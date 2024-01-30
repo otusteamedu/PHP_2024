@@ -13,14 +13,14 @@ try {
     echo '
     <p>
         <span>MYSQL Success</span>
-        <pre>'.print_r($fetch, true).'</pre>
+        <pre>' . print_r($fetch, true) . '</pre>
     </p>
     ';
 } catch (\Throwable $exception) {
     echo '
     <p>
         <span>MYSQL Error</span>
-        <pre>'.$exception->getMessage().'</pre>
+        <pre>' . $exception->getMessage() . '</pre>
     </p>
     ';
 }
@@ -38,7 +38,7 @@ try {
         echo '
         <p>
             <span>Redis Success</span>
-            <pre>Get value -> '.$redis->get('int').'</pre>
+            <pre>Get value -> ' . $redis->get('int') . '</pre>
         </p>
         ';
     } else {
@@ -53,7 +53,7 @@ try {
     echo '
     <p>
         <span>Redis Error</span>
-        <pre>'.$exception->getMessage().'</pre>
+        <pre>' . $exception->getMessage() . '</pre>
     </p>
     ';
 }
