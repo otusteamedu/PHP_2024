@@ -69,14 +69,14 @@ try {
     echo '
     <p>
         <span>Memcached Success</span>
-        <pre>Get value -> '.$memcached->get('int').'</pre>
+        <pre>Get value -> ' . $memcached->get('int') . '</pre>
     </p>
     ';
 } catch (\Throwable $exception) {
     echo '
     <p>
         <span>Memcached Error</span>
-        <pre>'.$exception->getMessage().'</pre>
+        <pre>' . $exception->getMessage() . '</pre>
     </p>
     ';
 }
