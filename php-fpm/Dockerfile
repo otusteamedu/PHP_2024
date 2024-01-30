@@ -11,8 +11,6 @@ RUN pecl install redis-6.0.2 memcached-3.2.0 && docker-php-ext-enable redis memc
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet --version=2.6.6
 
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-
 WORKDIR /app
 
 USER www-data

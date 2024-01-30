@@ -34,6 +34,7 @@ services:
     container_name: ${REDIS_CONTAINER_NAME}
     volumes:
       - ./var/redis:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - otus-network
   memcached:
