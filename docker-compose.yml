@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  webserver:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./code:/data/mysite.local
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+      - ./code:/data/mysite.local
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.3.0
+    container_name: ${MYSQL_CONTAINER_NAME}
+    volumes:
+      - ./var/mysql:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: ${REDIS_CONTAINER_NAME}
+    volumes:
+      - ./var/redis:/data
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:alpine
+    container_name: ${MEMCACHED_CONTAINER_NAME}
+    ports:
+      - ${MEMCACHED_PORT}:${MEMCACHED_PORT}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
