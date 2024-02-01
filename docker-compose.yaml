@@ -1,0 +1,70 @@
+version: '3'
+
+volumes:
+    socket:
+
+services:
+    redis:
+        image: redis
+        container_name: redis
+        ports:
+            - "6379:6379"
+        volumes:
+            - "./data/redis:/data"
+        networks:
+            - app-network
+
+    memcached:
+        container_name: memcached
+        image: memcached:latest
+        ports:
+            - "11211:11211"
+        networks:
+            - app-network
+
+    postgres:
+        image: postgres:latest
+        container_name: postgres
+        volumes:
+            - ./data/pg_data:/var/lib/postgresql
+        ports:
+            - "5434:5432"
+        expose:
+            - 5432
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - PGDATA=${PGDATA}
+            - POSTGRES_DB=${POSTGRES_DB}
+        networks:
+            - app-network
+
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        image: myapp/nginx
+        container_name: webserver
+        ports:
+            - "8002:80"
+        volumes:
+            - ./public:/data/application.local
+            - socket:/var/run/php-fpm
+        networks:
+            - app-network
+
+    app:
+        build:
+            context: ./fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: app
+        volumes:
+            - ./public:/data/application.local
+            - socket:/var/run/php-fpm
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
