@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - ./code:/app
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    depends_on:
+      - app
+    networks:
+      - net
+    platform: linux/x86_64
+  app:
+    build: docker/php
+    volumes:
+      - ./code:/app
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    networks:
+      - net
+  redis:
+    build: docker/redis
+    volumes:
+      - ./var/redis:/data
+    networks:
+      - net
+  mysql:
+    build: docker/mysql
+    volumes:
+      - ./var/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - net
+    platform: linux/x86_64
+  memcached:
+    image: memcached:latest
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
+
