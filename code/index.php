@@ -1,4 +1,5 @@
 <?php
+
 try {
     $redis = new Redis();
     $redis->connect(getenv('REDIS_CONTAINER_NAME'), getenv('REDIS_PORT'));
