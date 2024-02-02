@@ -1,0 +1,65 @@
+version: '3.9'
+
+services:
+  nginx:
+    container_name: hw1-nginx
+    hostname: hw1-nginx
+    build:
+      context: ./docker
+      dockerfile: nginx/Dockerfile
+    volumes:
+      - ./app:/app
+    ports:
+      - "8080:80"
+    networks:
+      - hw1-network
+
+  php:
+    container_name: hw1-php
+    hostname: hw1-php
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./app:/app
+    depends_on:
+      - nginx
+      - postgres
+    networks:
+      - hw1-network
+
+  postgres:
+    container_name: hw1-postgres
+    hostname: hw1-postgres
+    image: postgres:14-alpine
+    volumes:
+      - hw1-postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "54321:5432"
+    networks:
+      - hw1-network
+
+  memcache:
+    container_name: hw1-memcache
+    hostname: hw1-memcache
+    image: memcached:1.6.23-alpine
+    networks:
+      - hw1-network
+
+  redis:
+    container_name: hw1-redis
+    hostname: hw1-redis
+    image: redis:7.2.4-alpine
+    networks:
+      - hw1-network
+
+volumes:
+  hw1-postgres-data:
+
+networks:
+  hw1-network:
+    driver: bridge
