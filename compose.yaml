@@ -1,0 +1,43 @@
+version: '3'
+services:
+  php:
+    build: ./app
+    container_name: app
+    depends_on:
+      - memcached
+      - db
+    volumes:
+      - ./app:/data/mysite.local
+
+  nginx:
+    image: nginx:stable
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+      - ./app/public:/data/mysite.local/public
+      - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    depends_on:
+      - php
+
+  redis:
+    image: redis:latest
+    container_name: redis
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+
+  db:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
