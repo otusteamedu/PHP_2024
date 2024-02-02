@@ -1,0 +1,55 @@
+version: '3'
+services:
+  php:
+    build:
+      context: './docker/php'
+    volumes:
+      - './www/project:/var/www/html'
+      - './docker/php/php.ini:/usr/local/etc/php/php.ini'
+    environment:
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG}
+    links:
+      - mysql
+  
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - './www/project:/var/www/html'
+      - './docker/nginx/conf.d:/etc/nginx/conf.d'
+      - './docker/logs:/var/log/nginx'
+    links:
+      - php
+
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - default
+  
+  redis:
+    container_name: redis
+    image: redis:latest
+
+  memcached:
+    container_name: memcached
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    links:
+      - php  
+  
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1
