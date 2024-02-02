@@ -1,5 +1,12 @@
 .idea/
-/vendor/
+/app/vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
+.github
+.env
+logs/
+docker/logs
+docker/postgresql/db-data
+docker/redis/dаta
+app/composer.lock

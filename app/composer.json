@@ -1,0 +1,15 @@
+{
+  "name": "hukimato/hw1",
+  "description": "hw1",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "hukimato",
+      "email": "danay2211@gmail.com"
+    }
+  ],
+  "require": {
+
+  }
+}
