@@ -29,6 +29,24 @@ services:
     networks:
       - app-network
 
+  mariadb:
+    image: mariadb
+    restart: always
+    hostname: mariadb
+    container_name: mariadb
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mariadb/mariadb.cnf:/etc/mysql/conf.d/custom.cnf:ro
+      - ./mariadb/dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    networks:
+      - app-network
+
   redis:
     image: redis
     hostname: redis
