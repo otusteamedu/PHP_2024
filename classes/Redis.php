@@ -4,12 +4,17 @@ namespace classes;
 
 use Predis\Client;
 
-class RedisService
+class Redis
 {
-    const DEFAULT_HOST = 'redis';
-    const DEFAULT_PORT = 6379;
-    const DEFAULT_TIMEOUT = 0.8;
+    private const DEFAULT_HOST = '127.0.0.1';
+    private const DEFAULT_PORT = 6379;
+    private const DEFAULT_TIMEOUT = 0.8;
 
+    /**
+     * @param string $host
+     * @param int $port
+     * @param float $timeout
+     */
     public function __construct(
         private string $host = self::DEFAULT_HOST,
         private int $port = self::DEFAULT_PORT,
@@ -31,6 +36,9 @@ class RedisService
         }
     }
 
+    /**
+     * @return Client
+     */
     private function getClient(): Client
     {
         return new Client([

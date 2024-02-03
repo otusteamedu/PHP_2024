@@ -4,7 +4,7 @@ services:
   nginx:
     build: docker/nginx
     ports:
-      - ${NGINX_PORT}:80
+      - ${NGINX_PORT_MAPPING}:${NGINX_PORT}
     volumes:
       - ./:/app
       - ./docker/nginx/sites-enabled:/etc/nginx/sites-enabled
@@ -19,7 +19,7 @@ services:
     volumes:
       - ./var/mysql:/var/lib/mysql
     ports:
-      - ${DB_PORT}:3306
+      - ${DB_PORT_MAPPING}:${DB_PORT}
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_DATABASE}
@@ -31,7 +31,7 @@ services:
   app:
     build: docker/php
     ports:
-      - ${PHP_FPM_PORT}:9000
+      - ${PHP_FPM_PORT_MAPPING}:${PHP_FPM_PORT}
     volumes:
       - ./:/app
       - ../../var/composer:/root/.composer
@@ -45,14 +45,14 @@ services:
     volumes:
       - ./var/redis:/data
     ports:
-      - ${REDIS_PORT}:6379
+      - ${REDIS_PORT_MAPPING}:${REDIS_PORT}
     networks:
       - net
 
   memcached:
-    image: memcached:latest
+    build: docker/memcached
     ports:
-      - ${MEMCACHED_PORT}:11211
+      - ${MEMCACHED_PORT_MAPPING}:${MEMCACHED_PORT}
     networks:
       - net
 

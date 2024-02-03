@@ -5,12 +5,20 @@ define("BASE_PATH", __DIR__);
 require(__DIR__ . '/vendor/autoload.php');
 require(__DIR__ . '/autoload.php');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
-$redisService = new \classes\RedisService();
-$manager = new \classes\Manager($redisService);
+$redisService = new \classes\Redis(
+    getenv('REDIS_HOST'),
+    getenv('REDIS_PORT')
+);
+echo 'Redis connect ping - ' . $redisService->ping();
 
-echo $manager->checking();
+$memcached = new \classes\Memcached(
+    getenv('MEMCACHED_HOST'),
+    getenv('MEMCACHED_PORT')
+);
+echo 'Memcached version - ' . $memcached->ping();
+
 
 echo "Hello World!";
