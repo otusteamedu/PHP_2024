@@ -1,14 +1,16 @@
 <?php
 
-namespace Dotenv;
+namespace app;
+
 use PDO;
 use Redis;
 use Memcached;
+use Dotenv;
 
 // Загрузка переменных окружения из файла .env
 require __DIR__ . '/vendor/autoload.php';
 
-$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Получение переменных окружения
@@ -42,7 +44,7 @@ try {
     // Получаем значение
     echo $redis->get("testKey");
 } catch (Exception $e) {
-    echo "Ошибка подключения к Redis: ".$e->getMessage();
+    echo "Ошибка подключения к Redis: " . $e->getMessage();
 }
 
 $memcached = new Memcached();
