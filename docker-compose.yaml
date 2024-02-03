@@ -1,0 +1,81 @@
+version: '3'
+
+services:
+  web:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "${APP_PORT:-80}:80"
+    volumes:
+      - ./:/data/site.local
+      - ./nginx/hosts/site.local.conf:/etc/nginx/conf.d/site.local.conf
+      - phpsocket:/var/run
+    working_dir: /data
+    networks:
+      - otus-app-network
+
+  php:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: app/php
+    volumes:
+      - ./:/data/site.local
+      - ./fpm/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+      - ./fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - phpsocket:/var/run
+    working_dir: /data/site.local
+    networks:
+      - otus-app-network
+
+  mysql:
+    image: mysql:8.3
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - ./db:/data/dump
+    working_dir: /data/dump
+    networks:
+      - otus-app-network
+
+  redis:
+    image: redis:7.2-alpine
+    restart: always
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis:/data
+    networks:
+      - otus-app-network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+
+  memcache:
+    image: memcached:1.6-alpine
+    ports:
+      - "${MEMCACHED_PORT:-11211}:11211"
+    networks:
+      - otus-app-network
+
+networks:
+  otus-app-network:
+    driver: bridge
+
+volumes:
+  php:
+    driver: local
+  redis:
+    driver: local
+  mysql:
+    driver: local
+  memcache:
+    driver: local
+  phpsocket:
