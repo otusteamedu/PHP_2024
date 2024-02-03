@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libicu-dev \
-        libxml++2.6-dev \
         libmcrypt-dev \
         libbz2-dev \
         libc-client-dev \
@@ -13,14 +12,10 @@ RUN apt-get update && apt-get install -y \
         libkrb5-dev \
         libgraphicsmagick1-dev \
         libjpeg-dev \
-        subversion \
-        wget \
         net-tools \
         iproute2 \
         libcurl3-dev \
         git \
-        libzip-dev \
-        zip \
         libonig-dev \
         libmcrypt-dev \
         libmemcached-dev \
@@ -28,7 +23,7 @@ RUN apt-get update && apt-get install -y \
 
 #Install PECL modules
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install bz2 calendar imap pcntl shmop sockets sysvmsg sysvsem sysvshm xsl zip intl mbstring pdo_mysql mysqli opcache gettext xml exif
+    && docker-php-ext-install bz2 calendar imap pcntl shmop sockets sysvmsg sysvsem sysvshm intl mbstring pdo_mysql mysqli gettext exif
 
 #Install memcached
 RUN pecl install memcached-3.1.5 && docker-php-ext-enable memcached

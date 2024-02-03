@@ -17,6 +17,9 @@ class Memcached
     ) {
     }
 
+    /**
+     * @return false|string
+     */
     public function ping()
     {
         try {
