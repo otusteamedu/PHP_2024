@@ -1,0 +1,68 @@
+version: "3.3"
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-otus-lesson
+    ports:
+      - 9100:80
+      - 9104:443
+    volumes:
+      - ./data/logs:/var/log/nginx
+      - ./conf/nginx:/etc/nginx/conf.d
+      - ./app:/app
+      - php-socket:/var/run/php
+    networks:
+      - otus_net
+    restart: unless-stopped
+    depends_on:
+      - php
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-otus-lesson
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 23306:3306
+    networks:
+      - otus_net
+    restart: unless-stopped
+  php:
+    build: ./conf/php
+    container_name: php-fpm-otus-lesson
+    expose:
+      - 9000
+    volumes:
+      - ./app:/app
+      - php-socket:/var/run/php
+    networks:
+      - otus_net
+    environment:
+      PHP_IDE_CONFIG: serverName=onliner-test
+      XDEBUG_CONFIG: remote_host=<IP REMOTE HOST> remote_enable=On remote_autostart=1
+        remote_connect_back=1 remote_port=9000 remote_log=/tmp/php8-xdebug.log
+    env_file: ./app/.env
+    restart: unless-stopped
+  redis:
+    image: redis:latest
+    container_name: redis-otus-lesson
+    networks:
+      - otus_net
+    restart: unless-stopped
+  memcached:
+    image: memcached:latest
+    container_name: memcached-otus-lesson
+    restart: unless-stopped
+    networks:
+      - otus_net
+
+networks:
+  otus_net:
+    external: false
+
+volumes:
+  php-socket:
