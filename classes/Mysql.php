@@ -37,5 +37,4 @@ class Mysql
             return "error " . $e->getMessage();
         }
     }
-
 }
