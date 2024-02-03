@@ -64,5 +64,4 @@ final readonly class Connection
         $this->memcached->addServer("memcache", $this->env['MEMCACHED_PORT']);
         $this->memcached->set('test_connection', 'Memcached connect success!');
     }
-
 }
