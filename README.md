@@ -33,5 +33,5 @@ make start-otus
 Add this lines to your hosts file
 
 ```
-127.0.0.1 otus.lcl
+127.0.0.1 mysite.local
 ```
