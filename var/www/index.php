@@ -38,5 +38,3 @@ try {
 } catch (\Throwable $e) {
     print_r($e->getMessage());
 }
-
-
