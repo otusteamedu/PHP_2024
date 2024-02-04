@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: mysite-nginx
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/mysite.local
+       - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: mysite/php-fpm
+    container_name: mysite-php-fpm
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+    depends_on:
+      - memcached
+      - redis
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: mysite-memcached
+    ports:
+      - '11211:11211'
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: mysite-redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: sh -c 'exec redis-server --requirepass "$REDIS_PASSWORD"'
+    ports:
+      - '6379:6379'
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysite-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: mysite
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysite-dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysite-dbdata:
