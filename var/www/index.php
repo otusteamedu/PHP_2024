@@ -1,23 +1,22 @@
 <?php
-header('Content-type: text/plain');
-echo "Hello is my first docker contaner" . PHP_EOL;
+echo "Hello is my first docker contaner" . "<br>";
 
 try {
     $redis = new Redis();
     $redis->connect(getenv('REDIS_CONTAINER'), getenv('REDIS_PORT'));
-    echo "Redis подключение успешно ping:" . $redis->ping() . PHP_EOL;
+    echo "Redis подключение успешно ping:" . $redis->ping() . "<br>";
     $redis->close();
 } catch (Throwable $e) {
-    echo "Ошибка подключение к Redis:" . PHP_EOL . $e->getMessage() . PHP_EOL;
+    echo "Ошибка подключение к Redis:" . "<br>" . $e->getMessage() . "<br>";
 }
 
 
 try {
     $memcahed = new \Memcached();
     $memcahed->addServer(getenv('MEMCACHED_CONTAINER'), getenv('MEMCACHED_PORT'));
-    echo "Memcached подключение успешно version:" . current($memcahed->getVersion()) . PHP_EOL;
+    echo "Memcached подключение успешно version:" . current($memcahed->getVersion()) . "<br>";
 } catch (Throwable $e) {
-    echo "Ошибка подключение Memcached:" . PHP_EOL . $e->getMessage() . PHP_EOL;
+    echo "Ошибка подключение Memcached:" . "<br>" . $e->getMessage() . "<br>";
 }
 
 
@@ -29,9 +28,9 @@ try {
     $password = getenv('MYSQL_PASSWORD');
     $db = new PDO($dsn, $user, $password);
     $tables = $db->query('SHOW TABLES');
-    echo "Подключение к базе данных успешно,количество таблиц:". $tables->rowCount() . PHP_EOL;
+    echo "Подключение к базе данных успешно,количество таблиц:". $tables->rowCount() . "<br>";
 } catch (PDOException $e) {
-    echo "Ошибка подключение к базе данных:" . PHP_EOL . $e->getMessage() . PHP_EOL;
+    echo "Ошибка подключение к базе данных:" . "<br>" . $e->getMessage() . "<br>";
 }
 
 ?>
