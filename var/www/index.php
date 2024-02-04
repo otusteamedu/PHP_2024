@@ -31,5 +31,3 @@ try {
 } catch (PDOException $e) {
     echo "Ошибка подключение к базе данных:" . "<br>" . $e->getMessage() . "<br>";
 }
-
-?>
