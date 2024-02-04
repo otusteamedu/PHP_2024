@@ -3,7 +3,7 @@
 echo "<h1>Application " . getenv('APP_NAME') . " - " . date('Y') . "</h1>";
 echo "<img src='img.jpg'>";
 
-$redis = new Redis;
+$redis = new Redis();
 if ($redis->connect(getenv('REDIS_HOST'))) {
     echo "<p>Redis is connected!</p>";
 } else {
@@ -30,4 +30,3 @@ if (!$dbconn) {
     pg_close($dbconn);
     echo "<p>DB is connected!</p>";
 }
-
