@@ -1,4 +1,5 @@
 <?php
+
 echo "Hello is my first docker contaner" . "<br>";
 
 try {
@@ -10,7 +11,6 @@ try {
     echo "Ошибка подключение к Redis:" . "<br>" . $e->getMessage() . "<br>";
 }
 
-
 try {
     $memcahed = new \Memcached();
     $memcahed->addServer(getenv('MEMCACHED_CONTAINER'), getenv('MEMCACHED_PORT'));
@@ -18,7 +18,6 @@ try {
 } catch (Throwable $e) {
     echo "Ошибка подключение Memcached:" . "<br>" . $e->getMessage() . "<br>";
 }
-
 
 try {
     $dsn = 'mysql:host=' . getenv('MYSQL_CONTAINER') . ';';
@@ -28,7 +27,7 @@ try {
     $password = getenv('MYSQL_PASSWORD');
     $db = new PDO($dsn, $user, $password);
     $tables = $db->query('SHOW TABLES');
-    echo "Подключение к базе данных успешно,количество таблиц:". $tables->rowCount() . "<br>";
+    echo "Подключение к базе данных успешно,количество таблиц:" . $tables->rowCount() . "<br>";
 } catch (PDOException $e) {
     echo "Ошибка подключение к базе данных:" . "<br>" . $e->getMessage() . "<br>";
 }
