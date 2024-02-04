@@ -1,0 +1,74 @@
+version: "3"
+
+services:
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: nginx
+    hostname: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    restart: always
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  mariadb:
+    image: mariadb
+    restart: always
+    hostname: mariadb
+    container_name: mariadb
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./mariadb/mariadb.cnf:/etc/mysql/conf.d/custom.cnf:ro
+      - ./mariadb/dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    hostname: redis
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached
+    hostname: memcached
+    container_name: memcached
+    ports:
+      - "11211:11211"
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

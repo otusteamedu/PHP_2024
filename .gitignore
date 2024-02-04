@@ -1,5 +1,7 @@
 .idea/
 /vendor/
+/mariadb/dbdata/
+.env
 .DS_Store
 .AppleDouble
 .LSOverride
