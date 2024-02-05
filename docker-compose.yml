@@ -7,12 +7,14 @@ services:
   app:
     # Если нет секции build, то система будет искать образ в репозиториях
     build:
-      context: fpm
-      dockerfile: fpm/Dockerfile
+      context: ./fpm
+      dockerfile: Dockerfile
     image: myapp/php # имя будущего образа
     container_name: app # имя контейнера после запуска
+    depends_on:
+      - redis
     volumes:
-       - ./code:/data/mysite.local
+      - ./code:/data/mysite.local
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
@@ -20,8 +22,8 @@ services:
   #контейнер с Nginx
   webserver:
     build:
-      context: nginx
-      dockerfile: nginx/Dockerfile
+      context: ./nginx
+      dockerfile: Dockerfile
     image: myapp/nginx
     container_name: webserver
     # проброс портов
@@ -45,7 +47,21 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ./dbdata:/var/lib/mysql  
+      - ./dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    environment:
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DATABASES=${REDIS_DATABASES}
     networks:
       - app-network
 
