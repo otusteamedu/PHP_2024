@@ -1,0 +1,76 @@
+version: "3"
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "${NGINX_PORT}:80"
+    depends_on:
+      - php-fpm
+    volumes:
+      - ./src:/app/mysite.local
+      - phpsocket:/var/run
+    networks:
+      - backend
+
+  php-fpm:
+    build:
+      context: ./docker/php
+      dockerfile: ./php-fpm/Dockerfile
+    volumes:
+      - ./src:/app/mysite.local
+      - phpsocket:/var/run
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+  php-cli:
+    build:
+      context: ./docker/php
+      dockerfile: ./php-cli/Dockerfile
+    volumes:
+      - ./src:/app/mysite.local
+      - composer:/root/.composer/cache
+    depends_on:
+      - postgres
+    networks:
+      - backend
+
+  memcached:
+    image: memcached:latest
+    ports:
+      - "${MEMCACHED_PORT}:11211"
+    networks:
+      - backend
+
+  redis:
+    image: redis:latest
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres:
+  composer:
+  phpsocket:
