@@ -2,7 +2,7 @@
 
 FILE="users.txt"
 
-if [ ! -f "$FILE" ]; then
+if [ ! -f $FILE ]; then
   echo "Ошибка: Файл $FILE не существует"
   exit 1
 fi
