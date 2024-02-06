@@ -1,0 +1,17 @@
+{
+  "name": "kiryao/otus-php-01",
+  "description": "Homework 01",
+  "minimum-stability": "dev",
+  "type": "project",
+  "require": {
+    "php": ">=8.0",
+    "ext-memcached": "*",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "src/"
+    }
+  },
+  "prefer-stable": true
+}
