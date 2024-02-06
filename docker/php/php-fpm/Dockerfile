@@ -8,11 +8,10 @@ RUN apt-get update && apt-get install -y zlib1g-dev libzip-dev zip libpq-dev lib
   && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql
 
 COPY ../conf.d/php.ini /usr/local/etc/php/conf.d/php-custom.ini
+COPY ../php-fpm/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 WORKDIR /app/mysite.local
 
 VOLUME /app
-
-EXPOSE 9000
 
 CMD ["php-fpm"]

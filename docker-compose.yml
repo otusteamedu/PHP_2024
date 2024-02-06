@@ -11,6 +11,7 @@ services:
       - php-fpm
     volumes:
       - ./src:/app/mysite.local
+      - phpsocket:/var/run
     networks:
       - backend
 
@@ -20,6 +21,7 @@ services:
       dockerfile: ./php-fpm/Dockerfile
     volumes:
       - ./src:/app/mysite.local
+      - phpsocket:/var/run
     depends_on:
       - postgres
     networks:
@@ -71,3 +73,4 @@ networks:
 volumes:
   postgres:
   composer:
+  phpsocket:
