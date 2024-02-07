@@ -1,0 +1,6 @@
+1 test2 Kazan 99999
+2 test Moscow 908213
+3 test2 Saint-P 1232121
+4 test3 Tver 94352124
+5 test4 Milan 7990923
+6 test5 Moscow 1234123
