@@ -4,11 +4,12 @@ FILE='cities.txt'
 
 if ! [[ -f $FILE ]]; then
   echo "Файл по умолчанию '$FILE' не найден в директории '$PWD'"
-  read -p "Введите название файла с городами: " USER_FILE
-  if ! [[ -f $USER_FILE ]]; then
-    echo "Файл '$USER_FILE' не найден в директории '$PWD'"
-    exit 1
-  fi
+  while ! [[ -f $USER_FILE ]]; do
+    read -p "Введите название файла с городами: " USER_FILE
+    if ! [[ -f $USER_FILE ]]; then
+      echo -e "Файл '$USER_FILE' не найден в директории '$PWD'.\nВведите название файла повторно или нажмите <CTRL+C> для выхода."
+    fi
+  done
   FILE=$USER_FILE
 fi
 
