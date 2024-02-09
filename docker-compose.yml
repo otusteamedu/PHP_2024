@@ -65,6 +65,14 @@ services:
     networks:
       - app-network
 
+  memcached:
+    image: memcached:alpine
+    container_name: memcached
+    ports:
+      - ${MEMCACHED_PORT}:${MEMCACHED_PORT}
+
+
+
 #Docker Networks
 networks:
   app-network:
