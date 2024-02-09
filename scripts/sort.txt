@@ -1,0 +1,5 @@
+1 test Moscow 200
+2 test2 Saint-P 150
+3 test3 Tver 1000
+4 test4 Milan 1500
+5 test5 Moscow 20
