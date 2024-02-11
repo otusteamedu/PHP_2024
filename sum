@@ -1,0 +1,3 @@
+#! /usr/bin/awk -f
+
+BEGIN { t=0; for (i in ARGV) t+=ARGV[i]; print t}
