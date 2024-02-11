@@ -6,3 +6,5 @@ fi
 
 echo "Три наиболее популярных города:"
 awk '{print $3}' $FILE_FOR_SORT | tail -n +2 | sort | uniq -c | sort -rn | head -n3 | awk '{print $2}'
+
+exit 0

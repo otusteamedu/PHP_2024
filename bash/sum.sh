@@ -16,3 +16,5 @@ for arg in "$@"; do
 done
 
 echo $SUMMA
+
+exit 0
