@@ -1,3 +1,17 @@
-# PHP_2023
+# Capitalize string
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+## Требования
+- PHP 7.0
+
+## Установка
+
+```bash
+$ composer require aleksandrorlov/capitalize
+```
+
+## Использование
+
+```php
+$processor = new StringProcessor();
+echo $processor->capitalize('test'); // Test
+```
