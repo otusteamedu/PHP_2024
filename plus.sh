@@ -13,7 +13,7 @@ then
   exit 1
 fi
 
-regex='^[+-]?[0-9]+([0-9]+)?$'
+regex='^[+-]?[0-9]+([.][0-9]+)?$'
 if ! [[ $1 =~ $regex ]] ; then
    echo "Arg $1 is not correct number"
    exit 1
@@ -24,8 +24,4 @@ if ! [[ $2 =~ $regex ]] ; then
    exit 1
 fi
 
-
-sum=$(( $1 + $2 ))
-echo "Sum is $sum"
-
-
+perl -E "say $1+$2"
