@@ -2,8 +2,7 @@
 
 echo "Калькулятор"
 echo "Введите выражение для вычисления. Пример: 1 + 2"
-read -r strexp
-readarray -d ' ' -t args < <(printf '%s' "$strexp")
+read -ra args
 
 if ! [ "${#args[@]}" = "3" ]; then
   echo "Передано неверное выражение."
