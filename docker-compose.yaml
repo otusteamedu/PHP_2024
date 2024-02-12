@@ -35,15 +35,11 @@ services:
   redis:
     image: redis:latest
     container_name: ${REDIS_HOST}
-    ports:
-      - "${REDIS_PORT}:${REDIS_PORT}"
     networks:
       - app-network
   memcached:
     image: memcached:latest
     container_name: ${MEMCACHED_HOST}
-    ports:
-      - "${MEMCACHED_PORT}:${MEMCACHED_PORT}"
     networks:
       - app-network
   postgres:
