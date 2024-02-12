@@ -21,8 +21,6 @@ if (class_exists('Redis')) {
     } catch (\Exception $e) {
         echo "Redis error: {$e->getMessage()} $newLine";
     }
-
-
 }
 
 try {
