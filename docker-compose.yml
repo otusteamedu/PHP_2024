@@ -15,6 +15,8 @@ services:
       - redis
     volumes:
       - ./code:/data/mysite.local
+    env_file:
+      - ./.env
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
@@ -39,9 +41,9 @@ services:
   # строим на базе стандартного образа
   db:
     image: mysql:5.7.22
-    container_name: db
+    container_name: ${MYSQL_HOST}
     ports:
-      - "3306:3306"
+      - ${MYSQL_PORT}:${MYSQL_PORT}
     # описываем, какую БД мы создаём
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -61,7 +63,6 @@ services:
       - ${REDIS_PORT}:${REDIS_PORT}
     environment:
       - REDIS_PORT=${REDIS_PORT}
-      - REDIS_DATABASES=${REDIS_DATABASES}
     networks:
       - app-network
 
