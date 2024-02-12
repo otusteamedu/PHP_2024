@@ -35,9 +35,30 @@ try {
         echo 'Memcached is not connected' . $newLine;
     }
 } catch (Exception $e) {
-    echo "Error: {$e->getMessage()} $newLine";
+    echo "Memcached error: {$e->getMessage()} $newLine";
 }
 
+$host = 'db';
+$db = 'laravel';
+$user = 'root';
+$pass = 'qwerty123!wq';
+$charset = 'utf8';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+var_dump($dsn);
+$opt = [
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+];
+
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $opt);
+    echo 'PDO is connected' . $newLine;
+} catch (PDOException $e) {
+    echo "PDO error: {$e->getMessage()} $newLine";
+}
 
 echo '<pre>';
 print_r(get_loaded_extensions());
