@@ -1,0 +1,17 @@
+{
+    "name": "aleksandrorlov/capitalize",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "AleksandrOrlov\\Capitalize\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "a.orlov"
+        }
+    ],
+    "require": {
+      "php": ">=7.0"
+    }
+}
