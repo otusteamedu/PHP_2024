@@ -16,7 +16,7 @@ operand2="${args[2]}"
 
 operandNum=1
 for operand in $operand1 $operand2; do
-  if ! [[ "$operand" =~ ^[0-9.-]+$ ]]; then
+  if ! [[ "$operand" =~ ^[0-9.+-]+$ ]]; then
     echo "Неверное значение $operandNum-го операнда. Доступны только числовые значения. Пример: 1, -1, 1.65, -3.56"
     exit 1
   fi
