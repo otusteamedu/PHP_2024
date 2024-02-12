@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: nginx
+    ports:
+      - "${NGINX_PORT}:${NGINX_PORT}"
+    volumes:
+      - ./www:${ROOT_DIR}
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+      - ./www:${ROOT_DIR}
+    depends_on:
+      - redis
+      - memcached
+      - postgres
+    networks:
+      - app-network
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_HOST}
+    networks:
+      - app-network
+  memcached:
+    image: memcached:latest
+    container_name: ${MEMCACHED_HOST}
+    networks:
+      - app-network
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: ${POSTGRES_HOST}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER_NAME}
+    volumes:
+      - ./docker/db/postgresql/data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+ app-network:
+   driver: bridge
