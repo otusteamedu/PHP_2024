@@ -12,5 +12,4 @@ class App
         $fact = $cat->getFact();
         echo $fact;
     }
-
 }
