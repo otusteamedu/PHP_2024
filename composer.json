@@ -1,0 +1,17 @@
+{
+    "name": "van4ik/php_2024",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "IKolyas",
+            "email": "i.kolyasnikov@mail.ru"
+        }
+    ],
+    "require": {
+        "i-kolyas/person-name-format": "^1.0"
+    }
+}
