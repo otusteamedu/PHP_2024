@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "203aebdacee40221d0f8ef968995c46e",
+    "packages": [
+        {
+            "name": "hinoho/composer-kagirova",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hinoho/composer-kagirova.git",
+                "reference": "ceaab32f1a682294b881daca000efd79082722b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hinoho/composer-kagirova/zipball/ceaab32f1a682294b881daca000efd79082722b7",
+                "reference": "ceaab32f1a682294b881daca000efd79082722b7",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Hinoho\\ComposerKagirova\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/hinoho/composer-kagirova/issues",
+                "source": "https://github.com/hinoho/composer-kagirova/tree/v1.0.0"
+            },
+            "time": "2024-02-13T14:55:43+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
