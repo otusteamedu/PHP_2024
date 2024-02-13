@@ -17,15 +17,20 @@ COPY ./.deployment/docker/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.in
 RUN apk add --no-cache libpq-dev \
     && docker-php-ext-install pdo_pgsql
 
-## Configure non-root user ToDo: Брать из ENV
-ARG PUID=1000
-ARG PGID=1000
+## Configure non-root user
+ARG PUID
+ENV PUID $PUID
+
+ARG PGID
+ENV PGID $PGID
+
 RUN apk --no-cache add shadow && \
     groupmod -o -g ${PGID} www-data && \
     usermod -o -u ${PUID} -g www-data www-data
 
 # Source project
-RUN chown www-data:www-data /var/www/homework
+RUN mkdir /var/www/homework \
+    && chown www-data:www-data /var/www/homework
 COPY --chown=www-data:www-data ./ /var/www/homework
 WORKDIR /var/www/homework
 

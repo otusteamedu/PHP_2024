@@ -7,11 +7,14 @@ services:
       context: ./
       dockerfile: ./.deployment/docker/php-fpm/Dockerfile
       args:
-        - PUID=${PUID}
-        - PGID=${PGID}
-        - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
     environment:
+      # ToDO: Перенести
       PHP_IDE_CONFIG: "serverName=Homework"
+      PUID: ${PUID}
+      PGID: ${PGID}
     volumes:
       - ./:/var/www/homework
 
@@ -20,6 +23,12 @@ services:
     build:
       context: ./.deployment/docker/nginx
       dockerfile: ./.deployment/docker/nginx/Dockerfile
+      args:
+        PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+        PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_PORT}
+    environment:
+      PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+      PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_CONTAINER}
     ports:
       - ${NGINX_HOST_HTTP_PORT}:80
     volumes:
@@ -40,3 +49,6 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data:rw
+
+volumes:
+  db_data:
