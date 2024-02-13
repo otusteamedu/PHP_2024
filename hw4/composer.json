@@ -1,0 +1,18 @@
+{
+    "name": "pavel/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pavel\\Hw4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "neon-light84",
+            "email": "goroshnikov.pavel@gmail.com"
+        }
+    ],
+    "require": {
+        "pavel-goroshnikov/simple-api": "~1.0"
+    }
+}
