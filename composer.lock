@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "f43c14872f790dded31062ceb32e5bc6",
+    "packages": [
+        {
+            "name": "alexshutov/hw3",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Alex-8-4/hw3.git",
+                "reference": "cf8d8b6a87812e8f2d6e7e3436b92ec2b0b08c8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Alex-8-4/hw3/zipball/cf8d8b6a87812e8f2d6e7e3436b92ec2b0b08c8f",
+                "reference": "cf8d8b6a87812e8f2d6e7e3436b92ec2b0b08c8f",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Alexshutov\\Hw3\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/Alex-8-4/hw3/issues",
+                "source": "https://github.com/Alex-8-4/hw3/tree/v1.0.0"
+            },
+            "time": "2024-02-13T21:23:19+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}
