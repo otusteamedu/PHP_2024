@@ -5,17 +5,15 @@ if [[ $# -ne 2 ]]; then
   exit 1
 fi
 
-numberPattern="^[-]?[0-9]+(\.[0-9]+)?$"
+function validateNumber() {
+    if ! [[ $1 =~ ^[-]?[0-9]+(\.[0-9]+)?$ ]]; then
+       echo "$1 не является корректным числом!"
+       exit 1
+    fi
+}
 
-if ! [[ $1 =~ $numberPattern ]]; then
-   echo "$1 не является корректным числом!"
-   exit 1
-fi
-
-if ! [[ $2 =~ $numberPattern ]]; then
-   echo "$2 не является корректным числом!"
-   exit 1
-fi
+validateNumber $1
+validateNumber $2
 
 echo "$1 $2" | awk '{print $1 + $2}'
 exit 0
