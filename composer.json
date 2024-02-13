@@ -1,0 +1,18 @@
+{
+    "name": "victoria-babikova/otus-composer-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "VictoriaBabikova\\OtusComposerApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VictoriaBabikova",
+            "email": "babikovav8@gmail.com"
+        }
+    ],
+    "require": {
+        "victoria-babikova/translit-composer-package": "^1.0"
+    }
+}
