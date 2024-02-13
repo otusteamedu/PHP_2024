@@ -1,0 +1,12 @@
+{
+    "name": "afilippov/otus-composer-app-hw3",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Afilippov\\OtusComposerAppHw3\\": "src/"
+        }
+    },
+    "require": {
+        "afilippov/otus-composer-package-hw4": "^1.0"
+    }
+}
