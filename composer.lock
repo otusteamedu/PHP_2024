@@ -8,17 +8,24 @@
     "packages": [
         {
             "name": "hukimato/dumb-composer-package",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/hukimato/dumb-composer-package.git",
-                "reference": "a208d3e545441e1122db22fec9df67af6917cacc"
+                "reference": "2297101331731155092cd30e3e790a01abc29dbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hukimato/dumb-composer-package/zipball/a208d3e545441e1122db22fec9df67af6917cacc",
-                "reference": "a208d3e545441e1122db22fec9df67af6917cacc",
+                "url": "https://api.github.com/repos/hukimato/dumb-composer-package/zipball/2297101331731155092cd30e3e790a01abc29dbb",
+                "reference": "2297101331731155092cd30e3e790a01abc29dbb",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+                "phpcompatibility/php-compatibility": "*"
             },
             "type": "library",
             "autoload": {
@@ -35,9 +42,9 @@
             ],
             "support": {
                 "issues": "https://github.com/hukimato/dumb-composer-package/issues",
-                "source": "https://github.com/hukimato/dumb-composer-package/tree/v1.0.0"
+                "source": "https://github.com/hukimato/dumb-composer-package/tree/v1.0.1"
             },
-            "time": "2024-02-13T10:40:45+00:00"
+            "time": "2024-02-14T11:27:11+00:00"
         }
     ],
     "packages-dev": [],
