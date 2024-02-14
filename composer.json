@@ -1,0 +1,12 @@
+{
+  "name": "devgobankiros/ocp-hw",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Devgobankiros\\OcpHw\\": "src/"
+    }
+  },
+  "require": {
+    "devgobankiros/ocp-hw": "^1.0"
+  }
+}
