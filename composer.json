@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ilasadkin/crypto-data": "^1.0"
+    }
+}
