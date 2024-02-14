@@ -1,0 +1,12 @@
+{
+    "name": "nikolay-shvetsov/home-work-composer",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "NikolayShvetsov\\HomeWorkComposer\\": "src/"
+        }
+    },
+    "require": {
+        "nikolay-shvetsov/rename-service": "^1.0"
+    }
+}

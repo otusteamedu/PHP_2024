@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e8bf3a3d869f71c51e898e922569dfe6",
+    "packages": [
+        {
+            "name": "nikolay-shvetsov/rename-service",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikolayShvetsov/rename-service.git",
+                "reference": "9a140dc00aa3083ee3de4ce6893e22b0b18cca50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikolayShvetsov/rename-service/zipball/9a140dc00aa3083ee3de4ce6893e22b0b18cca50",
+                "reference": "9a140dc00aa3083ee3de4ce6893e22b0b18cca50",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "NikolayShvetsov\\RenameService\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/nikolayShvetsov/rename-service/issues",
+                "source": "https://github.com/nikolayShvetsov/rename-service/tree/v1.0.0"
+            },
+            "time": "2024-02-14T19:51:09+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
