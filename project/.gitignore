@@ -1,0 +1,7 @@
+/var/
+/vendor/
+/cache/
+/.env.local
+.env
+/.env.*.local
+.htaccess

@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: on-failure
+    ports:
+      - "80:80"
+    volumes:
+      - ./project:/var/www/project
+      - ./docker/sock:/sock
+    networks:
+      - project-network
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    restart: on-failure
+    volumes:
+      - ./project:/var/www/project
+      - ./docker/sock:/sock
+    networks:
+      - project-network
+
+  postgres:
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    restart: on-failure
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    ports:
+      - "5432:5432"
+    networks:
+      - project-network
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=${REDIS_REPLICATION_MODE}
+    networks:
+      - project-network
+
+  memcached:
+    image: "memcached:alpine"
+    restart: on-failure
+    ports:
+      - "11211:11211"
+    networks:
+      - project-network
+
+volumes:
+  db-data:
+
+networks:
+  project-network:
+    driver: bridge
