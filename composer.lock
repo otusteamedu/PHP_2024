@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bf060b6a18e36ad029484d43e7e8ae14",
+    "content-hash": "e8ba2c6dc3dd5ea41f32d9d4e2b0f3f7",
     "packages": [
         {
             "name": "casiliose/memory-show",
@@ -50,7 +50,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "8.3.*"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"
 }
