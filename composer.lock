@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "763262298a35cfcf4c63c34d7b7e7e1a",
+    "packages": [
+        {
+            "name": "devgobankiros/ocp-hw",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/devgobankiros/ocp-hw.git",
+                "reference": "99f13c2bd02cc059903d53efbe49bff738f9d2d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/devgobankiros/ocp-hw/zipball/99f13c2bd02cc059903d53efbe49bff738f9d2d6",
+                "reference": "99f13c2bd02cc059903d53efbe49bff738f9d2d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Devgobankiros\\OcpHw\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "array helper module",
+            "support": {
+                "issues": "https://github.com/devgobankiros/ocp-hw/issues",
+                "source": "https://github.com/devgobankiros/ocp-hw/tree/v1.0.1"
+            },
+            "time": "2024-02-14T19:16:39+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=8.0"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
+}

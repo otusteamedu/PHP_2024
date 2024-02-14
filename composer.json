@@ -1,5 +1,6 @@
 {
-  "name": "devgobankiros/ocp-hw",
+  "name": "otus/ystopchyk",
+  "description": "Otus home work",
   "type": "project",
   "autoload": {
     "psr-4": {
@@ -7,6 +8,7 @@
     }
   },
   "require": {
+    "php": ">=8.0",
     "devgobankiros/ocp-hw": "^1.0"
   }
 }
