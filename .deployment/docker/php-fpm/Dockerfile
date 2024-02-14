@@ -1,6 +1,12 @@
 FROM php:8.2-fpm-alpine
 
-RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash
+RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash libmemcached-dev libzip-dev
+# Добавляем расширения для Redis и Memcached
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && pecl install redis \
+    && pecl install memcached \
+    && docker-php-ext-enable redis memcached \
+    && apk del -f .build-deps
 
 # Если аргумент INSTALL_XDEBUG будет равен true, то устанавливаем xdebug (теперь можно исп. этот файл и для прод. деплоя)
 ARG INSTALL_XDEBUG=false
