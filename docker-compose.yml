@@ -51,5 +51,24 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data:rw
 
+  redis:
+    container_name: redis
+    build:
+      context: ./.deployment/docker/redis
+      dockerfile: ./Dockerfile
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - redis_data:/data
+
+  memcached:
+    container_name: memcached
+    build:
+      context: ./.deployment/docker/memcached
+      dockerfile: ./Dockerfile
+    ports:
+      - ${MEMCACHED_PORT}:11211
+
 volumes:
   db_data:
+  redis_data:
