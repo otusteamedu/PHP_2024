@@ -6,6 +6,6 @@
     }
   ],
   "require": {
-    "rmulyukov/hw3": "^0.0.1"
+    "rmulyukov/hw3": "^2.0"
   }
 }
