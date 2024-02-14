@@ -1,0 +1,5 @@
+{
+    "require": {
+        "jack-frost/guess-number": "^1.0"
+    }
+}

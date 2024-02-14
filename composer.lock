@@ -1,0 +1,47 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "83199422721130b13595482094759e57",
+    "packages": [
+        {
+            "name": "jack-frost/guess-number",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JackFrost/guess-number.git",
+                "reference": "53583ebcfc785c71a93074f5ebf5f0a9e8479b81"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JackFrost/guess-number/zipball/53583ebcfc785c71a93074f5ebf5f0a9e8479b81",
+                "reference": "53583ebcfc785c71a93074f5ebf5f0a9e8479b81",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JackFrost\\GuessNumber\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Guess number",
+            "support": {
+                "issues": "https://github.com/JackFrost/guess-number/issues",
+                "source": "https://github.com/JackFrost/guess-number/tree/v1.0.2"
+            },
+            "time": "2024-02-14T15:37:17+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
