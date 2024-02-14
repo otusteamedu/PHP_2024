@@ -8,20 +8,21 @@
     "packages": [
         {
             "name": "i-kolyas/person-name-format",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IKolyas/name-format-helper.git",
-                "reference": "6b5d04569abec81b17280b06013be7c717c04d01"
+                "reference": "2ff57e98184a91c66b0ca6e35000f8a44828d9af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IKolyas/name-format-helper/zipball/6b5d04569abec81b17280b06013be7c717c04d01",
-                "reference": "6b5d04569abec81b17280b06013be7c717c04d01",
+                "url": "https://api.github.com/repos/IKolyas/name-format-helper/zipball/2ff57e98184a91c66b0ca6e35000f8a44828d9af",
+                "reference": "2ff57e98184a91c66b0ca6e35000f8a44828d9af",
                 "shasum": ""
             },
             "require": {
-                "ext-mbstring": "*"
+                "ext-mbstring": "*",
+                "php": "^8.1"
             },
             "type": "library",
             "autoload": {
@@ -38,9 +39,9 @@
             ],
             "support": {
                 "issues": "https://github.com/IKolyas/name-format-helper/issues",
-                "source": "https://github.com/IKolyas/name-format-helper/tree/v1.0.1"
+                "source": "https://github.com/IKolyas/name-format-helper/tree/v1.0.2"
             },
-            "time": "2024-02-13T21:36:30+00:00"
+            "time": "2024-02-14T15:37:37+00:00"
         }
     ],
     "packages-dev": [],
