@@ -22,7 +22,7 @@ services:
     container_name: nginx
     build:
       context: ./.deployment/docker/nginx
-      dockerfile: ./.deployment/docker/nginx/Dockerfile
+      dockerfile: ./Dockerfile
       args:
         PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
         PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_PORT}
@@ -40,11 +40,12 @@ services:
     container_name: postgres
     build:
       context: ./.deployment/docker/postgres
-      dockerfile: ./.deployment/docker/postgres/Dockerfile
+      dockerfile: ./Dockerfile
     ports:
       - ${POSTGRES_PORT}:5432
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_DB_HOST}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
