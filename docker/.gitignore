@@ -1,0 +1,5 @@
+.env
+
+nginx/logs
+mysql/data
+redis/data

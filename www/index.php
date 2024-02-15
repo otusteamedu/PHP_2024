@@ -6,77 +6,43 @@ ini_set('display_errors', 'on');
 
 
 // check mysql
-// @todo this should be exposed to env from .env file
-$servername = "percona";
-$username = "root";
-$password = "example";
-$dbname = "hw1";
-
 try {
-    $dbh = new pdo(
-        'mysql:host=percona:3306;dbname=' . $dbname,
-        $username,
-        $password,
-        array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-    );
+    $dsn = 'mysql:host=' . getenv('MYSQL_HOST') . ';';
+    $dsn .= 'dbname=' . getenv('MYSQL_DATABASE');
 
-    echo '<h1>Database connected</h1>';
-} catch (PDOException $ex) {
-    echo $ex->getMessage().PHP_EOL;
-//    die(json_encode(array('outcome' => false, 'message' => 'Unable to connect')));
+    $pdo = new PDO(
+        $dsn,
+        getenv('MYSQL_USER'),
+        getenv('MYSQL_PASSWORD')
+    );
+    echo 'Database connection: successful</br>';
+} catch (\Throwable $e) {
+    echo 'Database connection: error. ' . $e->getMessage() . '</br>';
 }
 
 // check memcache
+try {
+    $memcached = new Memcache();
+    $memcached->addServer(getenv('MEMCACHED_HOST'), getenv('MEMCACHED_PORT_IN'));
+    $memcached->set('key', 12);
 
-if (class_exists('Memcache')) {
-    $server = 'memcached';
-    if (!empty($_REQUEST['server'])) {
-        $server = $_REQUEST['server'];
+    if (!empty($memcached->get('key'))) {
+        echo 'Memcached connection: successful</br>';
+    } else {
+        echo 'Memcached connection: error</br>';
     }
-    $memcache = new Memcache;
-    $isMemcacheAvailable = @$memcache->connect($server);
-
-    if ($isMemcacheAvailable) {
-        $aData = $memcache->get('data');
-        echo '<pre>';
-        if ($aData) {
-            echo '<h2>Data from Cache:</h2>';
-            print_r($aData);
-        } else {
-            $aData = array(
-                'me' => 'you',
-                'us' => 'them',
-            );
-            echo '<h2>Fresh Data:</h2>';
-            print_r($aData);
-            $memcache->set('data', $aData, 0, 300);
-        }
-        $aData = $memcache->get('data');
-        if ($aData) {
-            echo '<h3>Memcache seem to be working fine!</h3>';
-        } else {
-            echo '<h3>Memcache DOES NOT seem to be working!</h3>';
-        }
-        echo '</pre>';
-    }
+} catch (\Throwable $e) {
+    echo 'Memcached connection: error. ' . $e->getMessage() . '<br>';
 }
-if (!$isMemcacheAvailable) {
-    echo 'Memcache not available';
-}
-
 
 // check redis
-
-$redis = new Redis();
-
 try {
-    $redis->connect('redis', 6379);
+    $redis = new Redis();
+    $redis->connect(getenv('REDIS_HOST'), getenv('REDIS_PORT_IN'));
 
-    echo $redis->ping();
-} catch (Exception $exception) {
-    throw $exception;
-
-    echo $exception->getMessage() . PHP_EOL;
+    echo 'Redis connection: successful. Ping: ' . $redis->ping() . '<br>';
+} catch (\Throwable $e) {
+    echo 'Redis connection: error. ' . $e->getMessage() . '<br>';
 }
 
 phpinfo();

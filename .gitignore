@@ -5,8 +5,3 @@
 .LSOverride
 /docker/.env
 .github
-
-*/readme.md
-
-/docker/percona/data
-/docker/redis/data
