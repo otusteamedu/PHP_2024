@@ -11,8 +11,6 @@ services:
         PGID: ${PGID}
         INSTALL_XDEBUG: ${INSTALL_XDEBUG}
     environment:
-      # ToDO: Перенести
-      PHP_IDE_CONFIG: "serverName=Homework"
       PUID: ${PUID}
       PGID: ${PGID}
     volumes:
