@@ -1,8 +1,16 @@
 version: "3.8"
 
+networks:
+  homework-net:
+    name: homework-net
+    driver: bridge
+
+
 services:
   php-fpm:
     container_name: php-fpm
+    networks:
+      - homework-net
     build:
       context: ./
       dockerfile: ./.deployment/docker/php-fpm/Dockerfile
@@ -18,6 +26,8 @@ services:
 
   nginx:
     container_name: nginx
+    networks:
+      - homework-net
     build:
       context: ./.deployment/docker/nginx
       dockerfile: ./Dockerfile
@@ -36,6 +46,8 @@ services:
 
   postgres:
     container_name: postgres
+    networks:
+      - homework-net
     build:
       context: ./.deployment/docker/postgres
       dockerfile: ./Dockerfile
@@ -51,6 +63,8 @@ services:
 
   redis:
     container_name: redis
+    networks:
+      - homework-net
     build:
       context: ./.deployment/docker/redis
       dockerfile: ./Dockerfile
@@ -61,6 +75,8 @@ services:
 
   memcached:
     container_name: memcached
+    networks:
+      - homework-net
     build:
       context: ./.deployment/docker/memcached
       dockerfile: ./Dockerfile
