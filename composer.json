@@ -1,0 +1,7 @@
+{
+  "name": "project/app",
+  "type": "project",
+  "require": {
+    "ahor/hw3": "*"
+  }
+}
