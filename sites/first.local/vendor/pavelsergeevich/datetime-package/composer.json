@@ -1,0 +1,18 @@
+{
+    "name": "pavelsergeevich/datetime-package",
+    "description": "Расширение возможностей \\DateTime",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Pavelsergeevich\\DatetimePackage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "pavelsergeevich"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0"
+    }
+}

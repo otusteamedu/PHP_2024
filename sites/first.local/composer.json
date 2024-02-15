@@ -1,0 +1,18 @@
+{
+    "name": "pananin/first.local",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pananin\\FirstLocal\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel Ananin"
+        }
+    ],
+    "require": {
+        "cocur/slugify": "^4.5",
+        "pavelsergeevich/datetime-package": "^1.0"
+    }
+}

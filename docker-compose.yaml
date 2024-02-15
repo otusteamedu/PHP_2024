@@ -1,0 +1,66 @@
+#версия синтаксиса
+version: '3'
+
+#Сервисы (которые отвечают за контейнеры)
+services:
+
+  nginx_service:
+    image: nginx:latest
+    container_name: webserver_nginx_hw1
+    ports:
+      - "80:80"
+    volumes:
+      - ./sites/first.local:/data/first.local #Корень первого сайта
+      - ./sites/second.local:/data/second.local #Корень второго сайта
+      - ./nginx/conf.d:/etc/nginx/conf.d #Конфигурационные файлы nginx
+      - ./nginx/log:/var/log/nginx #Логи nginx
+    networks:
+      - otus_network
+    depends_on:
+      - php_service
+      - mysql_service
+
+  php_service:
+    build:
+      context: ./php_fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: php_hw1
+    ports:
+      - "8000:8000" # ???
+    #  - "9003:9003" #xdebug 3
+    volumes:
+      - ./sites/first.local:/data/first.local #Корень первого сайта
+      - ./sites/second.local:/data/second.local #Корень второго сайта
+      #- ./php_fpm/conf.d:/usr/local/etc/php/conf.d #Конфигурационные файлы php
+    networks:
+      - otus_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - mysql_service
+
+  mysql_service:
+    container_name: mysql_hw1
+    image: mysql
+    volumes:
+      - ./dbdata/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      - otus_network
+
+  phpmyadmin_service:
+    container_name: phpmyadmin_hw1
+    image: phpmyadmin
+    ports:
+      - "1500:80"
+    environment:
+      - PMA_HOST=mysql_hw1
+    networks:
+      - otus_network
+    depends_on:
+      - mysql_service
+networks:
+  otus_network:
+    driver: bridge
