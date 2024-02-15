@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d7e568090914eb1791b0871678813618",
+    "packages": [
+        {
+            "name": "a.kornienko/otus-composer-package",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Aleksey-Kornienko-xsolla/otus-composer-package.git",
+                "reference": "24802e2ec5033a027acf2e6544babb60093bcb2c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Aleksey-Kornienko-xsolla/otus-composer-package/zipball/24802e2ec5033a027acf2e6544babb60093bcb2c",
+                "reference": "24802e2ec5033a027acf2e6544babb60093bcb2c",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AKornienko\\OtusComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/Aleksey-Kornienko-xsolla/otus-composer-package/issues",
+                "source": "https://github.com/Aleksey-Kornienko-xsolla/otus-composer-package/tree/v1.0.1"
+            },
+            "time": "2024-02-15T19:17:13+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
