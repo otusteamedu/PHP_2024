@@ -4,21 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8ba2c6dc3dd5ea41f32d9d4e2b0f3f7",
+    "content-hash": "9b4b836f00fd475f8c30866c6e4f917b",
     "packages": [
         {
             "name": "casiliose/memory-show",
-            "version": "v1.0.1",
+            "version": "v1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/casilliose/memory-use.git",
-                "reference": "8497c4f79dc44422456c089b75ea0e16a3e605b3"
+                "reference": "ac21fd1648f048a05efee3d0d97da260d7948528"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/casilliose/memory-use/zipball/8497c4f79dc44422456c089b75ea0e16a3e605b3",
-                "reference": "8497c4f79dc44422456c089b75ea0e16a3e605b3",
+                "url": "https://api.github.com/repos/casilliose/memory-use/zipball/ac21fd1648f048a05efee3d0d97da260d7948528",
+                "reference": "ac21fd1648f048a05efee3d0d97da260d7948528",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0 <8.4"
             },
             "type": "library",
             "autoload": {
@@ -39,9 +42,9 @@
             "description": "Show memory use php script",
             "support": {
                 "issues": "https://github.com/casilliose/memory-use/issues",
-                "source": "https://github.com/casilliose/memory-use/tree/v1.0.1"
+                "source": "https://github.com/casilliose/memory-use/tree/v1.0.10"
             },
-            "time": "2024-02-13T12:51:30+00:00"
+            "time": "2024-02-15T07:07:28+00:00"
         }
     ],
     "packages-dev": [],
@@ -51,7 +54,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "8.3.*"
+        "php": ">=7.4 <8.4"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"
