@@ -1,0 +1,18 @@
+{
+    "name": "igor/php_2024",
+    "autoload": {
+        "psr-4": {
+            "Igor\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "i.branitsky",
+            "email": "dev_bi@bankiros.ru"
+        }
+    ],
+    "require": {
+	"php": ">=7.4 <8.4",
+        "casiliose/memory-show": "^1.0"
+    }
+}

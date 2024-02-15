@@ -1,0 +1,61 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "9b4b836f00fd475f8c30866c6e4f917b",
+    "packages": [
+        {
+            "name": "casiliose/memory-show",
+            "version": "v1.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/casilliose/memory-use.git",
+                "reference": "ac21fd1648f048a05efee3d0d97da260d7948528"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/casilliose/memory-use/zipball/ac21fd1648f048a05efee3d0d97da260d7948528",
+                "reference": "ac21fd1648f048a05efee3d0d97da260d7948528",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0 <8.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Casiliose\\MemoryShow\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT license"
+            ],
+            "authors": [
+                {
+                    "name": "i.branitsky",
+                    "email": "dev_bi@bankiros.ru"
+                }
+            ],
+            "description": "Show memory use php script",
+            "support": {
+                "issues": "https://github.com/casilliose/memory-use/issues",
+                "source": "https://github.com/casilliose/memory-use/tree/v1.0.10"
+            },
+            "time": "2024-02-15T07:07:28+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.4 <8.4"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
