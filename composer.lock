@@ -1,0 +1,58 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e11edaa4442078baeec65f9dd8f38369",
+    "packages": [
+        {
+            "name": "dudyuk-sergei/date-time-helper",
+            "version": "0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DudyukSergei/date-time-helper.git",
+                "reference": "a4fa84303c7fe9894f4c485c8ee245b714dec269"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DudyukSergei/date-time-helper/zipball/a4fa84303c7fe9894f4c485c8ee245b714dec269",
+                "reference": "a4fa84303c7fe9894f4c485c8ee245b714dec269",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DudyukSergei\\DateTimeHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Sergei Dudyu",
+                    "email": "imesergei@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/DudyukSergei/date-time-helper/issues",
+                "source": "https://github.com/DudyukSergei/date-time-helper/tree/0.0.1"
+            },
+            "time": "2024-02-15T21:22:52+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
