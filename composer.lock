@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "02f2243d21575cae0a069a4170e1a388",
+    "packages": [
+        {
+            "name": "i-kolyas/person-name-format",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IKolyas/name-format-helper.git",
+                "reference": "eafb8633e4698b7c9a37d1b94260b666568300f1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IKolyas/name-format-helper/zipball/eafb8633e4698b7c9a37d1b94260b666568300f1",
+                "reference": "eafb8633e4698b7c9a37d1b94260b666568300f1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IKolyas\\PersonNameFormat\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "IKolyas",
+                    "email": "i.kolyasnikov@mail.ru"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/IKolyas/name-format-helper/issues",
+                "source": "https://github.com/IKolyas/name-format-helper/tree/v1.0.3"
+            },
+            "time": "2024-02-15T16:23:49+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
