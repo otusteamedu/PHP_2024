@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  app-server:
+    build: docker/php
+    volumes:
+      - .:/app
+    networks:
+      - net
+    working_dir: /app/public
+  app-client:
+    build: docker/php
+    volumes:
+      - .:/app
+    working_dir: /app/public
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
