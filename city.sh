@@ -1,9 +1,14 @@
 #!/bin/bash
 
+if [ ! -f "$1" ]; then
+    	echo "Мне не удалось найти передаваемый файл."
+    	exit
+fi
+
 if [ -z $2 ]; then
-    count=3
+	count=3
 else
-    count=$2
+	count=$2
 fi
 
 cat $1 | tail -n +2 | awk '{print $3}' | grep -v '^$'| sort | uniq | while read city; do
