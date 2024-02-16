@@ -7,7 +7,7 @@
         }
     },
     "require": {
-        "php": ">=8.2.0",
+        "php": ">=7.0.0",
         "nikolay-shvetsov/rename-service": "^1.0"
     }
 }
