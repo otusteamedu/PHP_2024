@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./dockerfiles/nginx/conf.d:/etc/nginx/conf.d
+      - ./app:/data/app
+    networks:
+      - hw4_bridge
+    depends_on:
+      - php
+
+  php:
+    image: pavelsergeevich/php:1.0.0
+    container_name: php
+    build:
+      context: ./dockerfiles/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/data/app
+    networks:
+      - hw4_bridge
+
+networks:
+  hw4_bridge:
+    driver: bridge

@@ -1,0 +1,18 @@
+{
+    "name": "pavelsergeevich/hw4",
+    "description": "otus.php.hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pavelsergeevich\\Hw4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "pavelsergeevich"
+        }
+    ],
+    "require": {
+        "php": ">=8.0.0"
+    }
+}
