@@ -15,4 +15,6 @@ try {
 } catch (\Throwable $exception) {
     http_response_code(400);
     echo $exception->getMessage();
+} finally {
+    echo "<br>    Запрос обработал контейнер: " . $_SERVER['HOSTNAME'];
 }

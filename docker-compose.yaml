@@ -1,22 +1,65 @@
 version: "3"
 
 services:
-  nginx:
+  nginx_hw4_balancer:
     image: nginx:latest
-    container_name: nginx
+    container_name: nginx_hw4_balancer
     ports:
       - "80:80"
     volumes:
-      - ./dockerfiles/nginx/conf.d:/etc/nginx/conf.d
-      - ./app:/data/app
+      - ./dockerfiles/nginx/balancer.conf.d:/etc/nginx/conf.d
     networks:
       - hw4_bridge
     depends_on:
-      - php
+      - nginx_hw4_webserver_1
+      - nginx_hw4_webserver_2
+      - nginx_hw4_webserver_3_reserve
 
-  php:
+  nginx_hw4_webserver_1:
+    image: nginx:latest
+    container_name: nginx_hw4_webserver_1
+    volumes:
+      - ./app:/data/app
+      - ./dockerfiles/nginx/webserver.conf.d:/etc/nginx/conf.d
+    networks:
+      - hw4_bridge
+    depends_on:
+      - php_hw4_1
+      - php_hw4_2
+      - php_hw4_3
+      - php_hw4_4_reserve
+
+  nginx_hw4_webserver_2:
+    image: nginx:latest
+    container_name: nginx_hw4_webserver_2
+    volumes:
+      - ./app:/data/app
+      - ./dockerfiles/nginx/webserver.conf.d:/etc/nginx/conf.d
+    networks:
+      - hw4_bridge
+    depends_on:
+      - php_hw4_1
+      - php_hw4_2
+      - php_hw4_3
+      - php_hw4_4_reserve
+
+  nginx_hw4_webserver_3_reserve: #Запасной (на случай если другие вышли из строя)
+    image: nginx:latest
+    container_name: nginx_hw4_webserver_3_reserve
+    volumes:
+      - ./app:/data/app
+      - ./dockerfiles/nginx/webserver.conf.d:/etc/nginx/conf.d
+    networks:
+      - hw4_bridge
+    depends_on:
+      - php_hw4_1
+      - php_hw4_2
+      - php_hw4_3
+      - php_hw4_4_reserve
+
+  php_hw4_1:
     image: pavelsergeevich/php:1.0.0
-    container_name: php
+    container_name: php_hw4_1
     build:
       context: ./dockerfiles/php
       dockerfile: Dockerfile
@@ -24,6 +67,41 @@ services:
       - ./app:/data/app
     networks:
       - hw4_bridge
+
+  php_hw4_2:
+    image: pavelsergeevich/php:1.0.0
+    container_name: php_hw4_2
+    build:
+      context: ./dockerfiles/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/data/app
+    networks:
+      - hw4_bridge
+
+  php_hw4_3:
+    image: pavelsergeevich/php:1.0.0
+    container_name: php_hw4_3
+    build:
+      context: ./dockerfiles/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/data/app
+    networks:
+      - hw4_bridge
+
+  php_hw4_4_reserve: #Запасной (на случай если другие вышли из строя)
+    image: pavelsergeevich/php:1.0.0
+    container_name: php_hw4_4_reserve
+    build:
+      context: ./dockerfiles/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/data/app
+    networks:
+      - hw4_bridge
+
+
 
 networks:
   hw4_bridge:
