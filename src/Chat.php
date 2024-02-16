@@ -6,7 +6,6 @@ use Socket;
 
 abstract class Chat
 {
-
     private Socket $socket;
 
     public function __construct(
@@ -69,4 +68,3 @@ abstract class Chat
 
     abstract public function start();
 }
-

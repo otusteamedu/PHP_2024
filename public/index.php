@@ -1,6 +1,5 @@
 <?php
 
-
 use Ahor\Hw5\App;
 
 require('../vendor/autoload.php');

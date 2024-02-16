@@ -4,7 +4,6 @@ namespace Ahor\Hw5;
 
 class Client extends Chat
 {
-
     public function start(): void
     {
         echo "Старт клиента" . PHP_EOL;
