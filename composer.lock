@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "alexander-pogorelov/date-time-helper",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alexander-pogorelov/date-time-helper.git",
-                "reference": "8760eaa8fad96db9d0446108cf8531bbb358ebb5"
+                "reference": "77fb2d665c7c251c6535daaec5e525a161b2a38b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alexander-pogorelov/date-time-helper/zipball/8760eaa8fad96db9d0446108cf8531bbb358ebb5",
-                "reference": "8760eaa8fad96db9d0446108cf8531bbb358ebb5",
+                "url": "https://api.github.com/repos/alexander-pogorelov/date-time-helper/zipball/77fb2d665c7c251c6535daaec5e525a161b2a38b",
+                "reference": "77fb2d665c7c251c6535daaec5e525a161b2a38b",
                 "shasum": ""
             },
             "require": {
@@ -32,9 +32,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/alexander-pogorelov/date-time-helper/issues",
-                "source": "https://github.com/alexander-pogorelov/date-time-helper/tree/v1.0.0"
+                "source": "https://github.com/alexander-pogorelov/date-time-helper/tree/v1.0.1"
             },
-            "time": "2024-02-16T12:41:23+00:00"
+            "time": "2024-02-16T16:01:43+00:00"
         }
     ],
     "packages-dev": [],
