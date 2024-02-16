@@ -8,17 +8,20 @@
     "packages": [
         {
             "name": "a.kornienko/otus-composer-package",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Aleksey-Kornienko-xsolla/otus-composer-package.git",
-                "reference": "24802e2ec5033a027acf2e6544babb60093bcb2c"
+                "reference": "c56a958ea05ae5b102d788c0e7ff06d1e9fecc61"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Aleksey-Kornienko-xsolla/otus-composer-package/zipball/24802e2ec5033a027acf2e6544babb60093bcb2c",
-                "reference": "24802e2ec5033a027acf2e6544babb60093bcb2c",
+                "url": "https://api.github.com/repos/Aleksey-Kornienko-xsolla/otus-composer-package/zipball/c56a958ea05ae5b102d788c0e7ff06d1e9fecc61",
+                "reference": "c56a958ea05ae5b102d788c0e7ff06d1e9fecc61",
                 "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
             },
             "type": "library",
             "autoload": {
@@ -29,9 +32,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/Aleksey-Kornienko-xsolla/otus-composer-package/issues",
-                "source": "https://github.com/Aleksey-Kornienko-xsolla/otus-composer-package/tree/v1.0.1"
+                "source": "https://github.com/Aleksey-Kornienko-xsolla/otus-composer-package/tree/v1.0.2"
             },
-            "time": "2024-02-15T19:17:13+00:00"
+            "time": "2024-02-16T06:16:28+00:00"
         }
     ],
     "packages-dev": [],
