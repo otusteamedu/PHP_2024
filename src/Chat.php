@@ -8,10 +8,10 @@ abstract class Chat
 {
     private Socket $socket;
 
-    public function __construct(
-        private readonly Config $config
-    )
-    {}
+    public function __construct(private readonly Config $config)
+    {
+
+    }
 
     public function create($clear = false): void
     {
