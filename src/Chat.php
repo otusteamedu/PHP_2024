@@ -11,8 +11,7 @@ abstract class Chat
     public function __construct(
         private readonly Config $config
     )
-    {
-    }
+    {}
 
     public function create($clear = false): void
     {
