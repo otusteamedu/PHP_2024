@@ -1,0 +1,49 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "f615898d617b091909cd832277c50ce6",
+    "packages": [
+        {
+            "name": "kirill-gubenko/directory-reader",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kiryao/directory-reader.git",
+                "reference": "a1d0d2dec3fa348563fa4d219c8f474c297ca644"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kiryao/directory-reader/zipball/a1d0d2dec3fa348563fa4d219c8f474c297ca644",
+                "reference": "a1d0d2dec3fa348563fa4d219c8f474c297ca644",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "KirillGubenko\\DirectoryReader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/kiryao/directory-reader/issues",
+                "source": "https://github.com/kiryao/directory-reader/tree/v1.0.0"
+            },
+            "time": "2024-02-16T11:21:13+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}

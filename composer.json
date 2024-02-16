@@ -1,0 +1,5 @@
+{
+    "require": {
+        "kirill-gubenko/directory-reader": "^1.0"
+    }
+}
