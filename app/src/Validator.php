@@ -9,33 +9,35 @@ use Exception;
 class Validator
 {
     /**
-     * @param string $string
-     * @return string
+     * @return bool
      * @throws Exception
      */
-    public static function validate(string $string): string
+    public static function validateRequest(): bool
     {
-        if (empty($string) || preg_match("/^\(.*\)/", $string)) {
-            throw new Exception('Некорректная строка');
+        if (empty($_POST['string']) || preg_match("/^\(.*\)/", $_POST['string'])) {
+            throw new Exception('Некорректная строка', 400);
         }
 
         $counter = 0;
-        $length = strlen($string);
+        $length = strlen($_POST['string']);
 
         for ($i = 0; $i < $length; $i++) {
-            $bracket = $string[$i];
+            $bracket = $_POST['string'][$i];
 
             if ($bracket === '(') {
                 $counter++;
             } elseif ($bracket === ')') {
                 $counter--;
             }
+
+            if ($counter < 0) {
+                break;
+            }
         }
 
         if ($counter !== 0) {
             throw new Exception('Строка не валидна', 400);
         }
-
-        return 'OK';
+        return true;
     }
 }
