@@ -1,0 +1,90 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx-proxy
+      dockerfile: Dockerfile
+    image: hw4/nginx-proxy
+    container_name: hw4-nginx-proxy
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  nginx1:
+    build:
+      context: ./nginx-balancer
+      dockerfile: Dockerfile
+    image: hw4/nginx
+    container_name: hw4-nginx1
+    restart: unless-stopped
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  nginx2:
+    build:
+      context: ./nginx-balancer
+      dockerfile: Dockerfile
+    image: hw4/nginx
+    container_name: hw4-nginx2
+    restart: unless-stopped
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw4/fpm
+    container_name: hw4-app1
+    restart: unless-stopped
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw4/fpm
+    container_name: hw4-app2
+    restart: unless-stopped
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  memcached:
+    image: sameersbn/memcached:1.5.6-2
+    container_name: hw4-memcached
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  postgresql:
+    image: postgres:14.7-alpine
+    container_name: hw4-postgresql
+    environment:
+      POSTGRES_USER: hukimato
+      POSTGRES_PASSWORD: hukimato
+      POSTGRES_DB: hukimato
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresql/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+      - ./postgresql/db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
