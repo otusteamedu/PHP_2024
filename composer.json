@@ -1,0 +1,5 @@
+{
+    "require": {
+        "alexander-pogorelov/date-time-helper": "^1.0"
+    }
+}

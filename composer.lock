@@ -1,0 +1,49 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "37fe2b892693f0bb43f94c7cbd003685",
+    "packages": [
+        {
+            "name": "alexander-pogorelov/date-time-helper",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexander-pogorelov/date-time-helper.git",
+                "reference": "8760eaa8fad96db9d0446108cf8531bbb358ebb5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexander-pogorelov/date-time-helper/zipball/8760eaa8fad96db9d0446108cf8531bbb358ebb5",
+                "reference": "8760eaa8fad96db9d0446108cf8531bbb358ebb5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlexanderPogorelov\\DateTimeHelper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/alexander-pogorelov/date-time-helper/issues",
+                "source": "https://github.com/alexander-pogorelov/date-time-helper/tree/v1.0.0"
+            },
+            "time": "2024-02-16T12:41:23+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
