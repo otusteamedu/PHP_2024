@@ -1,0 +1,5 @@
+{
+    "require": {
+        "alexander-gladkov/string-processing": "^1.0"
+    }
+}

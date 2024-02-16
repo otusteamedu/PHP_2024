@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+    container_name: php-fpm
+    volumes:
+      - ./src:/app/application.local
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
+

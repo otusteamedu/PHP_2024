@@ -1,0 +1,51 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "9b1416d42e31a6cc567140ab6e7e331c",
+    "packages": [
+        {
+            "name": "alexander-gladkov/string-processing",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/alexander-git/otus-composer-package.git",
+                "reference": "a7e44c5e893263b6b09816d9e2d9e6de6ec4b40e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/alexander-git/otus-composer-package/zipball/a7e44c5e893263b6b09816d9e2d9e6de6ec4b40e",
+                "reference": "a7e44c5e893263b6b09816d9e2d9e6de6ec4b40e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AlexanderGladkov\\StringProcessing\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "String processing package",
+            "support": {
+                "issues": "https://github.com/alexander-git/otus-composer-package/issues",
+                "source": "https://github.com/alexander-git/otus-composer-package/tree/v1.0.2"
+            },
+            "time": "2024-02-16T11:11:45+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
