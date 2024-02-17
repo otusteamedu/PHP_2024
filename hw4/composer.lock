@@ -333,21 +333,24 @@
         },
         {
             "name": "pavel-goroshnikov/simple-api",
-            "version": "v1.0.1",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/neon-light84/SimpleApi.git",
-                "reference": "ef92e3991e5bb45c53d94832492030720951f912"
+                "reference": "94816dee743acc42cd24883c155d7fd19917224c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/neon-light84/SimpleApi/zipball/ef92e3991e5bb45c53d94832492030720951f912",
-                "reference": "ef92e3991e5bb45c53d94832492030720951f912",
+                "url": "https://api.github.com/repos/neon-light84/SimpleApi/zipball/94816dee743acc42cd24883c155d7fd19917224c",
+                "reference": "94816dee743acc42cd24883c155d7fd19917224c",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^7.8",
                 "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.49"
             },
             "type": "library",
             "autoload": {
@@ -368,9 +371,9 @@
             "description": "Pavel's first test library",
             "support": {
                 "issues": "https://github.com/neon-light84/SimpleApi/issues",
-                "source": "https://github.com/neon-light84/SimpleApi/tree/v1.0.1"
+                "source": "https://github.com/neon-light84/SimpleApi/tree/v1.0.3"
             },
-            "time": "2024-02-13T20:29:30+00:00"
+            "time": "2024-02-17T15:55:37+00:00"
         },
         {
             "name": "psr/http-client",
