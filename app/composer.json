@@ -1,0 +1,23 @@
+{
+    "name": "rmulyukov/hw4",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Mulyukov Rustyam"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rmulyukov\\Hw4\\": "app/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        }
+    },
+    "require": {
+        "php":"^8.2",
+        "ext-memcache": "*"
+    }
+}
