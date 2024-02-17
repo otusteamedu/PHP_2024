@@ -1,0 +1,5 @@
+{
+    "require": {
+        "temas765/password-hasher": "^1.1"
+    }
+}
