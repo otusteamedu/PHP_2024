@@ -10,12 +10,13 @@
 
 <!-- exclude our migrations directory from the violation check-->
 <exclude-pattern>*/migrations/*</exclude-pattern>
+<exclude-pattern>*/vendor/*</exclude-pattern>
 
 <!-- ignore warnings and display ERRORS only -->
 <arg  value="np"/>
 
 <rule  ref="PSR1"/>
-  
+
 <rule  ref="PSR12"/>
 
 </ruleset>
