@@ -35,6 +35,6 @@ try {
     $conn = new PDO("mysql:host=db;dbname=mydb", "user", "userpassword");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     echo "Успешное соединение с MySQL";
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     echo "Соединение с MySQL не удалось: " . $e->getMessage();
 }
