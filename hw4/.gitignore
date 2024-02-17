@@ -1,0 +1,6 @@
+# PhpStorm files
+*.iml
+.idea
+
+# Project files
+vendor
