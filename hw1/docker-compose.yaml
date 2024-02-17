@@ -1,9 +1,7 @@
 # версия синтаксиса
 version: '3'
 
-# в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #контейнер с Nginx
   nginx:
     build:
       context: ./nginx
@@ -12,25 +10,45 @@ services:
     container_name: hw1_nginx
     # проброс портов
     ports:
-      - "${CUSTOM_port}:80"
+      - "${CUSTOM_WEB_PORT}:80"
     volumes:
        - ./code:/data/site_root
+       - ./logs/nginx:/var/log/nginx
     networks:
       - hw1-network
 
-  #Контейнер с PHP-FPM, назовём его app
   fpm:
-    # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./fpm
       dockerfile: Dockerfile
+      args:
+        XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
     image: hw1/php # имя будущего образа
     container_name: hw1_fpm # имя контейнера после запуска
     volumes:
        - ./code:/data/site_root
+       - ./logs/php:/var/log/php
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - hw1-network
+
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    image: hw1/mysql
+    container_name: hw1_mysql
+    ports:
+      - "${CUSTOM_MYSQL_PORT}:3306"
+    restart: always
+    volumes:
+       - ${MYSQL_DATA_PATH}:/var/lib/mysql
+       - ./logs/mysql:/var/log
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - hw1-network
+
 
 #Docker Networks
 networks:
