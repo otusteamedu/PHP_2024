@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  nginx-balancer:
+    image: nginx:latest
+    container_name: nginx-balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx-balancer/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app-network
+    depends_on:
+      - nginx1
+      - nginx2
+  nginx1:
+    image: nginx:latest
+    container_name: nginx1
+    volumes:
+      - .:/data
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+  nginx2:
+    image: nginx:latest
+    container_name: nginx2
+    volumes:
+      - .:/data
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+  app1:
+    build: docker/php
+    container_name: app1
+    volumes:
+      - .:/data
+    networks:
+      - app-network
+  app2:
+    build: docker/php
+    container_name: app2
+    volumes:
+      - .:/data
+    networks:
+      - app-network
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
