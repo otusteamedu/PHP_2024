@@ -1,0 +1,14 @@
+{
+    "name": "goroshnikov-p/hw1",
+    "description": "Home Work 1",
+    "type": "project",
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.49"
+    },
+    "autoload": {
+        "psr-4": {
+            "GoroshnikovP\\Hw1\\": "src/"
+        }
+    },
+    "require": {}
+}

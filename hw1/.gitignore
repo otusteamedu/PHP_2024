@@ -1,0 +1,3 @@
+nginx/hosts/inc_server_name.conf
+/code/vendor/
+/.env
