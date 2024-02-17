@@ -1,6 +1,6 @@
-FROM php:8.2-fpm
+FROM php:7.0-fpm-alpine
 
-RUN apt-get update && apt-get install -y \
+RUN apk add --no-cache \
     zip \
     unzip \
     git

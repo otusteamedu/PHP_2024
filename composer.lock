@@ -8,20 +8,20 @@
     "packages": [
         {
             "name": "jack-frost/guess-number",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JackFrost/guess-number.git",
-                "reference": "133f2b93512d7252bf41cf2567fbf101bda8ec4e"
+                "reference": "122c5ba6d14b181aa7b8461dea7cb859ed1e116c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JackFrost/guess-number/zipball/133f2b93512d7252bf41cf2567fbf101bda8ec4e",
-                "reference": "133f2b93512d7252bf41cf2567fbf101bda8ec4e",
+                "url": "https://api.github.com/repos/JackFrost/guess-number/zipball/122c5ba6d14b181aa7b8461dea7cb859ed1e116c",
+                "reference": "122c5ba6d14b181aa7b8461dea7cb859ed1e116c",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.2"
+                "php": "^7.0"
             },
             "type": "library",
             "autoload": {
@@ -33,9 +33,9 @@
             "description": "Guess number",
             "support": {
                 "issues": "https://github.com/JackFrost/guess-number/issues",
-                "source": "https://github.com/JackFrost/guess-number/tree/v1.0.3"
+                "source": "https://github.com/JackFrost/guess-number/tree/v1.0.4"
             },
-            "time": "2024-02-15T05:05:58+00:00"
+            "time": "2024-02-17T06:19:54+00:00"
         }
     ],
     "packages-dev": [],
@@ -46,5 +46,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.2.0"
 }
