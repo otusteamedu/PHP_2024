@@ -19,5 +19,4 @@ class ValidatorException extends \Exception
     {
         echo new Response($this->message, 422) . '<br>';
     }
-
 }
