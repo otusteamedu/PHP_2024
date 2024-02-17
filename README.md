@@ -1,3 +1,5 @@
 # PHP_2024
 
+Test composer library
+
 https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus

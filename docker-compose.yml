@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+
+  composer-app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: composer-app
+    container_name: composer-app
+    restart: always
+    volumes:
+      - ./:/data/
