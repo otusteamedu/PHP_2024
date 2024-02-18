@@ -1,0 +1,12 @@
+{
+    "require": {
+        "ext-memcached": "*",
+        "ext-pdo": "*",
+        "ext-mbstring": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app"
+        }
+    }
+}
