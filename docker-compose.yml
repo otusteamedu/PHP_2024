@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./docker/nginx-balancer/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx-balancer/:/etc/nginx/conf.d/
     networks:
       - app-network
     depends_on:
@@ -18,7 +18,7 @@ services:
     container_name: nginx1
     volumes:
       - .:/data
-      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./docker/nginx/:/etc/nginx/conf.d/
     networks:
       - app-network
     depends_on:
@@ -29,7 +29,7 @@ services:
     container_name: nginx2
     volumes:
       - .:/data
-      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - ./docker/nginx/:/etc/nginx/conf.d/
     networks:
       - app-network
     depends_on:
