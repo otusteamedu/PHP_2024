@@ -8,7 +8,6 @@ class ValidatorPostRequest
 
     public function __construct(private string $method, private string $value)
     {
-
     }
 
     /**
