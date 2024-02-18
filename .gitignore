@@ -3,5 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-1/.env
 2/.env
+1/www/vendor/
+1/.env

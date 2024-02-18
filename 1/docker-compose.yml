@@ -6,7 +6,7 @@ services:
     ports:
       - ${NGINX_PORT}:80
     volumes:
-      - .:/app
+      - ./www:/app
       - ./docker/nginx/:/etc/nginx/conf.d/
     depends_on:
       - app
@@ -16,7 +16,7 @@ services:
   app:
     build: docker/php
     volumes:
-      - .:/app
+      - ./www:/app
     networks:
       - net
 
