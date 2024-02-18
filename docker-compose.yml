@@ -16,7 +16,7 @@ services:
     build: docker/php
     container_name: app1
     ports:
-      - ${PHP_FPM_PORT_MAPPING}:${PHP_FPM_PORT}
+      - ${PHP_FPM_PORT_MAPPING1}:${PHP_FPM_PORT}
     volumes:
       - ./:/app
       - ../../var/composer:/root/.composer
@@ -26,7 +26,7 @@ services:
     build: docker/php
     container_name: app2
     ports:
-      - ${PHP_FPM_PORT_MAPPING}:${PHP_FPM_PORT}
+      - ${PHP_FPM_PORT_MAPPING2}:${PHP_FPM_PORT}
     volumes:
       - ./:/app
       - ../../var/composer:/root/.composer
@@ -36,7 +36,7 @@ services:
     build: docker/php
     container_name: app3
     ports:
-      - ${PHP_FPM_PORT_MAPPING}:${PHP_FPM_PORT}
+      - ${PHP_FPM_PORT_MAPPING3}:${PHP_FPM_PORT}
     volumes:
       - ./:/app
       - ../../var/composer:/root/.composer
@@ -44,6 +44,7 @@ services:
       - net
   memcached:
     build: docker/memcached
+    container_name: memcached
     ports:
       - ${MEMCACHED_PORT_MAPPING}:${MEMCACHED_PORT}
     networks:
