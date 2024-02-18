@@ -1,8 +1,6 @@
 <?php
 
-
 declare(strict_types=1);
-
 
 use Ahar\Hw4\App;
 

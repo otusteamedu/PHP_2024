@@ -1,6 +1,7 @@
 <?php
 
 namespace Ahar\Hw4;
+
 use Ahar\Hw4\exceptions\ValidateExceptions;
 
 class App
