@@ -10,4 +10,4 @@ require_once "../vendor/autoload.php";
 
 $string = (new Request())->get('string');
 $isCorrectString = (new BracesChecker())->check($string);
-echo (new Response($isCorrectString))->getMessage();
+echo (new Response($isCorrectString))->send();

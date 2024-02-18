@@ -7,6 +7,8 @@ namespace Rmulyukov\Hw4;
 final class Response
 {
     private string $message;
+    private string $header;
+
     public function __construct(bool $success)
     {
         if ($success) {
@@ -16,20 +18,21 @@ final class Response
         }
     }
 
-    public function getMessage(): string
+    public function send(): string
     {
+        header($this->header);
         return $this->message;
     }
 
     private function initSuccess(): void
     {
-        header("HTTP/1.1 200 OK");
+        $this->header = 'HTTP/1.1 200 OK';
         $this->message = 'OK';
     }
 
     private function initError(): void
     {
-        header("HTTP/1.1 400 Bad request");
+        $this->header = 'HTTP/1.1 400 Bad request';
         $this->message = 'Incorrect string';
     }
 }
