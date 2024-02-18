@@ -5,3 +5,4 @@
 .LSOverride
 .env
 var/
+app/vendor/
