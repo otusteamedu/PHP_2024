@@ -54,11 +54,13 @@ curl --location 'http://mysite.local' \
 The result will be similar to this
 ```
 String is correct
-Контейнер: d6d457892a1d
+Контейнер: ee2109dcd3c1
+Сервер: 192.168.48.6
 SessionId: eld8q2qilt9fjs6vaa283mbuo1
 ```
 ```
 String is incorrect
-Контейнер: 7a4fd32b4fa4
+Контейнер: 72f1815ed5a8
+Сервер: 192.168.48.5
 SessionId: eld8q2qilt9fjs6vaa283mbuo1
 ```
