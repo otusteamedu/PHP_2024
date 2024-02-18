@@ -20,6 +20,6 @@ try {
 }
 
 //hw4 Задание 2 Проверка отработки баланисировщика Nginx
-'Session id: ' . session_id() . '<br>';
+echo 'Session id: ' . session_id() . '<br>';
 echo "Запрос обработал контейнер: " . $_SERVER['HOSTNAME'] . '<br>';
 echo "Запрос обработал сервер nginx c IP: " . $_SERVER['SERVER_ADDR'] . '<br>';
