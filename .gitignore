@@ -3,6 +3,5 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-
-/mariadb/
+/app/vendor/
 .env

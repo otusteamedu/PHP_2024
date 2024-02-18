@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+
+  balancer-nginx:
+    image: nginx
+    container_name: balancer-nginx
+    hostname: balancer-nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/data
+      - ./docker/nginx/hosts:/etc/nginx/conf.d
+    networks:
+      - balancer-network
+
+  balancer-app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: balancer-app
+    container_name: balancer-app
+    restart: always
+    volumes:
+       - ./app:/data
+    networks:
+      - balancer-network
+
+networks:
+  balancer-network:
+    driver: bridge
