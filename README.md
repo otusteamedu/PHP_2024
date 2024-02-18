@@ -35,3 +35,28 @@ Add this lines to your hosts file
 ```
 127.0.0.1 mysite.local
 ```
+
+##Usage 
+
+Send the following curl requests
+```
+#correct
+curl --location 'http://mysite.local' \
+--form 'string="()"'
+
+#incorrect
+curl --location 'http://mysite.local' \
+--form 'string="(()()()()))((((()()()))(()()()(((()))))))"'
+
+```
+The result will be similar to this
+```
+String is correct
+Контейнер: d6d457892a1d
+SessionId: eld8q2qilt9fjs6vaa283mbuo1
+```
+```
+String is incorrect
+Контейнер: 7a4fd32b4fa4
+SessionId: eld8q2qilt9fjs6vaa283mbuo1
+```

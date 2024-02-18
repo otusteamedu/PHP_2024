@@ -9,6 +9,6 @@ class HostService
      */
     public function getHostanmeMessgae(): string
     {
-        return  "<br><br>Контейнер: {$_SERVER['HOSTNAME']}<br>";
+        return  "Контейнер: {$_SERVER['HOSTNAME']}" . PHP_EOL;
     }
 }

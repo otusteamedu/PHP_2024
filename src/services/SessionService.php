@@ -11,6 +11,6 @@ class SessionService
 
     public function getSessinMessage(): string
     {
-        return "<br>SessionId: " . session_id();
+        return "SessionId: " . session_id() . PHP_EOL;
     }
 }

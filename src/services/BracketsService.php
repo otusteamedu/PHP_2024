@@ -50,7 +50,7 @@ class BracketsService
 
         return new ResponseDto(
             $status,
-            $message
+            $message  . PHP_EOL
         );
     }
 }
