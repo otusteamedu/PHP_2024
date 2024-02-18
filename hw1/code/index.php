@@ -8,7 +8,7 @@
 </head>
 <body>
 <?php
-echo "It's work!!!!<br>".date("Y-m-d H:i:s") ."<br><br>";
+echo "It's work!!!!<br>" . date("Y-m-d H:i:s") . "<br><br>";
 ?>
 
 <form method="post" action="<?=$_SERVER['SCRIPT_NAME']?>" name="redis">
@@ -38,7 +38,7 @@ if (!empty($_REQUEST['redis_key'])) {
         $redis = new Redis();
         $redis->connect('hw1_redis');
         $redis->set($_REQUEST['redis_key'], $_REQUEST['redis_value'], ['EX' => 60 * 5]);
-    } catch(RedisException $ex) {
+    } catch (RedisException $ex) {
         echo "RedisException: \n";
         echo "<pre>\n";
         print_r($ex);
@@ -48,7 +48,6 @@ if (!empty($_REQUEST['redis_key'])) {
     $memcached = new Memcached();
     $memcached->addServer('hw1_memcached', 11211);
     $memcached->set($_REQUEST['mem_key'], $_REQUEST['mem_value'], 60 * 5);
-
 } elseif (!empty($_REQUEST['read_key'])) {
     try {
         $redis = new Redis();
@@ -57,7 +56,7 @@ if (!empty($_REQUEST['redis_key'])) {
         if ($redisResult === false) {
             $redisResult = '--//--';
         }
-    } catch(RedisException $ex) {
+    } catch (RedisException $ex) {
         echo "RedisException: \n";
         echo "<pre>\n";
         print_r($ex);
@@ -75,7 +74,6 @@ if (!empty($_REQUEST['redis_key'])) {
 
     echo "in redis: $redisResult <br>\n";
     echo "in redis: $memcachedResult <br>\n";
-
 }
 
 
