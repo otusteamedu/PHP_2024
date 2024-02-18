@@ -1,0 +1,80 @@
+version: "3"
+
+services:
+  nginx-proxy:
+    image: nginx:latest
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - ./docker/nginx-proxy/:/etc/nginx/conf.d/
+    networks:
+      - net
+    depends_on:
+      - nginx1
+      - nginx2
+      - nginx3
+    platform: linux/x86_64
+  nginx1:
+    image: nginx:latest
+    volumes:
+      - ./src:/app
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - net
+    depends_on:
+      - app
+      - app1
+      - app2
+    platform: linux/x86_64
+  nginx2:
+    image: nginx:latest
+    volumes:
+      - ./src:/app
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - net
+    depends_on:
+      - app
+      - app1
+      - app2
+    platform: linux/x86_64
+  nginx3:
+    image: nginx:latest
+    volumes:
+      - ./src:/app
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - net
+    depends_on:
+      - app
+      - app1
+      - app2
+    platform: linux/x86_64
+  app:
+    build: docker/php
+    volumes:
+      - ./src:/app
+    networks:
+      - net
+  app1:
+    build: docker/php
+    volumes:
+      - ./src:/app
+    networks:
+      - net
+  app2:
+    build: docker/php
+    volumes:
+      - ./src:/app
+    networks:
+      - net
+  memcached:
+    image: memcached
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
+
