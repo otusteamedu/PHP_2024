@@ -26,6 +26,5 @@ class Client extends AbstractSocket
                 $connected = false;
             }
         }
-
     }
 }
