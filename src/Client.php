@@ -13,9 +13,7 @@ class Client extends Chat
 
         $run = true;
         while ($run) {
-            echo 'Введите сообщение и нажмите Enter: ' . PHP_EOL;
-
-            $message = readline();
+            $message = readline('Введите сообщение и нажмите Enter: ');
             $this->send($message);
 
             if ($message === 'stop') {
