@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  nginx-proxy:
+    container_name: proxy-hw4
+    hostname: proxy-hw4
+    build:
+      context: ./docker
+      dockerfile: proxy-nginx/Dockerfile
+    ports:
+      - "8080:80"
+    networks:
+      - hw4-network
+
+  nginx-balancer1:
+    container_name: balancer1-hw4
+    hostname: balancer1-hw4
+    build:
+      context: ./docker
+      dockerfile: balancer-nginx/Dockerfile
+    volumes:
+      - ./app:/hw4/app
+    networks:
+      - hw4-network
+
+  nginx-balancer2:
+    container_name: balancer2-hw4
+    hostname: balancer2-hw4
+    build:
+      context: ./docker
+      dockerfile: balancer-nginx/Dockerfile
+    volumes:
+      - ./app:/hw4/app
+    networks:
+      - hw4-network
+
+  php1:
+    container_name: php1-hw4
+    hostname: php1-hw4
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./app:/hw4/app
+    networks:
+      - hw4-network
+
+  php2:
+    container_name: php2-hw4
+    hostname: php2-hw4
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./app:/hw4/app
+    networks:
+      - hw4-network
+
+  memcache:
+    container_name: memcache-hw4
+    hostname: memcache-hw4
+    image: memcached:1.6.23-alpine
+    networks:
+      - hw4-network
+
+networks:
+  hw4-network:
+    driver: bridge
