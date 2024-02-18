@@ -13,21 +13,6 @@ services:
       - app
     networks:
       - net
-
-  mysql:
-    build: docker/mysql
-    volumes:
-      - ./var/mysql:/var/lib/mysql
-    ports:
-      - ${DB_PORT_MAPPING}:${DB_PORT}
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - net
-
   app:
     build: docker/php
     ports:
@@ -35,17 +20,6 @@ services:
     volumes:
       - ./:/app
       - ../../var/composer:/root/.composer
-    depends_on:
-      - mysql
-    networks:
-      - net
-
-  redis:
-    build: docker/redis
-    volumes:
-      - ./var/redis:/data
-    ports:
-      - ${REDIS_PORT_MAPPING}:${REDIS_PORT}
     networks:
       - net
 
