@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 $inputString = $_POST['string'] ?? null;
 
 if (empty($inputString)) {
