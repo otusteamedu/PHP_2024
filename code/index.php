@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 
-echo "Контейнер nginx: {$_SERVER['HOSTNAME']}<br><br>";
-
 $inputString = $_POST['string'] ?? null;
 
 if (empty($inputString)) {
@@ -12,7 +10,7 @@ if (empty($inputString)) {
     exit;
 }
 
-$openCount= 0;
+$openCount = 0;
 for ($i = 0; $i < strlen($inputString); $i++) {
     if ($inputString[$i] == '(') {
         $openCount++;
