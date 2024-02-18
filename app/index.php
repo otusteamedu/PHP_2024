@@ -22,5 +22,5 @@ try {
     $validator->validate($checkerBracket);
 } catch (Exception $exception) {
     http_response_code(400);
-    echo $exception->getMessage();
+    echo $exception->getMessage() . PHP_EOL;
 }
