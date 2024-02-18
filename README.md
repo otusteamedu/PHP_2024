@@ -1,3 +1,3 @@
-# PHP_2024
+# Commands
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+`sh users.sh` -  Launch
