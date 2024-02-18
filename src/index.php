@@ -1,5 +1,12 @@
 <?php
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Dotenv\Dotenv;
+use dtos\ResponseDto;
+use services\BracketsService;
+use helpers\Brackets;
+
 define("BASE_PATH", __DIR__);
 
 $dirEnv = __DIR__ . '/../';
@@ -8,15 +15,23 @@ $dirEnv = __DIR__ . '/../';
 require($dirEnv . 'vendor/autoload.php');
 require($dirEnv . 'autoload.php');
 
-$dotenv = \Dotenv\Dotenv::createUnsafeImmutable($dirEnv);
+$dotenv = Dotenv::createUnsafeImmutable($dirEnv);
 $dotenv->load();
 
-$request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
-$stringService = new \services\BracketsService(
-    new \helpers\Brackets()
+$request = Request::createFromGlobals();
+$stringService = new BracketsService(
+    new Brackets()
+);
+/** @var ResponseDto $responseDto */
+$responseDto = $stringService->validate($request->get('string', ''));
+
+$response = new Response(
+    $responseDto->getMessage(),
+    $responseDto->getStatus(),
+    ['content-type' => 'text/html']
 );
 
-$stringService->validate($request->get('string', ''));
+return $response->send();
 
 
 

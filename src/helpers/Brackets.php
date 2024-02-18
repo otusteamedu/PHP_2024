@@ -8,6 +8,14 @@ class Brackets
     private const CLOSE = ')';
 
     /**
+     * @return string
+     */
+    public function getOpenBracket(): string
+    {
+        return self::OPEN;
+    }
+
+    /**
      * @param $string
      * @return bool
      */
