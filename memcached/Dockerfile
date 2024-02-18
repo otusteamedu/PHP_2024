@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM memcached:alpine
 
 EXPOSE 11211
 
