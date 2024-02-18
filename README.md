@@ -41,10 +41,12 @@ Add this lines to your hosts file
 Send the following curl requests
 ```
 #correct
+POST:
 curl --location 'http://mysite.local' \
 --form 'string="()"'
 
 #incorrect
+POST:
 curl --location 'http://mysite.local' \
 --form 'string="(()()()()))((((()()()))(()()()(((()))))))"'
 

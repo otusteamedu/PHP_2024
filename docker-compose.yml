@@ -12,9 +12,9 @@ services:
       - ./var/nginx/logs:/var/log/nginx
     networks:
       - net
-  app1:
+  app:
     build: docker/php
-    container_name: app1
+    container_name: app
     ports:
       - ${PHP_FPM_PORT_MAPPING1}:${PHP_FPM_PORT}
     volumes:
