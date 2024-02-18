@@ -4,9 +4,9 @@ nginx/hosts/inc_server_name.conf
 /mysql_db_files/*
 
 logs/nginx/*
+logs/php/*
+logs/mysql/*
 # что бы сами папки логов не ушли из репозитория. Не знаю, как они будут мапиться внутрь контейнера, если не будут сущестовать
 !logs/nginx/1
-logs/php/*
 !logs/php/1
-logs/mysql/*
 !logs/mysql/1

@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:1.25
 
 ARG CUSTOM_HOST
 ENV CUSTOM_HOST ${CUSTOM_HOST}

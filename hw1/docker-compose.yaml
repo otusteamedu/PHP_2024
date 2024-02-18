@@ -1,4 +1,3 @@
-# версия синтаксиса
 version: '3'
 
 services:
@@ -54,15 +53,6 @@ services:
     networks:
       - hw1-network
 
-#  mem_ub:
-#    build:
-#      context: ./memcached-ub
-#      dockerfile: Dockerfile
-#    image: hw1/mem_ub
-#    container_name: hw1_mem_ub
-#    networks:
-#      - hw1-network
-
   memcached:
     build:
       context: ./memcached
@@ -81,7 +71,6 @@ services:
     networks:
       - hw1-network
 
-#Docker Networks
 networks:
   hw1-network:
     driver: bridge

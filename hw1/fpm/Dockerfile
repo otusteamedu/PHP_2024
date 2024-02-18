@@ -39,9 +39,6 @@ RUN apt-get update  \
   && echo "1" > /dev/null
 # "echo "1" > /dev/null" - заморочился, что бы последняя строка, тоже оканчивалась "/", т.е., была идинтична остальным.
 
-#&& docker-php-ext-configure gd --with-freetype --with-jpeg \
-#&& docker-php-ext-install -j$(nproc) gd
-
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
