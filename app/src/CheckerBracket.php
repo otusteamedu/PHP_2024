@@ -30,7 +30,11 @@ class CheckerBracket implements ICheckerInterface
             if ($char === "(") {
                 array_push($stackBracket, $char);
             } else {
-                if (empty($stackBracket) || array_pop($stackBracket) !== "(") {
+                if (array_pop($stackBracket) !== "(") {
+                    break;
+                }
+
+                if (empty($stackBracket)) {
                     $stackBracket[] = null;
                     break;
                 }
