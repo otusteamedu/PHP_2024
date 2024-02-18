@@ -5,3 +5,6 @@ docker exec -it container_name bash
 
 если при остановке говорит, что сетка занята:
 docker compose down --remove-orphans
+
+--------
+.\phpcbf.bat  --standard=phpcs.xml hw1
