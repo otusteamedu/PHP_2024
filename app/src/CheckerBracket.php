@@ -11,7 +11,7 @@ class CheckerBracket implements ICheckerInterface
      */
     public function check(string $string): void
     {
-        if(!preg_match('/^[()]+$/', $string)) {
+        if (!preg_match('/^[()]+$/', $string)) {
             throw new \Exception('Access only brackets "(" and ")"');
         }
 
@@ -36,7 +36,7 @@ class CheckerBracket implements ICheckerInterface
             }
         }
 
-        if($openCountBracket !== $closeCountBracket) {
+        if ($openCountBracket !== $closeCountBracket) {
             throw new \Exception('No valid count breackets');
         }
     }

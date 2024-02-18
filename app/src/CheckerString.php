@@ -11,7 +11,7 @@ class CheckerString implements ICheckerInterface
      */
     public function check(string $string): void
     {
-        if(empty($string) || strlen($string) < 1) {
+        if (empty($string) || strlen($string) < 1) {
             throw new \Exception('Empty string');
         }
     }

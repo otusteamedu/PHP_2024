@@ -10,9 +10,7 @@ class ValidatorPostRequest
         private string $method,
         private string $value
     )
-    {
-
-    }
+    {}
 
     /**
      * @throws \Exception
@@ -29,7 +27,7 @@ class ValidatorPostRequest
      */
     private function validateMethod(): void
     {
-        if($this->method !== self::METHOD) {
+        if ($this->method !== self::METHOD) {
             throw new \Exception('Not valid method. Access only POST method');
         }
     }
