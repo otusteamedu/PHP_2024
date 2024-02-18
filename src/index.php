@@ -11,10 +11,17 @@ require($dirEnv . 'autoload.php');
 $dotenv = \Dotenv\Dotenv::createUnsafeImmutable($dirEnv);
 $dotenv->load();
 
-$memcached = new \classes\Memcached(
+$request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+$stringService = new \services\BracketsService(
+    new \helpers\Brackets()
+);
+
+$stringService->validate($request->get('string', ''));
+
+
+
+/*$memcached = new \helpers\MemcachedService(
     getenv('MEMCACHED_HOST'),
     getenv('MEMCACHED_PORT')
 );
-echo 'Memcached version - ' . $memcached->ping() . "\r\n";
-
-echo "Hello World!";
+echo 'Memcached version - ' . $memcached->ping() . "\r\n";*/

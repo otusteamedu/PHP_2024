@@ -1,8 +1,8 @@
 <?php
 
-namespace classes;
+namespace helpers;
 
-class Memcached
+class MemcachedService
 {
     private const DEFAULT_HOST = '127.0.0.1';
     private const DEFAULT_PORT = 11211;
