@@ -10,5 +10,11 @@
             "GoroshnikovP\\Hw1\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "php": "~8.3",
+        "ext-mcrypt": "~1.0",
+        "ext-memcached": "~3.2",
+        "ext-redis": "~6.0",
+        "ext-pdo_mysql": "*"
+    }
 }
