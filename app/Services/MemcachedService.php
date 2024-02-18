@@ -17,9 +17,4 @@ final readonly class MemcachedService
         $this->memcached = new Memcached();
         $this->memcached->addServer("memcache", (int)$this->env['MEMCACHED_PORT']);
     }
-
-    public function getSessionId(): void
-    {
-        echo 'Session id: ' . session_id() . '<br>';
-    }
 }

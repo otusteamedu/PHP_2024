@@ -12,11 +12,10 @@ class ValidatorException extends \Exception
     public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
-        $this->withMessage();
     }
 
-    public function withMessage(): void
+    public function withMessage(): string
     {
-        echo new Response($this->message, 422) . '<br>';
+        return new Response($this->message) . '<br>';
     }
 }

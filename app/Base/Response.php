@@ -6,9 +6,8 @@ namespace App\Base;
 
 readonly class Response
 {
-    public function __construct(private string $content, private int $statusCode)
+    public function __construct(private string $content)
     {
-        header('HTTP/1.1 ' . $this->statusCode);
     }
 
     public function __toString(): string

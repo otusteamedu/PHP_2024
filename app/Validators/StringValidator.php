@@ -20,9 +20,9 @@ class StringValidator
     /**
      * @throws ValidatorException
      */
-    public function validate(): void
+    public function validate(): string
     {
-        match (false) {
+        return match (false) {
             $this->isEmptyValidate() => $this->validateError('пустая строка'),
             $this->isStartEndSymbolValidate() => $this->validateError('не корректное начало/конец строки'),
             $this->isSubstrCompareValidate() => $this->validateError(
@@ -32,9 +32,9 @@ class StringValidator
         };
     }
 
-    private function validateSuccess(): void
+    private function validateSuccess(): string
     {
-        echo new Response('строка валидна', 200) . '<br>';
+        return new Response('строка валидна') . '<br>';
     }
 
     private function isEmptyValidate(): bool
@@ -45,7 +45,7 @@ class StringValidator
     private function isStartEndSymbolValidate(): bool
     {
         $str = $this->request->data($this->paramName);
-        return $str[0] === '(' && $str[-1] = ')';
+        return $str[0] === '(' && $str[-1] === ')';
     }
 
     private function isSubstrCompareValidate(): bool
