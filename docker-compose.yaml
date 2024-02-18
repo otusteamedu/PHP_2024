@@ -58,50 +58,82 @@ services:
       - php_hw4_4_reserve
 
   php_hw4_1:
-    image: pavelsergeevich/php:1.0.0
+    image: pavelsergeevich/php:1.1.0
     container_name: php_hw4_1
     build:
       context: ./dockerfiles/php
       dockerfile: Dockerfile
     volumes:
       - ./app:/data/app
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     networks:
       - hw4_bridge
+    depends_on:
+      - mysql_hw4
 
   php_hw4_2:
-    image: pavelsergeevich/php:1.0.0
+    image: pavelsergeevich/php:1.1.0
     container_name: php_hw4_2
     build:
       context: ./dockerfiles/php
       dockerfile: Dockerfile
     volumes:
       - ./app:/data/app
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     networks:
       - hw4_bridge
+    depends_on:
+      - mysql_hw4 #Нужно для принятия миграций при разворачивании
 
   php_hw4_3:
-    image: pavelsergeevich/php:1.0.0
+    image: pavelsergeevich/php:1.1.0
     container_name: php_hw4_3
     build:
       context: ./dockerfiles/php
       dockerfile: Dockerfile
     volumes:
       - ./app:/data/app
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     networks:
       - hw4_bridge
+    depends_on:
+      - mysql_hw4 #Нужно для принятия миграций при разворачивании
 
   php_hw4_4_reserve: #Запасной (на случай если другие вышли из строя)
-    image: pavelsergeevich/php:1.0.0
+    image: pavelsergeevich/php:1.1.0
     container_name: php_hw4_4_reserve
     build:
       context: ./dockerfiles/php
       dockerfile: Dockerfile
     volumes:
       - ./app:/data/app
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      - hw4_bridge
+    depends_on:
+      - mysql_hw4 #Нужно для принятия миграций при разворачивании
+
+  mysql_hw4:
+    container_name: mysql_hw4
+    image: mysql
+    volumes:
+      - ./dbdata/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
     networks:
       - hw4_bridge
 
-
+  memcached_hw4:
+    image: memcached:latest
+    container_name: memcached_hw4
+    networks:
+      - hw4_bridge
 
 networks:
   hw4_bridge:

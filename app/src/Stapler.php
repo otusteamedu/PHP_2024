@@ -3,6 +3,7 @@ namespace Pavelsergeevich\Hw4;
 
 use \InvalidArgumentException;
 use \LengthException;
+use Pavelsergeevich\Hw4\Database\Dbmanager;
 
 /**
  * Класс для работы со скобками
@@ -49,6 +50,12 @@ class Stapler
      */
     public function isValid(): array
     {
+        $dbmanager = new Dbmanager();
+        $dbResult = $dbmanager->getResultIfExist($this->getStaples());
+        if ($dbResult) {
+            return $dbResult;
+        }
+
         $arStaples = str_split($this->getStaples(), 1);
 
         //Строка содержащая стек открытых скобочек, пример: "({{([("
@@ -62,19 +69,27 @@ class Stapler
             //Если закрывающая скобка
             else if (in_array($staple, self::ACCEPTABLE_STAPLES)) {
                 if (mb_strlen($openedStapleStack) === 0) {
-                    return [
+                    $result = [
                         'isValid' => false,
                         'message' => "Обнаружен неподходящий символ: $staple [$key]. Отсутствует открывающий символ."
                     ];
+
+                    $dbmanager->addRow($this->getStaples(), $result['message'], $result['isValid']);
+
+                    return $result;
                 }
 
                 $openedStapleForCurrent = array_search($staple, self::ACCEPTABLE_STAPLES);
                 $lastStapleInOpenedStack = mb_substr($openedStapleStack, -1);
                 if ($openedStapleForCurrent !== $lastStapleInOpenedStack) {
-                    return [
+                    $result = [
                         'isValid' => false,
                         'message' => "Обнаружен неподходящий символ: $staple [$key]. Ожидался закрывающий символ для $lastStapleInOpenedStack"
                     ];
+
+                    $dbmanager->addRow($this->getStaples(), $result['message'], $result['isValid']);
+
+                    return $result;
                 }
 
                 $openedStapleStack = mb_substr($openedStapleStack, 0, mb_strlen($openedStapleStack)-1);
@@ -88,16 +103,22 @@ class Stapler
         }
 
         if (mb_strlen($openedStapleStack) > 0) {
-            return [
+            $result = [
                 'isValid' => false,
                 'message' => "Имеются незакрытые символы. Оставшийся стек открытых символов: $openedStapleStack"
             ];
         } else {
-            return [
+            $result = [
                 'isValid' => true,
                 'message' => "Скобочная строка полностью валидна"
             ];
         }
+
+
+        $dbmanager->addRow($this->getStaples(), $result['message'], $result['isValid']);
+
+        return $result;
+
     }
 
 }

@@ -5,3 +5,5 @@
 .AppleDouble
 .LSOverride
 composer.lock
+.env
+dbdata
