@@ -1,7 +1,12 @@
 FROM nginx:latest
 
+ARG CUSTOM_HOST
+ENV CUSTOM_HOST ${CUSTOM_HOST}
+
 COPY hosts/site.conf /etc/nginx/conf.d/site.conf
-COPY hosts/inc_server_name.conf /etc/nginx/inc_server_name.conf
+
+# этот файл потом будет включен в конфиг хоста
+RUN echo "    server_name ${CUSTOM_HOST};" > /etc/nginx/inc_server_name.conf
 
 WORKDIR /data
 

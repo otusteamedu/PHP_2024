@@ -6,6 +6,8 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
+      args:
+        CUSTOM_HOST: ${CUSTOM_HOST}
     image: hw1/nginx
     container_name: hw1_nginx
     # проброс портов
@@ -23,6 +25,9 @@ services:
       dockerfile: Dockerfile
       args:
         XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     image: hw1/php # имя будущего образа
     container_name: hw1_fpm # имя контейнера после запуска
     volumes:
@@ -49,6 +54,32 @@ services:
     networks:
       - hw1-network
 
+#  mem_ub:
+#    build:
+#      context: ./memcached-ub
+#      dockerfile: Dockerfile
+#    image: hw1/mem_ub
+#    container_name: hw1_mem_ub
+#    networks:
+#      - hw1-network
+
+  memcached:
+    build:
+      context: ./memcached
+      dockerfile: Dockerfile
+    image: hw1/mem
+    container_name: hw1_memcached
+    networks:
+      - hw1-network
+
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    image: hw1/redis
+    container_name: hw1_redis
+    networks:
+      - hw1-network
 
 #Docker Networks
 networks:
