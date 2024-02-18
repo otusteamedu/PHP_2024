@@ -80,7 +80,7 @@ abstract class AbstractSocket
      */
     protected function receive($socket): string
     {
-        if(!$socket) {
+        if (!$socket) {
             return '';
         }
 

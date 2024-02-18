@@ -4,7 +4,6 @@ namespace Dsergei\Hw5;
 
 class Client extends AbstractSocket
 {
-
     /**
      * @return void
      * @throws \Exception
