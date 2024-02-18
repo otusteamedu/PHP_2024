@@ -1,53 +1,49 @@
-<!DOCTYPE html>
-<html lang="ru">
+<?php
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
+declare(strict_types=1);
 
-<body>
-  <?php
+function getStatusHeader(string $status): string
+{
+    return "HTTP/1.1 $status";
+}
 
-  // testing redis
-  $redis = new Redis();
+function sendGoodResponse(): void
+{
+    header(getStatusHeader('200 OK'));
+    echo 'All right!';
+};
 
-  $redis->connect('redis', 6379);
+function sendBadResponse(): void
+{
+    header(getStatusHeader('400 Bad Request'));
+    echo 'Wrong string!';
+};
 
-  if ($redis->ping()) {
-    echo "PONG" . PHP_EOL;
-  }
+$string = preg_replace('/\s+/', '', $_POST['string'] ?? '');
 
-  // testing memcached
-  $memcached = new Memcached();
-  $memcached->addServer('memcached', 11211);
+if ($string === '') {
+    sendBadResponse();
+    return;
+};
 
-  $key = 'time';
+$left = '(';
+$right = ')';
+$stack = [];
 
-  $time = $memcached->get($key);
+foreach (str_split($string) as $parenthesis) {
+    if ($parenthesis === $left) {
+        array_push($stack, $parenthesis);
+    } elseif ($parenthesis === $right) {
+        $char = array_pop($stack);
 
-  if (!$time) {
-    $memcached->set($key, date('G:i:s'), 5);
-    $time = $memcached->get($key);
-  }
+        if ($char === null || "{$char}{$parenthesis}" !== "{$left}{$right}") {
+            sendBadResponse();
+            return;
+        }
+    } else {
+        sendBadResponse();
+        return;
+    }
+}
 
-  echo $time . PHP_EOL;
-
-  // testing mysql
-  try {
-    $conn = new PDO('mysql:host=db;dbname=app_db', 'pozys', 'password');
-
-    echo 'Database connection established!';
-  } catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage();
-  }
-
-  echo PHP_EOL;
-
-  $conn = null;
-  ?>
-
-</body>
-
-</html>
+sendGoodResponse();

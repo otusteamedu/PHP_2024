@@ -15,9 +15,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
     && pecl install memcached \
-    && docker-php-ext-enable memcached \
-    && pecl install redis \
-    && docker-php-ext-enable redis
+    && docker-php-ext-enable memcached 
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
