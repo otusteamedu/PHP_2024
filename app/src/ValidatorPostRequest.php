@@ -6,10 +6,7 @@ class ValidatorPostRequest
 {
     private const METHOD = 'POST';
 
-    public function __construct(
-        private string $method,
-        private string $value
-    )
+    public function __construct(private string $method, private string $value)
     {}
 
     /**
