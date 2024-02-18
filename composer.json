@@ -1,0 +1,10 @@
+{
+  "require": {
+    "simplydemon/test-composer": "1.0.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "SimplyDemon\\Otus\\": "src/"
+    }
+  }
+}
