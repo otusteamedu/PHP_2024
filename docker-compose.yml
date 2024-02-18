@@ -1,0 +1,84 @@
+version: "3.8"
+
+services:
+  nginx-balancer:
+    build: nginx
+    container_name: ${BALANCER_NGINX_CONTAINER_NAME}
+    ports:
+      - "${BALANCER_NGINX_LOCAL_PORT}:${BALANCER_NGINX_CONTAINER_PORT}"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/balancer.conf:/etc/nginx/conf.d/balancer.conf
+      - ./var/nginx-balancer/logs:/var/log/nginx
+    networks:
+      - otus-network
+  nginx1:
+    build: nginx
+    container_name: ${NGINX1_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites:/etc/nginx/sites
+      - ./var/nginx1/logs:/var/log/nginx
+    depends_on:
+      - php-fpm1
+      - php-fpm2
+    networks:
+      - otus-network
+  nginx2:
+    build: nginx
+    container_name: ${NGINX2_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites:/etc/nginx/sites
+      - ./var/nginx2/logs:/var/log/nginx
+    depends_on:
+      - php-fpm1
+      - php-fpm2
+    networks:
+      - otus-network
+  php-fpm1:
+    build: php-fpm
+    container_name: ${PHP_FPM1_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./var/php-fpm1/log:/var/logs/php
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+    env_file: .env
+    depends_on:
+      - mysql
+      - memcached
+    networks:
+      - otus-network
+  php-fpm2:
+    build: php-fpm
+    container_name: ${PHP_FPM2_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./var/php-fpm2/log:/var/logs/php
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+    env_file: .env
+    depends_on:
+      - mysql
+      - memcached
+    networks:
+      - otus-network
+  memcached:
+    build: memcached
+    container_name: ${MEMCACHED_CONTAINER_NAME}
+    networks:
+      - otus-network
+  mysql:
+    build: mysql
+    container_name: ${MYSQL_CONTAINER_NAME}
+    env_file: .env
+    volumes:
+      - ./var/mysql:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - otus-network
+
+networks:
+  otus-network:
+    driver: bridge
