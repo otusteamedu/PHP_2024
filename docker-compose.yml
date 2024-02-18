@@ -3,18 +3,18 @@ version: "3.1"
 services:
   nginx:
     build: docker/nginx
+    container_name: nginx
     ports:
       - ${NGINX_PORT_MAPPING}:${NGINX_PORT}
     volumes:
       - ./:/app
       - ./docker/nginx/sites-enabled:/etc/nginx/sites-enabled
       - ./var/nginx/logs:/var/log/nginx
-    depends_on:
-      - app
     networks:
       - net
-  app:
+  app1:
     build: docker/php
+    container_name: app1
     ports:
       - ${PHP_FPM_PORT_MAPPING}:${PHP_FPM_PORT}
     volumes:
@@ -22,7 +22,26 @@ services:
       - ../../var/composer:/root/.composer
     networks:
       - net
-
+  app2:
+    build: docker/php
+    container_name: app2
+    ports:
+      - ${PHP_FPM_PORT_MAPPING}:${PHP_FPM_PORT}
+    volumes:
+      - ./:/app
+      - ../../var/composer:/root/.composer
+    networks:
+      - net
+  app3:
+    build: docker/php
+    container_name: app3
+    ports:
+      - ${PHP_FPM_PORT_MAPPING}:${PHP_FPM_PORT}
+    volumes:
+      - ./:/app
+      - ../../var/composer:/root/.composer
+    networks:
+      - net
   memcached:
     build: docker/memcached
     ports:
