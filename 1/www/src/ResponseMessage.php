@@ -7,5 +7,4 @@ class ResponseMessage
     public function __construct(public readonly ResponseStatus $responseStatus, public readonly string $message)
     {
     }
-
 }
