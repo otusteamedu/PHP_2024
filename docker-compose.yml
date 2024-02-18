@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   nginx-balancer:
-    build: nginx
+    image: nginx:1.25.3-alpine
     container_name: ${BALANCER_NGINX_CONTAINER_NAME}
     ports:
       - "${BALANCER_NGINX_LOCAL_PORT}:${BALANCER_NGINX_CONTAINER_PORT}"
@@ -13,7 +13,7 @@ services:
     networks:
       - otus-network
   nginx1:
-    build: nginx
+    image: nginx:1.25.3-alpine
     container_name: ${NGINX1_CONTAINER_NAME}
     volumes:
       - ./app:/app
@@ -26,7 +26,7 @@ services:
     networks:
       - otus-network
   nginx2:
-    build: nginx
+    image: nginx:1.25.3-alpine
     container_name: ${NGINX2_CONTAINER_NAME}
     volumes:
       - ./app:/app
@@ -65,12 +65,12 @@ services:
     networks:
       - otus-network
   memcached:
-    build: memcached
+    image: memcached:1.6.23-alpine
     container_name: ${MEMCACHED_CONTAINER_NAME}
     networks:
       - otus-network
   mysql:
-    build: mysql
+    image: mysql:8.3.0
     container_name: ${MYSQL_CONTAINER_NAME}
     env_file: .env
     volumes:

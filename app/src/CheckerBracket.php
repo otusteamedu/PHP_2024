@@ -25,19 +25,21 @@ class CheckerBracket implements ICheckerInterface
      */
     private function checkOpenClose(string $string): void
     {
-        $openCountBracket = 0;
-        $closeCountBracket = 0;
-
+        $stackBracket = [];
+        $isValid = true;
         foreach (str_split($string) as $char) {
             if ($char === "(") {
-                $openCountBracket++;
-            } elseif ($char === ")") {
-                $closeCountBracket++;
+                array_push($stackBracket, $char);
+            } else {
+                if (empty($stackBracket) || array_pop($stackBracket) !== "(") {
+                    $isValid = false;
+                    break;
+                }
             }
         }
 
-        if ($openCountBracket !== $closeCountBracket) {
-            throw new \Exception('No valid count breackets');
+        if (!$isValid) {
+            throw new \Exception('No valid brackets');
         }
     }
 }
