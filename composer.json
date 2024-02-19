@@ -1,0 +1,13 @@
+{
+    "name": "alexander-pogorelov/validator",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderPogorelov\\Validator\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.2",
+      "ext-mbstring": "*"
+    }
+}

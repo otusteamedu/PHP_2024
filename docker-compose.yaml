@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: mysite-nginx
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+    volumes:
+       - ./:/data/mysite.local
+       - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: mysite/php-fpm
+    container_name: mysite-php-fpm
+    working_dir: /data/mysite.local
+    volumes:
+       - ./:/data/mysite.local
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
