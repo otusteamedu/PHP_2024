@@ -1,0 +1,21 @@
+{
+  "name": "dw/otus-socket-chat",
+  "description": "socket chat",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Dw\\OtusSocketChat\\": "app/src/"
+    }
+  },
+  "require": {
+    "php": ">=8.0",
+    "ext-sockets": "*",
+    "ext-readline": "*"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*"
+  },
+  "scripts": {
+    "phpcs": "phpcs --standard=phpcs.xml"
+  }
+}
