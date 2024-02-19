@@ -11,19 +11,55 @@ services:
       - 80:80
     volumes:
       - ./app:/data
-      - ./docker/nginx/hosts:/etc/nginx/conf.d
+      - ./docker/nginx/hosts/mysite.local.balancer.conf:/etc/nginx/conf.d/mysite.local.balancer.conf
     networks:
       - balancer-network
 
-  balancer-app:
+  nginx-one:
+    image: nginx
+    container_name: nginx-one
+    hostname: nginx-one
+    restart: always
+    volumes:
+      - ./app:/data
+      - ./docker/nginx/hosts/mysite.local.one.conf:/etc/nginx/conf.d/mysite.local.one.conf
+    networks:
+      - balancer-network
+
+  nginx-two:
+    image: nginx
+    container_name: nginx-two
+    hostname: nginx-two
+    restart: always
+    volumes:
+      - ./app:/data
+      - ./docker/nginx/hosts/mysite.local.two.conf:/etc/nginx/conf.d/mysite.local.two.conf
+    networks:
+      - balancer-network
+
+  app-one:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
     image: balancer-app
-    container_name: balancer-app
+    container_name: app-one
+    hostname: app-one
     restart: always
     volumes:
-       - ./app:/data
+      - ./app:/data
+    networks:
+      - balancer-network
+
+  app-two:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: balancer-app
+    container_name: app-two
+    hostname: app-two
+    restart: always
+    volumes:
+      - ./app:/data
     networks:
       - balancer-network
 
