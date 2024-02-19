@@ -1,0 +1,101 @@
+version: '3'
+
+services:
+  nginx-balancer:
+    image: nginx:latest
+    container_name: mysite-nginx-balancer
+    depends_on:
+      - nginx-1
+      - nginx-2
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/balancer/nginx-balancer.conf:/etc/nginx/conf.d/nginx-balancer.conf
+    networks:
+      - app-network
+
+  nginx-1:
+    image: nginx:latest
+    container_name: mysite-nginx-1
+    depends_on:
+      - php-fpm-1
+      - php-fpm-2
+    volumes:
+       - ./code:/data/mysite.local
+       - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  nginx-2:
+    image: nginx:latest
+    container_name: mysite-nginx-2
+    depends_on:
+      - php-fpm-1
+      - php-fpm-2
+    volumes:
+      - ./code:/data/mysite.local
+      - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  php-fpm-1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: mysite/php-fpm
+    container_name: mysite-php-fpm-1
+    working_dir: /data/mysite.local
+    environment:
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+    depends_on:
+      - memcached
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  php-fpm-2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: mysite/php-fpm
+    container_name: mysite-php-fpm-2
+    working_dir: /data/mysite.local
+    environment:
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+    depends_on:
+      - memcached
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: mysite-memcached
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysite-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: mysite
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysite-dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysite-dbdata:
