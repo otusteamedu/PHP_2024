@@ -13,9 +13,9 @@ class Server extends Chat
         $this->listen();
     }
 
-    public function start(): void
+    public function start(): \Generator
     {
-        echo "Старт сервера" . PHP_EOL;
+        yield "Старт сервера" . PHP_EOL;
         $client = $this->accept();
 
         $run = true;
@@ -28,8 +28,8 @@ class Server extends Chat
             }
 
             if ($message) {
-                echo "Пришло сообщение" . PHP_EOL;
-                echo $message . PHP_EOL;
+                yield "Пришло сообщение" . PHP_EOL;
+                yield $message . PHP_EOL;
             }
         }
 

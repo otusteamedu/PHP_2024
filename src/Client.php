@@ -4,9 +4,9 @@ namespace Ahor\Hw5;
 
 class Client extends Chat
 {
-    public function start(): void
+    public function start(): \Generator
     {
-        echo "Старт клиента" . PHP_EOL;
+        yield  "Старт клиента" . PHP_EOL;
 
         $this->create();
         $this->connect();

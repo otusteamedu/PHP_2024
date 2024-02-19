@@ -11,21 +11,23 @@ class App
         $this->config = new Config($fileConfigName);
     }
 
-    public function run($arg): void
+    public function run($arg): \Generator
     {
         switch ($arg) {
             case 'server':
                 $server = new Server($this->config);
-                $server->start();
+                $data = $server->start();
 
                 break;
             case 'client':
                 $client = new Client($this->config);
-                $client->start();
+                $data = $client->start();
 
                 break;
             default:
                 throw new \DomainException('Ошибка аргумента, server или client' . PHP_EOL);
         }
+
+        return $data;
     }
 }
