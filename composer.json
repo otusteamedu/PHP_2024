@@ -1,0 +1,13 @@
+{
+    "name": "ahor/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Ahor\\Hw5\\": "src/"
+        }
+    },
+    "require": {
+        "ext-sockets": "*",
+        "ext-readline": "*"
+    }
+}
