@@ -1,0 +1,10 @@
+{
+    "name": "akornienko/app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Akornienko\\App\\": "src/"
+        }
+    },
+    "require": {}
+}

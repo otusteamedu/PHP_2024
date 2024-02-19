@@ -1,30 +1,89 @@
 version: '3'
 
 services:
-  nginx:
+  nginx-proxy:
     build:
-      context: ./docker/nginx
+      context: ./docker/nginx-proxy
       dockerfile: Dockerfile
-    image: myapp/nginx
-    container_name: webserver
+    image: myapp/nginx-proxy
+    container_name: proxy
     ports:
       - "80:80"
-    volumes:
-      - ./code:/data/mysite.local
     networks:
       - app-network
     depends_on:
-      - app
+      - nginx-balancer1
+      - nginx-balancer2
 
-  app:
+  nginx-balancer1:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx-balancer1
+    container_name: nginx-balancer1
+    volumes:
+      - ./app:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+      - app3
+
+  nginx-balancer2:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx-balancer2
+    container_name: nginx-balancer2
+    volumes:
+      - ./app:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+      - app3
+
+  app1:
     build:
       context: ./docker/fpm
       dockerfile: Dockerfile
-    container_name: app
+    container_name: app1
     env_file:
       - .env
     volumes:
-      - ./code:/data/mysite.local
+      - ./app:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - memcached
+
+  app2:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: app2
+    env_file:
+      - .env
+    volumes:
+      - ./app:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - memcached
+
+  app3:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: app3
+    env_file:
+      - .env
+    volumes:
+      - ./app:/data/mysite.local
     networks:
       - app-network
     depends_on:
