@@ -1,18 +1,5 @@
 {
-    "name": "slipka007/hw1-3-composer-package",
-    "type": "library",
-    "autoload": {
-        "psr-4": {
-            "Slipka007\\Hw13ComposerPackage\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "SlipKa007",
-            "email": "slipka007@example.com"
-        }
-    ],
     "require": {
-        "php": ">=5.6"
+        "slipka007/hw1-3-composer-package": "^1.0"
     }
 }
