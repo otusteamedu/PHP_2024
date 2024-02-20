@@ -12,28 +12,22 @@ class Client extends SocketClient
     public function run()
     {
         $serverName = readline('Enter server name: ');
-
         $socketName = parent::getSocketNameFromServerName($serverName);
+
+        $socketWrapper = new SocketWrapper();
+        $socketWrapper->connect($socketName);
 
         while (true) {
             $message = readline('Enter message: ');
 
-            $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
-            if (!$socket) {
-                throw new Exception("Не удалось создать сокет");
-            }
+            $socketWrapper->write("{$this->name}: $message");
 
-            $connect = socket_connect($socket, $socketName);
-            if (!$connect) {
-                throw new Exception("Не удалось подключиться к сокету");
+            $confirmation = $socketWrapper->read();
+            if ($confirmation === 'closed') {
+                echo "server stopped" . PHP_EOL;
+                return;
             }
-
-            socket_write($socket, "{$this->name}: $message");
-
-            $confirmation = socket_read($socket, 1024);
-            if (!$confirmation) {
-                throw new Exception("Подтверждения не получено");
-            }
+            echo $confirmation . PHP_EOL;
         }
     }
 }

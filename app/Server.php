@@ -13,36 +13,27 @@ class Server extends SocketClient
     public function run(): void
     {
         $socketName = parent::getSocketNameFromServerName($this->name);
-
         if (file_exists($socketName)) {
             unlink($socketName);
         }
 
-        $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
-        if (!$socket) {
-            throw new Exception("Не удалось создать сокет");
-        }
-
-        if (!socket_bind($socket, $socketName)) {
-            throw new Exception("Не удалось забиндить сокет");
-        }
-
-        if (!socket_listen($socket)) {
-            throw new Exception("Не удалось подключиться к сокету");
-        }
+        $socketWrapper = new SocketWrapper();
+        $socketWrapper->bind($socketName);
+        $socketWrapper->listen();
+        $socketWrapper->accept();
 
         while (true) {
-            $connection = socket_accept($socket);
-            if (!$connection) {
-                throw new Exception("Не удалось получить данные из сокета");
-            }
-
-            $data = socket_read($connection, 1024);
+            $data = $socketWrapper->read();
             echo $data . PHP_EOL;
 
-            socket_write($connection, "confirmed");
-
-            socket_close($connection);
+            if (preg_match('#/quit#', $data, $match)) {
+                echo 'Прекращаю работу' . PHP_EOL;
+                $socketWrapper->write("closed");
+                break;
+            }
+            $socketWrapper->write("confirmed");
         }
+        $socketWrapper->close();
+        echo 'Connection closed' . PHP_EOL;
     }
 }
