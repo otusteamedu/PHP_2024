@@ -7,6 +7,7 @@ namespace AleksandrOrlov\Php2024\Service;
 use Exception;
 use AleksandrOrlov\Php2024\Configuration\Service as Configuration;
 use AleksandrOrlov\Php2024\Socket\Service as SocketService;
+use Generator;
 
 class Server implements NetworkInterface
 {
@@ -20,7 +21,7 @@ class Server implements NetworkInterface
     /**
      * @throws Exception
      */
-    public function run()
+    public function run(): Generator
     {
         $config = Configuration::getConfig();
 
@@ -38,7 +39,7 @@ class Server implements NetworkInterface
 
             $this->socketService->send($socket, $buf, $from);
 
-            echo "Request processed\n";
+            yield;
         }
     }
 }
