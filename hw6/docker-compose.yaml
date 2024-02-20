@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
+    image: hw6/php # имя будущего образа
+    container_name: hw6_php # имя контейнера после запуска
+    volumes:
+      - ./code:/data/code_root
+      - ./logs/php:/var/log/php
+    networks:
+      - hw6-network
+
+networks:
+  hw6-network:
+    driver: bridge
