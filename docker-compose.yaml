@@ -11,6 +11,10 @@ services:
       - "80:80"
     networks:
       - app-network
+    depends_on:
+      - nginx1
+      - nginx2
+
 
   nginx1:
     build:
@@ -23,6 +27,9 @@ services:
       - ./code:/data/mysite.local
     networks:
       - app-network
+    depends_on:
+      - app1
+      - app2
 
   nginx2:
     build:
@@ -35,6 +42,9 @@ services:
       - ./code:/data/mysite.local
     networks:
       - app-network
+    depends_on:
+      - app1
+      - app2
 
   app1:
     build:
