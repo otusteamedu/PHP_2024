@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+  nginx:
+    depends_on:
+      - fpm
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        CUSTOM_HOST: ${CUSTOM_HOST}
+    image: hw1/nginx
+    container_name: hw1_nginx
+    # проброс портов
+    ports:
+      - "${CUSTOM_WEB_PORT}:80"
+    volumes:
+       - ./code:/data/site_root
+       - ./logs/nginx:/var/log/nginx
+       - ./system:/var/run/system_for_container #такое сложно имя, что бы точно не оказалось одноименной папки
+    networks:
+      - hw1-network
+
+  fpm:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+      args:
+        XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    image: hw1/php # имя будущего образа
+    container_name: hw1_fpm # имя контейнера после запуска
+    volumes:
+       - ./code:/data/site_root
+       - ./logs/php:/var/log/php
+       - ./system:/var/run/system_for_container #такое сложно имя, что бы точно не оказалось одноименной папки
+    # мы можем создать для контейнеров внутреннюю сеть
+    networks:
+      - hw1-network
+
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    image: hw1/mysql
+    container_name: hw1_mysql
+    ports:
+      - "${CUSTOM_MYSQL_PORT}:3306"
+    restart: always
+    volumes:
+       - ${MYSQL_DATA_PATH}:/var/lib/mysql
+       - ./logs/mysql:/var/log
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - hw1-network
+
+  memcached:
+    build:
+      context: ./memcached
+      dockerfile: Dockerfile
+    image: hw1/mem
+    container_name: hw1_memcached
+    networks:
+      - hw1-network
+
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    image: hw1/redis
+    container_name: hw1_redis
+    networks:
+      - hw1-network
+
+networks:
+  hw1-network:
+    driver: bridge
