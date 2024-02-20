@@ -48,5 +48,4 @@ class Validation
             throw new Exception('Строка не корректна!');
         }
     }
-
 }
