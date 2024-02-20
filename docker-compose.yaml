@@ -1,0 +1,90 @@
+version: "3.8"
+
+services:
+  nginx-entry:
+    build:
+      context: ./docker/nginx-entry
+    container_name: nginx-entry
+    ports:
+      - "${NGINX_ENTRY_PORT:-8000}:80"
+    networks:
+      - net
+    depends_on:
+      - nginx-internal1
+      - nginx-internal2
+
+  nginx-internal1:
+    build:
+      context: ./docker/nginx-internal
+    container_name: nginx-internal1
+    volumes:
+      - ./src:/app/application.local
+    networks:
+      - net
+    depends_on:
+      - php-fpm1
+      - php-fpm2
+
+  nginx-internal2:
+    build:
+      context: ./docker/nginx-internal
+    container_name: nginx-internal2
+    volumes:
+      - ./src:/app/application.local
+    networks:
+      - net
+    depends_on:
+      - php-fpm1
+      - php-fpm2
+
+  php-fpm1:
+    build:
+      context: ./docker/php-fpm
+    container_name: php-fpm1
+    volumes:
+      - ./src:/app/application.local
+    networks:
+      - net
+    depends_on:
+      - memcached
+      - mysql
+
+  php-fpm2:
+    build:
+      context: ./docker/php-fpm
+    container_name: php-fpm2
+    volumes:
+      - ./src:/app/application.local
+    networks:
+      - net
+    depends_on:
+      - memcached
+      - mysql
+
+  memcached:
+    image: memcached:1.6.23
+    container_name: memcached
+    networks:
+      - net
+
+  mysql:
+    image: mysql:8.3
+    container_name: mysql
+    environment:
+      - "MYSQL_DATABASE=${MYSQL_DATABASE:-db-example}"
+      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:-root}"
+      - "MYSQL_USER=${MYSQL_USER:-user}"
+      - "MYSQL_PASSWORD=${MYSQL_PASSWORD:-pass}"
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
+
+
