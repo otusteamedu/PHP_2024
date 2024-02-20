@@ -1,0 +1,11 @@
+{
+    "name": "pozys/php_2024",
+    "type": "project",
+    "authors": [
+        {
+            "name": "pozys",
+            "email": "pozys@mail.ru"
+        }
+    ],
+    "require": {}
+}
