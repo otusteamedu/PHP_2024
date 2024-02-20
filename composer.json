@@ -1,0 +1,5 @@
+{
+    "require": {
+        "slipka007/hw1-3-composer-package": "^1.0"
+    }
+}
