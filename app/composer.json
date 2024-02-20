@@ -1,0 +1,18 @@
+{
+    "name": "aleksandrorlov/app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AleksandrOrlov\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "a.orlov",
+            "email": "a.orlov@intec-balance.ru"
+        }
+    ],
+    "require": {
+      "php": ">=8.1"
+    }
+}

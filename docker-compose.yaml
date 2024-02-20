@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        image: myapp/nginx
+        container_name: webserver
+        ports:
+            - "8002:80"
+        volumes:
+            - ./app:/data/application.local
+        networks:
+            - app-network
+
+    app:
+        build:
+            context: ./fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: app
+        volumes:
+            - ./app:/data/application.local
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
