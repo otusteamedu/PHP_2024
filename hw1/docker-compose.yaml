@@ -2,6 +2,8 @@ version: '3'
 
 services:
   nginx:
+    depends_on:
+      - fpm
     build:
       context: ./nginx
       dockerfile: Dockerfile
@@ -15,6 +17,7 @@ services:
     volumes:
        - ./code:/data/site_root
        - ./logs/nginx:/var/log/nginx
+       - ./system:/var/run/system_for_container #такое сложно имя, что бы точно не оказалось одноименной папки
     networks:
       - hw1-network
 
@@ -32,6 +35,7 @@ services:
     volumes:
        - ./code:/data/site_root
        - ./logs/php:/var/log/php
+       - ./system:/var/run/system_for_container #такое сложно имя, что бы точно не оказалось одноименной папки
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - hw1-network

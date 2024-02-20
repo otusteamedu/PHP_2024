@@ -41,6 +41,7 @@ RUN apt-get update  \
 
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+COPY ./zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /data
