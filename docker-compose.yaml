@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hw5/app
+    container_name: hw5-server
+    volumes:
+      - ./app:/app
+      - ./sockets:/sockets
+      - ./logs/server:/var/log
+
+  client1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hw5/app
+    container_name: hw5-client1
+    volumes:
+      - ./app:/app
+      - ./sockets:/sockets
+      - ./logs/client1:/var/log

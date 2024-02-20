@@ -1,0 +1,20 @@
+{
+    "name": "hukimato/socket-chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Hukimato\\SocketChat\\": "."
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniil Aleksandrov",
+            "email": "danay2211@gmail.com"
+        }
+    ],
+    "require": {
+      "ext-sockets": "*",
+      "ext-readline": "*",
+      "ext-pcntl": "*"
+    }
+}
