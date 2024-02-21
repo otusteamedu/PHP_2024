@@ -1,0 +1,19 @@
+{
+    "name": "stubb/hw3",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Stubb\\Hw3\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nikita Trubkin",
+            "email": "stubbornbattery@gmail.com"
+        }
+    ],
+    "require": {
+        "stubb/otus-library": "^1.0.0"
+
+    }
+}
