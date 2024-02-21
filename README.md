@@ -1,3 +1,9 @@
-# PHP_2024
+### Запуск сервера
+```
+php app.php server
+```
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+### Запуск клиента
+```
+php app.php client
+```
