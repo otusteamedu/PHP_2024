@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    build: .
+    volumes:
+      - ./public:/data/mysite.local/public
+      - ./src:/data/mysite.local/src
+
+  nginx:
+    image: nginx:stable
+    volumes:
+      - ./public:/data/mysite.local/public
+      - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf

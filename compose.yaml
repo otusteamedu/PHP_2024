@@ -1,0 +1,64 @@
+version: '3'
+services:
+  app1:
+    extends:
+      file: replicated-services.yaml
+      service: app
+    depends_on:
+      - memcached
+      - db
+
+  app2:
+    extends:
+      file: replicated-services.yaml
+      service: app
+    depends_on:
+      - memcached
+      - db
+
+  nginx-proxy:
+    image: nginx:stable
+    container_name: webserver-proxy
+    volumes:
+      - ./nginx/hosts/mysite-proxy.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - nginx1
+      - nginx2
+
+  nginx1:
+    extends:
+      file: replicated-services.yaml
+      service: nginx
+    container_name: webserver1
+    depends_on:
+      - app1
+      - app2
+
+  nginx2:
+    extends:
+      file: replicated-services.yaml
+      service: nginx
+    container_name: webserver2
+    depends_on:
+      - app1
+      - app2
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+
+  db:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
