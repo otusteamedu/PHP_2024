@@ -1,0 +1,13 @@
+{
+    "name": "goroshnikov-p/hw7",
+    "description": "Home Work 7",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "GoroshnikovP\\Hw7\\": "src/"
+        }
+    },
+    "require": {
+        "php": "~8.3"
+    }
+}

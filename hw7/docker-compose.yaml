@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
+    image: hw7_php
+    container_name: hw7_php
+    volumes:
+      - ./code:/data/code_root
+      - ./logs/php:/var/log/php
