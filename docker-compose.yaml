@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  php-cli-server:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    image: chat/php-cli
+    container_name: chat-php-cli-server
+    tty: true
+    working_dir: /data/chat
+    volumes:
+      - ./app/:/data/chat/app
+      - ./socket/:/data/chat/socket
+    networks:
+      - app-network
+
+  php-cli-client:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    image: chat/php-cli
+    container_name: chat-php-cli-client
+    tty: true
+    working_dir: /data/chat
+    volumes:
+      - ./app/:/data/chat/app
+      - ./socket/:/data/chat/socket
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
