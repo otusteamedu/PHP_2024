@@ -8,8 +8,7 @@ class App
 {
     public function run()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET')
-        {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             return '
                 <h1>(()()()())<span style="color:red;">)</span>((((()()()))(()()()(((()))))))</h1>
                 <form method="post">
