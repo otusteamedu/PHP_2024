@@ -16,7 +16,7 @@ $pass = $_ENV['POSTGRES_PASSWORD'] ?? null;
 $redisHost = $_ENV['REDIS_HOST'] ?? null;
 $redisPort = $_ENV['REDIS_PORT'] ?? null;
 // memcached data
-$memcachedHost = $_ENV['MEMCACHED_PORT'] ?? null;
+$memcachedHost = $_ENV['MEMCACHED_HOST'] ?? null;
 $memcachedPort = $_ENV['MEMCACHED_PORT'] ?? null;
 
 $dsn = "pgsql:host=$host;port=$dbPort;dbname=$db;user=$user;password=$pass";
