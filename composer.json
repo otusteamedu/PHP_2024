@@ -7,5 +7,15 @@
             "email": "pozys@mail.ru"
         }
     ],
+    "autoload": {
+        "files": [
+            "src/app.php",
+            "src/normalizer.php",
+            "src/request.php",
+            "src/response.php",
+            "src/validator.php",
+            "src/verification.php"
+        ]
+    },
     "require": {}
 }

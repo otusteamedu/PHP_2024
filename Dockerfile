@@ -25,6 +25,6 @@ WORKDIR /data/mysite.local
 
 COPY . .
 
-RUN composer install --optimize-autoloader
+RUN composer install && composer dump-autoload
 
 CMD ["php-fpm"]

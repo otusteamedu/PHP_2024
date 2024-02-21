@@ -10,12 +10,6 @@ use function Response\{prepareBadResponse, prepareGoodResponse};
 use function Validator\validateBracketsString;
 use function Verification\verifyBrackets;
 
-require_once 'normalizer.php';
-require_once 'request.php';
-require_once 'response.php';
-require_once 'validator.php';
-require_once 'verification.php';
-
 function runApp(): string
 {
     if (!isPost()) {

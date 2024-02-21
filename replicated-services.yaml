@@ -3,10 +3,11 @@ services:
   app:
     build: .
     volumes:
-      - .:/data/mysite.local
+      - ./public:/data/mysite.local/public
+      - ./src:/data/mysite.local/src
 
   nginx:
     image: nginx:stable
     volumes:
-      - .:/data/mysite.local
+      - ./public:/data/mysite.local/public
       - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf

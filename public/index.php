@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use function App\runApp;
 
-require_once __DIR__ . '/../src/app.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $app = runApp();
 

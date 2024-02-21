@@ -1,0 +1,7 @@
+# .dockerignore
+vendor
+.github
+nginx
+*.md
+*.yaml
+*.yml
