@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+    server:
+        build:
+            context: ./fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: server
+        volumes:
+            - ./app:/data
+        networks:
+            - app-network
+        environment:
+            XDEBUG_CONFIG: "mode=debug client_port=9007 client_host=host.docker.internal start_with_request=yes"
+            PHP_IDE_CONFIG: "serverName=cli"
+
+    client:
+        build:
+            context: ./fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: client
+        volumes:
+            - ./app:/data
+        networks:
+            - app-network
+        environment:
+            XDEBUG_CONFIG: "mode=debug client_port=9007 client_host=host.docker.internal start_with_request=yes"
+            PHP_IDE_CONFIG: "serverName=cli"
+
+networks:
+    app-network:
+        driver: bridge
