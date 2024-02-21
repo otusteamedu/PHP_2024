@@ -15,7 +15,7 @@ class BracketsValidator
         foreach ($bracketsArr as $bracket) {
             if ($bracket === '(') {
                 $stack[] = $bracket;
-            } elseif (count($stack) > 0) {
+            } elseif ($bracket === ')' && count($stack) > 0) {
                 array_pop($stack);
             } else {
                 return false;
