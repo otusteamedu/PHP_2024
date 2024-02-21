@@ -1,0 +1,12 @@
+{
+  "name": "hw4/string-test",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "AlexanderGladkov\\App\\": "App/"
+    }
+  },
+  "require": {
+    "ext-mbstring": "*"
+  }
+}
