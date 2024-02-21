@@ -7,6 +7,7 @@ namespace AleksandrOrlov\Php2024\Service;
 use AleksandrOrlov\Php2024\Configuration\Service as Configuration;
 use AleksandrOrlov\Php2024\Socket\Service as SocketService;
 use Exception;
+use Generator;
 
 class Client implements NetworkInterface
 {
@@ -20,8 +21,9 @@ class Client implements NetworkInterface
     /**
      * @throws Exception
      */
-    public function run()
+    public function run(): Generator
     {
+        yield "Client started\n";
         $config = Configuration::getConfig();
 
         $socket = $this->socketService->create();

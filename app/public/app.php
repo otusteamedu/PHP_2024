@@ -6,7 +6,10 @@ use AleksandrOrlov\Php2024\App;
 
 try {
     $app = new App();
-    $app->run();
+    $data = $app->run();
+    foreach ($data as $message) {
+        echo $message;
+    }
 } catch (Exception $e) {
     echo $e->getMessage();
 }

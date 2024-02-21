@@ -39,7 +39,7 @@ class Server implements NetworkInterface
 
             $this->socketService->send($socket, $buf, $from);
 
-            yield;
+            yield "Request processed\n";
         }
     }
 }
