@@ -33,5 +33,4 @@ class BracketsChecker
         }
         return true;
     }
-
 }

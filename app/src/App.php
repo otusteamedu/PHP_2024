@@ -21,10 +21,7 @@ class App
             ';
         }
         elseif (
-            (new BracketsChecker())
-                ->check(
-                    $_POST['string'] ?? ''
-                )
+            (new BracketsChecker())->check($_POST['string'] ?? '')
         ) {
             header("HTTP/1.1 200 OK", true, 200);
             return '200 Ok!';
@@ -32,5 +29,4 @@ class App
         header("HTTP/1.1 400 BAD REQUEST", true, 400);
         return '400 Bad!';
     }
-
 }
