@@ -32,14 +32,14 @@ services:
 
   mysql_db:
     image: mysql:8
-    #restart: always
+    container_name: mysql
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root_secret
-      MYSQL_DATABASE: db_docker
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: docker_pass
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
     volumes:
       - ./db:/var/lib/mysql
     networks:
