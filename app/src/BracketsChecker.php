@@ -6,7 +6,6 @@ namespace Lrazumov\Hw4;
 
 class BracketsChecker
 {
-
     private function balanceBad(string $string): bool
     {
         $balance = 0;

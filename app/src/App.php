@@ -6,7 +6,6 @@ namespace Lrazumov\Hw4;
 
 class App
 {
-
     public function run()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET')
