@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexanderGladkov\App;
+namespace AlexanderGladkov\App\Validation;
 
 use Exception;
 use LogicException;
