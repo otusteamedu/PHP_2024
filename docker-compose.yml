@@ -45,6 +45,8 @@ services:
     container_name: app-one
     hostname: app-one
     restart: always
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     volumes:
       - ./app:/data
     networks:
@@ -58,8 +60,23 @@ services:
     container_name: app-two
     hostname: app-two
     restart: always
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     volumes:
       - ./app:/data
+    networks:
+      - balancer-network
+
+  redis:
+    image: redis
+    hostname: redis
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: sh -c 'exec redis-server --requirepass "$REDIS_PASSWORD"'
     networks:
       - balancer-network
 
