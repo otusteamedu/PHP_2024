@@ -9,8 +9,8 @@ class App
     public function run()
     {
         session_start([
-            'save_handler' => 'redis', 
-            'save_path' => 'tcp://redis:6379?auth=' . getenv("REDIS_PASSWORD")
+            'save_handler' => 'redis',
+            'save_path' => 'tcp://redis:6379?auth=' . getenv("REDIS_PASSWORD"),
         ]);
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $redis = new \Redis();
