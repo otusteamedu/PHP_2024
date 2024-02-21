@@ -6,8 +6,6 @@ namespace AlexanderPogorelov\Chat;
 
 class SocketManager
 {
-    public const SOCKET_FILENAME = 'socket/chat.sock';
-
     private Config $config;
     private string $socketFilename;
     private ?\Socket $socket = null;
@@ -15,7 +13,7 @@ class SocketManager
     public function __construct()
     {
         $this->config = new Config();
-        $this->socketFilename = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . self::SOCKET_FILENAME;
+        $this->socketFilename = realpath(__DIR__ . $this->config->getSocketPath());
     }
 
     /**
@@ -107,11 +105,6 @@ class SocketManager
     public function close(\Socket $connection = null): void
     {
         \socket_close($connection ?? $this->socket);
-    }
-
-    public function isStopMessage(string $message): bool
-    {
-        return $this->config->getStopMessage() === strtolower($message);
     }
 
     public function getSocket(): \Socket

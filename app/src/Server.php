@@ -7,10 +7,12 @@ namespace AlexanderPogorelov\Chat;
 class Server
 {
     private SocketManager $manager;
+    private Config $config;
 
     public function __construct()
     {
         $this->manager = new SocketManager();
+        $this->config = new Config();
     }
 
     public function start(): void
@@ -27,7 +29,7 @@ class Server
         while ($isRunning) {
             $message = $this->manager->read($connection);
 
-            if ($this->manager->isStopMessage($message)) {
+            if ($this->config->getStopMessage() === $message) {
                 $isRunning = false;
             }
 

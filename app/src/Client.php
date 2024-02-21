@@ -7,10 +7,12 @@ namespace AlexanderPogorelov\Chat;
 class Client
 {
     private SocketManager $manager;
+    private Config $config;
 
     public function __construct()
     {
         $this->manager = new SocketManager();
+        $this->config = new Config();
     }
 
     /**
@@ -27,7 +29,7 @@ class Client
         while ($isRunning) {
             $message = \readline('Enter your message: ');
 
-            if ($this->manager->isStopMessage($message)) {
+            if ($this->config->getStopMessage() === $message) {
                 $isRunning = false;
             }
 

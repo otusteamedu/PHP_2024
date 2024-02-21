@@ -8,6 +8,7 @@ class Config
 {
     public const MAX_MESSAGE_LENGTH = 'max_message_length';
     public const STOP_MESSAGE = 'stop_message';
+    public const SOCKET_PATH = 'socket_path';
 
     private array $data;
 
@@ -30,5 +31,10 @@ class Config
     public function getStopMessage(): string
     {
         return $this->data[self::STOP_MESSAGE];
+    }
+
+    public function getSocketPath(): string
+    {
+        return $this->data[self::SOCKET_PATH];
     }
 }
