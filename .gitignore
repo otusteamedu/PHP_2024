@@ -3,7 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-
+.env
 /logs/**
 /db/**
 !/db/db_docker
