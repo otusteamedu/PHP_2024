@@ -13,7 +13,7 @@ $dbPort = $_ENV['POSTGRES_PORT'] ?? null;
 $user = $_ENV['POSTGRES_USER'] ?? null;
 $pass = $_ENV['POSTGRES_PASSWORD'] ?? null;
 // redis data
-$redisHost = $_ENV['REDIS_PORT'] ?? null;
+$redisHost = $_ENV['REDIS_HOST'] ?? null;
 $redisPort = $_ENV['REDIS_PORT'] ?? null;
 // memcached data
 $memcachedHost = $_ENV['MEMCACHED_PORT'] ?? null;
