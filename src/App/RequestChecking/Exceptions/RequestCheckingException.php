@@ -11,12 +11,6 @@ class RequestCheckingException extends Exception
 {
     private Response $response;
 
-    /**
-     * @param Response $response
-     * @param $message
-     * @param $code
-     * @param $previous
-     */
     public function __construct(Response $response, $message = "", $code = 0, $previous = null)
     {
         $this->response = $response;
