@@ -3,3 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+
+/logs/**
+/db/**
+!/db/db_docker
