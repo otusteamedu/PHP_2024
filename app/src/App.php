@@ -19,8 +19,7 @@ class App
                 <b>Nginx:</b> ' . $_SERVER['HTTP_X_NGINX'] . '<br>
                 <b>Php-fpm:</b> ' . $_SERVER['HOSTNAME'] . '<br>
             ';
-        }
-        elseif (
+        } elseif (
             (new BracketsChecker())->check($_POST['string'] ?? '')
         ) {
             header("HTTP/1.1 200 OK", true, 200);

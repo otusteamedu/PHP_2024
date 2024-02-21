@@ -9,14 +9,12 @@ class BracketsChecker
     private function balanceBad(string $string): bool
     {
         $balance = 0;
-        for ($i = 0; $i < strlen($string); $i++) { 
+        for ($i = 0; $i < strlen($string); $i++) {
             if (empty($balance) && $string[$i] === ')') {
                 return true;
-            }
-            elseif ($string[$i] === '(') {
+            } elseif ($string[$i] === '(') {
                 $balance++;
-            }
-            elseif ($string[$i] === ')') {
+            } elseif ($string[$i] === ')') {
                 $balance--;
             }
         }
@@ -27,8 +25,7 @@ class BracketsChecker
     {
         if (empty($string)) {
             return false;
-        }
-        elseif ($this->balanceBad($string)) {
+        } elseif ($this->balanceBad($string)) {
             return false;
         }
         return true;
