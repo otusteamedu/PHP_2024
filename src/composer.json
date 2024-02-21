@@ -3,7 +3,7 @@
   "type": "project",
   "autoload": {
     "psr-4": {
-      "AlexanderGladkov\\App\\": "app/"
+      "AlexanderGladkov\\App\\": "App/"
     }
   },
   "require": {
