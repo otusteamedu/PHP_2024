@@ -8,10 +8,18 @@ class Response
 {
     private ?array $headers = null;
 
+    /**
+     * @param StatusCode $statusCode
+     * @param string $message
+     */
     private function __construct(private StatusCode $statusCode, private string $message)
     {
     }
 
+    /**
+     * @param array|null $headers
+     * @return void
+     */
     public function setHeaders(?array $headers): void
     {
         $this->headers = $headers;
