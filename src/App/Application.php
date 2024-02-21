@@ -16,18 +16,25 @@ class Application
      */
     public function run(): void
     {
+        $this->processRequest()->send();
+    }
+
+    /**
+     * @return Response
+     */
+    private function processRequest(): Response
+    {
         try {
             $this->checkRequest();
         } catch (RequestCheckingException $e) {
-            $e->getResponse()->send();
-            return;
+            return $e->getResponse();
         }
 
         try {
             (new Validation())->validateBrackets($_POST['string']);
-            Response::createSuccessResponse('Строка корректна!')->send();
+            return Response::createSuccessResponse('Строка корректна!');
         } catch (Exception $e) {
-            Response::createBadRequestResponse($e->getMessage())->send();
+            return Response::createBadRequestResponse($e->getMessage());
         }
     }
 
