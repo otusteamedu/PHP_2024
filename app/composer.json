@@ -1,0 +1,14 @@
+{
+    "name": "alexander-pogorelov/chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderPogorelov\\Chat\\": "src/"
+        }
+    },
+    "require": {
+      "ext-sockets": "*",
+      "ext-readline": "*",
+      "ext-mbstring": "*"
+    }
+}
