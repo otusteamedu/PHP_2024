@@ -1,0 +1,91 @@
+version: '3'
+services:
+  app1:
+    build:
+      context: './docker/php'
+    container_name: app1  
+    restart: always
+    volumes:
+      - './www/project:/var/www/html'
+      - './docker/php/php.ini:/usr/local/etc/php/php.ini'
+    links:
+      - mysql
+    networks:
+      - default
+    
+  app2:
+    build:
+      context: './docker/php'
+    container_name: app2  
+    restart: always
+    volumes:
+      - './www/project:/var/www/html'
+      - './docker/php/php.ini:/usr/local/etc/php/php.ini'
+    links:
+      - mysql
+    networks:
+      - default
+  
+  nginx-proxy:
+    image: nginx:latest
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - './docker/nginx/proxy/conf.d:/etc/nginx/conf.d'
+      - './docker/logs:/var/log/nginx'
+    networks:
+      - default
+
+  nginx1:
+    image: nginx:latest
+    container_name: nginx1
+    restart: always
+    ports:
+      - "80"
+    volumes:
+      - './www/project:/var/www/html'
+      - './docker/nginx/hosts/conf.d:/etc/nginx/conf.d'
+    networks:
+      - default
+  
+  nginx2:
+    image: nginx:latest
+    container_name: nginx2
+    restart: always
+    ports:
+      - "80"
+    volumes:
+      - './www/project:/var/www/html'
+      - './docker/nginx/hosts/conf.d:/etc/nginx/conf.d'
+    networks:
+      - default
+    
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - default
+  
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    environment:
+      REDIS_PORT: 6379
+      REDIS_DATABASES: 16
+    networks:
+      - default
+    
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+          gateway: 172.28.0.1

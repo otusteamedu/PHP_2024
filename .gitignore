@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/task1/docker/logs
+/task2/docker/logs
+/task1/www/project/vendor
