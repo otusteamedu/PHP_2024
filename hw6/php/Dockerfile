@@ -6,6 +6,7 @@ ENV XDEBUG_REMOTE_IP ${XDEBUG_REMOTE_IP}
 RUN apt-get update  \
   && apt-get install -y \
     libonig-dev \
+    libzip-dev \
   && pecl install  \
     xdebug-3.3.1 \
   && docker-php-ext-enable  \
@@ -14,6 +15,7 @@ RUN apt-get update  \
     mbstring  \
     sockets \
     pcntl \
+    zip \
   && echo "1" > /dev/null
 # echo "1" > /dev/null" - заморочился, что бы последняя строка, тоже оканчивалась "/", т.е., была идинтична остальным.
 
