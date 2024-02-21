@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "0e1f56d17d7d0a9bca42dc22c6286451",
+    "packages": [
+        {
+            "name": "stubb/otus-library",
+            "version": "v1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/StubbornBattery/OtusHw3.git",
+                "reference": "6d7552595db968629defde31cda0e7111926ae95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/StubbornBattery/OtusHw3/zipball/6d7552595db968629defde31cda0e7111926ae95",
+                "reference": "6d7552595db968629defde31cda0e7111926ae95",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Stubb\\OtusLibrary\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Nikita Trubkin",
+                    "email": "Stubbornbattery@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/StubbornBattery/OtusHw3/issues",
+                "source": "https://github.com/StubbornBattery/OtusHw3/tree/v1.2.2"
+            },
+            "time": "2024-02-21T04:49:10+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}
