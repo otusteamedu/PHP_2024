@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace GoroshnikovP\Hw6\Chat;
 
@@ -13,7 +14,7 @@ class ChatServer extends Chat
     {
         $this->socketInit($this->socketConfig->fileNameServer);
 
-        while(1) {
+        while(true) {
             $receivedInfo = $this->socketReceive();
             if (parent::SERVER_EXIT === $receivedInfo->data) {
                 $messageToAnswer = "Сервер остановлен.";
@@ -33,7 +34,8 @@ class ChatServer extends Chat
 
     private  function serverBreak() {
         socket_close ($this->socket);
-        unlink($this->socketConfig->fileNameServer);
+        $fileName = $this->socketConfig->fileNameServer;
+        if (file_exists($fileName)) unlink($fileName);
         echo 'Server exits';
     }
 }

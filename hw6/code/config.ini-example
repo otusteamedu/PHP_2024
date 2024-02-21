@@ -1,0 +1,3 @@
+[main]
+file_name_server = /var/run/socket_chat_server.sock
+file_name_client = /var/run/socket_chat_client.sock
