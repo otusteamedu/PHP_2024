@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace GoroshnikovP\Hw6;
@@ -7,7 +8,6 @@ use GoroshnikovP\Hw6\Chat\ChatClient;
 use GoroshnikovP\Hw6\Chat\ChatServer;
 use GoroshnikovP\Hw6\Dtos\PrepareResultDto;
 use GoroshnikovP\Hw6\Dtos\SocketConfigDto;
-use GoroshnikovP\Hw6\Dtos\ValidationDto;
 use GoroshnikovP\Hw6\Enums\ModeEnum;
 use GoroshnikovP\Hw6\Exceptions\PrepareException;
 use GoroshnikovP\Hw6\Exceptions\RuntimeException;
@@ -18,20 +18,12 @@ class App
     private ModeEnum $mode;
     private SocketConfigDto $socketConfig;
 
-    private function validation (): ValidationDto {
-        // TODO: продумать валидацию. Как минимум, аргументы запуска. Наличие секций в кнофиг-файле.
 
-        $result = new ValidationDto();
-        $result->isValid = true;
-        return $result;
-    }
-
-    private function prepareArg(): PrepareResultDto {
+    private function prepareArg(): PrepareResultDto
+    {
         $argc = $GLOBALS['argc'] ?? 0;
         $argv = $GLOBALS['argv'] ?? [];
-
         $res = new PrepareResultDto();
-
         if (3 === $argc && in_array($argv[1], ['-m', '--mode'])) {
             $mode = ModeEnum::tryFrom($argv[2]);
             if ($mode !== null) {
@@ -47,9 +39,9 @@ class App
     }
 
 
-    private function prepareConfig(): PrepareResultDto {
+    private function prepareConfig(): PrepareResultDto
+    {
         $res = new PrepareResultDto();
-
         if (!file_exists(static::CONFIG_PATH)) {
             $res->isOk = false;
             $res->message = 'Не найден файл конфигурации, ' . static::CONFIG_PATH;
@@ -57,11 +49,9 @@ class App
         }
 
         $arrConfig = parse_ini_file(static::CONFIG_PATH, false);
-
         $this->socketConfig = new SocketConfigDto();
         $this->socketConfig->fileNameServer = $arrConfig['file_name_server'] ?? '';
         $this->socketConfig->fileNameClient = $arrConfig['file_name_client'] ?? '';
-
         if ($this->socketConfig->fileNameServer && $this->socketConfig->fileNameClient) {
             $res->isOk = true;
         } else {
@@ -73,7 +63,8 @@ class App
     }
 
 
-    private function prepare(): PrepareResultDto {
+    private function prepare(): PrepareResultDto
+    {
         $res = $this->prepareArg();
         if (!$res->isOk) {
             return $res;
@@ -93,7 +84,8 @@ class App
         return $res;
     }
 
-    public function run(): void {
+    public function run(): void
+    {
         try {
             $prepareResult = $this->prepare();
             if (!$prepareResult->isOk) {
@@ -107,7 +99,7 @@ class App
             }
 
             $chat->run();
-        } catch(PrepareException $ex){
+        } catch (PrepareException $ex) {
             echo "Проблема при старте: \n";
             print_r([
                 'message' =>  $ex->getMessage(),
@@ -115,7 +107,7 @@ class App
                 'file' =>  $ex->getFile(),
                 'line' =>  $ex->getLine(),
             ]);
-        } catch(RuntimeException $ex){
+        } catch (RuntimeException $ex) {
             echo "Проблема при выполнении: \n";
             print_r([
                 'message' =>  $ex->getMessage(),
@@ -124,7 +116,5 @@ class App
                 'line' =>  $ex->getLine(),
             ]);
         }
-
-
     }
 }

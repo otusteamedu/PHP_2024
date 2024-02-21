@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace GoroshnikovP\Hw6\Chat;
@@ -36,7 +37,9 @@ class ChatClient extends Chat
     {
         socket_close($this->socket);
         $fileName = $this->socketConfig->fileNameClient;
-        if (file_exists($fileName)) unlink($fileName);
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
         echo 'Client exits';
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace GoroshnikovP\Hw6\Exceptions;
@@ -9,5 +10,4 @@ namespace GoroshnikovP\Hw6\Exceptions;
  */
 class RuntimeNotCriticalException extends RuntimeException
 {
-
 }
