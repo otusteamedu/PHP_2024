@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Services;
@@ -18,12 +19,16 @@ class StringService
     {
         if (empty($this->string)) {
             return $this->getValidateError('empty string!');
-        } elseif((!str_starts_with($this->string, "(")) || (!str_ends_with($this->string, ")"))) {
+        } elseif ((!str_starts_with($this->string, "(")) || (!str_ends_with($this->string, ")"))) {
             return $this->getValidateError('incorrect start or end of string!');
         } elseif (mb_substr_count($this->string, "(") !== mb_substr_count($this->string, ")")) {
             return $this->getValidateError('number of open parentheses does not match with closed parentheses!');
+        } elseif (strpos($this->string, ")(")) {
+            return $this->getValidateError("error string!");
+        } else {
+            header('HTTP/1.1' . 200);
+            return "'" . $this->string . "'" . " is a valid string!";
         }
-        return "'" . $this->string . "'" . " is a valid string!";
     }
 
     public function getValidateError($message)
