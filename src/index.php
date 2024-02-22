@@ -15,12 +15,6 @@ require($dirEnv . 'autoload.php');
 $dotenv = Dotenv::createUnsafeImmutable($dirEnv);
 $dotenv->load();
 
-$mainservice = new \services\MainService(
-    new BracketsService(
-        new Brackets()
-    ),
-    new SessionService,
-    new HostService
-);
+$mainservice = new \services\MainService();
 
 return $mainservice->process();
