@@ -18,8 +18,6 @@ class App
             $redis->auth(
                 getenv("REDIS_PASSWORD")
             );
-            $count = isset($_SESSION['count']) ? $_SESSION['count'] : 1;
-            $_SESSION['count'] = ++$count;
             return '
                 <h1>(()()()())<span style="color:red;">)</span>((((()()()))(()()()(((()))))))</h1>
                 <form method="post">
@@ -29,8 +27,8 @@ class App
                 <h2>Balance info</h2>
                 <b>Nginx:</b> ' . $_SERVER['HTTP_X_NGINX'] . '<br>
                 <b>Php-fpm:</b> ' . $_SERVER['HOSTNAME'] . '<br>
-                <b>Redis:</b> ' . ($redis->ping() ? 'ok' : 'fail') . '<br>
-                <b>Session counter:</b> ' . $count . '<br>
+                <b>Redis:</b> ' . $redis->ping() . '<br>
+                <b>Session counter:</b> ' . session_id() . '<br>
             ';
         } elseif (
             (new BracketsChecker())->check($_POST['string'] ?? '')

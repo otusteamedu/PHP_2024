@@ -22,7 +22,7 @@ services:
     restart: always
     volumes:
       - ./app:/data
-      - ./docker/nginx/hosts/mysite.local.one.conf:/etc/nginx/conf.d/mysite.local.one.conf
+      - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
       - balancer-network
 
@@ -33,7 +33,7 @@ services:
     restart: always
     volumes:
       - ./app:/data
-      - ./docker/nginx/hosts/mysite.local.two.conf:/etc/nginx/conf.d/mysite.local.two.conf
+      - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
       - balancer-network
 
@@ -76,7 +76,7 @@ services:
       - 6379:6379
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: sh -c 'exec redis-server --requirepass "$REDIS_PASSWORD"'
+    command: sh -c 'exec redis-server --requirepass "${REDIS_PASSWORD}"'
     networks:
       - balancer-network
 
