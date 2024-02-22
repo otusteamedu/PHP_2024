@@ -4,7 +4,8 @@ namespace Akornienko\App\hw4;
 
 class BracketsValidator
 {
-    public function validate(string $brackets): bool {
+    public function validate(string $brackets): bool
+    {
         if (!strlen($brackets)) {
             return false;
         }

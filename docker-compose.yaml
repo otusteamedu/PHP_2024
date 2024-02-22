@@ -22,7 +22,7 @@ services:
     image: myapp/nginx-balancer1
     container_name: nginx-balancer1
     volumes:
-      - ./app:/data/mysite.local
+      - ./public:/data/mysite.local/public
     networks:
       - app-network
     depends_on:
@@ -37,7 +37,7 @@ services:
     image: myapp/nginx-balancer2
     container_name: nginx-balancer2
     volumes:
-      - ./app:/data/mysite.local
+      - ./public:/data/mysite.local/public
     networks:
       - app-network
     depends_on:
@@ -53,7 +53,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./app:/data/mysite.local
+      - ./app:/data/mysite.local/app
+      - ./public:/data/mysite.local/public
     networks:
       - app-network
     depends_on:
@@ -68,7 +69,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./app:/data/mysite.local
+      - ./app:/data/mysite.local/app
+      - ./public:/data/mysite.local/public
     networks:
       - app-network
     depends_on:
@@ -83,7 +85,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./app:/data/mysite.local
+      - ./app:/data/mysite.local/app
+      - ./public:/data/mysite.local/public
     networks:
       - app-network
     depends_on:
