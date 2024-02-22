@@ -1,0 +1,130 @@
+version: '3'
+
+services:
+  nginx-proxy:
+    build:
+      context: ./docker/nginx-proxy
+      dockerfile: Dockerfile
+    image: myapp/nginx-proxy
+    container_name: proxy
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - nginx-balancer1
+      - nginx-balancer2
+
+  nginx-balancer1:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx-balancer1
+    container_name: nginx-balancer1
+    volumes:
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+      - app3
+
+  nginx-balancer2:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx-balancer2
+    container_name: nginx-balancer2
+    volumes:
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+      - app3
+
+  app1:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: app1
+    env_file:
+      - .env
+    volumes:
+      - ./app:/data/mysite.local/app
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - memcached
+
+  app2:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: app2
+    env_file:
+      - .env
+    volumes:
+      - ./app:/data/mysite.local/app
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - memcached
+
+  app3:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: app3
+    env_file:
+      - .env
+    volumes:
+      - ./app:/data/mysite.local/app
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - memcached
+
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_HOST}
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: ${MEMCACHED_HOST}
+    ports:
+      - "${MEMCACHED_PORT}:${MEMCACHED_PORT}"
+    networks:
+      - app-network
+
+  mysql_db:
+    image: mysql:8.3
+    container_name: ${MYSQL_HOST}
+    restart: always
+    ports:
+      - "${MYSQL_PORT}:${MYSQL_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./dbdata:/var/lib/mysql/
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
