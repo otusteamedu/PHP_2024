@@ -6,28 +6,26 @@ namespace Lrazumov\Hw4;
 
 class BracketsChecker
 {
-    private function balanceBad(string $string): bool
+    private function balanceOk(string $string): bool
     {
         $balance = 0;
         for ($i = 0; $i < strlen($string); $i++) {
             if (empty($balance) && $string[$i] === ')') {
-                return true;
+                return false;
             } elseif ($string[$i] === '(') {
                 $balance++;
             } elseif ($string[$i] === ')') {
                 $balance--;
             }
         }
-        return !empty($balance);
+        return empty($balance);
     }
 
     public function check(string $string): bool
     {
         if (empty($string)) {
             return false;
-        } elseif ($this->balanceBad($string)) {
-            return false;
         }
-        return true;
+        return $this->balanceOk($string);
     }
 }
