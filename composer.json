@@ -2,7 +2,8 @@
     "name": "shtorm/homework5",
     "type": "project",
     "require": {
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "ext-redis": "*"
     },
     "autoload": {
         "psr-4": {
