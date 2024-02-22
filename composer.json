@@ -1,0 +1,13 @@
+{
+    "name": "afilippov/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Afilippov\\Hw5\\": "src/"
+        }
+    },
+    "require": {
+        "ext-sockets": "*",
+        "ext-readline": "*"
+    }
+}
