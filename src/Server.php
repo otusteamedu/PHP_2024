@@ -10,8 +10,6 @@ class Server
 {
     private Socket $socket;
 
-    private bool $isRunning = true;
-
     /**
      * @throws Exception
      */
@@ -35,16 +33,16 @@ class Server
     {
         $client = $this->socket->accept();
 
-        while ($this->isRunning) {
+        while (true) {
             $message = $this->socket->read($client);
-
-            if ($message === 'STOP') {
-                socket_close($client);
-                $this->isRunning = false;
-            }
 
             if ($message) {
                 echo $message . PHP_EOL;
+            }
+
+            if ($message === 'STOP') {
+                socket_close($client);
+                break;
             }
         }
 

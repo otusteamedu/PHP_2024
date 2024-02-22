@@ -13,13 +13,15 @@ class App
      */
     public function run($arg): void
     {
+        $config = new SocketConfig();
+
         switch ($arg) {
             case 'server':
-                $server = new Server(new Socket());
+                $server = new Server(new Socket($config));
                 $server->start();
                 break;
             case 'client':
-                $client = new Client(new Socket());
+                $client = new Client(new Socket($config));
                 $client->start();
                 break;
             default:

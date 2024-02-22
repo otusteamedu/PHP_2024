@@ -8,19 +8,10 @@ use Exception;
 
 class Socket
 {
-    private string $socketPath;
+    private \Socket $socket;
 
-    private int $maxLength;
-
-    protected \Socket $socket;
-
-    /**
-     * @throws Exception
-     */
-    public function __construct()
+    public function __construct(private readonly SocketConfig $config)
     {
-        $this->socketPath = getenv('SOCKET_PATH');
-        $this->maxLength = (int)getenv('MAX_LENGTH');
     }
 
     /**
@@ -41,7 +32,7 @@ class Socket
      */
     public function bind(): void
     {
-        $bindResult = socket_bind($this->socket, $this->socketPath);
+        $bindResult = socket_bind($this->socket, $this->config->socketPath);
         if ($bindResult === false) {
             throw new Exception("Ошибка привязки сокета к пути");
         }
@@ -52,7 +43,7 @@ class Socket
      */
     public function connect(): void
     {
-        $connectResult = socket_connect($this->socket, $this->socketPath);
+        $connectResult = socket_connect($this->socket, $this->config->socketPath);
         if ($connectResult === false) {
             throw new Exception("Ошибка подключения к серверу");
         }
@@ -98,7 +89,7 @@ class Socket
      */
     public function read(\Socket $socket): string
     {
-        $message = socket_read($socket, $this->maxLength);
+        $message = socket_read($socket, $this->config->maxLength);
         if ($message === false) {
             throw new Exception("Ошибка чтения сообщения");
         }
@@ -113,8 +104,8 @@ class Socket
 
     public function removeSockFile(): void
     {
-        if (file_exists($this->socketPath)) {
-            unlink($this->socketPath);
+        if (file_exists($this->config->socketPath)) {
+            unlink($this->config->socketPath);
         }
     }
 }

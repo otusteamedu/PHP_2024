@@ -10,8 +10,6 @@ class Client
 {
     private Socket $socket;
 
-    private bool $isRunning = true;
-
     /**
      * @throws Exception
      */
@@ -29,12 +27,12 @@ class Client
      */
     public function start(): void
     {
-        while ($this->isRunning) {
+        while (true) {
             $message = readline('Введите сообщение: ');
             $this->socket->write($message);
 
             if ($message === 'STOP') {
-                $this->isRunning = false;
+                break;
             }
         }
 
