@@ -1,0 +1,15 @@
+{
+    "name": "kiryao/sockchat",
+    "description": "Console chat on sockets",
+    "type": "project",
+    "require": {
+        "ext-sockets": "*",
+        "ext-readline": "*",
+        "ext-mbstring": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Kiryao\\Sockchat\\": "src/"
+        }
+    }
+}

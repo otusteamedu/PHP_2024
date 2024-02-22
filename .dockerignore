@@ -1,0 +1,5 @@
+socket.d
+vendor
+.vscode
+.idea
+.github

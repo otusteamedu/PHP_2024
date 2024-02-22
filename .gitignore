@@ -1,5 +1,9 @@
 .idea/
-/vendor/
+.vscode
+vendor
 .DS_Store
 .AppleDouble
 .LSOverride
+
+socket.d
+.env
