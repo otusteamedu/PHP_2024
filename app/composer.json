@@ -1,0 +1,12 @@
+{
+    "name": "alexander-pogorelov/email-validator",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderPogorelov\\EmailValidator\\": "src/"
+        }
+    },
+    "require": {
+      "ext-mbstring": "*"
+    }
+}
