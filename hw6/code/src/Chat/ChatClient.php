@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace GoroshnikovP\Hw6\Chat;
 
 use GoroshnikovP\Hw6\Exceptions\RuntimeException;
-use GoroshnikovP\Hw6\Exceptions\RuntimeNotCriticalException;
 
 class ChatClient extends Chat
 {
@@ -14,32 +13,33 @@ class ChatClient extends Chat
      */
     public function run(): void
     {
-        $this->socketInit($this->socketConfig->fileNameClient);
+        $this->socketInit();
+
+        if (!file_exists($this->socketFile)) {
+            throw new RuntimeException("Похоже, сервер не запущен. " .
+                socket_strerror(socket_last_error($this->socket)));
+        }
+
+        if (!socket_connect($this->socket, $this->socketFile)) {
+            throw new RuntimeException("Не удалось подключиться к сокету. " .
+                socket_strerror(socket_last_error($this->socket)));
+        }
         while (true) {
             try {
                 $msg = readline('Какое сообщение отправить? ');
-                if (parent::CLIENT_EXIT === $msg) {
-                    $this->clientBreak();
+                $this->socketSend($this->socket, $msg);
+
+                if (parent::CHAT_EXIT === $msg) {
+                    socket_close($this->socket);
+                    echo "Отключаемся.\n";
                     break;
                 }
 
-                $this->socketSend($this->socketConfig->fileNameServer, $msg);
-
-                $answerInfo = $this->socketReceive();
-                echo "Ответ: {$answerInfo->data}\n";
-            } catch (RuntimeNotCriticalException $ex) {
+                $answerSata = $this->socketReceive($this->socket);
+                echo "Ответ: {$answerSata}\n";
+            } catch (RuntimeException $ex) {
                 echo $ex->getMessage() . "\n";
             }
         }
-    }
-
-    private function clientBreak()
-    {
-        socket_close($this->socket);
-        $fileName = $this->socketConfig->fileNameClient;
-        if (file_exists($fileName)) {
-            unlink($fileName);
-        }
-        echo 'Client exits';
     }
 }

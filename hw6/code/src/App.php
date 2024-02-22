@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace GoroshnikovP\Hw6;
 
+use Exception;
 use GoroshnikovP\Hw6\Chat\ChatClient;
 use GoroshnikovP\Hw6\Chat\ChatServer;
-use GoroshnikovP\Hw6\Dtos\PrepareResultDto;
-use GoroshnikovP\Hw6\Dtos\SocketConfigDto;
 use GoroshnikovP\Hw6\Enums\ModeEnum;
 use GoroshnikovP\Hw6\Exceptions\PrepareException;
 use GoroshnikovP\Hw6\Exceptions\RuntimeException;
@@ -16,105 +15,85 @@ class App
 {
     const CONFIG_PATH = 'config.ini';
     private ModeEnum $mode;
-    private SocketConfigDto $socketConfig;
+    private string $socketFile;
 
 
-    private function prepareArg(): PrepareResultDto
+    /**
+* @return string расшифровка ошибки. Пустая строка - нет ошибки.
+     */
+    private function prepareArg(): string
     {
         $argc = $GLOBALS['argc'] ?? 0;
         $argv = $GLOBALS['argv'] ?? [];
-        $res = new PrepareResultDto();
-        if (3 === $argc && in_array($argv[1], ['-m', '--mode'])) {
-            $mode = ModeEnum::tryFrom($argv[2]);
-            if ($mode !== null) {
-                $this->mode = $mode;
-                $res->isOk = true;
-                return $res;
-            }
+        if (3 !== $argc || !in_array($argv[1], ['-m', '--mode'])) {
+            return 'Скрипт должен быть запущен в cli, с параметрами "--mode sever" или "--mode client" или ключом "-m".';
         }
 
-        $res->isOk = false;
-        $res->message = 'Скрипт должен быть запущен в cli, с параметрами "mode sever" или "mode client"';
-        return $res;
+        try {
+            $this->mode = ModeEnum::From($argv[2]);
+        } catch (Exception) {
+            return 'Не распознан режим работы чата (клиент/сервер).';
+        }
+
+        return '';
     }
 
 
-    private function prepareConfig(): PrepareResultDto
+    /**
+     * @return string расшифровка ошибки. Пустая строка - нет ошибки.
+     */
+    private function prepareConfig(): string
     {
-        $res = new PrepareResultDto();
         if (!file_exists(static::CONFIG_PATH)) {
-            $res->isOk = false;
-            $res->message = 'Не найден файл конфигурации, ' . static::CONFIG_PATH;
-            return $res;
+            return 'Не найден файл конфигурации, ' . static::CONFIG_PATH;
         }
 
         $arrConfig = parse_ini_file(static::CONFIG_PATH, false);
-        $this->socketConfig = new SocketConfigDto();
-        $this->socketConfig->fileNameServer = $arrConfig['file_name_server'] ?? '';
-        $this->socketConfig->fileNameClient = $arrConfig['file_name_client'] ?? '';
-        if ($this->socketConfig->fileNameServer && $this->socketConfig->fileNameClient) {
-            $res->isOk = true;
-        } else {
-            $res->isOk = false;
-            $res->message = 'Ошибка в синтаксисе конфига' . static::CONFIG_PATH;
+        $this->socketFile = $arrConfig['socket_file_name'] ?? '';
+
+        if (empty($this->socketFile)) {
+            return 'Ошибка в синтаксисе конфига' . static::CONFIG_PATH;
         }
 
-        return $res;
+        return '';
     }
 
 
-    private function prepare(): PrepareResultDto
+    private function prepare(): string
     {
         $res = $this->prepareArg();
-        if (!$res->isOk) {
+        if (!empty($res)) {
             return $res;
         }
 
         if (!extension_loaded('sockets')) {
-            $res->isOk = false;
-            $res->message = 'Недоступно расширение sockets';
-            return $res;
+            return 'Недоступно расширение sockets';
         }
 
-        $res = $this->prepareConfig();
-        if (!$res->isOk) {
-            return $res;
-        }
-
-        return $res;
+        return $this->prepareConfig();
     }
 
-    public function run(): void
+    public function run(): string
     {
         try {
             $prepareResult = $this->prepare();
-            if (!$prepareResult->isOk) {
-                throw new PrepareException('Ошибка подготовки:' . $prepareResult->message);
+            if (!empty($prepareResult)) {
+                throw new PrepareException('Ошибка подготовки:' . $prepareResult);
             }
 
             if (ModeEnum::Server === $this->mode) {
-                $chat = new ChatServer($this->socketConfig);
+                $chat = new ChatServer($this->socketFile);
             } elseif (ModeEnum::Client === $this->mode) {
-                $chat = new ChatClient($this->socketConfig);
+                $chat = new ChatClient($this->socketFile);
             }
 
             $chat->run();
         } catch (PrepareException $ex) {
-            echo "Проблема при старте: \n";
-            print_r([
-                'message' =>  $ex->getMessage(),
-                'code' =>  $ex->getCode(),
-                'file' =>  $ex->getFile(),
-                'line' =>  $ex->getLine(),
-            ]);
+            return "Проблема при старте: {$ex->getMessage()}";
         } catch (RuntimeException $ex) {
-            echo "Проблема при выполнении: \n";
-            print_r([
-                'message' =>  $ex->getMessage(),
-                'code' =>  $ex->getCode(),
-                'file' =>  $ex->getFile(),
-                'line' =>  $ex->getLine(),
-            ]);
+            echo "Проблема при выполнении: {$ex->getMessage()}";
         }
+
+        return '';
     }
 }
