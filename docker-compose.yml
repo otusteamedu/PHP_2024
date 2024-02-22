@@ -1,0 +1,76 @@
+version: '3'
+services:
+
+  nginx:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    container_name: '${CONTAINER_NAME_NGINX}'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+    networks:
+      - network
+    links:
+      - php-fpm
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: docker/php-fpm
+    networks:
+      - network
+    container_name: '${CONTAINER_NAME_PHP_FPM}'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'volume-redis:/data'
+    networks:
+      - network
+
+  memcached:
+    image: sameersbn/memcached:1.5.6-2
+    ports:
+      - "11211:11211"
+    restart: always
+    volumes:
+      - 'volume-memcached:/data'
+    networks:
+      - network
+
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'volume-mysql:/var/lib/mysql'
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  volume-redis:
+    driver: local
+  volume-memcached:
+    driver: local
+  volume-mysql:
+    driver: local
