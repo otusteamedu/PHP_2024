@@ -16,7 +16,6 @@ class App
             return;
         }
 
-        $emailService = EmailFeatures::getInstance();
 
         $emailsList = file(static::EMAIL_LISTS_PATH);
         if (empty($emailsList)) {
@@ -29,7 +28,7 @@ class App
         }
         unset($email);
 
-        $validationList = $emailService->validateEmailSList($emailsList);
+        $validationList = EmailFeatures::validateEmailSList($emailsList);
 
         echo "--------\n";
         foreach ($validationList as $item) {
