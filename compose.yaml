@@ -1,0 +1,25 @@
+version: '3'
+services:
+  server:
+    build: .
+    container_name: server
+    volumes:
+      - ./public:/data/mysite.local/public
+      - ./src:/data/mysite.local/src
+      - ./config:/data/mysite.local/config
+      - socket:/data/mysite.local/tmp
+    command: ["php", "./public/app.php", "server"]
+
+  client:
+    build: .
+    container_name: client
+    volumes:
+      - ./public:/data/mysite.local/public
+      - ./src:/data/mysite.local/src
+      - ./config:/data/mysite.local/config
+      - socket:/data/mysite.local/tmp
+    depends_on:
+      - server
+
+volumes:
+  socket:
