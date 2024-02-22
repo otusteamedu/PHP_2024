@@ -1,21 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sfadeev\ChatApp\Client;
+
+use RuntimeException;
+use Sfadeev\ChatApp\Socket\UnixSocket;
 
 class Client
 {
-    public function send($msg)
+    private UnixSocket $socket;
+
+    /**
+     * @param UnixSocket $socket
+     */
+    public function __construct(UnixSocket $socket)
     {
-        if (($sock = socket_create(AF_UNIX, SOCK_DGRAM, 0)) === false) {
-            echo "Не удалось выполнить socket_create(): причина: " . socket_strerror(socket_last_error()) . "\n";
-        }
+        $this->socket = $socket;
+    }
 
-        $file = './src/var/my.sock';
-
-        if (socket_sendto($sock, $msg, strlen($msg), 0, $file) === false) {
-            echo "Не удалось выполнить socket_sendto(): причина: " . socket_strerror(socket_last_error($sock)) . "\n";
-        }
-
-        socket_close($sock);
+    /**
+     * @param string $msg
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    public function send(string $msg): void
+    {
+        $this->socket->send($msg);
     }
 }

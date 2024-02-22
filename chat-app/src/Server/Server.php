@@ -1,29 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Sfadeev\ChatApp\Server;
+
+use RuntimeException;
+use Sfadeev\ChatApp\Socket\UnixSocket;
 
 class Server
 {
-    public function listen()
+    private UnixSocket $socket;
+    private mixed $output;
+
+    /**
+     * @param UnixSocket $socket
+     * @param mixed $output
+     */
+    public function __construct(UnixSocket $socket, mixed $output)
     {
-        if (($sock = socket_create(AF_UNIX, SOCK_DGRAM, 0)) === false) {
-            echo "Не удалось выполнить socket_create(): причина: " . socket_strerror(socket_last_error()) . "\n";
-        }
+        $this->socket = $socket;
+        $this->output = $output;
+    }
 
-        if (socket_bind($sock, './src/var/my.sock') === false) {
-            echo "Не удалось выполнить socket_bind(): причина: " . socket_strerror(socket_last_error($sock)) . "\n";
-        }
+    /**
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    public function listen(): void
+    {
+        $this->socket->bind();
 
-        $file = '';
+        fwrite($this->output,  'Сервер готов принимать сообщения.' . PHP_EOL);
+
         while (true) {
-            if (socket_recvfrom($sock, $buf, 64, 0, $file) === false) {
-                echo "Не удалось выполнить socket_listen(): причина: " . socket_strerror(socket_last_error($sock)) . "\n";
-                break;
-            }
+            $data = $this->socket->read(64);
 
-            echo "$buf\n";
+            $outputInfo = sprintf('Получено сообщение: "%s"' . PHP_EOL, $data);
+
+            fwrite($this->output,  $outputInfo);
         }
-
-        socket_close($sock);
     }
 }
