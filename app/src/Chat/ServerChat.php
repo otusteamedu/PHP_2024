@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Kiryao\Sockchat\Chat;
 
-use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
-use Kiryao\Sockchat\Config\Exception\SocketConstantNotFoundException;
 use Kiryao\Sockchat\Socket\Server\Socket;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketReceiveException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketListenException;
@@ -13,11 +11,12 @@ use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketBindException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketAcceptException;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketWriteException;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketCreateException;
+use Kiryao\Sockchat\Config\Exception\SocketConstantNotFoundException;
 use Kiryao\Sockchat\Config\Exception\ConfigKeyNotFoundException;
+use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
 
 class ServerChat implements ChatInterface
 {
-
     /**
      * @throws ConfigKeyNotFoundException
      * @throws ErrorSocketAcceptException
