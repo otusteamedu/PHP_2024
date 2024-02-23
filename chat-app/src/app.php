@@ -1,58 +1,29 @@
 <?php
 
-use Sfadeev\ChatApp\Server\Server;
 use Sfadeev\ChatApp\Client\Client;
+use Sfadeev\ChatApp\Server\Server;
 use Sfadeev\ChatApp\Socket\UnixSocket;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-const SOCKET_PATH = __DIR__ . '/var/my.sock';
+const SERVER_LISTEN_SOCKET_PATH = __DIR__ . '/var/server_listen.sock';
+const SCLIENT_LISTEN_SOCKET_PATH = __DIR__ . '/var/client_listen.sock';
 
-$socket = new UnixSocket(SOCKET_PATH);
+$serverListenSock = new UnixSocket(SERVER_LISTEN_SOCKET_PATH);
+$clientListenSock = new UnixSocket(SCLIENT_LISTEN_SOCKET_PATH);
 
-$stdin = fopen("php://stdin", "r");
-$stdout = fopen("php://stdout", "w");
+$input = fopen("php://stdin", "r");
+$output = fopen("php://stdout", "w");
 
 switch ($argv[1]) {
     case 'start-server':
-        (new Server($socket, $stdout))->listen();
+        (new Server($serverListenSock, $clientListenSock, $output))->listen();
         break;
     case 'start-client':
-        if (!file_exists(SOCKET_PATH)) {
-            throw new RuntimeException(sprintf('Cокет %s не существует. Возможная причина - не запущен сервер.', SOCKET_PATH));
+        if (!file_exists(SERVER_LISTEN_SOCKET_PATH)) {
+            throw new RuntimeException(sprintf("Socket %s doesn't exist. Probable reason - the server is not running.", SERVER_LISTEN_SOCKET_PATH));
         }
 
-        $client = new Client($socket);
-        while (true) {
-            if (!sendMessageInteractive($client, $stdin, $stdout)) {
-                break 2;
-            }
-        }
+        (new Client($serverListenSock, $clientListenSock, $input, $output))->startMessaging();
+        break;
 }
-
-fclose($stdin);
-fclose($stdout);
-
-/**
- * @param Client $client
- * @param resource $input
- * @param resource $output
- *
- * @return bool
- */
-function sendMessageInteractive(Client $client, mixed $input, mixed $output): bool
-{
-    fwrite($output, '---' . PHP_EOL);
-    fwrite($output, 'Введите сообщение.' . PHP_EOL);
-
-    $data = trim(fgets($input));
-
-    if ('' === $data) return false;
-
-    $client->send($data);
-
-    fwrite($output, 'Сообщение отправлено.' . PHP_EOL);
-
-    return true;
-}
-

@@ -18,7 +18,7 @@ class UnixSocket
     public function __construct(string $path)
     {
         if (false === ($sock = socket_create(AF_UNIX, SOCK_DGRAM, 0))) {
-            throw new RuntimeException('Не удалось выполнить socket_create(): причина: ' . socket_strerror(socket_last_error()));
+            throw new RuntimeException('socket_create()failed: reason: ' . socket_strerror(socket_last_error()));
         }
 
         $this->_socket = $sock;
@@ -39,7 +39,7 @@ class UnixSocket
         }
 
         if (false === socket_bind($this->_socket, $this->_path)) {
-            throw new RuntimeException('Не удалось выполнить socket_bind(): причина: ' . socket_strerror(socket_last_error()));
+            throw new RuntimeException('ocket_bind(): failed: reason: ' . socket_strerror(socket_last_error()));
         }
     }
 
@@ -53,7 +53,7 @@ class UnixSocket
     {
         if (false === ($data = socket_read($this->_socket, $length))) {
             $this->close();
-            throw new RuntimeException('Не удалось выполнить socket_read(): причина: ' . socket_strerror(socket_last_error()));
+            throw new RuntimeException('socket_read() failed: reason: ' . socket_strerror(socket_last_error()));
         }
 
         return $data;
@@ -69,7 +69,7 @@ class UnixSocket
     {
         if (socket_sendto($this->_socket, $msg, strlen($msg), 0, $this->_path) === false) {
             $this->close();
-            throw new RuntimeException('Не удалось выполнить socket_sendto(): причина: ' . socket_strerror(socket_last_error()));
+            throw new RuntimeException('socket_sendto() failed: reason: ' . socket_strerror(socket_last_error()));
         }
     }
 

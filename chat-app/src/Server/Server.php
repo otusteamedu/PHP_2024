@@ -4,41 +4,37 @@ declare(strict_types=1);
 
 namespace Sfadeev\ChatApp\Server;
 
-use RuntimeException;
 use Sfadeev\ChatApp\Socket\UnixSocket;
 
 class Server
 {
-    private UnixSocket $socket;
+    private UnixSocket $inputSock;
+    private UnixSocket $outputSock;
     private mixed $output;
 
-    /**
-     * @param UnixSocket $socket
-     * @param mixed $output
-     */
-    public function __construct(UnixSocket $socket, mixed $output)
+    public function __construct(UnixSocket $inputSock, UnixSocket $outputSock, mixed $output)
     {
-        $this->socket = $socket;
+        $this->inputSock = $inputSock;
+        $this->outputSock = $outputSock;
         $this->output = $output;
     }
 
-    /**
-     * @return void
-     *
-     * @throws RuntimeException
-     */
     public function listen(): void
     {
-        $this->socket->bind();
+        $this->inputSock->bind();
 
-        fwrite($this->output,  'Сервер готов принимать сообщения.' . PHP_EOL);
+        $consumer = new MessageConsumer($this->inputSock);
+
+        fwrite($this->output, 'Server is ready to receive messages.' . PHP_EOL);
 
         while (true) {
-            $data = $this->socket->read(64);
+            $msg = $consumer->consume();
 
-            $outputInfo = sprintf('Получено сообщение: "%s"' . PHP_EOL, $data);
+            $this->outputSock->send(sprintf('Received: %d bytes.', strlen($msg)));
 
-            fwrite($this->output,  $outputInfo);
+            $outputInfo = sprintf('Received message: "%s".' . PHP_EOL, $msg);
+
+            fwrite($this->output, $outputInfo);
         }
     }
 }
