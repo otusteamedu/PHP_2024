@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  nginx-balancer:
+    image: nginx:latest
+    container_name: nginx-balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx-balancer.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app-network
+    depends_on:
+      - nginx_1
+      - nginx_2
+  nginx_1:
+    image: nginx:latest
+    container_name: nginx_1
+    volumes:
+      - .:/var/www/html
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app-network
+    depends_on:
+      - php_fpm_1
+      - php_fpm_2
+  nginx_2:
+    image: nginx:latest
+    container_name: nginx_2
+    volumes:
+      - .:/var/www/html
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app-network
+    depends_on:
+      - php_fpm_1
+      - php_fpm_2
+  php_fpm_1:
+    image: php:fpm
+    container_name: php_fpm_1
+    volumes:
+      - .:/var/www/html
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - memcached
+  php_fpm_2:
+    image: php:fpm
+    container_name: php_fpm_2
+    volumes:
+      - .:/var/www/html
+      - ./config/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - memcached
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network
+  db:
+    image: redis:latest
+    container_name: redis
+    environment:
+      - REDIS_DATABASE=${REDIS_DATABASE}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
