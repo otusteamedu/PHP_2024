@@ -1,0 +1,12 @@
+{
+    "name": "rmulyukov/hw6",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Rmulyukov\\Hw6\\": "src/"
+        }
+    },
+    "require": {
+        "php": "^8.2"
+    }
+}

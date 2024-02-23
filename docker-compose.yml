@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  php:
+    container_name: hw6-php
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./app:/app
