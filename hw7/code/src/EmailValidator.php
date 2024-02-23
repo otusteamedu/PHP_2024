@@ -44,5 +44,4 @@ class EmailValidator
 // он не нужен, но он обязательный параметр...
         return getmxrr($domain, $hosts);
     }
-
 }

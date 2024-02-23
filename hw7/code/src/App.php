@@ -10,7 +10,8 @@ class App
 
     private static ?EmailValidator $validator = null;
 
-    public function getValidator(): EmailValidator {
+    public function getValidator(): EmailValidator
+    {
         if (empty(static::$validator)) {
             static::$validator = new EmailValidator();
         }
