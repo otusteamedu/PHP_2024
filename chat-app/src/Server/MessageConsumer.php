@@ -19,11 +19,11 @@ class MessageConsumer
     }
 
     /**
+     * @param int $msgLength
      * @return string
-     *
      */
-    public function consume(): string
+    public function consume(int $msgLength): string
     {
-        return $this->inputSocket->read(64);
+        return $this->inputSocket->read($msgLength);
     }
 }

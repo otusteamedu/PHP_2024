@@ -19,7 +19,7 @@ class Server
         $this->output = $output;
     }
 
-    public function listen(): void
+    public function listen(int $msgLength = 255): void
     {
         $this->inputSock->bind();
 
@@ -28,7 +28,7 @@ class Server
         fwrite($this->output, 'Server is ready to receive messages.' . PHP_EOL);
 
         while (true) {
-            $msg = $consumer->consume();
+            $msg = $consumer->consume($msgLength);
 
             $this->outputSock->send(sprintf('Received: %d bytes.', strlen($msg)));
 
