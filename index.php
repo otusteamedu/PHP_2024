@@ -1,10 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 require 'vendor/autoload.php';
 
-use KirillGubenko\DirectoryReader\DirectoryReader;
+use KirillGubenko\DirectoryReader\Factory\DirectoryReaderFactory;
 
-$directoryReader = new DirectoryReader();
-print_r($directoryReader->getFiles(__DIR__));
+$directoryReader = DirectoryReaderFactory::create();
+
+$catalog = __DIR__;
+
+print_r($directoryReader->getFiles($catalog));
+print_r($directoryReader->getFilesWithInfo($catalog));

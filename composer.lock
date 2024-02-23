@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f615898d617b091909cd832277c50ce6",
+    "content-hash": "d60baa4db03b46f776b59eda379721e0",
     "packages": [
         {
             "name": "kirill-gubenko/directory-reader",
-            "version": "v1.0.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kiryao/directory-reader.git",
-                "reference": "a1d0d2dec3fa348563fa4d219c8f474c297ca644"
+                "reference": "965c45750f0b7d17f4c0a2d772535b1a34265131"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kiryao/directory-reader/zipball/a1d0d2dec3fa348563fa4d219c8f474c297ca644",
-                "reference": "a1d0d2dec3fa348563fa4d219c8f474c297ca644",
+                "url": "https://api.github.com/repos/kiryao/directory-reader/zipball/965c45750f0b7d17f4c0a2d772535b1a34265131",
+                "reference": "965c45750f0b7d17f4c0a2d772535b1a34265131",
                 "shasum": ""
             },
             "require": {
@@ -32,9 +32,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/kiryao/directory-reader/issues",
-                "source": "https://github.com/kiryao/directory-reader/tree/v1.0.0"
+                "source": "https://github.com/kiryao/directory-reader/tree/v2.0.0"
             },
-            "time": "2024-02-16T11:21:13+00:00"
+            "time": "2024-02-23T16:49:10+00:00"
         }
     ],
     "packages-dev": [],
