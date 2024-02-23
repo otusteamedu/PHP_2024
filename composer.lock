@@ -8,17 +8,20 @@
     "packages": [
         {
             "name": "stanislav-gavrilchik/otus-composer-package",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gavrillavigne/otus-composer-package.git",
-                "reference": "5aa3a26257494e47a02694413e1f242c67b6b248"
+                "reference": "6a8181e36530d945488e4bea13005add065d510e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gavrillavigne/otus-composer-package/zipball/5aa3a26257494e47a02694413e1f242c67b6b248",
-                "reference": "5aa3a26257494e47a02694413e1f242c67b6b248",
+                "url": "https://api.github.com/repos/Gavrillavigne/otus-composer-package/zipball/6a8181e36530d945488e4bea13005add065d510e",
+                "reference": "6a8181e36530d945488e4bea13005add065d510e",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
             },
             "type": "library",
             "autoload": {
@@ -29,9 +32,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/Gavrillavigne/otus-composer-package/issues",
-                "source": "https://github.com/Gavrillavigne/otus-composer-package/tree/v1.0.0"
+                "source": "https://github.com/Gavrillavigne/otus-composer-package/tree/v1.0.1"
             },
-            "time": "2024-02-18T13:31:39+00:00"
+            "time": "2024-02-23T04:03:54+00:00"
         }
     ],
     "packages-dev": [],
