@@ -4,19 +4,50 @@ declare(strict_types=1);
 
 namespace Rmulyukov\Hw5\Chat;
 
-final readonly class Server extends AbstractChat
+use Exception;
+
+final class Server extends AbstractChat
 {
+    public function __construct(string $socketPath)
+    {
+        parent::__construct($socketPath);
+    }
+
+    /**
+     * @throws Exception
+     */
     public function run(): void
     {
+        $this->socket->removeFile();
+        $this->socket->create();
+        $this->socket->bind();
+        $this->socket->listen();
         while (true) {
-            $message = $this->socket->getMessage();
-            echo sprintf("Received %s from %s \n", $message->getMessage(), $message->getFrom());
+            echo "Expecting connections\n";
+            $connection = $this->socket->getConnection();
 
-            $response = "Server processed your request";
-            $responseMessage = new Message($this->socket->getPath(), $message->getFrom(), $response, strlen($response));
+            while (true) {
+                $message = $this->socket->getMessage($connection);
+                if ($message === 'stop') {
+                    break;
+                }
 
-            $this->socket->sendMessage($responseMessage);
-            echo "Request processed\n";
+                echo sprintf("Received %s from %s \n", $message, 'client');
+
+                $this->socket->sendMessage("Server processed your request", $connection);
+                echo "Request processed\n";
+            }
+
+            $this->socket->closeConnection($connection);
+            echo "Connection closed\n\n";
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function __destruct()
+    {
+        $this->socket->removeFile();
     }
 }

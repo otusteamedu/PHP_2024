@@ -35,12 +35,12 @@ final readonly class App
      */
     public function run(): void
     {
-        $serverSocketFile = $this->configs->getString('serverFile', 'server.sock');
-        if ($this->chatType === 'server') {
-            (new Server($serverSocketFile))->run();
-            return;
-        }
-        $clientSocketFile = $this->configs->getString('clientFile', 'client.sock');
-        (new Client($clientSocketFile, $serverSocketFile))->run();
+        $socketFile = $this->configs->getStoragePath() . '/' . $this->configs->getSocketFile();
+        $chat = match ($this->chatType) {
+            'server' => new Server($socketFile),
+            'client' => new Client($socketFile)
+        };
+
+        $chat->run();
     }
 }

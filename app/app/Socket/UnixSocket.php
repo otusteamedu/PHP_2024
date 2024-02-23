@@ -5,26 +5,36 @@ declare(strict_types=1);
 namespace Rmulyukov\Hw5\Socket;
 
 use Exception;
-use Rmulyukov\Hw5\Chat\Message;
 use Socket;
 
-final readonly class UnixSocket
+final class UnixSocket
 {
     private Socket $socket;
 
     /**
      * @throws Exception
      */
-    public function __construct(private string $path)
+    public function __construct(
+        private readonly string $path
+    ) {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function create(): void
     {
-        if (file_exists($this->path)) {
-            $this->removeFile();
-        }
-        if (!($socket = socket_create(AF_UNIX, SOCK_DGRAM, 0))) {
+        if (!($socket = socket_create(AF_UNIX, SOCK_STREAM, 0))) {
             throw new Exception('Unable to create AF_UNIX socket');
         }
         $this->socket = $socket;
+    }
 
+    /**
+     * @throws Exception
+     */
+    public function bind(): void
+    {
         if (!socket_bind($this->socket, $this->path)) {
             throw new Exception("Unable to bind to $this->path");
         }
@@ -33,56 +43,61 @@ final readonly class UnixSocket
     /**
      * @throws Exception
      */
-    public function getMessage(): Message
+    public function listen(): void
     {
-        if (!socket_set_block($this->socket)) {
-            throw new Exception('Unable to set blocking mode for socket');
+        if (!socket_listen($this->socket, 3)) {
+            throw new Exception("Unable to listen to $this->path");
         }
-
-        $message = '';
-        $from = '';
-        echo "Ready to receive...\n";
-
-        // block to wait client query
-        $receivedBytes = socket_recvfrom($this->socket, $message, 65536, 0, $from);
-        if (!$receivedBytes || $receivedBytes == -1) {
-            throw new Exception('An error occurred while receiving from the socket');
-        }
-
-        return new Message($from, $this->path, $message, $receivedBytes);
     }
 
     /**
      * @throws Exception
      */
-    public function sendMessage(Message $message): void
+    public function connect(): void
     {
-        if (!socket_set_nonblock($this->socket)) {
-            throw new Exception('Unable to set nonblocking mode for socket');
-        }
-
-        // client side socket filename is known from client request: $from
-        $sentBytes = socket_sendto(
-            $this->socket,
-            $message->getMessage(),
-            $message->getLength(),
-            0,
-            $message->getTo()
-        );
-
-        if ($sentBytes == -1) {
-            throw new Exception('An error occurred while sending to the socket');
-        }
-        if ($sentBytes !== $message->getLength()) {
-            throw new Exception(
-                sprintf('expected %d bytes, but have been sent %d', $message->getLength(), $sentBytes)
-            );
+        if (!socket_connect($this->socket, $this->path)) {
+            throw new Exception("Unable to bind to $this->path");
         }
     }
 
-    public function getPath(): string
+    /**
+     * @throws Exception
+     */
+    public function getConnection(): Socket
     {
-        return $this->path;
+        if (!($connection = socket_accept($this->socket))) {
+            throw new Exception("Unable to read");
+        }
+        return $connection;
+    }
+
+    public function closeConnection(Socket $connection): void
+    {
+        socket_close($connection);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getMessage(?Socket $connection = null): string
+    {
+        $connection = $connection ?? $this->socket;
+        $message = socket_read($connection, 2048);
+        if ($message === false) {
+            throw new Exception("Unable to read");
+        }
+        return $message;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function sendMessage(string $message, ?Socket $connection = null): void
+    {
+        $connection = $connection ?? $this->socket;
+        if (socket_write($connection, $message) === false) {
+            throw new Exception('Unable to write');
+        }
     }
 
     /**
