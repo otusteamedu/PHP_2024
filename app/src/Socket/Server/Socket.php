@@ -22,11 +22,6 @@ use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
  */
 class Socket extends AbstractSocket
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * @throws ConfigKeyNotFoundException
      * @throws ErrorSocketCreateException
