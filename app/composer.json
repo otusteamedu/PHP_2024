@@ -1,0 +1,14 @@
+{
+    "name": "rmulyukov/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rmulyukov\\Hw5\\": "app/"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-sockets": "*",
+        "ext-readline": "*"
+    }
+}

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  server:
+    container_name: php-server-hw5
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./app:/hw/app
+      - ./storage:/hw/storage
+    networks:
+      - hw5-network
+
+  client:
+    container_name: php-client-hw5
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./app:/hw/app
+      - ./storage:/hw/storage
+    depends_on:
+      - server
+    networks:
+      - hw5-network
+
+networks:
+  hw5-network:
+    driver: bridge
