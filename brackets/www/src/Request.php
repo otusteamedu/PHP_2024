@@ -8,7 +8,7 @@ class Request
     {
         if ($this->validateMethod() && $this->validateValueName('string')) {
             $str = $_REQUEST['string'];
-            if (!strlen($str)){
+            if (!strlen($str)) {
                 return false;
             }
             if (preg_match('/[()]*/', $str)) {
