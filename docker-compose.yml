@@ -17,7 +17,7 @@ services:
     image: nginx:latest
     container_name: nginx_1
     volumes:
-      - ./src:/var/www/html
+      - .:/var/www/html
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - app-network
@@ -28,7 +28,7 @@ services:
     image: nginx:latest
     container_name: nginx_2
     volumes:
-      - ./src:/var/www/html
+      - .:/var/www/html
       - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - app-network
@@ -39,21 +39,35 @@ services:
     image: php:fpm
     container_name: php_fpm_1
     volumes:
-      - ./src:/var/www/html
+      - .:/var/www/html
       - ./config/php/php.ini:/usr/local/etc/php/php.ini
     networks:
       - app-network
+    depends_on:
+      - db
+      - memcached
   php_fpm_2:
     image: php:fpm
     container_name: php_fpm_2
     volumes:
-      - ./src:/var/www/html
+      - .:/var/www/html
       - ./config/php/php.ini:/usr/local/etc/php/php.ini
     networks:
       - app-network
+    depends_on:
+      - db
+      - memcached
   memcached:
     image: memcached:latest
     container_name: memcached
+    networks:
+      - app-network
+  db:
+    image: redis:latest
+    container_name: redis
+    environment:
+      - REDIS_DATABASE=${REDIS_DATABASE}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
     networks:
       - app-network
 networks:

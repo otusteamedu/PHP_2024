@@ -1,0 +1,12 @@
+{
+  "name": "ashutov/hw4",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "AShutov\\Hw4\\": "src/app/"
+    }
+  },
+  "require": {
+  }
+}
