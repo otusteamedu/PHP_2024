@@ -50,7 +50,7 @@ class Client
     private function sendMessageInteractive(MessageProducer $client): bool
     {
         fwrite($this->output, '---' . PHP_EOL);
-        fwrite($this->output, 'Enter your message:' . PHP_EOL);
+        fwrite($this->output, 'Enter your message (empty string for exit):' . PHP_EOL);
 
         $msg = trim(fgets($this->input));
 
