@@ -8,6 +8,14 @@ class App
 {
     const EMAIL_LISTS_PATH = 'emails.txt';
 
+    private static ?EmailValidator $validator = null;
+
+    public function getValidator(): EmailValidator {
+        if (empty(static::$validator)) {
+            static::$validator = new EmailValidator();
+        }
+        return static::$validator;
+    }
 
     public function run(): void
     {
@@ -15,7 +23,6 @@ class App
             echo "Не найден файл " . static::EMAIL_LISTS_PATH;
             return;
         }
-
 
         $emailsList = file(static::EMAIL_LISTS_PATH);
         if (empty($emailsList)) {
@@ -28,7 +35,7 @@ class App
         }
         unset($email);
 
-        $validationList = EmailFeatures::validateEmailSList($emailsList);
+        $validationList = $this->getValidator()->validateEmailSList($emailsList);
 
         echo "--------\n";
         foreach ($validationList as $item) {
