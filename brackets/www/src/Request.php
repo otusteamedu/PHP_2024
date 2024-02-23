@@ -1,11 +1,12 @@
 <?php
+
 namespace Kagirova\Brackets;
 
 class Request
 {
-    public function ValidateString(): bool
+    public function validateString(): bool
     {
-        if ($this->ValidateMethod() && $this->ValidateValueName('string')) {
+        if ($this->validateMethod() && $this->validateValueName('string')) {
             $str = $_REQUEST['string'];
             if (!strlen($str)){
                 return false;
@@ -34,12 +35,12 @@ class Request
         return false;
     }
 
-    public function ValidateMethod()
+    public function validateMethod()
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
 
-    public function ValidateValueName($value_name)
+    public function validateValueName($value_name)
     {
         return isset($_REQUEST[$value_name]);
     }

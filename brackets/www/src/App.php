@@ -1,4 +1,5 @@
 <?php
+
 namespace Kagirova\Brackets;
 
 class App
@@ -6,7 +7,7 @@ class App
     public function run(): void
     {
         $request = new Request();
-        if ($request->ValidateString()) {
+        if ($request->validateString()) {
             echo 'ok';
         } else {
             http_response_code(400);
