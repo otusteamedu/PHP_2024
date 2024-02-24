@@ -38,10 +38,10 @@ class Server
                 socket_close($client);
                 break;
             }
+            $answer = "Получено " . strlen($message) . " байт";
+            $this->socket->write($client, $answer);
         }
-
         $this->socket->removeSockFile();
-
         $this->socket->close();
     }
 }

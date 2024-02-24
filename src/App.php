@@ -24,7 +24,7 @@ class App
                 $client->start();
                 break;
             default:
-                throw new Exception("Неверный аргумент. Выберите server или client");
+                throw new Exception("Неверный аргумент. Выберите server или client" . PHP_EOL);
         }
     }
 

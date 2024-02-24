@@ -25,13 +25,14 @@ class Client
     {
         while (true) {
             $message = readline('Введите сообщение(для выхода введите bye): ');
-            $this->socket->write($message);
+            $this->socket->write($this->socket->socket, $message);
 
             if ($message === 'bye') {
                 break;
             }
+            $answer = $this->socket->read($this->socket->socket);
+            echo $answer . PHP_EOL;
         }
-
         $this->socket->close();
     }
 }

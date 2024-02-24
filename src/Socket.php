@@ -9,7 +9,7 @@ class Socket
 {
     private string $socketPath;
     private int $socketLength;
-    private \Socket $socket;
+    public \Socket $socket;
 
     /**
      * @throws Exception
@@ -37,7 +37,7 @@ class Socket
         $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
 
         if ($socket === false) {
-            throw new Exception("Ошибка создания сокета");
+            throw new Exception("Ошибка создания сокета ");
         }
 
         $this->socket = $socket;
@@ -51,7 +51,7 @@ class Socket
         $bindResult = socket_bind($this->socket, $this->socketPath);
 
         if ($bindResult === false) {
-            throw new Exception("Путь к сокету неверный");
+            throw new Exception("Путь к сокету неверный ");
         }
     }
 
@@ -63,7 +63,7 @@ class Socket
         $connectResult = socket_connect($this->socket, $this->socketPath);
 
         if ($connectResult === false) {
-            throw new Exception("Ошибка подключения к серверу");
+            throw new Exception("Ошибка подключения к серверу ");
         }
     }
 
@@ -75,7 +75,7 @@ class Socket
         $listenResult = socket_listen($this->socket);
 
         if ($listenResult === false) {
-            throw new Exception("Ошибка прослушивания сокета");
+            throw new Exception("Ошибка прослушивания сокета ");
         }
     }
 
@@ -87,7 +87,7 @@ class Socket
         $clientSocket = socket_accept($this->socket);
 
         if ($clientSocket === false) {
-            throw new Exception("Ошибка принятия подключения");
+            throw new Exception("Ошибка принятия подключения ");
         }
 
         return $clientSocket;
@@ -96,12 +96,12 @@ class Socket
     /**
      * @throws Exception
      */
-    public function write(string $message): void
+    public function write(\Socket $socket, string $message): void
     {
-        $writeResult = socket_write($this->socket, $message, strlen($message));
+        $writeResult = socket_write($socket, $message, strlen($message));
 
         if ($writeResult === false) {
-            throw new Exception("Ошибка записи в сокет");
+            throw new Exception("Ошибка записи в сокет ");
         }
     }
 
@@ -113,7 +113,7 @@ class Socket
         $message = socket_read($socket, $this->socketLength);
 
         if ($message === false) {
-            throw new Exception("Ошибка чтения сообщения");
+            throw new Exception("Ошибка чтения сообщения ");
         }
 
         return $message;
