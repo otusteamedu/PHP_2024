@@ -1,0 +1,6 @@
+nginx_fpm/hosts/inc_server_name.conf
+/code/vendor/
+/.env
+/mysql_db_files/
+
+/logs/
