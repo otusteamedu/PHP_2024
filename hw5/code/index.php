@@ -24,7 +24,7 @@ echo "</pre>\n";
 <h3>Проверка сессий</h3>
 <?php
 // При правильно настроенных сессиях, счетчик растет при каждом рефреше страницы.
-if (!empty($_SESSION['counter'])){
+if (!empty($_SESSION['counter'])) {
     echo "Привет, вы уже посещали нас {$_SESSION['counter']} раз.\n";
     $_SESSION['counter']++;
 } else {
