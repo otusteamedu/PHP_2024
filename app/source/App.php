@@ -8,7 +8,14 @@ class App
 {
     public function run(): void
     {
+        $this->runPreload();
         $router = new Router();
         $router->run();
+    }
+
+    private function runPreload(): void
+    {
+        //Вывод ошибок
+        error_reporting(0);
     }
 }

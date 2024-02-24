@@ -1,7 +1,8 @@
 <?php
-//Подключение файлов
-require_once $_SERVER['DOCUMENT_ROOT'] . '/../source/Config/Preload.php';
-(new \Pavelsergeevich\Hw6\Config\Preload())->run();
+
+//Подключение автолоадера
+require_once $_SERVER['DOCUMENT_ROOT'] . '/../vendor/autoload.php';
+
 
 $app = new \Pavelsergeevich\Hw6\App;
-$result = $app->run();
+$app->run();
