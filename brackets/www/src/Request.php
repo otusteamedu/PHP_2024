@@ -30,7 +30,6 @@ class Request
             }
             if ($count != 0) {
                 throw new \Exception("String is invalid");
-
             }
         } else {
             throw new \Exception("String must contain only ( and )");

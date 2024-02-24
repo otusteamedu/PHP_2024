@@ -6,12 +6,12 @@ class App
 {
     public function run(): string
     {
-        try{
+        try {
             $request = new Request();
             $request->validateString();
             return 'OK';
         }
-        catch (\Throwable $e){
+        catch (\Throwable $e) {
             http_response_code(400);
             return $e->getMessage();
         }
