@@ -1,0 +1,5 @@
+{
+    "require": {
+        "rail-mukhametshin/config-manager": "*"
+    }
+}

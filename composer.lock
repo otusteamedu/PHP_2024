@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "0dbf78ba1b544357ba319fffab017bf6",
+    "packages": [
+        {
+            "name": "rail-mukhametshin/config-manager",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a7000q/ConfigManager.git",
+                "reference": "536539502db5060729f8f41fbd078dfd6cf16ddf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a7000q/ConfigManager/zipball/536539502db5060729f8f41fbd078dfd6cf16ddf",
+                "reference": "536539502db5060729f8f41fbd078dfd6cf16ddf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RailMukhametshin\\ConfigManager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Rail Mukhametshin"
+                }
+            ],
+            "description": "ConfigManagerPHP is a lightweight and flexible configuration management tool for PHP applications. It provides an easy and intuitive interface for managing and accessing configuration data in various formats. With support for key formats such as PHP arrays and JSON, and planned expansions for YAML, 'ConfigManagerPHP' ensures centralized and efficient management of configuration settings, essential for any PHP project.",
+            "support": {
+                "issues": "https://github.com/a7000q/ConfigManager/issues",
+                "source": "https://github.com/a7000q/ConfigManager/tree/v1.0.0"
+            },
+            "time": "2024-02-24T17:51:11+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
