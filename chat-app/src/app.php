@@ -1,30 +1,12 @@
 <?php
 
-use Sfadeev\ChatApp\Client\Client;
-use Sfadeev\ChatApp\Server\Server;
-use Sfadeev\ChatApp\Socket\UnixSocket;
+use Sfadeev\ChatApp\App;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-const SERVER_LISTEN_SOCKET_PATH = __DIR__ . '/var/server_listen.sock';
-const CLIENT_LISTEN_SOCKET_PATH = __DIR__ . '/var/client_listen.sock';
-const MESSAGE_LENGTH = 255;
-
-$serverListenSock = new UnixSocket(SERVER_LISTEN_SOCKET_PATH);
-$clientListenSock = new UnixSocket(CLIENT_LISTEN_SOCKET_PATH);
-
-$input = fopen("php://stdin", "r");
-$output = fopen("php://stdout", "w");
-
-switch ($argv[1]) {
-    case 'start-server':
-        (new Server($serverListenSock, $clientListenSock, $output))->listen(MESSAGE_LENGTH);
-        break;
-    case 'start-client':
-        if (!file_exists(SERVER_LISTEN_SOCKET_PATH)) {
-            throw new RuntimeException(sprintf("Socket %s doesn't exist. Probable reason - the server is not running.", SERVER_LISTEN_SOCKET_PATH));
-        }
-
-        (new Client($serverListenSock, $clientListenSock, $input, $output))->startMessaging();
-        break;
+try {
+    $app = new App();
+    $app->run($argv[1]);
+} catch (Exception $e) {
+    throw new RuntimeException("Unexpected error", 0, $e);
 }

@@ -4,37 +4,61 @@ declare(strict_types=1);
 
 namespace Sfadeev\ChatApp\Server;
 
+use Exception;
+use RuntimeException;
+use Sfadeev\ChatApp\Config;
 use Sfadeev\ChatApp\Socket\UnixSocket;
 
 class Server
 {
-    private UnixSocket $inputSock;
-    private UnixSocket $outputSock;
+    private Config $config;
     private mixed $output;
 
-    public function __construct(UnixSocket $inputSock, UnixSocket $outputSock, mixed $output)
+    public function __construct(Config $config, mixed $output)
     {
-        $this->inputSock = $inputSock;
-        $this->outputSock = $outputSock;
+        $this->config = $config;
         $this->output = $output;
     }
 
-    public function listen(int $msgLength = 255): void
+    /**
+     * @return void
+     *
+     * @throws RuntimeException
+     */
+    public function listen(): void
     {
-        $this->inputSock->bind();
-
-        $consumer = new MessageConsumer($this->inputSock);
-
-        fwrite($this->output, 'Server is ready to receive messages.' . PHP_EOL);
+        $masterSock = UnixSocket::create();
+        $masterSock->bind($this->config->getSocketPath());
+        $masterSock->listen();
 
         while (true) {
-            $msg = $consumer->consume($msgLength);
+            fwrite($this->output, 'Server is ready to receive connection.' . PHP_EOL);
 
-            $this->outputSock->send(sprintf('Received: %d bytes.', strlen($msg)));
+            try{
+                $connSock = $masterSock->accept();
+            } catch (Exception $e) {
+                $masterSock->close();
+                unlink($this->config->getSocketPath());
+                throw $e;
+            }
 
-            $outputInfo = sprintf('Received message: "%s".' . PHP_EOL, $msg);
+            fwrite($this->output, 'Connection established.' . PHP_EOL);
 
-            fwrite($this->output, $outputInfo);
+            while (true) {
+                $msg = $connSock->read($this->config->getMessageMaxLength());
+
+                if (null === $msg) {
+                    fwrite($this->output, 'Connection closed.' . PHP_EOL);
+                    $connSock->close();
+                    break;
+                }
+
+                $connSock->send(sprintf('Received: %d bytes.', strlen($msg)));
+
+                $outputInfo = sprintf('Received message: "%s".' . PHP_EOL, $msg);
+
+                fwrite($this->output, $outputInfo);
+            }
         }
     }
 }
