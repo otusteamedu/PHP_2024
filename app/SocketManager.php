@@ -10,35 +10,14 @@ use Socket;
 class SocketManager
 {
     private Socket $socket;
-    private string $socketPath;
 
-    public function __construct()
+    public function __construct(private string $socketPath)
     {
-        $socketPath = App::getConfig('socket.path');
-
         if (!$socketPath) {
             throw new Exception("Socket path is empty");
         }
 
         $this->socketPath = dirname(__DIR__) . $socketPath;
-    }
-
-    public function runServer(): self
-    {
-        if (file_exists($this->socketPath)) {
-            unlink($this->socketPath);
-        }
-
-        $this->create()->bind()->listen();
-
-        return $this;
-    }
-
-    public function runClient(): self
-    {
-        $this->create()->connect();
-
-        return $this;
     }
 
     public function write(string $message, ?Socket $socket = null): void
@@ -62,17 +41,30 @@ class SocketManager
         return $message;
     }
 
-    public function kill(): void
+    public function close(): self
     {
         socket_close($this->socket);
-        unlink($this->socketPath);
+
+        return $this;
+    }
+
+    public function kill(): void
+    {
+        $this->close()->dropSocket();
+    }
+
+    public function dropSocket(): self
+    {
+        if (file_exists($this->socketPath)) {
+            unlink($this->socketPath);
+        }
+
+        return $this;
     }
 
     public function handleConnections(): void
     {
         set_time_limit(0);
-
-        $stopWord = App::getConfig('socket.stop_word');
 
         do {
             $socket = socket_accept($this->socket);
@@ -82,26 +74,25 @@ class SocketManager
 
             do {
                 $message = $this->read($socket);
-                $trimmed = trim($message);
 
-                if ($message === '' || $trimmed === $stopWord) {
+                if ($message === '') {
                     break;
                 }
 
-                echo "Received message: $trimmed" . PHP_EOL;
+                $message = trim($message);
 
-                $size = strlen($trimmed);
+                echo "Received message: $message" . PHP_EOL;
+
+                $size = strlen($message);
                 $talkback = "Received {$size} bytes";
                 $this->write($talkback, $socket);
             } while (true);
-
-            socket_close($socket);
         } while (true);
 
         $this->kill();
     }
 
-    private function create(): self
+    public function create(): self
     {
         if (!extension_loaded('sockets')) {
             throw new Exception('The sockets extension is not loaded.');
@@ -116,7 +107,7 @@ class SocketManager
         return $this;
     }
 
-    private function bind(): self
+    public function bind(): self
     {
         if (socket_bind($this->socket, $this->socketPath) === false) {
             throw new Exception("socket_bind() failed: reason: " . socket_strerror(socket_last_error($this->socket)));
@@ -125,7 +116,7 @@ class SocketManager
         return $this;
     }
 
-    private function connect(): self
+    public function connect(): self
     {
         $result = socket_connect($this->socket, $this->socketPath, 0);
         if ($result === false) {
@@ -135,7 +126,7 @@ class SocketManager
         return $this;
     }
 
-    private function listen(): self
+    public function listen(): self
     {
         if (socket_listen($this->socket, 5) === false) {
             throw new Exception("socket_listen() failed: reason: " . socket_strerror(socket_last_error($this->socket)));

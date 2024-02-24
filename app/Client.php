@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Pozys\ChatConsole;
 
-class Client
+use Pozys\ChatConsole\Interfaces\Runnable;
+
+class Client implements Runnable
 {
+    public function __construct(private SocketManager $socket, private string $stopWord)
+    {
+    }
+
     public function run(): void
     {
-        $socket = new SocketManager();
-        $socket->runClient();
-        $stopWord = App::getConfig('socket.stop_word');
+        $socket = $this->socket->create()->connect();
 
         while (true) {
             $message = readline("Write something: ");
@@ -19,11 +23,12 @@ class Client
                 continue;
             }
 
-            $socket->write($message);
-
-            if (trim($message) === $stopWord) {
+            if (trim($message) === $this->stopWord) {
+                $socket->close();
                 break;
             }
+
+            $socket->write($message);
 
             $answer = $socket->read();
 

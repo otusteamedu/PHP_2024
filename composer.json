@@ -3,7 +3,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Pozys\\ChatConsole\\": "src/"
+            "Pozys\\ChatConsole\\": "app/"
         }
     },
     "authors": [
@@ -12,5 +12,8 @@
             "email": "pozys@mail.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "php-di/php-di": "^7.0",
+        "vlucas/phpdotenv": "^5.6"
+    }
 }

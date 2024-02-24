@@ -4,18 +4,17 @@ services:
     build: .
     container_name: server
     volumes:
-      - ./public:/data/mysite.local/public
-      - ./src:/data/mysite.local/src
+      - ./app:/data/mysite.local/app
       - ./config:/data/mysite.local/config
       - socket:/data/mysite.local/tmp
-    command: ["php", "./public/app.php", "server"]
+    command: ["php", "app.php", "server"]
 
   client:
     build: .
     container_name: client
+    tty: true
     volumes:
-      - ./public:/data/mysite.local/public
-      - ./src:/data/mysite.local/src
+      - ./app:/data/mysite.local/app
       - ./config:/data/mysite.local/config
       - socket:/data/mysite.local/tmp
     depends_on:
