@@ -38,7 +38,7 @@ class Server
             echo "Ready to receive...\n";
             $this->buf = $this->waitQueryFromClient($socket);
             if ($this->buf != '') {
-                $this->sendResponse($socket,$isRunning);
+                $this->sendResponse($socket, $isRunning);
             }
         }
         return $isRunning;
