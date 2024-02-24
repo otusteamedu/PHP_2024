@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  nginx_hw6:
+    container_name: nginx_hw6
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./dockerfiles/nginx/hw6.local.conf:/etc/nginx/conf.d/hw6.local.conf
+      - ./app:/data/app
+    networks:
+      - hw6_bridge
+    depends_on:
+      - php_hw6
+  php_hw6:
+    container_name: php_hw6
+    image: pavelsergeevich/hw6/php
+    build:
+      context: ./dockerfiles/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/data/app
+    networks:
+      - hw6_bridge
+
+networks:
+  hw6_bridge:
+    driver: bridge
+
