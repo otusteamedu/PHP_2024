@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AShutov\Hw5;
 
 use Exception;
+
 class Client
 {
     private Socket $socket;
