@@ -54,8 +54,6 @@ class Socket extends AbstractSocket
             throw new ErrorSocketBindException('Failed to bind socket: ' . $this->getError());
         }
 
-        echo 'Socket bound successfully.' . PHP_EOL;
-
         return $this;
     }
 
@@ -76,8 +74,6 @@ class Socket extends AbstractSocket
             throw new ErrorSocketListenException('Failed to listen socket: ' . $this->getError());
         }
 
-        echo 'Socket listening successfully.' . PHP_EOL;
-
         return $this;
     }
 
@@ -94,8 +90,6 @@ class Socket extends AbstractSocket
 
         $this->socket = $socket;
 
-        echo 'Client accepted successfully.' . PHP_EOL;
-
         return $this;
     }
 
@@ -108,8 +102,6 @@ class Socket extends AbstractSocket
     {
         if (file_exists($this->config->getPath())) {
             unlink($this->config->getPath());
-
-            echo 'The previous socket deleted successfully.' . PHP_EOL;
         }
     }
 }

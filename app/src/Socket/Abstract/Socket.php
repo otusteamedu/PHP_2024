@@ -55,7 +55,6 @@ abstract class Socket
         }
 
         $this->socket = $socket;
-        echo 'Socket created successfully.' . PHP_EOL;
 
         return $this;
     }
@@ -63,8 +62,6 @@ abstract class Socket
     public function close(): self
     {
         socket_close($this->socket);
-        echo 'Socket closed successfully.' . PHP_EOL;
-
         return $this;
     }
 
