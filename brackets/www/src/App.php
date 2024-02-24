@@ -4,14 +4,16 @@ namespace Kagirova\Brackets;
 
 class App
 {
-    public function run(): void
+    public function run(): string
     {
-        $request = new Request();
-        if ($request->validateString()) {
-            echo 'ok';
-        } else {
+        try{
+            $request = new Request();
+            $request->validateString();
+            return 'OK';
+        }
+        catch (\Throwable $e){
             http_response_code(400);
-            print_r("Invalid brackets sequence\n");
+            return $e->getMessage();
         }
     }
 }
