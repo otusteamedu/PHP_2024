@@ -13,11 +13,11 @@ class Base
      */
     public function run(): object|bool|null
     {
-        if (in_array('server',$_SERVER['argv'])) {
+        if (in_array('server', $_SERVER['argv'])) {
             $server = new Server();
             $this->result = $server->createServer();
         }
-        if (in_array('client',$_SERVER['argv'])) {
+        if (in_array('client', $_SERVER['argv'])) {
             if (file_exists(__DIR__ . Base::getConfig('server_side_sock'))) {
                 $client = new Client();
                 $this->result = $client->createClient();
@@ -38,7 +38,7 @@ class Base
         if (array_key_exists($string, $ini_array)) {
             return $ini_array[$string];
         } else {
-            throw new SocketErrorException( "Undefined '$string' in " . __DIR__ . "/config.ini");
+            throw new SocketErrorException("Undefined '$string' in " . __DIR__ . "/config.ini");
         }
     }
 

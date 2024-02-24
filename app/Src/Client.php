@@ -45,7 +45,7 @@ class Client
         }
         $this->server_side_sock = __DIR__ . Base::getConfig('server_side_sock');
 
-        echo "Attention!!! To stop the server, enter '" . Base::getConfig('stop_word') ."'". "\n";
+        echo "Attention!!! To stop the server, enter '" . Base::getConfig('stop_word') . "'" . "\n";
 
         $msg = readline("Enter a message to send to the server: ");
         if (empty($msg)) {
@@ -66,7 +66,7 @@ class Client
     /**
      * @throws SocketErrorException
      */
-    public function  receiveData($socket): object|bool
+    public function receiveData($socket): object|bool
     {
         if (!socket_set_block($socket)) {
             return $this->getSocketError('Unable to set blocking mode for socket');

@@ -8,7 +8,7 @@ class Server
 {
     private string $buf = '';
     private string $from = '';
-    public string  $server_side_sock;
+    public string $server_side_sock;
     public string $stop_word;
 
     /**
@@ -20,7 +20,7 @@ class Server
             return $this->getSocketError('The sockets extension is not loaded.');
         }
         $socket = socket_create(AF_UNIX, SOCK_DGRAM, 0);
-        if(!$socket) {
+        if (!$socket) {
             return $this->getSocketError('Unable to create AF_UNIX socket');
         }
 
@@ -31,7 +31,7 @@ class Server
         }
 
         $isRunning = true;
-        while($isRunning) {
+        while ($isRunning) {
             if (!socket_set_block($socket)) {
                 return $this->getSocketError('Unable to set blocking mode for socket');
             }
