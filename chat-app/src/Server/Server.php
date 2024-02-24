@@ -34,7 +34,7 @@ class Server
         while (true) {
             fwrite($this->output, 'Server is ready to receive connection.' . PHP_EOL);
 
-            try{
+            try {
                 $connSock = $masterSock->accept();
             } catch (Exception $e) {
                 $masterSock->close();
