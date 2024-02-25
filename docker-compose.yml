@@ -7,8 +7,8 @@ networks:
 
 
 services:
-  php-fpm:
-    container_name: php-fpm
+  php-fpm1:
+    container_name: php-fpm1
     networks:
       - homework-net
     build:
@@ -24,45 +24,60 @@ services:
     volumes:
       - ./:/var/www/homework
 
-  nginx:
-    container_name: nginx
+  php-fpm2:
+    container_name: php-fpm2
     networks:
       - homework-net
     build:
-      context: ./.deployment/docker/nginx
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: ./.deployment/docker/php-fpm/Dockerfile
       args:
-        PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
-        PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_PORT}
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
     environment:
-      PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
-      PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_CONTAINER}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./:/var/www/homework
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    networks:
+      - homework-net
+    build:
+      context: ./.deployment/docker/nginx-proxy
+      dockerfile: ./Dockerfile
     ports:
       - ${NGINX_HOST_HTTP_PORT}:80
     volumes:
       - ./:/var/www/homework:rw
     depends_on:
-      - php-fpm
+      - nginx-backend1
+      - nginx-backend2
 
-  postgres:
-    container_name: postgres
+  nginx-backend1:
+    container_name: nginx-backend1
     networks:
       - homework-net
     build:
-      context: ./.deployment/docker/postgres
+      context: ./.deployment/docker/nginx-backend
       dockerfile: ./Dockerfile
-    ports:
-      - ${POSTGRES_PORT}:5432
-    environment:
-      POSTGRES_HOST: ${POSTGRES_DB_HOST}
-      POSTGRES_DB: ${POSTGRES_DB_NAME}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - db_data:/var/lib/postgresql/data:rw
+      - ./:/var/www/homework:rw
 
-  redis:
-    container_name: redis
+  nginx-backend2:
+    container_name: nginx-backend2
+    networks:
+      - homework-net
+    build:
+      context: ./.deployment/docker/nginx-backend
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/var/www/homework:rw
+
+  redis2:
+    container_name: redis2
     networks:
       - homework-net
     build:
@@ -72,16 +87,6 @@ services:
       - ${REDIS_PORT}:6379
     volumes:
       - redis_data:/data
-
-  memcached:
-    container_name: memcached
-    networks:
-      - homework-net
-    build:
-      context: ./.deployment/docker/memcached
-      dockerfile: ./Dockerfile
-    ports:
-      - ${MEMCACHED_PORT}:11211
 
 volumes:
   db_data:
