@@ -28,39 +28,17 @@ composer install
 make start-otus
 ```
 
-###web
-
-Add this lines to your hosts file
-
-```
-127.0.0.1 mysite.local
-```
-
 ##Usage 
 
-Send the following curl requests
-```
-#correct
-POST:
-curl --location 'http://mysite.local' \
---form 'string="()"'
+docker-compose run server php index.php server
+docker-compose run client php index.php client
 
-#incorrect
-POST:
-curl --location 'http://mysite.local' \
---form 'string="(()()()()))((((()()()))(()()()(((()))))))"'
+or
 
-```
-The result will be similar to this
-```
-String is correct
-Контейнер: ee2109dcd3c1
-Сервер: 192.168.48.6
-SessionId: eld8q2qilt9fjs6vaa283mbuo1
-```
-```
-String is incorrect
-Контейнер: 72f1815ed5a8
-Сервер: 192.168.48.5
-SessionId: eld8q2qilt9fjs6vaa283mbuo1
-```
+docker-compose exec server bash
+php index.php server
+
+docker-compose exec client bash
+php index.php client
+
+exit from client by word - quit
