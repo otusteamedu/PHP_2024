@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  php_server:
+    container_name: php_server
+    image: pavelsergeevich/hw5/php_server
+    build:
+      context: ./dockerfiles/php_server
+      dockerfile: Dockerfile
+    volumes:
+      - ./application:/data/application
+    networks:
+      - hw5_bridge
+
+#  php_client:
+#    container_name: php_client
+#    image: pavelsergeevich/hw5/php_client
+#    build:
+#      context: ./dockerfiles/php_client
+#      dockerfile: Dockerfile
+#    volumes:
+#      - ./application:/data/application
+#    networks:
+#      - hw5_bridge
+#    depends_on:
+#      - php_server
+
+networks:
+  hw5_bridge:
+    driver: bridge
+
+

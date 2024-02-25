@@ -1,0 +1,21 @@
+{
+    "name": "pavelsergeevich/hw5",
+    "description": "hw5 - client-server socket connection",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pavelsergeevich\\Hw5\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel Sergeevich"
+        }
+    ],
+    "require": {
+        "php": ">=8.0.0",
+        "ext-readline": "*",
+        "ext-sockets": "*",
+        "ext-mbstring": "*"
+    }
+}
