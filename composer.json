@@ -1,0 +1,10 @@
+{
+    "name": "afilipov/hw6",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Afilipov\\Hw6\\": "src/"
+        }
+    },
+    "require": {}
+}

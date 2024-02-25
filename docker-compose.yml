@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - .:/data
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+    depends_on:
+      - app
+  app:
+    build: docker/php
+    container_name: app
+    volumes:
+      - .:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
