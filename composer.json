@@ -1,0 +1,10 @@
+{
+    "name": "a.kornienko/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AKornienko\\hw5\\": "src/"
+        }
+    },
+    "require": {}
+}
