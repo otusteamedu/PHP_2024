@@ -8,16 +8,26 @@ class App
 {
     public function run()
     {
+        $app_ip = getenv("APP_IP");
         session_start([
-            'save_handler' => 'redis',
-            'save_path' => 'tcp://redis:6379?auth=' . getenv("REDIS_PASSWORD"),
+            'save_handler' => 'rediscluster',
+            'save_path' => http_build_query([
+                'seed' => [
+                    $app_ip . ':6381',
+                    $app_ip . ':6382',
+                    $app_ip . ':6383',
+                    $app_ip . ':6384',
+                    $app_ip . ':6385',
+                    $app_ip . ':6386',
+                ],
+                'timeout' => 2,
+                'read_timeout' => 10,
+                'failover' => 'error',
+                'auth' => getenv("REDIS_PASSWORD"),
+            ]),
         ]);
+        $_SESSION['count'] = 1;
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-            $redis = new \Redis();
-            $redis->connect('redis', 6379);
-            $redis->auth(
-                getenv("REDIS_PASSWORD")
-            );
             return '
                 <h1>(()()()())<span style="color:red;">)</span>((((()()()))(()()()(((()))))))</h1>
                 <form method="post">
@@ -27,7 +37,6 @@ class App
                 <h2>Balance info</h2>
                 <b>Nginx:</b> ' . $_SERVER['HTTP_X_NGINX'] . '<br>
                 <b>Php-fpm:</b> ' . $_SERVER['HOSTNAME'] . '<br>
-                <b>Redis:</b> ' . $redis->ping() . '<br>
                 <b>Session counter:</b> ' . session_id() . '<br>
             ';
         } elseif (
