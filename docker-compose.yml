@@ -1,24 +1,26 @@
 version: "3.8"
 
 services:
-  php-client:
+  nginx:
     build:
-      context: ./docker/php
+      context: ./docker/nginx
       dockerfile: Dockerfile
-    container_name: php-client
+    container_name: nginx
+    ports:
+      - '80:80'
     volumes:
-      - .:/data
+      - .:/data/mysite.local
     depends_on:
-      - php-server
+      - php-fpm
     networks:
       - app-network
-  php-server:
+  php-fpm:
     build:
-      context: ./docker/php
+      context: ./docker/fpm
       dockerfile: Dockerfile
-    container_name: php-server
+    container_name: php-fpm-8.3
     volumes:
-      - .:/data
+      - .:/data/mysite.local
     networks:
       - app-network
 networks:

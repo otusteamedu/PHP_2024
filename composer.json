@@ -1,14 +1,12 @@
 {
-  "name": "ashutov/hw5",
+  "name": "ashutov/hw6",
   "minimum-stability": "stable",
   "license": "proprietary",
   "autoload": {
     "psr-4": {
-      "AShutov\\Hw5\\": "src/"
+      "AShutov\\Hw6\\": "src/"
     }
   },
   "require": {
-    "ext-sockets": "*",
-    "ext-readline": "*"
   }
 }

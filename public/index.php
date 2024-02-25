@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use AShutov\Hw5\App;
+use AShutov\Hw6\EmailValidator;
 
 try {
-    $app = new App();
-    $app->run($argv[1] ?? null);
+    $filePath = 'emails.txt';
+    $app = new EmailValidator();
+    echo $app->run($filePath);
 } catch (Throwable $e) {
     echo $e->getMessage();
 }
