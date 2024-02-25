@@ -1,0 +1,18 @@
+{
+    "name": "pozys/email-validator",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Pozys\\EmailValidator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "pozys",
+            "email": "pozys@mail.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    }
+}
