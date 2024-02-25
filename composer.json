@@ -1,5 +1,5 @@
 {
-    "name": "pozys/email_validator",
+    "name": "pozys/email-validator",
     "type": "library",
     "autoload": {
         "psr-4": {
@@ -12,5 +12,7 @@
             "email": "pozys@mail.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=7.0"
+    }
 }
