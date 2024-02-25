@@ -82,12 +82,10 @@ class App
             }
 
             if (ModeEnum::Server === $this->mode) {
-                $chat = new ChatServer($this->socketFile);
+                (new Chat($this->socketFile))->runServer();
             } elseif (ModeEnum::Client === $this->mode) {
-                $chat = new ChatClient($this->socketFile);
+                (new Chat($this->socketFile))->runClient();
             }
-
-            $chat->run();
         } catch (PrepareException $ex) {
             return "Проблема при старте: {$ex->getMessage()}";
         } catch (RuntimeException $ex) {
