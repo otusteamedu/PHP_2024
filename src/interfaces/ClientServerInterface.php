@@ -2,7 +2,7 @@
 
 namespace hw5\interfaces;
 
-interface UnixSocetInterface
+interface ClientServerInterface
 {
     public function process(): void;
 }

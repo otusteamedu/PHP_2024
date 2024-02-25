@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace hw5;
 
-use hw5\interfaces\UnixSocetInterface;
+use hw5\interfaces\LogInterface;
+use hw5\interfaces\ClientServerInterface;
+use hw5\interfaces\SocketInterface;
 
-class Server implements UnixSocetInterface
+class Server implements ClientServerInterface
 {
     public function __construct(
-        private UnixSocket $socket
+        private SocketInterface $socket,
+        private LogInterface $log
     ) {
     }
 
@@ -19,26 +22,26 @@ class Server implements UnixSocetInterface
         $this->socket->bind($socket);
         $this->socket->listen($socket);
 
-        echo "Старт сервера" . PHP_EOL;
+        $this->log->info("Старт сервера");
 
         while (true) {
             $client = $this->socket->acceptClient($socket);
             $clientMessage = $this->socket->read($client);
 
-            if($clientMessage == 'quit') {
-                echo "Клиент отключился от сервера" . PHP_EOL;
+            if($clientMessage === 'quit') {
+                $this->log->info("Клиент отключился от сервера" . PHP_EOL);
                 $this->socket->closeClient($client);
                 break;
             }
 
             if (!empty($clientMessage)) {
-                echo "Сообщение с клиента" . PHP_EOL;
-                echo $clientMessage . PHP_EOL;
+                $this->log->info("Сообщение с клиента");
+                $this->log->info($clientMessage);
             }
 
             $this->socket->write($client, "Прочитано");
         }
-        echo "Отключение сервера" . PHP_EOL;
+        $this->log->info("Отключение сервера");
         $this->socket->close($socket);
     }
 }

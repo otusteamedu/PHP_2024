@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace hw5;
 
-use hw5\interfaces\UnixSocetInterface;
+use hw5\interfaces\LogInterface;
+use hw5\interfaces\ClientServerInterface;
+use hw5\interfaces\SocketInterface;
 
-class Client implements UnixSocetInterface
+class Client implements ClientServerInterface
 {
     public function __construct(
-        private UnixSocket $socket
-    ){}
+        private SocketInterface $socket,
+        private LogInterface $log
+    ) {
+    }
 
-    public function process():void
+    public function process(): void
     {
-        echo "Старт клиента" . PHP_EOL;
+        $this->log->info("Старт клиента");
 
         $socket = $this->socket->create();
         $this->socket->connect($socket);
@@ -23,14 +27,14 @@ class Client implements UnixSocetInterface
             $message = readline('Введите сообщение и нажмите Enter: ');
             $this->socket->write($socket, $message);
             if ($message === 'quit') {
-                echo "Соединение с сервером разоравно" .PHP_EOL;
+                $this->log->info("Соединение с сервером разоравно");
+                sleep(5);
                 break;
             }
 
             $messageServer = $this->socket->read($socket);
-            echo "Ответ сервера: $messageServer" .PHP_EOL;
+            $this->log->info("Ответ сервера: $messageServer");
             sleep(5);
-
         }
         $this->socket->close($socket);
     }

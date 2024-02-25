@@ -5,10 +5,11 @@ declare(strict_types=1);
 
 namespace hw5;
 
+use hw5\interfaces\SocketInterface;
 use \Socket;
 use \Exception;
 
-class UnixSocket
+final class UnixSocket implements SocketInterface
 {
     private const DOMAIN = AF_UNIX;
     private const TYPE = SOCK_STREAM;
@@ -98,7 +99,7 @@ class UnixSocket
 
     public function write(Socket $socket, string $st): void
     {
-        if (!socket_write($socket, $st, mb_strlen($st))) {
+        if (!socket_write($socket, $st, strlen($st))) {
             $this->error("Не удалось запись в сокет");
         }
     }
