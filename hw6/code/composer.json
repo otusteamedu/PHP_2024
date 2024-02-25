@@ -1,0 +1,16 @@
+{
+    "name": "goroshnikov-p/hw6",
+    "description": "Home Work 6",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "GoroshnikovP\\Hw6\\": "src/"
+        }
+    },
+    "require": {
+        "php": "~8.3",
+        "ext-mbstring": "*",
+        "ext-sockets": "*",
+        "ext-pcntl": "*"
+    }
+}
