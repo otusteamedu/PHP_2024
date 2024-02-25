@@ -6,11 +6,13 @@
   "require": {
     "php": ">=8.0",
     "vlucas/phpdotenv": "^5.6",
-    "ext-memcached": "^3.1"
+    "ext-memcached": "^3.1",
+    "ext-sockets": "*",
+    "ext-readline": "*"
   },
   "autoload": {
     "psr-4": {
-      "app\\": "src/"
+      "hw5\\": "src/"
     }
   },
   "prefer-stable": true,

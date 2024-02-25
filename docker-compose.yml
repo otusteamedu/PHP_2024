@@ -4,33 +4,30 @@ services:
   nginx:
     build: docker/nginx
     container_name: nginx
+    ports:
+      - ${NGINX_PORT_MAPPING}:${NGINX_PORT}
     volumes:
       - ./:/app
+      - ./docker/nginx/sites-enabled:/etc/nginx/sites-enabled
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./var/nginx/logs:/var/log/nginx
     networks:
       - net
     depends_on:
       - app
       - app2
-  app:
+  server:
     build: docker/php
-    container_name: app
+    container_name: server
     volumes:
       - ./:/app
     networks:
       - net
-  app2:
+  client:
     build: docker/php
-    container_name: app2
+    container_name: client
     volumes:
       - ./:/app
-    networks:
-      - net
-  memcached:
-    build: docker/memcached
-    container_name: memcached
-    ports:
-      - ${MEMCACHED_PORT_MAPPING}:${MEMCACHED_PORT}
     networks:
       - net
 
