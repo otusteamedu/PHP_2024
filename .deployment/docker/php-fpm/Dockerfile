@@ -8,6 +8,9 @@ RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && docker-php-ext-enable redis memcached \
     && apk del -f .build-deps
 
+# Добавление настроек Redis в php.ini
+RUN echo "session.save_handler = redis" >> /usr/local/etc/php/conf.d/redis-sessions.ini && \
+    echo "session.save_path = \"tcp://redis2:6379\"" >> /usr/local/etc/php/conf.d/redis-sessions.ini
 # Если аргумент INSTALL_XDEBUG будет равен true, то устанавливаем xdebug (теперь можно исп. этот файл и для прод. деплоя)
 ARG INSTALL_XDEBUG=false
 # Подтягиваем зависимости для xdebug и включаем расширение xdebug в php.ini
