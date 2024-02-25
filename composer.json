@@ -1,0 +1,22 @@
+{
+  "name": "otus/ystopchyk",
+  "description": "Otus home work 5",
+  "minimum-stability": "dev",
+  "type": "project",
+  "require": {
+    "php": ">=8.0",
+    "vlucas/phpdotenv": "^5.6",
+    "ext-memcached": "^3.1",
+    "ext-sockets": "*",
+    "ext-readline": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "hw5\\": "src/"
+    }
+  },
+  "prefer-stable": true,
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  }
+}
