@@ -5,11 +5,11 @@ services:
   php:
     build:
       context: ./php
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile_cli_alp
       args:
         XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
-    image: hw6/php # имя будущего образа
-    container_name: hw6_php # имя контейнера после запуска
+    image: hw6/php
+    container_name: hw6_php
     volumes:
       - ./code:/data/code_root
       - ./logs/php:/var/log/php

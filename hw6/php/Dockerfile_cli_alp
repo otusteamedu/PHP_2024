@@ -1,0 +1,33 @@
+FROM php:8.3-cli-alpine
+
+ARG XDEBUG_REMOTE_IP
+ENV XDEBUG_REMOTE_IP ${XDEBUG_REMOTE_IP}
+
+RUN apk update  \
+  && apk add \
+    oniguruma-dev \
+    libzip-dev \
+    linux-headers \
+    autoconf \
+    make \
+    gcc \
+    libc-dev \
+  && pecl install  \
+    xdebug-3.3.1 \
+  && docker-php-ext-enable  \
+    xdebug \
+  && docker-php-ext-install -j$(nproc)  \
+    mbstring  \
+    sockets \
+    pcntl \
+    zip \
+  && echo "1" > /dev/null
+
+
+COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+
+WORKDIR /data/code_root
+
+CMD tail -f /dev/null
+

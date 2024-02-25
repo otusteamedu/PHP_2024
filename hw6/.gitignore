@@ -1,3 +1,4 @@
 /code/vendor/
 /.env
 /code/config.ini
+/logs/
