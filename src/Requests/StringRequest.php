@@ -39,7 +39,7 @@ class StringRequest
                 }
 
                 array_pop($stack);
-            }else{
+            } else {
                 return false;
             }
         }
