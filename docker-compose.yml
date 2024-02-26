@@ -15,22 +15,13 @@ services:
       - net
     depends_on:
       - app
-      - app2
-  server:
+  app:
     build: docker/php
-    container_name: server
+    container_name: app
     volumes:
       - ./:/app
     networks:
       - net
-  client:
-    build: docker/php
-    container_name: client
-    volumes:
-      - ./:/app
-    networks:
-      - net
-
 networks:
   net:
     driver: bridge

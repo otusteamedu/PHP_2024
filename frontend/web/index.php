@@ -1,8 +1,5 @@
 <?php
 
-use Dotenv\Dotenv;
-use hw5\services\MainService;
-
 define("BASE_PATH", __DIR__);
 
 $dirEnv = __DIR__ . '/../../';
@@ -11,14 +8,14 @@ $dirEnv = __DIR__ . '/../../';
 require($dirEnv . 'vendor/autoload.php');
 
 try {
-    $dotenv = Dotenv::createUnsafeImmutable($dirEnv);
-    $dotenv->load();
+    $string = $argv[1] ?? '';
 
-    $method = $argv[1] ?? '';
+    $appService = new \hw6\AppService(new \hw6\EmailValidator());
 
-    $mainservice = new \hw5\Creator();
-    $mainservice->create($method)->process();
-
+    $data = explode(',', $string);
+    foreach ($data as $value) {
+        echo $value . ' - ' . $appService->validate((string)$value) . PHP_EOL;
+    }
 } catch (\Throwable $exception) {
     echo $exception->getMessage();
 }

@@ -30,15 +30,9 @@ make start-otus
 
 ##Usage 
 
-docker-compose run server php index.php server
-docker-compose run client php index.php client
+docker-compose run app php frontend/web/index.php 'valera@gmail.com,valera@gmail.con,valera @gmail.com'
 
 or
 
 docker-compose exec server bash
-php index.php server
-
-docker-compose exec client bash
-php index.php client
-
-exit from client by word - quit
+php frontend/web/index.php index.php 'valera@gmail.com,valera@gmail.con,valera @gmail.com'

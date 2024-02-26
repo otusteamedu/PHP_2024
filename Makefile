@@ -1,6 +1,6 @@
 start:
-	docker-compose -f ./docker-compose.yml --env-file .env exec server composer config --global discard-changes true
-	docker-compose -f ./docker-compose.yml --env-file .env exec server composer install --no-interaction --prefer-dist --no-progress --no-suggest
+	docker-compose -f ./docker-compose.yml --env-file .env exec app composer config --global discard-changes true
+	docker-compose -f ./docker-compose.yml --env-file .env exec app composer install --no-interaction --prefer-dist --no-progress --no-suggest
 
 docker-up:
 	docker-compose up -d --build
