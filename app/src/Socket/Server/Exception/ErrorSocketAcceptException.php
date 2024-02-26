@@ -9,8 +9,8 @@ class ErrorSocketAcceptException extends \Exception
     public function __construct(
         string $error,
         int $code = 0,
-        \Throwable $previous = null)
-    {
+        \Throwable $previous = null
+    ) {
         $message = 'Failed to accept socket: ' . $error;
         parent::__construct($message, $code, $previous);
     }
