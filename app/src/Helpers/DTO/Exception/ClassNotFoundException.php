@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Kiryao\Sockchat\Config\Exception;
+namespace Kiryao\Sockchat\Helpers\DTO\Exception;
 
-class ConfigNotFoundException extends \Exception
+class ClassNotFoundException extends \Exception
 {
     public function __construct(
-        string $message = 'Config file not found.',
+        string $className,
         int $code = 0,
         \Throwable $previous = null
     ) {
+        $message = "Class '$className' not found.";
         parent::__construct($message, $code, $previous);
     }
 }

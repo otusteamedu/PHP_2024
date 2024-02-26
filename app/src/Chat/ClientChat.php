@@ -4,42 +4,47 @@ declare(strict_types=1);
 
 namespace Kiryao\Sockchat\Chat;
 
-use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketReceiveException;
-use Kiryao\Sockchat\Socket\Client\Socket;
 use Kiryao\Sockchat\Socket\Client\Exception\ErrorSocketConnectException;
+use Kiryao\Sockchat\Socket\Client;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketWriteException;
+use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketReadException;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketCreateException;
-use Kiryao\Sockchat\Config\Exception\SocketConstantNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigKeyNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
+use Kiryao\Sockchat\Chat\Std\StdManager;
 
 class ClientChat implements ChatInterface
 {
+    public function __construct(
+        private Client\Socket $socket,
+        private StdManager $stdManager,
+        private string $chatExit
+    ) {
+    }
+
     /**
-     * @throws ConfigKeyNotFoundException
      * @throws ErrorSocketConnectException
      * @throws ErrorSocketCreateException
-     * @throws ErrorSocketReceiveException
+     * @throws ErrorSocketReadException
      * @throws ErrorSocketWriteException
-     * @throws ConfigKeyIsEmptyException
-     * @throws SocketConstantNotFoundException
      */
     public function run(): void
     {
-        $socket = (new Socket())->create()->connect();
+        $this->stdManager->printMessage('The client is running.');
+        $this->socket->create()->connect();
 
         while (true) {
-            $outputMessage = $socket->waitInputMessage();
+            $outputMessage = $this->stdManager->readLine("Enter any message (or '$this->chatExit' to exit) and press Enter: ");
 
-            $socket->write($outputMessage);
+            $this->socket->write($outputMessage);
 
-            if ($outputMessage === '/exit') {
+            if ($outputMessage === $this->chatExit) {
                 break;
             }
 
-            echo $socket->readMessage() . PHP_EOL;
+            $inputMessage = $this->socket->readMessage();
+            $this->stdManager->printMessage($inputMessage);
         }
 
-        $socket->close();
+        $this->socket->close();
+        $this->stdManager->printMessage('The client is stopped.');
     }
 }

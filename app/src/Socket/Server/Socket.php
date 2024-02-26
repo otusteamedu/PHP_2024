@@ -4,29 +4,16 @@ declare(strict_types=1);
 
 namespace Kiryao\Sockchat\Socket\Server;
 
-use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketReceiveException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketListenException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketBindException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketAcceptException;
-use Kiryao\Sockchat\Socket\Abstract\Socket as AbstractSocket;
+use Kiryao\Sockchat\Socket\Abstract\AbstractSocket;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketCreateException;
-use Kiryao\Sockchat\Config\Exception\SocketConstantNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigKeyNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
 
-/**
- * @throws ErrorSocketBindException
- * @throws ErrorSocketListenException
- * @throws ErrorSocketAcceptException
- * @throws ErrorSocketReceiveException
- */
 class Socket extends AbstractSocket
 {
     /**
-     * @throws ConfigKeyNotFoundException
      * @throws ErrorSocketCreateException
-     * @throws ConfigKeyIsEmptyException
-     * @throws SocketConstantNotFoundException
      */
     public function create(): self
     {
@@ -37,41 +24,35 @@ class Socket extends AbstractSocket
     }
 
     /**
-     * @throws ConfigKeyIsEmptyException
-     * @throws ConfigKeyNotFoundException
      * @throws ErrorSocketBindException
-     * @throws SocketConstantNotFoundException
      */
     public function bind(): self
     {
         $result = socket_bind(
             $this->socket,
-            $this->config->getPath(),
-            $this->config->getPort()
+            $this->socketPathConfig->getPath(),
+            $this->socketConfig->getPort()
         );
 
         if ($result === false) {
-            throw new ErrorSocketBindException('Failed to bind socket: ' . $this->getError());
+            throw new ErrorSocketBindException($this->getError());
         }
 
         return $this;
     }
 
     /**
-     * @throws ConfigKeyIsEmptyException
-     * @throws ConfigKeyNotFoundException
      * @throws ErrorSocketListenException
-     * @throws SocketConstantNotFoundException
      */
     public function listen(): self
     {
         $result = socket_listen(
             $this->socket,
-            $this->config->getBacklog()
+            $this->socketConfig->getBacklog()
         );
 
         if ($result === false) {
-            throw new ErrorSocketListenException('Failed to listen socket: ' . $this->getError());
+            throw new ErrorSocketListenException($this->getError());
         }
 
         return $this;
@@ -85,7 +66,7 @@ class Socket extends AbstractSocket
         $socket = socket_accept($this->socket);
 
         if ($socket === false) {
-            throw new ErrorSocketAcceptException('Failed to accept socket: ' . $this->getError());
+            throw new ErrorSocketAcceptException($this->getError());
         }
 
         $this->socket = $socket;
@@ -93,15 +74,12 @@ class Socket extends AbstractSocket
         return $this;
     }
 
-    /**
-     * @throws ConfigKeyIsEmptyException
-     * @throws ConfigKeyNotFoundException
-     * @throws SocketConstantNotFoundException
-     */
     private function deletePreviousSocket(): void
     {
-        if (file_exists($this->config->getPath())) {
-            unlink($this->config->getPath());
+        $config = $this->socketPathConfig->getPath();
+
+        if (file_exists($config)) {
+            unlink($config);
         }
     }
 }

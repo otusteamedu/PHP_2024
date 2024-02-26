@@ -4,46 +4,51 @@ declare(strict_types=1);
 
 namespace Kiryao\Sockchat\Chat;
 
-use Kiryao\Sockchat\Socket\Server\Socket;
-use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketReceiveException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketListenException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketBindException;
 use Kiryao\Sockchat\Socket\Server\Exception\ErrorSocketAcceptException;
+use Kiryao\Sockchat\Socket\Server;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketWriteException;
+use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketReadException;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketCreateException;
-use Kiryao\Sockchat\Config\Exception\SocketConstantNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigKeyNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
+use Kiryao\Sockchat\Chat\Std\StdManager;
 
 class ServerChat implements ChatInterface
 {
+    public function __construct(
+        private Server\Socket $socket,
+        private StdManager $stdManager,
+        private string $chatExit
+    ) {
+    }
+
     /**
-     * @throws ConfigKeyNotFoundException
      * @throws ErrorSocketAcceptException
      * @throws ErrorSocketBindException
      * @throws ErrorSocketCreateException
      * @throws ErrorSocketListenException
-     * @throws ErrorSocketReceiveException
      * @throws ErrorSocketWriteException
-     * @throws ConfigKeyIsEmptyException
-     * @throws SocketConstantNotFoundException
+     * @throws ErrorSocketReadException
      */
     public function run(): void
     {
-        $socket = (new Socket())->create()->bind()->listen()->accept();
+        $this->stdManager->printMessage('The server is running.');
+        $this->socket->create()->bind()->listen()->accept();
+        $this->stdManager->printMessage('The client has successfully connected.');
 
         while (true) {
-            $inputMessage = $socket->readMessage();
+            $inputMessage = $this->socket->readMessage();
 
-            if ($inputMessage === '/exit') {
+            if ($inputMessage === $this->chatExit) {
                 break;
             }
 
-            $outputMessage = sprintf("Server received number of bytes: %s bytes.", mb_strlen($inputMessage));
+            $this->stdManager->printMessage('The client sent a message: ' . $inputMessage);
 
-            $socket->write($outputMessage);
+            $this->socket->write(sprintf('Server received number of bytes: %s bytes.', mb_strlen($inputMessage)));
         }
 
-        $socket->close();
+        $this->socket->close();
+        $this->stdManager->printMessage('The server is stopped.');
     }
 }
