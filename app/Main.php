@@ -26,7 +26,7 @@ class Main
 
     public static function getInstance(): Main
     {
-        if (empty (self::$app)) {
+        if (empty(self::$app)) {
             self::$app = new static();
         }
         return self::$app;
@@ -45,7 +45,7 @@ class Main
         if ($stringBracketValidator->validate()) {
             $content .= "Строка: '" . $string . "' валидна" . PHP_EOL;
         } else {
-            $content .= $stringBracketValidator->getErrorMessage() . PHP_EOL;;
+            $content .= $stringBracketValidator->getErrorMessage() . PHP_EOL;
             $status = Response::HTTP_BAD_REQUEST;
         }
 
