@@ -10,7 +10,6 @@ use Exception;
 
 class ClientProcess extends AbstractProcess implements ProcessInterface
 {
-
     /**
      * @throws Exception
      */

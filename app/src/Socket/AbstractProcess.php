@@ -76,5 +76,4 @@ abstract class AbstractProcess implements ProcessInterface
             socket_close($this->socket);
         }
     }
-
 }
