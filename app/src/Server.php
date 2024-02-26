@@ -10,10 +10,21 @@ class Server extends AbstractUnixSocket
      */
     public function startChat(): void
     {
+        echo 'Re-creating socket...' . PHP_EOL;
         $this->recreate();
+        echo 'Socket re-created!' . PHP_EOL;
+
+        echo 'Creating socket...' . PHP_EOL;
         $this->create();
+        echo 'Socket created!' . PHP_EOL;
+
+        echo 'Binding socket...' . PHP_EOL;
         $this->bind();
+        echo "Socket is successfully bound!" . PHP_EOL;
+
         $this->listen();
+        echo "Server listening on socket..." . PHP_EOL;
+
         $client = $this->accept();
 
         $isRunning = true;

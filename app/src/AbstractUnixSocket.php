@@ -21,13 +21,9 @@ abstract class AbstractUnixSocket
      */
     protected function recreate(): void
     {
-        echo 'Re-creating socket...' . PHP_EOL;
-
         if (file_exists($this->socketFile) && !unlink($this->socketFile)) {
             throw new \Exception('Failed to re-create socket!');
         }
-
-        echo 'Socket re-created!' . PHP_EOL;
     }
 
     /**
@@ -36,15 +32,11 @@ abstract class AbstractUnixSocket
      */
     protected function create(): void
     {
-        echo 'Creating socket...' . PHP_EOL;
-
         $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
 
         if ($this->socket === false) {
             throw new \Exception("Failed to create socket: " . socket_strerror(socket_last_error()));
         }
-
-        echo 'Socket created!' . PHP_EOL;
     }
 
     /**
@@ -53,13 +45,9 @@ abstract class AbstractUnixSocket
      */
     protected function bind(): void
     {
-        echo 'Binding socket...' . PHP_EOL;
-
         if (!socket_bind($this->socket, $this->socketFile)) {
             throw new \Exception("Failed to bind socket: " . socket_strerror(socket_last_error()));
         }
-
-        echo "Socket is successfully bound to the file $this->socketFile" . PHP_EOL;
     }
 
     /**
@@ -71,8 +59,6 @@ abstract class AbstractUnixSocket
         if (!socket_listen($this->socket)) {
             throw new \Exception("Failed to listen on socket: " . socket_strerror(socket_last_error()));
         }
-
-        echo "Server listening on socket $this->socketFile" . PHP_EOL;
     }
 
     /**
@@ -95,13 +81,9 @@ abstract class AbstractUnixSocket
      */
     protected function connect(): void
     {
-        echo 'Connecting socket...' . PHP_EOL;
-
         if (!socket_connect($this->socket, $this->socketFile)) {
             throw new \Exception("Failed to connect to socket: " . socket_strerror(socket_last_error()));
         }
-
-        echo "Socket connection established successfully!" . PHP_EOL;
     }
 
     /**
