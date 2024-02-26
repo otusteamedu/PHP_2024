@@ -13,6 +13,7 @@ class App
         $this->validatorEmailName = new ValidatorEmailName();
         $this->validatorEmailDns = new ValidatorEmailDns();
     }
+
     /**
      * @throws \Exception
      */
