@@ -32,5 +32,4 @@ class Server extends AbstractUnixSocket
 
         $this->close();
     }
-
 }

@@ -8,5 +8,4 @@ class ServicesDictionary
         'server' => 'Otus\Hw5\Server',
         'client' => 'Otus\Hw5\Client'
     ];
-
 }

@@ -23,7 +23,5 @@ class Client extends AbstractUnixSocket
                 $isRunning = false;
             }
         }
-
     }
-
 }

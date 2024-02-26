@@ -17,8 +17,7 @@ class App
             throw new \Exception('Access is denied!' . PHP_EOL);
         }
 
-        $participant = new ServicesDictionary::$allowedParticipants[$participant];
+        $participant = new ServicesDictionary::$allowedParticipants[$participant]();
         $participant->startChat();
     }
-
 }

@@ -143,5 +143,4 @@ abstract class AbstractUnixSocket
      * @return void
      */
     abstract public function startChat(): void;
-
 }
