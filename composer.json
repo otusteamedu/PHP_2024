@@ -1,0 +1,14 @@
+{
+  "name": "ikuntsevich/hw4",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "symfony/http-foundation": "^6.0"
+
+  }
+}
