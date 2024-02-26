@@ -1,61 +1,35 @@
 version: '3.8'
 
 services:
-  nginx:
-    build: nginx
-    container_name: ${CONTAINER_NAME_NGINX}
-    ports:
-      - "${LOCAL_PORT_NGINX}:${CONTAINER_PORT_NGINX}"
-    volumes:
-      - ./app:/app
-      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./var/nginx/logs:/var/log/nginx
-    depends_on:
-      - php-fpm
-    networks:
-      - otus-network
-
-  php-fpm:
+  server:
     build: php-fpm
-    container_name: ${CONTAINER_NAME_PHP_FPM}
+    container_name: ${CONTAINER_NAME_PHP_FPM_SERVER}
     volumes:
       - ./app:/app
+      - ./var/php-socket:/tmp/socket
       - ./php-fpm/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
       - ./var/php-fpm/logs:/var/logs/php
-    depends_on:
-      - mysql
-      - redis
-      - memcached
     env_file: .env
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
       - otus-network
 
-  mysql:
-    build: mysql
-    container_name: ${CONTAINER_NAME_MYSQL}
+  client:
+    build: php-fpm
+    container_name: ${CONTAINER_NAME_PHP_FPM_CLIENT}
     volumes:
-      - ./var/mysql:/var/lib/mysql
-      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./app:/app
+      - ./var/php-socket:/tmp/socket
+      - ./php-fpm/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./var/php-fpm/logs:/var/logs/php
+    depends_on:
+      - server
     env_file: .env
-    networks:
-      - otus-network
-
-  redis:
-    build: redis
-    container_name: ${CONTAINER_NAME_REDIS}
-    volumes:
-      - ./var/redis:/data
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    networks:
-      - otus-network
-
-  memcached:
-    build: memcached
-    container_name: ${CONTAINER_NAME_MEMCACHED}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - otus-network
 
