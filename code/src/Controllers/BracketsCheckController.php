@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace IGalimov\Hw41\Controllers;
+
 /**
  * Class BracketsCheckController
  * @package Controllers
@@ -13,7 +14,7 @@ class BracketsCheckController
     {
         try {
             $this->runApp();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             http_response_code($e->getCode());
             echo $e->getMessage();
         }
@@ -24,22 +25,22 @@ class BracketsCheckController
      */
     public function runApp(): void
     {
-        if($_SERVER['REQUEST_METHOD'] !== "POST") {
+        if ($_SERVER['REQUEST_METHOD'] !== "POST") {
             throw new \Exception('Неопределенный метод запроса', 405);
         }
 
         $requestBodyJson = file_get_contents('php://input');
         $requestBody = json_decode($requestBodyJson);
 
-        if(!isset($requestBody->string)){
+        if (!isset($requestBody->string)) {
             throw new \Exception('Не указан параметр string в теле запроса', 422);
         }
 
-        if(mb_strlen($requestBody->string) === 0){
+        if (mb_strlen($requestBody->string) === 0) {
             throw new \Exception('Параметр string пуст', 422);
         }
 
-        if(!$this->checkStringBrackets($requestBody->string)){
+        if (!$this->checkStringBrackets($requestBody->string)) {
             throw new \Exception('Строка в поле string некорректна', 400);
         }
 
