@@ -8,7 +8,9 @@ require '../vendor/autoload.php';
 
 try {
     $app = new App();
-    $app->run();
+    foreach ($app->run() as $email => $isValid) {
+        echo "$email - " . ($isValid ? 'валидный' : 'не валидный') . '<br/>';
+    }
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage() . PHP_EOL;
 }

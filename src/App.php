@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Afilipov\Hw6;
 
+use Generator;
+
 class App
 {
-    public function run(): void
+    public function run(): Generator
     {
         $emails = [
             'test@mail.ru',
@@ -17,11 +19,7 @@ class App
 
         $emailValidator = new EmailValidator();
         foreach ($emails as $email) {
-            if ($emailValidator->validate($email)) {
-                echo "$email - валидный.<br/>";
-            } else {
-                echo "$email - не валидный.<br/>";
-            }
+            yield $email => $emailValidator->validate($email);
         }
     }
 }
