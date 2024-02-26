@@ -6,5 +6,7 @@
             "Dsergei\\Hw5\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+      "ext-sockets": "*"
+    }
 }

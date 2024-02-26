@@ -10,17 +10,17 @@ class Server extends AbstractSocket
      */
     public function init(): void
     {
-        echo "Create server" . PHP_EOL;
+        $this->log()->send("Create server");
         $this->check();
         $this->create();
 
-        echo "Bind to server" . PHP_EOL;
+        $this->log()->send("Bind to server");
         $this->bind();
 
-        echo "Listen server" . PHP_EOL;
+        $this->log()->send("Listen server");
         $this->listen();
 
-        echo "Accept message to client" . PHP_EOL;
+        $this->log()->send("Accept message to client");
         $client = $this->accept();
 
         $listening = true;
@@ -33,10 +33,11 @@ class Server extends AbstractSocket
             }
 
             if ($message) {
-                echo "Receive message: {$message}" . PHP_EOL;
+                $this->log()->send("Receive message: {$message}");
             }
         }
 
+        $this->log()->send("Close connect");
         $this->close();
     }
 }

@@ -10,10 +10,10 @@ class Client extends AbstractSocket
      */
     public function init(): void
     {
-        echo "Create client" . PHP_EOL;
+        $this->log()->send('Create client');
         $this->create();
 
-        echo "Connect to client" . PHP_EOL;
+        $this->log()->send('Connect to client');
         $this->connect();
 
         $connected = true;
@@ -23,6 +23,7 @@ class Client extends AbstractSocket
             $this->send($message);
 
             if ($message === 'close') {
+                $this->log()->send('Close connect to client');
                 $connected = false;
             }
         }

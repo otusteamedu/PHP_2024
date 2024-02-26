@@ -108,6 +108,15 @@ abstract class AbstractSocket
     }
 
     /**
+     * @return \Generator
+     */
+    public function log(): \Generator
+    {
+        $string = yield;
+        echo $string.PHP_EOL;
+    }
+
+    /**
      * @return void
      */
     abstract public function init(): void;

@@ -10,9 +10,12 @@ class App
     /**
      * @throws \Exception
      */
-    public function run($arg): void
+    public function run(): void
     {
-        switch ($arg) {
+        global $argv;
+        $type = $argv[1] ?? null;
+
+        switch ($type) {
             case 'server':
                 $server = new Server();
                 $server->init();
