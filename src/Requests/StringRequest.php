@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace RailMukhametshin\Hw\Requests;
 
+use RailMukhametshin\Hw\Exceptions\HttpException;
+
 class StringRequest
 {
     private array $server;
