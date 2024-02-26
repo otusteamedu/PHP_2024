@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace IGalimov\Hw41\Controllers;
 
+use IGalimov\Hw41\Http\Response;
+
 /**
  * Class BracketsCheckController
  * @package Controllers
  */
 class BracketsCheckController
 {
-    public function initApp()
+    /**
+     * @return string
+     */
+    public function initApp(): string
     {
         try {
-            $this->runApp();
+            return $this->runApp();
         } catch (\Exception $e) {
-            http_response_code($e->getCode());
-            echo $e->getMessage();
+            return Response::getResponse($e->getCode(), $e->getMessage());
         }
     }
 
     /**
      * @throws \Exception
+     * @return string
      */
-    public function runApp(): void
+    private function runApp(): string
     {
         if ($_SERVER['REQUEST_METHOD'] !== "POST") {
             throw new \Exception('Неопределенный метод запроса', 405);
@@ -44,9 +49,7 @@ class BracketsCheckController
             throw new \Exception('Строка в поле string некорректна', 400);
         }
 
-        http_response_code(200);
-        echo 'Успешно';
-        return;
+        return Response::getResponse(200, 'Успешно');
     }
 
     /**

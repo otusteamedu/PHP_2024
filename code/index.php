@@ -8,4 +8,4 @@ use IGalimov\Hw41\Controllers\BracketsCheckController;
 
 $app = new BracketsCheckController();
 
-$app->initApp();
+echo $app->initApp();
