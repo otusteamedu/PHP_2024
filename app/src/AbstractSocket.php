@@ -130,7 +130,7 @@ abstract class AbstractSocket
     public function log(): \Generator
     {
         $string = yield;
-        echo $string.PHP_EOL;
+        echo $string . PHP_EOL;
     }
 
     /**
