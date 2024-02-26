@@ -10,7 +10,6 @@ use Exception;
 
 class SocketProcessesResolver
 {
-
     public ProcessInterface $process;
     public string $socketPath;
 
