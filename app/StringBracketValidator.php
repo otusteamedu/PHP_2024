@@ -17,7 +17,7 @@ class StringBracketValidator
         $this->validationValue = $value;
     }
 
-    public function validate():bool
+    public function validate(): bool
     {
         if (!$this->validateIsNotEmpty()) {
             return false;
@@ -31,9 +31,9 @@ class StringBracketValidator
         return true;
     }
 
-    protected function validateIsNotEmpty():bool
+    protected function validateIsNotEmpty(): bool
     {
-        if(empty($this->validationValue)) {
+        if (empty($this->validationValue)) {
             $this->errorMessage = "Передана пустая строка";
             return false;
         }
@@ -41,26 +41,26 @@ class StringBracketValidator
     }
 
 
-    protected function validateBrackets():bool
+    protected function validateBrackets(): bool
     {
         $validateSumm = 0;
-        $chars = str_split($this->validationValue );
+        $chars = str_split($this->validationValue);
 
         foreach ($chars as $char) {
             if ($char == self::OPEN) {
                 $validateSumm++;
             }
 
-            if($char == self::CLOSED) {
+            if ($char == self::CLOSED) {
                 $validateSumm--;
             }
 
-            if($validateSumm < 0) {
+            if ($validateSumm < 0) {
                 break;
             }
         }
 
-        if($validateSumm != 0) {
+        if ($validateSumm != 0) {
             $this->errorMessage = "Скобки в строке расставлены не верно.";
             return false;
         }
@@ -68,10 +68,8 @@ class StringBracketValidator
         return true;
     }
 
-    public function getErrorMessage():string
+    public function getErrorMessage(): string
     {
         return $this->errorMessage;
     }
-
-
 }

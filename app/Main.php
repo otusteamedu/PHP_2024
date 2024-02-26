@@ -14,7 +14,9 @@ class Main
         session_start();
     }
 
-    protected function __clone() { }
+    protected function __clone()
+    {
+    }
 
     public function __wakeup()
     {
@@ -42,14 +44,14 @@ class Main
 
         if ($stringBracketValidator->validate()) {
             $content .= "Строка: '" . $string . "' валидна" . PHP_EOL;
-        }else{
-            $content .= $stringBracketValidator->getErrorMessage(). PHP_EOL;;
+        } else {
+            $content .= $stringBracketValidator->getErrorMessage() . PHP_EOL;;
             $status = Response::HTTP_BAD_REQUEST;
         }
 
         $content .= "Контейнер: " . $_SERVER['HOSTNAME'] . PHP_EOL;
-        $content .= "Сервер: ".$_SERVER['SERVER_ADDR'] . PHP_EOL;
-        $content .= "Сессия: " . session_id(). PHP_EOL;
+        $content .= "Сервер: " . $_SERVER['SERVER_ADDR'] . PHP_EOL;
+        $content .= "Сессия: " . session_id() . PHP_EOL;
 
         $response = new Response(
             $content,
@@ -59,6 +61,4 @@ class Main
 
         $response->send();
     }
-
-
 }
