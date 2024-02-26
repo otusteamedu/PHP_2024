@@ -37,7 +37,6 @@ class App
                 echo '400 Bad Request <br>';
                 echo $exception->getMessage() . '<br>';
             }
-
         }
     }
 
