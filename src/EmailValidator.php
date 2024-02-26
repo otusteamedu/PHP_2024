@@ -14,7 +14,7 @@ class EmailValidator implements ValidatorInterface
             return false;
         }
 
-        if(!$this->checkDns($string)) {
+        if (!$this->checkDns($string)) {
             return false;
         }
 
