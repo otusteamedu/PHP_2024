@@ -23,7 +23,5 @@ class ValidatorEmailDns extends AbstractValidator implements IValidator
                 $this->log()->send("Dns $dns is valid");
             }
         }
-
-
     }
 }

@@ -22,8 +22,7 @@ class App
         global $argv;
 
         foreach ($argv as $key => $email) {
-            if ($key === 0)
-            {
+            if ($key === 0) {
                 continue;
             }
 
