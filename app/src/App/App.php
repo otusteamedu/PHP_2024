@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Kiryao\Sockchat\App;
 
-use Exception;
-use InvalidArgumentException;
-use Kiryao\Sockchat\App\Exception\ArgumentMissingException;
-use Kiryao\Sockchat\Chat\ClientChat;
-use Kiryao\Sockchat\Chat\ServerChat;
-use Kiryao\Sockchat\Chat\Std\StdManager;
-use Kiryao\Sockchat\Config\DTO\Chat;
-use Kiryao\Sockchat\Config\DTO\Socket;
-use Kiryao\Sockchat\Config\DTO\SocketPath;
-use Kiryao\Sockchat\Socket\Client;
 use Kiryao\Sockchat\Socket\Server;
+use Kiryao\Sockchat\Socket\Client;
+use Kiryao\Sockchat\Config\DTO\SocketPath;
+use Kiryao\Sockchat\Config\DTO\Socket;
+use Kiryao\Sockchat\Config\DTO\Chat;
+use Kiryao\Sockchat\Chat\Std\StdManager;
+use Kiryao\Sockchat\Chat\ServerChat;
+use Kiryao\Sockchat\Chat\ClientChat;
+use Kiryao\Sockchat\App\Exception\ArgumentMissingException;
+use InvalidArgumentException;
+use Exception;
 
 class App
 {
@@ -43,7 +43,6 @@ class App
         }
 
         $chat = match ($arg) {
-
             $argServerRun => new ServerChat(
                 new Server\Socket(
                     $this->socketConfig,
@@ -52,7 +51,6 @@ class App
                 $this->stdManager,
                 $chatExit
             ),
-
             $argClientRun => new ClientChat(
                 new Client\Socket(
                     $this->socketConfig,
@@ -61,7 +59,6 @@ class App
                 $this->stdManager,
                 $chatExit
             ),
-
             default => throw new InvalidArgumentException('Invalid argument. Please use ' . $argServerRun . ' or ' . $argClientRun),
         };
 
