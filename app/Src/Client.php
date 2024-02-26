@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace App;
 
+use Generator;
+
 class Client
 {
     private string $buf = '';
     private string $from = '';
-    public object|bool $result;
     public string $server_side_sock;
     public string $client_side_sock;
 
     /**
+     * @return Generator
      * @throws SocketErrorException
      */
-    public function createClient(): object|bool
+    public function createClient(): Generator
     {
         if (!extension_loaded('sockets')) {
             return $this->getSocketError('The sockets extension is not loaded.');
@@ -29,23 +31,24 @@ class Client
         if (!socket_bind($socket, $this->client_side_sock)) {
             return $this->getSocketError("Unable to bind to $this->client_side_sock");
         }
-        if ($this->sendData($socket) === true) {
-            $this->result = $this->receiveData($socket);
+        yield "Attention!!! To stop the server, enter '" . Base::getConfig('stop_word') . "'" . "\n";
+        if ($this->sendData($socket)) {
+            yield $this->receiveData($socket)->current();
         }
-        return $this->result;
     }
 
+
     /**
+     * @param $socket
+     * @return bool|object
      * @throws SocketErrorException
      */
-    public function sendData($socket): object|bool
+    public function sendData($socket): bool|object
     {
         if (!socket_set_nonblock($socket)) {
             return $this->getSocketError('Unable to set nonblocking mode for socket');
         }
         $this->server_side_sock = __DIR__ . Base::getConfig('server_side_sock');
-
-        echo "Attention!!! To stop the server, enter '" . Base::getConfig('stop_word') . "'" . "\n";
 
         $msg = readline("Enter a message to send to the server: ");
         if (empty($msg)) {
@@ -63,10 +66,13 @@ class Client
         return true;
     }
 
+
     /**
+     * @param $socket
+     * @return Generator
      * @throws SocketErrorException
      */
-    public function receiveData($socket): object|bool
+    public function receiveData($socket): Generator
     {
         if (!socket_set_block($socket)) {
             return $this->getSocketError('Unable to set blocking mode for socket');
@@ -75,14 +81,15 @@ class Client
         if ($bytes_received == -1) {
             return $this->getSocketError('An error occurred while receiving from the socket');
         }
-        echo "Received '$this->buf' from '$this->from' and count of bytes are " . strlen($this->buf) . "\n";
         socket_close($socket);
         unlink($this->client_side_sock);
-        echo "Client exits\n";
-        return true;
+        yield "Received '$this->buf' from '$this->from' and count of bytes are " . strlen($this->buf) . "\n" .
+        "Client exits\n";
     }
 
     /**
+     * @param string $message
+     * @return object
      * @throws SocketErrorException
      */
     public function getSocketError(string $message): object

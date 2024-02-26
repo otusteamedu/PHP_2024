@@ -6,9 +6,10 @@ namespace App;
 
 class Base
 {
-    public object|bool|null $result;
+    public object $result;
 
     /**
+     * @return object|bool|null
      * @throws SocketErrorException
      */
     public function run(): object|bool|null
@@ -16,11 +17,17 @@ class Base
         if (in_array('server', $_SERVER['argv'])) {
             $server = new Server();
             $this->result = $server->createServer();
+            foreach ($this->result as $item) {
+                print_r($item);
+            }
         }
         if (in_array('client', $_SERVER['argv'])) {
             if (file_exists(__DIR__ . Base::getConfig('server_side_sock'))) {
                 $client = new Client();
                 $this->result = $client->createClient();
+                foreach ($this->result as $item) {
+                    print_r($item);
+                }
             } else {
                 $this->getBaseError('Attention!!! You mast not start client before server');
             }
@@ -29,6 +36,8 @@ class Base
     }
 
     /**
+     * @param string $string
+     * @return string|object
      * @throws SocketErrorException
      */
     public static function getConfig(string $string): string|object
@@ -42,7 +51,10 @@ class Base
         }
     }
 
+
     /**
+     * @param string $message
+     * @return object
      * @throws SocketErrorException
      */
     public function getBaseError(string $message): object

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
+use Generator;
+
 class Server
 {
     private string $buf = '';
@@ -11,10 +13,12 @@ class Server
     public string $server_side_sock;
     public string $stop_word;
 
+
     /**
+     * @return Generator
      * @throws SocketErrorException
      */
-    public function createServer(): object|bool
+    public function createServer(): Generator
     {
         if (!extension_loaded('sockets')) {
             return $this->getSocketError('The sockets extension is not loaded.');
@@ -35,16 +39,24 @@ class Server
             if (!socket_set_block($socket)) {
                 return $this->getSocketError('Unable to set blocking mode for socket');
             }
-            echo "Ready to receive...\n";
+            yield "Ready to receive...\n";
             $this->buf = $this->waitQueryFromClient($socket);
+            yield "Received '$this->buf' from '$this->from' and count bytes are " . strlen($this->buf) . "\n";
+            yield "Request processed\n";
             if ($this->buf != '') {
                 $this->sendResponse($socket, $isRunning);
             }
+            if (!$isRunning) {
+                yield "Server exits\n";
+            }
         }
-        return $isRunning;
+        yield $isRunning;
     }
 
+
     /**
+     * @param $socket
+     * @return object|string
      * @throws SocketErrorException
      */
     public function waitQueryFromClient($socket): object|string
@@ -53,11 +65,14 @@ class Server
         if ($bytes_received == -1) {
             return $this->getSocketError('An error occurred while receiving from the socket');
         }
-        echo "Received '$this->buf' from '$this->from' and count bytes are " . strlen($this->buf) . "\n";
         return  $this->buf;
     }
 
+
     /**
+     * @param $socket
+     * @param $isRunning
+     * @return object|bool
      * @throws SocketErrorException
      */
     public function sendResponse($socket, &$isRunning): object|bool
@@ -68,7 +83,6 @@ class Server
             socket_sendto($socket, $this->buf, strlen($this->buf), 0, $this->from);
             socket_close($socket);
             unlink($this->server_side_sock);
-            echo "Server exits\n";
             return $isRunning;
         }
         if (!socket_set_nonblock($socket)) {
@@ -81,11 +95,12 @@ class Server
         } elseif ($bytes_sent != $len) {
             return $this->getSocketError($bytes_sent . ' bytes have been sent instead of the ' . $len . ' bytes expected');
         }
-        echo "Request processed\n";
         return $isRunning;
     }
 
     /**
+     * @param string $message
+     * @return object
      * @throws SocketErrorException
      */
     public function getSocketError(string $message): object
