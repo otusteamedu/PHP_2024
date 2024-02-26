@@ -10,10 +10,7 @@ class Client extends AbstractSocket
      */
     public function init(): void
     {
-        $this->log()->send('Create client');
         $this->create();
-
-        $this->log()->send('Connect to client');
         $this->connect();
 
         $connected = true;
@@ -23,7 +20,7 @@ class Client extends AbstractSocket
             $this->send($message);
 
             if ($message === 'close') {
-                $this->log()->send('Close connect to client');
+                $this->log()->send('Close connect to socket');
                 $connected = false;
             }
         }
