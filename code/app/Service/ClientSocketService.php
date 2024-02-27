@@ -19,7 +19,9 @@ class ClientSocketService extends SocketService
 
             $this->sendMessage($message, $serverSocketPath);
 
-            if ($message == '!exit') $this->closeSocket();
+            if ($message == '!exit') {
+                $this->closeSocket();
+            }
 
             $this->blockSocket();
 

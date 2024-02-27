@@ -19,7 +19,9 @@ class ServerSocketService extends SocketService
 
             extract($this->receiveMessages($buf, $from));
 
-            if ($buf == '!exit') $this->closeSocket();
+            if ($buf == '!exit') {
+                $this->closeSocket();
+            }
 
             $this->unblockSocket();
 
