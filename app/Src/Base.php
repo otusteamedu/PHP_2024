@@ -6,33 +6,24 @@ namespace App;
 
 class Base
 {
-    public object $result;
-
     /**
-     * @return object|bool|null
+     * @return void
      * @throws SocketErrorException
      */
-    public function run(): object|bool|null
+    public function run(): void
     {
         if (in_array('server', $_SERVER['argv'])) {
-            $server = new Server();
-            $this->result = $server->createServer();
-            foreach ($this->result as $item) {
-                print_r($item);
-            }
+            $server = new SocketStart();
+            $server->startServerSocket();
         }
         if (in_array('client', $_SERVER['argv'])) {
             if (file_exists(__DIR__ . Base::getConfig('server_side_sock'))) {
-                $client = new Client();
-                $this->result = $client->createClient();
-                foreach ($this->result as $item) {
-                    print_r($item);
-                }
+                $server = new SocketStart();
+                $server->startClientSocket();
             } else {
                 $this->getBaseError('Attention!!! You mast not start client before server');
             }
         }
-        return $this->result;
     }
 
     /**
@@ -50,7 +41,6 @@ class Base
             throw new SocketErrorException("Undefined '$string' in " . __DIR__ . "/config.ini");
         }
     }
-
 
     /**
      * @param string $message
