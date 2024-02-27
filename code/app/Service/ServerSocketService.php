@@ -11,18 +11,15 @@ class ServerSocketService extends SocketService
      */
     public function socketInProcess()
     {
-        while ($this->socketStatus)
-        {
+        while ($this->socketStatus) {
             $this->blockSocket();
 
-            $buf    = '';
-            $from   = '';
+            $buf = '';
+            $from = '';
 
             extract($this->receiveMessages($buf, $from));
 
-            if ($buf == '!exit')
-                $this->closeSocket();
-
+            if ($buf == '!exit') $this->closeSocket();
 
             $this->unblockSocket();
 

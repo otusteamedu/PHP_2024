@@ -6,17 +6,16 @@ namespace IGalimov\Hw5\Service;
 
 class SocketService
 {
-    public      $socket;
-    protected   $socketPath;
-    protected   $socketStatus;
+    public $socket;
+    protected $socketPath;
+    protected $socketStatus;
 
     /**
      * @throws \Exception
      */
     protected function checkAvailableAndPrepareToCreate(): void
     {
-        if (!extension_loaded('sockets'))
-            throw new \Exception("The sockets extension is not loaded.");
+        if (!extension_loaded('sockets')) throw new \Exception("The sockets extension is not loaded.");
 
         if ($this->checkSocketExists($this->socketPath))
             unlink($this->socketPath);
@@ -52,11 +51,9 @@ class SocketService
     {
         $this->socket = socket_create(AF_UNIX, SOCK_DGRAM, 0);
 
-        if (!$this->socket)
-            throw new \Exception("Unable to create AF_UNIX socket.");
+        if (!$this->socket) throw new \Exception("Unable to create AF_UNIX socket.");
 
-        if (!socket_bind($this->socket, $this->socketPath))
-            throw new \Exception("Unable to bind to $this->socketPath.");
+        if (!socket_bind($this->socket, $this->socketPath)) throw new \Exception("Unable to bind to $this->socketPath.");
 
         $this->socketStatus = true;
 
@@ -68,8 +65,7 @@ class SocketService
      */
     protected function blockSocket(): void
     {
-        if (!socket_set_block($this->socket))
-            throw new \Exception("Unable to set blocking mode for socket.");
+        if (!socket_set_block($this->socket)) throw new \Exception("Unable to set blocking mode for socket.");
     }
 
     /**
@@ -77,8 +73,7 @@ class SocketService
      */
     protected function unblockSocket(): void
     {
-        if (!socket_set_nonblock($this->socket))
-            throw new \Exception("Unable to set nonblocking mode for socket.");
+        if (!socket_set_nonblock($this->socket)) throw new \Exception("Unable to set nonblocking mode for socket.");
     }
 
     /**
@@ -91,8 +86,7 @@ class SocketService
     {
         $bytesReceived = socket_recvfrom($this->socket, $buf, 65536, 0, $from);
 
-        if ($bytesReceived == -1)
-            throw new \Exception("An error occured while receiving from the socket.");
+        if ($bytesReceived == -1) throw new \Exception("An error occured while receiving from the socket.");
 
         echo "$from:\n $buf \n";
 
@@ -110,10 +104,8 @@ class SocketService
 
         $bytesSent = socket_sendto($this->socket, $message, $len, 0, $from);
 
-        if ($bytesSent == -1)
-            throw new \Exception("An error occured while sending to the socket.");
-        else if ($bytesSent != $len)
-            throw new \Exception("$bytesSent bytes have been sent instead of the $len bytes expected.");
+        if ($bytesSent == -1) throw new \Exception("An error occured while sending to the socket.");
+        else if ($bytesSent != $len) throw new \Exception("$bytesSent bytes have been sent instead of the $len bytes expected.");
     }
 
     /**

@@ -12,16 +12,14 @@ class ClientSocketService extends SocketService
      */
     public function socketInProcess(string $serverSocketPath = null)
     {
-        while ($this->socketStatus)
-        {
+        while ($this->socketStatus) {
             $message = readline("Type: ");
 
             $this->unblockSocket();
 
             $this->sendMessage($message, $serverSocketPath);
 
-            if ($message == '!exit')
-                $this->closeSocket();
+            if ($message == '!exit') $this->closeSocket();
 
             $this->blockSocket();
 
