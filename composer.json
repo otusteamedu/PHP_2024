@@ -1,0 +1,19 @@
+{
+    "name": "sfadeev/greeting-lib-test",
+    "description": "Test greeting-lib library",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "LowBlow\\GreetingLibTest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Fadeev",
+            "email": "fadeevsn92@gmail.com"
+        }
+    ],
+    "require": {
+        "low-blow/greeting-lib": "^1.0"
+    }
+}
