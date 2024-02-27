@@ -2,7 +2,7 @@
 CREATE TABLE movie
 (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(128) NOT NULL,
+    name VARCHAR(128) NOT NULL UNIQUE,
     description VARCHAR(4096) NULL
 );
 
@@ -10,7 +10,7 @@ CREATE TABLE movie
 CREATE TABLE room
 (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(128) NULL
+    name VARCHAR(128) NULL UNIQUE
 );
 
 -- Киносессии
@@ -22,7 +22,9 @@ CREATE TABLE session
     begin TIMESTAMP NOT NULL,
     finish TIMESTAMP NOT NULL,
     room_id INTEGER REFERENCES room(id),
-    movie_id INTEGER REFERENCES movie(id)
+    movie_id INTEGER REFERENCES movie(id),
+
+    unique(begin, room_id)
 );
 
 -- Посадочные места
@@ -32,7 +34,9 @@ CREATE TABLE place
     id SERIAL PRIMARY KEY,
     horizontal SMALLINT NULL,
     vertical SMALLINT NULL,
-    room_id INTEGER REFERENCES room(id)
+    room_id INTEGER REFERENCES room(id),
+
+    unique(horizontal, vertical, room_id)
 );
 
 --Билеты
@@ -41,5 +45,7 @@ CREATE TABLE ticket
     id SERIAL PRIMARY KEY,
     owner VARCHAR(128) NULL,
     place_id INTEGER REFERENCES place(id),
-    session_id INTEGER REFERENCES session(id)
+    session_id INTEGER REFERENCES session(id),
+
+    unique(place_id, session_id)
 );

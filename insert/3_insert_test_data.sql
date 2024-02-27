@@ -54,7 +54,7 @@ VALUES (
             130,
             '2024-01-02 13:00:00',
             '2024-01-02 16:00:00',
-            (SELECT id FROM room WHERE name = 'circle'),
+            (SELECT id FROM room WHERE name = 'classic second'),
             (SELECT id FROM movie WHERE name = 'Best Movie 2007')
        ),
        (
@@ -164,7 +164,7 @@ VALUES
         )
     ),
     (
-        'Vasya Leo',
+        'Bazanov',
         (
             SELECT place.id
             FROM place
@@ -199,6 +199,82 @@ VALUES
             INNER JOIN movie
                 ON movie.id = session.movie_id
             WHERE room.name = 'classic first' AND movie.name = 'Oppenheimer' AND session.begin = '2024-01-02 10:00:00'
+        )
+    ),
+    (
+        'Pavel Not Ananin',
+        (
+            SELECT place.id
+            FROM place
+            INNER JOIN room
+                ON room.id = place.room_id
+            WHERE room.name = 'classic first' AND place.horizontal = 1 AND place.vertical = 1
+        ),
+        (
+            SELECT session.id
+            FROM session
+            INNER JOIN room
+                ON room.id = session.room_id
+            INNER JOIN movie
+                ON movie.id = session.movie_id
+            WHERE room.name = 'classic first' AND movie.name = 'Oppenheimer' AND session.begin = '2024-01-02 10:00:00'
+        )
+    ),
+    (
+        'Maria DB.',
+        (
+            SELECT place.id
+            FROM place
+            INNER JOIN room
+                ON room.id = place.room_id
+            WHERE room.name = 'circle' AND place.vertical = 1
+        ),
+        (
+            SELECT session.id
+            FROM session
+            INNER JOIN room
+                ON room.id = session.room_id
+            INNER JOIN movie
+                ON movie.id = session.movie_id
+            WHERE room.name = 'circle' AND movie.name = 'John Wick: Chapter 4' AND session.begin = '2024-01-05 13:00:00'
+        )
+    ),
+    (
+        'Jorik',
+        (
+            SELECT place.id
+            FROM place
+            INNER JOIN room
+                ON room.id = place.room_id
+            WHERE room.name = 'circle' AND place.vertical = 2
+        ),
+        (
+            SELECT session.id
+            FROM session
+            INNER JOIN room
+                ON room.id = session.room_id
+            INNER JOIN movie
+                ON movie.id = session.movie_id
+            WHERE room.name = 'circle' AND movie.name = 'John Wick: Chapter 4' AND session.begin = '2024-01-05 13:00:00'
+        )
+    ),
+    (
+        'Bazanov',
+        (
+            SELECT place.id
+            FROM place
+            INNER JOIN room
+                ON room.id = place.room_id
+            WHERE room.name = 'classic first' AND place.horizontal = 1 AND place.vertical = 1
+        ),
+        (
+            SELECT session.id
+            FROM session
+            INNER JOIN room
+                ON room.id = session.room_id
+            INNER JOIN movie
+                ON movie.id = session.movie_id
+            WHERE room.name = 'classic first' AND movie.name = 'Killers Of The Flower Moon' AND session.begin = '2024-01-02 14:00:00'
         )
     );
 

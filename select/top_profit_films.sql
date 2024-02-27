@@ -6,4 +6,4 @@ LEFT JOIN movie
     ON movie.id = session.movie_id
 GROUP BY movie.name
 ORDER BY profit_sum DESC
-LIMIT 1;
+LIMIT 3;
