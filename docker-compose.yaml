@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - "${APP_PORT:-80}:80"
+    volumes:
+      - ./:/data/site.local
+      - ./nginx/hosts/site.local.conf:/etc/nginx/conf.d/site.local.conf
+      - phpsocket:/var/run
+    working_dir: /data
+    networks:
+      - otus-app-network
+
+  php:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: app/php
+    volumes:
+      - ./:/data/site.local
+      - ./fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - phpsocket:/var/run
+    working_dir: /data/site.local
+    networks:
+      - otus-app-network
+
+networks:
+  otus-app-network:
+    driver: bridge
+
+volumes:
+  phpsocket:
