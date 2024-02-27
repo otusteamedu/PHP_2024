@@ -1,8 +1,5 @@
 FROM nginx:1.25.2-alpine
 
-#COPY ../nginx-proxy/nginx.conf /etc/nginx/
-#COPY ../nginx-proxy/default.conf /etc/nginx/conf.d
-
 RUN apk update && apk upgrade
 
 RUN set -x ; \
