@@ -4,5 +4,8 @@ require '../vendor/autoload.php';
 
 use Alogachev\Homework\App;
 
-$app = new App();
-$app->run();
+try {
+    $app = new App();
+    $app->run();
+} catch (Exception $exception) {
+}
