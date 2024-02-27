@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: hw5/php
+    container_name: server
+    volumes:
+      - ./code:/var/chat-unix/entrypoint
+      - ./server:/var/chat-unix/server
+    networks:
+      - app-network
+
+  clinet:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: hw5/php
+    container_name: client
+    volumes:
+      - ./code:/var/chat-unix/entrypoint
+      - ./server:/var/chat-unix/server
+    networks:
+      - app-network
+    depends_on:
+      - server
+
+networks:
+  app-network:
+    driver: bridge
