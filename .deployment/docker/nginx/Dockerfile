@@ -1,9 +1,9 @@
 FROM nginx:1.25.2-alpine
 
-COPY nginx.conf /etc/nginx/
-COPY default.conf /etc/nginx/conf.d
+#COPY ../nginx-proxy/nginx.conf /etc/nginx/
+#COPY ../nginx-proxy/default.conf /etc/nginx/conf.d
 
-RUN apk update && apk upgrade && apk add --no-cache bash
+RUN apk update && apk upgrade
 
 RUN set -x ; \
     addgroup -g 82 -S www-data ; \
