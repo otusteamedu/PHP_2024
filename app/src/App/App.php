@@ -28,7 +28,7 @@ class App
 
     /**
      * @throws InvalidArgumentException
-     * @throws Exception
+     * @throws ArgumentMissingException
      */
     public function run(): void
     {

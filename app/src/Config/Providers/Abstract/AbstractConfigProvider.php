@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Kiryao\Sockchat\Config\Providers\Abstract;
 
-use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
-use Kiryao\Sockchat\Config\Exception\ConfigKeyNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigNotFoundException;
-use Kiryao\Sockchat\Config\Exception\ConfigSectionNotFoundException;
 use Kiryao\Sockchat\Config\Providers\Interface\ConfigProviderInterface;
+use Kiryao\Sockchat\Config\Exception\ConfigSectionNotFoundException;
+use Kiryao\Sockchat\Config\Exception\ConfigNotFoundException;
+use Kiryao\Sockchat\Config\Exception\ConfigKeyNotFoundException;
+use Kiryao\Sockchat\Config\Exception\ConfigKeyIsEmptyException;
 
 abstract class AbstractConfigProvider implements ConfigProviderInterface
 {
@@ -52,12 +52,12 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @throws configSectionNotFoundException
+     * @throws ConfigSectionNotFoundException
      */
     protected function selectSection(): self
     {
         if (!array_key_exists($this->configSection, $this->config)) {
-            throw new configSectionNotFoundException($this->configSection);
+            throw new ConfigSectionNotFoundException($this->configSection);
         }
 
         $this->config = $this->config[$this->configSection];
@@ -82,7 +82,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     {
         foreach ($this->config as $key => $value) {
             $this->checkConfigKey($key);
-            $this->checkConfigValue($key);
+            $this->checkConfigValue($key, $value);
         }
 
         return $this;
@@ -101,10 +101,8 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     /**
      * @throws ConfigKeyIsEmptyException
      */
-    protected function checkConfigValue(string $key): void
+    protected function checkConfigValue(string $key, string|int $value): void
     {
-        $value = $this->config[$key];
-
         if ($value === '' | $value === null) {
             throw new ConfigKeyIsEmptyException($key);
         }
