@@ -63,8 +63,6 @@ class SocketService
         }
 
         $this->socketStatus = true;
-
-        echo "Chat is ready (type '!exit' to stop):\n";
     }
 
     /**
