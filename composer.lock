@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "20c10806bde5b0463a63efd096a2acd6",
+    "packages": [
+        {
+            "name": "low-blow/greeting-lib",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/low-blow/greeting-lib.git",
+                "reference": "9a8fc74038d5d80b8d2ca0aee11f80362bf062c3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/low-blow/greeting-lib/zipball/9a8fc74038d5d80b8d2ca0aee11f80362bf062c3",
+                "reference": "9a8fc74038d5d80b8d2ca0aee11f80362bf062c3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LowBlow\\GreetingLib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Sergey Fadeev",
+                    "email": "fadeevsn92@gmail.com"
+                }
+            ],
+            "description": "Generates a random greeting message",
+            "support": {
+                "issues": "https://github.com/low-blow/greeting-lib/issues",
+                "source": "https://github.com/low-blow/greeting-lib/tree/v1.0.0"
+            },
+            "time": "2024-02-27T20:05:25+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}
