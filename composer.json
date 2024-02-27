@@ -1,0 +1,19 @@
+{
+    "name": "pozys/chat-console",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pozys\\ChatConsole\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "pozys",
+            "email": "pozys@mail.ru"
+        }
+    ],
+    "require": {
+        "php-di/php-di": "^7.0",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
