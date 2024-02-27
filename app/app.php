@@ -11,5 +11,5 @@ try {
     $app = new Base();
     $app->run();
 } catch (SocketErrorException $e) {
-     echo $e->getErrorMessage() . PHP_EOL;
+    echo $e->getErrorMessage() . PHP_EOL;
 }
