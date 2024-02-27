@@ -72,6 +72,20 @@ create table if not exists hall_rows
 alter table hall_rows
     owner to postgres;
 
+create table if not exists hall_row_seats
+(
+    id       integer not null
+        constraint hall_row_seats_pk
+            primary key,
+    hall_row_id  integer not null
+        constraint hall_row_seats_hall_rows_null_fk
+            references hall_rows,
+    number   integer not null
+);
+
+alter table hall_row_seats
+    owner to postgres;
+
 create table if not exists tickets
 (
     id         integer not null
@@ -86,10 +100,12 @@ create table if not exists tickets
     row_id     integer
     constraint tickets_hall_rows_null_fk
     references hall_rows,
-    seat       integer,
+    seat_id     integer
+    constraint tickets_hall_row_seats_null_fk
+    references hall_row_seats,
     price      integer not null,
     constraint tickets_session_row_seat_unique
-    unique (session_id, row_id, seat)
+    unique (session_id, row_id, seat_id)
 );
 
 alter table tickets
