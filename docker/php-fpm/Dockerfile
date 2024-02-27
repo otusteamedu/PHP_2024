@@ -15,19 +15,23 @@ RUN set -eux; \
             libwebp-dev \
             libxpm-dev \
             libmcrypt-dev \
-            libonig-dev; \
+            libonig-dev \
+            libzip-dev \
+            zip; \
     rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
     docker-php-ext-install pdo_mysql; \
     docker-php-ext-install pdo_pgsql; \
+    docker-php-ext-install zip; \
     docker-php-ext-configure gd \
             --prefix=/usr \
             --with-jpeg \
             --with-webp \
             --with-xpm \
             --with-freetype; \
-    docker-php-ext-install gd;
+    docker-php-ext-install gd; \
+    docker-php-ext-configure zip
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
