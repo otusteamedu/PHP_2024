@@ -19,10 +19,9 @@ class SocketService
             throw new \Exception("The sockets extension is not loaded.");
         }
 
-        if ($this->checkSocketExists($this->socketPath)){
+        if ($this->checkSocketExists($this->socketPath)) {
             unlink($this->socketPath);
         }
-
     }
 
     /**
@@ -138,5 +137,4 @@ class SocketService
 
         throw new \Exception("Chat ended...");
     }
-
 }
