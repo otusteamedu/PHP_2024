@@ -15,19 +15,21 @@ class BracketsChecker
             throw new EmptyStringException();
         }
 
-        $balance = 0; // Счётчик для отслеживания баланса скобок
+        $balanceOpen = 0;
+        $balanceClose = 0;
 
         for ($i = 0; $i < strlen($string); $i++) {
             if ($string[$i] == '(') {
-                $balance++; // Увеличиваем счётчик для открытой скобки
-            } elseif ($string[$i] == ')') {
-                $balance--; // Уменьшаем счётчик для закрытой скобки
+                $balanceOpen++;
             }
+            if ($string[$i] == ')') {
+                $balanceClose++;
+            }
+        }
 
-            if ($balance < 0) {
-                // Если счётчик стал отрицательным, значит есть закрытая скобка без соответствующей открытой
-                throw new InvalidBracketsException();
-            }
+        if ($balanceOpen !== $balanceClose) {
+            // Если счётчик стал отрицательным, значит есть закрытая скобка без соответствующей открытой
+            throw new InvalidBracketsException();
         }
     }
 }
