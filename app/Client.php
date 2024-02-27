@@ -8,13 +8,15 @@ use Pozys\ChatConsole\Interfaces\Runnable;
 
 class Client implements Runnable
 {
-    public function __construct(private SocketManager $socket, private string $stopWord)
+    public function __construct(private SocketManager $socket, private Config $config)
     {
     }
 
     public function run(): void
     {
-        $socket = $this->socket->create()->connect();
+        $socketManager = $this->runSocket();
+
+        $stopWord = $this->config->stopWord;
 
         while (true) {
             $message = readline("Write something: ");
@@ -23,14 +25,14 @@ class Client implements Runnable
                 continue;
             }
 
-            if (trim($message) === $this->stopWord) {
-                $socket->close();
+            if (trim($message) === $stopWord) {
+                $socketManager->close();
                 break;
             }
 
-            $socket->write($message);
+            $socketManager->write($message);
 
-            $answer = $socket->read();
+            $answer = $socketManager->read();
 
             if ($answer === '') {
                 continue;
@@ -38,5 +40,10 @@ class Client implements Runnable
 
             echo $answer . PHP_EOL;
         }
+    }
+
+    private function runSocket(): SocketManager
+    {
+        return $this->socket->create()->connect();
     }
 }

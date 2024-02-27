@@ -12,7 +12,6 @@ use function DI\autowire;
 
 class App
 {
-    private array $config;
     private Container $container;
 
     public function __construct()
@@ -20,19 +19,15 @@ class App
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
 
-        $this->config = self::readConfig(dirname(__DIR__) . $_ENV['CONFIG_PATH']);
+        $config = new Config($_ENV['CONFIG_PATH']);
 
         $this->container = new Container([
             SocketManager::class => autowire()
                 ->constructorParameter(
                     'socketPath',
-                    $this->config['socket']['path'] ?? ''
+                    $config->socketPath
                 ),
-            Client::class => autowire()
-                ->constructorParameter(
-                    'stopWord',
-                    $this->config['socket']['stop_word'] ?? ''
-                ),
+            Config::class => $config,
         ]);
     }
 
@@ -56,20 +51,5 @@ class App
         }
 
         return strtolower(trim($_SERVER['argv'][1]));
-    }
-
-    private static function readConfig(string $path): array
-    {
-        if (!file_exists($path)) {
-            throw new Exception("Config file not found");
-        }
-
-        $config = parse_ini_file($path, true);
-
-        if ($config === false) {
-            throw new Exception("Wrong config file");
-        }
-
-        return $config;
     }
 }

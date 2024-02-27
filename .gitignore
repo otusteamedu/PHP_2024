@@ -4,3 +4,4 @@
 .AppleDouble
 .LSOverride
 tmp/*
+Makefile

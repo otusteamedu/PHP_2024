@@ -62,36 +62,6 @@ class SocketManager
         return $this;
     }
 
-    public function handleConnections(): void
-    {
-        set_time_limit(0);
-
-        do {
-            $socket = socket_accept($this->socket);
-            if ($socket === false) {
-                throw new Exception("socket_accept() failed: reason: " . socket_strerror(socket_last_error($this->socket)));
-            }
-
-            do {
-                $message = $this->read($socket);
-
-                if ($message === '') {
-                    break;
-                }
-
-                $message = trim($message);
-
-                echo "Received message: $message" . PHP_EOL;
-
-                $size = strlen($message);
-                $talkback = "Received {$size} bytes";
-                $this->write($talkback, $socket);
-            } while (true);
-        } while (true);
-
-        $this->kill();
-    }
-
     public function create(): self
     {
         if (!extension_loaded('sockets')) {
@@ -120,7 +90,8 @@ class SocketManager
     {
         $result = socket_connect($this->socket, $this->socketPath, 0);
         if ($result === false) {
-            throw new Exception("socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($this->socket)));
+            throw new Exception("socket_connect() failed.\nReason: ($result) "
+                . socket_strerror(socket_last_error($this->socket)));
         }
 
         return $this;
@@ -133,5 +104,16 @@ class SocketManager
         }
 
         return $this;
+    }
+
+    public function accept(): Socket
+    {
+        $socket = socket_accept($this->socket);
+
+        if ($socket === false) {
+            throw new Exception("socket_accept() failed: reason: " . socket_strerror(socket_last_error($this->socket)));
+        }
+
+        return $socket;
     }
 }
