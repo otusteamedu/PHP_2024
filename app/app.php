@@ -9,7 +9,10 @@ require __DIR__ . '/vendor/autoload.php';
 
 try {
     $app = new Base();
-    $app->run();
+    $creator = $app->run();
+    foreach ($creator as $item) {
+        print_r($item);
+    }
 } catch (SocketErrorException $e) {
     echo $e->getErrorMessage() . PHP_EOL;
 }

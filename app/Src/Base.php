@@ -4,22 +4,27 @@ declare(strict_types=1);
 
 namespace App;
 
+use Generator;
+
 class Base
 {
+    public object $result;
+
+
     /**
-     * @return void
+     * @return Generator|void
      * @throws SocketErrorException
      */
-    public function run(): void
+    public function run()
     {
         if (in_array('server', $_SERVER['argv'])) {
-            $server = new SocketStart();
-            $server->startServerSocket();
+            $server = new Server();
+            return $server->createServer();
         }
         if (in_array('client', $_SERVER['argv'])) {
             if (file_exists(__DIR__ . Base::getConfig('server_side_sock'))) {
-                $server = new SocketStart();
-                $server->startClientSocket();
+                $client = new Client();
+                return $client->createClient();
             } else {
                 $this->getBaseError('Attention!!! You mast not start client before server');
             }
