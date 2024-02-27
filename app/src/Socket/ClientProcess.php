@@ -10,6 +10,7 @@ use Exception;
 
 class ClientProcess extends AbstractProcess implements ProcessInterface
 {
+    public array $messages = [];
     /**
      * @throws Exception
      */
@@ -49,8 +50,9 @@ class ClientProcess extends AbstractProcess implements ProcessInterface
             $message = $this->read($this->socket);
 
             if (!empty(trim($message))) {
-                echo "Ответ с сервера: $message" . PHP_EOL;
+                $this->messages[time()] = $message;
             }
+
         } while ($this->runProcess);
     }
 
