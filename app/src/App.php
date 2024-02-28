@@ -8,12 +8,18 @@ class App
 {
     private string $mode;
 
-    function __construct(string $mode) {
-        $this->mode = $mode;
+    function __construct() {
+        $this->arguments = $argv;
     }
 
     public function run()
     {
-        print $this->mode;
+        print_r($this->arguments);
+        if (!extension_loaded('sockets')) {
+            print ('The sockets extension is not loaded.');
+        } else {
+            print 'ok';
+        }
+        print "\n";
     }
 }

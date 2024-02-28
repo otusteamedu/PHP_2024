@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker exec -ti app php app.php --start server
+docker exec -ti app-server php app.php --mode server

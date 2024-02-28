@@ -6,7 +6,10 @@ require './vendor/autoload.php';
 
 use Lrazumov\Hw5\App;
 
-$options = getopt('', ['mode:']);
-
-(new App($options['mode'] ?? 'dev'))
-    ->run();
+try {
+    (new App())
+        ->run();
+}
+catch(Exception $e){
+    print $e->getMessage();
+}
