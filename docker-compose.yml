@@ -3,10 +3,6 @@ version: "3.3"
 networks:
   balancer-network:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 173.18.0.0/16
 
 volumes:
   redis_1_data: {}
@@ -29,8 +25,7 @@ services:
       - ./app:/data
       - ./docker/nginx/hosts/mysite.local.balancer.conf:/etc/nginx/conf.d/mysite.local.balancer.conf
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.5
+      - balancer-network
 
   nginx-one:
     image: nginx
@@ -41,8 +36,7 @@ services:
       - ./app:/data
       - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.6
+      - balancer-network
 
   nginx-two:
     image: nginx
@@ -53,8 +47,7 @@ services:
       - ./app:/data
       - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.7
+      - balancer-network
 
   app-one:
     build:
@@ -70,8 +63,7 @@ services:
     volumes:
       - ./app:/data
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.8
+      - balancer-network
 
   app-two:
     build:
@@ -87,11 +79,10 @@ services:
     volumes:
       - ./app:/data
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.9
+      - balancer-network
 
   redis_1:
-    image: redis:6.2-alpine
+    image: redis
     hostname: redis_1
     container_name: redis_1
     restart: always
@@ -101,17 +92,16 @@ services:
       - "6381:6381"
       - "16381:16381"
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.11
+      - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6381'
     volumes:
       - redis_1_data:/data
-      - ./docker/redis/redis_1/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_2:
-    image: redis:6.2-alpine
+    image: redis
     hostname: redis_2
     container_name: redis_2
     restart: always
@@ -121,17 +111,16 @@ services:
       - "6382:6382"
       - "16382:16382"
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.12
+      - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6382'
     volumes:
       - redis_2_data:/data
-      - ./docker/redis/redis_2/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_3:
-    image: redis:6.2-alpine
+    image: redis
     hostname: redis_3
     container_name: redis_3
     restart: always
@@ -141,17 +130,16 @@ services:
       - "6383:6383"
       - "16383:16383"
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.13
+      - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6383'
     volumes:
       - redis_3_data:/data
-      - ./docker/redis/redis_3/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_4:
-    image: redis:6.2-alpine
+    image: redis
     hostname: redis_4
     container_name: redis_4
     restart: always
@@ -161,17 +149,16 @@ services:
       - "6384:6384"
       - "16384:16384"
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.14
+      - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6384'
     volumes:
       - redis_4_data:/data
-      - ./docker/redis/redis_4/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_5:
-    image: redis:6.2-alpine
+    image: redis
     hostname: redis_5
     container_name: redis_5
     restart: always
@@ -181,17 +168,16 @@ services:
       - "6385:6385"
       - "16385:16385"
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.15
+      - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6385'
     volumes:
       - redis_5_data:/data
-      - ./docker/redis/redis_5/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_6:
-    image: redis:6.2-alpine
+    image: redis
     hostname: redis_6
     container_name: redis_6
     restart: always
@@ -201,27 +187,25 @@ services:
       - "6386:6386"
       - "16386:16386"
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.16
+      - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6386'
     volumes:
       - redis_6_data:/data
-      - ./docker/redis/redis_6/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_cluster:
-    image: redis:6.2-alpine
+    image: redis
     container_name: redis_cluster
     sysctls:
       - net.core.somaxconn=65536
     networks:
-      balancer-network:
-        ipv4_address: 173.18.0.17
+      - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     tty: true
-    command: 'redis-cli --cluster create 173.18.0.11:6381 173.18.0.12:6382 173.18.0.13:6383 173.18.0.14:6384 173.18.0.15:6385 173.18.0.16:6386 --cluster-replicas 1 --cluster-yes -a "${REDIS_PASSWORD}"'
+    command: 'redis-cli --cluster create ${APP_IP}:6381 ${APP_IP}:6382 ${APP_IP}:6383 ${APP_IP}:6384 ${APP_IP}:6385 ${APP_IP}:6386 --cluster-replicas 1 --cluster-yes -a "${REDIS_PASSWORD}"'
     depends_on:
       - redis_1
       - redis_2
