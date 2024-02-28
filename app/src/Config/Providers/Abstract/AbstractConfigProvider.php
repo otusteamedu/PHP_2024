@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kiryao\Sockchat\Config\Providers\Abstract;
 
+use Kiryao\Sockchat\Helpers\DTO\DTOInterface;
 use Kiryao\Sockchat\Config\Providers\Interface\ConfigProviderInterface;
 use Kiryao\Sockchat\Config\Exception\ConfigSectionNotFoundException;
 use Kiryao\Sockchat\Config\Exception\ConfigNotFoundException;
@@ -14,11 +15,25 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
 {
     protected array $config;
 
-    public function __construct(protected string $configPath, protected string $configSection)
-    {
+    public function __construct(
+        protected string $configPath,
+        protected string $configSection
+    ) {
     }
 
-    abstract public function load();
+    /**
+     * @throws ConfigNotFoundException
+     * @throws ConfigSectionNotFoundException
+     * @throws ConfigKeyIsEmptyException
+     * @throws ConfigKeyNotFoundException
+     */
+    public function load(): DTOInterface
+    {
+        $this->parse();
+        return $this->buildConfig();
+    }
+
+    abstract protected function buildConfig(): DTOInterface;
 
     /**
      * @throws ConfigNotFoundException
@@ -26,7 +41,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      * @throws ConfigKeyNotFoundException
      * @throws ConfigSectionNotFoundException
      */
-    protected function parse(): void
+    private function parse(): void
     {
         $this
             ->getConfig()
@@ -38,7 +53,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     /**
      * @throws ConfigNotFoundException
      */
-    protected function getConfig(): self
+    private function getConfig(): self
     {
         $config = parse_ini_file($this->configPath, true);
 
@@ -54,7 +69,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     /**
      * @throws ConfigSectionNotFoundException
      */
-    protected function selectSection(): self
+    private function selectSection(): self
     {
         if (!array_key_exists($this->configSection, $this->config)) {
             throw new ConfigSectionNotFoundException($this->configSection);
@@ -65,7 +80,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
         return $this;
     }
 
-    protected function normalizeConfigValues(): self
+    private function normalizeConfigValues(): self
     {
         foreach ($this->config as $key => $value) {
             $this->config[$key] = is_numeric($value) ? (int) $value : (string) $value;
@@ -78,20 +93,18 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
      * @throws ConfigKeyNotFoundException
      * @throws ConfigKeyIsEmptyException
      */
-    protected function checkConfig(): self
+    private function checkConfig(): void
     {
         foreach ($this->config as $key => $value) {
             $this->checkConfigKey($key);
             $this->checkConfigValue($key, $value);
         }
-
-        return $this;
     }
 
     /**
      * @throws ConfigKeyNotFoundException
      */
-    protected function checkConfigKey(string $key): void
+    private function checkConfigKey(string $key): void
     {
         if (!array_key_exists($key, $this->config)) {
             throw new ConfigKeyNotFoundException($key);
@@ -101,7 +114,7 @@ abstract class AbstractConfigProvider implements ConfigProviderInterface
     /**
      * @throws ConfigKeyIsEmptyException
      */
-    protected function checkConfigValue(string $key, string|int $value): void
+    private function checkConfigValue(string $key, string|int $value): void
     {
         if ($value === '' | $value === null) {
             throw new ConfigKeyIsEmptyException($key);
