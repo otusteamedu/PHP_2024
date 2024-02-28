@@ -9,7 +9,6 @@ use IGalimov\Hw5\App;
 try {
     $app = new App();
     $app->run();
-    echo "Chat is ready (type '!exit' to stop):\n";
 } catch (Exception $e) {
     echo "Error:\n - " . $e->getMessage() . "\n";
 }

@@ -10,22 +10,25 @@ class ClientSocketService extends SocketService
      * @param string|null $serverSocketPath
      * @throws \Exception
      */
-    public function socketInProcess(string $serverSocketPath = null)
+    public function socketInProcess(string $serverSocketPath = null): string
     {
-        while ($this->socketStatus) {
-            $message = readline("Type: ");
+        $message = readline("Type: ");
 
-            $this->unblockSocket();
+        $this->unblockSocket();
 
-            $this->sendMessage($message, $serverSocketPath);
+        $this->sendMessage($message, $serverSocketPath);
 
-            if ($message == '!exit') {
-                $this->closeSocket();
-            }
-
-            $this->blockSocket();
-
-            extract($this->receiveMessages());
+        if ($message == '!exit') {
+            $this->closeSocket();
         }
+
+        $this->blockSocket();
+
+        $buf = '';
+        $from = '';
+
+        extract($this->receiveMessages($buf, $from));
+
+        return "$from:\n $buf \n";
     }
 }

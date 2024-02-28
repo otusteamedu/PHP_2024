@@ -8,7 +8,7 @@ class SocketService
 {
     public $socket;
     protected $socketPath;
-    protected $socketStatus;
+    public $socketStatus;
 
     /**
      * @throws \Exception
@@ -28,7 +28,7 @@ class SocketService
      * @param string $pathToSocket
      * @throws \Exception
      */
-    public function createSocket(string $pathToSocket): bool
+    public function createSocket(string $pathToSocket): void
     {
         $this->socketPath = $pathToSocket;
 
@@ -91,15 +91,13 @@ class SocketService
      * @return array
      * @throws \Exception
      */
-    protected function receiveMessages(string $buf = '', string $from = ''): array
+    protected function receiveMessages(string $buf, string $from): array
     {
         $bytesReceived = socket_recvfrom($this->socket, $buf, 65536, 0, $from);
 
         if ($bytesReceived == -1) {
             throw new \Exception("An error occured while receiving from the socket.");
         }
-
-        echo "$from:\n $buf \n";
 
         return compact('buf', 'from');
     }

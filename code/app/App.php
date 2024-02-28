@@ -43,7 +43,9 @@ class App
 
         $socketService->createSocket(dirname(__FILE__) . self::PATH_TO_SERVER_SOCKET);
 
-        $socketService->socketInProcess();
+        while ($socketService->socketStatus) {
+            echo $socketService->socketInProcess();
+        }
     }
 
     /**
@@ -57,8 +59,12 @@ class App
             throw new \Exception("Server is offline.");
         }
 
-        $socketService->createSocket(dirname(__FILE__) . self::PATH_TO_CLIENT_SOCKET))
+        $socketService->createSocket(dirname(__FILE__) . self::PATH_TO_CLIENT_SOCKET);
 
-        $socketService->socketInProcess(dirname(__FILE__) . self::PATH_TO_SERVER_SOCKET);
+        echo "Chat is ready (type '!exit' to stop):\n";
+
+        while ($socketService->socketStatus) {
+            echo $socketService->socketInProcess(dirname(__FILE__) . self::PATH_TO_SERVER_SOCKET);
+        }
     }
 }

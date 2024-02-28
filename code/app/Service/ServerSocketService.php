@@ -9,23 +9,23 @@ class ServerSocketService extends SocketService
     /**
      * @throws \Exception
      */
-    public function socketInProcess()
+    public function socketInProcess(): string
     {
-        while ($this->socketStatus) {
-            $this->blockSocket();
+        $this->blockSocket();
 
-            $buf = '';
-            $from = '';
+        $buf = '';
+        $from = '';
 
-            extract($this->receiveMessages($buf, $from));
+        extract($this->receiveMessages($buf, $from));
 
-            if ($buf == '!exit') {
-                $this->closeSocket();
-            }
-
-            $this->unblockSocket();
-
-            $this->sendMessage('Message received by server...', $from);
+        if ($buf == '!exit') {
+            $this->closeSocket();
         }
+
+        $this->unblockSocket();
+
+        $this->sendMessage('Message received by server...', $from);
+
+        return "$from:\n $buf \n";
     }
 }
