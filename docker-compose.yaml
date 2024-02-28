@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  server:
+    build:
+      dockerfile: docker/Server/Dockerfile
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+
+
+  client:
+    build:
+      dockerfile: docker/Client/Dockerfile
+    tty: true
+
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    depends_on:
+      - server
+
+networks:
+  app-network:
+    driver: bridge
