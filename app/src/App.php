@@ -6,7 +6,6 @@ namespace Kagirova\Hw5;
 
 class App
 {
-
     public function run($args)
     {
         if (empty($args[1])) {
