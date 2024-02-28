@@ -9,13 +9,13 @@ use Kiryao\Sockchat\Socket\Client;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketWriteException;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketReadException;
 use Kiryao\Sockchat\Socket\Abstract\Exception\ErrorSocketCreateException;
-use Kiryao\Sockchat\Chat\Std\StdManager;
+use Kiryao\Sockchat\Chat\IO\IOManager;
 
 class ClientChat implements ChatInterface
 {
     public function __construct(
         private Client\Socket $socket,
-        private StdManager $stdManager,
+        private IOManager $ioManager,
         private string $chatExit
     ) {
     }
@@ -28,11 +28,11 @@ class ClientChat implements ChatInterface
      */
     public function run(): void
     {
-        $this->stdManager->printMessage('The client is running.');
+        $this->ioManager->printMessage('The client is running.');
         $this->socket->create()->connect();
 
         while (true) {
-            $outputMessage = $this->stdManager->readLine("Enter any message (or '$this->chatExit' to exit) and press Enter: ");
+            $outputMessage = $this->ioManager->readLine("Enter any message (or '$this->chatExit' to exit) and press Enter: ");
 
             $this->socket->write($outputMessage);
 
@@ -41,10 +41,10 @@ class ClientChat implements ChatInterface
             }
 
             $inputMessage = $this->socket->readMessage();
-            $this->stdManager->printMessage($inputMessage);
+            $this->ioManager->printMessage($inputMessage);
         }
 
         $this->socket->close();
-        $this->stdManager->printMessage('The client is stopped.');
+        $this->ioManager->printMessage('The client is stopped.');
     }
 }

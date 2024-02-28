@@ -9,7 +9,7 @@ use Kiryao\Sockchat\Socket\Client;
 use Kiryao\Sockchat\Config\DTO\SocketPath;
 use Kiryao\Sockchat\Config\DTO\Socket;
 use Kiryao\Sockchat\Config\DTO\Chat;
-use Kiryao\Sockchat\Chat\Std\StdManager;
+use Kiryao\Sockchat\Chat\IO\IOManager;
 use Kiryao\Sockchat\Chat\ServerChat;
 use Kiryao\Sockchat\Chat\ClientChat;
 use Kiryao\Sockchat\App\Exception\ArgumentMissingException;
@@ -22,7 +22,7 @@ class App
         private Socket\Config $socketConfig,
         private SocketPath\Config $socketPathConfig,
         private Chat\Config $chatConfig,
-        private StdManager $stdManager
+        private IOManager $ioManager
     ) {
     }
 
@@ -48,7 +48,7 @@ class App
                     $this->socketConfig,
                     $this->socketPathConfig
                 ),
-                $this->stdManager,
+                $this->ioManager,
                 $chatExit
             ),
             $argClientRun => new ClientChat(
@@ -56,7 +56,7 @@ class App
                     $this->socketConfig,
                     $this->socketPathConfig,
                 ),
-                $this->stdManager,
+                $this->ioManager,
                 $chatExit
             ),
             default => throw new InvalidArgumentException('Invalid argument. Please use ' . $argServerRun . ' or ' . $argClientRun),

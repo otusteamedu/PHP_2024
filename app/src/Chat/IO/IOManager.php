@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Kiryao\Sockchat\Chat\Std;
+namespace Kiryao\Sockchat\Chat\IO;
 
-class StdManager
+class IOManager
 {
     public function readLine(string $prompt): string
     {
