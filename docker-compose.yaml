@@ -3,10 +3,9 @@ version: '3'
 
 # в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #контейнер с Nginx
   nginx:
     build:
-      context: ./nginx
+      context: ./nginx-balancer
       dockerfile: Dockerfile
     image: balance/nginx
     container_name: nginx
@@ -14,9 +13,36 @@ services:
     ports:
       - "80:80"
     volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+    depends_on:
+      - nginx1
+      - nginx2
+
+  nginx1:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx1
+    volumes:
        - ./code:/data/mysite.local
     networks:
       - app-network
+
+  nginx2:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx2
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
 
   #Контейнер с PHP-FPM, назовём его app
   app1:
@@ -47,18 +73,6 @@ services:
       - app-network
 
   #Контейнер с PHP-FPM, назовём его app
-  app3:
-    # Если нет секции build, то система будет искать образ в репозиториях
-    build:
-      context: ./fpm
-      dockerfile: Dockerfile
-    image: balance/php # имя будущего образа
-    container_name: app3 # имя контейнера после запуска
-    volumes:
-      - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
-    networks:
-      - app-network
 
 #Docker Networks
 networks:
