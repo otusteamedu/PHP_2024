@@ -57,7 +57,7 @@ class App
             throw new \Exception("Server is offline.");
         }
 
-        if($socketService->createSocket(dirname(__FILE__) . self::PATH_TO_CLIENT_SOCKET)) {
+        if ($socketService->createSocket(dirname(__FILE__) . self::PATH_TO_CLIENT_SOCKET)) {
             echo "Chat is ready (type '!exit' to stop):\n";
         }
 
