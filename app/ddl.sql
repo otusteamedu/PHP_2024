@@ -1,11 +1,37 @@
+CREATE TABLE countries (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    UNIQUE (name)
+);
+
+CREATE TABLE genres (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    UNIQUE (name)
+);
+
 CREATE TABLE films (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+);
+
+CREATE TABLE film_genres (
+    film_id INT NOT NULL REFERENCES films (id),
+    genre_id INT NOT NULL REFERENCES genres (id),
+    UNIQUE (film_id, genre_id)
+);
+
+CREATE TABLE film_genres (
+    film_id INT NOT NULL REFERENCES films (id),
+    country_id INT NOT NULL REFERENCES countries (id),
+    UNIQUE (film_id, country_id)
 );
 
 CREATE TABLE rooms (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    UNIQUE (name)
 );
 
 CREATE TABLE rooms_places (
