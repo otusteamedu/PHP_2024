@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  server:
+    build:
+      context: ./docker/php
+      dockerfile: ./php-cli/Dockerfile
+      args:
+        - CONTAINER_TYPE=${SERVER_NAME}
+    container_name: ${SERVER_NAME}
+    volumes:
+      - ./app:/app
+      - chatsocket:/app/socket.d/
+      - composer:/root/.composer/cache
+    networks:
+      - chat-network
+
+  client:
+    build:
+      context: ./docker/php
+      dockerfile: ./php-cli/Dockerfile
+      args:
+        - CONTAINER_TYPE=${CLIENT_NAME}
+    container_name: ${CLIENT_NAME}
+    volumes:
+      - ./app:/app
+      - chatsocket:/app/socket.d/
+      - composer:/root/.composer/cache
+    depends_on:
+      - server
+    networks:
+      - chat-network
+
+networks:
+  chat-network:
+    driver: bridge
+
+volumes:
+  composer:
+  chatsocket:
