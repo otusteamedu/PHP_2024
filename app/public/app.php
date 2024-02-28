@@ -11,5 +11,4 @@ try {
     $app->run($argv);
 } catch (Exception $e) {
     echo 'error: ' . $e->getMessage() . "\n";
-
 }

@@ -12,17 +12,13 @@ class App
         if (empty($args[1])) {
             throw new \Exception('Must have an argument');
         }
-        switch ($args[1]) {
-            case 'server':
-                $client = new Server();
-                $client->run();
-                break;
-            case 'client':
-                $client = new Client();
-                $client->run();
-                break;
-            default:
-                throw new \Exception('Must have one argument: client or server');
-        }
+        $config = Config::create();
+
+        $chat = match ($args[1]) {
+            'server' => new Server(new UnixSocket($config)),
+            'client' => new Client(new UnixSocket($config)),
+            default => throw new \Exception('Must have one argument: client or server')
+        };
+        $chat->run();
     }
 }

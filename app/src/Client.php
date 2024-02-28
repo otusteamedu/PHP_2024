@@ -10,9 +10,9 @@ class Client
 {
     private UnixSocket $socket;
 
-    public function __construct()
+    public function __construct(UnixSocket $unixSocket)
     {
-        $this->socket = new UnixSocket();
+        $this->socket = $unixSocket;
     }
 
     public function run()
@@ -34,6 +34,5 @@ class Client
             }
         }
         $this->socket->close();
-
     }
 }

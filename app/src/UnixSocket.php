@@ -8,28 +8,20 @@ use Socket;
 
 class UnixSocket
 {
+    private Config $config;
     private ?Socket $socket = null;
-    private int $max_message_length;
-    private string $socket_address;
-    private string $port;
 
-    public function __construct()
+
+    public function __construct($config)
     {
-        $data = parse_ini_file(dirname(__DIR__) . '/app.ini');
-        if (false === $data) {
-            throw new \RuntimeException('Unable to parse config.ini');
-        }
-        $this->max_message_length = $data['max_message_length'];
-        $this->socket_address = $data['socket_address'];
-        $this->port = $data['port'];
+        $this->config = $config;
     }
-
 
     public function create(bool $clear)
     {
         if ($clear) {
-            if (file_exists($this->socket_address)) {
-                unlink($this->socket_address);
+            if (file_exists($this->config->getSocketPath())) {
+                unlink($this->config->getSocketPath());
             }
         }
         $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
@@ -40,7 +32,7 @@ class UnixSocket
 
     public function bind()
     {
-        if ((socket_bind($this->socket, $this->socket_address, $this->port)) === false) {
+        if ((socket_bind($this->socket, $this->config->getSocketPath())) === false) {
             throw new \Exception("socket_bind() failed: reason: " . socket_strerror(socket_last_error($this->socket)) . "\n");
         }
     }
@@ -48,7 +40,7 @@ class UnixSocket
 
     public function connect()
     {
-        $result = socket_connect($this->socket, $this->socket_address, $this->port);
+        $result = socket_connect($this->socket, $this->config->getSocketPath());
         if ($result === false) {
             throw new \Exception("socket_connect() failed.\nReason: ($result) " . socket_strerror(socket_last_error($this->socket)) . "\n");
         }
@@ -59,7 +51,6 @@ class UnixSocket
         if ((socket_listen($this->socket, 10)) === false) {
             throw new \Exception("socket_listen() failed: reason: " . socket_strerror(socket_last_error($this->socket)) . "\n");
         }
-
     }
 
     public function accept()
@@ -74,7 +65,7 @@ class UnixSocket
     {
         $connection = $socket ?? $this->socket;
 
-        if (($message = socket_read($connection, $this->max_message_length)) === false) {
+        if (($message = socket_read($connection, $this->config->getMessageMaxLength())) === false) {
             throw new \Exception("socket_read() failed: reason: " . socket_strerror(socket_last_error($connection)) . "\n");
         }
         return $message;
@@ -86,7 +77,6 @@ class UnixSocket
         if (socket_write($connection, $message) === false) {
             throw new \Exception("socket_write() failed: reason: " . socket_strerror(socket_last_error($connection)) . "\n");
         }
-
     }
 
     public function close(Socket $socket = null)

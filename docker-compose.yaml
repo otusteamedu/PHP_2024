@@ -1,21 +1,26 @@
 version: '3'
 
 services:
-  client:
+  server:
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/Server/Dockerfile
     volumes:
       - ./app:/app
     networks:
       - app-network
 
-  server:
+
+  client:
     build:
-      dockerfile: docker/Dockerfile
+      dockerfile: docker/Client/Dockerfile
+    tty: true
+
     volumes:
       - ./app:/app
     networks:
       - app-network
+    depends_on:
+      - server
 
 networks:
   app-network:
