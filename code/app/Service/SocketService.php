@@ -35,8 +35,6 @@ class SocketService
         $this->checkAvailableAndPrepareToCreate();
 
         $this->socketInit();
-
-        return $this->socketStatus;
     }
 
 
