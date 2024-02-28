@@ -42,7 +42,7 @@ class ClientProcess extends AbstractProcess implements ProcessInterface
             $send = $this->write($message, $this->socket);
 
             if (!$send) {
-                echo "Сообщение не отправлено" . PHP_EOL;
+                $this->messages['error'][time()] = "Сообщение не отправлено";
                 $this->init();
                 continue;
             }
@@ -50,7 +50,7 @@ class ClientProcess extends AbstractProcess implements ProcessInterface
             $message = $this->read($this->socket);
 
             if (!empty(trim($message))) {
-                $this->messages[time()] = $message;
+                $this->messages['success'][time()] = $message;
             }
 
         } while ($this->runProcess);
