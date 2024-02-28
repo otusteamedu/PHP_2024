@@ -33,10 +33,12 @@ RUN set -eux; \
     docker-php-ext-install gd; \
     docker-php-ext-configure zip
 
+RUN pecl install memcached && docker-php-ext-enable memcached
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY sock.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY php.ini /usr/local/etc/php/conf.d/php.ini
 
 WORKDIR /var/www/html
 

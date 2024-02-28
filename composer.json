@@ -1,4 +1,16 @@
 {
+    "name": "rail-mukhametshin/hw",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "RailMukhametshin\\Hw\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rail Mukhametshin"
+        }
+    ],
     "require": {
         "rail-mukhametshin/config-manager": "*"
     }

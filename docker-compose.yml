@@ -1,32 +1,69 @@
 version: '3'
 services:
 
-  nginx:
+  nginx_main:
     build:
       context: docker/nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"
-    container_name: '${CONTAINER_NAME_NGINX}'
+    networks:
+      - network
+    volumes:
+      - ./docker/nginx/main.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - nginx1
+      - nginx2
+
+  nginx1:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "81:80"
+    container_name: '${CONTAINER_NAME_NGINX}1'
     volumes:
       - .:/var/www/html
       - ./docker/php-fpm/sock:/sock
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - network
-    links:
-      - php-fpm
-    depends_on:
-      - php-fpm
 
-  php-fpm:
+  nginx2:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "82:80"
+    container_name: '${CONTAINER_NAME_NGINX}2'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - network
+
+  php-fpm1:
     build:
       context: docker/php-fpm
     networks:
       - network
-    container_name: '${CONTAINER_NAME_PHP_FPM}'
+    container_name: '${CONTAINER_NAME_PHP_FPM}1'
     volumes:
       - .:/var/www/html
       - ./docker/php-fpm/sock:/sock
+      - ./docker/php-fpm/sock1.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+
+  php-fpm2:
+    build:
+      context: docker/php-fpm
+    networks:
+      - network
+    container_name: '${CONTAINER_NAME_PHP_FPM}2'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+      - ./docker/php-fpm/sock2.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
 
   redis:
     image: 'redis:alpine'
@@ -41,6 +78,7 @@ services:
     image: sameersbn/memcached:1.5.6-2
     ports:
       - "11211:11211"
+    container_name: "memcached"
     restart: always
     volumes:
       - 'volume-memcached:/data'
