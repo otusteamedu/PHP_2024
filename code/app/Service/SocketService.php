@@ -28,13 +28,15 @@ class SocketService
      * @param string $pathToSocket
      * @throws \Exception
      */
-    public function createSocket(string $pathToSocket): void
+    public function createSocket(string $pathToSocket): bool
     {
         $this->socketPath = $pathToSocket;
 
         $this->checkAvailableAndPrepareToCreate();
 
         $this->socketInit();
+
+        return $this->socketStatus;
     }
 
 
