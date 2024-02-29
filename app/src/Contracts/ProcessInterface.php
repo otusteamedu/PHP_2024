@@ -8,5 +8,5 @@ interface ProcessInterface
 {
     public function init(): void;
 
-    public function run(): void;
+    public function run(): \Fiber;
 }
