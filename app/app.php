@@ -14,8 +14,6 @@ try {
         $message = $fiber->resume();
         echo $message . PHP_EOL;
     }
-
 } catch (Throwable $e) {
     echo $e->getMessage() . PHP_EOL;
 }
-
