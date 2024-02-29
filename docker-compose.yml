@@ -48,7 +48,7 @@ services:
       context: docker/php-fpm
     networks:
       - network
-    container_name: '${CONTAINER_NAME_PHP_FPM}1'
+    container_name: '${CONTAINER_NAME_PHP_FPM_1}'
     volumes:
       - .:/var/www/html
       - ./docker/php-fpm/sock:/sock
@@ -59,7 +59,7 @@ services:
       context: docker/php-fpm
     networks:
       - network
-    container_name: '${CONTAINER_NAME_PHP_FPM}2'
+    container_name: '${CONTAINER_NAME_PHP_FPM_2}'
     volumes:
       - .:/var/www/html
       - ./docker/php-fpm/sock:/sock

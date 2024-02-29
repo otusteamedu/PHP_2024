@@ -7,8 +7,11 @@ up:
 down:
 	docker-compose down
 
-bash:
-	docker exec -it ${CONTAINER_NAME_PHP_FPM}1 /bin/bash
+p1 bash:
+	docker exec -it ${CONTAINER_NAME_PHP_FPM_1} /bin/bash
+
+p2 bash:
+	docker exec -it ${CONTAINER_NAME_PHP_FPM_2} /bin/bash
 
 build:
 	docker-compose build

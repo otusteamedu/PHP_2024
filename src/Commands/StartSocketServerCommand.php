@@ -15,7 +15,7 @@ class StartSocketServerCommand extends AbstractCommand
     public function execute(): void
     {
         $this->formatter->output('Started socket server');
-        $server = new SocketServer($this->getConfigManager()->get('unix_file_path'));
+        $server = new SocketServer($this->configManager->get('unix_file_path'));
         $server->start();
         $this->formatter->output('Closed socket server');
     }

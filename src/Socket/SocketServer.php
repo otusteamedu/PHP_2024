@@ -12,7 +12,7 @@ class SocketServer extends AbstractSocket
 {
     private function bindSock(): void
     {
-        @unlink($this->socketPath);
+        unlink($this->socketPath);
 
         if (socket_bind($this->sock, $this->socketPath) === false) {
             throw new Exception("Socket binding error: " . socket_strerror(socket_last_error($this->sock)));

@@ -10,16 +10,11 @@ use RailMukhametshin\Hw\Formatters\ConsoleOutputFormatter;
 abstract class AbstractCommand implements CommandInterface
 {
     protected ConsoleOutputFormatter $formatter;
-    private ConfigManager $configManager;
+    protected ConfigManager $configManager;
 
     public function __construct(ConfigManager $configManager)
     {
         $this->formatter = new ConsoleOutputFormatter();
         $this->configManager = $configManager;
-    }
-
-    protected function getConfigManager(): ConfigManager
-    {
-        return $this->configManager;
     }
 }
