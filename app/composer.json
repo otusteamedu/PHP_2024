@@ -1,0 +1,10 @@
+{
+    "name": "rmulyukov/hw8",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rmulyukov\\Hw8\\": "app/"
+        }
+    },
+    "require": {}
+}
