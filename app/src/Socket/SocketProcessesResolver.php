@@ -24,12 +24,13 @@ class SocketProcessesResolver
     /**
      * @throws Exception
      */
-    public function runProcess(): void
+    public function runProcess(): \Fiber
     {
         $argStart = $this->getArgs();
         $processClass = ProcessEnum::from($argStart)->resolveProcessClass();
         $this->process = new $processClass($this->socketPath);
-        $this->process->run();
+
+        return $this->process->run();
     }
 
     /**

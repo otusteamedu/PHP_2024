@@ -19,8 +19,8 @@ class App
     /**
      * @throws Exception
      */
-    public function run(): void
+    public function run(): \Fiber
     {
-        $this->socketResolver->runProcess();
+        return $this->socketResolver->runProcess();
     }
 }

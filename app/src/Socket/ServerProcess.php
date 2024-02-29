@@ -24,26 +24,26 @@ class ServerProcess extends AbstractProcess implements ProcessInterface
     /**
      * @throws Exception
      */
-    public function run(): void
+    public function run(): \Fiber
     {
-        echo 'Server start ...' . PHP_EOL;
-        $socket = $this->accept();
+        return new \Fiber(function () {
+            $socket = $this->accept();
 
-        do {
-            $message = $this->read($socket);
+            do {
+                $message = $this->read($socket);
 
-            if (!empty(trim($message))) {
-                echo "Сообщение от клиента: {$message}" . PHP_EOL;
-                $length = mb_strlen($message);
-                $this->write("{$length}b" . PHP_EOL, $socket);
-            }
+                if (!empty(trim($message))) {
+                    \Fiber::suspend("Сообщение от клиента: {$message}");
+                    $length = mb_strlen($message);
+                    $this->write("Принято {$length}b" . PHP_EOL, $socket);
+                }
 
-            if (CommandEnum::tryFrom(trim($message)) === CommandEnum::STOP) {
-                $this->runProcess = false;
-            }
-        } while ($this->runProcess);
+                $this->runProcess = CommandEnum::tryFrom(trim($message)) !== CommandEnum::STOP;
 
-        $this->kill();
+            } while ($this->runProcess);
+
+            $this->kill();
+        });
     }
 
     /**

@@ -10,7 +10,6 @@ use Exception;
 
 class ClientProcess extends AbstractProcess implements ProcessInterface
 {
-    public array $messages = [];
     /**
      * @throws Exception
      */
@@ -24,36 +23,37 @@ class ClientProcess extends AbstractProcess implements ProcessInterface
     /**
      * @throws Exception
      */
-    public function run(): void
+    public function run(): \Fiber
     {
-        $this->init();
 
-        do {
-            if (!$this->socket) {
-                continue;
-            }
+        return new \Fiber(function () {
+            $this->init();
 
-            $message = readline('Введите сообщение: ');
+            do {
+                if (!$this->socket) {
+                    continue;
+                }
 
-            if (CommandEnum::tryFrom(trim($message)) === CommandEnum::STOP) {
-                $this->runProcess = false;
-            }
+                $message = readline('Введите сообщение: ');
 
-            $send = $this->write($message, $this->socket);
+                $this->runProcess = CommandEnum::tryFrom(trim($message)) !== CommandEnum::STOP;
 
-            if (!$send) {
-                $this->messages['error'][time()] = "Сообщение не отправлено";
-                $this->init();
-                continue;
-            }
+                $send = $this->write($message, $this->socket);
 
-            $message = $this->read($this->socket);
+                if (!$send) {
+                    \Fiber::suspend("Сообщение не отправлено!");
+                    $this->init();
+                    continue;
+                }
 
-            if (!empty(trim($message))) {
-                $this->messages['success'][time()] = $message;
-            }
+                $message = $this->read($this->socket);
 
-        } while ($this->runProcess);
+                if (!empty(trim($message))) {
+                    \Fiber::suspend($message);
+                }
+
+            } while ($this->runProcess);
+        });
     }
 
     /**
