@@ -7,10 +7,10 @@ namespace Alogachev\Homework\Exception;
 use RuntimeException;
 use Throwable;
 
-class WrongConfigException extends RuntimeException
+class WrongInputException extends RuntimeException
 {
     public function __construct(?Throwable $previous = null)
     {
-        parent::__construct('Некорректный ini файл конфигураций', 1, $previous);
+        parent::__construct('Некорректный ввод. Ожидается два аргумента', 1, $previous);
     }
 }

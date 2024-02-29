@@ -11,6 +11,6 @@ class NonExistedConfigException extends RuntimeException
 {
     public function __construct(?Throwable $previous = null)
     {
-        parent::__construct('Отсутствует ini файл конфигураций', 400, $previous);
+        parent::__construct('Отсутствует ini файл конфигураций', 1, $previous);
     }
 }
