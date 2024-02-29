@@ -39,7 +39,6 @@ class ServerProcess extends AbstractProcess implements ProcessInterface
                 }
 
                 $this->runProcess = CommandEnum::tryFrom(trim($message)) !== CommandEnum::STOP;
-
             } while ($this->runProcess);
 
             $this->kill();

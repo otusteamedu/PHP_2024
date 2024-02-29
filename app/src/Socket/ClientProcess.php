@@ -51,7 +51,6 @@ class ClientProcess extends AbstractProcess implements ProcessInterface
                 if (!empty(trim($message))) {
                     \Fiber::suspend($message);
                 }
-
             } while ($this->runProcess);
         });
     }
