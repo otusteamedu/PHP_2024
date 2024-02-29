@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "rail-mukhametshin/config-manager": "*"
+        "rail-mukhametshin/config-manager": "*",
+        "ext-sockets": "*"
     }
 }
