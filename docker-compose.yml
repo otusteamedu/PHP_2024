@@ -8,8 +8,6 @@ services:
       dockerfile: Dockerfile
     image: chat-app
     container_name: app-client
-    # hostname: app-client
-    # restart: always
     volumes:
       - ./app:/data
 
@@ -19,7 +17,5 @@ services:
       dockerfile: Dockerfile
     image: chat-app
     container_name: app-server
-    # hostname: app-server
-    # restart: always
     volumes:
       - ./app:/data
