@@ -23,10 +23,16 @@ class App
 
         switch ($_SERVER['argv'][1]) {
             case 'client':
-                $this->runClient();
+                $client = $this->runClient();
+                foreach ($client as $item) {
+                    yield $item;
+                }
                 break;
             case 'server':
-                $this->runServer();
+                $server = $this->runServer();
+                foreach ($server as $item) {
+                    yield $item;
+                }
                 break;
             default:
                 throw new \Exception("Wrong command.");
@@ -44,7 +50,10 @@ class App
         $socketService->createSocket(dirname(__FILE__) . self::PATH_TO_SERVER_SOCKET);
 
         while ($socketService->socketStatus) {
-            echo $socketService->socketInProcess();
+            $processes = $socketService->socketInProcess();
+            foreach ($processes as $process) {
+                yield $process;
+            }
         }
     }
 
@@ -61,10 +70,13 @@ class App
 
         $socketService->createSocket(dirname(__FILE__) . self::PATH_TO_CLIENT_SOCKET);
 
-        echo "Chat is ready (type '!exit' to stop):\n";
+        yield "Chat is ready (type '!exit' to stop):\n";
 
         while ($socketService->socketStatus) {
-            echo $socketService->socketInProcess(dirname(__FILE__) . self::PATH_TO_SERVER_SOCKET);
+            $processes = $socketService->socketInProcess(dirname(__FILE__) . self::PATH_TO_SERVER_SOCKET);
+            foreach ($processes as $process) {
+                yield $process;
+            }
         }
     }
 }

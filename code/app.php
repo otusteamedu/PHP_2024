@@ -8,7 +8,11 @@ use IGalimov\Hw5\App;
 
 try {
     $app = new App();
-    $app->run();
+    $messages = $app->run();
+
+    foreach ($messages as $message) {
+        echo $message;
+    }
 } catch (Exception $e) {
     echo "Error:\n - " . $e->getMessage() . "\n";
 }

@@ -7,9 +7,10 @@ namespace IGalimov\Hw5\Service;
 class ServerSocketService extends SocketService
 {
     /**
+     * @return \Generator
      * @throws \Exception
      */
-    public function socketInProcess(): string
+    public function socketInProcess(): \Generator
     {
         $this->blockSocket();
 
@@ -26,6 +27,6 @@ class ServerSocketService extends SocketService
 
         $this->sendMessage('Message received by server...', $from);
 
-        return "$from:\n $buf \n";
+        yield "$from:\n $buf \n";
     }
 }

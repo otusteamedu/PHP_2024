@@ -8,9 +8,10 @@ class ClientSocketService extends SocketService
 {
     /**
      * @param string|null $serverSocketPath
+     * @return \Generator
      * @throws \Exception
      */
-    public function socketInProcess(string $serverSocketPath = null): string
+    public function socketInProcess(string $serverSocketPath = null): \Generator
     {
         $message = readline("Type: ");
 
@@ -29,6 +30,6 @@ class ClientSocketService extends SocketService
 
         extract($this->receiveMessages($buf, $from));
 
-        return "$from:\n $buf \n";
+        yield "$from:\n $buf \n";
     }
 }
