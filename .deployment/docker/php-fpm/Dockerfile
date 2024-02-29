@@ -38,6 +38,10 @@ USER www-data
 # Composer instalation
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+RUN composer install
+
+WORKDIR /var/www/homework/public
+
 CMD php-fpm
 
 EXPOSE 9000
