@@ -7,10 +7,10 @@ namespace Alogachev\Homework\Exception;
 use RuntimeException;
 use Throwable;
 
-class EmptyStringException extends RuntimeException
+class NonExistedConfigException extends RuntimeException
 {
     public function __construct(?Throwable $previous = null)
     {
-        parent::__construct('Нет данных для проверки', 400, $previous);
+        parent::__construct('Отсутствует ini файл конфигураций', 400, $previous);
     }
 }
