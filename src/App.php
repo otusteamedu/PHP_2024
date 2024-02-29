@@ -8,6 +8,7 @@ final class App
 {
     public function run(): void
     {
-        $config = Config::getInstance();
+        $config = Config::getInstance()->getConfig();
+        echo 'Все хорошо. Работаем!';
     }
 }

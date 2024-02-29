@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework;
 
+use Alogachev\Homework\Exception\NonExistedConfigException;
+use Alogachev\Homework\Exception\WrongConfigException;
 use Dotenv\Dotenv;
 
 final class Config
@@ -21,17 +23,22 @@ final class Config
         return Config::$instance;
     }
 
-    private function loadConfig()
+    public function getConfig(): array
     {
-        $configPath = $_ENV['CONFIG_PATH'];
+        return $this->configs;
+    }
+
+    private function loadConfig(): array
+    {
+        $configPath = dirname(__DIR__) . $_ENV['CONFIG_PATH'];
         if (!file_exists($configPath)) {
-            // ToDo: Выбросить исключение NonExistedConfigException.
+            throw new NonExistedConfigException();
         }
 
         $config = parse_ini_file($configPath, true);
 
         if ($config === false) {
-            // ToDo: Выбросить исключение WrongConfigException.
+            throw new WrongConfigException();
         }
 
         return $config;
@@ -39,12 +46,11 @@ final class Config
 
     private function __construct()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__);
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
 
         $config = $this->loadConfig();
         $this->configs = $config;
     }
     private function __clone() {}
-    private function __wakeup() {}
 }
