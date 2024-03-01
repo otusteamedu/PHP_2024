@@ -4,3 +4,4 @@
 .AppleDouble
 .LSOverride
 /docker/logs/
+/app/vendor/
