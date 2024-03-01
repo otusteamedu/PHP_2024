@@ -46,6 +46,7 @@ final class Config
 
     private function __construct()
     {
+        // ToDo: Вынести отсюда.
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
 

@@ -6,6 +6,11 @@ namespace Alogachev\Homework;
 
 use Alogachev\Homework\Exception\InvalidAppTypeException;
 use Alogachev\Homework\Exception\WrongInputException;
+use Alogachev\Homework\Interface\IRun;
+use DI\Container;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 final class App
 {
@@ -14,12 +19,34 @@ final class App
         'server',
     ];
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function run(): void
     {
-        $config = Config::getInstance()->getConfig();
+        $container = $this->resolveDI();
         $appType = $this->resolveAppType();
+        /** @var IRun $app */
+        $app = match ($appType) {
+            'server' => $container->get(Server::class),
+            'client' => $container->get(Client::class),
+        };
+//        $app = $container->get(ucfirst($appType));
+        $app->run();
 
         echo "\nВсе хорошо. Работаем!";
+    }
+
+    private function resolveDI(): ContainerInterface
+    {
+        $config = Config::getInstance()->getConfig();
+        var_dump($config);
+
+        return new Container([
+            '$socketPath' => $config['socket']['path'] ?? '',
+            '$stopWord' => $config['socket']['stop_word'] ?? '',
+        ]);
     }
 
     private function resolveAppType(): string
