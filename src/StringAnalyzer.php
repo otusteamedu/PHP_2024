@@ -1,6 +1,7 @@
 <?php
 
 namespace StringAnalyzer;
+
 class StringAnalyzer
 {
     public function checkBrackets(string $string): bool
