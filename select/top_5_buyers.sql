@@ -1,3 +1,4 @@
+-- Топ 5 покупателей (в денежном измерении)
 SELECT SUM(session.price) AS money, ticket.owner AS owner
 FROM ticket
 LEFT JOIN session

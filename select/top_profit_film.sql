@@ -1,3 +1,4 @@
+-- Самый продаваемый фильм (в денежном измерении)
 SELECT SUM(session.price) AS profit_sum, movie.name AS movie_name
 FROM ticket
 LEFT JOIN session

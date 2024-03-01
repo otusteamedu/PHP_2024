@@ -1,3 +1,4 @@
+-- Топ-3 продаваемых (в денежном измерении) жанра
 SELECT genre.name AS genre_name, SUM(session.price) AS profit_sum
 FROM ticket
 LEFT JOIN session
