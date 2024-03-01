@@ -7,16 +7,14 @@ spl_autoload_register(function ($class) {
 $validatePostData =  new \src\Classes\Validate\PostData($_POST);
 try {
     $validationResult = $validatePostData->validate();
-    echo 'Всё хорошо';
+    echo 'Всё хорошо<br>';
 } catch (Exception $e) {
     header("HTTP/1.1 400 Bad Request");
-    echo 'Всё плохо';
+    echo 'Всё плохо<br>';
     echo $e->getMessage();
 
 }
-
-var_dump($_POST);
-echo "Привет, Otus!<br>".date("Y-m-d H:i:s")."<br><br>";
+echo "<br>Привет, Otus!<br>".date("Y-m-d H:i:s")."<br><br>";
 
 echo "Запрос обработал контейнер: " . $_SERVER['HOSTNAME'];
 
