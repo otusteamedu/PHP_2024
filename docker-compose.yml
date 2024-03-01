@@ -89,13 +89,12 @@ services:
     sysctls:
       - net.core.somaxconn=65536
     ports:
-      - "6381:6381"
-      - "16381:16381"
+      - "6381:6379"
     networks:
       - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6381'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
     volumes:
       - redis_1_data:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -108,13 +107,12 @@ services:
     sysctls:
       - net.core.somaxconn=65536
     ports:
-      - "6382:6382"
-      - "16382:16382"
+      - "6382:6379"
     networks:
       - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6382'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
     volumes:
       - redis_2_data:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -127,13 +125,12 @@ services:
     sysctls:
       - net.core.somaxconn=65536
     ports:
-      - "6383:6383"
-      - "16383:16383"
+      - "6383:6379"
     networks:
       - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6383'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
     volumes:
       - redis_3_data:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -146,13 +143,12 @@ services:
     sysctls:
       - net.core.somaxconn=65536
     ports:
-      - "6384:6384"
-      - "16384:16384"
+      - "6384:6379"
     networks:
       - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6384'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
     volumes:
       - redis_4_data:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -165,13 +161,12 @@ services:
     sysctls:
       - net.core.somaxconn=65536
     ports:
-      - "6385:6385"
-      - "16385:16385"
+      - "6385:6379"
     networks:
       - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6385'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
     volumes:
       - redis_5_data:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -184,13 +179,12 @@ services:
     sysctls:
       - net.core.somaxconn=65536
     ports:
-      - "6386:6386"
-      - "16386:16386"
+      - "6386:6379"
     networks:
       - balancer-network
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}" --port 6386'
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
     volumes:
       - redis_6_data:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
@@ -205,7 +199,7 @@ services:
     environment:
       REDIS_PASSWORD: ${REDIS_PASSWORD}
     tty: true
-    command: 'redis-cli --cluster create ${APP_IP}:6381 ${APP_IP}:6382 ${APP_IP}:6383 ${APP_IP}:6384 ${APP_IP}:6385 ${APP_IP}:6386 --cluster-replicas 1 --cluster-yes -a "${REDIS_PASSWORD}"'
+    command: 'redis-cli --cluster create redis_1:6379 redis_2:6379 redis_3:6379 redis_4:6379 redis_5:6379 redis_6:6379 --cluster-replicas 1 --cluster-yes -a "${REDIS_PASSWORD}"'
     depends_on:
       - redis_1
       - redis_2
