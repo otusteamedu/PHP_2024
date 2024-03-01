@@ -28,7 +28,7 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 
 WORKDIR /data/application.local
 
-COPY ../../../. .
+COPY . .
 
-RUN composer install
+RUN composer install && composer dump-autoload
 CMD ["php-fpm"]

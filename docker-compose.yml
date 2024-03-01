@@ -4,24 +4,26 @@ version: '3.3'
 services:
   app1:
     build:
-      context: Docker/fpm
+      context: .
       dockerfile: Dockerfile
     image: myapp/php
     container_name: app1
     volumes:
-       - ./Docker/code:/data/application.local
+      - ./src/:/data/application.local/src
+      - ./public/:/data/application.local/public
     networks:
       - app-network
 
 
   app2:
     build:
-      context: Docker/fpm
+      context: .
       dockerfile: Dockerfile
     image: myapp/php
     container_name: app2
     volumes:
-      - ./Docker/code:/data/application.local
+      - ./src/:/data/application.local/src
+      - ./public/:/data/application.local/public
     networks:
       - app-network
 
@@ -35,7 +37,7 @@ services:
     ports:
       - "80"
     volumes:
-       - ./Docker/code:/data/application.local
+       - ./public/:/data/application.local/public
     networks:
       - app-network
     depends_on:
@@ -50,7 +52,7 @@ services:
     ports:
       - "80"
     volumes:
-      - ./Docker/code:/data/application.local
+      - ./public/:/data/application.local/public
     networks:
       - app-network
     depends_on:
