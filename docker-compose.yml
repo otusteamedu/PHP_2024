@@ -1,0 +1,209 @@
+version: "3.3"
+
+networks:
+  balancer-network:
+    driver: bridge
+
+volumes:
+  redis_1_data: {}
+  redis_2_data: {}
+  redis_3_data: {}
+  redis_4_data: {}
+  redis_5_data: {}
+  redis_6_data: {}
+
+services:
+
+  balancer-nginx:
+    image: nginx
+    container_name: balancer-nginx
+    hostname: balancer-nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/data
+      - ./docker/nginx/hosts/mysite.local.balancer.conf:/etc/nginx/conf.d/mysite.local.balancer.conf
+    networks:
+      - balancer-network
+
+  nginx-one:
+    image: nginx
+    container_name: nginx-one
+    hostname: nginx-one
+    restart: always
+    volumes:
+      - ./app:/data
+      - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - balancer-network
+
+  nginx-two:
+    image: nginx
+    container_name: nginx-two
+    hostname: nginx-two
+    restart: always
+    volumes:
+      - ./app:/data
+      - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - balancer-network
+
+  app-one:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: balancer-app
+    container_name: app-one
+    hostname: app-one
+    restart: always
+    environment:
+      APP_IP: ${APP_IP}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - ./app:/data
+    networks:
+      - balancer-network
+
+  app-two:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: balancer-app
+    container_name: app-two
+    hostname: app-two
+    restart: always
+    environment:
+      APP_IP: ${APP_IP}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    volumes:
+      - ./app:/data
+    networks:
+      - balancer-network
+
+  redis_1:
+    image: redis
+    hostname: redis_1
+    container_name: redis_1
+    restart: always
+    sysctls:
+      - net.core.somaxconn=65536
+    ports:
+      - "6381:6379"
+    networks:
+      - balancer-network
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    volumes:
+      - redis_1_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redis_2:
+    image: redis
+    hostname: redis_2
+    container_name: redis_2
+    restart: always
+    sysctls:
+      - net.core.somaxconn=65536
+    ports:
+      - "6382:6379"
+    networks:
+      - balancer-network
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    volumes:
+      - redis_2_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redis_3:
+    image: redis
+    hostname: redis_3
+    container_name: redis_3
+    restart: always
+    sysctls:
+      - net.core.somaxconn=65536
+    ports:
+      - "6383:6379"
+    networks:
+      - balancer-network
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    volumes:
+      - redis_3_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redis_4:
+    image: redis
+    hostname: redis_4
+    container_name: redis_4
+    restart: always
+    sysctls:
+      - net.core.somaxconn=65536
+    ports:
+      - "6384:6379"
+    networks:
+      - balancer-network
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    volumes:
+      - redis_4_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redis_5:
+    image: redis
+    hostname: redis_5
+    container_name: redis_5
+    restart: always
+    sysctls:
+      - net.core.somaxconn=65536
+    ports:
+      - "6385:6379"
+    networks:
+      - balancer-network
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    volumes:
+      - redis_5_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redis_6:
+    image: redis
+    hostname: redis_6
+    container_name: redis_6
+    restart: always
+    sysctls:
+      - net.core.somaxconn=65536
+    ports:
+      - "6386:6379"
+    networks:
+      - balancer-network
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command: 'redis-server /usr/local/etc/redis/redis.conf --requirepass "${REDIS_PASSWORD}"'
+    volumes:
+      - redis_6_data:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redis_cluster:
+    image: redis
+    container_name: redis_cluster
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      - balancer-network
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    tty: true
+    command: 'redis-cli --cluster create redis_1:6379 redis_2:6379 redis_3:6379 redis_4:6379 redis_5:6379 redis_6:6379 --cluster-replicas 1 --cluster-yes -a "${REDIS_PASSWORD}"'
+    depends_on:
+      - redis_1
+      - redis_2
+      - redis_3
+      - redis_4
+      - redis_5
+      - redis_6
