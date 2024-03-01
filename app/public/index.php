@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Base;
 use App\Services\EmailVerificationService\Exceptions\EmailValidateException;
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $emails = [
     "bob@example.com",
@@ -17,7 +17,7 @@ try {
     $app = new Base();
     echo "validated emails:<br>";
     foreach ($app->run($emails) as $key => $value) {
-       echo $key . " => " . $value . "<br>";
+        echo $key . " => " . $value . "<br>";
     }
 } catch (EmailValidateException $e) {
     echo $e->getMessage();

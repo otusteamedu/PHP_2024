@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Services\EmailVerificationService;
@@ -44,7 +45,7 @@ class EmailVarificator
         $valid_emails = [];
         foreach ($array as $key => $item) {
             if ($item) {
-                $domain = explode('@' ,$item)[1];
+                $domain = explode('@', $item)[1];
                 $valid_emails[$item] = checkdnsrr($domain, 'MX');
             } else {
                 $valid_emails[$key] = false;
