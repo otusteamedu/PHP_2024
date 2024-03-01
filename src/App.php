@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace App;
 
 use RedisConnector\RedisConnector;
