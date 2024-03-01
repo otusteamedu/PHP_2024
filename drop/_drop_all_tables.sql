@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS ticket, place, session, room, movie_genre, movie, genre;
