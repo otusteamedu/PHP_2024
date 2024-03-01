@@ -8,8 +8,9 @@ CREATE TABLE public.cinema_halls (
 
 CREATE TABLE public.seats (
     id bigserial NOT NULL,
-    "number" varchar NOT NULL,
     cinema_hall_id int8 NOT NULL,
+    "row" varchar NOT NULL,
+    "number" varchar NOT NULL,
     "type" varchar NOT NULL,
     CONSTRAINT seats_check CHECK (
         (
@@ -21,7 +22,7 @@ CREATE TABLE public.seats (
         )
     ),
     CONSTRAINT seats_pk PRIMARY KEY (id),
-    CONSTRAINT seats_unique UNIQUE (number, cinema_hall_id),
+    CONSTRAINT seats_unique UNIQUE (cinema_hall_id, "row", number),
     CONSTRAINT seats_cinema_halls_fk FOREIGN KEY (cinema_hall_id) REFERENCES public.cinema_halls(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -69,7 +70,7 @@ CREATE INDEX shows_cinema_hall_id_idx ON public.shows USING btree (cinema_hall_i
 
 CREATE INDEX shows_movie_id_idx ON public.shows USING btree (movie_id);
 
-CREATE TABLE tickets (
+CREATE TABLE public.tickets (
     id bigserial NOT NULL,
     show_id int8 NOT NULL,
     seat_id int8 NOT NULL,
@@ -83,7 +84,7 @@ CREATE INDEX tickets_seat_id_idx ON public.tickets USING btree (seat_id);
 
 CREATE INDEX tickets_show_id_idx ON public.tickets USING btree (show_id);
 
-CREATE TABLE sales (
+CREATE TABLE public.sales (
     id bigserial NOT NULL,
     "date" date NOT NULL,
     amount float8 NOT NULL,
