@@ -60,7 +60,7 @@ CREATE TABLE place
 CREATE TABLE ticket
 (
     id SERIAL PRIMARY KEY,
-    owner VARCHAR(128) NULL,
+    owner VARCHAR(128) NOT NULL,
     session_id INTEGER REFERENCES session(id),
     place_horizontal INTEGER,
     place_vertical INTEGER,
