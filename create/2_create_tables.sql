@@ -49,8 +49,8 @@ CREATE TABLE session
 ----Здесь используются ключи VERTICAL и HORIZONTAL, потому что column - зарезервированное слово, а аналогов я не знаю
 CREATE TABLE place
 (
-    horizontal SMALLINT NULL,
-    vertical SMALLINT NULL,
+    horizontal INTEGER NOT NULL,
+    vertical INTEGER NOT NULL,
     room_id INTEGER REFERENCES room(id),
 
     PRIMARY KEY (horizontal, vertical, room_id)

@@ -4,4 +4,4 @@ LEFT JOIN session
     ON session.id = ticket.id
 GROUP BY ticket.owner
 ORDER BY money DESC
-LIMIT 3;
+LIMIT 5;
