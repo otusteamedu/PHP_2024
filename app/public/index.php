@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Base;
-use App\Services\EmailVerificationService\Exceptions\EmailValidateException;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -19,6 +18,6 @@ try {
     foreach ($app->run($emails) as $key => $value) {
         echo $key . " => " . $value . "<br>";
     }
-} catch (EmailValidateException $e) {
+} catch (Exception $e) {
     echo $e->getMessage();
 }

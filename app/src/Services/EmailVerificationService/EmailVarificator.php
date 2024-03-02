@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\EmailVerificationService;
 
-use App\Services\EmailVerificationService\Exceptions\EmailValidateException;
+use Exception;
 
 class EmailVarificator
 {
@@ -16,67 +16,64 @@ class EmailVarificator
     }
 
     /**
-     * @return array|void
-     * @throws EmailValidateException
+     * @return array
+     * @throws Exception
      */
-    public function emailsVarify()
+    public function emailsVarify(): array
     {
-        if ($this->isEmpty()) {
-            if ($this->isStringItemData()) {
-                return $this->checkDNSMXRecord(array_combine($this->emails, $this->emailsFilter()));
+        $this->isEmpty();
+        $validated_email = [];
+        for ($i = 0; $i < count($this->emails); $i++) {
+            $this->isStringItemData($this->emails[$i]);
+            if ($this->emailsFilter($this->emails[$i]) == $this->emails[$i]) {
+                $validated_email[$this->emails[$i]] = $this->checkDNSMXRecord($this->emails[$i]);
+            } else {
+                $validated_email[$this->emails[$i]] = false;
             }
         }
+        return $validated_email;
     }
 
     /**
+     * @param $value
      * @return mixed
      */
-    private function emailsFilter(): mixed
+    private function emailsFilter($value): mixed
     {
-        return $this->emails = filter_var($this->emails, FILTER_VALIDATE_EMAIL, FILTER_REQUIRE_ARRAY);
+        return filter_var($value, FILTER_VALIDATE_EMAIL);
     }
 
     /**
-     * @param array $array
-     * @return array
+     * @param $value
+     * @return bool
      */
-    public function checkDNSMXRecord(array $array): array
+    public function checkDNSMXRecord($value): bool
     {
-        $valid_emails = [];
-        foreach ($array as $key => $item) {
-            if ($item) {
-                $domain = explode('@', $item)[1];
-                $valid_emails[$item] = checkdnsrr($domain, 'MX');
-            } else {
-                $valid_emails[$key] = false;
-            }
+        $domain = explode('@', $value)[1];
+        return checkdnsrr($domain, 'MX');
+    }
+
+    /**
+     * @param $value
+     * @return void
+     * @throws Exception
+     */
+    private function isStringItemData($value): void
+    {
+        if (!is_string($value)) {
+            $type = gettype($value);
+            throw new Exception("value must be a string! $type is given ");
         }
-        return $valid_emails;
     }
 
     /**
-     * @throws EmailValidateException
+     * @return void
+     * @throws Exception
      */
-    private function isStringItemData(): bool
-    {
-        for ($i = 0; $i < count($this->emails); $i++) {
-            if (!is_string($this->emails[$i])) {
-                $type = gettype($this->emails[$i]);
-                throw new EmailValidateException("value must be a string! $type is given ");
-            }
-        }
-        return true;
-    }
-
-    /**
-     * @return true
-     * @throws EmailValidateException
-     */
-    public function isEmpty(): bool
+    public function isEmpty(): void
     {
         if ($this->emails == []) {
-            throw new EmailValidateException("value must not be empty!");
+            throw new Exception("value must not be empty!");
         }
-        return true;
     }
 }
