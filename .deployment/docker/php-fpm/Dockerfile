@@ -38,7 +38,7 @@ USER www-data
 # Composer instalation
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN composer install
+RUN composer install --optimize-autoloader
 
 WORKDIR /var/www/homework/public
 

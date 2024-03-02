@@ -12,6 +12,9 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+use function DI\create;
+use function DI\get;
+
 final class App
 {
     private const ALLOWED_APP_TYPES = [
@@ -32,7 +35,6 @@ final class App
             'server' => $container->get(Server::class),
             'client' => $container->get(Client::class),
         };
-//        $app = $container->get(ucfirst($appType));
         $app->run();
 
         echo "\nВсе хорошо. Работаем!";
@@ -41,11 +43,16 @@ final class App
     private function resolveDI(): ContainerInterface
     {
         $config = Config::getInstance()->getConfig();
-        var_dump($config);
 
         return new Container([
-            '$socketPath' => $config['socket']['path'] ?? '',
-            '$stopWord' => $config['socket']['stop_word'] ?? '',
+            Client::class => create()->constructor(
+                get('stopWord')
+            ),
+            SocketManager::class => create()->constructor(
+                get('socketPath')
+            ),
+            'socketPath' => $config['socket']['path'] ?? '',
+            'stopWord' => $config['socket']['stop_word'] ?? '',
         ]);
     }
 
