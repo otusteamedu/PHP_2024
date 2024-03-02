@@ -1,0 +1,18 @@
+{
+    "name": "aevkiselev/hw3",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Aevkiselev\\Hw3\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AEVKISELEV",
+            "email": "imbatvink@gmail.com"
+        }
+    ],
+    "require": {
+        "aevkiselev/example-library": "^1.0"
+    }
+}

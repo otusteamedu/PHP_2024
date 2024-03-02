@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "a18dea60f3c0f0ecf66108f39ac41033",
+    "packages": [
+        {
+            "name": "aevkiselev/example-library",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AEVKISELEV/example-library.git",
+                "reference": "9fbf523003e81c0dfa94d833e83279498e8ab9d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AEVKISELEV/example-library/zipball/9fbf523003e81c0dfa94d833e83279498e8ab9d9",
+                "reference": "9fbf523003e81c0dfa94d833e83279498e8ab9d9",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Aevkiselev\\ExampleLibrary\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "AEVKISELEV",
+                    "email": "imbatvink@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/AEVKISELEV/example-library/issues",
+                "source": "https://github.com/AEVKISELEV/example-library/tree/v1.0.0"
+            },
+            "time": "2024-03-02T23:34:59+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
