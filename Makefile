@@ -13,5 +13,11 @@ p1 bash:
 p2 bash:
 	docker exec -it ${CONTAINER_NAME_PHP_FPM_2} /bin/bash
 
+cli1 bash:
+	docker exec -it ${CONTAINER_NAME_PHP_CLI_1} /bin/bash
+
+cli2 bash:
+	docker exec -it ${CONTAINER_NAME_PHP_CLI_2} /bin/bash
+
 build:
 	docker-compose build

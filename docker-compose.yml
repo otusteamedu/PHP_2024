@@ -65,6 +65,24 @@ services:
       - ./docker/php-fpm/sock:/sock
       - ./docker/php-fpm/sock2.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
 
+  php-cli1:
+    image: php8.2-cli
+    networks:
+      - network
+    container_name: '${CONTAINER_NAME_PHP_CLI_1}'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+
+  php-cli2:
+    image: php8.2-cli
+    networks:
+      - network
+    container_name: '${CONTAINER_NAME_PHP_CLI_2}'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+
   redis:
     image: 'redis:alpine'
     ports:
@@ -85,19 +103,16 @@ services:
     networks:
       - network
 
-  mysql:
-    image: 'mysql/mysql-server:8.0'
+  pgsql:
+    image: 'postgres:14-alpine'
     ports:
-      - '3306:3306'
+      - '5432:5432'
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_DB: '${DB_DATABASE}'
     volumes:
-      - 'volume-mysql:/var/lib/mysql'
+      - 'volume-pgsql:/var/lib/postgresql/data'
     networks:
       - network
 
@@ -110,5 +125,5 @@ volumes:
     driver: local
   volume-memcached:
     driver: local
-  volume-mysql:
+  volume-pgsql:
     driver: local
