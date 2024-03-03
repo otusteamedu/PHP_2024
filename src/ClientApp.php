@@ -40,8 +40,7 @@ class ClientApp implements AppInterface
         $isRunning = true;
         while ($isRunning) {
             $sockets = [$this->socket];
-            $write = NULL;
-            $except = NULL;
+            $write = $except = null;
 
             if (socket_select($sockets, $write, $except, 0)) {
                 if ($out = socket_read($this->socket, 1024)) {
