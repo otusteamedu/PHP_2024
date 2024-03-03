@@ -11,10 +11,27 @@ class AppService
     ) {
     }
 
-    public function validate(string $string): string
+    public function validate(): string
     {
-        return $this->validator->validate($string)
-            ? 'Валидно'
-            : 'Невалидно';
+        $message = '';
+        $string = $_SERVER["argv"][2] ?? '';
+
+        try {
+            if (empty($string)) {
+                throw new InvalidParamException('Вы не ввели данные для валидации');
+            }
+
+            $data = explode(',', $string);
+            foreach ($data as $value) {
+                $result = $this->validator->validate($value)
+                    ? 'Валидно'
+                    : 'Невалидно';
+                $message .= "$value - $result" . PHP_EOL;
+            }
+        } catch (\Throwable $exception) {
+            $message = "Ошибка валидации: {$exception->getMessage()}" . PHP_EOL;
+        }
+
+        return $message;
     }
 }
