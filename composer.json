@@ -1,0 +1,12 @@
+{
+    "name": "alex-s-otus/composer-homework",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "AlexSOtus\\ComposerHomework\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0"
+    }
+}

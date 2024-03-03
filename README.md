@@ -1,4 +1,24 @@
-# PHP_2024
+# PartStringHighlight
 
-1. Bash-скрипт otus_bash_sum.sh, принимает два числа и выводит их сумму в стандартный вывод.
-2. Bash-скрипт otus_bash_sort.sh, выводит на экран 3 наиболее популярных города среди пользователей системы.
+Библиотека PartStringHighlight позволяет найти подстроку в строке и вернуть данную 
+строку с выделенной посредством скобок () подстрокой. Регистр строк УЧИТЫВАЕТСЯ.
+
+
+## Требования
+
+- PHP 8.0
+
+
+## Установка
+
+```bash
+composer require alex-s-otus/composer-homework
+```
+
+## Usage
+
+```php
+<?php
+$stringHighlight = new \AlexSOtus\ComposerHomework\PartStringHighlight();
+echo $stringHighlight->stringHighlight("abc","a");
+```
