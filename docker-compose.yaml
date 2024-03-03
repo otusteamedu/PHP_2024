@@ -91,9 +91,17 @@ services:
     image: redis:latest
     container_name: ${APP_NAME}_redis
     volumes:
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
     ports:
       - "${REDIS_PORT}:6379"
     restart: always
     networks:
       - app_network
+
+  composer:
+    image: composer:latest
+    container_name: ${APP_NAME}_composer
+    working_dir: /var/www/app
+    command: [ "composer", "install" ]
+    volumes:
+      - .:/var/www/app

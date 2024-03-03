@@ -6,8 +6,11 @@ namespace App\Controller;
 
 use App\Exception\DomainException;
 use App\Request\CheckParenthesesRequest;
+use App\Response\HttpResponse;
+use App\Response\ResponseInterface;
 use App\Service\ParenthesesCheckService;
 use App\Validator\CheckParenthesesRequestValidator;
+use Throwable;
 
 final readonly class CheckParenthesesController implements CheckParenthesesControllerInterface
 {
@@ -17,20 +20,31 @@ final readonly class CheckParenthesesController implements CheckParenthesesContr
     ) {
     }
 
-    /**
-     * @throws DomainException
-     */
-    public function checkParentheses(): void
+    public function checkParentheses(): ResponseInterface
     {
-        if (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
-            throw new DomainException("Доступен только метод запроса POST");
+        try {
+            if (empty($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+                throw new DomainException("Доступен только метод запроса POST");
+            }
+
+            $request = new CheckParenthesesRequest((string) ($_REQUEST['string'] ?? ''));
+            $this->requestValidator->validate($request);
+
+            if (!$this->parenthesesChecker->check($request->string)) {
+                throw new DomainException('Количество открытых скобок не совпадает с количеством закрытых');
+            }
+
+            $http_code = 200;
+            $response_date['message'] = 'OK';
+        } catch (DomainException $e) {
+            $http_code = 400;
+            $response_date['message'] = $e->getMessage();
+        } catch (Throwable $e) {
+            // логгируем ошибку
+            $http_code = 400;
+            $response_date['message'] = 'Произошла ошибка в процессе обработки';
         }
 
-        $request = new CheckParenthesesRequest((string) ($_REQUEST['string'] ?? ''));
-        $this->requestValidator->validate($request);
-
-        if (!$this->parenthesesChecker->check($request->string)) {
-            throw new DomainException('Количество открытых скобок не совпадает с количеством закрытых');
-        }
+        return new HttpResponse($http_code, json_encode($response_date, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
     }
 }
