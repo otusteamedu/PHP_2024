@@ -6,5 +6,4 @@ namespace App;
 
 class DomainException extends \Exception
 {
-
 }

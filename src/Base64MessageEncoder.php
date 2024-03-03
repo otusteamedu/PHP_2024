@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\MessageEncoderInterface;
-
 class Base64MessageEncoder implements MessageEncoderInterface
 {
-
     public function encode(string $message): string
     {
         return base64_encode($message);
