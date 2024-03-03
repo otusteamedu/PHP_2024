@@ -1,4 +1,3 @@
 # PHP_2024
 
-1. Bash-скрипт otus_bash_sum.sh, принимает два числа и выводит их сумму в стандартный вывод.
-2. Bash-скрипт otus_bash_sort.sh, выводит на экран 3 наиболее популярных города среди пользователей системы.
+https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
