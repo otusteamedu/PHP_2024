@@ -37,7 +37,7 @@ final class App
         };
         $app->run();
 
-        echo "\nВсе хорошо. Работаем!";
+        echo "Все хорошо. Работаем!" . PHP_EOL;
     }
 
     private function resolveDI(): ContainerInterface

@@ -7,6 +7,7 @@ namespace Alogachev\Homework;
 use Alogachev\Homework\Exception\ExtensionNotFoundException;
 use Alogachev\Homework\Exception\SocketAcceptFailedException;
 use Alogachev\Homework\Exception\SocketBindFailedException;
+use Alogachev\Homework\Exception\SocketConnectFailedException;
 use Alogachev\Homework\Exception\SocketCreateFailedException;
 use Alogachev\Homework\Exception\SocketListenFailedException;
 use Alogachev\Homework\Exception\SocketReadFailedException;
@@ -35,6 +36,14 @@ class SocketManager
         }
 
         $this->socket = $socket;
+    }
+
+    public function connect(): void
+    {
+        $result = socket_connect($this->socket, $this->socketPath, 0);
+        if (!$result) {
+            throw new SocketConnectFailedException(socket_strerror(socket_last_error($this->socket)));
+        }
     }
 
     public function bind(): void
@@ -100,6 +109,12 @@ class SocketManager
     {
         $this->close();
         $this->drop();
+    }
+
+    public function createAndConnect(): void
+    {
+        $this->create();
+        $this->connect();
     }
 
     public function recreateBindAndListen(): void

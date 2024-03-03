@@ -15,7 +15,7 @@ class Server implements IRun
 
     public function run(): void
     {
-        echo "\nРаботает сервер!";
+        echo "Работает сервер!" . PHP_EOL;
 
         $this->manager->recreateBindAndListen();
         set_time_limit(0);
@@ -35,6 +35,5 @@ class Server implements IRun
                 $this->manager->write("Получено {$size} байт", $socket);
             }
         }
-
     }
 }
