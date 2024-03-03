@@ -8,17 +8,20 @@
     "packages": [
         {
             "name": "aevkiselev/example-library",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/AEVKISELEV/example-library.git",
-                "reference": "9fbf523003e81c0dfa94d833e83279498e8ab9d9"
+                "reference": "951fc32fcb0b064c779e3001130a928cb9d857b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/AEVKISELEV/example-library/zipball/9fbf523003e81c0dfa94d833e83279498e8ab9d9",
-                "reference": "9fbf523003e81c0dfa94d833e83279498e8ab9d9",
+                "url": "https://api.github.com/repos/AEVKISELEV/example-library/zipball/951fc32fcb0b064c779e3001130a928cb9d857b0",
+                "reference": "951fc32fcb0b064c779e3001130a928cb9d857b0",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
             },
             "type": "library",
             "autoload": {
@@ -35,9 +38,9 @@
             ],
             "support": {
                 "issues": "https://github.com/AEVKISELEV/example-library/issues",
-                "source": "https://github.com/AEVKISELEV/example-library/tree/v1.0.0"
+                "source": "https://github.com/AEVKISELEV/example-library/tree/v1.0.1"
             },
-            "time": "2024-03-02T23:34:59+00:00"
+            "time": "2024-03-03T16:25:02+00:00"
         }
     ],
     "packages-dev": [],
