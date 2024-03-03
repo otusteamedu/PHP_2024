@@ -6,4 +6,8 @@ then
   exit $E_NOFILE
 fi
 
-awk '{print $3}' $1 | sort | uniq -d | head -3
+printCities=$( awk '{print $3}' $1 | sort | uniq -d )
+if ! [ -n "$printCities" ]
+then awk 'FNR>1 {print $3}' $1 | head -3
+else awk '{print $3}' $1 | sort | uniq -d | head -3
+fi

@@ -6,5 +6,5 @@ id user city phone
 5 test5 Moscow 908213
 6 test6 Saint-P 1435782
 7 test7 Milan 4753834
-8 test8 Milan 4835743
+8 test8 Moscow 4835743
 9 test3 Tver 675758
