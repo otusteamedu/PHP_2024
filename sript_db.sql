@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Films` (
   `rental_company` INT NOT NULL,
   `age_limits` INT NOT NULL,
   `actors` VARCHAR(255) NULL,
-  `film_links` VARCHAR(255) NULL,
+  `film_links` TEXT(4096) NULL,
   `start_rental_at` DATETIME NULL,
   `end_rental_at` DATETIME NULL,
   PRIMARY KEY (`film_id`),
