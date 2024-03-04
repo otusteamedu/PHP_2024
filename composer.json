@@ -19,5 +19,7 @@
             "email": "BeliaevNO@alfastrah.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-redis": "*"
+    }
 }

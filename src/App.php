@@ -20,7 +20,6 @@ class App
     public function run(): string
     {
         if (empty($_POST['string'])) {
-            echo "Костыль";
             return ResponseFormatter::jsonResponse([
                 'success' => false,
                 'message' => 'Строка не найдена в POST запросе',
