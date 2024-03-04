@@ -17,8 +17,8 @@ class Response
         private ?string $content = '',
         private ResponseStatus $status = ResponseStatus::HTTP_OK,
         private array $headers = []
-    )
-    {}
+    ) {
+    }
 
     /**
      * @return void

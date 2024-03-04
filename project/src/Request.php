@@ -11,8 +11,8 @@ class Request
      */
     private function __construct(
         private array $params
-    )
-    {}
+    ) {
+    }
 
     /**
      * @return Request
