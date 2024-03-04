@@ -11,6 +11,6 @@ class ReadFileException extends RuntimeException
 {
     public function __construct(?Throwable $previous = null)
     {
-        parent::__construct( 'Ошибка при чтении файла', 400, $previous);
+        parent::__construct('Ошибка при чтении файла', 400, $previous);
     }
 }
