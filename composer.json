@@ -1,0 +1,16 @@
+{
+    "name": "hukimato/email-validator",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Hukimato\\EmailValidator\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniil Aleksandrov",
+            "email": "danay2211@gmail.com"
+        }
+    ],
+    "require": {}
+}
