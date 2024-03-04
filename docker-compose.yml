@@ -54,7 +54,7 @@ services:
       - app-network
 
   redis:
-    image: redis:alpine
+    image: redis
     container_name: redis
     restart: always
     volumes:
@@ -67,7 +67,7 @@ services:
       - app-network
 
   memcached:
-    image: memcached:alpine
+    image: memcached
     container_name: memcached
     ports:
       - ${MEMCACHED_PORT}:${MEMCACHED_PORT}
