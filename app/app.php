@@ -30,7 +30,6 @@ try {
         ->mergeTwoLists($list1, $list2);
 
     var_dump($solution);
-
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
