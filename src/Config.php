@@ -53,6 +53,7 @@ final class Config
         $config = $this->loadConfig();
         $this->configs = $config;
     }
-    private function __clone() {
+    private function __clone()
+    {
     }
 }
