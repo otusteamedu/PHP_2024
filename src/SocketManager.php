@@ -40,6 +40,7 @@ class SocketManager
 
     public function connect(): void
     {
+        var_dump($this->socketPath);
         $result = socket_connect($this->socket, $this->socketPath, 0);
         if (!$result) {
             throw new SocketConnectFailedException(socket_strerror(socket_last_error($this->socket)));

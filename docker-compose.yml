@@ -42,7 +42,6 @@ services:
     volumes:
       - ./:/var/www/homework
       - socket:/var/www/homework/tmp
-    command: ["php", "app.php", "client"]
     depends_on:
       - server
 

@@ -30,7 +30,7 @@ final class Config
 
     private function loadConfig(): array
     {
-        $configPath = dirname(__DIR__) . $_ENV['CONFIG_PATH'];
+        $configPath = $_ENV['CONFIG_PATH'];
         if (!file_exists($configPath)) {
             throw new NonExistedConfigException();
         }

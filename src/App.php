@@ -37,7 +37,7 @@ final class App
         };
         $app->run();
 
-        echo "Все хорошо. Работаем!" . PHP_EOL;
+        echo "Выход из приложения!" . PHP_EOL;
     }
 
     private function resolveDI(): ContainerInterface
@@ -46,7 +46,8 @@ final class App
 
         return new Container([
             Client::class => create()->constructor(
-                get('stopWord')
+                get('stopWord'),
+                get(SocketManager::class)
             ),
             SocketManager::class => create()->constructor(
                 get('socketPath')
