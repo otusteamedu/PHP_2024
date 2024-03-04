@@ -4,7 +4,7 @@
 2) Заполнить поля в `.env` файле. Для примера можно взять данные ниже:
 
 ```dotenv
-COMPOSE_PROJECT_NAME=homework
+COMPOSE_PROJECT_NAME=homework7
 
 ###> php-fpm ###
 PUID=1000
@@ -15,26 +15,8 @@ INSTALL_XDEBUG=true
 ###> nginx ###
 PHP_UPSTREAM_CONTAINER=php-fpm
 PHP_UPSTREAM_PORT=9000
-NGINX_HOST_HTTP_PORT=8888
+NGINX_HOST_HTTP_PORT=80
 ###< nginx ###
-
-###> postgres ###
-POSTGRES_DB_HOST=postgres
-POSTGRES_DB_NAME=homework
-POSTGRES_PORT=5432
-POSTGRES_USER=apps
-POSTGRES_PASSWORD=apps
-###< postgres ###
-
-###> redis ###
-REDIS_HOST=redis
-REDIS_PORT=6379
-###< redis ###
-
-###> memcached ###
-MEMCACHED_HOST=memcached
-MEMCACHED_PORT=11211
-###< memcached ###
 ```
 
 3) Ввести команды (вводить `docker-compose` или `docker compose` в зависимости от версии):

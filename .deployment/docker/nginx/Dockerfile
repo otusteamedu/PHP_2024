@@ -3,7 +3,7 @@ FROM nginx:1.25.2-alpine
 COPY nginx.conf /etc/nginx/
 COPY default.conf /etc/nginx/conf.d
 
-RUN apk update && apk upgrade && apk add --no-cache bash
+RUN apk update && apk upgrade && apk add --no-cache
 
 ARG PHP_UPSTREAM_CONTAINER
 ENV PHP_UPSTREAM_CONTAINER $PHP_UPSTREAM_CONTAINER

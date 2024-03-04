@@ -5,7 +5,6 @@ networks:
     name: homework-net
     driver: bridge
 
-
 services:
   php-fpm:
     container_name: php-fpm
@@ -43,45 +42,6 @@ services:
       - ./:/var/www/homework:rw
     depends_on:
       - php-fpm
-
-  postgres:
-    container_name: postgres
-    networks:
-      - homework-net
-    build:
-      context: ./.deployment/docker/postgres
-      dockerfile: ./Dockerfile
-    ports:
-      - ${POSTGRES_PORT}:5432
-    environment:
-      POSTGRES_HOST: ${POSTGRES_DB_HOST}
-      POSTGRES_DB: ${POSTGRES_DB_NAME}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - db_data:/var/lib/postgresql/data:rw
-
-  redis:
-    container_name: redis
-    networks:
-      - homework-net
-    build:
-      context: ./.deployment/docker/redis
-      dockerfile: ./Dockerfile
-    ports:
-      - ${REDIS_PORT}:6379
-    volumes:
-      - redis_data:/data
-
-  memcached:
-    container_name: memcached
-    networks:
-      - homework-net
-    build:
-      context: ./.deployment/docker/memcached
-      dockerfile: ./Dockerfile
-    ports:
-      - ${MEMCACHED_PORT}:11211
 
 volumes:
   db_data:
