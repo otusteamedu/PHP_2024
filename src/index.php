@@ -1,6 +1,5 @@
 <?php
 
-echo "Привет, Otus!<br>".date("Y-m-d H:i:s") ."<br><br>";
+echo "Привет, Otus! Я сделяль!";
 
-echo "111111";
 
