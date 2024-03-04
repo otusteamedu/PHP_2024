@@ -20,7 +20,6 @@ class SocketManager
     public function __construct(
         private readonly string $socketPath,
     ) {
-
     }
 
     public function create(): void

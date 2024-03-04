@@ -12,7 +12,6 @@ class Client implements IRun
         private readonly string $stopWord,
         private readonly SocketManager $manager,
     ) {
-
     }
 
     public function run(): void
@@ -20,7 +19,7 @@ class Client implements IRun
         echo "Работает клиент!" . PHP_EOL;
         $this->manager->createAndConnect();
 
-        while(true) {
+        while (true) {
             $msg = readline("Write something: ");
 
             if (!$msg) {
