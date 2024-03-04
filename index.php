@@ -8,4 +8,3 @@ $service = new \Sergey\OtusVasilkov\Application\StringService();
 $command = new \Sergey\OtusVasilkov\Infrastructure\StringCommand($service);
 
 $command->run();
-
