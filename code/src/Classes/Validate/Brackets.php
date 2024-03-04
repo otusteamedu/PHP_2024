@@ -2,36 +2,21 @@
 
 namespace src\Classes\Validate;
 
-class PostData
+class Brackets
 {
-    protected bool $validateResult = true;
-    protected array $post;
     protected string $string;
 
-    public function __construct(array $post)
+    public function __construct(string $string)
     {
-        $this->post = $post;
+        $this->string = $string;
     }
 
     /**
      * @throws \Exception
      */
-    public function validate(): bool
+    public function validate(): void
     {
-        $this->checkIncomingParam();
         $this->checkBracketCount();
-        return true;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    protected function checkIncomingParam(): void
-    {
-        if (empty($this->post['string'])) {
-            throw new \Exception('Param empty');
-        }
-        $this->string = $this->post['string'];
     }
 
     /**
@@ -70,4 +55,5 @@ class PostData
             throw new \Exception('Brackets count is wrong');
         }
     }
+
 }
