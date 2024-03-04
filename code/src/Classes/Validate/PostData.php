@@ -6,8 +6,10 @@ class PostData
 {
     protected bool $validateResult = true;
     protected array $post;
-    protected  string $string;
-    public function __construct(array $post) {
+    protected string $string;
+
+    public function __construct(array $post)
+    {
         $this->post = $post;
     }
 
@@ -26,7 +28,7 @@ class PostData
      */
     protected function checkIncomingParam(): void
     {
-        if(empty($this->post['string'])) {
+        if (empty($this->post['string'])) {
             throw new \Exception('Param empty');
         }
         $this->string = $this->post['string'];
@@ -41,32 +43,31 @@ class PostData
 
         $countOfOpenBrackets = 0;
         $countOfClosedBrackets = 0;
-        if($arrayOfBrackets[0] !== '(' && end($arrayOfBrackets) !== ')' ) {
+        if ($arrayOfBrackets[0] !== '(' && end($arrayOfBrackets) !== ')') {
             throw new \Exception('Wrong string');
         }
 
         foreach ($arrayOfBrackets as $bracket) {
-            if($bracket !== '(' && $bracket !== ')') {
+            if ($bracket !== '(' && $bracket !== ')') {
                 throw new \Exception('Its not bracket');
             }
 
-            if($bracket === '(') {
+            if ($bracket === '(') {
                 $countOfOpenBrackets++;
             } else {
                 $countOfClosedBrackets++;
             }
 
-            if($countOfClosedBrackets > $countOfOpenBrackets) {
+            if ($countOfClosedBrackets > $countOfOpenBrackets) {
                 throw new \Exception('Closed brackets more than opened');
-            } elseif($countOfClosedBrackets === $countOfOpenBrackets) {
+            } elseif ($countOfClosedBrackets === $countOfOpenBrackets) {
                 $countOfOpenBrackets = 0;
                 $countOfClosedBrackets = 0;
             }
 
-
         }
 
-        if($countOfClosedBrackets !== $countOfOpenBrackets) {
+        if ($countOfClosedBrackets !== $countOfOpenBrackets) {
             throw new \Exception('Brackets count is wrong');
         }
     }
