@@ -15,7 +15,7 @@ enum ResponseStatus: int
      */
     public function getText(): string
     {
-        return match($this) {
+        return match ($this) {
             ResponseStatus::HTTP_OK => 'OK',
             ResponseStatus::HTTP_BAD_REQUEST => 'Bad Request',
             ResponseStatus::HTTP_INTERNAL_SERVER_ERROR => 'Internal Server Error',

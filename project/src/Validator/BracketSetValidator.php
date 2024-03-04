@@ -9,7 +9,7 @@ class BracketSetValidator
     public function validate(mixed $value): void
     {
         if (!is_string($value)) {
-            throw new InvalidBracketSetException(sprintf( 'Value type should be string, %s given', gettype($value)));
+            throw new InvalidBracketSetException(sprintf('Value type should be string, %s given', gettype($value)));
         }
 
         if ('' === $value) {
@@ -19,7 +19,10 @@ class BracketSetValidator
         $countBalance = 0;
         $wrongStruct = false;
         foreach (str_split($value) as $char) {
-            if ($countBalance < 0) $wrongStruct = true;
+            if ($countBalance < 0) {
+                $wrongStruct = true;
+            }
+
             switch ($char) {
                 case '(':
                     $countBalance++;
