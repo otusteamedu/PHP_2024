@@ -3,7 +3,7 @@
     "description": "project",
     "autoload": {
         "psr-4": {
-            "Alogachev\\Homework\\": "./"
+            "Alogachev\\Homework\\": "src/"
         }
     },
     "authors": [
