@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.2-alpine
 
 RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash libmemcached-dev libzip-dev
 
