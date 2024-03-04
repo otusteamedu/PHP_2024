@@ -64,7 +64,6 @@ class PostData
                 $countOfOpenBrackets = 0;
                 $countOfClosedBrackets = 0;
             }
-
         }
 
         if ($countOfClosedBrackets !== $countOfOpenBrackets) {
