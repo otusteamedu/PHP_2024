@@ -55,5 +55,4 @@ class Brackets
             throw new \Exception('Brackets count is wrong');
         }
     }
-
 }

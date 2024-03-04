@@ -28,5 +28,4 @@ class HTTP
             throw new \Exception('Param empty');
         }
     }
-
 }
