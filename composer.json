@@ -1,0 +1,5 @@
+{
+    "require": {
+        "sergey-program/otus-vasilkov": "^1.0"
+    }
+}
