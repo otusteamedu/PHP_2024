@@ -1,0 +1,106 @@
+
+version: '3.3'
+
+services:
+  app1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app1
+    volumes:
+      - ./src/:/data/application.local/src
+      - ./public/:/data/application.local/public
+    networks:
+      - app-network
+
+
+  app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app2
+    volumes:
+      - ./src/:/data/application.local/src
+      - ./public/:/data/application.local/public
+    networks:
+      - app-network
+
+
+  webserver1:
+    build:
+      context: Docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: web1
+    ports:
+      - "80"
+    volumes:
+       - ./public/:/data/application.local/public
+    networks:
+      - app-network
+    depends_on:
+      - app1
+
+  webserver2:
+    build:
+      context: Docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: web2
+    ports:
+      - "80"
+    volumes:
+      - ./public/:/data/application.local/public
+    networks:
+      - app-network
+    depends_on:
+      - app2
+
+  webserverBalancer:
+    build:
+      context: Docker/nginx_balancer
+      dockerfile: Dockerfile
+    image: myapp/nginx_balancer
+    container_name: balancer
+    ports:
+      - "8080:80"
+      - "443:443"
+    networks:
+      - app-network
+    depends_on:
+      - webserver1
+      - webserver2
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
+
+#  postgres_db:
+#    image: postgres:latest
+#    container_name: db
+#    restart: always
+#    environment:
+#      - POSTGRES_USER=${POSTGRES_USER}
+#      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+#    ports:
+#      - '5432:5432'
+#    volumes:
+#      - postgres_db:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_db:
+    driver: local
+networks:
+  redis-net:
+  app-network:
+    driver: bridge

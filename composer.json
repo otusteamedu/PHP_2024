@@ -1,0 +1,25 @@
+{
+    "name": "beliaevno/hw",
+    "type": "project",
+
+    "autoload": {
+        "files": [
+            "src/App.php",
+            "src/RedisConnector.php",
+            "src/ResponseFormatter.php",
+            "src/StringAnalyzer.php"
+        ],
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "BeliaevNO",
+            "email": "BeliaevNO@alfastrah.ru"
+        }
+    ],
+    "require": {
+        "ext-redis": "*"
+    }
+}
