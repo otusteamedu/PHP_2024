@@ -7,19 +7,14 @@
 COMPOSE_PROJECT_NAME=homework
 
 ###> php-fpm ###
-PUID=1000
-PGID=1000
+PUID=1001
+PGID=1001
 INSTALL_XDEBUG=true
 ###< php-fpm ###
 
-###> nginx ###
-NGINX_HOST_HTTP_PORT=80
-###< nginx ###
-
-###> redis ###
-REDIS_HOST=redis
-REDIS_PORT=6379
-###< redis ###
+###> app ###
+CONFIG_PATH=${PWD}/../config/config.ini
+###< app ###
 ```
 
 3) Ввести команды (вводить `docker-compose` или `docker compose` в зависимости от версии):
@@ -31,5 +26,6 @@ docker compose up -d --build
 4) Установите зависимости после успешного запуска проекта:
 
 ```bash
-docker compose exec php-fpm composer install
+docker compose exec server composer install
+docker compose exec client composer install
 ```
