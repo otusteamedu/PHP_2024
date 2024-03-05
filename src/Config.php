@@ -6,26 +6,27 @@ namespace Alogachev\Homework;
 
 use Alogachev\Homework\Exception\NonExistedConfigException;
 use Alogachev\Homework\Exception\WrongConfigException;
-use Dotenv\Dotenv;
 
 final class Config
 {
-    private array $configs = [];
-    private static ?self $instance = null;
+    private string $socketPath;
+    private string $stopWord;
 
-
-    public static function getInstance(): self
+    public function __construct()
     {
-        if (is_null(Config::$instance)) {
-            Config::$instance = new self();
-        }
-
-        return Config::$instance;
+        $config = $this->loadConfig();
+        $this->socketPath = $config['socket']['path'] ?? '';
+        $this->stopWord = $config['socket']['stop_word'] ?? '';
     }
 
-    public function getConfig(): array
+    public function getSocketPath(): string
     {
-        return $this->configs;
+        return $this->socketPath;
+    }
+
+    public function getStopWord(): string
+    {
+        return $this->stopWord;
     }
 
     private function loadConfig(): array
@@ -42,18 +43,5 @@ final class Config
         }
 
         return $config;
-    }
-
-    private function __construct()
-    {
-        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
-        $dotenv->load();
-
-        $config = $this->loadConfig();
-        $this->configs = $config;
-    }
-
-    private function __clone()
-    {
     }
 }

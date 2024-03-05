@@ -8,6 +8,7 @@ use Alogachev\Homework\Exception\InvalidAppTypeException;
 use Alogachev\Homework\Exception\WrongInputException;
 use Alogachev\Homework\Interface\IRun;
 use DI\Container;
+use Dotenv\Dotenv;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -28,6 +29,8 @@ final class App
      */
     public function run(): void
     {
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
+        $dotenv->load();
         $container = $this->resolveDI();
         $appType = $this->resolveAppType();
         /** @var IRun $app */
@@ -42,7 +45,7 @@ final class App
 
     private function resolveDI(): ContainerInterface
     {
-        $config = Config::getInstance()->getConfig();
+        $config = new Config();
 
         return new Container([
             Client::class => create()->constructor(
@@ -52,8 +55,8 @@ final class App
             SocketManager::class => create()->constructor(
                 get('socketPath')
             ),
-            'socketPath' => $config['socket']['path'] ?? '',
-            'stopWord' => $config['socket']['stop_word'] ?? '',
+            'socketPath' => $config->getSocketPath(),
+            'stopWord' => $config->getStopWord(),
         ]);
     }
 
