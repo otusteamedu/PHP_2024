@@ -8,16 +8,11 @@ class EmailValidator
 {
     public function validate(string $email): bool
     {
-        if ($this->validateEmailByRegex($email)) {
-            $domain = substr(strchr($email, "@"), 1);
-            if ($this->validateDNS($domain)) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
+        if (!$this->validateEmailByRegex($email)) {
             return false;
         }
+        $domain = substr(strchr($email, "@"), 1);
+        return $this->validateDNS($domain);
     }
 
     private function validateEmailByRegex($email): bool

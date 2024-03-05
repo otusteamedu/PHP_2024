@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
 # ставим необходимые для нормальной работы модули
 RUN apt-get update \
