@@ -9,7 +9,7 @@ use SFadeev\Hw6\Validator\Exception\InvalidTypeException;
 
 class EmailDomainValidator implements ValidatorInterface
 {
-    function validate(mixed $value): void
+    public function validate(mixed $value): void
     {
         if (!is_string($value)) {
             throw new InvalidTypeException(gettype($value), ['string']);

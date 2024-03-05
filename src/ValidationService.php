@@ -13,7 +13,7 @@ class ValidationService
      * @param ValidatorInterface[] $validators
      */
     public function __construct(
-       private array $validators
+        private array $validators
     ) {
     }
 

@@ -19,7 +19,7 @@ class EmailPatternValidator implements ValidatorInterface
      * @throws InvalidEmailException
      * @throws InvalidTypeException
      */
-    function validate(mixed $value): void
+    public function validate(mixed $value): void
     {
         if (!is_string($value)) {
             throw new InvalidTypeException(gettype($value), ['string']);

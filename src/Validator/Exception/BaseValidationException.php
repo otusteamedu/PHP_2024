@@ -8,5 +8,4 @@ use RuntimeException;
 
 abstract class BaseValidationException extends RuntimeException
 {
-
 }

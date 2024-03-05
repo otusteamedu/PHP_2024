@@ -14,5 +14,5 @@ interface ValidatorInterface
      *
      * @throws BaseValidationException
      */
-    function validate(mixed $value): void;
+    public function validate(mixed $value): void;
 }
