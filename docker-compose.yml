@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  nginx-balancer:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: on-failure
+    volumes:
+      - ./docker/nginx/balancer-config:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+    networks:
+      - project-network
+
+  nginx1:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: on-failure
+    volumes:
+      - ./project:/var/www/project
+      - ./docker/nginx/backend-config:/etc/nginx/conf.d
+    networks:
+      - project-network
+
+  nginx2:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: on-failure
+    volumes:
+      - ./project:/var/www/project
+      - ./docker/nginx/backend-config:/etc/nginx/conf.d
+    networks:
+      - project-network
+
+  php1:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    restart: on-failure
+    volumes:
+      - ./project:/var/www/project
+    networks:
+      - project-network
+
+  php2:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    restart: on-failure
+    volumes:
+      - ./project:/var/www/project
+    networks:
+      - project-network
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server
+    restart: on-failure
+    networks:
+      - project-network
+
+networks:
+  project-network:
+    driver: bridge
