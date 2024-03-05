@@ -17,8 +17,8 @@ class EmailDomainValidator implements ValidatorInterface
 
         $domain = substr($value, strpos($value, '@') + 1);
 
-        if (gethostbyname($domain) === $domain) {
-            throw new InvalidEmailDomainException($value, 'Unable to resolve host');
+        if (!checkdnsrr($domain)) {
+            throw new InvalidEmailDomainException($value, 'DNS records could not be found');
         }
     }
 }
