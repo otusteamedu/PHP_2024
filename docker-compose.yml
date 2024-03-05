@@ -4,8 +4,10 @@ services:
   nginx-balancer:
     build:
       context: .
-      dockerfile: docker/nginx-balancer/Dockerfile
+      dockerfile: docker/nginx/Dockerfile
     restart: on-failure
+    volumes:
+      - ./docker/nginx/balancer-config:/etc/nginx/conf.d
     ports:
       - "80:80"
     networks:
@@ -14,20 +16,22 @@ services:
   nginx1:
     build:
       context: .
-      dockerfile: docker/nginx-backend/Dockerfile
+      dockerfile: docker/nginx/Dockerfile
     restart: on-failure
     volumes:
       - ./project:/var/www/project
+      - ./docker/nginx/backend-config:/etc/nginx/conf.d
     networks:
       - project-network
 
   nginx2:
     build:
       context: .
-      dockerfile: docker/nginx-backend/Dockerfile
+      dockerfile: docker/nginx/Dockerfile
     restart: on-failure
     volumes:
       - ./project:/var/www/project
+      - ./docker/nginx/backend-config:/etc/nginx/conf.d
     networks:
       - project-network
 

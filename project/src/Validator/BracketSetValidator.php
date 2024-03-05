@@ -6,6 +6,8 @@ namespace SFadeev\HW4\Validator;
 
 class BracketSetValidator
 {
+    const WRONG_STRUCT_MESSAGE = 'The value contains wrong bracket struct';
+
     public function validate(mixed $value): void
     {
         if (!is_string($value)) {
@@ -13,17 +15,23 @@ class BracketSetValidator
         }
 
         if ('' === $value) {
-            throw new InvalidBracketSetException('Value should not be empty.');
+            throw new InvalidBracketSetException('Value should not be empty');
+        }
+
+        $len = strlen($value);
+
+        if ($len % 2 > 0) {
+            throw new InvalidBracketSetException(self::WRONG_STRUCT_MESSAGE);
         }
 
         $countBalance = 0;
-        $wrongStruct = false;
-        foreach (str_split($value) as $char) {
-            if ($countBalance < 0) {
-                $wrongStruct = true;
+        $chars = str_split($value);
+        for ($i = 0; $i < $len; $i++) {
+            if ($countBalance < 0 || $countBalance > ($len - $i)) {
+                throw new InvalidBracketSetException(self::WRONG_STRUCT_MESSAGE);
             }
 
-            switch ($char) {
+            switch ($chars[$i]) {
                 case '(':
                     $countBalance++;
                     break;
@@ -31,16 +39,12 @@ class BracketSetValidator
                     $countBalance--;
                     break;
                 default:
-                    throw new InvalidBracketSetException(sprintf('Value contains unexpected char: %s', $char));
+                    throw new InvalidBracketSetException(sprintf('Value contains unexpected char: %s', $chars[$i]));
             }
         }
 
         if ($countBalance > 0) {
-            throw new InvalidBracketSetException(sprintf('The value contains %d redundant open brackets', abs($countBalance)));
-        } else if ($countBalance < 0) {
-            throw new InvalidBracketSetException(sprintf('The value contains %d redundant closed brackets', abs($countBalance)));
-        } else if ($wrongStruct) {
-            throw new InvalidBracketSetException('The value contains wrong bracket struct');
+            throw new InvalidBracketSetException(self::WRONG_STRUCT_MESSAGE);
         }
     }
 }
