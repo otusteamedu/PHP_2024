@@ -6,5 +6,7 @@ namespace App\Response;
 
 interface ResponseInterface
 {
-    public function send(): void;
+    public function getContent(): string;
+
+    public function getCode(): int;
 }

@@ -10,10 +10,13 @@ readonly class HttpResponse implements ResponseInterface
     {
     }
 
-    public function send(): void
+    public function getContent(): string
     {
-        header('Content-Type: application/json; charset=UTF-8');
-        http_response_code($this->http_code);
-        echo $this->content;
+        return $this->content;
+    }
+
+    public function getCode(): int
+    {
+        return $this->http_code;
     }
 }
