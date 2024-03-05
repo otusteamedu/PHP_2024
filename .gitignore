@@ -4,3 +4,5 @@
 .AppleDouble
 .LSOverride
 .env
+/docker/dbdata/
+/docker/php-fpm/sock/docker.sock
