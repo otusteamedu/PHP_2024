@@ -6,3 +6,4 @@
 .env
 /docker/dbdata/
 /docker/php-fpm/sock/docker.sock
+composer.lock
