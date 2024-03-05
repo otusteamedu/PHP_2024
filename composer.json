@@ -1,0 +1,6 @@
+{
+  "name": "slipka007/hw",
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*"
+  }
+}

@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+
+  #контейнер с Nginx
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: ${CONTAINER_NAME_NGINX}
+    restart: unless-stopped
+    ports:
+      - ${LOCAL_PORT_NGINX}:${CONTAINER_PORT_NGINX}
+    volumes:
+      - ./src:/data/mysite.local
+      - ./docker/php-fpm/sock:/sock
+    networks:
+      - app-network
+
+  #Контейнер с PHP-FPM
+  phpfpm:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    container_name: ${CONTAINER_NAME_PHP_FPM}
+    restart: unless-stopped
+    volumes:
+      - ./src:/data/mysite.local
+      - ./docker/php-fpm/sock:/sock
+    networks:
+      - app-network
+
+  #контейнер с MySQL
+  db:
+    image: mysql
+    container_name: ${CONTAINER_NAME_DB}
+    restart: unless-stopped
+    command: --lower_case_table_names=1
+    ports:
+      - ${LOCAL_PORT_DB}:${CONTAINER_PORT_DB}
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./docker/dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+  #контейнер с Redis
+  redis:
+    image: redis
+    container_name: ${CONTAINER_NAME_REDIS}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: sh -c 'exec redis-server --requirepass "$REDIS_PASSWORD"'
+    ports:
+      - ${LOCAL_PORT_REDIS}:${CONTAINER_PORT_REDIS}
+    networks:
+      - app-network
+
+#  memcached:
+  memcached:
+    image: memcached
+    container_name: ${CONTAINER_NAME_MEMCACHED}
+    ports:
+      - ${LOCAL_PORT_MEMCACHED}:${CONTAINER_PORT_MEMCACHED}
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  sock:
