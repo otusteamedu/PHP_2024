@@ -6,30 +6,41 @@ namespace Rmulyukov\Hw8;
 
 final class ListMerger
 {
-    public function merge(LinkedList $list1, LinkedList $list2): LinkedList
-    {
-        $first = $list1;
-        $second = $list2;
-        if ($list1->getValue() > $list2->getValue()) {
-            $first = $list2;
-            $second = $list1;
+    function mergeTwoLists($list1, $list2) {
+        if (!$list1) {
+            return $list2;
         }
-        $head = $first;
+        if (!$list2) {
+            return $list1;
+        }
+
+        if ($list2->val > $list1->val) {
+            $head = $list1;
+            $list1 = $list1->next;
+        } else {
+            $head = $list2;
+            $list2 = $list2->next;
+        }
+
+        $last = $head;
 
         while (true) {
-            if (!$second) {
+            if (!$list1) {
+                $last->next = $list2;
                 break;
             }
-            $firstNext = $first->getNext();
-            if (!$firstNext) {
-                $first->setNext($second);
+            if (!$list2) {
+                $last->next = $list1;
                 break;
             }
-            if ($firstNext->getValue() > $second->getValue()) {
-                $first->setNext($second);
-                $second = $firstNext;
+            if ($list2->val > $list1->val) {
+                $last->next = $list1;
+                $list1 = $list1->next;
+            } else {
+                $last->next = $list2;
+                $list2 = $list2->next;
             }
-            $first = $first->getNext();
+            $last = $last->next;
         }
 
         return $head;
