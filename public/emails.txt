@@ -1,0 +1,12 @@
+plainaddress
+@no-local-part.com
+no-at-sign.com
+no-domain-part@
+multiple..dots@domain.com
+.start-dot@domain.com
+end-dot@domain.com.
+special-characters!#$%&'*+/=?^_{|}~@domain.com
+too-long-local-part-1234567890123456789012345678901234567890123456789012345678901234+x@domain.com
+invalid-characters-in-domain@dom!ain.com
+
+correct@email.com
