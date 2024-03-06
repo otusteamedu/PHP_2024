@@ -1,4 +1,5 @@
 <?php
+// phpcs:ignoreFile
 
 class ListNode
 {
@@ -27,50 +28,39 @@ class Solution
      */
     function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ?ListNode
     {
-        // Определяем первую ноду и сохраняем её в переменные $current и $head
         if (null === $list1) {
-            if (null === $list2) {
-                return null;
-            }
-            $head = $current = $list2;
-            $list2 = $list2->next;
-        } else {
-            if (null === $list2) {
-                $head = $current = $list1;
-                $list1 = $list1->next;
-            } else {
-                if ($list1->val < $list2->val) {
-                    $head = $current = $list1;
-                    $list1 = $list1->next;
-                } else {
-                    $head = $current = $list2;
-                    $list2 = $list2->next;
-                }
-            }
+            return $list2;
         }
 
-        // Перебираем ноды, до тех пор пока оба указателя не будут null (null - достигнут конец списка)
+        if (null === $list2) {
+            return $list1;
+        }
+
+        $result = $current = new ListNode();
+
         while (null !== $list1 || null !== $list2) {
             if (null === $list1) {
-                $current = $current->next = $list2;
-                $list2 = $list2->next;
-                continue;
-            } else if (null === $list2) {
-                $current = $current->next = $list1;
-                $list1 = $list1->next;
-                continue;
+                $current->next = $list2;
+                break;
+            }
+
+            if (null === $list2) {
+                $current->next = $list1;
+                break;
             }
 
             if ($list1->val > $list2->val) {
-                $current = $current->next = $list2;
+                $current->next = $list2;
                 $list2 = $list2->next;
             } else {
-                $current = $current->next = $list1;
+                $current->next = $list1;
                 $list1 = $list1->next;
             }
+
+            $current = $current->next;
         }
 
-        return $head;
+        return $result->next;
     }
 }
 
