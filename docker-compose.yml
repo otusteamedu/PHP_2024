@@ -7,43 +7,6 @@ networks:
 
 
 services:
-  php-fpm:
-    container_name: php-fpm
-    networks:
-      - homework-net
-    build:
-      context: ./
-      dockerfile: ./.deployment/docker/php-fpm/Dockerfile
-      args:
-        PUID: ${PUID}
-        PGID: ${PGID}
-        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
-    environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
-    volumes:
-      - ./:/var/www/homework
-
-  nginx:
-    container_name: nginx
-    networks:
-      - homework-net
-    build:
-      context: ./.deployment/docker/nginx
-      dockerfile: ./Dockerfile
-      args:
-        PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
-        PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_PORT}
-    environment:
-      PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
-      PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_CONTAINER}
-    ports:
-      - ${NGINX_HOST_HTTP_PORT}:80
-    volumes:
-      - ./:/var/www/homework:rw
-    depends_on:
-      - php-fpm
-
   postgres:
     container_name: postgres
     networks:
@@ -61,28 +24,5 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data:rw
 
-  redis:
-    container_name: redis
-    networks:
-      - homework-net
-    build:
-      context: ./.deployment/docker/redis
-      dockerfile: ./Dockerfile
-    ports:
-      - ${REDIS_PORT}:6379
-    volumes:
-      - redis_data:/data
-
-  memcached:
-    container_name: memcached
-    networks:
-      - homework-net
-    build:
-      context: ./.deployment/docker/memcached
-      dockerfile: ./Dockerfile
-    ports:
-      - ${MEMCACHED_PORT}:11211
-
 volumes:
   db_data:
-  redis_data:
