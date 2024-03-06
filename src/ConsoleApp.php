@@ -14,7 +14,7 @@ readonly class ConsoleApp implements AppInterface
     /**
      * @throws DomainException
      */
-    public function run(): void
+    public function run(): \Iterator
     {
         $appType = $this->args[1] ?? '';
         $server_address = (string) getenv('SERVER_ADDRESS');
@@ -26,6 +26,6 @@ readonly class ConsoleApp implements AppInterface
             default => throw new DomainException('Указан недопустимый тип приложения')
         };
 
-        $app->run();
+        return $app->run();
     }
 }

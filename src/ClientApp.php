@@ -35,7 +35,7 @@ class ClientApp implements AppInterface
     /**
      * @throws DomainException
      */
-    public function run(): void
+    public function run(): \Iterator
     {
         $isRunning = true;
         while ($isRunning) {
@@ -45,7 +45,7 @@ class ClientApp implements AppInterface
             if (socket_select($sockets, $write, $except, 0)) {
                 if ($out = socket_read($this->socket, 1024)) {
                     $msg = $this->messageEncoder->decode($out);
-                    echo "$msg\n";
+                    yield "Сервер: $msg\n";
                 } else {
                     throw new DomainException('Пропало соединение с сервером');
                 }

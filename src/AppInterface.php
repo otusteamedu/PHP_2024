@@ -6,5 +6,5 @@ namespace App;
 
 interface AppInterface
 {
-    public function run(): void;
+    public function run(): \Iterator;
 }

@@ -38,9 +38,9 @@ class ServerApp implements AppInterface
         $this->messageEncoder = $messageEncoder;
     }
 
-    public function run(): void
+    public function run(): \Iterator
     {
-        echo "Сервер запущен\n";
+        yield "Сервер запущен\n";
         $isRunning = true;
         $clients = [$this->socket];
 
@@ -56,17 +56,17 @@ class ServerApp implements AppInterface
                     $key = array_search($this->socket, $read_sockets);
                     unset($read_sockets[$key]);
                     $clients[] = $newClient;
-                    echo "Подключен новый клиент\n";
+                    yield "Подключен новый клиент\n";
                 }
 
                 foreach ($read_sockets as $key => $value) {
                     $data = socket_read($value, 1024);
                     if ($data) {
-                        echo "Клиент написал: " . $this->messageEncoder->decode($data);
+                        yield "Клиент написал: " . $this->messageEncoder->decode($data);
                         $confirmationMsg = $this->messageEncoder->encode('Получено ' . strlen($data) . ' байт.');
                         socket_write($value, $confirmationMsg);
                     } elseif ($data == '') {
-                        echo "Клиент отключился.\n";
+                        yield "Клиент отключился.\n";
                         unset($clients[$key]);
                         socket_close($value);
                     }
