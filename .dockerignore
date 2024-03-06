@@ -1,0 +1,4 @@
+# .dockerignore
+App/vendor/**
+App/composer.lock
+.github

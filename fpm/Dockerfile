@@ -23,9 +23,19 @@ RUN apt-get update && apt-get install -y \
     && pecl install -f memcached-3.2.0 && docker-php-ext-enable memcached \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+#USER www-data
+
+# xdebug
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+COPY ./composer.json /data/composer.json
+
+ADD config/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 WORKDIR /data
 
+RUN composer install && composer dump-autoload
 
 CMD ["php-fpm"]
