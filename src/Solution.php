@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Afilipov\Hw8;
 
-class ListHelper
+class Solution
 {
     public function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ?ListNode
     {
