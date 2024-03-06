@@ -10,8 +10,9 @@ CREATE TABLE seats (
                        id BIGSERIAL NOT NULL PRIMARY KEY,
                        hall_id BIGINT NOT NULL,
                        number VARCHAR(100) NOT NULL,
+                       line VARCHAR(100) NOT NULL,
                        CONSTRAINT fk_hall FOREIGN KEY (hall_id) REFERENCES halls(id),
-                       UNIQUE (hall_id, number)
+                       UNIQUE (hall_id, line, number)
 );
 
 CREATE TABLE films (
@@ -57,11 +58,12 @@ INSERT INTO films (film) VALUES ('Тупой и еще тупее'),('Люди �
 
 INSERT INTO halls (name) VALUES ('Зал 1'),('Зал 2'),('Зал 3');
 
-INSERT INTO seats (hall_id, number)
+INSERT INTO seats (hall_id, line, number)
 SELECT
-    id,seat_number
+    id, seat_line, seat_number
 FROM
     unnest(string_to_array('A1,A2,A3,A4,A5,A6,A7,A8,A9,A10,B1,B2,B3,B4,B5,B6,B7,B8,B9,B10,C1,C2,C3,C4,C5,C6,C7,C8,C9,C10', ',')) as seat_number,
+    unnest(string_to_array('1,2,3', ',')) as seat_line,
     halls;
 
 INSERT INTO session (hall_id,session_at,film_id)
