@@ -1,3 +1,16 @@
-# PHP_2024
+# Чат
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Консольный чат на сокетах
+
+## Требования
+
+- PHP 8.2
+
+## Запуск локального окружения
+
+- Установить значения окружения на основе файла ```.env.example```
+- Выполнить ```docker-compose up --build```
+- Перейти в контейнер ```docker exec -it {APP_NAME}_app bash```
+- Запустить приложение в нужном режиме, выполнив команду:
+  - Режим сервера ```php app.php server``` 
+  - Режим клиента ```php app.php client``` 
