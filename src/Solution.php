@@ -16,8 +16,8 @@ class Solution
             return $list1;
         }
 
-        $dummyHead = new ListNode();
-        $tail = $dummyHead;
+        $head = new ListNode();
+        $tail = $head;
 
         while ($list1 !== null && $list2 !== null) {
             $tail->next = ($list1->val < $list2->val) ? $list1 : $list2;
@@ -33,6 +33,6 @@ class Solution
 
         $tail->next = $list1 ?? $list2;
 
-        return $dummyHead->next;
+        return $head->next;
     }
 }
