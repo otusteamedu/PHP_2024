@@ -45,6 +45,11 @@ final readonly class CheckParenthesesController implements CheckParenthesesContr
             $response_date['message'] = 'Произошла ошибка в процессе обработки';
         }
 
-        return new HttpResponse($http_code, json_encode($response_date, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        header('Content-Type: application/json; charset=UTF-8');
+        http_response_code($http_code);
+
+        return new HttpResponse(
+            json_encode($response_date, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        );
     }
 }

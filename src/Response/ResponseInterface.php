@@ -7,6 +7,4 @@ namespace App\Response;
 interface ResponseInterface
 {
     public function getContent(): string;
-
-    public function getCode(): int;
 }
