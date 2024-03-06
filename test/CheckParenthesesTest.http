@@ -1,0 +1,62 @@
+###
+GET http://127.0.0.1:3000
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="string"
+
+(()()()())
+--WebAppBoundary--
+
+> {%
+    client.test("Проверка передачи неверного метода запроса", function() {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
+###
+POST http://127.0.0.1:3000
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="string"
+
+--WebAppBoundary--
+
+> {%
+    client.test("Проверка передачи пустого значения", function() {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
+###
+POST http://127.0.0.1:3000
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="string"
+
+(()()()()))((((()()()))(()()()(((()))))))
+--WebAppBoundary--
+
+> {%
+    client.test("Проверка не верного выражения", function() {
+        client.assert(response.status === 400, "Response status is not 400");
+    });
+%}
+
+###
+POST http://127.0.0.1:3000
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="string"
+
+(()()()())
+--WebAppBoundary--
+
+> {%
+    client.test("Проверка верного выражения", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+    });
+%}
