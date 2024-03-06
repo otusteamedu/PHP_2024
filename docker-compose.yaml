@@ -6,7 +6,7 @@ services:
   #контейнер с Nginx
   nginx:
     build:
-      context: ./nginx
+      context: ./server/nginx
       dockerfile: Dockerfile
     image: myapp/nginx
     container_name: webserver
@@ -14,7 +14,7 @@ services:
     ports:
       - "80:80"
     volumes:
-       - ./App:/data
+       - ./App:/data/app
     networks:
       - app-network
 
@@ -22,13 +22,15 @@ services:
   app:
     # Если нет секции build, то система будет искать образ в репозиториях
     build:
-      context: ./fpm
+      context: ./server/fpm
       dockerfile: Dockerfile
     image: myapp/php # имя будущего образа
     container_name: app1 # имя контейнера после запуска
     volumes:
-       - ./App:/data
-      # - ./composer.json:/data/composer.json
+      - ./App:/data/app
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network

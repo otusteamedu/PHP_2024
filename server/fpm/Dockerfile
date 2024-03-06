@@ -21,20 +21,14 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && pecl install redis && docker-php-ext-enable redis \
     && pecl install -f memcached-3.2.0 && docker-php-ext-enable memcached \
+    && pecl install xdebug && docker-php-ext-enable xdebug \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-#USER www-data
-
-# xdebug
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-
-COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
-COPY ./composer.json /data/composer.json
-
-ADD config/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 WORKDIR /data
+COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./composer.json /data/composer.json
 
 RUN composer install && composer dump-autoload
 

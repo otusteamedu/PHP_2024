@@ -1,4 +1,6 @@
 # .dockerignore
-App/vendor/**
-App/composer.lock
+.idea/
 .github
+vendor/**
+composer.json
+composer.lock
