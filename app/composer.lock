@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "500387270640906085fc470895af1f88",
+    "packages": [
+        {
+            "name": "jack-frost/validate-emails",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JackFrost/validate-emails.git",
+                "reference": "302eba177156231b5f528938387d07d3c63df393"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JackFrost/validate-emails/zipball/302eba177156231b5f528938387d07d3c63df393",
+                "reference": "302eba177156231b5f528938387d07d3c63df393",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "JackFrost\\ValidateEmails\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/JackFrost/validate-emails/issues",
+                "source": "https://github.com/JackFrost/validate-emails/tree/v1.0.0"
+            },
+            "time": "2024-03-06T19:19:23+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
