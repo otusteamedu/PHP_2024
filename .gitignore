@@ -3,3 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+index.php
+config.php
+db.php
+mydb.sql
