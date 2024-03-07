@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-$nums = [1,7,3,6,5,6];
+$nums = [1, 7, 3, 6, 5, 6];
 
 // Сложность O(n)
-function pivotIndex(array $nums): int {
+function pivotIndex(array $nums): int
+{
     $len = count($nums);
     $copy = $nums;
 
@@ -14,7 +15,9 @@ function pivotIndex(array $nums): int {
     for ($i = 0; $i < $len; $i++) {
         $sumRight -= $copy[$i];
 
-        if ($sumLeft === $sumRight) return $i;
+        if ($sumLeft === $sumRight) {
+            return $i;
+        }
 
         $sumLeft += $copy[$i];
     }
