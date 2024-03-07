@@ -1,0 +1,5 @@
+{
+    "require": {
+        "jack-frost/validate-emails": "^2.0"
+    }
+}
