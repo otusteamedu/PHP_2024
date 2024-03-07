@@ -34,7 +34,7 @@ class Solution
             if ($list1->val < $list2->val) {
                 $newListTail->next = $list1;
                 $list1 = $list1->next;
-                $newListTail = $newListTail->next;  // одинаковая строчка в обоих кейсах. Можно было бы вынести за пределы условия. Но тяжелее понять суть работы со списком. А на скорость не влияет.  
+                $newListTail = $newListTail->next;  // одинаковая строчка в обоих кейсах. Можно было бы вынести за пределы условия. Но тяжелее понять суть работы со списком. А на скорость не влияет.
             } else {
                 $newListTail->next = $list2;
                 $list2 = $list2->next;
