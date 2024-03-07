@@ -4,21 +4,50 @@ declare(strict_types=1);
 
 require __DIR__ . '/utils.php';
 
+CONST GENRES = [
+    'Action',
+    'Adventure',
+    'Animation',
+    'Comedy',
+    'Crime',
+    'Documentary',
+    'Drama',
+    'Family',
+    'Fantasy',
+    'Film-Noir',
+    'History',
+    'Horror',
+    'Music',
+    'Musical',
+    'Mystery',
+    'Romance',
+    'Sci-Fi',
+    'Thriller',
+    'War',
+    'Western'
+];
+
 const MOVIE_POOL = [
     [
         'slug' => 'korol-liev',
         'title' => 'Король лев',
-        'duration' => 7200
+        'duration' => 7200,
+        'country' => 'Russia',
+        'creation_year' => 2021
     ],
     [
         'slug' => 'batman',
         'title' => 'Бэтмен',
-        'duration' => 7200
+        'duration' => 7200,
+        'country' => 'China',
+        'creation_year' => 2022
     ],
     [
         'slug' => 'titanik',
         'title' => 'Титаник',
-        'duration' => 7200
+        'duration' => 7200,
+        'country' => 'USA',
+        'creation_year' => 2023
     ],
 ];
 const HALL_POOL = [
@@ -55,20 +84,26 @@ $dsnStr = sprintf(
 
 $dbh = new PDO($dsnStr);
 
-foreach (MOVIE_POOL as $movie) {
-    insertMovie($dbh, $movie['slug'], $movie['title'], $movie['duration']);
+foreach (GENRES as $genre) {
+    insertGenre($dbh, $genre);
 }
+
+foreach (MOVIE_POOL as $movie) {
+    insertMovie($dbh,  $movie['country'],  $movie['title'], $movie['duration'], $movie['creation_year']);
+}
+
+randomiseGenresToFilms($dbh);
 
 foreach (HALL_POOL as $hall) {
     insertHall($dbh, $hall['nick'], $hall['number_of_rows'], $hall['number_of_seats_per_row']);
 }
 
-$insertedSessionsIds = [];
+$movies = getMoviesData($dbh);
 for ($i = 0; $i < 100; $i++) {
-    $movie = MOVIE_POOL[array_rand(MOVIE_POOL)];
+    $movie = $movies[array_rand($movies)];
     $hall = HALL_POOL[array_rand(HALL_POOL)];
     $session_ts = generateSessionTime();
-    $id = insertRandomSession($dbh, $movie['slug'], $hall['nick'], $session_ts, $session_ts = generateSessionTime(), rand(1, 40) * 50);
+    $id = insertRandomSession($dbh, $movie['id'], $hall['nick'], $session_ts, $session_ts = generateSessionTime(), rand(1, 40) * 50);
 }
 
 $sessions = getSessionsData($dbh);

@@ -1,9 +1,10 @@
-select a.title, sum(a.sum_cost) as sum_cost_per_movie
-from (select s.movie as title, count(t.session_id) * s.ticket_cost as sum_cost
-      from session s
-               join ticket t on t.session_id = s.id
-      group by s.movie, s.ticket_cost
-      order by sum_cost desc) as a
-group by title
-order by sum_cost_per_movie DESC
+select tmp.title, sum(tmp.profit)
+from (select m.title, s.ticket_cost, count(t.session_id) * s.ticket_cost as profit
+      from ticket t
+               join session s on t.session_id = s.id
+               join movie m on s.movie = m.id
+      group by t.session_id, m.title, s.ticket_cost) as tmp
+group by tmp.title
+order by sum(tmp.profit) DESC
 limit 1;
+

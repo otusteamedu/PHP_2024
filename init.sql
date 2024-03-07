@@ -1,13 +1,32 @@
 DROP TABLE IF EXISTS ticket;
 DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS genre_movie;
 DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS genre;
 DROP TABLE IF EXISTS hall;
+
+CREATE TABLE genre
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
 
 CREATE TABLE movie
 (
-    slug     varchar(255) primary key,
+    id       serial primary key,
     title    varchar(255) UNIQUE,
-    duration smallint NOT NULL CHECK ( duration > 0 )
+    country    varchar(255) UNIQUE,
+    duration smallint NOT NULL CHECK ( duration > 0 ), -- minutes
+    creation_year bigint NOT NULL CHECK ( creation_year > 0)
+);
+
+CREATE TABLE genre_movie
+(
+    genre_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    PRIMARY KEY (genre_id, movie_id),
+    FOREIGN KEY (genre_id) REFERENCES genre(id),
+    FOREIGN KEY (movie_id) REFERENCES movie(id)
 );
 
 CREATE TABLE hall
@@ -20,7 +39,7 @@ CREATE TABLE hall
 CREATE TABLE session
 (
     id          serial primary key,
-    movie       varchar(255) NOT NULL REFERENCES movie (slug),
+    movie       serial NOT NULL REFERENCES movie (id),
     hall        varchar(255) NOT NULL REFERENCES hall (nick),
     start_ts    timestamptz  NOT NULL,
     end_ts      timestamptz  NOT NULL,
@@ -29,43 +48,8 @@ CREATE TABLE session
 
 CREATE TABLE ticket
 (
-    session_id serial REFERENCES session (id) ON DELETE CASCADE,
+    session_id serial NOT NULL REFERENCES session (id) ON DELETE CASCADE,
     row        int NOT NULL CHECK ( row > 0 ),
     seat       int NOT NULL CHECK ( row > 0 ),
     PRIMARY KEY(session_id, row, seat)
 );
-
-CREATE OR REPLACE FUNCTION session_compare_durations() RETURNS TRIGGER LANGUAGE plpgsql AS
-$$
-BEGIN
-    IF (SELECT EXTRACT(EPOCH FROM NEW.end_ts::TIMESTAMP - NEW.start_ts::TIMESTAMP) < (SELECT movie.duration from movie where slug = NEW.movie)) THEN
-        RAISE EXCEPTION 'Session duration cannot be less then movie duration.';
-    END IF;
-    RETURN NEW;
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION session_check_ts_intersection() RETURNS TRIGGER LANGUAGE plpgsql AS
-$$
-begin
-    IF (EXISTS(SELECT id from session
-                    WHERE (start_ts < NEW.start_ts AND end_ts > NEW.end_ts)
-                       OR (start_ts > NEW.start_ts AND end_ts < NEW.end_ts)
-                    )) THEN
-        RAISE EXCEPTION 'Session cannot be intersected with another one.';
-    END IF;
-    RETURN NEW;
-end;
-$$;
-
-
-CREATE OR REPLACE TRIGGER session_check_ts_1
-    BEFORE INSERT OR UPDATE on session
-    FOR EACH ROW
-    EXECUTE PROCEDURE session_compare_durations();
-
-
-CREATE OR REPLACE TRIGGER session_check_ts_2
-    BEFORE INSERT OR UPDATE on session
-    FOR EACH ROW
-    EXECUTE PROCEDURE session_check_ts_intersection();
