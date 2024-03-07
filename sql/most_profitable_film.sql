@@ -2,7 +2,7 @@ SELECT
   f.film_id,
   f.title,
   COUNT(t.ticket_id) AS tickets_sold,
-  SUM(s.price) AS total_revenue
+  SUM(t.selling_price) AS total_revenue
 FROM
   tickets AS t
   INNER JOIN sessions AS s ON s.session_id = t.session_id

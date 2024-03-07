@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS
     hall_id int REFERENCES halls (hall_id),
     start_time timestamp NOT NULL,
     end_time timestamp NOT NULL,
-    price money NOT NULL,
+    reccomended_price money NOT NULL,
     CONSTRAINT valid_time_range CHECK (start_time < end_time)
   );
 
@@ -102,5 +102,6 @@ CREATE TABLE IF NOT EXISTS
     session_id int REFERENCES sessions (session_id),
     seat_id int REFERENCES seats (seat_id),
     purchased_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    selling_price money NOT NULL,
     visitor_id int REFERENCES visitors (visitor_id)
   );

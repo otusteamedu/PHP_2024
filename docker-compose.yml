@@ -10,6 +10,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+      POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=ru-RU"
     ports:
       - "${DB_PORT}:5432"
 

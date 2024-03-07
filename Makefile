@@ -20,6 +20,9 @@ docker-pull:
 docker-build:
 	docker compose build
 
+check-postgres:
+	docker ps | grep ${DB_CONTAINER_NAME}
+
 db-wait:
 	until docker-compose exec -T postgres pg_isready --timeout=0 --dbname=$(POSTGRES_DB) ; do sleep 1 ; done
 
@@ -35,4 +38,4 @@ db-insert-data:
 db-get-film:
 	cat sql/most_profitable_film.sql | docker exec -i ${DB_CONTAINER_NAME} psql -U ${DB_USER} -d ${DB_NAME}
 
-init-db: db-wait db-create-tables db-init-triggers db-insert-data db-get-film
+init-db: check-postgres db-wait db-create-tables db-init-triggers db-insert-data db-get-film
