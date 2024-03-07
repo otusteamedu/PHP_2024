@@ -42,14 +42,14 @@ $invalidEmails = [
 ];
 
 echo "Проверка валидных" . PHP_EOL;
-foreach(\Hukimato\EmailValidator\EmailValidator::validateArray($validEmails) as $key => $result) {
+foreach (\Hukimato\EmailValidator\EmailValidator::validateArray($validEmails) as $key => $result) {
     if (!$result) {
         echo $validEmails[$key] . " неверно определён как невалдиный" . PHP_EOL;
     }
 }
 
 echo "Проверка невалидных" . PHP_EOL;
-foreach(\Hukimato\EmailValidator\EmailValidator::validateArray($invalidEmails) as $key => $result) {
+foreach (\Hukimato\EmailValidator\EmailValidator::validateArray($invalidEmails) as $key => $result) {
     if ($result) {
         echo $validEmails[$key] . " неверно определён как валдиный" . PHP_EOL;
     }
