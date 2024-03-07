@@ -4,21 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "500387270640906085fc470895af1f88",
+    "content-hash": "010536ea7ae429458e7f8d9aa1287648",
     "packages": [
         {
             "name": "jack-frost/validate-emails",
-            "version": "v1.0.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JackFrost/validate-emails.git",
-                "reference": "302eba177156231b5f528938387d07d3c63df393"
+                "reference": "d3d246802a392ba715265b6f52d0145170571bdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JackFrost/validate-emails/zipball/302eba177156231b5f528938387d07d3c63df393",
-                "reference": "302eba177156231b5f528938387d07d3c63df393",
+                "url": "https://api.github.com/repos/JackFrost/validate-emails/zipball/d3d246802a392ba715265b6f52d0145170571bdf",
+                "reference": "d3d246802a392ba715265b6f52d0145170571bdf",
                 "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
             },
             "type": "library",
             "autoload": {
@@ -29,9 +32,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/JackFrost/validate-emails/issues",
-                "source": "https://github.com/JackFrost/validate-emails/tree/v1.0.0"
+                "source": "https://github.com/JackFrost/validate-emails/tree/v2.0.0"
             },
-            "time": "2024-03-06T19:19:23+00:00"
+            "time": "2024-03-07T05:11:15+00:00"
         }
     ],
     "packages-dev": [],

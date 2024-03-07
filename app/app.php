@@ -9,7 +9,7 @@ use JackFrost\ValidateEmails\ValidateEmails;
 $validate_emails = new ValidateEmails();
 
 $result = $validate_emails->check([
-    'a@a.com',
+    'test@yandex.ru',
     'b@b-com',
     'c-c.com',
     'd@d@com',
