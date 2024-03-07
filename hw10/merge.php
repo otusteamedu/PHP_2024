@@ -6,7 +6,7 @@ class ListNode
 {
     public int $val;
     public ?ListNode $next = null;
-    function __construct(int $val, ?self $next = null)
+    public function __construct(int $val, ?self $next = null)
     {
         $this->next = $next;
         $this->val = $val;
@@ -20,7 +20,7 @@ class ListNode
 
 class Solution
 {
-    function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ?ListNode
+    public function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ?ListNode
     {
         // будем считать это "служебным" узлом. Теперь список изначально не пустой. Это сократит
         // кол-во проверок в цикле. Просто будем помнить, что первый узел, "фейковый".
