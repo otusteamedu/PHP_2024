@@ -24,58 +24,44 @@ class Solution
 
     function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ?ListNode
     {
-        $newListHead = null;
-        $newListTail = null;
+        // будем считать это "служебным" узлом. Теперь список изначально не пустой. Это сократит
+        // кол-во проверок в цикле. Просто будем помнить, что первый узел, "фейковый".
+        $newListHead = new ListNode(0);
+        $newListTail = $newListHead;
+        $newListTail->next = null;
 
         while ($list1 && $list2) {
             if ($list1->val < $list2->val) {
-                // значение меньше в списке 1
-                if (empty($newListHead)) {
-                    $newListHead = $list1;
-                    $newListTail = $newListHead;
-                    $list1 = $list1->next;
-                    $newListTail->next = null;
-                } else {
-                    $newListTail->next = $list1;//
-                    $newListTail = $newListTail->next;
-                    $list1 = $list1->next; //
-                    $newListTail->next = null;
-                }
+                $newListTail->next = $list1;
+                $list1 = $list1->next;
+                $newListTail = $newListTail->next;  // одинаковая строчка в обоих кейсах. Можно было бы вынести за пределы условия. Но тяжелее понять суть работы со списком. А на скорость не влияет.  
             } else {
-                // значение меньше в списке 2
-                if (empty($newListHead)) {
-                    $newListHead = $list2;
-                    $newListTail = $newListHead;
-                    $list2 = $list2->next;
-                    $newListTail->next = null;
-                } else {
-                    $newListTail->next = $list2;
-                    $newListTail = $newListTail->next;
-                    $list2 = $list2->next;
-                    $newListTail->next = null;
-                }
+                $newListTail->next = $list2;
+                $list2 = $list2->next;
+                $newListTail = $newListTail->next;
             }
+            // тут напрашивается $newListTail->next = null; , для того, что бы не нарушить правила списка.
+            // А именно, последний элемент не должен иметь ссылку на следующий. На то он и последний.
+            // Однако, на каждом проходе цикла, будет добавляться новый элемент.
         }
 
         // на выходе из цикла, один из списков, точно пустой. Если есть НЕ пустой, то пристыковываем его к новому списку.
-        // при этом теряем хвост нового списка. Да он и не нужен.
-        if (!$list1 && $list2) {
-            if ($newListHead) {
-                $newListTail->next = $list2;
-            } else {
-                $newListHead = $list2;
-            }
-            $list2 = null;
+        // при этом теряем хвост у нового списка. Да он и не нужен. Его и во входных данных то, не было).
+        if ($list2) {
+            $newListTail->next = $list2;
+//            $list2 = null;
         }
-        if (!$list2 && $list1) {
-            if ($newListHead) {
-                $newListTail->next = $list1;
-            } else {
-                $newListHead = $list1;
-            }
-            $list1 = null;
+        elseif ($list1) {
+            $newListTail->next = $list1;
+//            $list1 = null;
+        } else {
+            // если сюда провалится, то значит оба списка пустые. Например, если они изначально были пустые.
+            // Возможно, провалится, еще при каких то случаях, которые я не предусмотрел.
+            // тогда нам нечего пристыковывать, однако, надо гарантировать, что последний элемент без ссылки.
+            $newListTail->next = null;
         }
-        $newListTail = null;
+
+        $newListHead = $newListHead->next; // исключаем тот самый "служебный" элемент (добавили в начале)
 
         return $newListHead;
     }
