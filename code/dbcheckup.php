@@ -5,24 +5,24 @@ echo '<pre>';
 $redis = new Redis();
 
 try {
-	$redis->connect('redis', '6379');
-	echo 'Redis is connected ' . $redis->ping() . PHP_EOL;
-	$redis->close();
+    $redis->connect('redis', '6379');
+    echo 'Redis is connected ' . $redis->ping() . PHP_EOL;
+    $redis->close();
 } catch (\Exception $e) {
-	echo "Redis error: " . $e->getMessage() . PHP_EOL;
+    echo "Redis error: " . $e->getMessage() . PHP_EOL;
 }
 
 try {
-	$memcached = new \Memcached();
-	$memcachedServerConnection = $memcached->addServer('memchached', '11211');
+    $memcached = new \Memcached();
+    $memcachedServerConnection = $memcached->addServer('memchached', '11211');
 
-	if ($memcachedServerConnection === true) {
-		echo 'Memcached is connected' . PHP_EOL;
-	} else {
-		echo 'Memcached is not connected' . PHP_EOL;
-	}
+    if ($memcachedServerConnection === true) {
+        echo 'Memcached is connected' . PHP_EOL;
+    } else {
+        echo 'Memcached is not connected' . PHP_EOL;
+    }
 } catch (Exception $e) {
-	echo 'Memcached error: ' . $e->getMessage() . PHP_EOL;
+    echo 'Memcached error: ' . $e->getMessage() . PHP_EOL;
 }
 
 $host = getenv('MYSQL_HOST');
