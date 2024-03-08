@@ -6,6 +6,15 @@ services:
       context: ./fpm
       dockerfile: Dockerfile
     image: irayu/php
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      MEMCACHED_HOST: ${MEMCACHED_HOST}
+      MEMCACHED_PORT: ${MEMCACHED_PORT}
     container_name: app
     volumes:
        - ./code:/data/ira.yu
@@ -30,7 +39,7 @@ services:
 
   db:
     image: mysql:8.3
-    container_name: db
+    container_name: ${MYSQL_HOST}
     ports:
       - "${MYSQL_PORT}:3306"
     environment:
@@ -45,12 +54,16 @@ services:
   memcached:
     image: memcached:1.6-alpine
     container_name: memcached
+    ports:
+      - "${MEMCACHED_PORT}:11211"
     networks:
       - app-network
 
   redis:
     image: redis:7.2-alpine
     container_name: redis
+    ports:
+      - ${REDIS_PORT}:6379
     networks:
       - app-network
 networks:
