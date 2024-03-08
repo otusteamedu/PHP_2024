@@ -37,7 +37,7 @@ services:
     image: mysql
     container_name: mysql
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - ./docker/mysql/mysql-data:/var/lib/mysql
     environment:
@@ -45,6 +45,28 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     command: mysqld --user=root --sql-mode=""
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    hostname: redis
+    container_name: redis
+    restart: always
+    ports:
+        - 6379:6379
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    networks:
+        - app-network
+
+  memcached:
+    image: memcached
+    hostname: memcached
+    container_name: memcached
+    ports:
+      - "11211:11211"
+    restart: always
     networks:
       - app-network
 
