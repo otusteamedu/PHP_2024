@@ -1,4 +1,8 @@
 <?php
-echo "Hello, Ira!";
+
+/**
+ * @package Irayu
+ * Index.php
+ */
 
 phpinfo();

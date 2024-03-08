@@ -1,13 +1,15 @@
 <?php
+
 echo '<pre>';
 
-$redis = new \Redis();
+$redis = new Redis();
+
 try {
 	$redis->connect('redis', '6379');
 	echo 'Redis is connected ' . $redis->ping() . PHP_EOL;
 	$redis->close();
 } catch (\Exception $e) {
-	echo "Redis error: {$e->getMessage()}" . PHP_EOL;
+	echo "Redis error: " . $e->getMessage() . PHP_EOL;
 }
 
 try {
@@ -20,7 +22,7 @@ try {
 		echo 'Memcached is not connected' . PHP_EOL;
 	}
 } catch (Exception $e) {
-	echo "Memcached error: {$e->getMessage()} " . PHP_EOL;
+	echo 'Memcached error: ' . $e->getMessage() . PHP_EOL;
 }
 
 $host = getenv('MYSQL_HOST');
@@ -29,7 +31,7 @@ $user = getenv('MYSQL_USER');
 $pass = getenv('MYSQL_PASSWORD');
 $charset = getenv('MYSQL_CHARSET');
 
-$dsn = "mysql:host=$host;dbname=$db";
+$dsn = 'mysql:host=' . $host . ';dbname=' . $db;
 $dbh = new PDO($dsn, $user, $pass);
 echo 'Mysql is connected' . PHP_EOL;
 $sth = $dbh->query('SELECT * FROM hw1');
