@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+
+  server:
+    build:
+      context: ./docker/php-cli
+    container_name: server
+    volumes:
+      - ./src:/app/socket-chat
+      - sockets:/var/run/sockets
+    networks:
+      - net
+    stdin_open: true
+    tty: true
+
+  client:
+    build:
+      context: ./docker/php-cli
+    container_name: client
+    volumes:
+      - ./src:/app/socket-chat
+      - sockets:/var/run/sockets
+    networks:
+      - net
+    depends_on:
+      - server
+    stdin_open: true
+    tty: true
+
+networks:
+  net:
+    driver: bridge
+
+volumes:
+  sockets:
