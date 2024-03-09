@@ -55,7 +55,6 @@ class App
     {
         $socketClient = new SocketClient();
         while (true) {
-
             echo PHP_EOL . "Введите что-нибудь (для выхода введите 'exit'): ";
 
             $input = fgets(STDIN);
@@ -81,3 +80,4 @@ class App
     }
 
 }
+

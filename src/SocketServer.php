@@ -85,11 +85,8 @@ class SocketServer
                 if (socket_write($this->clientSocket, $messageOut, strlen($messageOut)) === false) {
                     break;
                 }
-
             } while (true);
-
             socket_close($this->clientSocket);
-
         } while (true);
     }
 
@@ -100,3 +97,4 @@ class SocketServer
     }
 
 }
+
