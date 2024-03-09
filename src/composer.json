@@ -1,0 +1,17 @@
+{
+    "name": "igor/app",
+    "autoload": {
+        "psr-4": {
+            "ChatOtus\\App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "i.branitsky",
+            "email": "dev_bi@bankiros.ru"
+        }
+    ],
+    "require": {
+        "hassankhan/config": "^3.1"
+    }
+}
