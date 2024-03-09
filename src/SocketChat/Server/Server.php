@@ -21,7 +21,7 @@ class Server
             $message = $serverSocket->read($this->config->getMessageMaxLength());
             $messageLength = strlen($message);
             $serverSocket->write("Получено $messageLength байт от клиента");
-            echo $message. PHP_EOL;
+            echo $message . PHP_EOL;
             if ($message === $this->config->getStopWord()) {
                 break;
             }
