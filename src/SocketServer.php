@@ -95,6 +95,4 @@ class SocketServer
         socket_close($this->clientSocket);
         socket_close($this->socket);
     }
-
 }
-

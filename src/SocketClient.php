@@ -58,6 +58,4 @@ class SocketClient
         $out = socket_read($this->socket, 2048);
         fputs(STDIN, $out);
     }
-
 }
-

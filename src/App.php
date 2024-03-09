@@ -78,6 +78,4 @@ class App
         $socketServer->runListner();
         $socketServer->closeSocket();
     }
-
 }
-
