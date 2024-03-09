@@ -13,15 +13,14 @@
  */
 class Solution
 {
-
     /**
      * @param ListNode $list1
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists($list1, $list2)
     {
-        $list = new ListNode;
+        $list = new ListNode();
         $current = $list;
 
         while (!empty($list1) && !empty($list2)) {
