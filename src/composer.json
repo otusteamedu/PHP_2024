@@ -1,0 +1,19 @@
+{
+    "name": "alexander-gladkov/socket-chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderGladkov\\SocketChat\\": "SocketChat/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Gladkov"
+        }
+    ],
+    "require": {
+        "ext-sockets": "*",
+        "ext-readline": "*",
+        "ext-mbstring": "*"
+    }
+}
