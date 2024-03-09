@@ -1,3 +1,11 @@
 # PHP_2024
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+First Start Server
+
+`docker-compose run php-chat-server
+`
+
+Last Start Client 
+
+`docker-compose run php-chat-client
+`

@@ -6,3 +6,4 @@
 .env
 app/
 data/
+src/vendor

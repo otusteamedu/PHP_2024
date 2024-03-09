@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  php-chat-server:
+    build:
+      context: ./conf/php
+      dockerfile: Dockerfile
+    container_name: php-chat-server-1
+    volumes:
+      - php-data:/data
+      - ./src:/src
+    environment:
+      CLIENT_OR_SERVER: "server"
+
+  php-chat-client:
+    build:
+      context: ./conf/php
+      dockerfile: Dockerfile
+    container_name: php-chat-client-1
+    volumes:
+      - php-data:/data
+      - ./src:/src
+    environment:
+      CLIENT_OR_SERVER: "client"
+
+volumes:
+  php-data:
