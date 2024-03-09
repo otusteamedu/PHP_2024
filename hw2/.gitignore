@@ -1,0 +1,7 @@
+.idea/
+/vendor/
+/docker/
+.DS_Store
+.AppleDouble
+.LSOverride
+.env
