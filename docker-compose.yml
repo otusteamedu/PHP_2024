@@ -1,44 +1,9 @@
 version: "3.1"
 
 services:
-  nginx-proxy:
-    image: nginx:latest
-    container_name: nginx-proxy
-    # проброс портов
-    ports:
-      - ${NGINX_PORT_EXTERNAL}:${NGINX_PORT}
-    volumes:
-      - ./docker/nginx/proxy/:/etc/nginx/conf.d/
-    networks:
-      - app-network
-    depends_on:
-      - nginx
-      - nginx2
-  nginx:
-    image: nginx:latest
-    container_name: nginx
-    volumes:
-      - ./:/var/www/mysite.local
-      - ./docker/nginx/server:/etc/nginx/conf.d
-    networks:
-      - app-network
-    depends_on:
-      - app
-      - app2
-  nginx2:
-    image: nginx:latest
-    container_name: nginx2
-    volumes:
-      - ./:/var/www/mysite.local
-      - ./docker/nginx/server:/etc/nginx/conf.d
-    networks:
-      - app-network
-    depends_on:
-      - app
-      - app2
-  app:
+  app1:
     build: docker/php
-    container_name: app
+    container_name: app1
     volumes:
       - ./:/var/www/mysite.local
     networks:
@@ -50,14 +15,6 @@ services:
       - ./:/var/www/mysite.local
     networks:
       - app-network
-  memcached:
-    image: memcached:latest
-    container_name: ${MEMCACHED_CONTAINER}
-    ports:
-      - ${MEMCACHED_PORT}:${MEMCACHED_PORT}
-    networks:
-      - app-network
-
 networks:
   app-network:
     driver: bridge

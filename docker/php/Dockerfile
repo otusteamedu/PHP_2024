@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y \
     && pecl install memcached\
     && docker-php-ext-enable memcached
 
+RUN docker-php-ext-install sockets
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
 
 

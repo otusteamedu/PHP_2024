@@ -3,12 +3,10 @@
   "type": "project",
   "autoload": {
     "psr-4": {
-      "App\\": "app/"
+      "Main\\": "src/"
     }
   },
   "require": {
-    "php": ">=7.1",
-    "symfony/http-foundation": "^6.0"
-
+    "php": ">=7.1"
   }
 }
