@@ -11,7 +11,7 @@ class Validate
     /**
      * @throws Exception
      */
-    static public function isBracketsValidate(string $brackets): bool
+    public static function isBracketsValidate(string $brackets): bool
     {
         $count = mb_strlen($brackets);
         if ($brackets["0"] !== "(" || $brackets[--$count] !== ")") {
