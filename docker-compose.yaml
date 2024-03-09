@@ -1,37 +1,93 @@
 version: '3'
 
 services:
-  nginx:
+  nginx-balancer:
     build:
-      context: docker/nginx
+      context: docker/nginx/balancer
       dockerfile: Dockerfile
-    image: myapp/nginx
-    container_name: nginx
+    container_name: nginx-balancer
     ports:
       - "${NGINX_PORT}:${NGINX_PORT}"
+    networks:
+      - app-network
+    depends_on:
+      - nginx-default-1
+      - nginx-default-2
+  nginx-default-1:
+    build:
+      context: docker/nginx/default
+      dockerfile: Dockerfile
+    container_name: nginx-default-1
+    expose:
+      - ${NGINX_PORT}
     volumes:
       - ./www:${ROOT_DIR}
     networks:
       - app-network
     depends_on:
-      - app
-
-  app:
+      - php-fpm-1
+      - php-fpm-2
+      - php-fpm-3
+  nginx-default-2:
+    build:
+      context: docker/nginx/default
+      dockerfile: Dockerfile
+    container_name: nginx-default-2
+    expose:
+      - ${NGINX_PORT}
+    volumes:
+      - ./www:${ROOT_DIR}
+    networks:
+      - app-network
+    depends_on:
+      - php-fpm-1
+      - php-fpm-2
+      - php-fpm-3
+  php-fpm-1:
     build:
       context: docker/fpm
       dockerfile: Dockerfile
-    image: myapp/php
-    container_name: app
+    container_name: php-fpm-1
     env_file:
       - .env
     volumes:
       - ./www:${ROOT_DIR}
-    depends_on:
-      - redis
-      - memcached
-      - postgres
     networks:
       - app-network
+    depends_on:
+      - redis
+      - postgres
+      - memcached
+  php-fpm-2:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    container_name: php-fpm-2
+    env_file:
+      - .env
+    volumes:
+      - ./www:${ROOT_DIR}
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - postgres
+      - memcached
+  php-fpm-3:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    container_name: php-fpm-3
+    env_file:
+      - .env
+    volumes:
+      - ./www:${ROOT_DIR}
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - postgres
+      - memcached
   redis:
     image: redis:latest
     container_name: ${REDIS_HOST}
@@ -46,8 +102,6 @@ services:
     image: postgres:latest
     restart: always
     container_name: ${POSTGRES_HOST}
-    ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     environment:
       POSTGRES_DB: ${POSTGRES_DB_NAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
