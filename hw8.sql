@@ -7,6 +7,11 @@ ALTER TABLE IF EXISTS prices
 DROP CONSTRAINT IF EXISTS prices_hall_id_fkey;
 ALTER TABLE IF EXISTS prices
 DROP CONSTRAINT IF EXISTS prices_zone_id_fkey;
+ALTER TABLE IF EXISTS movie_genre
+DROP CONSTRAINT IF EXISTS movie_genre_movie_id_fkey;
+ALTER TABLE IF EXISTS movie_genre
+DROP CONSTRAINT IF EXISTS movie_genre_genre_id_fkey;
+DROP INDEX IF EXISTS movie_genre_gm_idx;
 ALTER TABLE IF EXISTS movies
 DROP CONSTRAINT IF EXISTS movies_country_id_fkey;
 ALTER TABLE IF EXISTS movies
@@ -61,17 +66,24 @@ CREATE TABLE genres
     name VARCHAR(255) NOT NULL UNIQUE
 );
 
-
 DROP TABLE IF EXISTS movies;
 CREATE TABLE movies
 (
     id            BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     country_id    BIGINT REFERENCES countries (id) ON DELETE CASCADE,
-    genre_id      BIGINT REFERENCES genres (id) ON DELETE CASCADE,
     name          VARCHAR(255) NOT NULL UNIQUE,
     duration      TIME         NOT NULL,
     year_of_issue SMALLINT     NOT NULL
 );
+
+DROP TABLE IF EXISTS movie_genre;
+CREATE TABLE movie_genre
+(
+    genre_id      BIGINT REFERENCES genres (id) ON DELETE CASCADE,
+    movie_id      BIGINT REFERENCES movies (id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX movie_genre_gm_idx ON movie_genre (genre_id, movie_id);
 
 DROP TABLE IF EXISTS sessions;
 CREATE TABLE sessions
@@ -135,11 +147,18 @@ VALUES ('Триллер'),
        ('Фонтастика'),
        ('Ужасы');
 
-INSERT INTO movies (name, duration, year_of_issue, country_id, genre_id)
-VALUES ('Хищник', '02:30', 1992, 2, 2),
-       ('Робин Гуд', '01:30', 2019, 1, 1),
-       ('Операция Ы', '02:10', 2015, 1, 1),
-       ('Чужой', '02:00', 1992, 2, 3);
+INSERT INTO movies (name, duration, year_of_issue, country_id)
+VALUES ('Хищник', '02:30', 1992, 2),
+       ('Робин Гуд', '01:30', 2019, 1),
+       ('Операция Ы', '02:10', 2015, 1),
+       ('Чужой', '02:00', 1992, 2);
+
+INSERT INTO movie_genre (movie_id, genre_id)
+VALUES (1, 2),
+       (2, 1),
+       (3, 1),
+       (4, 3),
+       (1, 1);
 
 INSERT INTO sessions (movie_id, hall_id, datetime_start, duration)
 VALUES (1, 1, '2024-01-05 10:00', '03:00'),
