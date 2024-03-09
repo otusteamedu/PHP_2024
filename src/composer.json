@@ -1,0 +1,17 @@
+{
+    "name": "igor/src",
+    "autoload": {
+        "psr-4": {
+            "Igor\\ValidateBrackets\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "i.branitsky",
+            "email": "dev_bi@bankiros.ru"
+        }
+    ],
+    "require": {
+        "ext-mbstring": "*"
+    }
+}

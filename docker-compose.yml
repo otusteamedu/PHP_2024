@@ -34,7 +34,9 @@ services:
       - app-network
 
   php-fpm-1:
-    image: php:fpm
+    build:
+      context: ./conf/php
+      dockerfile: Dockerfile
     container_name: 'php-fpm-1'
     expose:
       - 9000
@@ -45,7 +47,9 @@ services:
       - app-network
 
   php-fpm-2:
-    image: php:fpm
+    build:
+      context: ./conf/php
+      dockerfile: Dockerfile
     container_name: 'php-fpm-2'
     expose:
       - 9000
