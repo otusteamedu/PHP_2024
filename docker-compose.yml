@@ -48,7 +48,7 @@ services:
       context: docker/php-fpm
     networks:
       - network
-    container_name: '${CONTAINER_NAME_PHP_FPM}1'
+    container_name: '${CONTAINER_NAME_PHP_FPM_1}'
     volumes:
       - .:/var/www/html
       - ./docker/php-fpm/sock:/sock
@@ -59,14 +59,12 @@ services:
       context: docker/php-fpm
     networks:
       - network
-    container_name: '${CONTAINER_NAME_PHP_FPM}2'
+    container_name: '${CONTAINER_NAME_PHP_FPM_2}'
     volumes:
       - .:/var/www/html
       - ./docker/php-fpm/sock:/sock
       - ./docker/php-fpm/sock2.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
 
-<<<<<<< Updated upstream
-=======
   php-cli1:
     image: beginner95/php8-cli
     networks:
@@ -85,7 +83,6 @@ services:
       - .:/var/www/html
       - ./docker/php-fpm/sock:/sock
 
->>>>>>> Stashed changes
   redis:
     image: 'redis:alpine'
     ports:
@@ -106,21 +103,16 @@ services:
     networks:
       - network
 
-  mysql:
-    image: 'mysql/mysql-server:8.0'
+  postgres:
+    image: postgres:14-alpine
     ports:
-      - '3306:3306'
-    environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ROOT_HOST: '%'
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      - "5432:5432"
     volumes:
-      - 'volume-mysql:/var/lib/mysql'
-    networks:
-      - network
+      - volume-psql:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_DB: '${DB_DATABASE}'
 
 networks:
   network:
@@ -131,5 +123,5 @@ volumes:
     driver: local
   volume-memcached:
     driver: local
-  volume-mysql:
+  volume-psql:
     driver: local
