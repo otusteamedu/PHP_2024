@@ -45,9 +45,9 @@ class App
             $this->runServer();
         } elseif ($argv[1] == 'client') {
             $this->runClient();
+        } else {
+            throw new \Exception('Передано не существующие действие');
         }
-
-        throw new \Exception('Передано не существующие действие');
     }
 
 
@@ -67,7 +67,6 @@ class App
             }
             $socketClient->sendMessage($input);
         }
-
         $socketClient->closeSocket();
     }
 
@@ -78,4 +77,5 @@ class App
         $socketServer->runListner();
         $socketServer->closeSocket();
     }
+
 }
