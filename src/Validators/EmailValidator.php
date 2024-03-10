@@ -6,7 +6,6 @@ namespace Main\Validators;
 
 class EmailValidator extends AbstractValidator implements Validator
 {
-
     protected $pattern = '/^[a-zA-Zа-яА-Я0-9\.\_\-]+@[a-zA-Zа-яА-Я0-9.-]+\.[a-zA-Zа-яА-Я]{2,6}$/u';
 
     public function validate(): bool
