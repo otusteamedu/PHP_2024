@@ -60,6 +60,15 @@ services:
     networks:
       - app-network
 
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    image: myapp/redis
+    container_name: redis
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge

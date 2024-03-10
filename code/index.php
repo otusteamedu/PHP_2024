@@ -1,7 +1,5 @@
 <?php
 
-echo 'container id: ' . $_SERVER['HOSTNAME'];
-
 if (!empty($_POST['string'])) {
     if (isStringValid($_POST['string'])) {
         http_response_code(200);
