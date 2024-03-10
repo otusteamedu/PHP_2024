@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  php-cli-server:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    container_name: php-cli-server
+    env_file:
+      - .env
+    volumes:
+      - ./www:${ROOT_DIR}
+    networks:
+      - app-network
+
+  php-cli-client:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    container_name: php-cli-client
+    env_file:
+      - .env
+    volumes:
+      - ./www:${ROOT_DIR}
+    networks:
+      - app-network
+    depends_on:
+      - php-cli-server
+
+networks:
+  app-network:
+    driver: bridge
