@@ -54,19 +54,7 @@ class App
     public function runClient(): void
     {
         $socketClient = new SocketClient();
-        while (true) {
-            echo PHP_EOL . "Введите что-нибудь (для выхода введите 'exit'): ";
-
-            $input = fgets(STDIN);
-
-            $input = trim($input);
-
-            if ($input === 'exit') {
-                echo "До свидания!\n";
-                break;
-            }
-            $socketClient->sendMessage($input);
-        }
+        $socketClient->runClientListener();
         $socketClient->closeSocket();
     }
 

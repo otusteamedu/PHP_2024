@@ -17,11 +17,6 @@ class SocketClient
         $this->socketConnect();
     }
 
-    public function getClientMessage()
-    {
-
-    }
-
     public function initSocketFilePath(): void
     {
         $path = __DIR__ . getenv('SOCKET_PATH');
@@ -73,6 +68,57 @@ class SocketClient
     public function showResponse(): void
     {
         $out = socket_read($this->socket, 2048);
+        $out .= PHP_EOL;
         fputs(STDIN, $out);
+    }
+
+    public function runClientListener(): void
+    {
+        while (true) {
+            $message = $this->getClientMessage();
+            if ($this->isExitMessage($message)) {
+                $this->showExitNotification();
+                break;
+            }
+
+            if ($this->isEmptyMessage($message)) {
+                $this->showEmptyNotification();
+                continue;
+            }
+
+            $this->sendMessage($message);
+        }
+    }
+
+    public function getClientMessage(): string
+    {
+        $message = readline("Введите что-нибудь (для выхода введите 'exit'): ");
+        return $message;
+    }
+
+    public function isExitMessage(string $message): bool
+    {
+        $message = trim($message);
+        if ($message === 'exit') {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function isEmptyMessage(string $message): bool
+    {
+        $message = trim($message);
+        return empty($message);
+    }
+
+    public function showExitNotification(): void
+    {
+        echo "До свидания!" . PHP_EOL;
+    }
+
+    public function showEmptyNotification(): void
+    {
+        echo "Вы отпправили пустую строку!" . PHP_EOL;
     }
 }
