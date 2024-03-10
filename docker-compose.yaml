@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  php-cli:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    image: alg/php-cli
+    container_name: alg-php-cli
+    tty: true
+    working_dir: /data
+    volumes:
+      - ./code/:/data
