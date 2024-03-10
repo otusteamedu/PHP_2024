@@ -12,23 +12,28 @@ class SocketServer
 
     public $clientSocket = false;
 
-    public $socketFile = __DIR__ . "/my_unix_socket.sock";
+    public $socketFile;
 
     public function __construct()
     {
-        $this->socketFile = __DIR__ . getenv('SOCKET_PATH');
+        $this->initSocketFilePath();
         $this->socketCreate();
         $this->socketBind();
         $this->socketListen();
     }
 
 
-    public function getSocketFilePath(): string
+    public function initSocketFilePath(): void
     {
-        if (file_exists($this->socketFile)) {
-            unlink($this->socketFile);
+        $path = __DIR__ . getenv('SOCKET_PATH');
+        if (file_exists($path)) {
+            if (is_dir($path)) {
+                throw new \Exception('Не правильный путь к сокету');
+            } else {
+                unlink($path);
+            }
         }
-        return $this->socketFile;
+        $this->socketFile = $path;
     }
 
     public function socketCreate(): bool
@@ -49,7 +54,7 @@ class SocketServer
 
     public function socketBind(): bool
     {
-        if (socket_bind($this->socket, $this->getSocketFilePath()) === false) {
+        if (socket_bind($this->socket, $this->socketFile) === false) {
             throw new \Exception("Не удалось выполнить socket_bind(): причина: " . socket_last_error($this->socket));
         }
 

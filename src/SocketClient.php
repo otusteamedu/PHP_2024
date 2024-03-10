@@ -8,12 +8,29 @@ class SocketClient
 {
     public $socket = false;
 
-    public $socketFile = __DIR__ . "/my_unix_socket.sock";
+    public $socketFile;
 
     public function __construct()
     {
+        $this->initSocketFilePath();
         $this->socketCreate();
         $this->socketConnect();
+    }
+
+    public function getClientMessage()
+    {
+
+    }
+
+    public function initSocketFilePath(): void
+    {
+        $path = __DIR__ . getenv('SOCKET_PATH');
+        if (file_exists($path) && !is_dir($path)) {
+            $this->socketFile = $path;
+        } else {
+            throw new \Exception('Нe правильный путь к сокету');
+        }
+        $this->socketFile = $path;
     }
 
     public function socketCreate(): bool
