@@ -5,7 +5,7 @@ isAwk=false;
 
 for i in $@
 do
-  if ! [[ "$i" =~ (^(\-?)[0-9]+(\.[0-9]+)?$) ]]
+  if ! [[ "$i" =~ (^(\-|\+)?[0-9]+(\.[0-9]+)?$) ]]
   then
      isError=true;
   else
