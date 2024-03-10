@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace Main;
-
 
 class App
 {
@@ -20,11 +18,9 @@ class App
     {
     }
 
-
     protected function __clone()
     {
     }
-
 
     /**
      * @throws \Exception
@@ -33,7 +29,6 @@ class App
     {
         throw new \Exception("Может существовать только 1 экземпляр приложения");
     }
-
 
     /**
      * @param array $config
@@ -48,7 +43,6 @@ class App
         return self::$instance;
     }
 
-
     /**
      * @throws \Exception
      */
@@ -57,11 +51,4 @@ class App
         $emailTest = new EmailTest();
         $emailTest->runTest();
     }
-
-
-    protected function getEmailList()
-    {
-
-    }
-
 }

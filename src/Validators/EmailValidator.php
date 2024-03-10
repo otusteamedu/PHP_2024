@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace Main\Validators;
-
 
 class EmailValidator extends AbstractValidator implements Validator
 {

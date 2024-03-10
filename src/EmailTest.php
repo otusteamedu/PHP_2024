@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace Main;
-
 
 use Main\Validators\EmailValidator;
 
