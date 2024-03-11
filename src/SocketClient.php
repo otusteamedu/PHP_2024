@@ -74,26 +74,27 @@ class SocketClient
 
     public function runClientListener(): void
     {
-        while (true) {
-            $message = $this->getClientMessage();
-            if ($this->isExitMessage($message)) {
-                $this->showExitNotification();
-                break;
-            }
+        foreach ($this->getClientMessage() as $message) {
+            $this->sendMessage($message);
+        }
 
+    }
+
+    public function getClientMessage(): \Generator
+    {
+        while (true){
+            $message = readline("Введите что-нибудь (для выхода введите 'exit'): ");
+            $message = strval($message);
+            if($this->isExitMessage($message)){
+                $this->showExitNotification();
+                return;
+            }
             if ($this->isEmptyMessage($message)) {
                 $this->showEmptyNotification();
                 continue;
             }
-
-            $this->sendMessage($message);
+            yield $message;
         }
-    }
-
-    public function getClientMessage(): string
-    {
-        $message = readline("Введите что-нибудь (для выхода введите 'exit'): ");
-        return $message;
     }
 
     public function isExitMessage(string $message): bool
