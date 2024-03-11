@@ -13,6 +13,6 @@ $mergeList = new ListMerge();
 $mergedList = $mergeList->mergeTwoLists($list1, $list2);
 
 while (!is_null($mergedList->next)) {
-    echo $mergedList->val. PHP_EOL;
+    echo $mergedList->val . PHP_EOL;
     $mergedList = $mergedList->next;
 }
