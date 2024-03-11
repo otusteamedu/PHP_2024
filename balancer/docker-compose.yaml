@@ -1,0 +1,86 @@
+version: '3'
+
+services:
+
+  nginx-main:
+    build:
+      context: ./nginx/upstream
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx-main
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/app
+    networks:
+      - app-network
+
+  nginx1:
+    build:
+      context: ./nginx/nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx1
+    volumes:
+      - ./code:/data/app
+    networks:
+      - app-network
+
+  nginx2:
+    build:
+      context: ./nginx/nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx2
+    volumes:
+      - ./code:/data/app
+    networks:
+      - app-network
+
+  nginx3:
+    build:
+      context: ./nginx/nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx3
+    volumes:
+      - ./code:/data/app
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app1
+    volumes:
+       - ./code:/data/app
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./code:/data/app
+    networks:
+      - app-network
+
+  app3:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app3
+    volumes:
+      - ./code:/data/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
