@@ -68,6 +68,14 @@ services:
     container_name: redis
     networks:
       - app-network
+  memcached:
+    build:
+      context: ./memcached
+      dockerfile: Dockerfile
+    image: myapp/memcached
+    container_name: memcached
+    networks:
+      - app-network
 
 networks:
   app-network:
