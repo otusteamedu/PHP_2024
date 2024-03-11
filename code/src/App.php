@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Src;
+
 class App
 {
     public function run(): void

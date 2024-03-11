@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-require __DIR__ . '/src/App.php';
+require './src/App.php';
+
+use Src\App;
 
 $app = new App();
 $app->run();
