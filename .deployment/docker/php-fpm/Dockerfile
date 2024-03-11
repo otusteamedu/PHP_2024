@@ -1,12 +1,6 @@
 FROM php:8.2-fpm-alpine
 
-RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash libmemcached-dev libzip-dev
-# Добавляем расширения для Redis и Memcached
-RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
-    && pecl install redis \
-    && pecl install memcached \
-    && docker-php-ext-enable redis memcached \
-    && apk del -f .build-deps
+RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash
 
 # Если аргумент INSTALL_XDEBUG будет равен true, то устанавливаем xdebug (теперь можно исп. этот файл и для прод. деплоя)
 ARG INSTALL_XDEBUG=false
@@ -18,10 +12,6 @@ RUN if [ ${INSTALL_XDEBUG} = true ];  \
 
 # Пробрасываем xdebug.ini в контейнер php
 COPY ./.deployment/docker/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
-# Postgres
-RUN apk add --no-cache libpq-dev \
-    && docker-php-ext-install pdo_pgsql
 
 ## Configure non-root user
 ARG PUID
@@ -38,7 +28,7 @@ RUN apk --no-cache add shadow && \
 RUN mkdir /var/www/homework \
     && chown www-data:www-data /var/www/homework
 COPY --chown=www-data:www-data ./ /var/www/homework
-WORKDIR /var/www/homework
+WORKDIR /var/www/homework/public
 
 USER www-data
 
