@@ -12,3 +12,32 @@ try {
 } catch (Exception $e) {
     echo "Error: {$e->getMessage()}" . PHP_EOL;
 }
+
+/*$some_state = 'initial';
+
+function gen() {
+    global $some_state;
+
+    echo "gen() execution start\n";
+    $some_state = "changed";
+
+    yield 1;
+    yield 2;
+}
+
+function peek_state() {
+    global $some_state;
+    echo "\$some_state = $some_state\n";
+}
+
+echo "calling gen()...\n";
+$result = gen();
+echo "gen() was called\n";
+
+peek_state();
+
+echo "iterating...\n";
+foreach ($result as $val) {
+    echo "iteration: $val\n";
+    peek_state();
+}*/

@@ -13,6 +13,10 @@ class Client extends AbstractSocket
         $this->create();
         $this->connect();
 
+        foreach ($this->logGenerator() as $status) {
+            echo $status . PHP_EOL;
+        }
+
         $connected = true;
         while ($connected) {
             $message = readline('Enter your message: ');
@@ -20,9 +24,20 @@ class Client extends AbstractSocket
             $this->send($message);
 
             if ($message === 'close') {
-                $this->log()->send('Close connect to socket');
                 $connected = false;
             }
+        }
+    }
+
+    public function logGenerator(): \Generator
+    {
+        $list = [
+            'Create socket',
+            'Connect to socket'
+        ];
+
+        foreach ($list as $status) {
+            yield $status;
         }
     }
 }

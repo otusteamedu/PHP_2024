@@ -15,11 +15,18 @@ class Server extends AbstractSocket
         $this->bind();
         $this->listen();
 
+        foreach ($this->logGenerator() as $status) {
+            echo $status . PHP_EOL;
+        }
+
         $client = $this->accept();
 
         $listening = true;
+
         while ($listening) {
             $message = $this->receive($client);
+
+            echo "Received socket message: {$message}";
 
             if ($message === 'close') {
                 $listening = false;
@@ -27,5 +34,19 @@ class Server extends AbstractSocket
         }
 
         $this->close();
+    }
+
+    public function logGenerator(): \Generator
+    {
+        $list = [
+            'Check old socket',
+            'Create socket',
+            'Listen socket',
+            'Wait socket'
+        ];
+
+        foreach ($list as $status) {
+            yield $status;
+        }
     }
 }
