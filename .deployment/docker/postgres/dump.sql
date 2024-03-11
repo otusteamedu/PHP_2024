@@ -7,16 +7,48 @@ CREATE TABLE IF NOT EXISTS hall
 COMMENT ON TABLE hall IS 'Кинозал';
 COMMENT ON COLUMN hall.name IS 'Название кинозала';
 
+-- Страны-производители фильмов
+CREATE TABLE IF NOT EXISTS country
+(
+    id SERIAL PRIMARY KEY,
+    name varchar(255) NOT NULL
+);
+COMMENT ON TABLE country IS 'Страны-производители фильмов';
+COMMENT ON COLUMN country.name IS 'Название страны';
+
+-- Жанры фильмов
+CREATE TABLE IF NOT EXISTS genre
+(
+    id SERIAL PRIMARY KEY,
+    name varchar(255) NOT NULL
+);
+COMMENT ON TABLE genre IS 'Жанры фильмов';
+COMMENT ON COLUMN genre.name IS 'Название жанра';
+
 -- Фильмы
 CREATE TABLE IF NOT EXISTS movie
 (
     id          SERIAL PRIMARY KEY,
     name        varchar(255) NOT NULL,
-    description text DEFAULT NULL
+    description text DEFAULT NULL,
+    country_id  int NOT NULL,
+    produced_at date NOT NULL
 );
 COMMENT ON TABLE movie IS 'Фильмы';
 COMMENT ON COLUMN movie.name IS 'Название фильма';
 COMMENT ON COLUMN movie.description IS 'Описание фильма';
+COMMENT ON COLUMN movie.country_id IS 'Ссылка на страну-производитель фильма';
+COMMENT ON COLUMN movie.produced_at IS 'Дата выпуска фильма';
+
+-- Многие ко многим для жанров и фильмов
+CREATE TABLE IF NOT EXISTS movie_genre
+(
+    movie_id int NOT NULL,
+    genre_id int NOT NULL,
+    PRIMARY KEY (movie_id, genre_id),
+    FOREIGN KEY (movie_id) REFERENCES movie (id),
+    FOREIGN KEY (genre_id) REFERENCES genre (id)
+);
 
 -- Стоимость фильмов
 CREATE TABLE IF NOT EXISTS movie_price
@@ -30,7 +62,18 @@ CREATE TABLE IF NOT EXISTS movie_price
         FOREIGN KEY (movie_id)
             REFERENCES movie (id)
             ON DELETE CASCADE
-            ON UPDATE CASCADE
+            ON UPDATE CASCADE,
+    CONSTRAINT movie_price_check CHECK (
+        (
+            (type) :: text = ANY (
+                ARRAY [
+                    ('first'::character varying)::text,
+                    ('second'::character varying)::text,
+                    ('third'::character varying)::text
+                    ]
+                )
+            )
+        )
 );
 COMMENT ON TABLE movie_price IS 'Цены фильмов';
 COMMENT ON COLUMN movie_price.movie_id IS 'Ссылка на фильм';
@@ -117,6 +160,7 @@ CREATE TABLE IF NOT EXISTS ticket_sale
     id         SERIAL PRIMARY KEY,
     ticket_id    int       NOT NULL,
     amount       int       NOT NULL,
+    customer_email varchar(60) NOT NULL,
     CONSTRAINT fk_ticket
         FOREIGN KEY (ticket_id)
             REFERENCES ticket (id)
@@ -126,5 +170,6 @@ CREATE TABLE IF NOT EXISTS ticket_sale
 COMMENT ON TABLE ticket_sale IS 'Продажи билетов';
 COMMENT ON COLUMN ticket_sale.ticket_id IS 'Ссылка на билет';
 COMMENT ON COLUMN ticket_sale.amount IS 'Стоимость билета';
+COMMENT ON COLUMN ticket_sale.customer_email IS 'Email покупателя';
 
 CREATE INDEX IF NOT EXISTS fk_ticket_ticket_sale_ticket_id ON ticket_sale (ticket_id);
