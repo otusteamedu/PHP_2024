@@ -1,0 +1,73 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/application.local
+      - ./docker/nginx/application.local.conf:/etc/nginx/conf.d/application.local.conf
+      - "phpsocket:/var/run"
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: php-fpm
+    volumes:
+      - ./code:/data/application.local
+      - ./docker/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - "phpsocket:/var/run"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    networks:
+      - app-network
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./docker/mysql_data:/var/lib/mysql
+
+  composer:
+    build: 
+      context: ./docker/composer
+      dockerfile: Dockerfile
+    image: myapp/composer
+    container_name: composer
+    volumes:
+      - ./code:/data/application.local
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+    phpsocket:

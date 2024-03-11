@@ -1,0 +1,50 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "278fa26ee6edfb1141282e43ad68d1e9",
+    "packages": [
+        {
+            "name": "ilya-plotnikov/hello-name",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Tory495/hello-name.git",
+                "reference": "40d021d95f0ce440fa366b8d292e0c3761fef945"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Tory495/hello-name/zipball/40d021d95f0ce440fa366b8d292e0c3761fef945",
+                "reference": "40d021d95f0ce440fa366b8d292e0c3761fef945",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IlyaPlotnikov\\HelloName\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "A small php package for testing",
+            "support": {
+                "issues": "https://github.com/Tory495/hello-name/issues",
+                "source": "https://github.com/Tory495/hello-name/tree/v1.0.4"
+            },
+            "time": "2024-03-10T18:22:43+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
