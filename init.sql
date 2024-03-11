@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS db.movies
     movie_id    SERIAL PRIMARY KEY,
     title   VARCHAR(255) NOT NULL,
     release    INT NOT NULL,
-    duration    INTNOT NULL
+    duration    INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS db.genres
