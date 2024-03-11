@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  php-fpm-client:
+    build: php-fpm
+    container_name: ${PHP_FPM_CLIENT_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./var/php-socket:/tmp/socket
+      - ./var/php-fpm/log:/var/logs/php
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+    env_file: .env
+    depends_on:
+      - php-fpm-server
+    networks:
+      - otus-network
+  php-fpm-server:
+    build: php-fpm
+    container_name: ${PHP_FPM_SERVER_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./var/php-socket:/tmp/socket
+      - ./var/php-fpm/log:/var/logs/php
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+    env_file: .env
+    networks:
+      - otus-network
+networks:
+  otus-network:
+    driver: bridge

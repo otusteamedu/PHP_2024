@@ -1,0 +1,12 @@
+{
+    "name": "dsergei/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Dsergei\\Hw5\\": "src/"
+        }
+    },
+    "require": {
+      "ext-sockets": "*"
+    }
+}
