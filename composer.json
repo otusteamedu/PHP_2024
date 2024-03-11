@@ -1,0 +1,10 @@
+{
+    "name": "ilya-plotnikov/socket-chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "IlyaPlotnikov\\SocketChat\\": "src/"
+        }
+    },
+    "require": {}
+}
