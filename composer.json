@@ -1,0 +1,10 @@
+{
+    "name": "kostarh9/otus-composer-package",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Kostarh9\\OtusComposerPackage\\": "src/"
+        }
+    },
+    "require": {}
+}
