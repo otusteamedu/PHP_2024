@@ -6,8 +6,21 @@ namespace Alogachev\Homework;
 
 class ListMerge
 {
-    function mergeTwoLists(ListNode $list1, ListNode $list2): ListNode
+    /**
+     * @param ListNode $list1
+     * @param ListNode $list2
+     * @return ListNode
+     */
+    function mergeTwoLists($list1, $list2): ListNode
     {
+        if (is_null($list1)) {
+            return $list2;
+        }
+
+        if (is_null($list2)) {
+            return $list1;
+        }
+
         return $list1->val >= $list2->val
             ? new ListNode(
                 $list2->val,
