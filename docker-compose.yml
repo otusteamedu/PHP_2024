@@ -61,18 +61,13 @@ services:
       - app-network
 
   redis:
-    build:
-      context: ./redis
-      dockerfile: Dockerfile
-    image: myapp/redis
+    image: redis:latest
     container_name: redis
     networks:
       - app-network
+
   memcached:
-    build:
-      context: ./memcached
-      dockerfile: Dockerfile
-    image: myapp/memcached
+    image: memcached:latest
     container_name: memcached
     networks:
       - app-network
