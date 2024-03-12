@@ -17,7 +17,7 @@ class App
     /**
      * @throws \Exception
      */
-    public function run(): bool
+    public function run(): void
     {
         $emails = $_SERVER['argv'] ?? [];
 
@@ -27,14 +27,12 @@ class App
             }
 
             if (!$this->validatorEmailName->validate($email)) {
-                return false;
+                throw new \Exception("Email $email is not valid");
             }
 
             if (!$this->validatorEmailDns->validate($email)) {
-                return false;
+                throw new \Exception("DNS email $email is not valid");
             }
         }
-
-        return true;
     }
 }
