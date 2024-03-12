@@ -3,7 +3,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "IlyaPlotnikov\\SocketChat\\": "src/"
+            "Src\\": "src/"
         }
     },
     "require": {}
