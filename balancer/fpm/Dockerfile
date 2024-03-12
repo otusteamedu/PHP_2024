@@ -1,6 +1,6 @@
 FROM php:8.2-fpm
 
-#EXPOSE 9000
+EXPOSE 9000
 
 RUN apt-get update && apt-get install -y \
     curl \
@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd \
     && pecl install redis && docker-php-ext-enable redis \
     && pecl install -f memcached-3.2.0 && docker-php-ext-enable memcached \
-    && pecl install xdebug && docker-php-ext-enable xdebug \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
