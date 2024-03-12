@@ -24,6 +24,13 @@ class Client
      */
     public function start(): void
     {
+        foreach ($this->answer() as $answer) {
+            echo $answer . PHP_EOL;
+        }
+    }
+
+    public function answer(): \Generator
+    {
         while (true) {
             $message = readline('Введите сообщение(для выхода введите bye): ');
             $this->socket->write($this->socket->socket, $message);
@@ -32,7 +39,7 @@ class Client
                 break;
             }
             $answer = $this->socket->read($this->socket->socket);
-            echo $answer . PHP_EOL;
+            yield $answer;
         }
         $this->socket->close();
     }
