@@ -2,10 +2,7 @@ version: '3'
 
 services:
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
+    image: nginx:latest
     container_name: webserver
     ports:
       - "80:80"
@@ -15,10 +12,7 @@ services:
       - app-network
 
   nginx1:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
+    image: nginx:latest
     container_name: nginx1
     volumes:
       - ./code:/data/application.local
@@ -27,10 +21,7 @@ services:
       - app-network
 
   nginx2:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
+    image: nginx:latest
     container_name: nginx2
     volumes:
       - ./code:/data/application.local

@@ -42,6 +42,6 @@ class App
     private function throwErrorMessageCode(string $msg): void
     {
         http_response_code(400);
-        throw new Exception($msg);
+        throw new \Exception($msg);
     }
 }

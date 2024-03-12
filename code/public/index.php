@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require './src/App.php';
+require '../src/App.php';
 
 use Src\App;
 
