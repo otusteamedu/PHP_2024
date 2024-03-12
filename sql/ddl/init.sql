@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS movies_genres (
 );
 
 -- сеансы
-CREATE TABLE IF NOT EXISTS moviesSessions (
+CREATE TABLE IF NOT EXISTS movies_sessions (
     id bigint PRIMARY KEY,
     hall_id bigint REFERENCES halls (id),
     movie_id bigint REFERENCES movies (id),
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS seats (
 -- билеты
 CREATE TABLE IF NOT EXISTS tickets (
     id bigint PRIMARY KEY,
-    session_id bigint REFERENCES moviesSessions (id),
+    session_id bigint REFERENCES movies_sessions (id),
     seat_id bigint REFERENCES seats (id),
     price money NOT NULL
 );
