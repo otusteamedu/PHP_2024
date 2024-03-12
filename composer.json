@@ -1,0 +1,12 @@
+{
+  "name": "ashutov/hw6",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "AShutov\\Hw6\\": "src/"
+    }
+  },
+  "require": {
+  }
+}

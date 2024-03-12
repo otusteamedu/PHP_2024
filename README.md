@@ -1,3 +1,8 @@
-# PHP_2023
+# How to use
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+```
+$ docker compose build
+$ docker compose up -d
+```
+
+open http://localhost/
