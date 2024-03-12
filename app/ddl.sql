@@ -13,7 +13,7 @@ CREATE TABLE genres (
 CREATE TABLE films (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    date DATE NOT NULL,
+    date DATE NOT NULL
 );
 
 CREATE TABLE film_genres (
@@ -65,3 +65,34 @@ CREATE TABLE tickets (
 
 CREATE INDEX idx_ticket_session ON tickets (session_id);
 CREATE INDEX idx_ticket_place ON tickets (place_id);
+
+CREATE TABLE attribute_types (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    UNIQUE (name)
+);
+
+CREATE TABLE attributes (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    UNIQUE (name),
+    type_id INT NOT NULL REFERENCES attribute_types (id)
+);
+
+CREATE INDEX idx_attribute_type ON attributes (type_id);
+
+CREATE TABLE attribute_values (
+    id SERIAL PRIMARY KEY,
+    attribute_id INT NOT NULL REFERENCES attributes (id),
+    film_id INT NOT NULL REFERENCES films (id),
+    order SMALLINT NOT NULL DEFAULT 0,
+    int_value INT DEFAULT NULL,
+    float_value DECIMAL(40,20) DEFAULT NULL,
+    bool_value BOOLEAN DEFAULT NULL,
+    string_value VARCHAR(255) DEFAULT NULL,
+    text_value TEXT DEFAULT NULL,
+    date_value TIMESTAMP DEFAULT NULL
+);
+
+CREATE INDEX idx_values_attribute ON attribute_values (attribute_id);
+CREATE INDEX idx_values_film ON attribute_values (film_id);
