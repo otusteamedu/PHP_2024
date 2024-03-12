@@ -8,14 +8,14 @@ class ValidatorEmailName extends AbstractValidator implements IValidator
 {
     private const REGEX = '/^\S+@\S+\.\S+$/';
 
-    public function validate(string $email): void
+    public function validate(string $email): bool
     {
         $valid = preg_match(self::REGEX, $email);
 
         if (!$valid) {
-            $this->log()->send("Email $email is not valid");
+            return false;
         } else {
-            $this->log()->send("Email $email is valid");
+            return true;
         }
     }
 }

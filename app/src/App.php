@@ -17,17 +17,24 @@ class App
     /**
      * @throws \Exception
      */
-    public function run(): void
+    public function run(): bool
     {
-        global $argv;
+        $emails = $_SERVER['argv'] ?? [];
 
-        foreach ($argv as $key => $email) {
+        foreach ($emails as $key => $email) {
             if ($key === 0) {
                 continue;
             }
 
-            $this->validatorEmailName->validate($email);
-            $this->validatorEmailDns->validate($email);
+            if (!$this->validatorEmailName->validate($email)) {
+                return false;
+            }
+
+            if (!$this->validatorEmailDns->validate($email)) {
+                return false;
+            }
         }
+
+        return true;
     }
 }
