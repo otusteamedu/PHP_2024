@@ -4,38 +4,8 @@ declare(strict_types=1);
 
 namespace AShutov\Hw6;
 
-use Exception;
-
 class EmailValidator
 {
-    /**
-     * @throws Exception
-     */
-    public function run(string $path)
-    {
-        $arrEmails = $this->readFile($path);
-
-        return $this->validate($arrEmails);
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function readFile(string $path): array
-    {
-        $emails = [];
-
-        if (!file_exists($path)) {
-            throw new Exception("Файл не найден");
-        }
-
-        if ($lines = file($path, FILE_SKIP_EMPTY_LINES | FILE_IGNORE_NEW_LINES)) {
-            $emails = $lines;
-        }
-
-        return $emails;
-    }
-
     public function validate(array $emails): string
     {
         $res = '';
@@ -48,9 +18,9 @@ class EmailValidator
                 && !empty($explodeEmail[1])
                 && $this->checkDnsMx($explodeEmail[1])
             ) {
-                $res .= 'Email ' . $email . ' валидный <br>';
+                $res .= 'Email ' . $email . ' <span style="color: green;">валидный</span><br>';
             } else {
-                $res .= 'Email ' . $email . ' невалидный <br>';
+                $res .= 'Email ' . $email . ' <span style="color: red;">невалидный</span> <br>';
             }
         }
 
