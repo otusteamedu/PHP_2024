@@ -32,7 +32,7 @@ docker compose exec php-fpm composer install
 docker compose exec php-fpm php app.php
 ```
 
-## Обосновние сложности
+## Обоснование сложности
 
 В моем случае `mergeTwoLists` представляет собой рекурсивный алгоритм 
 слияния двух односвязных, отсортированных списков.
