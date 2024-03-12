@@ -1,9 +1,8 @@
 FROM nginx:latest
 
-COPY default.conf  /etc/nginx/conf.d/default.conf
+COPY mysite.local.conf  /etc/nginx/conf.d/mysite.local.conf
 
 WORKDIR /data
-VOLUME /data
 
 EXPOSE 80
 

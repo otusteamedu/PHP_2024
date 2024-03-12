@@ -4,4 +4,4 @@
 .AppleDouble
 .LSOverride
 .env
-/docker/php-fpm/sock
+/docker/php/sock

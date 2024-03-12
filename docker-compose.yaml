@@ -9,12 +9,12 @@ services:
       context: docker/nginx
       dockerfile: Dockerfile
     image: myserver/nginx
-    container_name: nginx
+    container_name: '${CONTAINER_NAME_NGINX}'
     # проброс портов
     ports:
       - "80:80"
     volumes:
-      - ./code:/data/mysite.local
+      - ./src:/data/mysite.local
       - ./docker/php/sock:/sock
     networks:
       - app-network
@@ -30,10 +30,10 @@ services:
     image: myserver/nginx
     networks:
       - app-network
-    container_name: php
+    container_name: '${CONTAINER_NAME_PHP_FPM}'
     volumes:
-      - ./code:/data/mysite.local
-      - ./docker/php-fpm/sock:/sock
+      - ./src:/data/mysite.local
+      - ./docker/php/sock:/sock
 
   redis:
     image: 'redis:alpine'
@@ -57,11 +57,11 @@ services:
     ports:
       - '3306:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_HOST: '%'
-      MYSQL_DATABASE: database
-      MYSQL_USER: root
-      MYSQL_PASSWORD: pass
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
       - 'volume-mysql:/var/lib/mysql'
