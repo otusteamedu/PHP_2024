@@ -62,7 +62,7 @@ class App
     public function runServer(): void
     {
         $socketServer = new SocketServer();
-        $socketServer->runListner();
+        $socketServer->runListener();
         $socketServer->closeSocket();
     }
 

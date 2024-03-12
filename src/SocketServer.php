@@ -9,9 +9,6 @@ use http\Env;
 class SocketServer
 {
     public $socket = false;
-
-    public $clientSocket = false;
-
     public $socketFile;
 
     public function __construct()
@@ -69,35 +66,51 @@ class SocketServer
         return true;
     }
 
-    public function runListner(): void
+    public function runListener(): void
     {
-        do {
-            echo "Сервер готов к прослушиванию." . PHP_EOL;
+        foreach ($this->getClientSocket() as $clientSocket) {
+            $this->runClientListener($clientSocket);
+        }
+    }
 
-            if (($this->clientSocket = socket_accept($this->socket)) === false) {
-                break;
+
+    public function runClientListener($clientSocket)
+    {
+        foreach ($this->getClientMessage($clientSocket) as $message) {
+            $messageOut = "Получено байт:" . strlen($message);
+            socket_write($clientSocket, $messageOut, strlen($messageOut));
+        }
+
+        socket_close($clientSocket);
+    }
+
+    public function getClientSocket()
+    {
+        while (true) {
+            echo "Сервер ожидает подключение клиента." . PHP_EOL;
+            if (($clientSocket = socket_accept($this->socket)) === false) {
+                return;
             }
+            echo "Клиент подключился к серверу." . PHP_EOL;
+            yield $clientSocket;
+        }
+    }
 
-            do {
-                $buf = socket_read($this->clientSocket, 2048);
-
-                if ($buf === false) {
-                    break;
-                }
-
-                $messageOut = "Получено байт:" . strlen($buf);
-
-                if (socket_write($this->clientSocket, $messageOut, strlen($messageOut)) === false) {
-                    break;
-                }
-            } while (true);
-            socket_close($this->clientSocket);
-        } while (true);
+    public function getClientMessage($clientSocket)
+    {
+        while (true)
+        {
+            $clientMessage = socket_read($clientSocket, 2048);
+            echo "Клиент отправил: '$clientMessage' - ".strlen($clientMessage)." байт " . PHP_EOL;
+            if(empty($clientMessage)){
+                return;
+            }
+            yield $clientMessage;
+        }
     }
 
     public function closeSocket(): void
     {
-        socket_close($this->clientSocket);
         socket_close($this->socket);
     }
 }
