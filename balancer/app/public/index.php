@@ -10,4 +10,4 @@ $_SESSION['host'] = $_SERVER['HOSTNAME'];
 
 $test = (new Test())->getTest();
 
-echo $_SESSION['host'].'<br/><br/>'.$test;
+echo $_SESSION['host'].'<br/>'.$test;
