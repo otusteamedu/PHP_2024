@@ -17,7 +17,7 @@ class App
     /**
      * @throws \Exception
      */
-    public function run(): void
+    public function run(): bool
     {
         $emails = $_SERVER['argv'] ?? [];
 
@@ -34,5 +34,7 @@ class App
                 throw new \Exception("DNS email $email is not valid");
             }
         }
+
+        return true;
     }
 }
