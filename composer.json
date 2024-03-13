@@ -1,0 +1,12 @@
+{
+    "name": "ilya-plotnikov/otus-php",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "IlyaPlotnikov\\OtusPhp\\": "src/"
+        }
+    },
+    "require": {
+        "ilya-plotnikov/hello-name": "^1.0.5"
+    }
+}
