@@ -27,14 +27,3 @@ composer install
 ```
 make start-otus
 ```
-
-##Usage 
-```
-docker-compose run app php frontend/web/index.php 'valera@gmail.com,valera@gmail.con,valera @gmail.com'
-```
-or
-
-```
-docker-compose exec server bash
-php frontend/web/index.php index.php 'valera@gmail.com,valera@gmail.con,valera @gmail.com'
-```
