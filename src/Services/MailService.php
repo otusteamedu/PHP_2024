@@ -6,7 +6,22 @@ namespace IlyaPlotnikov\MailService\Services;
 
 class MailService
 {
-    public function validate(string $email): bool
+    public function validate(array $emails): bool
+    {
+        if (!empty($emails)) {
+            foreach ($emails as $email) {
+                if (!$this->validateEmail($email)) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function validateEmail(string $email): bool
     {
         if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $explodedEmail = explode('@', $email);

@@ -7,7 +7,7 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 ```php
 $mailService = new MailService();
 
-if ($mailService->validate('nisaga.2002.11.04@gmail.com')) {
+if ($mailService->validate(['ivarthewebdeveloper@gmail.com', 'nisaga.2002.11.04@gmail.com'])) {
     echo 'Email is valid';
 } else {
     echo 'Email is not valid';
