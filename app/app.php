@@ -8,9 +8,8 @@ use Dsergei\Hw6\App;
 
 try {
     $app = new App();
-    if($app->run()) {
-        echo 'All emails is valid' . PHP_EOL;
-    }
+    $app->run();
+    echo 'All emails is valid' . PHP_EOL;
 } catch (Exception $e) {
     echo "Error: {$e->getMessage()}" . PHP_EOL;
 }
