@@ -7,7 +7,8 @@
  * Пространственная сложность:
  * Узлы копируются в новый список ($result), поэтому дополнительная память равна = O(n);
  *
-*/
+ */
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -19,8 +20,6 @@
  *     }
  * }
  */
-
-
 class Solution
 {
 
@@ -63,11 +62,11 @@ class Solution
             $current = $current->next;
         }
 
-        if (!$pointerA) {
+        if ($pointerA !== null) {
             $current->next = $pointerA;
         }
 
-        if (!$pointerB) {
+        if ($pointerB !== null) {
             $current->next = $pointerB;
         }
         return $head;
