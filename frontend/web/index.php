@@ -7,5 +7,7 @@ $dirEnv = __DIR__ . '/../../';
 // Composer
 require($dirEnv . 'vendor/autoload.php');
 
-$appService = new \hw6\AppService(new \hw6\EmailValidator());
-echo $appService->validate();
+$list1 = [1, 2, 4];
+$list2 = [1, 3, 4];
+
+print_r((new \hw10\App())->unit($list1, $list2));

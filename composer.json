@@ -1,6 +1,6 @@
 {
   "name": "otus/ystopchyk",
-  "description": "Otus home work 5",
+  "description": "Otus home work 10",
   "minimum-stability": "dev",
   "type": "project",
   "require": {
@@ -8,12 +8,11 @@
   },
   "autoload": {
     "psr-4": {
-      "hw6\\": "src/"
+      "hw10\\": "src/"
     }
   },
   "prefer-stable": true,
   "require-dev": {
-    "roave/security-advisories": "dev-latest",
-    "squizlabs/php_codesniffer": "3.*"
+    "roave/security-advisories": "dev-latest"
   }
 }
