@@ -10,8 +10,6 @@ services:
     container_name: nginx-main
     ports:
       - "80:80"
-    volumes:
-       - ./code:/data/app
     networks:
       - app-network
 
