@@ -19,9 +19,9 @@ COMMENT ON COLUMN attribute_type.name IS 'Имя типа';
 -- Атрибуты
 CREATE TABLE IF NOT EXISTS attribute
 (
-    id   SERIAL PRIMARY KEY,
-    name varchar(255) NOT NULL,
-    attribute_type_id int NOT NULL,
+    id                SERIAL PRIMARY KEY,
+    name              varchar(255) NOT NULL,
+    attribute_type_id int          NOT NULL,
     CONSTRAINT fk_attribute_type
         FOREIGN KEY (attribute_type_id)
             REFERENCES attribute_type (id)
@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS attribute
 COMMENT ON TABLE attribute IS 'Атрибуты';
 COMMENT ON COLUMN attribute.name IS 'Имя атрибута';
 COMMENT ON COLUMN attribute.name IS 'Ссылка на тип атрибута';
+
+CREATE INDEX IF NOT EXISTS fk_attr_attr_type_attr_type_id ON attribute (attribute_type_id);
 
 -- Значения
 CREATE TABLE IF NOT EXISTS value
@@ -54,3 +56,5 @@ COMMENT ON COLUMN value.movie_id IS 'Ссылка на фильм';
 COMMENT ON COLUMN value.attribute_id IS 'Ссылка на атрибут';
 COMMENT ON COLUMN value.value IS 'Само значение';
 
+CREATE INDEX IF NOT EXISTS fk_value_movie_movie_id ON value (movie_id);
+CREATE INDEX IF NOT EXISTS fk_value_attribute_attribute_id ON value (attribute_id);
