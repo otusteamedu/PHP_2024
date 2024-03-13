@@ -6,7 +6,12 @@ CREATE TABLE IF NOT EXISTS db.movies
     title   VARCHAR(255) NOT NULL,
     release_date    INT NOT NULL,
     duration_minutes    INT NOT NULL,
-    country_name    VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS db.countries
+(
+    id  SERIAL PRIMARY KEY,
+    name    VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS db.genres
@@ -51,6 +56,15 @@ CREATE TABLE IF NOT EXISTS db.movie_director
     PRIMARY KEY (movie_id, director_id),
     FOREIGN KEY (movie_id) REFERENCES db.movies (id),
     FOREIGN KEY (director_id) REFERENCES db.directors (id)
+);
+
+CREATE TABLE IF NOT EXISTS db.movie_country
+(
+    movie_id    INT NOT NULL,
+    country_id  INT NOT NULL,
+    PRIMARY KEY (movie_id, country_id),
+    FOREIGN KEY (movie_id) REFERENCES db.movies (id),
+    FOREIGN KEY (country_id) REFERENCES db.countries (id)
 );
 
 CREATE TABLE IF NOT EXISTS db.seats
