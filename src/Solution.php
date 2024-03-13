@@ -25,6 +25,9 @@ class Solution
             return $list1;
         }
 
-        return new ListNode($list1->val ?? null, $this->mergeTwoLists($list2, $list1->next ?? null));
+        if ($list1->val >= $list2->val) {
+            return new ListNode($list2->val, $this->mergeTwoLists($list1, $list2->next));
+        }
+        return new ListNode($list1->val, $this->mergeTwoLists($list2, $list1->next));
     }
 }
