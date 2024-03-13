@@ -9,6 +9,10 @@ use AShutov\Hw5\App;
 try {
     $app = new App();
     $app->run($argv[1] ?? null);
+
+    foreach ($app->getAnswer() as $answer) {
+        echo $answer . PHP_EOL;
+    }
 } catch (Throwable $e) {
     echo $e->getMessage();
 }

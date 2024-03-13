@@ -22,14 +22,7 @@ class Client
     /**
      * @throws Exception
      */
-    public function start(): void
-    {
-        foreach ($this->answer() as $answer) {
-            echo $answer . PHP_EOL;
-        }
-    }
-
-    public function answer(): \Generator
+    public function start(): \Generator
     {
         while (true) {
             $message = readline('Введите сообщение(для выхода введите bye): ');
