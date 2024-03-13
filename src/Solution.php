@@ -2,7 +2,8 @@
 
 namespace Dsergei\Hw8;
 
-class Solution {
+class Solution
+{
     function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ListNode
     {
         if (is_null($list1) && is_null($list2)) {
