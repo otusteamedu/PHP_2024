@@ -87,11 +87,11 @@ class SocketServer
     public function getClientSocket()
     {
         while (true) {
-            echo "Сервер ожидает подключение клиента." . PHP_EOL;
+            App::getInstance()->getLogger()->info("Сервер ожидает подключение клиента.");
             if (($clientSocket = socket_accept($this->socket)) === false) {
                 return;
             }
-            echo "Клиент подключился к серверу." . PHP_EOL;
+            App::getInstance()->getLogger()->info("Клиент подключился к серверу.");
             yield $clientSocket;
         }
     }
@@ -101,7 +101,7 @@ class SocketServer
         while (true)
         {
             $clientMessage = socket_read($clientSocket, 2048);
-            echo "Клиент отправил: '$clientMessage' - ".strlen($clientMessage)." байт " . PHP_EOL;
+            App::getInstance()->getLogger()->info("Клиент отправил: '$clientMessage' - ".strlen($clientMessage)." байт ");
             if(empty($clientMessage)){
                 return;
             }

@@ -10,8 +10,12 @@ class App
 {
     private static $instance;
 
+    private $logger;
+
     protected function __construct()
     {
+        $logger = new ConsoleLog();
+        $this->setLogger($logger);
     }
 
     protected function __clone()
@@ -65,5 +69,18 @@ class App
         $socketServer->runListener();
         $socketServer->closeSocket();
     }
+
+
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
+
+
 
 }
