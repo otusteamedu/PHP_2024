@@ -6,7 +6,7 @@ namespace hw10;
 
 class Define
 {
-    function init($data)
+    public function init($data)
     {
         if (empty($data)) {
             return null;
