@@ -7,6 +7,6 @@
         }
     },
     "require": {
-        "ilya-plotnikov/hello-name": "^1.0"
+        "ilya-plotnikov/hello-name": "^1.0.5"
     }
 }
