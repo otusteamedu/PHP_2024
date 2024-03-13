@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     image: balance/nginx
     container_name: nginx-main
+    volumes:
+      - ./app/public:/data/app/public
     ports:
       - "80:80"
     networks:
@@ -20,7 +22,11 @@ services:
     image: balance/nginx
     container_name: nginx1
     volumes:
-      - ./code:/data/app
+      - ./app/public:/data/app/public
+    depends_on:
+      - app1
+      - app2
+      - app3
     networks:
       - app-network
 
@@ -31,7 +37,11 @@ services:
     image: balance/nginx
     container_name: nginx2
     volumes:
-      - ./code:/data/app
+      - ./app/public:/data/app/public
+    depends_on:
+      - app1
+      - app2
+      - app3
     networks:
       - app-network
 
@@ -42,7 +52,11 @@ services:
     image: balance/nginx
     container_name: nginx3
     volumes:
-      - ./code:/data/app
+      - ./app/public:/data/app/public
+    depends_on:
+      - app1
+      - app2
+      - app3
     networks:
       - app-network
 
@@ -53,7 +67,7 @@ services:
     image: balance/php
     container_name: app1
     volumes:
-       - ./code:/data/app
+       - ./app:/data/app
     networks:
       - app-network
 
@@ -64,7 +78,7 @@ services:
     image: balance/php
     container_name: app2
     volumes:
-      - ./code:/data/app
+      - ./app:/data/app
     networks:
       - app-network
 
@@ -75,7 +89,7 @@ services:
     image: balance/php
     container_name: app3
     volumes:
-      - ./code:/data/app
+      - ./app:/data/app
     networks:
       - app-network
 

@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
-WORKDIR /data
+WORKDIR /data/app
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
 CMD ["php-fpm"]
