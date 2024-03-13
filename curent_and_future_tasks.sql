@@ -1,3 +1,5 @@
+CREATE VIEW curent_and_future_tasks AS
+
 WITH films_with_date_attributes AS (
     select f.id as film_id, f.name as film_name, a.name as attribute_name, v.v_date as val
     from films_entity as f

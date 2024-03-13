@@ -1,3 +1,5 @@
+CREATE VIEW marketing AS
+
 select f.name as film_name, t.type as attribute_type, a.name as attribute_name,
        CASE
            WHEN v.v_date   IS NOT NULL THEN v.v_date::text
