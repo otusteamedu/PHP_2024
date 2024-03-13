@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/utils.php';
 
-CONST GENRES = [
+const GENRES = [
     'Action',
     'Adventure',
     'Animation',
@@ -25,6 +25,10 @@ CONST GENRES = [
     'Thriller',
     'War',
     'Western'
+];
+
+const COUNTRIES = [
+    'USA', 'Russia', 'China', 'Japan', 'Germany', 'France',
 ];
 
 const MOVIE_POOL = [
@@ -88,8 +92,14 @@ foreach (GENRES as $genre) {
     insertGenre($dbh, $genre);
 }
 
+foreach (COUNTRIES as $country) {
+    insertGenre($dbh, $country);
+}
+
+$countries = getCountriesData($dbh);
 foreach (MOVIE_POOL as $movie) {
-    insertMovie($dbh,  $movie['country'],  $movie['title'], $movie['duration'], $movie['creation_year']);
+    $country = $countries[array_rand($countries)];
+    insertMovie($dbh, $country['id'], $movie['title'], $movie['duration'], $movie['creation_year']);
 }
 
 randomiseGenresToFilms($dbh);
@@ -112,4 +122,3 @@ for ($i = 0; $i < 200; $i++) {
     $session = $sessions[array_rand($sessions)];
     insertRandomTicket($dbh, $session['id'], rand(1, $session['number_of_rows']), rand(1, $session['number_of_seats_per_row']));
 }
-

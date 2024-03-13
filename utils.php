@@ -2,6 +2,20 @@
 
 declare(strict_types=1);
 
+function insertCountries(PDO $pdo, $name)
+{
+    $sql = 'INSERT INTO country (name) VALUES(:name)';
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':name', $name);
+
+    try {
+        $stmt->execute();
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
 function insertGenre(PDO $pdo, $name)
 {
     $sql = 'INSERT INTO genre (name) VALUES(:name)';
@@ -145,6 +159,12 @@ ON session.hall = h.nick');
 function getMoviesData(PDO $pdo)
 {
     $sth = $pdo->query('SELECT id FROM movie');
+    return $sth->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function getCountriesData(PDO $pdo)
+{
+    $sth = $pdo->query('SELECT id FROM country');
     return $sth->fetchAll(PDO::FETCH_ASSOC);
 }
 
