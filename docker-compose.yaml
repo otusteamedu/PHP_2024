@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  nginx-upstream:
+    image: nginx:latest
+    container_name: nginx-upstream
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/host-upstream/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  nginx1:
+    image: nginx:latest
+    container_name: nginx1
+    volumes:
+      - ./code:/data/mysite.local
+      - ./nginx/host-nginx/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  nginx2:
+    image: nginx:latest
+    container_name: nginx2
+    volumes:
+      - ./code:/data/mysite.local
+      - ./nginx/host-nginx/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network 
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app1
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres:
