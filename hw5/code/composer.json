@@ -7,7 +7,7 @@
     },
     "autoload": {
         "psr-4": {
-            "GoroshnikovP\\Hw1\\": "src/"
+            "GoroshnikovP\\Hw5\\": "src/"
         }
     },
     "require": {

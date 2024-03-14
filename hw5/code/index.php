@@ -2,49 +2,15 @@
 
 declare(strict_types=1);
 
-$strOfBraces = $_POST['string'] ?? null;
-if ($strOfBraces === null) {
-    http_response_code(400);
-    echo 'Требуется строка в post-параметре string.';
-    return;
-}
+require_once "vendor/autoload.php";
 
-$strOfBraces = trim($strOfBraces);
-if ('' === $strOfBraces) {
-    http_response_code(400);
-    echo 'Передана пустая строка.';
-    return;
-}
+use GoroshnikovP\Hw5\App;
+use GoroshnikovP\Hw5\Exceptions\AppException;
 
-$isCorrect = true;
-$correctCharsOnly = true;
-$countOpenedBraces = 0;
-for ($index = 0; $index < strlen($strOfBraces); $index++) {
-    $char = $strOfBraces[$index];
-    if ($char === '(') {
-        $countOpenedBraces++;
-    } elseif ($char === ')') {
-        $countOpenedBraces--;
-        if ($countOpenedBraces < 0) {
-            break;
-        }
-    } else {
-        $correctCharsOnly = false;
-        break;
-    }
-}
-
-if (!$correctCharsOnly) {
-    http_response_code(400);
-    echo 'В строке посторонние символы.';
-    return;
-}
-
-$isCorrect = (0 === $countOpenedBraces);
-if ($isCorrect) {
-    http_response_code(200);
-    echo 'Все ОК.';
-} else {
-    http_response_code(400);
-    echo 'Ошибка в расстановке скобок.';
+$viewParams = [];
+try {
+    $app = new App();
+    echo $app->run();
+} catch (AppException $ex) {
+    echo $ex->getMessage();
 }
