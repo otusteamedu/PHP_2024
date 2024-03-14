@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -23,7 +24,7 @@ class Solution
         if (empty($list1)) {
             return $list2;
         }
-        
+
         if (empty($list2)) {
             return $list1;
         }
