@@ -1,5 +1,7 @@
 <?php
 
+namespace IlyaPlotnikov\HomeWork;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -13,13 +15,12 @@
  */
 class Solution
 {
-
     /**
      * @param ListNode $list1
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists($list1, $list2)
     {
         if (empty($list1)) {
             return $list2;
