@@ -20,11 +20,11 @@ class Solution
      */
     function mergeTwoLists($list1, $list2)
     {
-        if (empty($list1) && empty($list2)) {
-            return [];
-        } else if (empty($list1)) {
+        if (empty($list1)) {
             return $list2;
-        } else if (empty($list2)) {
+        }
+        
+        if (empty($list2)) {
             return $list1;
         }
 
@@ -38,8 +38,8 @@ class Solution
 
         $head = $result;
 
-        while ($list1 !== null || $list2 !== null) {
-            if ($list1 !== null && $list1->val <= $list2->val || $list2 === null) {
+        while ($list1 && $list2) {
+            if ($list1->val <= $list2->val) {
                 $result->next = $list1;
                 $list1 = $list1->next;
             } else {
@@ -48,6 +48,12 @@ class Solution
             }
 
             $result = $result->next;
+        }
+
+        if ($list2) {
+            $result->next = $list2;
+        } else {
+            $result->next = $list1;
         }
 
         return $head;
