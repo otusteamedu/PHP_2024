@@ -1,0 +1,17 @@
+{
+    "name": "dsmolyaninov/hw3",
+    "autoload": {
+        "psr-4": {
+            "Dsmolyaninov\\Hw3\\": "/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitry Smolyaninov",
+            "email": "smolyaninovda@gmail.com"
+        }
+    ],
+    "require": {
+        "smolyaninov/otus-composer-package": "^1.0"
+    }
+}
