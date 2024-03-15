@@ -1,0 +1,121 @@
+version: '3'
+
+services:
+  nginx_balancer:
+    depends_on:
+      - nginx_fpm1
+    build:
+      context: nginx_balancer
+      dockerfile: Dockerfile
+      args:
+        CUSTOM_HOST: ${CUSTOM_HOST}
+    image: hw5_nginx_bal
+    container_name: hw5_nginx_bal
+    ports:
+      - "${CUSTOM_WEB_PORT}:80"
+    volumes:
+       - ./logs/nginx_balancer:/var/log/nginx
+    networks:
+      - hw5_network
+
+  nginx_fpm1:
+    depends_on:
+      - php1
+      - php2
+    build:
+      context: nginx_fpm
+      dockerfile: Dockerfile
+    image: hw5_nginx_fpm
+    container_name: hw5_nginx_fpm_1
+    volumes:
+       - ./code:/data/site_root
+       - ./logs/nginx_fpm1:/var/log/nginx
+    networks:
+      - hw5_network
+
+  nginx_fpm2:
+    depends_on:
+      - php1
+      - php2
+    build:
+      context: nginx_fpm
+      dockerfile: Dockerfile
+    image: hw5_nginx_fpm
+    container_name: hw5_nginx_fpm_2
+    volumes:
+       - ./code:/data/site_root
+       - ./logs/nginx_fpm2:/var/log/nginx
+    networks:
+      - hw5_network
+
+  php1:
+    build:
+      context: php
+      dockerfile: Dockerfile
+      args:
+        XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    image: hw5_php
+    container_name: hw5_php_1
+    volumes:
+       - ./code:/data/site_root
+       - ./logs/php:/var/log/php
+    networks:
+      - hw5_network
+
+  php2:
+    build:
+      context: php
+      dockerfile: Dockerfile
+      args:
+        XDEBUG_REMOTE_IP: ${XDEBUG_REMOTE_IP}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    image: hw5_php
+    container_name: hw5_php_2
+    volumes:
+       - ./code:/data/site_root
+       - ./logs/php:/var/log/php
+    networks:
+      - hw5_network
+
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    image: hw5_mysql
+    container_name: hw5_mysql
+    ports:
+      - "${CUSTOM_MYSQL_PORT}:3306"
+    volumes:
+       - ${MYSQL_DATA_PATH}:/var/lib/mysql
+       - ./logs/mysql:/var/log
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - hw5_network
+
+  memcached:
+    build:
+      context: ./memcached
+      dockerfile: Dockerfile
+    image: hw5_memcached
+    container_name: hw5_memcached
+    networks:
+      - hw5_network
+
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    image: hw5_redis
+    container_name: hw5_redis
+    networks:
+      - hw5_network
+
+networks:
+  hw5_network:
+    driver: bridge
