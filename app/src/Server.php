@@ -8,7 +8,8 @@ class Server
 {
     private Config $config;
 
-    function __construct(Config $config) {
+    public function __construct(Config $config)
+    {
         $this->config = $config;
     }
 

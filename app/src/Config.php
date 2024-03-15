@@ -8,7 +8,8 @@ class Config
 {
     private string $config_path;
 
-    function __construct(string $config_path) {
+    public function __construct(string $config_path)
+    {
         $this->config_path = $config_path;
     }
 }

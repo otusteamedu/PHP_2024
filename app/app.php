@@ -17,8 +17,7 @@ try {
     $mode = $argv[1] ?? 'empty mode';
     (new App($mode, $config))
         ->run();
-}
-catch(Exception $e){
+} catch(Exception $e) {
     print $e->getMessage();
     print PHP_EOL;
 }
