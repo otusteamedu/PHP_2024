@@ -9,67 +9,19 @@ use Throwable;
 
 class App
 {
-    private ?string $strOfBraces;
-
-    private function validateInput(): string
-    {
-        if ($this->strOfBraces === null) {
-            return 'Требуется строка в post-параметре string.';
-        }
-
-        $strOfBraces = trim($this->strOfBraces);
-        if ('' === $strOfBraces) {
-            return 'Передана пустая строка.';
-        }
-
-        return '';
-    }
-
-
-    /**
-* @return string пустая строка, скобки расставлены верно. Иначе, что именно не в порядке.
-     */
-    private function calculateBraces(): string
-    {
-        $isCorrect = true;
-        $correctCharsOnly = true;
-        $countOpenedBraces = 0;
-        $len = strlen($this->strOfBraces);
-        for ($index = 0; $index < $len; $index++) {
-            $char = $this->strOfBraces[$index];
-            if ($char === '(') {
-                $countOpenedBraces++;
-            } elseif ($char === ')') {
-                $countOpenedBraces--;
-                if ($countOpenedBraces < 0) {
-                    break;
-                }
-            } else {
-                return 'В строке посторонние символы.';
-            }
-        }
-
-        return (0 === $countOpenedBraces) ? '' : 'Ошибка в расстановке скобок.';
-    }
-
-
     /**
      * @throws AppException
      */
     public function run(): string
     {
         try {
-            $this->strOfBraces = $_POST['string'] ?? null;
-            $validateMsg = $this->validateInput();
-            if (!empty($validateMsg)) {
-                throw new AppException($validateMsg);
-            }
-
-            $result = $this->calculateBraces();
+            $strOfBraces = $_POST['string'] ?? null;
+            $bracesService = new BracesService();
+            $result = $bracesService->calculateBraces($strOfBraces);
 
             if (empty($result)) {
                 http_response_code(200);
-                return 'Скобки раставлены правильно.';
+                return 'Скобки расставлены правильно.';
             } else {
                 throw new AppException($result);
             }
