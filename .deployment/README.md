@@ -4,7 +4,7 @@
 2) Заполнить поля в `.env` файле. Для примера можно взять данные ниже:
 
 ```dotenv
-COMPOSE_PROJECT_NAME=homework8
+COMPOSE_PROJECT_NAME=homework12
 
 ###> postgres ###
 POSTGRES_DB_HOST=postgres
