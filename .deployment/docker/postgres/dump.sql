@@ -20,7 +20,8 @@ COMMENT ON COLUMN attribute_type.name IS 'Имя типа';
 CREATE TABLE IF NOT EXISTS attribute
 (
     id                SERIAL PRIMARY KEY,
-    name              varchar(255) NOT NULL,
+    name              varchar(255) DEFAULT NULL,
+    system_name       varchar(255) NOT NULL,
     attribute_type_id int          NOT NULL,
     CONSTRAINT fk_attribute_type
         FOREIGN KEY (attribute_type_id)
@@ -29,10 +30,12 @@ CREATE TABLE IF NOT EXISTS attribute
             ON DELETE CASCADE
 );
 COMMENT ON TABLE attribute IS 'Атрибуты';
-COMMENT ON COLUMN attribute.name IS 'Имя атрибута';
-COMMENT ON COLUMN attribute.name IS 'Ссылка на тип атрибута';
+COMMENT ON COLUMN attribute.name IS 'Имя атрибута для вывода';
+COMMENT ON COLUMN attribute.system_name IS 'Системное имя';
+COMMENT ON COLUMN attribute.attribute_type_id IS 'Ссылка на тип атрибута';
 
 CREATE INDEX IF NOT EXISTS fk_attr_attr_type_attr_type_id ON attribute (attribute_type_id);
+CREATE INDEX IF NOT EXISTS idx_attribute_system_name ON attribute (system_name);
 
 -- Значения
 CREATE TABLE IF NOT EXISTS value
