@@ -2,14 +2,23 @@
 
 declare(strict_types=1);
 
+if (!is_dir(__DIR__ . "/vendor")) {
+    shell_exec("composer install --no-dev  -o -d " . __DIR__);
+}
+
 require './vendor/autoload.php';
 
 use Lrazumov\Hw5\App;
+use Lrazumov\Hw5\Config;
 
 try {
-    (new App())
+    $config_path = __DIR__ . '/config.php';
+    $config = new Config($config_path);
+    $mode = $argv[1] ?? 'empty mode';
+    (new App($mode, $config))
         ->run();
 }
 catch(Exception $e){
     print $e->getMessage();
+    print PHP_EOL;
 }
