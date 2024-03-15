@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "02c5aa08d445de05ac2bfff7963d5365",
+    "packages": [
+        {
+            "name": "smolyaninov/otus-composer-package",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smolyaninov/otus-composer-package.git",
+                "reference": "445abe98de3d8768e4e5e79660e3d327f5025aa8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smolyaninov/otus-composer-package/zipball/445abe98de3d8768e4e5e79660e3d327f5025aa8",
+                "reference": "445abe98de3d8768e4e5e79660e3d327f5025aa8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Smolyaninov\\OtusComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Dmitry Smolyaninov",
+                    "email": "smolyaninovda@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/smolyaninov/otus-composer-package/issues",
+                "source": "https://github.com/smolyaninov/otus-composer-package/tree/v1.0.1"
+            },
+            "time": "2024-03-15T05:52:58+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
