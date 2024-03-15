@@ -87,11 +87,9 @@ class SocketServer
     public function getClientSocket()
     {
         while (true) {
-            App::getInstance()->getLogger()->info("Сервер ожидает подключение клиента.");
             if (($clientSocket = socket_accept($this->socket)) === false) {
                 return;
             }
-            App::getInstance()->getLogger()->info("Клиент подключился к серверу.");
             yield $clientSocket;
         }
     }
@@ -101,7 +99,6 @@ class SocketServer
         while (true)
         {
             $clientMessage = socket_read($clientSocket, 2048);
-            App::getInstance()->getLogger()->info("Клиент отправил: '$clientMessage' - ".strlen($clientMessage)." байт ");
             if(empty($clientMessage)){
                 return;
             }
