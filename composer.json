@@ -1,0 +1,10 @@
+{
+    "name": "ilya-plotnikov/mail-service",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "IlyaPlotnikov\\MailService\\": "src/"
+        }
+    },
+    "require": {}
+}
