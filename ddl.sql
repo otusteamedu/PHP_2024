@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS public."Films_arrtibuteValue"
     value_boolean boolean,
     value_datetime timestamp without time zone,
     attributetype_id bigint,
+    value_int bigint,
+    value_float double precision,
     PRIMARY KEY (id)
 );
 
