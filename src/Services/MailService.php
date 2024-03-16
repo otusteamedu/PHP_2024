@@ -8,14 +8,10 @@ class MailService
 {
     public function validate(array $emails): bool
     {
-        if (!empty($emails)) {
-            foreach ($emails as $email) {
-                if (!$this->validateEmail($email)) {
-                    return false;
-                }
+        foreach ($emails as $email) {
+            if (!$this->validateEmail($email)) {
+                return false;
             }
-        } else {
-            return false;
         }
 
         return true;
