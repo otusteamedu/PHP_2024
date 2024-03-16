@@ -1,0 +1,19 @@
+{
+    "name": "ira-yu/otus-hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "IraYu\\OtusHw4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Irina Yurtaeva",
+            "email": "irina.s.yurtaeva@gmail.com"
+        }
+    ],
+    "require": {
+        "cocur/slugify": "^4.5",
+        "irina-s-yurtaeva/php-session-learn": "^1.0"
+    }
+}
