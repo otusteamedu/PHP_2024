@@ -82,17 +82,20 @@
         },
         {
             "name": "irina-s-yurtaeva/php-session-learn",
-            "version": "v1.0.0",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/irina-s-yurtaeva/php-session-learn.git",
-                "reference": "e218c7e5195a830a1763141ac035d5a333a8267e"
+                "reference": "42dda66f5c824a23cc0c6fcabab1cca440c311f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/irina-s-yurtaeva/php-session-learn/zipball/e218c7e5195a830a1763141ac035d5a333a8267e",
-                "reference": "e218c7e5195a830a1763141ac035d5a333a8267e",
+                "url": "https://api.github.com/repos/irina-s-yurtaeva/php-session-learn/zipball/42dda66f5c824a23cc0c6fcabab1cca440c311f1",
+                "reference": "42dda66f5c824a23cc0c6fcabab1cca440c311f1",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
             },
             "type": "library",
             "autoload": {
@@ -109,9 +112,9 @@
             ],
             "support": {
                 "issues": "https://github.com/irina-s-yurtaeva/php-session-learn/issues",
-                "source": "https://github.com/irina-s-yurtaeva/php-session-learn/tree/v1.0.0"
+                "source": "https://github.com/irina-s-yurtaeva/php-session-learn/tree/v1.0.2"
             },
-            "time": "2024-03-12T05:00:00+00:00"
+            "time": "2024-03-16T06:56:33+00:00"
         }
     ],
     "packages-dev": [],
