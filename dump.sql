@@ -39,8 +39,9 @@ SET
 CREATE TYPE public.value_type AS ENUM (
     'text',
     'boolean',
-    'numeric',
-    'date'
+    'float',
+    'date',
+    'integer'
 );
 
 ALTER TYPE public.value_type OWNER TO pozys;
@@ -118,8 +119,9 @@ CREATE TABLE public."values" (
     attribute_id integer NOT NULL,
     text_value text,
     boolean_value boolean DEFAULT false NOT NULL,
-    numeric_value numeric,
-    date_value date
+    float_value real,
+    date_value date,
+    integer_value integer
 );
 
 ALTER TABLE
@@ -137,7 +139,8 @@ SELECT
         at2.value_type
         WHEN 'text' :: public.value_type THEN v.text_value
         WHEN 'boolean' :: public.value_type THEN (v.boolean_value) :: text
-        WHEN 'numeric' :: public.value_type THEN (v.numeric_value) :: text
+        WHEN 'float' :: public.value_type THEN (v.float_value) :: text
+        WHEN 'integer' :: public.value_type THEN (v.integer_value) :: text
         WHEN 'date' :: public.value_type THEN (v.date_value) :: text
         ELSE '' :: text
     END AS value
@@ -243,13 +246,14 @@ COPY public."values" (
     attribute_id,
     text_value,
     boolean_value,
-    numeric_value,
-    date_value
+    float_value,
+    date_value,
+    integer_value
 )
 FROM
     stdin;
 
-1 1 Текст рецензии 1 f \ N \ N 1 2 Текст рецензии 2 f \ N \ N 1 3 t \ N \ N 1 4 \ N f \ N \ N 3 1 Текст рецензии 1 f \ N \ N 3 2 Текст рецензии 2 f \ N \ N 3 4 \ N f \ N \ N 3 3 t \ N \ N 1 8 \ N f \ N 2024 -03 -14 1 9 \ N f \ N 2024 -04 -11 3 8 \ N f \ N 2024 -03 -15 4 8 \ N f \ N 2024 -04 -16 4 9 \ N f \ N 2024 -04 -01 4 1 Текст рецензии f \ N \ N 4 3 \ N t \ N \ N 4 4 \ N t \ N \ N 3 9 \ N f \ N 2024 -03 -14 \.--
+1 1 Текст рецензии 1 f \ N \ N \ N 1 2 Текст рецензии 2 f \ N \ N \ N 1 3 t \ N \ N \ N 1 4 \ N f \ N \ N \ N 3 1 Текст рецензии 1 f \ N \ N \ N 3 2 Текст рецензии 2 f \ N \ N \ N 3 4 \ N f \ N \ N \ N 3 3 t \ N \ N \ N 1 8 \ N f \ N 2024 -03 -14 \ N 1 9 \ N f \ N 2024 -04 -11 \ N 3 8 \ N f \ N 2024 -03 -15 \ N 4 8 \ N f \ N 2024 -04 -16 \ N 4 9 \ N f \ N 2024 -04 -01 \ N 4 1 Текст рецензии f \ N \ N \ N 4 3 \ N t \ N \ N \ N 4 4 \ N t \ N \ N \ N 3 9 \ N f \ N 2024 -03 -14 \ N \.--
 -- Name: attribute_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: pozys
 --
 SELECT
