@@ -21,9 +21,9 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
-    docker-php-ext-install pdo_mysql; \
     docker-php-ext-install pdo_pgsql; \
     docker-php-ext-install zip; \
+    docker-php-ext-install sockets; \
     docker-php-ext-configure gd \
             --prefix=/usr \
             --with-jpeg \
