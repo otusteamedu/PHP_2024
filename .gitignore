@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/www/vendor/
+/docker/db/
+.env
