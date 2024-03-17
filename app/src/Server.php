@@ -10,20 +10,14 @@ class Server extends AbstractUnixSocket
      */
     public function startChat(): void
     {
-        echo 'Re-creating socket...' . PHP_EOL;
         $this->recreate();
-        echo 'Socket re-created!' . PHP_EOL;
-
-        echo 'Creating socket...' . PHP_EOL;
         $this->create();
-        echo 'Socket created!' . PHP_EOL;
-
-        echo 'Binding socket...' . PHP_EOL;
         $this->bind();
-        echo "Socket is successfully bound!" . PHP_EOL;
-
         $this->listen();
-        echo "Server listening on socket..." . PHP_EOL;
+
+        foreach ($this->logGenerator() as $log) {
+            echo $log . PHP_EOL;
+        }
 
         $client = $this->accept();
 
@@ -42,5 +36,22 @@ class Server extends AbstractUnixSocket
         }
 
         $this->close();
+    }
+
+    /**
+     * @return \Generator
+     */
+    public function logGenerator(): \Generator
+    {
+        $logs = [
+            'Socket re-created!',
+            'Socket created!',
+            'Socket is successfully bound!',
+            'Server listening on socket...',
+        ];
+
+        foreach ($logs as $log) {
+            yield $log;
+        }
     }
 }

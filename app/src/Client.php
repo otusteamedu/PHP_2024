@@ -10,13 +10,12 @@ class Client extends AbstractUnixSocket
      */
     public function startChat(): void
     {
-        echo 'Creating socket...' . PHP_EOL;
         $this->create();
-        echo 'Socket created!' . PHP_EOL;
-
-        echo 'Connecting socket...' . PHP_EOL;
         $this->connect();
-        echo "Socket connection established successfully!" . PHP_EOL;
+
+        foreach ($this->logGenerator() as $log) {
+            echo $log . PHP_EOL;
+        }
 
         $isRunning = true;
         while ($isRunning) {
@@ -27,6 +26,21 @@ class Client extends AbstractUnixSocket
             if ($message === 'close') {
                 $isRunning = false;
             }
+        }
+    }
+
+    /**
+     * @return \Generator
+     */
+    public function logGenerator(): \Generator
+    {
+        $logs = [
+            'Socket created!',
+            'Socket connection established successfully!'
+        ];
+
+        foreach ($logs as $log) {
+            yield $log;
         }
     }
 }

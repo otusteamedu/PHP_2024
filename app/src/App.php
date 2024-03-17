@@ -12,7 +12,7 @@ class App
      */
     public function run(): void
     {
-        $participant = $_SERVER['argv'][1] ?? null;
+        $participant = $this->getParticipant();
 
         if (!array_key_exists($participant, ServicesDictionary::$allowedParticipants)) {
             throw new \Exception('Access is denied!' . PHP_EOL);
@@ -20,5 +20,13 @@ class App
 
         $participant = new ServicesDictionary::$allowedParticipants[$participant]();
         $participant->startChat();
+    }
+
+    /**
+     * @return string|null
+     */
+    private function getParticipant(): ?string
+    {
+        return $_SERVER['argv'][1] ?? null;
     }
 }

@@ -125,4 +125,9 @@ abstract class AbstractUnixSocket
      * @return void
      */
     abstract public function startChat(): void;
+
+    /**
+     * @return \Generator
+     */
+    abstract public function logGenerator(): \Generator;
 }
