@@ -1,0 +1,19 @@
+{
+    "name": "irina-s-yurtaeva/hw4",
+    "description": "We train balancing",
+    "type": "project",
+    "require": {
+        "php": ">8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "IraYu\\OtusHw4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Irina Yurtaeva",
+            "email": "irina.s.yurtaeva@gmail.com"
+        }
+    ]
+}
