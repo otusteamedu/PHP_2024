@@ -1,17 +1,17 @@
 <?php
 
-namespace Otus;
+namespace Otus\Validation;
 
-class BracketValidator
+class BracketValidator implements Validator
 {
-	public function isValid(string $string): bool
+	public function isValid(string $value): bool
 	{
 		$stack = [];
 		$map = ['(' => ')'];
 
-		for ($i = 0, $length = strlen($string); $i < $length; $i++)
+		for ($i = 0, $length = strlen($value); $i < $length; $i++)
 		{
-			$char = $string[$i];
+			$char = $value[$i];
 
 			if (isset($map[$char]))
 			{
