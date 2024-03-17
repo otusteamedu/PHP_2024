@@ -1,0 +1,34 @@
+explain analyse select films.name, sum(orders.sum) as film_total
+from films
+         inner join screenings on screenings.film_id = films.id
+         inner join orders on orders.screening_id = screenings.id
+where screening_date >= date_trunc('week', CURRENT_DATE)::date
+  and screening_date <= date_trunc('week', CURRENT_DATE)::date + '7 days'::interval
+group by films.id
+order by film_total DESC
+limit 3
+
+Limit  (cost=1147.27..1147.28 rows=3 width=44) (actual time=16.108..16.111 rows=1 loops=1)
+  ->  Sort  (cost=1147.27..1154.18 rows=2763 width=44) (actual time=16.107..16.109 rows=1 loops=1)
+        Sort Key: (sum(orders.sum)) DESC
+        Sort Method: quicksort  Memory: 25kB
+        ->  HashAggregate  (cost=1083.93..1111.56 rows=2763 width=44) (actual time=16.038..16.052 rows=1 loops=1)
+              Group Key: films.id
+              Batches: 1  Memory Usage: 121kB
+              ->  Hash Join  (cost=803.97..1070.11 rows=2763 width=40) (actual time=9.895..15.429 rows=2763 loops=1)
+                    Hash Cond: (screenings.film_id = films.id)
+                    ->  Hash Join  (cost=474.46..733.34 rows=2763 width=8) (actual time=2.633..7.504 rows=2763 loops=1)
+                          Hash Cond: (orders.screening_id = screenings.id)
+                          ->  Bitmap Heap Scan on orders  (cost=429.13..680.74 rows=2763 width=8) (actual time=2.520..6.539 rows=2763 loops=1)
+"                                Recheck Cond: ((screening_date >= (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date) AND (screening_date <= ((date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date + '7 days'::interval)))"
+                                Heap Blocks: exact=148
+                                ->  Bitmap Index Scan on orders_id_screening_date_index  (cost=0.00..428.44 rows=2763 width=0) (actual time=2.470..2.470 rows=2763 loops=1)
+"                                      Index Cond: ((screening_date >= (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date) AND (screening_date <= ((date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date + '7 days'::interval)))"
+                          ->  Hash  (cost=25.70..25.70 rows=1570 width=8) (actual time=0.070..0.070 rows=14 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 17kB
+                                ->  Seq Scan on screenings  (cost=0.00..25.70 rows=1570 width=8) (actual time=0.044..0.046 rows=14 loops=1)
+                    ->  Hash  (cost=204.23..204.23 rows=10023 width=36) (actual time=7.081..7.082 rows=10023 loops=1)
+                          Buckets: 16384  Batches: 1  Memory Usage: 833kB
+                          ->  Seq Scan on films  (cost=0.00..204.23 rows=10023 width=36) (actual time=0.065..3.912 rows=10023 loops=1)
+Planning Time: 1.617 ms
+Execution Time: 17.036 ms

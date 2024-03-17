@@ -1,0 +1,32 @@
+explain analyse select films.name, sum(orders.sum) as film_total
+from films
+         inner join screenings on screenings.film_id = films.id
+         inner join orders on orders.screening_id = screenings.id
+where screening_date >= date_trunc('week', CURRENT_DATE)::date
+  and screening_date <= date_trunc('week', CURRENT_DATE)::date + '7 days'::interval
+group by films.id
+order by film_total DESC
+limit 3
+
+Limit  (cost=1365.01..1365.02 rows=3 width=44) (actual time=27.331..27.333 rows=1 loops=1)
+  ->  Sort  (cost=1365.01..1371.92 rows=2763 width=44) (actual time=27.329..27.331 rows=1 loops=1)
+        Sort Key: (sum(orders.sum)) DESC
+        Sort Method: quicksort  Memory: 25kB
+        ->  HashAggregate  (cost=1301.67..1329.30 rows=2763 width=44) (actual time=27.028..27.042 rows=1 loops=1)
+              Group Key: films.id
+              Batches: 1  Memory Usage: 121kB
+              ->  Hash Join  (cost=374.84..1287.86 rows=2763 width=40) (actual time=11.947..26.730 rows=2763 loops=1)
+                    Hash Cond: (screenings.film_id = films.id)
+                    ->  Hash Join  (cost=45.33..951.09 rows=2763 width=8) (actual time=0.169..14.601 rows=2763 loops=1)
+                          Hash Cond: (orders.screening_id = screenings.id)
+                          ->  Seq Scan on orders  (cost=0.00..898.49 rows=2763 width=8) (actual time=0.053..14.097 rows=2763 loops=1)
+"                                Filter: ((screening_date >= (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date) AND (screening_date <= ((date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date + '7 days'::interval)))"
+                                Rows Removed by Filter: 17250
+                          ->  Hash  (cost=25.70..25.70 rows=1570 width=8) (actual time=0.076..0.076 rows=14 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 17kB
+                                ->  Seq Scan on screenings  (cost=0.00..25.70 rows=1570 width=8) (actual time=0.043..0.047 rows=14 loops=1)
+                    ->  Hash  (cost=204.23..204.23 rows=10023 width=36) (actual time=11.687..11.687 rows=10023 loops=1)
+                          Buckets: 16384  Batches: 1  Memory Usage: 833kB
+                          ->  Seq Scan on films  (cost=0.00..204.23 rows=10023 width=36) (actual time=0.219..7.942 rows=10023 loops=1)
+Planning Time: 1.078 ms
+Execution Time: 27.881 ms
