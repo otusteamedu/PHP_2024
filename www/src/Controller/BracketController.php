@@ -6,7 +6,6 @@ use Otus\Validation\Validator;
 
 class BracketController
 {
-
     public function __construct(private readonly Validator $validator)
     {
     }
