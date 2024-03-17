@@ -9,4 +9,3 @@ class RuleAlways implements Rule
         return true;
     }
 }
-
