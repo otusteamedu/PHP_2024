@@ -170,34 +170,6 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movies_sessions`
     `id`
 ));
 
-
--- -----------------------------------------------------
--- Table `cinema`.`price_category`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cinema`.`price_category`
-(
-    `id`
-    INT
-    NOT
-    NULL
-    AUTO_INCREMENT,
-    `price`
-    FLOAT
-    NOT
-    NULL,
-    `status`
-    TINYINT
-    NOT
-    NULL
-    DEFAULT
-    1,
-    PRIMARY
-    KEY
-(
-    `id`
-));
-
-
 -- -----------------------------------------------------
 -- Table `cinema`.`tickets`
 -- -----------------------------------------------------
@@ -215,7 +187,11 @@ CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
 ) NOT NULL,
     `seat_id` INT NOT NULL,
     `session_id` INT NOT NULL,
-    `price_category_id` INT NOT NULL,
+    `price` DECIMAL
+(
+    6,
+    2
+) NOT NULL
     `status` TINYINT NOT NULL DEFAULT 0,
     `date_of_purchase` DATETIME NULL,
     PRIMARY KEY
