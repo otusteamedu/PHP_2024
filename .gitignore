@@ -3,6 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-
 logs/
-/code/vendor/
+*.log
+code/vendor/

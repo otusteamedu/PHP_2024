@@ -12,19 +12,20 @@ class CommandParenthesesCheck implements Command
         if (empty($param)) {
             $result->addError('Required parameter "string" is empty.');
         } else {
-            $count = 0;
-            do {
-                $res = preg_replace('/\(([^\(\)]*)\)/i', '', $param, -1, $count);
-                if (is_null($res) || $count <= 0) {
-                    break;
+            $pointer = 0;
+            $length = strlen($param);
+            for ($i = 0; $i < $length; $i++) {
+                if ($param[$i] === '(') {
+                    $pointer++;
+                } else if ($param[$i] === ')') {
+                    $pointer--;
+                    if ($pointer < 0) {
+                        break;
+                    }
                 }
-                $param = $res;
-            } while (true);
-
-            if (strpos($param, '(') || strpos($param, ')')) {
+            }
+            if ($pointer !== 0) {
                 $result->addError('Bad Parentheses.' . $param);
-            } else {
-                $result->addMessage('Parentheses are good.');
             }
         }
 
