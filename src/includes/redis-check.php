@@ -7,7 +7,7 @@ if (! function_exists('isRedisConnected')) {
         $redis = new Redis();
 
         try {
-            $redis->connect('redis');
+            $redis->connect(getenv('REDIS_HOST'), (int) getenv('REDIS_PORT'));
 
             return $redis->ping();
         } catch (Throwable $e) {
