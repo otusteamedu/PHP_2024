@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS cinema;
-CREATE DATABASE cinema OWNER = matrix ENCODING = 'UTF8';
+CREATE DATABASE cinema OWNER = postgres ENCODING = 'UTF8';
 
 ALTER TABLE IF EXISTS attributes
 DROP CONSTRAINT IF EXISTS attributes_attribute_type_id_fkey;
@@ -43,7 +43,10 @@ CREATE TABLE values
     attribute_id BIGINT REFERENCES attributes (id) ON DELETE CASCADE,
     bool_val     BOOL,
     date_val     DATE,
-    text_val     TEXT
+    text_val     TEXT,
+    int_val      INT,
+    float_val    FLOAT,
+    json_val     JSONB
 );
 
 INSERT INTO movies (name)
@@ -54,7 +57,10 @@ VALUES ('Фильм 1'),
 INSERT INTO attribute_types (name)
 VALUES ('bool'),
        ('date'),
-       ('text');
+       ('text'),
+       ('int'),
+       ('float'),
+       ('json');
 
 INSERT INTO attributes (name, attribute_type_id)
 VALUES ('is_active', 1),
@@ -97,8 +103,7 @@ SELECT m.name,
 FROM movies as m
          LEFT JOIN values as v ON v.movie_id = m.id
          LEFT JOIN attributes as a ON a.id = v.attribute_id
-         LEFT JOIN attribute_types as at ON at.id = a.attribute_type_id
-;
+         LEFT JOIN attribute_types as at ON at.id = a.attribute_type_id;
 
 SELECT *
 FROM actual_for_date;
