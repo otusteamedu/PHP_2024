@@ -10,7 +10,7 @@ COMMENT ON COLUMN hall.name IS 'Название кинозала';
 -- Страны-производители фильмов
 CREATE TABLE IF NOT EXISTS country
 (
-    id SERIAL PRIMARY KEY,
+    id   SERIAL PRIMARY KEY,
     name varchar(255) NOT NULL
 );
 COMMENT ON TABLE country IS 'Страны-производители фильмов';
@@ -19,7 +19,7 @@ COMMENT ON COLUMN country.name IS 'Название страны';
 -- Жанры фильмов
 CREATE TABLE IF NOT EXISTS genre
 (
-    id SERIAL PRIMARY KEY,
+    id   SERIAL PRIMARY KEY,
     name varchar(255) NOT NULL
 );
 COMMENT ON TABLE genre IS 'Жанры фильмов';
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS movie
     id          SERIAL PRIMARY KEY,
     name        varchar(255) NOT NULL,
     description text DEFAULT NULL,
-    country_id  int NOT NULL,
-    produced_at date NOT NULL
+    country_id  int          NOT NULL,
+    produced_at date         NOT NULL
 );
 COMMENT ON TABLE movie IS 'Фильмы';
 COMMENT ON COLUMN movie.name IS 'Название фильма';
@@ -53,11 +53,11 @@ CREATE TABLE IF NOT EXISTS movie_genre
 -- Стоимость фильмов
 CREATE TABLE IF NOT EXISTS movie_price
 (
-    id          SERIAL PRIMARY KEY,
-    movie_id    integer NOT NULL,
-    price       integer NOT NULL,
-    type        varchar(60) NOT NULL,
-    started_at  date NOT NULL,
+    id         SERIAL PRIMARY KEY,
+    movie_id   integer     NOT NULL,
+    price      integer     NOT NULL,
+    type       varchar(60) NOT NULL,
+    started_at date        NOT NULL,
     CONSTRAINT fk_movie
         FOREIGN KEY (movie_id)
             REFERENCES movie (id)
@@ -86,14 +86,26 @@ CREATE INDEX IF NOT EXISTS fk_movie_price_movie_movie_id ON movie_price (movie_i
 CREATE TABLE IF NOT EXISTS seat
 (
     id      SERIAL PRIMARY KEY,
-    number  int NOT NULL,
-    row     int NOT NULL,
-    hall_id int NOT NULL,
+    number  int         NOT NULL,
+    row     int         NOT NULL,
+    hall_id int         NOT NULL,
+    type    varchar(60) NOT NULL,
     CONSTRAINT fk_hall
         FOREIGN KEY (hall_id)
             REFERENCES hall (id)
             ON DELETE CASCADE
-            ON UPDATE CASCADE
+            ON UPDATE CASCADE,
+    CONSTRAINT seat_price_check CHECK (
+        (
+            (type) :: text = ANY (
+                ARRAY [
+                    ('first'::character varying)::text,
+                    ('second'::character varying)::text,
+                    ('third'::character varying)::text
+                    ]
+                )
+            )
+        )
 );
 COMMENT ON TABLE seat IS 'Сидения';
 COMMENT ON COLUMN seat.number IS 'Номер сидения';
@@ -133,9 +145,9 @@ CREATE INDEX IF NOT EXISTS fk_session_movie_movie_id ON session (movie_id);
 CREATE TABLE IF NOT EXISTS ticket
 (
     id         SERIAL PRIMARY KEY,
-    seat_id    int       NOT NULL,
-    session_id int       NOT NULL,
-    is_sold    bool      NOT NULL,
+    seat_id    int  NOT NULL,
+    session_id int  NOT NULL,
+    is_sold    bool NOT NULL,
     CONSTRAINT fk_seat
         FOREIGN KEY (seat_id)
             REFERENCES seat (id)
@@ -157,10 +169,11 @@ CREATE INDEX IF NOT EXISTS fk_ticket_session_session_id ON ticket (session_id);
 -- Продажи билетов
 CREATE TABLE IF NOT EXISTS ticket_sale
 (
-    id         SERIAL PRIMARY KEY,
-    ticket_id    int       NOT NULL,
-    amount       int       NOT NULL,
+    id             SERIAL PRIMARY KEY,
+    ticket_id      int         NOT NULL,
+    amount         int         NOT NULL,
     customer_email varchar(60) NOT NULL,
+    created_at     date        NOT NULL DEFAULT CURRENT_DATE,
     CONSTRAINT fk_ticket
         FOREIGN KEY (ticket_id)
             REFERENCES ticket (id)
