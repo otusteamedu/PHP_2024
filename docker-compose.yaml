@@ -14,9 +14,9 @@ services:
     networks:
       - app-network
 
-  app:
+  php-fpm:
     build:
-      context: ./.docker/fpm
+      context: ./.docker/php-fpm
       dockerfile: Dockerfile
     image: otus-edu/php
     container_name: app
@@ -40,6 +40,19 @@ services:
     container_name: ${MEMCACHED_HOST}
     ports:
       - ${MEMCACHED_PORT}:${MEMCACHED_PORT}
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql
+    container_name: ${MYSQL_HOST}
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - app-network
 
