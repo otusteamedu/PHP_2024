@@ -1,3 +1,5 @@
+-- noinspection SqlWithoutWhereForFile
+
 delete
 from ticket;
 delete
@@ -16,7 +18,7 @@ $$
 declare
     result timestamp;
 begin
-    result := NOW() + (random() * (interval '90 days')) + '30 days';
+    result := NOW() + (random() * (interval '30 days')) + '1 days';
     return result;
 end;
 $$ language plpgsql;
@@ -71,17 +73,17 @@ $$
         for counter in 11..20
             loop
                 insert into attribute (id, name, type_id, title)
-                values (counter, random_string(random_number(1, 10)), 2, random_string(random_number(1, 10)));
+                values (counter, random_string(random_number(1, 11)), 2, random_string(random_number(1, 11)));
             end loop;
         for counter in 21..30
             loop
                 insert into attribute (id, name, type_id, title)
-                values (counter, random_string(random_number(1, 10)), 3, random_string(random_number(1, 10)));
+                values (counter, random_string(random_number(1, 12)), 3, random_string(random_number(1, 12)));
             end loop;
         for counter in 31..40
             loop
                 insert into attribute (id, name, type_id, title)
-                values (counter, random_string(random_number(1, 10)), 4, random_string(random_number(1, 10)));
+                values (counter, random_string(random_number(1, 13)), 4, random_string(random_number(1, 13)));
             end loop;
     end;
 $$;
@@ -91,7 +93,7 @@ $$
     declare
         type integer;
     begin
-        for counter in 1..100000
+        for counter in 1..1000
             loop
                 type = random_number(1, 4);
                 case
@@ -112,3 +114,30 @@ $$
             end loop;
     end;
 $$;
+
+do
+$$
+    declare
+        start_time timestamp;
+    begin
+        for counter in 1..1000
+            loop
+            start_time = random_timestamp();
+                insert into session (id, movie_id, start_time, end_time)
+                values (counter, random_number(1, 100), start_time,start_time + interval '2 hours');
+            end loop;
+    end;
+$$;
+
+
+do
+$$
+    begin
+        for counter in 1..100000
+            loop
+                insert into ticket (id, session_id, raw, col, price, bought)
+                values (counter, random_number(1, 1000), random_number(1, 40), random_number(1, 40), random_number(200, 1000), random_number(1, 2) = 1);
+            end loop;
+    end;
+$$;
+
