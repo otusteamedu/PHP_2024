@@ -33,6 +33,14 @@ services:
     networks:
       - app-network
 
+  memcached:
+    image: memcached:alpine
+    container_name: memcached
+    ports:
+      - "11211:11211"
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
