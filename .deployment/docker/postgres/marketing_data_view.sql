@@ -4,7 +4,9 @@ SELECT
     at.name AS type,
     a.name AS attr_name,
     a.system_name AS attr_system_name,
-    v.value
+    v.value_text,
+    v.value_boolean,
+    v.value_date
 FROM
     movie m
 LEFT JOIN value v ON m.id = v.movie_id

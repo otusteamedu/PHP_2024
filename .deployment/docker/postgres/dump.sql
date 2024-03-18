@@ -40,9 +40,11 @@ CREATE INDEX IF NOT EXISTS idx_attribute_system_name ON attribute (system_name);
 -- Значения
 CREATE TABLE IF NOT EXISTS value
 (
-    movie_id     int NOT NULL,
-    attribute_id int NOT NULL,
-    value        text DEFAULT NULL,
+    movie_id      int NOT NULL,
+    attribute_id  int NOT NULL,
+    value_text    text    DEFAULT NULL,
+    value_boolean boolean DEFAULT NULL,
+    value_date    date    DEFAULT NULL,
     CONSTRAINT fk_movie
         FOREIGN KEY (movie_id)
             REFERENCES movie (id)
@@ -57,7 +59,9 @@ CREATE TABLE IF NOT EXISTS value
 COMMENT ON TABLE value IS 'Значения';
 COMMENT ON COLUMN value.movie_id IS 'Ссылка на фильм';
 COMMENT ON COLUMN value.attribute_id IS 'Ссылка на атрибут';
-COMMENT ON COLUMN value.value IS 'Само значение';
+COMMENT ON COLUMN value.value_text IS 'Значение в текстовом формате';
+COMMENT ON COLUMN value.value_boolean IS 'Значение в булевом формате';
+COMMENT ON COLUMN value.value_date IS 'Значение в формате даты';
 
 CREATE INDEX IF NOT EXISTS fk_value_movie_movie_id ON value (movie_id);
 CREATE INDEX IF NOT EXISTS fk_value_attribute_attribute_id ON value (attribute_id);
