@@ -171,6 +171,29 @@ CREATE TABLE IF NOT EXISTS `cinema`.`movies_sessions`
 ));
 
 -- -----------------------------------------------------
+-- Table `cinema`.`price_category`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cinema`.`price_category`
+(
+    `id`
+    INT
+    NOT
+    NULL
+    AUTO_INCREMENT,
+    `price`
+    DECIMAL
+(
+    6,
+    2
+) NOT NULL,
+    `status` TINYINT NOT NULL DEFAULT 1,
+    PRIMARY KEY
+(
+    `id`
+));
+
+
+-- -----------------------------------------------------
 -- Table `cinema`.`tickets`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `cinema`.`tickets`
