@@ -10,8 +10,6 @@ class CommandParenthesesCheck implements Command
 
         $param = $request->get('string');
         if (empty($param)) {
-            $result->addError('Required parameter "string" is empty.');
-
             return $result;
         }
         $pointer = 0;
