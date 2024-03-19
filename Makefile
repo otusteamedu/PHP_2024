@@ -21,6 +21,6 @@ start:
 ps:
 	docker-compose ps
 client:
-	docker exec -ti app-client php app.php --mode client
+	docker-compose run --rm app-client php app.php client
 server:
-	docker exec -ti app-server php app.php --mode server
+	docker-compose run --rm app-server php app.php server

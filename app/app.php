@@ -12,8 +12,9 @@ use Lrazumov\Hw5\App;
 use Lrazumov\Hw5\Config;
 
 try {
-    $config_path = __DIR__ . '/config.php';
+    $config_path = __DIR__ . '/config.ini';
     $config = new Config($config_path);
+    $config->load();
     $mode = $argv[1] ?? 'empty mode';
     (new App($mode, $config))
         ->run();
