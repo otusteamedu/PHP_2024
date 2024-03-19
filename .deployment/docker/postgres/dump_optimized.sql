@@ -80,6 +80,8 @@ COMMENT ON COLUMN movie_price.movie_id IS 'Ссылка на фильм';
 COMMENT ON COLUMN movie_price.type IS 'Тип цены';
 COMMENT ON COLUMN movie_price.started_at IS 'Дата начала действия цены';
 
+CREATE INDEX IF NOT EXISTS fk_movie_price_movie_movie_id ON movie_price (movie_id);
+
 -- Сидения
 CREATE TABLE IF NOT EXISTS seat
 (
@@ -110,6 +112,8 @@ COMMENT ON COLUMN seat.number IS 'Номер сидения';
 COMMENT ON COLUMN seat.row IS 'Ряд сидения';
 COMMENT ON COLUMN seat.hall_id IS 'Ссылка на кинозал';
 
+CREATE INDEX IF NOT EXISTS fk_seat_hall_hall_id ON seat (hall_id);
+
 -- Сеансы
 CREATE TABLE IF NOT EXISTS session
 (
@@ -134,6 +138,9 @@ COMMENT ON COLUMN session.movie_id IS 'Ссылка на фильм';
 COMMENT ON COLUMN session.scheduled_at IS 'Время и дата начала сеанса';
 COMMENT ON COLUMN session.duration IS 'Длительность сеанса в секундах';
 
+CREATE INDEX IF NOT EXISTS fk_session_hall_hall_id ON session (hall_id);
+CREATE INDEX IF NOT EXISTS fk_session_movie_movie_id ON session (movie_id);
+
 -- Билеты
 CREATE TABLE IF NOT EXISTS ticket
 (
@@ -156,6 +163,9 @@ COMMENT ON COLUMN ticket.seat_id IS 'Ссылка на сидение';
 COMMENT ON COLUMN ticket.session_id IS 'Ссылка на сеанс';
 COMMENT ON COLUMN ticket.is_sold IS 'Флаг, указывающий продан ли билет';
 
+CREATE INDEX IF NOT EXISTS fk_session_seat_seat_id ON ticket (seat_id);
+CREATE INDEX IF NOT EXISTS fk_ticket_session_session_id ON ticket (session_id);
+
 -- Продажи билетов
 CREATE TABLE IF NOT EXISTS ticket_sale
 (
@@ -174,3 +184,5 @@ COMMENT ON TABLE ticket_sale IS 'Продажи билетов';
 COMMENT ON COLUMN ticket_sale.ticket_id IS 'Ссылка на билет';
 COMMENT ON COLUMN ticket_sale.amount IS 'Стоимость билета';
 COMMENT ON COLUMN ticket_sale.customer_email IS 'Email покупателя';
+
+CREATE INDEX IF NOT EXISTS fk_ticket_ticket_sale_ticket_id ON ticket_sale (ticket_id);
