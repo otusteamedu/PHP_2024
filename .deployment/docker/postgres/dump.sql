@@ -2,10 +2,12 @@
 CREATE TABLE IF NOT EXISTS hall
 (
     id   SERIAL PRIMARY KEY,
-    name varchar(255) NOT NULL
+    name varchar(255) NOT NULL,
+    capacity int NOT NULL
 );
 COMMENT ON TABLE hall IS 'Кинозал';
 COMMENT ON COLUMN hall.name IS 'Название кинозала';
+COMMENT ON COLUMN hall.capacity IS 'Общее количество сидений, вместимость зала';
 
 -- Страны-производители фильмов
 CREATE TABLE IF NOT EXISTS country
