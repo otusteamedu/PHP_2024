@@ -23,12 +23,12 @@ VALUES
   (2, 'Чужой', NULL, 5, 122),
   (3, 'Один дома', NULL, 4, 92);
 
-INSERT INTO `session` (`id`, `movie_id`, `cinema_hall_id`, `date`) 
+INSERT INTO `session` (`id`, `movie_id`, `cinema_hall_id`, `date`, `price`)
 VALUES
-  (1, 1, 2, '2024-03-17 17:00:00'),
-  (2, 1, 2, '2024-03-17 20:00:00'),
-  (3, 2, 1, '2024-03-17 20:00:00'),
-  (4, 3, 3, '2024-03-17 12:00:00');
+  (1, 1, 2, '2024-03-17 17:00:00', '600'),
+  (2, 1, 2, '2024-03-17 20:00:00', '600'),
+  (3, 2, 1, '2024-03-17 20:00:00', '500'),
+  (4, 3, 3, '2024-03-17 12:00:00', '450');
 
 INSERT INTO
   `seats` (`cinema_hall_id`, `row_number`, `seat_number`)
@@ -100,7 +100,7 @@ INSERT INTO
   ticket (
     session_id,
     seat_id,
-    price,
+    selling_price,
     purchase_time,
     visitor_id
   )

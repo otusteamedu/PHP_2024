@@ -50,14 +50,15 @@ CREATE TABLE `session` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `movie_id` integer NOT NULL,
   `cinema_hall_id` integer,
-  `date` datetime NOT NULL
+  `date` datetime NOT NULL,
+  `price` decimal(8,4) NOT NULL
 );
 
 CREATE TABLE `ticket` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `session_id` integer NOT NULL,
   `seat_id` integer,
-  `price` decimal(8,4) NOT NULL,
+  `selling_price` decimal(8,4) NOT NULL,
   `purchase_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `visitor_id` integer
 );
