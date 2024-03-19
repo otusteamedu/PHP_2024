@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  nginx0:
+    image: nginx:latest
+    container_name: nginx0
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d/balancer.conf:/etc/nginx/conf.d/balancer.conf
+      - ./code:/data/ira.yu
+      - ./logs/nginxbalancer:/var/log/nginx
+    networks:
+      - app-network
+
+  nginx1:
+    image: nginx:latest
+    container_name: nginx1
+#    ports:
+#      - "80:80"
+    volumes:
+      - ./nginx/conf.d/irayu.conf:/etc/nginx/conf.d/irayu.conf
+      - ./code:/data/ira.yu
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - app-network
+
+  nginx2:
+    image: nginx:latest
+    container_name: nginx2
+    volumes:
+      - ./nginx/conf.d/irayu.conf:/etc/nginx/conf.d/irayu.conf
+      - ./code:/data/ira.yu
+      - ./logs/nginx:/var/log/nginx
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app1
+    volumes:
+      - ./code:/data/ira.yu
+      - ./logs/php:/var/log/php
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./code:/data/ira.yu
+      - ./logs/php:/var/log/php
+    networks:
+      - app-network
+#
+#  memcached:
+#    image: memcached:alpine
+#    container_name: memcached
+#    networks:
+#      - app-network
+#
+#  redis:
+#    image: redis:alpine
+#    container_name: redis
+#    networks:
+#      - app-network
+
+networks:
+  app-network:
+    driver: bridge
