@@ -66,7 +66,7 @@ services:
       - ./docker/php-fpm/sock2.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
 
   php-cli1:
-    image: php8.2-cli
+    image: testlagoon/php-8.3-cli
     networks:
       - network
     container_name: '${CONTAINER_NAME_PHP_CLI_1}'
@@ -75,7 +75,7 @@ services:
       - ./docker/php-fpm/sock:/sock
 
   php-cli2:
-    image: php8.2-cli
+    image: testlagoon/php-8.3-cli
     networks:
       - network
     container_name: '${CONTAINER_NAME_PHP_CLI_2}'
@@ -116,6 +116,19 @@ services:
     networks:
       - network
 
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.0.1
+    container_name: es01
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+    volumes:
+      - data-es1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - network
+
 networks:
   network:
     driver: bridge
@@ -126,4 +139,6 @@ volumes:
   volume-memcached:
     driver: local
   volume-pgsql:
+    driver: local
+  data-es1:
     driver: local
