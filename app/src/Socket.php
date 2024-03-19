@@ -9,10 +9,8 @@ use Exception;
 
 class Socket
 {
-    // private Config $config;
     private UnixSocket $unixSocket;
     private string $path;
-    
 
     public function __construct(Config $config)
     {
@@ -63,8 +61,7 @@ class Socket
     public function sendMessage(
         string $message,
         ?UnixSocket $connection = null
-    ): void
-    {
+    ): void {
         $connection = $connection ?? $this->unixSocket;
         if (socket_write($connection, $message, strlen($message)) === false) {
             throw new Exception('Socket send message error');

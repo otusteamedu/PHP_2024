@@ -38,11 +38,9 @@ class Server
                 $client_message = $this->socket->readMessage($connection);
                 if (!$client_message = trim($client_message)) {
                     continue;
-                }
-                elseif ($client_message === 'close') {
+                } elseif ($client_message === 'close') {
                     break;
-                }
-                elseif ($client_message === 'exit') {
+                } elseif ($client_message === 'exit') {
                     break 2;
                 }
                 $server_message = sprintf("Client send message: '%s'\n", $client_message);
