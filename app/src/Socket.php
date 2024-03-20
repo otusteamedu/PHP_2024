@@ -76,8 +76,7 @@ class Socket
     {
         if (!file_exists($this->path)) {
             throw new Exception("Server not found at {$this->path}");
-        }
-        elseif (socket_connect($this->unixSocket, $this->path) === false) {
+        } elseif (socket_connect($this->unixSocket, $this->path) === false) {
             throw new Exception('Socket connect error');
         }
     }
