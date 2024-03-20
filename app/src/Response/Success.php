@@ -6,28 +6,28 @@ namespace App\Response;
 
 final class Success
 {
-    private int $_success200 = 200;
-    private string $_msg = "That's fine!";
+    const SUCCESS200 = 200;
+    const MESSAGE = "That's fine!";
 
     /**
      * @return void
      */
-    public function getSuccess()
+    public function get()
     {
-        $this->SuccessCode();
+        $this->getSuccessCode();
         $this->getMessage();
     }
 
     private function getMessage() {
-        echo $this->_msg;
+        echo self::MESSAGE;
     }
 
     /**
      * @return int
      */
-    private function SuccessCode(): int
+    private function getSuccessCode(): int
     {
-        return http_response_code($this->_success200);
+        return http_response_code(self::SUCCESS200);
     }
 
 }

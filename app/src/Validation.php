@@ -10,33 +10,36 @@ use App\Validators\RoundBrackets;
 
 final class Validation
 {
+    const POSTKEY = 'string';
+    private array $post;
+    private ?Error400 $errorResponse;
+    private RoundBrackets $roundBrackets;
+    private Success $successResponse;
 
-    private array $_post;
-    private string $_postKey = 'string';
-    private ?Error400 $_errorResponse;
-    private RoundBrackets $_roundBrackets;
-    private Success $_successResponse;
 
-
-    public function __construct()
+    public function __construct(
+        Error400 $error400,
+        RoundBrackets $roundBrackets,
+        Success $successResponse
+    )
     {
-        $this->_post = $_POST;
-        $this->_errorResponse = new Error400();
-        $this->_roundBrackets = new RoundBrackets();
-        $this->_successResponse = new Success();
+        $this->post = $_POST;
+        $this->errorResponse = $error400;
+        $this->roundBrackets = $roundBrackets;
+        $this->successResponse = $successResponse;
     }
 
-    public function validatePost():void
+    public function validatePost()
     {
-        if (array_key_exists($this->_postKey,$this->_post)) {
-
-            $string = $this->_post[$this->_postKey];
-            $result = $this->_roundBrackets->validate($string);
-            if ($result) $this->_successResponse->getSuccess();
-            else $this->_errorResponse->getError400();;
-        } else {
-            $this->_errorResponse->getError400();
+        if (!array_key_exists(self::POSTKEY,$this->post)) {
+            $this->errorResponse->get();
+            return;
         }
+
+        $string = $this->post[self::POSTKEY];
+        $result = $this->roundBrackets->validate($string);
+        if ($result) $this->successResponse->get();
+        else $this->errorResponse->get();
     }
 
 }

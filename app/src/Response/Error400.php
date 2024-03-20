@@ -7,28 +7,28 @@ namespace App\Response;
 final class Error400
 {
 
-    private int $_error400 = 400;
-    private string $_msg = "Bad request!";
+    const ERROR = 400;
+    const MESSAGE = "Bad request!";
 
     /**
      * @return void
      */
-    public function getError400()
+    public function get()
     {
-        $this->ErrorCode400();
+        $this->getCode400();
         $this->getMessage();
     }
 
     private function getMessage() {
-        echo $this->_msg;
+        echo self::MESSAGE;
     }
 
     /**
      * @return int
      */
-    private function ErrorCode400(): int
+    private function getCode400(): int
     {
-        return http_response_code($this->_error400);
+        return http_response_code(self::ERROR);
     }
 
 }
