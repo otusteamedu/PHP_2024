@@ -3,7 +3,7 @@ version: '3'
 services:
   php_server:
     build:
-      context: ./docker/server
+      context: ./docker
       dockerfile: Dockerfile
     container_name: 'php_server'
     volumes:
@@ -14,7 +14,7 @@ services:
 
   php_client:
     build:
-      context: ./docker/client
+      context: ./docker
       dockerfile: Dockerfile
     container_name: 'php_client'
     volumes:
