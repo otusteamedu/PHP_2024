@@ -1,0 +1,31 @@
+{
+  "name": "app/php_2024",
+  "autoload": {
+    "psr-4": {
+      "AleksandrOrlov\\Php2024\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "a.orlov",
+      "email": "a.orlov@intec-balance.ru"
+    }
+  ],
+  "require": {
+    "ext-pdo": "*",
+    "elasticsearch/elasticsearch": "^8.12",
+    "guzzlehttp/guzzle": "^7.8",
+    "phplucidframe/console-table": "^1.2",
+    "vlucas/phpdotenv": "^5.6"
+  }
+,
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "friendsofphp/php-cs-fixer": "^3.34"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}

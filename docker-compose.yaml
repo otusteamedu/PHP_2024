@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    php:
+        build:
+            context: ./fpm
+            dockerfile: Dockerfile
+        container_name: app
+        volumes:
+            - ./:/data
+        networks:
+            - app-network
+
+    elasticsearch:
+        image: elasticsearch:8.12.0
+        container_name: elasticsearch
+        ports:
+            - "9200:9200"
+        environment:
+            discovery.type: single-node
+            ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+            ES_PORT: ${ES_PORT}
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
