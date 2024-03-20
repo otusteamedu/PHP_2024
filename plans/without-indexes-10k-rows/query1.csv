@@ -1,0 +1,9 @@
+Sort  (cost=243.32..243.57 rows=100 width=20) (actual time=7.360..7.371 rows=100 loops=1)
+  Sort Key: (count(id))
+  Sort Method: quicksort  Memory: 29kB
+  ->  HashAggregate  (cost=239.00..240.00 rows=100 width=20) (actual time=7.268..7.298 rows=100 loops=1)
+        Group Key: session_id
+        Batches: 1  Memory Usage: 32kB
+        ->  Seq Scan on ticket  (cost=0.00..164.00 rows=10000 width=16) (actual time=0.012..1.887 rows=10000 loops=1)
+Planning Time: 0.564 ms
+Execution Time: 7.459 ms

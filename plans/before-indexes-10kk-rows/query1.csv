@@ -1,0 +1,27 @@
+Sort  (cost=320564.24..320802.09 rows=95139 width=20) (actual time=799.253..803.889 rows=100000 loops=1)
+  Sort Key: (count(id))
+  Sort Method: external merge  Disk: 3336kB
+  ->  Finalize GroupAggregate  (cost=286165.19..310744.32 rows=95139 width=20) (actual time=734.470..781.817 rows=100000 loops=1)
+        Group Key: session_id
+        ->  Gather Merge  (cost=286165.19..308365.84 rows=190278 width=20) (actual time=734.438..761.048 rows=299999 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              ->  Sort  (cost=285165.17..285403.02 rows=95139 width=20) (actual time=703.901..709.617 rows=100000 loops=3)
+                    Sort Key: session_id
+                    Sort Method: external merge  Disk: 3336kB
+                    Worker 0:  Sort Method: external merge  Disk: 3336kB
+                    Worker 1:  Sort Method: external merge  Disk: 3336kB
+                    ->  Partial HashAggregate  (cost=254025.74..275345.25 rows=95139 width=20) (actual time=614.383..682.909 rows=100000 loops=3)
+                          Group Key: session_id
+                          Batches: 5  Memory Usage: 8241kB  Disk Usage: 20112kB
+                          Worker 0:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 23432kB
+                          Worker 1:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 23512kB
+                          ->  Parallel Seq Scan on ticket  (cost=0.00..115196.67 rows=2085695 width=16) (actual time=9.088..216.826 rows=1666866 loops=3)
+                                Filter: bought
+                                Rows Removed by Filter: 1666468
+Planning Time: 0.208 ms
+JIT:
+  Functions: 42
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 3.118 ms, Inlining 0.000 ms, Optimization 1.690 ms, Emission 36.723 ms, Total 41.530 ms"
+Execution Time: 809.322 ms

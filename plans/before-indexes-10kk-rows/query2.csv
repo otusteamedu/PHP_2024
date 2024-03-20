@@ -1,0 +1,12 @@
+Gather  (cost=1000.00..116788.53 rows=102 width=8) (actual time=14.107..141.134 rows=54 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  ->  Parallel Seq Scan on ticket  (cost=0.00..115778.33 rows=42 width=8) (actual time=13.065..118.011 rows=18 loops=3)
+        Filter: (session_id = 1)
+        Rows Removed by Filter: 3333315
+Planning Time: 0.163 ms
+JIT:
+  Functions: 12
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 1.092 ms, Inlining 0.000 ms, Optimization 0.838 ms, Emission 13.015 ms, Total 14.945 ms"
+Execution Time: 141.650 ms

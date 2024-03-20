@@ -1,0 +1,20 @@
+Nested Loop  (cost=25.16..69.13 rows=100 width=580) (actual time=0.237..0.557 rows=100 loops=1)
+  ->  Hash Join  (cost=25.00..62.00 rows=100 width=410) (actual time=0.217..0.432 rows=100 loops=1)
+        Hash Cond: (m.id = v.movie_id)
+        ->  Seq Scan on movie m  (cost=0.00..31.00 rows=1000 width=23) (actual time=0.012..0.088 rows=1000 loops=1)
+        ->  Hash  (cost=23.75..23.75 rows=100 width=395) (actual time=0.200..0.202 rows=100 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 27kB
+              ->  Hash Join  (cost=9.25..23.75 rows=100 width=395) (actual time=0.065..0.168 rows=100 loops=1)
+                    Hash Cond: (a.id = v.attribute_id)
+                    ->  Seq Scan on attribute a  (cost=0.00..11.00 rows=400 width=17) (actual time=0.005..0.037 rows=400 loops=1)
+                    ->  Hash  (cost=8.00..8.00 rows=100 width=386) (actual time=0.055..0.055 rows=100 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 26kB
+                          ->  Seq Scan on attribute_value v  (cost=0.00..8.00 rows=100 width=386) (actual time=0.006..0.026 rows=100 loops=1)
+  ->  Memoize  (cost=0.15..0.29 rows=1 width=520) (actual time=0.000..0.000 rows=1 loops=100)
+        Cache Key: a.type_id
+        Cache Mode: logical
+        Hits: 96  Misses: 4  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+        ->  Index Scan using attribute_type_pkey on attribute_type t  (cost=0.14..0.28 rows=1 width=520) (actual time=0.002..0.002 rows=1 loops=4)
+              Index Cond: (id = a.type_id)
+Planning Time: 0.802 ms
+Execution Time: 0.603 ms
