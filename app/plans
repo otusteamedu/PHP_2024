@@ -1,0 +1,256 @@
+EXPLAIN
+SELECT * FROM films WHERE date = '2024-04-11';
+
+10000 записей
+Seq Scan on films  (cost=0.00..194.00 rows=3 width=24)
+  Filter: (date = '2024-04-11'::date)
+
+10000000 записей
+Gather  (cost=1000.00..122124.73 rows=2474 width=24)
+  Workers Planned: 2
+  ->  Parallel Seq Scan on films  (cost=0.00..120877.33 rows=1031 width=24)
+        Filter: (date = '2024-04-11'::date)
+
+с индексами
+Bitmap Heap Scan on films  (cost=31.61..8415.53 rows=2474 width=24)
+  Recheck Cond: (date = '2024-04-11'::date)
+  ->  Bitmap Index Scan on idx_film_date  (cost=0.00..30.99 rows=2474 width=0)
+        Index Cond: (date = '2024-04-11'::date)
+
+
+---------------------------------------------------------------
+EXPLAIN
+SELECT count(id) FROM tickets
+WHERE sold = true AND sold_at < CURRENT_DATE::timestamp AND sold_at > (now()::date - interval '7 days')::timestamp;
+
+10000 записей
+Finalize Aggregate  (cost=38623.97..38623.98 rows=1 width=8)
+  ->  Gather  (cost=38623.75..38623.96 rows=2 width=8)
+        Workers Planned: 2
+        ->  Partial Aggregate  (cost=37623.75..37623.76 rows=1 width=8)
+              ->  Parallel Seq Scan on tickets  (cost=0.00..37622.67 rows=434 width=4)
+                    Filter: (sold AND (sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)))
+
+
+10000000 записей
+Finalize Aggregate  (cost=1750553.23..1750553.24 rows=1 width=8)
+  ->  Gather  (cost=1750553.01..1750553.22 rows=2 width=8)
+        Workers Planned: 2
+        ->  Partial Aggregate  (cost=1749553.01..1749553.02 rows=1 width=8)
+              ->  Parallel Seq Scan on tickets  (cost=0.00..1749315.87 rows=94856 width=4)
+                    Filter: (sold AND (sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)))
+
+
+с индексами
+индекс по полю sold_at
+Aggregate  (cost=12720.13..12720.14 rows=1 width=8)
+  ->  Bitmap Heap Scan on tickets  (cost=73.84..12717.65 rows=995 width=4)
+        Recheck Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)))
+        Filter: sold
+        ->  Bitmap Index Scan on idx_ticket_sold_at  (cost=0.00..73.59 rows=3315 width=0)
+              Index Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)))
+
+индексы по полям sold и sold_at
+Aggregate  (cost=10509.54..10509.55 rows=1 width=8)
+  ->  Bitmap Heap Scan on tickets  (cost=6611.76..10507.06 rows=995 width=4)
+        Recheck Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)) AND sold)
+        ->  BitmapAnd  (cost=6611.76..6611.76 rows=995 width=0)
+              ->  Bitmap Index Scan on idx_ticket_sold_at  (cost=0.00..73.59 rows=3315 width=0)
+                    Index Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)))
+              ->  Bitmap Index Scan on idx_ticket_sold  (cost=0.00..6537.42 rows=600133 width=0)
+                    Index Cond: (sold = true)
+
+
+
+составной индекс (sold_at, sold) с измененим порядка параметров в условии запроса на
+
+Aggregate  (cost=3991.91..3991.92 rows=1 width=8)
+  ->  Bitmap Heap Scan on tickets  (cost=94.13..3989.42 rows=995 width=4)
+        Recheck Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)) AND sold)
+        ->  Bitmap Index Scan on idx_ticket_sold  (cost=0.00..93.88 rows=995 width=0)
+              Index Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)) AND (sold = true))
+
+
+------------------------------------------------------------------
+EXPLAIN
+SELECT id FROM movie_sessions
+WHERE start_at > CURRENT_DATE::timestamp AND start_at < (now()::date + interval '1 day')::timestamp;
+
+10000 записей
+Seq Scan on movie_sessions  (cost=0.00..349.00 rows=1 width=4)
+  Filter: ((start_at > (CURRENT_DATE)::timestamp without time zone) AND (start_at < ((now())::date + '1 day'::interval)))
+
+
+10000000 записей
+Gather  (cost=1000.00..189343.80 rows=2318 width=4)
+  Workers Planned: 2
+  ->  Parallel Seq Scan on movie_sessions  (cost=0.00..188112.00 rows=966 width=4)
+        Filter: ((start_at > (CURRENT_DATE)::timestamp without time zone) AND (start_at < ((now())::date + '1 day'::interval)))
+
+
+с индексами
+Bitmap Heap Scan on movie_sessions  (cost=52.21..8041.12 rows=2318 width=4)
+  Recheck Cond: ((start_at > (CURRENT_DATE)::timestamp without time zone) AND (start_at < ((now())::date + '1 day'::interval)))
+  ->  Bitmap Index Scan on idx_movie_session_start_at  (cost=0.00..51.63 rows=2318 width=0)
+        Index Cond: ((start_at > (CURRENT_DATE)::timestamp without time zone) AND (start_at < ((now())::date + '1 day'::interval)))
+
+------------------------------------------------------------------
+EXPLAIN
+SELECT tickets.session_id, SUM(tickets.price) as total, movie_sessions.film_id FROM tickets
+LEFT JOIN movie_sessions ON movie_sessions.id = tickets.session_id
+WHERE
+    tickets.sold = true AND
+    tickets.sold_at < CURRENT_DATE::timestamp AND
+    tickets.sold_at > (now()::date - interval '7 days')::timestamp
+GROUP BY tickets.session_id, movie_sessions.film_id
+ORDER BY total DESC
+LIMIT 3;
+
+10000 записей
+Limit  (cost=39086.97..39086.98 rows=3 width=40)
+  ->  Sort  (cost=39086.97..39089.57 rows=1042 width=40)
+        Sort Key: (sum(tickets.price)) DESC
+        ->  Finalize GroupAggregate  (cost=38941.84..39073.50 rows=1042 width=40)
+"              Group Key: tickets.session_id, movie_sessions.film_id"
+              ->  Gather Merge  (cost=38941.84..39051.80 rows=868 width=40)
+                    Workers Planned: 2
+                    ->  Partial GroupAggregate  (cost=37941.82..37951.58 rows=434 width=40)
+"                          Group Key: tickets.session_id, movie_sessions.film_id"
+                          ->  Sort  (cost=37941.82..37942.90 rows=434 width=13)
+"                                Sort Key: tickets.session_id, movie_sessions.film_id"
+                                ->  Hash Left Join  (cost=299.00..37922.81 rows=434 width=13)
+                                      Hash Cond: (tickets.session_id = movie_sessions.id)
+                                      ->  Parallel Seq Scan on tickets  (cost=0.00..37622.67 rows=434 width=9)
+                                            Filter: (sold AND (sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)))
+                                      ->  Hash  (cost=174.00..174.00 rows=10000 width=8)
+                                            ->  Seq Scan on movie_sessions  (cost=0.00..174.00 rows=10000 width=8)
+
+
+10000000 записей
+Limit  (cost=1993012.20..1993012.21 rows=3 width=40)
+  ->  Sort  (cost=1993012.20..1993581.33 rows=227654 width=40)
+        Sort Key: (sum(tickets.price)) DESC
+        ->  Finalize GroupAggregate  (cost=1961295.29..1990069.81 rows=227654 width=40)
+"              Group Key: tickets.session_id, movie_sessions.film_id"
+              ->  Gather Merge  (cost=1961295.29..1985327.02 rows=189712 width=40)
+                    Workers Planned: 2
+                    ->  Partial GroupAggregate  (cost=1960295.26..1962429.52 rows=94856 width=40)
+"                          Group Key: tickets.session_id, movie_sessions.film_id"
+                          ->  Sort  (cost=1960295.26..1960532.40 rows=94856 width=22)
+"                                Sort Key: tickets.session_id, movie_sessions.film_id"
+                                ->  Parallel Hash Left Join  (cost=183554.91..1950507.78 rows=94856 width=22)
+                                      Hash Cond: (tickets.session_id = movie_sessions.id)
+                                      ->  Parallel Seq Scan on tickets  (cost=0.00..1749315.87 rows=94856 width=18)
+                                            Filter: (sold AND (sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)))
+                                      ->  Parallel Hash  (cost=115196.18..115196.18 rows=4166618 width=8)
+                                            ->  Parallel Seq Scan on movie_sessions  (cost=0.00..115196.18 rows=4166618 width=8)
+
+
+с индексами
+Limit  (cost=4405.90..4405.90 rows=3 width=40)
+  ->  Sort  (cost=4405.90..4408.38 rows=995 width=40)
+        Sort Key: (sum(tickets.price)) DESC
+        ->  HashAggregate  (cost=4380.60..4393.04 rows=995 width=40)
+"              Group Key: tickets.session_id, movie_sessions.film_id"
+              ->  Merge Right Join  (cost=4039.40..4373.14 rows=995 width=13)
+                    Merge Cond: (movie_sessions.id = tickets.session_id)
+                    ->  Index Scan using movie_sessions_pkey on movie_sessions  (cost=0.43..333217.43 rows=10000000 width=8)
+                    ->  Sort  (cost=4038.96..4041.45 rows=995 width=9)
+                          Sort Key: tickets.session_id
+                          ->  Bitmap Heap Scan on tickets  (cost=94.13..3989.42 rows=995 width=9)
+                                Recheck Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)) AND sold)
+                                ->  Bitmap Index Scan on idx_ticket_sold  (cost=0.00..93.88 rows=995 width=0)
+                                      Index Cond: ((sold_at < (CURRENT_DATE)::timestamp without time zone) AND (sold_at > ((now())::date - '7 days'::interval)) AND (sold = true))
+
+
+------------------------------------------------------------------
+EXPLAIN
+SELECT tickets.session_id, tickets.id, rooms_places.id, rooms_places.name, rooms_places.row, rooms_places.number, tickets.sold FROM tickets
+LEFT JOIN rooms_places ON rooms_places.id = tickets.place_id
+WHERE tickets.session_id = 1
+GROUP BY tickets.id, rooms_places.id;
+
+
+10000 записей
+Group  (cost=26132.05..26152.67 rows=200 width=34)
+"  Group Key: tickets.id, rooms_places.id"
+  ->  Gather Merge  (cost=26132.05..26151.84 rows=166 width=34)
+        Workers Planned: 2
+        ->  Group  (cost=25132.03..25132.65 rows=83 width=34)
+"              Group Key: tickets.id, rooms_places.id"
+              ->  Sort  (cost=25132.03..25132.24 rows=83 width=34)
+"                    Sort Key: tickets.id, rooms_places.id"
+                    ->  Hash Left Join  (cost=6.50..25129.38 rows=83 width=34)
+                          Hash Cond: (tickets.place_id = rooms_places.id)
+                          ->  Parallel Seq Scan on tickets  (cost=0.00..25122.67 rows=83 width=13)
+                                Filter: (session_id = 1)
+                          ->  Hash  (cost=4.00..4.00 rows=200 width=25)
+                                ->  Seq Scan on rooms_places  (cost=0.00..4.00 rows=200 width=25)
+
+
+10000000 записей
+Group  (cost=1203518.59..1250633.24 rows=455307 width=34)
+"  Group Key: tickets.id, rooms_places.id"
+  ->  Gather Merge  (cost=1203518.59..1248736.13 rows=379422 width=34)
+        Workers Planned: 2
+        ->  Group  (cost=1202518.56..1203941.40 rows=189711 width=34)
+"              Group Key: tickets.id, rooms_places.id"
+              ->  Sort  (cost=1202518.56..1202992.84 rows=189711 width=34)
+"                    Sort Key: tickets.id, rooms_places.id"
+                    ->  Hash Left Join  (cost=6.50..1180696.63 rows=189711 width=34)
+                          Hash Cond: (tickets.place_id = rooms_places.id)
+                          ->  Parallel Seq Scan on tickets  (cost=0.00..1180181.58 rows=189711 width=13)
+                                Filter: (session_id = 1)
+                          ->  Hash  (cost=4.00..4.00 rows=200 width=25)
+                                ->  Seq Scan on rooms_places  (cost=0.00..4.00 rows=200 width=25)
+
+
+с индексами
+HashAggregate  (cost=722.81..741.43 rows=1862 width=34)
+"  Group Key: tickets.id, rooms_places.id"
+  ->  Hash Left Join  (cost=6.93..713.50 rows=1862 width=34)
+        Hash Cond: (tickets.place_id = rooms_places.id)
+        ->  Index Scan using idx_ticket_session on tickets  (cost=0.43..702.01 rows=1862 width=13)
+              Index Cond: (session_id = 1)
+        ->  Hash  (cost=4.00..4.00 rows=200 width=25)
+              ->  Seq Scan on rooms_places  (cost=0.00..4.00 rows=200 width=25)
+
+
+------------------------------------------------------------------
+EXPLAIN
+SELECT MAX(max_tickets.price) as max_price, MIN(min_tickets.price) as min_price FROM tickets as max_tickets, tickets as min_tickets
+WHERE max_tickets.session_id = 2 AND min_tickets.session_id = 2
+
+10000 записей
+Aggregate  (cost=52985.83..52985.84 rows=1 width=64)
+  ->  Nested Loop  (cost=2000.00..52785.83 rows=40000 width=10)
+        ->  Gather  (cost=1000.00..26142.67 rows=200 width=5)
+              Workers Planned: 2
+              ->  Parallel Seq Scan on tickets max_tickets  (cost=0.00..25122.67 rows=83 width=5)
+                    Filter: (session_id = 2)
+        ->  Materialize  (cost=1000.00..26143.67 rows=200 width=5)
+              ->  Gather  (cost=1000.00..26142.67 rows=200 width=5)
+                    Workers Planned: 2
+                    ->  Parallel Seq Scan on tickets min_tickets  (cost=0.00..25122.67 rows=83 width=5)
+                          Filter: (session_id = 2)
+
+
+10000000 записей
+Aggregate  (cost=4643502914.49..4643502914.50 rows=1 width=64)
+  ->  Nested Loop  (cost=1000.00..3606980593.25 rows=207304464249 width=28)
+        ->  Seq Scan on tickets max_tickets  (cost=0.00..1844171.59 rows=455307 width=14)
+              Filter: (session_id = 2)
+        ->  Materialize  (cost=1000.00..1231212.81 rows=455307 width=14)
+              ->  Gather  (cost=1000.00..1226712.28 rows=455307 width=14)
+                    Workers Planned: 2
+                    ->  Parallel Seq Scan on tickets min_tickets  (cost=0.00..1180181.58 rows=189711 width=14)
+                          Filter: (session_id = 2)
+
+с индексами
+Aggregate  (cost=62081.95..62081.96 rows=1 width=64)
+  ->  Nested Loop  (cost=0.85..44746.73 rows=3467044 width=10)
+        ->  Index Scan using idx_ticket_session on tickets max_tickets  (cost=0.43..702.01 rows=1862 width=5)
+              Index Cond: (session_id = 2)
+        ->  Materialize  (cost=0.43..711.32 rows=1862 width=5)
+              ->  Index Scan using idx_ticket_session on tickets min_tickets  (cost=0.43..702.01 rows=1862 width=5)
+                    Index Cond: (session_id = 2)

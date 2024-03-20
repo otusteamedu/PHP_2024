@@ -1,0 +1,46 @@
+SELECT
+    table_name,
+    pg_table_size(table_name) AS table_size,
+    pg_indexes_size(table_name) AS indexes_size,
+    pg_total_relation_size(table_name) AS total_size
+FROM (
+         SELECT ('"' || table_schema || '"."' || table_name || '"') AS table_name
+         FROM information_schema.tables
+     ) AS all_tables
+ORDER BY total_size DESC
+
+table_name                          total_size  table_size  indexes_size
+"""public"".""tickets""",           7941980160, 5784379392, 2157600768
+"""public"".""movie_sessions""",    1051828224, 602554368,  449273856
+"""public"".""films""",             859373568,  563699712,  295673856
+"""pg_catalog"".""pg_proc""",       1245184,    892928,     352256
+"""pg_catalog"".""pg_rewrite""",    753664,     720896,     32768
+"""pg_catalog"".""pg_attribute""",  745472,     516096,     229376
+"""pg_catalog"".""pg_description""",630784,     409600,     221184
+"""pg_catalog"".""pg_statistic""",  311296,     278528,     32768
+"""pg_catalog"".""pg_depend""",     303104,     147456,     155648
+"""pg_catalog"".""pg_collation""",  245760,     155648,     90112
+"""pg_catalog"".""pg_operator""",   237568,     147456,     90112
+"""pg_catalog"".""pg_type""",       237568,     163840,     73728
+"""pg_catalog"".""pg_class""",      237568,     147456,     90112
+"""pg_catalog"".""pg_amop""",       229376,     90112,      139264
+"""pg_catalog"".""pg_amproc""",     147456,     73728,      73728
+
+
+
+Самые часто используемые индексы
+
+table           index                       index_read_count
+movie_sessions, movie_sessions_pkey,        2000205
+movie_sessions, idx_movie_session_start_at, 2000205
+tickets,        idx_ticket_place,           3
+tickets,        idx_ticket_session,         3
+tickets,        tickets_pkey,               3
+
+Самые редко используемые индексы
+
+rooms_places,   rooms_places_pkey,  2,  2
+films,          films_pkey,         0,  0
+films,          idx_film_date,      0,  0
+rooms,          rooms_name_key,     0,  0
+rooms,          rooms_pkey,         0,  0
