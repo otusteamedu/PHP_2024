@@ -1,6 +1,6 @@
 -- 1) Все фильмы на сегодня
 
-SELECT m.id, m.name
+SELECT m.id, m.name, s.scheduled_at
 FROM movie m
          JOIN session s ON m.id = s.movie_id
 WHERE s.scheduled_at::date = CURRENT_DATE;
