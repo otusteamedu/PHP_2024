@@ -19,14 +19,15 @@ RUN apt-get update && apt-get install -y \
 	&& docker-php-ext-configure sockets \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && pecl install redis && docker-php-ext-enable redis \
-    && pecl install -f memcached-3.2.0 && docker-php-ext-enable memcached \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-#COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
 WORKDIR /data
 
 VOLUME /data
 
-CMD ["php","app.php","client-start"]
+#COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+COPY ../composer.json /data/composer.json
+
+RUN composer install && composer dump-autoload
+
+CMD ["php","app.php","container_up"]
