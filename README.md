@@ -49,24 +49,25 @@
 ```SQL
     select count(t.id) from tickets t
     inner join sessions s on s.id = t.session_id
-    where s.datetime_begin >= (CURRENT_TIMESTAMP - '7 days'::interval) and s.datetime_end <= now()::date;
+    where s.datetime_begin >= (DATE_PART('EPOCH', (now()::timestamp(0) - (interval '7 days'))::timestamp(0))) 
+      and s.datetime_end <= DATE_PART('EPOCH', now()::timestamp(0));
 ```
 
 * EXPLAIN до оптимизации
 
 | QUERY PLAN |
 | :--- |
-| Aggregate  \(cost=54185.15..54185.16 rows=1 width=8\) \(actual time=513.951..513.951 rows=1 loops=1\) |
-|   -&gt;  Hash Join  \(cost=33699.56..54112.03 rows=29247 width=4\) \(actual time=380.564..513.248 rows=29626 loops=1\) |
+| Aggregate  \(cost=84915.73..84915.74 rows=1 width=8\) \(actual time=371.642..371.642 rows=1 loops=1\) |
+|   -&gt;  Hash Join  \(cost=55157.84..84637.95 rows=111111 width=4\) \(actual time=217.799..371.593 rows=866 loops=1\) |
 |         Hash Cond: \(t.session\_id = s.id\) |
-|         -&gt;  Seq Scan on tickets t  \(cost=0.00..16370.00 rows=1000000 width=8\) \(actual time=0.021..54.731 rows=1000000 loops=1\) |
-|         -&gt;  Hash  \(cost=33333.98..33333.98 rows=29247 width=4\) \(actual time=380.418..380.418 rows=29790 loops=1\) |
-|               Buckets: 32768  Batches: 1  Memory Usage: 1304kB |
-|               -&gt;  Seq Scan on sessions s  \(cost=0.00..33333.98 rows=29247 width=4\) \(actual time=0.039..358.801 rows=29790 loops=1\) |
-|                     [Filter: \(\(datetime\_begin &gt;= \(now\(\) - '7 days'::interval\)\) AND \(datetime\_end &lt;= \(now\(\)\)::date\)\)]() |
-|                     Rows Removed by Filter: 970209 |
-| Planning time: 0.598 ms |
-| Execution time: 514.070 ms |
+|         -&gt;  Seq Scan on tickets t  \(cost=0.00..16370.00 rows=1000000 width=8\) \(actual time=0.013..57.824 rows=1000000 loops=1\) |
+|         -&gt;  Hash  \(cost=53333.96..53333.96 rows=111111 width=4\) \(actual time=217.402..217.402 rows=859 loops=1\) |
+|               Buckets: 131072  Batches: 2  Memory Usage: 1040kB |
+|               -&gt;  Seq Scan on sessions s  \(cost=0.00..53333.96 rows=111111 width=4\) \(actual time=0.983..216.890 rows=859 loops=1\) |
+|                     Filter: \(\(\(datetime\_end\)::double precision &lt;= date\_part\('EPOCH'::text, \(now\(\)\)::timestamp\(0\) without time zone\)\) AND \(\(datetime\_begin\)::double precision &gt;= date\_part\('EPOCH'::text, \(\(\(now\(\)\)::timestamp\(0\) without time zone - '7 days'::interval\)\)::timestamp\(0\) without time zone\)\)\) |
+|                     Rows Removed by Filter: 999140 |
+| Planning time: 0.281 ms |
+| Execution time: 371.688 ms |
 
 * Добавил составной INDEX в соответствии с условием выборки
 
@@ -78,20 +79,17 @@
 
 | QUERY PLAN |
 | :--- |
-| Aggregate  \(cost=42594.09..42594.10 rows=1 width=8\) \(actual time=232.840..232.840 rows=1 loops=1\) |
-|   -&gt;  Hash Join  \(cost=22108.52..42520.97 rows=29245 width=4\) \(actual time=95.848..232.105 rows=29626 loops=1\) |
+| Aggregate  \(cost=84915.73..84915.74 rows=1 width=8\) \(actual time=427.038..427.038 rows=1 loops=1\) |
+|   -&gt;  Hash Join  \(cost=55157.84..84637.95 rows=111111 width=4\) \(actual time=255.519..426.961 rows=2110 loops=1\) |
 |         Hash Cond: \(t.session\_id = s.id\) |
-|         -&gt;  Seq Scan on tickets t  \(cost=0.00..16370.00 rows=1000000 width=8\) \(actual time=0.022..55.030 rows=1000000 loops=1\) |
-|         -&gt;  Hash  \(cost=21742.96..21742.96 rows=29245 width=4\) \(actual time=95.777..95.777 rows=29790 loops=1\) |
-|               Buckets: 32768  Batches: 1  Memory Usage: 1304kB |
-|               -&gt;  Bitmap Heap Scan on sessions s  \(cost=12677.84..21742.96 rows=29245 width=4\) \(actual time=85.961..93.575 rows=29790 loops=1\) |
-|                     Recheck Cond: \(\(datetime\_begin &gt;= \(now\(\) - '7 days'::interval\)\) AND \(datetime\_end &lt;= \(now\(\)\)::date\)\) |
-|                     Heap Blocks: exact=8104 |
-|                     -&gt;  Bitmap Index Scan on indx\_sessions\_dates  \(cost=0.00..12670.52 rows=29245 width=0\) \(actual time=85.012..85.012 rows=29790 loops=1\) |
-|                           Index Cond: \(\(datetime\_begin &gt;= \(now\(\) - '7 days'::interval\)\) AND \(datetime\_end &lt;= \(now\(\)\)::date\)\) |
-| Planning time: 1.974 ms |
-| Execution time: 233.458 ms |
-
+|         -&gt;  Seq Scan on tickets t  \(cost=0.00..16370.00 rows=1000000 width=8\) \(actual time=0.018..69.019 rows=1000000 loops=1\) |
+|         -&gt;  Hash  \(cost=53333.96..53333.96 rows=111111 width=4\) \(actual time=255.163..255.163 rows=2117 loops=1\) |
+|               Buckets: 131072  Batches: 2  Memory Usage: 1063kB |
+|               -&gt;  Seq Scan on sessions s  \(cost=0.00..53333.96 rows=111111 width=4\) \(actual time=0.665..253.683 rows=2117 loops=1\) |
+|                     Filter: \(\(\(datetime\_end\)::double precision &lt;= date\_part\('EPOCH'::text, \(now\(\)\)::timestamp\(0\) without time zone\)\) AND \(\(datetime\_begin\)::double precision &gt;= date\_part\('EPOCH'::text, \(\(\(now\(\)\)::timestamp\(0\) without time zone - '7 days'::interval\)\)::timestamp\(0\) without time zone\)\)\) |
+|                     Rows Removed by Filter: 997882 |
+| Planning time: 0.927 ms |
+| Execution time: 427.233 ms |
 
 ### Формирование афиши (фильмы, которые показывают сегодня)
 

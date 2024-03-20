@@ -37,16 +37,16 @@ alter table halls
 create table if not exists sessions
 (
     id             integer                  not null
-    constraint sessions_pk
-    primary key,
+        constraint sessions_pk
+            primary key,
     hall_id        integer                  not null
-    constraint sessions_halls_null_fk
-    references halls,
+        constraint sessions_halls_null_fk
+            references halls,
     film_id        integer                  not null
-    constraint sessions_films_null_fk
-    references films,
-    datetime_begin timestamp with time zone not null,
-    datetime_end   timestamp with time zone not null,
+        constraint sessions_films_null_fk
+            references films,
+    datetime_begin bigint,
+    datetime_end   bigint,
     price integer     not null
 );
 

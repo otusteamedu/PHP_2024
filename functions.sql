@@ -71,15 +71,15 @@ DECLARE
     counter          int := 1;
     film             int;
     price            int;
-    begin_timestamp  timestamp;
-    end_timestamp    timestamp;
+    begin_timestamp  bigint;
+    end_timestamp    bigint;
 BEGIN
     WHILE counter < count_sessions
         LOOP
             film := get_random_int(1, count_movies);
             price := get_random_int(500, 900);
-            begin_timestamp := CURRENT_TIMESTAMP - random() * (interval '7 days');
-            end_timestamp := get_random_date();
+            begin_timestamp := DATE_PART('EPOCH', (now()::timestamp(0) - random() * (interval '7 days'))::timestamp(0));
+            end_timestamp := DATE_PART('EPOCH', (now()::timestamp(0) + random() * (interval '7 days'))::timestamp(0));
 
             INSERT INTO sessions (id, hall_id, film_id, datetime_begin, datetime_end, price)
             VALUES (counter, 1, film, begin_timestamp, end_timestamp, price);
