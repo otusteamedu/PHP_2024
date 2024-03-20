@@ -1,0 +1,18 @@
+Hash Join  (cost=54.65..7129.99 rows=100000 width=580) (actual time=0.640..68.099 rows=100000 loops=1)
+  Hash Cond: (a.type_id = t.id)
+  ->  Hash Join  (cost=41.50..3596.39 rows=100000 width=406) (actual time=0.608..36.678 rows=100000 loops=1)
+        Hash Cond: (v.attribute_id = a.id)
+        ->  Hash Join  (cost=29.50..3319.11 rows=100000 width=397) (actual time=0.401..25.309 rows=100000 loops=1)
+              Hash Cond: (v.movie_id = m.id)
+              ->  Seq Scan on attribute_value v  (cost=0.00..3026.00 rows=100000 width=382) (actual time=0.007..9.688 rows=100000 loops=1)
+              ->  Hash  (cost=17.00..17.00 rows=1000 width=23) (actual time=0.385..0.386 rows=1000 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 64kB
+                    ->  Seq Scan on movie m  (cost=0.00..17.00 rows=1000 width=23) (actual time=0.004..0.142 rows=1000 loops=1)
+        ->  Hash  (cost=7.00..7.00 rows=400 width=17) (actual time=0.200..0.200 rows=400 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 28kB
+              ->  Seq Scan on attribute a  (cost=0.00..7.00 rows=400 width=17) (actual time=0.007..0.081 rows=400 loops=1)
+  ->  Hash  (cost=11.40..11.40 rows=140 width=520) (actual time=0.018..0.018 rows=4 loops=1)
+        Buckets: 1024  Batches: 1  Memory Usage: 9kB
+        ->  Seq Scan on attribute_type t  (cost=0.00..11.40 rows=140 width=520) (actual time=0.012..0.013 rows=4 loops=1)
+Planning Time: 1.194 ms
+Execution Time: 70.163 ms

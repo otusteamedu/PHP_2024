@@ -1,0 +1,31 @@
+Sort  (cost=168690.04..168934.45 rows=97766 width=20) (actual time=981.087..988.267 rows=100000 loops=1)
+  Sort Key: (count(id))
+  Sort Method: quicksort  Memory: 7760kB
+  ->  Finalize HashAggregate  (cost=159609.02..160586.68 rows=97766 width=20) (actual time=957.593..970.264 rows=100000 loops=1)
+        Group Key: session_id
+        Batches: 1  Memory Usage: 14353kB
+        ->  Gather  (cost=137611.67..158142.53 rows=195532 width=20) (actual time=871.233..894.973 rows=300000 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              ->  Partial HashAggregate  (cost=136611.67..137589.33 rows=97766 width=20) (actual time=859.407..871.868 rows=100000 loops=3)
+                    Group Key: session_id
+                    Batches: 1  Memory Usage: 11281kB
+                    Worker 0:  Batches: 1  Memory Usage: 11281kB
+                    Worker 1:  Batches: 1  Memory Usage: 11281kB
+                    ->  Parallel Seq Scan on ticket  (cost=0.00..105361.67 rows=4166667 width=16) (actual time=0.018..154.392 rows=3333333 loops=3)
+Planning Time: 0.176 ms
+JIT:
+  Functions: 26
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 1.370 ms, Inlining 0.000 ms, Optimization 1.084 ms, Emission 13.518 ms, Total 15.972 ms"
+Execution Time: 993.091 ms
+
+
+-- После триггера
+
+Sort  (cost=93471.82..93721.82 rows=100000 width=12) (actual time=115.876..120.104 rows=100000 loops=1)
+  Sort Key: ticket_count
+  Sort Method: external merge  Disk: 2160kB
+  ->  Seq Scan on session  (cost=0.00..85167.00 rows=100000 width=12) (actual time=86.532..103.516 rows=100000 loops=1)
+Planning Time: 0.097 ms
+Execution Time: 122.113 ms

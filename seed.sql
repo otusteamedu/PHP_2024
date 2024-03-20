@@ -12,6 +12,8 @@ delete
 from movie;
 delete
 from attribute_type;
+delete
+from hall;
 
 create or replace function random_timestamp() returns timestamp as
 $$
@@ -61,29 +63,33 @@ values (1, 'timestamp'),
 do
 $$
     begin
+        for counter in 1..1000
+            loop
+                insert into movie (id, title) values (counter, counter || random_string(random_number(1, 30)));
+            end loop;
         for counter in 1..100
             loop
-                insert into movie (id, title) values (counter, random_string(random_number(1, 10)));
+                insert into attribute (id, name, type_id, title)
+                values (counter, counter || random_string(random_number(1, 10)), 1,
+                        counter || random_string(random_number(1, 10)));
             end loop;
-        for counter in 1..10
+        for counter in 101..200
             loop
                 insert into attribute (id, name, type_id, title)
-                values (counter, random_string(random_number(1, 10)), 1, random_string(random_number(1, 10)));
+                values (counter, counter || random_string(random_number(1, 11)), 2,
+                        counter || random_string(random_number(1, 11)));
             end loop;
-        for counter in 11..20
+        for counter in 201..300
             loop
                 insert into attribute (id, name, type_id, title)
-                values (counter, random_string(random_number(1, 11)), 2, random_string(random_number(1, 11)));
+                values (counter, counter || random_string(random_number(1, 12)), 3,
+                        counter || random_string(random_number(1, 12)));
             end loop;
-        for counter in 21..30
+        for counter in 301..400
             loop
                 insert into attribute (id, name, type_id, title)
-                values (counter, random_string(random_number(1, 12)), 3, random_string(random_number(1, 12)));
-            end loop;
-        for counter in 31..40
-            loop
-                insert into attribute (id, name, type_id, title)
-                values (counter, random_string(random_number(1, 13)), 4, random_string(random_number(1, 13)));
+                values (counter, counter || random_string(random_number(1, 13)), 4,
+                        counter || random_string(random_number(1, 13)));
             end loop;
     end;
 $$;
@@ -93,24 +99,35 @@ $$
     declare
         type integer;
     begin
-        for counter in 1..1000
+        for counter in 1..100000
             loop
                 type = random_number(1, 4);
                 case
                     when type = 1 then -- timestamp
                     insert into attribute_value(id, attribute_id, movie_id, timestamp_value)
-                    values (counter, random_number(1, 10), random_number(1, 100), random_timestamp());
+                    values (counter, random_number(1, 100), random_number(1, 1000), random_timestamp());
                     when type = 2 then -- bool
                     insert into attribute_value(id, attribute_id, movie_id, bool_value)
-                    values (counter, random_number(1, 10), random_number(1, 100), random_number(1, 2) = 1);
+                    values (counter, random_number(101, 200), random_number(1, 1000), random_number(1, 2) = 1);
                     when type = 3 then -- text
                     insert into attribute_value(id, attribute_id, movie_id, text_value)
-                    values (counter, random_number(1, 10), random_number(1, 100),
+                    values (counter, random_number(201, 300), random_number(1, 1000),
                             random_string(random_number(200, 500)));
                     when type = 4 then -- float
                     insert into attribute_value(id, attribute_id, movie_id, float_value)
-                    values (counter, random_number(1, 10), random_number(1, 100), random_number(100, 1000));
+                    values (counter, random_number(301, 400), random_number(1, 1000), random_number(100, 1000));
                     end case;
+            end loop;
+    end;
+$$;
+
+do
+$$
+    begin
+        for counter in 1..10
+            loop
+                insert into hall (id, title, rows, cols)
+                values (counter, random_string(random_number(10, 15)), random_number(10, 20), random_number(10, 20));
             end loop;
     end;
 $$;
@@ -120,11 +137,12 @@ $$
     declare
         start_time timestamp;
     begin
-        for counter in 1..1000
+        for counter in 1..100000
             loop
-            start_time = random_timestamp();
-                insert into session (id, movie_id, start_time, end_time)
-                values (counter, random_number(1, 100), start_time,start_time + interval '2 hours');
+                start_time = random_timestamp();
+                insert into session (id, movie_id, hall_id, start_time, end_time)
+                values (counter, random_number(1, 1000), random_number(1, 10), start_time,
+                        start_time + interval '2 hours');
             end loop;
     end;
 $$;
@@ -133,11 +151,11 @@ $$;
 do
 $$
     begin
-        for counter in 1..100000
+        for counter in 1..10000000
             loop
-                insert into ticket (id, session_id, raw, col, price, bought)
-                values (counter, random_number(1, 1000), random_number(1, 40), random_number(1, 40), random_number(200, 1000), random_number(1, 2) = 1);
+                insert into ticket (id, session_id, raw, col, price)
+                values (counter, random_number(1, 100000), random_number(1, 40), random_number(1, 40),
+                        random_number(200, 1000));
             end loop;
     end;
 $$;
-

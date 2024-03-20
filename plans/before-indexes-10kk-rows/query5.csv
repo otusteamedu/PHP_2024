@@ -1,0 +1,39 @@
+GroupAggregate  (cost=464366.71..464394.96 rows=1000 width=35) (actual time=1137.714..1147.688 rows=816 loops=1)
+  Group Key: m.title
+  ->  Sort  (cost=464366.71..464371.27 rows=1825 width=35) (actual time=1137.691..1147.456 rows=1822 loops=1)
+        Sort Key: m.title
+        Sort Method: quicksort  Memory: 161kB
+        ->  Hash Join  (cost=437770.92..464267.85 rows=1825 width=35) (actual time=1083.767..1146.390 rows=1822 loops=1)
+              Hash Cond: (s.movie_id = m.id)
+              ->  Hash Join  (cost=437741.42..464233.54 rows=1825 width=20) (actual time=1068.630..1130.927 rows=1822 loops=1)
+                    Hash Cond: (ticket.session_id = s.id)
+                    ->  Finalize GroupAggregate  (cost=435482.09..460739.90 rows=97766 width=20) (actual time=1064.449..1121.074 rows=100000 loops=1)
+                          Group Key: ticket.session_id
+                          ->  Gather Merge  (cost=435482.09..458295.75 rows=195532 width=20) (actual time=1064.415..1100.280 rows=300000 loops=1)
+                                Workers Planned: 2
+                                Workers Launched: 2
+                                ->  Sort  (cost=434482.06..434726.48 rows=97766 width=20) (actual time=1046.026..1051.749 rows=100000 loops=3)
+                                      Sort Key: ticket.session_id
+                                      Sort Method: external merge  Disk: 3336kB
+                                      Worker 0:  Sort Method: external merge  Disk: 3336kB
+                                      Worker 1:  Sort Method: external merge  Disk: 3336kB
+                                      ->  Partial HashAggregate  (cost=382705.44..424373.21 rows=97766 width=20) (actual time=900.908..1024.509 rows=100000 loops=3)
+                                            Group Key: ticket.session_id
+                                            Batches: 5  Memory Usage: 8241kB  Disk Usage: 44200kB
+                                            Worker 0:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 44160kB
+                                            Worker 1:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 44312kB
+                                            ->  Parallel Seq Scan on ticket  (cost=0.00..105361.67 rows=4166667 width=12) (actual time=0.014..158.217 rows=3333333 loops=3)
+                    ->  Hash  (cost=2236.00..2236.00 rows=1867 width=8) (actual time=4.167..4.168 rows=1822 loops=1)
+                          Buckets: 2048  Batches: 1  Memory Usage: 88kB
+                          ->  Seq Scan on session s  (cost=0.00..2236.00 rows=1867 width=8) (actual time=0.025..3.987 rows=1822 loops=1)
+                                Filter: ((start_time >= '2024-03-21 00:00:00'::timestamp without time zone) AND (start_time < '2024-03-22 00:00:00'::timestamp without time zone))
+                                Rows Removed by Filter: 98178
+              ->  Hash  (cost=17.00..17.00 rows=1000 width=23) (actual time=15.128..15.130 rows=1000 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 64kB
+                    ->  Seq Scan on movie m  (cost=0.00..17.00 rows=1000 width=23) (actual time=14.971..15.025 rows=1000 loops=1)
+Planning Time: 0.506 ms
+JIT:
+  Functions: 59
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 3.021 ms, Inlining 0.000 ms, Optimization 1.466 ms, Emission 32.673 ms, Total 37.159 ms"
+Execution Time: 1157.217 ms

@@ -1,0 +1,30 @@
+GroupAggregate  (cost=309166.40..309194.75 rows=1000 width=35) (actual time=876.134..881.039 rows=816 loops=1)
+  Group Key: m.title
+  ->  Sort  (cost=309166.40..309170.99 rows=1835 width=35) (actual time=876.101..880.789 rows=1822 loops=1)
+        Sort Key: m.title
+        Sort Method: quicksort  Memory: 161kB
+        ->  Hash Join  (cost=1030.25..309066.93 rows=1835 width=35) (actual time=28.260..879.451 rows=1822 loops=1)
+              Hash Cond: (s.movie_id = m.id)
+              ->  Merge Join  (cost=1000.75..309032.59 rows=1835 width=20) (actual time=21.144..871.516 rows=1822 loops=1)
+                    Merge Cond: (s.id = ticket.session_id)
+                    ->  Index Scan using session_pkey on session s  (cost=0.29..3843.29 rows=1877 width=8) (actual time=0.013..9.890 rows=1822 loops=1)
+                          Filter: ((start_time >= '2024-03-21 00:00:00'::timestamp without time zone) AND (start_time < '2024-03-22 00:00:00'::timestamp without time zone))
+                          Rows Removed by Filter: 98178
+                    ->  Finalize GroupAggregate  (cost=1000.46..303944.18 rows=97766 width=20) (actual time=21.080..857.901 rows=99988 loops=1)
+                          Group Key: ticket.session_id
+                          ->  Gather Merge  (cost=1000.46..301500.03 rows=195532 width=20) (actual time=21.033..842.383 rows=137002 loops=1)
+                                Workers Planned: 2
+                                Workers Launched: 2
+                                ->  Partial GroupAggregate  (cost=0.43..277930.76 rows=97766 width=20) (actual time=1.514..568.723 rows=45673 loops=3)
+                                      Group Key: ticket.session_id
+                                      ->  Parallel Index Only Scan using ticket_bought_session_price on ticket  (cost=0.43..245703.10 rows=4166667 width=12) (actual time=0.026..439.884 rows=3333333 loops=3)
+                                            Heap Fetches: 0
+              ->  Hash  (cost=17.00..17.00 rows=1000 width=23) (actual time=7.103..7.105 rows=1000 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 64kB
+                    ->  Seq Scan on movie m  (cost=0.00..17.00 rows=1000 width=23) (actual time=6.932..7.002 rows=1000 loops=1)
+Planning Time: 0.373 ms
+JIT:
+  Functions: 32
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 0.900 ms, Inlining 0.000 ms, Optimization 0.441 ms, Emission 10.939 ms, Total 12.280 ms"
+Execution Time: 881.713 ms

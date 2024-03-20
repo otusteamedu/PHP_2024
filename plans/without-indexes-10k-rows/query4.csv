@@ -1,0 +1,24 @@
+Limit  (cost=261.82..261.82 rows=3 width=27) (actual time=1.715..1.717 rows=3 loops=1)
+  ->  Sort  (cost=261.82..262.07 rows=100 width=27) (actual time=1.714..1.716 rows=3 loops=1)
+        Sort Key: (sum(t.earned)) DESC
+        Sort Method: top-N heapsort  Memory: 25kB
+        ->  HashAggregate  (cost=259.52..260.52 rows=100 width=27) (actual time=1.697..1.704 rows=94 loops=1)
+              Group Key: m.title
+              Batches: 1  Memory Usage: 24kB
+              ->  Hash Join  (cost=220.50..259.02 rows=100 width=27) (actual time=1.574..1.670 rows=100 loops=1)
+                    Hash Cond: (s.id = t.session_id)
+                    ->  Hash Join  (cost=3.25..41.50 rows=100 width=23) (actual time=0.038..0.125 rows=100 loops=1)
+                          Hash Cond: (m.id = s.movie_id)
+                          ->  Seq Scan on movie m  (cost=0.00..31.00 rows=1000 width=23) (actual time=0.009..0.044 rows=1000 loops=1)
+                          ->  Hash  (cost=2.00..2.00 rows=100 width=8) (actual time=0.023..0.024 rows=100 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                                ->  Seq Scan on session s  (cost=0.00..2.00 rows=100 width=8) (actual time=0.003..0.011 rows=100 loops=1)
+                    ->  Hash  (cost=216.00..216.00 rows=100 width=12) (actual time=1.532..1.533 rows=100 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 13kB
+                          ->  Subquery Scan on t  (cost=214.00..216.00 rows=100 width=12) (actual time=1.513..1.524 rows=100 loops=1)
+                                ->  HashAggregate  (cost=214.00..215.00 rows=100 width=12) (actual time=1.512..1.518 rows=100 loops=1)
+                                      Group Key: ticket.session_id
+                                      Batches: 1  Memory Usage: 24kB
+                                      ->  Seq Scan on ticket  (cost=0.00..164.00 rows=10000 width=12) (actual time=0.002..0.399 rows=10000 loops=1)
+Planning Time: 0.199 ms
+Execution Time: 1.750 ms

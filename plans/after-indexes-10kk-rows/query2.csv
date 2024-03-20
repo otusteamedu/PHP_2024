@@ -1,0 +1,7 @@
+Bitmap Heap Scan on ticket  (cost=5.23..402.26 rows=102 width=8) (actual time=0.023..0.149 rows=54 loops=1)
+  Recheck Cond: (session_id = 1)
+  Heap Blocks: exact=54
+  ->  Bitmap Index Scan on ticket_session  (cost=0.00..5.20 rows=102 width=0) (actual time=0.011..0.011 rows=54 loops=1)
+        Index Cond: (session_id = 1)
+Planning Time: 0.101 ms
+Execution Time: 0.166 ms
