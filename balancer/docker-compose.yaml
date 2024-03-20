@@ -1,0 +1,107 @@
+version: '3'
+
+services:
+
+  nginx-main:
+    build:
+      context: ./nginx/upstream
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx-main
+    volumes:
+      - ./app/public:/data/app/public
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  nginx1:
+    build:
+      context: ./nginx/nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx1
+    volumes:
+      - ./app/public:/data/app/public
+    depends_on:
+      - app1
+      - app2
+      - app3
+    networks:
+      - app-network
+
+  nginx2:
+    build:
+      context: ./nginx/nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx2
+    volumes:
+      - ./app/public:/data/app/public
+    depends_on:
+      - app1
+      - app2
+      - app3
+    networks:
+      - app-network
+
+  nginx3:
+    build:
+      context: ./nginx/nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx3
+    volumes:
+      - ./app/public:/data/app/public
+    depends_on:
+      - app1
+      - app2
+      - app3
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app1
+    volumes:
+       - ./app:/data/app
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./app:/data/app
+    networks:
+      - app-network
+
+  app3:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app3
+    volumes:
+      - ./app:/data/app
+    networks:
+      - app-network
+
+  memcached:
+    image: library/memcached:latest
+    container_name: memcached
+    command: ["-m", "2048"]
+    expose:
+      - 11211
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

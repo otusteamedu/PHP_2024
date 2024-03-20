@@ -1,0 +1,6 @@
+# .dockerignore
+.idea/
+.github
+vendor/**
+composer.json
+composer.lock
