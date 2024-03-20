@@ -34,6 +34,22 @@ ORDER BY SUM(ts.amount) DESC;
 
 -- 5) Схема зала для конкретного сеанса
 
+SELECT h.id,
+       h.name,
+       st.number,
+       st.row,
+       st.type,
+       (st.type = mp.type AND ts.id IS NOT NULL) AS is_available
+FROM session s
+         JOIN hall h on s.hall_id = h.id
+         JOIN seat st ON h.id = st.hall_id
+         JOIN movie_price mp ON mp.movie_id = s.movie_id
+LEFT JOIN ticket t ON t.seat_id = st.id
+LEFT JOIN ticket_sale ts ON t.id = ts.ticket_id
+WHERE s.id = 1
+GROUP BY h.id, st.id
+ORDER BY h.id, st.id
+;
 
 -- 6) Диапазон минимальной и максимальной цены за билет на конкретный сеанс
 
