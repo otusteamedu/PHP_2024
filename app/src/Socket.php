@@ -23,7 +23,6 @@ class Socket
             throw new Exception('Socket create error');
         }
         $this->unixSocket = $unix_socket;
-        echo 'Socket create' . PHP_EOL;
     }
 
     public function bind(): void
@@ -31,7 +30,6 @@ class Socket
         if (socket_bind($this->unixSocket, $this->path) === false) {
             throw new Exception('Socket bind error');
         }
-        echo 'Socket bind' . PHP_EOL;
     }
 
     public function listen(): void
@@ -39,14 +37,12 @@ class Socket
         if (socket_listen($this->unixSocket) === false) {
             throw new Exception('Socket listen error');
         }
-        echo 'Socket listen' . PHP_EOL;
     }
 
     public function close(?UnixSocket $connection = null): void
     {
         $connection = $connection ?? $this->unixSocket;
         socket_close($connection);
-        echo 'Socket close' . PHP_EOL;
     }
 
     public function acceptConnection(): UnixSocket
@@ -54,7 +50,6 @@ class Socket
         if (($connection = socket_accept($this->unixSocket)) === false) {
             throw new Exception('Socket accept error');
         }
-        echo 'Socket accept' . PHP_EOL;
         return $connection;
     }
 
@@ -66,7 +61,6 @@ class Socket
         if (socket_write($connection, $message, strlen($message)) === false) {
             throw new Exception('Socket send message error');
         }
-        echo 'Socket send message' . PHP_EOL;
     }
 
     public function readMessage(?UnixSocket $connection = null): string
@@ -75,16 +69,17 @@ class Socket
         if (($message = socket_read($connection, 2048)) === false) {
             throw new Exception('Socket read message error');
         }
-        echo 'Socket read message' . PHP_EOL;
         return $message;
     }
 
     public function connect(): void
     {
-        if (socket_connect($this->unixSocket, $this->path) === false) {
+        if (!file_exists($this->path)) {
+            throw new Exception("Server not found at {$this->path}");
+        }
+        elseif (socket_connect($this->unixSocket, $this->path) === false) {
             throw new Exception('Socket connect error');
         }
-        echo 'Socket connect OK' . PHP_EOL;
     }
 
     public function removeFile(): void

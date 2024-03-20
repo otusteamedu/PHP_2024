@@ -25,6 +25,7 @@ class Server
     {
         echo 'Server started' . PHP_EOL;
         $this->socket = new Socket($this->config);
+        $this->socket->removeFile();
         $this->socket->create();
         $this->socket->bind();
         $this->socket->listen();
@@ -35,21 +36,24 @@ class Server
             $this->socket->sendMessage($server_message, $connection);
 
             do {
+                sleep(1);
                 $client_message = $this->socket->readMessage($connection);
-                if (!$client_message = trim($client_message)) {
+                if (!trim($client_message)) {
                     continue;
                 } elseif ($client_message === 'close') {
+                    echo 'Client close connection' . PHP_EOL;
                     break;
                 } elseif ($client_message === 'exit') {
+                    $this->socket->close($connection);
+                    echo 'Client exit server' . PHP_EOL;
                     break 2;
                 }
-                $server_message = sprintf("Client send message: '%s'\n", $client_message);
+                echo "[Client message]: $client_message\n";
+                $server_message = sprintf("Server read message: %s", $client_message);
                 $this->socket->sendMessage($server_message, $connection);
-                echo "$client_message\n";
             } while (true);
 
             $this->socket->close($connection);
-            break;
         } while (true);
         $this->socket->close();
         echo 'Server stopped' . PHP_EOL;

@@ -19,6 +19,8 @@ try {
     (new App($mode, $config))
         ->run();
 } catch (Exception $e) {
-    print $e->getMessage();
-    print PHP_EOL;
+    echo 'Error: ==========================================';
+    echo PHP_EOL;
+    echo $e->getMessage();
+    echo PHP_EOL;
 }

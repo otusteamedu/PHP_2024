@@ -23,10 +23,12 @@ class Client
         $this->socket->connect();
         do {
             $server_message = $this->socket->readMessage();
-            echo sprintf("MESSAGE '%s' from server \n", $server_message);
+            echo sprintf("[Server message] %s\n", $server_message);
             $client_message = readline("Write your message \n");
             $this->socket->sendMessage($client_message);
-            break;
+            if (in_array($client_message, ['close', 'exit'])) {
+                break;
+            }
         } while (true);
         $this->socket->close();
         echo 'Client stopped' . PHP_EOL;
