@@ -39,17 +39,15 @@ SELECT h.id,
        st.number,
        st.row,
        st.type,
-       (st.type = mp.type AND ts.id IS NOT NULL) AS is_available
+       (NOT t.is_sold) AS is_available
 FROM session s
          JOIN hall h on s.hall_id = h.id
          JOIN seat st ON h.id = st.hall_id
          JOIN movie_price mp ON mp.movie_id = s.movie_id
-LEFT JOIN ticket t ON t.seat_id = st.id
-LEFT JOIN ticket_sale ts ON t.id = ts.ticket_id
+         LEFT JOIN ticket t ON t.seat_id = st.id
+         LEFT JOIN ticket_sale ts ON t.id = ts.ticket_id
 WHERE s.id = 1
-GROUP BY h.id, st.id
-ORDER BY h.id, st.id
-;
+GROUP BY st.number, h.name, h.id, st.row, st.type, is_available;
 
 -- 6) Диапазон минимальной и максимальной цены за билет на конкретный сеанс
 
