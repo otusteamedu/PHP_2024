@@ -1,3 +1,4 @@
 # PHP_2024
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+### Пользователь ищет все Исторический роман дешевле 2000 рублей (и в наличии) по поисковому запросу "рыцОри"
+```php app.php --maxPrice=2000 --category="Исторический роман" --index=otus-shop --searchQuery=рыцОри```
