@@ -1,0 +1,60 @@
+version: "3.3"
+
+services:
+
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: app14
+    container_name: app
+    volumes:
+      - ./app:/data
+    networks:
+      - elasticnetwork
+
+  elasticsearch:
+    container_name: elastic
+    image: docker.io/bitnami/elasticsearch:$ELASTIC_VERSION
+    restart: always
+    ports:
+      - '9999:9200'
+    environment:
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx1512m"
+      - ELASTIC_PASSWORD=$ELASTIC_PASSWORD
+      - xpack.security.enabled=$ELASTIC_SECURITY
+      - cluster.routing.allocation.disk.threshold_enabled=false
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./docker/elk/elasticsearch/data:/usr/share/elasticsearch/data
+      - ./docker/elk/elasticsearch/logs:/usr/share/elasticsearch/logs
+    networks:
+      - elasticnetwork
+
+  kibana:
+    container_name: kibana
+    image: docker.io/bitnami/kibana:$ELASTIC_VERSION
+    restart: always
+    environment:
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=$ELASTIC_PASSWORD
+      - xpack.monitoring.enabled=false
+      - xpack.security.encryptionKey=$ENCRYPTION_KEY
+      - SERVER_PUBLICBASEURL=$PUBLIC_BASE_URL
+    ports:
+      - '5555:5601'
+    networks:
+      - elasticnetwork
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+
+networks:
+  elasticnetwork:
+    driver: bridge

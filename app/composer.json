@@ -1,0 +1,10 @@
+{
+    "name": "lrazumov/hw14",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Lrazumov\\Hw14\\": "src/"
+        }
+    },
+    "require": {}
+}
