@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS films_sessions
     film_id    bigint    NOT NULL,
     start_time timestamp NOT NULL,
     end_time   timestamp NOT NULL,
+    base_price money NOT NULL,
     FOREIGN KEY (hall_id) REFERENCES halls (id),
     FOREIGN KEY (film_id) REFERENCES films (id)
 );
@@ -66,9 +67,10 @@ CREATE TABLE IF NOT EXISTS seats
 CREATE TABLE IF NOT EXISTS tickets
 (
     id         bigint PRIMARY KEY,
-    session_id bigint NOT NULL,
-    seat_id    bigint NOT NULL,
-    price      money  NOT NULL,
+    session_id bigint    NOT NULL,
+    seat_id    bigint    NOT NULL,
+    price      money     NOT NULL,
+    pay_time   timestamp NOT NULL,
     FOREIGN KEY (session_id) REFERENCES films_sessions (id),
     FOREIGN KEY (seat_id) REFERENCES seats (id)
 );
