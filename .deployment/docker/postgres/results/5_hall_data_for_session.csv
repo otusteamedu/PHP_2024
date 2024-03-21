@@ -1,0 +1,32 @@
+Group  (cost=138123.63..138684.41 rows=37385 width=535)
+"  Group Key: st.number, h.id, st.""row"", st.type, ((NOT t.is_sold))"
+  ->  Sort  (cost=138123.63..138217.10 rows=37385 width=535)
+"        Sort Key: st.number, h.id, st.""row"", st.type, ((NOT t.is_sold))"
+        ->  Hash Join  (cost=48304.68..126338.21 rows=37385 width=535)
+              Hash Cond: (s.movie_id = mp.movie_id)
+              ->  Hash Right Join  (cost=48284.78..124931.36 rows=17446 width=539)
+                    Hash Cond: (ts.ticket_id = t.id)
+                    ->  Seq Scan on ticket_sale ts  (cost=0.00..47106.90 rows=2434990 width=4)
+                    ->  Hash  (cost=46856.71..46856.71 rows=17446 width=543)
+                          ->  Hash Right Join  (cost=38.14..46856.71 rows=17446 width=543)
+                                Hash Cond: (t.seat_id = st.id)
+                                ->  Seq Scan on ticket t  (cost=0.00..37512.90 rows=2434990 width=9)
+                                ->  Hash  (cost=38.05..38.05 rows=7 width=542)
+                                      ->  Nested Loop  (cost=8.47..38.05 rows=7 width=542)
+                                            Join Filter: (h.id = s.hall_id)
+                                            ->  Hash Join  (cost=8.31..30.35 rows=243 width=30)
+                                                  Hash Cond: (st.hall_id = s.hall_id)
+                                                  ->  Seq Scan on seat st  (cost=0.00..16.77 rows=977 width=22)
+                                                  ->  Hash  (cost=8.30..8.30 rows=1 width=8)
+                                                        ->  Index Scan using session_pkey on session s  (cost=0.29..8.30 rows=1 width=8)
+                                                              Index Cond: (id = 1)
+                                            ->  Memoize  (cost=0.15..0.22 rows=1 width=520)
+                                                  Cache Key: st.hall_id
+                                                  Cache Mode: logical
+                                                  ->  Index Scan using hall_pkey on hall h  (cost=0.14..0.21 rows=1 width=520)
+                                                        Index Cond: (id = st.hall_id)
+              ->  Hash  (cost=14.40..14.40 rows=440 width=4)
+                    ->  Seq Scan on movie_price mp  (cost=0.00..14.40 rows=440 width=4)
+JIT:
+  Functions: 51
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"

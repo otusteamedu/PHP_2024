@@ -1,0 +1,24 @@
+Sort  (cost=91017.96..91018.28 rows=130 width=528)
+  Sort Key: (sum(ts.amount)) DESC
+  ->  Finalize GroupAggregate  (cost=90980.46..91013.39 rows=130 width=528)
+        Group Key: m.id
+        ->  Gather Merge  (cost=90980.46..91010.79 rows=260 width=528)
+              Workers Planned: 2
+              ->  Sort  (cost=89980.43..89980.76 rows=130 width=528)
+                    Sort Key: m.id
+                    ->  Partial HashAggregate  (cost=89974.57..89975.87 rows=130 width=528)
+                          Group Key: m.id
+                          ->  Hash Join  (cost=50155.07..88676.92 rows=259529 width=524)
+                                Hash Cond: (s.movie_id = m.id)
+                                ->  Hash Join  (cost=50142.14..87960.53 rows=259529 width=8)
+                                      Hash Cond: (t.session_id = s.id)
+                                      ->  Parallel Hash Join  (cost=49843.14..86979.98 rows=259529 width=8)
+                                            Hash Cond: (t.id = ts.ticket_id)
+                                            ->  Parallel Seq Scan on ticket t  (cost=0.00..23308.79 rows=1014579 width=8)
+                                            ->  Parallel Hash  (cost=45585.03..45585.03 rows=259529 width=8)
+                                                  ->  Parallel Seq Scan on ticket_sale ts  (cost=0.00..45585.03 rows=259529 width=8)
+                                                        Filter: ((created_at >= CURRENT_DATE) AND (created_at <= (CURRENT_DATE + '7 days'::interval)))
+                                      ->  Hash  (cost=174.00..174.00 rows=10000 width=8)
+                                            ->  Seq Scan on session s  (cost=0.00..174.00 rows=10000 width=8)
+                                ->  Hash  (cost=11.30..11.30 rows=130 width=520)
+                                      ->  Seq Scan on movie m  (cost=0.00..11.30 rows=130 width=520)
