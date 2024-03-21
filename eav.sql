@@ -103,7 +103,9 @@ SELECT m.name,
            WHEN v.date_val IS NOT NULL THEN v.date_val::TEXT
            WHEN v.text_val IS NOT NULL THEN v.text_val::TEXT
            WHEN v.int_val IS NOT NULL THEN v.int_val::TEXT
+           WHEN v.float_val IS NOT NULL THEN v.float_val::TEXT
            WHEN v.bool_val IS NOT NULL THEN v.bool_val::TEXT
+           WHEN v.json_val IS NOT NULL THEN v.json_val::TEXT
            END as value
 FROM movies as m
         LEFT JOIN values as v ON v.movie_id = m.id
