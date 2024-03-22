@@ -1,0 +1,27 @@
+Sort  (cost=451889.60..451889.93 rows=130 width=528)
+  Sort Key: (sum(ts.amount)) DESC
+  ->  Finalize GroupAggregate  (cost=451852.10..451885.04 rows=130 width=528)
+        Group Key: m.id
+        ->  Gather Merge  (cost=451852.10..451882.44 rows=260 width=528)
+              Workers Planned: 2
+              ->  Sort  (cost=450852.08..450852.40 rows=130 width=528)
+                    Sort Key: m.id
+                    ->  Partial HashAggregate  (cost=450846.22..450847.52 rows=130 width=528)
+                          Group Key: m.id
+                          ->  Hash Join  (cost=251373.24..444457.58 rows=1277728 width=524)
+                                Hash Cond: (s.movie_id = m.id)
+                                ->  Hash Join  (cost=251360.32..440981.27 rows=1277728 width=8)
+                                      Hash Cond: (t.session_id = s.id)
+                                      ->  Parallel Hash Join  (cost=249867.32..436133.94 rows=1277728 width=8)
+                                            Hash Cond: (t.id = ts.ticket_id)
+                                            ->  Parallel Seq Scan on ticket t  (cost=0.00..117041.46 rows=5094746 width=8)
+                                            ->  Parallel Hash  (cost=228903.72..228903.72 rows=1277728 width=8)
+                                                  ->  Parallel Seq Scan on ticket_sale ts  (cost=0.00..228903.72 rows=1277728 width=8)
+                                                        Filter: ((created_at >= CURRENT_DATE) AND (created_at <= (CURRENT_DATE + '7 days'::interval)))
+                                      ->  Hash  (cost=868.00..868.00 rows=50000 width=8)
+                                            ->  Seq Scan on session s  (cost=0.00..868.00 rows=50000 width=8)
+                                ->  Hash  (cost=11.30..11.30 rows=130 width=520)
+                                      ->  Seq Scan on movie m  (cost=0.00..11.30 rows=130 width=520)
+JIT:
+  Functions: 33
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"

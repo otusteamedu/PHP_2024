@@ -74,7 +74,7 @@ SELECT random_between(1, 4),
        random_between(1, 6),
        NOW() + random() * (INTERVAL '1 day' * 30),
        random_between(9000, 10800)
-FROM generate_series(1, 10000000) AS sess_data;
+FROM generate_series(1, 50000) AS sess_data;
 
 -- Билеты
 INSERT INTO ticket (seat_id, session_id, is_sold)
