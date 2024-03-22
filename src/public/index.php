@@ -14,7 +14,6 @@ try {
     ]);
     $statement = $pdo->query('SELECT now() as current_time');
     echo $statement->fetch()['current_time'] . PHP_EOL;
-}
-catch (Throwable $e) {
+} catch (Throwable $e) {
     echo $e->getMessage() . PHP_EOL;
 }
