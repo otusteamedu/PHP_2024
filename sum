@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [ "$#" -eq 2 ]; then
+	REGEX="^[+-]?[0-9]+([.][0-9]+)?$"
+
+
+    if ! [[ "$1" =~ $REGEX ]];
+        then echo "First argument is not a number" 
+	    exit -1
+    fi
+
+    if ! [[ "$2" =~ $REGEX ]];
+         then echo "Second argument is not a number"
+	exit -1
+    fi
+
+    echo $(awk "BEGIN {print $1 + $2}")
+    exit 0
+else
+	echo "Amount of arguments does not match"
+	exit -1
+fi
