@@ -67,7 +67,6 @@ VALUES (1, 250, 'first', '2024-01-01'),
 
 -- Места в кинозале
 SELECT public.fill_cinema_halls();
--- CALL public.fill_cinema_halls();
 
 -- Сеансы
 INSERT INTO session (hall_id, movie_id, scheduled_at, duration)
@@ -95,7 +94,6 @@ FROM ticket t
          JOIN movie m ON s.movie_id = m.id
          JOIN seat st ON t.seat_id = st.id
          JOIN movie_price mp ON m.id = mp.movie_id AND st.type = mp.type
-ORDER BY t.id
-;
+ORDER BY t.id;
 
 COMMIT;

@@ -67,7 +67,6 @@ VALUES (1, 250, 'first', '2024-01-01'),
 
 -- Места в кинозале
 SELECT public.fill_cinema_halls();
--- CALL public.fill_cinema_halls();
 
 -- Сеансы
 INSERT INTO session (hall_id, movie_id, scheduled_at, duration)
@@ -75,15 +74,14 @@ SELECT random_between(1, 4),
        random_between(1, 6),
        NOW() + random() * (INTERVAL '1 day' * 30),
        random_between(9000, 10800)
-FROM generate_series(1, 10000) AS sess_data;
+FROM generate_series(1, 10000000) AS sess_data;
 
 -- Билеты
 INSERT INTO ticket (seat_id, session_id, is_sold)
 SELECT seat.id, s.id, true
 FROM session s
          JOIN hall h ON h.id = s.hall_id
-         JOIN seat ON h.id = seat.hall_id
-;
+         JOIN seat ON h.id = seat.hall_id;
 
 INSERT INTO ticket_sale (ticket_id, amount, customer_email, created_at)
 SELECT t.id,
@@ -95,7 +93,6 @@ FROM ticket t
          JOIN movie m ON s.movie_id = m.id
          JOIN seat st ON t.seat_id = st.id
          JOIN movie_price mp ON m.id = mp.movie_id AND st.type = mp.type
-ORDER BY t.id
-;
+ORDER BY t.id;
 
 COMMIT;
