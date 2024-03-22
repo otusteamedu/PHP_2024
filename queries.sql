@@ -620,6 +620,52 @@ ORDER BY sum DESC;
 -- Execution Time: 10165.813 ms
 -- endregion
 
+-- region result AFTER CORRECT CONFIG Planning Time: 1.266 ms / Execution Time: 5510.276 ms (cost=285082.30..285082.65 rows=140 width=556) (actual time=5495.352..5506.069 rows=4 loops=1)
+-- Sort  (cost=285082.30..285082.65 rows=140 width=556) (actual time=5495.352..5506.069 rows=4 loops=1)
+--   Sort Key: (sum(p.price)) DESC
+--   Sort Method: quicksort  Memory: 25kB
+--   ->  Finalize GroupAggregate  (cost=285058.41..285077.31 rows=140 width=556) (actual time=5495.339..5506.061 rows=4 loops=1)
+--         Group Key: m.id
+--         ->  Gather Merge  (cost=285058.41..285074.51 rows=140 width=556) (actual time=5495.323..5506.041 rows=8 loops=1)
+--               Workers Planned: 1
+--               Workers Launched: 1
+--               ->  Sort  (cost=284058.40..284058.75 rows=140 width=556) (actual time=5463.305..5463.309 rows=4 loops=2)
+--                     Sort Key: m.id
+--                     Sort Method: quicksort  Memory: 25kB
+--                     Worker 0:  Sort Method: quicksort  Memory: 25kB
+--                     ->  Partial HashAggregate  (cost=284051.66..284053.41 rows=140 width=556) (actual time=5463.285..5463.292 rows=4 loops=2)
+--                           Group Key: m.id
+--                           Batches: 1  Memory Usage: 40kB
+--                           Worker 0:  Batches: 1  Memory Usage: 40kB
+--                           ->  Hash Left Join  (cost=52.45..254610.47 rows=5888238 width=538) (actual time=20.480..4239.654 rows=7507586 loops=2)
+--                                 Hash Cond: (s.movie_id = m.id)
+--                                 ->  Hash Left Join  (cost=39.30..238813.16 rows=5888238 width=22) (actual time=20.463..2973.564 rows=7507586 loops=2)
+--                                       Hash Cond: (tickets.session_id = s.id)
+--                                       ->  Hash Left Join  (cost=2.30..223264.95 rows=5888238 width=22) (actual time=20.440..1763.478 rows=7507586 loops=2)
+--                                             Hash Cond: (tickets.zone_id = z.id)
+--                                             ->  Parallel Seq Scan on tickets  (cost=0.00..142299.38 rows=5888238 width=16) (actual time=0.115..434.874 rows=5005002 loops=2)
+--                                             ->  Hash  (cost=2.22..2.22 rows=6 width=22) (actual time=19.892..19.894 rows=9 loops=2)
+--                                                   Buckets: 1024  Batches: 1  Memory Usage: 9kB
+--                                                   ->  Hash Right Join  (cost=1.14..2.22 rows=6 width=22) (actual time=19.883..19.889 rows=9 loops=2)
+--                                                         Hash Cond: (p.zone_id = z.id)
+--                                                         ->  Seq Scan on prices p  (cost=0.00..1.06 rows=6 width=22) (actual time=0.019..0.020 rows=6 loops=2)
+--                                                         ->  Hash  (cost=1.06..1.06 rows=6 width=8) (actual time=19.849..19.849 rows=6 loops=2)
+--                                                               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+--                                                               ->  Seq Scan on zones z  (cost=0.00..1.06 rows=6 width=8) (actual time=19.825..19.830 rows=6 loops=2)
+--                                       ->  Hash  (cost=22.00..22.00 rows=1200 width=16) (actual time=0.011..0.012 rows=8 loops=2)
+--                                             Buckets: 2048  Batches: 1  Memory Usage: 17kB
+--                                             ->  Seq Scan on sessions s  (cost=0.00..22.00 rows=1200 width=16) (actual time=0.008..0.009 rows=8 loops=2)
+--                                 ->  Hash  (cost=11.40..11.40 rows=140 width=524) (actual time=0.010..0.010 rows=4 loops=2)
+--                                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+--                                       ->  Seq Scan on movies m  (cost=0.00..11.40 rows=140 width=524) (actual time=0.007..0.007 rows=4 loops=2)
+-- Planning Time: 1.266 ms
+-- JIT:
+--   Functions: 85
+-- "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+-- "  Timing: Generation 5.523 ms, Inlining 0.000 ms, Optimization 1.689 ms, Emission 38.102 ms, Total 45.314 ms"
+-- Execution Time: 5510.276 ms
+-- endregion
+
 DROP index indx_tickets_place;
 DROP index indx_tickets_session_id;
 DROP index indx_tickets_zone_id;
