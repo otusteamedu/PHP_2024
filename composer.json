@@ -1,0 +1,7 @@
+{
+    "name": "erybkin/hw3",
+    "type": "project",
+    "require": {
+        "rybkinevg/otus-composer-package": "^1.0"
+    }
+}
