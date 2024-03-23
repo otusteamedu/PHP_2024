@@ -1,0 +1,20 @@
+version: "3.1"
+
+services:
+  app1:
+    build: docker/php
+    container_name: app1
+    volumes:
+      - ./:/var/www/mysite.local
+    networks:
+      - app-network
+  app2:
+    build: docker/php
+    container_name: app2
+    volumes:
+      - ./:/var/www/mysite.local
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,13 @@
+{
+  "name": "ikuntsevich/hw4",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Main\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.1",
+    "vlucas/phpdotenv": "^5.6"
+  }
+}
