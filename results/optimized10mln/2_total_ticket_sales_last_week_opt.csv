@@ -1,0 +1,9 @@
+Finalize Aggregate  (cost=232265.90..232265.91 rows=1 width=8)
+  ->  Gather  (cost=232265.68..232265.90 rows=2 width=8)
+        Workers Planned: 2
+        ->  Partial Aggregate  (cost=231265.68..231265.70 rows=1 width=8)
+              ->  Parallel Seq Scan on ticket_sale ts  (cost=0.00..228135.36 rows=1252129 width=4)
+                    Filter: ((created_at >= CURRENT_DATE) AND (created_at <= (CURRENT_DATE + '7 days'::interval)))
+JIT:
+  Functions: 7
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"

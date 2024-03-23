@@ -1,0 +1,42 @@
+Sort  (cost=451798.94..451798.95 rows=6 width=528) (actual time=3454.478..3569.765 rows=6 loops=1)
+  Sort Key: (sum(ts.amount)) DESC
+  Sort Method: quicksort  Memory: 25kB
+  ->  Finalize GroupAggregate  (cost=451797.34..451798.86 rows=6 width=528) (actual time=3454.447..3569.737 rows=6 loops=1)
+        Group Key: m.id
+        ->  Gather Merge  (cost=451797.34..451798.74 rows=12 width=528) (actual time=3454.430..3569.718 rows=18 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              ->  Sort  (cost=450797.31..450797.33 rows=6 width=528) (actual time=3433.516..3433.552 rows=6 loops=3)
+                    Sort Key: m.id
+                    Sort Method: quicksort  Memory: 25kB
+                    Worker 0:  Sort Method: quicksort  Memory: 25kB
+                    Worker 1:  Sort Method: quicksort  Memory: 25kB
+                    ->  Partial HashAggregate  (cost=450797.18..450797.24 rows=6 width=528) (actual time=3433.438..3433.475 rows=6 loops=3)
+                          Group Key: m.id
+                          Batches: 1  Memory Usage: 24kB
+                          Worker 0:  Batches: 1  Memory Usage: 24kB
+                          Worker 1:  Batches: 1  Memory Usage: 24kB
+                          ->  Hash Join  (cost=250173.11..444536.53 rows=1252129 width=524) (actual time=2308.821..3342.252 rows=1004783 loops=3)
+                                Hash Cond: (s.movie_id = m.id)
+                                ->  Hash Join  (cost=250171.97..438926.90 rows=1252129 width=8) (actual time=2281.163..3202.687 rows=1004783 loops=3)
+                                      Hash Cond: (t.session_id = s.id)
+                                      ->  Parallel Hash Join  (cost=248678.97..434146.79 rows=1252129 width=8) (actual time=2267.877..3054.250 rows=1004783 loops=3)
+                                            Hash Cond: (t.id = ts.ticket_id)
+                                            ->  Parallel Seq Scan on ticket t  (cost=0.00..116647.72 rows=5077572 width=8) (actual time=0.363..654.984 rows=4062057 loops=3)
+                                            ->  Parallel Hash  (cost=228135.36..228135.36 rows=1252129 width=8) (actual time=1013.461..1013.462 rows=1004783 loops=3)
+                                                  Buckets: 262144  Batches: 32  Memory Usage: 5792kB
+                                                  ->  Parallel Seq Scan on ticket_sale ts  (cost=0.00..228135.36 rows=1252129 width=8) (actual time=0.355..855.185 rows=1004783 loops=3)
+                                                        Filter: ((created_at >= CURRENT_DATE) AND (created_at <= (CURRENT_DATE + '7 days'::interval)))
+                                                        Rows Removed by Filter: 3057275
+                                      ->  Hash  (cost=868.00..868.00 rows=50000 width=8) (actual time=13.003..13.004 rows=50000 loops=3)
+                                            Buckets: 65536  Batches: 1  Memory Usage: 2466kB
+                                            ->  Seq Scan on session s  (cost=0.00..868.00 rows=50000 width=8) (actual time=0.042..5.089 rows=50000 loops=3)
+                                ->  Hash  (cost=1.06..1.06 rows=6 width=520) (actual time=27.626..27.627 rows=6 loops=3)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                      ->  Seq Scan on movie m  (cost=0.00..1.06 rows=6 width=520) (actual time=27.597..27.603 rows=6 loops=3)
+Planning Time: 2.899 ms
+JIT:
+  Functions: 102
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 6.939 ms, Inlining 0.000 ms, Optimization 3.310 ms, Emission 79.596 ms, Total 89.846 ms"
+Execution Time: 3572.006 ms

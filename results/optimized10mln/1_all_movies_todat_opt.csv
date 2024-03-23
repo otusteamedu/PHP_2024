@@ -1,0 +1,8 @@
+Hash Join  (cost=7.37..360.96 rows=250 width=528)
+  Hash Cond: (s.movie_id = m.id)
+  ->  Bitmap Heap Scan on session s  (cost=6.23..358.70 rows=250 width=12)
+        Recheck Cond: ((scheduled_at)::date = CURRENT_DATE)
+        ->  Bitmap Index Scan on idx_session_scheduled_at_date  (cost=0.00..6.17 rows=250 width=0)
+              Index Cond: ((scheduled_at)::date = CURRENT_DATE)
+  ->  Hash  (cost=1.06..1.06 rows=6 width=520)
+        ->  Seq Scan on movie m  (cost=0.00..1.06 rows=6 width=520)
