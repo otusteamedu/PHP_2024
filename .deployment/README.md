@@ -20,3 +20,5 @@ POSTGRES_PASSWORD=apps
 ```bash
 docker compose up -d --build
 ```
+
+4) Данные по оптимизации БД находятся в файле `dump_optimized.sql`
