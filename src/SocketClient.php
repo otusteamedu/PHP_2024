@@ -13,7 +13,7 @@ class SocketClient
     public function __construct()
     {
         $this->initSocketFilePath();
-        $this->socketCreate();
+        $this->socket = $this->socketCreate();
         $this->socketConnect();
     }
 
@@ -25,10 +25,9 @@ class SocketClient
         } else {
             throw new \Exception('Нe правильный путь к сокету');
         }
-        $this->socketFile = $path;
     }
 
-    public function socketCreate(): bool
+    public function socketCreate(): resource
     {
         $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
 
@@ -36,11 +35,8 @@ class SocketClient
             throw new \Exception("Не удалось выполнить socket_create(), причина: " . socket_strerror(socket_last_error()));
         }
 
-        $this->socket = $socket;
-
-        return true;
+        return $socket;
     }
-
 
     public function socketConnect(): bool
     {
@@ -56,44 +52,35 @@ class SocketClient
         socket_close($this->socket);
     }
 
-    public function sendMessage($message): void
+    public function sendMessage($message): \Generator
     {
         if (socket_write($this->socket, $message, strlen($message)) === false) {
             throw new \Exception(socket_strerror(socket_last_error()));
         }
 
-        $this->showResponse();
+        yield socket_read($this->socket, 2048) . PHP_EOL;
     }
 
-    public function showResponse(): void
-    {
-        $out = socket_read($this->socket, 2048);
-        $out .= PHP_EOL;
-        fputs(STDIN, $out);
-    }
-
-    public function runClientListener(): void
-    {
-        foreach ($this->getClientMessage() as $message) {
-            $this->sendMessage($message);
-        }
-
-    }
-
-    public function getClientMessage(): \Generator
+    public function runClientListener(): \Generator
     {
         while (true){
-            $message = readline("Введите что-нибудь (для выхода введите 'exit'): ");
+            yield "Введите что-нибудь (для выхода введите 'exit'): ".PHP_EOL;
+            $message = trim(fgets(STDIN));
             $message = strval($message);
+
             if($this->isExitMessage($message)){
-                $this->showExitNotification();
-                return;
+                yield $this->getExitNotification();
+                break;
             }
+
             if ($this->isEmptyMessage($message)) {
-                $this->showEmptyNotification();
+                yield $this->getEmptyNotification();
                 continue;
             }
-            yield $message;
+
+            foreach ($this->sendMessage($message) as $messageOut) {
+                yield $messageOut;
+            }
         }
     }
 
@@ -113,13 +100,13 @@ class SocketClient
         return empty($message);
     }
 
-    public function showExitNotification(): void
+    public function getExitNotification(): string
     {
-        echo "До свидания!" . PHP_EOL;
+        return "До свидания!" . PHP_EOL;
     }
 
-    public function showEmptyNotification(): void
+    public function getEmptyNotification(): string
     {
-        echo "Вы отпправили пустую строку!" . PHP_EOL;
+        return "Вы отпправили пустую строку!" . PHP_EOL;
     }
 }

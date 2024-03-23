@@ -37,34 +37,40 @@ class App
     }
 
 
-    public function run($argv): void
+    public function run($argv): \Generator
     {
         if (empty($argv[1])) {
             throw new \Exception('Не передано действие');
         }
 
         if ($argv[1] == 'server') {
-            $this->runServer();
+            return $this->runServer();
         } elseif ($argv[1] == 'client') {
-            $this->runClient();
+            return $this->runClient();
         } else {
             throw new \Exception('Передано не существующие действие');
         }
     }
 
 
-    public function runClient(): void
+    public function runClient()
     {
         $socketClient = new SocketClient();
-        $socketClient->runClientListener();
+        foreach ($socketClient->runClientListener() as $message) {
+            yield $message;
+        }
         $socketClient->closeSocket();
     }
 
 
-    public function runServer(): void
+    public function runServer(): \Generator
     {
         $socketServer = new SocketServer();
-        $socketServer->runListener();
+
+        foreach ($socketServer->runListener() as $message){
+            yield $message;
+        }
+
         $socketServer->closeSocket();
     }
 

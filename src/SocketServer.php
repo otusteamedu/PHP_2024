@@ -9,6 +9,7 @@ use http\Env;
 class SocketServer
 {
     public $socket = false;
+
     public $socketFile;
 
     public function __construct()
@@ -18,7 +19,6 @@ class SocketServer
         $this->socketBind();
         $this->socketListen();
     }
-
 
     public function initSocketFilePath(): void
     {
@@ -48,7 +48,6 @@ class SocketServer
         return true;
     }
 
-
     public function socketBind(): bool
     {
         if (socket_bind($this->socket, $this->socketFile) === false) {
@@ -66,25 +65,29 @@ class SocketServer
         return true;
     }
 
-    public function runListener(): void
+    public function runListener(): \Generator
     {
+        yield "Сервер ожидает подключение клиента." . PHP_EOL;
         foreach ($this->getClientSocket() as $clientSocket) {
-            $this->runClientListener($clientSocket);
+            yield "Клиент подключился к серверу." . PHP_EOL;
+            foreach ($this->runClientListener($clientSocket) as $message) {
+                yield $message;
+            }
+            yield "Клиент отключился от сервера. Сервер ожидает подключение нового клиента" . PHP_EOL;
         }
     }
 
-
-    public function runClientListener($clientSocket)
+    public function runClientListener($clientSocket): \Generator
     {
         foreach ($this->getClientMessage($clientSocket) as $message) {
+            yield "Сообщения от клиента: " . $message . PHP_EOL;
             $messageOut = "Получено байт:" . strlen($message);
             socket_write($clientSocket, $messageOut, strlen($messageOut));
         }
-
         socket_close($clientSocket);
     }
 
-    public function getClientSocket()
+    public function getClientSocket(): \Generator
     {
         while (true) {
             if (($clientSocket = socket_accept($this->socket)) === false) {
@@ -94,12 +97,11 @@ class SocketServer
         }
     }
 
-    public function getClientMessage($clientSocket)
+    public function getClientMessage($clientSocket): \Generator
     {
-        while (true)
-        {
+        while (true) {
             $clientMessage = socket_read($clientSocket, 2048);
-            if(empty($clientMessage)){
+            if (empty($clientMessage)) {
                 return;
             }
             yield $clientMessage;
