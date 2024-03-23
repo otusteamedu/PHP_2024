@@ -65,24 +65,6 @@ services:
       - ./docker/php-fpm/sock:/sock
       - ./docker/php-fpm/sock2.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
 
-  php-cli1:
-    image: testlagoon/php-8.3-cli
-    networks:
-      - network
-    container_name: '${CONTAINER_NAME_PHP_CLI_1}'
-    volumes:
-      - .:/var/www/html
-      - ./docker/php-fpm/sock:/sock
-
-  php-cli2:
-    image: testlagoon/php-8.3-cli
-    networks:
-      - network
-    container_name: '${CONTAINER_NAME_PHP_CLI_2}'
-    volumes:
-      - .:/var/www/html
-      - ./docker/php-fpm/sock:/sock
-
   redis:
     image: 'redis:alpine'
     ports:
