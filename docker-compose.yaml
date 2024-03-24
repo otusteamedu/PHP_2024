@@ -8,7 +8,7 @@ services:
     container_name: 'php_server'
     volumes:
     - ./code:/data
-    - "phpsocket:/var/socket/phpsocket.sock"
+    - "phpsocket:/tmp/phpsocket"
     networks:
       - php_app
 
@@ -19,7 +19,7 @@ services:
     container_name: 'php_client'
     volumes:
       - ./code:/data
-      - "phpsocket:/var/socket/phpsocket.sock"
+      - "phpsocket:/tmp/phpsocket"
     networks:
       - php_app
     depends_on:
