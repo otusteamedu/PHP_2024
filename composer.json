@@ -1,15 +1,17 @@
 {
   "name": "otus/ystopchyk",
-  "description": "Otus home work 5",
+  "description": "Otus home work 14",
   "minimum-stability": "dev",
   "type": "project",
   "require": {
     "php": ">=8.0",
-    "elasticsearch/elasticsearch": "^8.0"
+    "elasticsearch/elasticsearch": "^8.0",
+    "php-http/mock-client": "^1.6",
+    "nyholm/psr7": "^1.8"
   },
   "autoload": {
     "psr-4": {
-      "hw6\\": "src/"
+      "hw14\\": "src/"
     }
   },
   "prefer-stable": true,
