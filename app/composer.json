@@ -6,5 +6,12 @@
             "Lrazumov\\Hw14\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "elasticsearch/elasticsearch": "^8.12"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }
