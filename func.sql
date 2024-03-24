@@ -12,9 +12,15 @@ visitors_qty int := (SELECT max(id)
 BEGIN
     FOR ticket IN 1..qty
         LOOP
-INSERT INTO tickets (session_id, zone_id, visitor_id, row, place)
-VALUES (trunc(random() * sessions_qty + 1)::numeric, trunc(random() * zones_qty + 1)::numeric,
-        trunc(random() * visitors_qty + 1)::numeric, trunc(random() * 5 + 1), trunc(random() * 40 + 1));
+INSERT INTO tickets (session_id, zone_id, visitor_id, row, place, selling_price, sale_at)
+VALUES (
+           trunc(random() * sessions_qty + 1)::numeric,
+           trunc(random() * zones_qty + 1)::numeric,
+           trunc(random() * visitors_qty + 1)::numeric,
+           trunc(random() * 5 + 1), trunc(random() * zones_qty + 1)::numeric,
+           trunc(random()*(400-250)+250)::numeric,
+           now()
+       );
 END LOOP;
 END
 $$;

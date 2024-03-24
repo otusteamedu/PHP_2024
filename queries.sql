@@ -452,11 +452,9 @@ WHERE p.price > 300 ORDER BY p.price;
 
 
 EXPLAIN ANALYSE
-    SELECT m.name, sum(p.price) as sum
-FROM tickets
-         LEFT JOIN sessions s on s.id = tickets.session_id
-         LEFT JOIN zones z on z.id = tickets.zone_id
-         LEFT JOIN prices p on z.id = p.zone_id
+    SELECT m.name, sum(t.selling_price) as sum
+FROM tickets as t
+         LEFT JOIN sessions s on s.id = t.session_id
          LEFT JOIN movies m on s.movie_id = m.id
 GROUP BY m.id
 ORDER BY sum DESC;
@@ -664,6 +662,43 @@ ORDER BY sum DESC;
 -- "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
 -- "  Timing: Generation 5.523 ms, Inlining 0.000 ms, Optimization 1.689 ms, Emission 38.102 ms, Total 45.314 ms"
 -- Execution Time: 5510.276 ms
+-- endregion
+
+-- region CHANE QUERY
+-- Sort  (cost=223673.43..223673.78 rows=140 width=556) (actual time=3060.048..3067.295 rows=4 loops=1)
+--   Sort Key: (sum(t.selling_price)) DESC
+--   Sort Method: quicksort  Memory: 25kB
+--   ->  Finalize GroupAggregate  (cost=223649.54..223668.44 rows=140 width=556) (actual time=3060.036..3067.287 rows=4 loops=1)
+--         Group Key: m.id
+--         ->  Gather Merge  (cost=223649.54..223665.64 rows=140 width=556) (actual time=3060.023..3067.270 rows=8 loops=1)
+--               Workers Planned: 1
+--               Workers Launched: 1
+--               ->  Sort  (cost=222649.53..222649.88 rows=140 width=556) (actual time=3047.537..3047.540 rows=4 loops=2)
+--                     Sort Key: m.id
+--                     Sort Method: quicksort  Memory: 25kB
+--                     Worker 0:  Sort Method: quicksort  Memory: 25kB
+--                     ->  Partial HashAggregate  (cost=222642.79..222644.54 rows=140 width=556) (actual time=3047.515..3047.519 rows=4 loops=2)
+--                           Group Key: m.id
+--                           Batches: 1  Memory Usage: 40kB
+--                           Worker 0:  Batches: 1  Memory Usage: 40kB
+--                           ->  Hash Left Join  (cost=50.15..193230.96 rows=5882365 width=529) (actual time=16.347..2261.617 rows=5000002 loops=2)
+--                                 Hash Cond: (s.movie_id = m.id)
+--                                 ->  Hash Left Join  (cost=37.00..177449.40 rows=5882365 width=13) (actual time=16.260..1447.618 rows=5000002 loops=2)
+--                                       Hash Cond: (t.session_id = s.id)
+--                                       ->  Parallel Seq Scan on tickets t  (cost=0.00..161916.65 rows=5882365 width=13) (actual time=0.045..368.079 rows=5000002 loops=2)
+--                                       ->  Hash  (cost=22.00..22.00 rows=1200 width=16) (actual time=16.196..16.197 rows=8 loops=2)
+--                                             Buckets: 2048  Batches: 1  Memory Usage: 17kB
+--                                             ->  Seq Scan on sessions s  (cost=0.00..22.00 rows=1200 width=16) (actual time=16.173..16.179 rows=8 loops=2)
+--                                 ->  Hash  (cost=11.40..11.40 rows=140 width=524) (actual time=0.070..0.071 rows=4 loops=2)
+--                                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+--                                       ->  Seq Scan on movies m  (cost=0.00..11.40 rows=140 width=524) (actual time=0.024..0.025 rows=4 loops=2)
+-- Planning Time: 0.229 ms
+-- JIT:
+--   Functions: 51
+-- "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+-- "  Timing: Generation 2.537 ms, Inlining 0.000 ms, Optimization 1.203 ms, Emission 31.197 ms, Total 34.937 ms"
+-- Execution Time: 3068.565 ms
+
 -- endregion
 
 DROP index indx_tickets_place;
