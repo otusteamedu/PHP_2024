@@ -1,36 +1,36 @@
 /* Структура базы */
 
 CREATE TABLE films (
-                       id BIGSERIAL NOT NULL PRIMARY KEY,
-                       title VARCHAR(100) NOT NULL,
-                       UNIQUE (title)
-);
-
-CREATE TABLE film_attributes (
-                                 id BIGSERIAL NOT NULL PRIMARY KEY,
-                                 name VARCHAR(100) NOT NULL,
-                                 UNIQUE (name)
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    UNIQUE (title)
 );
 
 CREATE TABLE film_attribute_types (
-                                      id BIGSERIAL NOT NULL PRIMARY KEY,
-                                      name VARCHAR(100) NOT NULL,
-                                      UNIQUE (name)
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    type VARCHAR(100) NOT NULL,
+    UNIQUE (type)
+);
+
+CREATE TABLE film_attributes (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    attribute_type_id BIGINT,
+    name VARCHAR(100) NOT NULL,
+    UNIQUE (name),
+    CONSTRAINT fk_attr_type FOREIGN KEY (attribute_type_id) REFERENCES film_attribute_types(id)
 );
 
 CREATE TABLE film_attribute_values (
-                                       film_id BIGINT NOT NULL,
-                                       attribute_id BIGINT NOT NULL,
-                                       attribute_type_id BIGINT NOT NULL,
-                                       text_value TEXT DEFAULT NULL,
-                                       string_value VARCHAR(255) DEFAULT NULL,
-                                       date_time_value TIMESTAMP DEFAULT NULL,
-                                       CONSTRAINT fk_attr FOREIGN KEY (attribute_id) REFERENCES film_attributes(id),
-                                       CONSTRAINT fk_attr_type FOREIGN KEY (attribute_type_id) REFERENCES film_attribute_types(id),
-                                       CONSTRAINT fk_film FOREIGN KEY (film_id) REFERENCES films(id)
+    film_id BIGINT NOT NULL,
+    attribute_id BIGINT NOT NULL,
+    int_value BIGINT DEFAULT NULL,
+    float_value FLOAT DEFAULT NULL,
+    boolean_value BOOL DEFAULT NULL,
+    string_value TEXT DEFAULT NULL,
+    datetime_value TIMESTAMP DEFAULT NULL,
+    CONSTRAINT fk_attr FOREIGN KEY (attribute_id) REFERENCES film_attributes(id),
+    CONSTRAINT fk_film FOREIGN KEY (film_id) REFERENCES films(id)
 );
-
-
 
 INSERT INTO
     films (title)
@@ -40,29 +40,34 @@ VALUES
     ('Мальчишник');
 
 INSERT INTO
-    film_attributes (name)
+    film_attribute_types (type)
 VALUES
-    ('Рецензия критиков'),
-    ('Отзыв неизвестной киноакадемии'),
-    ('Премия'),
-    ('Мировая премьера'),
-    ('Премьера в РФ'),
-    ('Дата начала продажи билетов'),
-    ('Когда запускать рекламу на ТВ'),
-    ('Проверить зал');
+    ('string'),
+    ('datetime'),
+    ('int'),
+    ('boolean'),
+    ('float');
 
 INSERT INTO
-    film_attribute_types (name)
+    film_attributes (name, attribute_type_id)
 VALUES
-    ('Рецензия'),
-    ('Премия'),
-    ('Важная дата'),
-    ('Служебная дата');
+    ('Рецензия критиков', 1),
+    ('Отзыв неизвестной киноакадемии', 1),
+    ('Премия',1),
+    ('Мировая премьера', 2),
+    ('Премьера в РФ', 2),
+    ('Дата начала продажи билетов', 2),
+    ('Когда запускать рекламу на ТВ', 2),
+    ('Служебная дата', 2),
+    ('Новинка', 4),
+    ('Рейтинг', 5),
+    ('Бюджет', 5),
+    ('Количество показов', 3);
 
 INSERT INTO
-    film_attribute_values (film_id,attribute_type_id, attribute_id, text_value)
+    film_attribute_values (film_id, attribute_id, string_value)
 VALUES
-    (1, 1, 1, 'Путешествия во времени – самая алогичная и, вместе с тем, поистине неисчерпаемая и невероятно увлекательная тема, бездонная бочка сюжетов для фантастического кинематографа. «Назад в будущее» - один из лучших фантастических фильмов в истории кино, снятых на эту тематику, настоящий культ жанра.
+    (1, 1, 'Путешествия во времени – самая алогичная и, вместе с тем, поистине неисчерпаемая и невероятно увлекательная тема, бездонная бочка сюжетов для фантастического кинематографа. «Назад в будущее» - один из лучших фантастических фильмов в истории кино, снятых на эту тематику, настоящий культ жанра.
 
 Впрочем, определить жанровую принадлежность этой картины практически нельзя. Это, пожалуй, эталон того, как нужно снимать фильм, в основу сюжета которого легло столько жанров: это и комедия, и фантастика, и драма, и приключения, и даже триллер! Элемент каждого жанра здесь тщательно выверен и очень гармонично вписывается в общую стилистику картины.
 
@@ -75,12 +80,27 @@ VALUES
 Не отстают и остальные актеры – все сыграли замечательно, очень органично вписавшись в сюжет. В фильме нет ни одного «провисающего» кадра и ни одного лишнего персонажа – каждый характер, даже самый незначительный, выверен и продуман до мелочей. Кстати, забавно, что в трилогии «засветились» тогда еще совсем молодые Билли Зэйн, Кейси Семашко и совсем еще ребенок Эдайджа Вуд.
 
 «Назад в будущее» - фильм на все времена, для любого возраста и любого зрителя. Он никогда не потеряет свою актуальность и магическую, волшебную притягательность. Это путешествие в детство, к захватывающим дух приключениям и путешествиям, которые так будоражат воображение. Этот фильм можно пересматривать бесконечное количество раз – и каждый раз испытывать неописуемый восторг, переживая приключения вместе с героями картины. Этот фильм украсит любую коллекцию. Шедевр вне времени. Классика.'
-    ), (1, 1, 2, 'Неплохой фильм');
+    ), (1, 2, 'Неплохой фильм');
 
 INSERT INTO
-    film_attribute_values (film_id, attribute_type_id,attribute_id, text_value)
+    film_attribute_values (film_id,attribute_id, boolean_value)
 VALUES
-    (2, 1, 1, 'В Америке не любят нелегальных эмигрантов. В любом виде — мексиканцев, бразильцев, армян, русских, китайцев и даже одного-единственного чукчу, который приехал просто для того, чтобы узнать у Санты, чем надо кормить оленей, чтоб они летали, и заблудился. Но эмигранты из Китая — не единственная проблема Америки. Оказывается, Землю уже давно осаждают нелегальные и легальные эмигранты из Космоса — да, да, пришельцы спускаются на Землю в поисках политического, религиозного или экономического убежища, работают на самых дурацких работах — торговцами оружием, полицейскими, спортсменами, актерами, певцами и т.д.
+    (1, 9, true);
+
+INSERT INTO
+    film_attribute_values (film_id,attribute_id, float_value)
+VALUES
+    (1, 10, 7.3),(2, 11, 5000000.00);
+
+INSERT INTO
+    film_attribute_values (film_id,attribute_id, int_value)
+VALUES
+    (2, 12, 300),(1, 12, 10);
+
+INSERT INTO
+    film_attribute_values (film_id,attribute_id, string_value)
+VALUES
+    (2, 1, 'В Америке не любят нелегальных эмигрантов. В любом виде — мексиканцев, бразильцев, армян, русских, китайцев и даже одного-единственного чукчу, который приехал просто для того, чтобы узнать у Санты, чем надо кормить оленей, чтоб они летали, и заблудился. Но эмигранты из Китая — не единственная проблема Америки. Оказывается, Землю уже давно осаждают нелегальные и легальные эмигранты из Космоса — да, да, пришельцы спускаются на Землю в поисках политического, религиозного или экономического убежища, работают на самых дурацких работах — торговцами оружием, полицейскими, спортсменами, актерами, певцами и т.д.
 
 За всем этим потоком эмигрантов следит сверхсекретная служба — Люди в черном. Эти люди, они, как понимаете, все в черном. Некоторые даже сами черные. И вот агентам Кею и Джею приходится расхлебывать не хилую заварушку — на Землю притащился гигантский злобный таракан с амбициями.
 * * *
@@ -106,73 +126,76 @@ VALUES
     );
 
 INSERT INTO
-    film_attribute_values (film_id, attribute_type_id, attribute_id, string_value)
+    film_attribute_values (film_id, attribute_id, string_value)
 VALUES
-    (1, 2, 3,'оскар');
+    (1, 3,'оскар');
 
 INSERT INTO
-    film_attribute_values (film_id, attribute_type_id, attribute_id, string_value)
+    film_attribute_values (film_id, attribute_id, string_value)
 VALUES
-    (2, 2, 3, 'тугрик');
+    (2, 3, 'тугрик');
 
 INSERT INTO
-    film_attribute_values (film_id, attribute_type_id, attribute_id, date_time_value)
+    film_attribute_values (film_id, attribute_id, datetime_value)
 VALUES
-    (1, 3, 4,'2024-03-17 00:00:00'),
-    (1, 3, 5,'2024-03-18 00:00:00'),
-    (2, 3, 4,'2024-03-17 00:00:00'),
-    (2, 3, 5,'2024-03-18 00:00:00'),
+    (1, 4,'2024-03-17 00:00:00'),
+    (1, 5,'2024-03-18 00:00:00'),
+    (2, 4,'2024-03-17 00:00:00'),
+    (2, 5,'2024-03-18 00:00:00'),
 
-    (2, 3, 6,'2024-03-24 00:00:00'),
-    (2, 3, 7,'2024-03-26 00:00:00'),
-    (1, 4, 6,'2024-03-26 00:00:00'),
-    (1, 4, 7,'2024-03-28 00:00:00'),
+    (2, 6,'2024-03-24 00:00:00'),
+    (2, 7,'2024-03-26 00:00:00'),
+    (1, 6,'2024-03-26 00:00:00'),
+    (1, 7,'2024-03-28 00:00:00'),
 
-    (1, 4, 8,CURRENT_TIMESTAMP),
-    (3, 4, 8,CURRENT_TIMESTAMP);
+    (1, 8,CURRENT_TIMESTAMP),
+    (3, 8,CURRENT_TIMESTAMP);
 
-CREATE VIEW film_tasks_for_today_view AS SELECT
-                                             f.title as Фильм,
-                                             fa.name as Задача,
-                                             fav.date_time_value as Значение
-                                         FROM
-                                             films f,
-                                             film_attribute_values fav,
-                                             film_attributes fa
-                                         WHERE
-                                             f.id = fav.film_id
-                                           AND fa.id = fav.attribute_id
-                                           AND fav.attribute_type_id = 4 /* Выбираем служебные даты */
-                                           AND fav.date_time_value NOTNULL
-  AND fav.date_time_value BETWEEN TO_TIMESTAMP(CONCAT(CURRENT_DATE, ' ', '00:00:00'), 'YYYY-MM-DD HH24:MI:ss')
-    AND TO_TIMESTAMP(CONCAT(CURRENT_DATE, ' ', '23:59:59'), 'YYYY-MM-DD HH24:MI:ss');
+CREATE VIEW film_tasks_for_today_view AS
+    SELECT
+         f.title as Фильм,
+         fa.name as Задача,
+         fav.datetime_value as Значение
+    FROM
+         films f,
+         film_attribute_values fav,
+         film_attributes fa
+    WHERE
+        f.id = fav.film_id
+        AND fa.id = fav.attribute_id
+        AND fav.attribute_id = 8 /* Выбираем служебные даты */
+        AND fav.datetime_value NOTNULL
+        AND fav.datetime_value BETWEEN TO_TIMESTAMP(CONCAT(CURRENT_DATE, ' ', '00:00:00'), 'YYYY-MM-DD HH24:MI:ss')
+        AND TO_TIMESTAMP(CONCAT(CURRENT_DATE, ' ', '23:59:59'), 'YYYY-MM-DD HH24:MI:ss');
 
-CREATE VIEW film_tasks_for_20_days_view AS SELECT
-                                               f.title as Фильм,
-                                               fa.name as Задача,
-                                               fav.date_time_value as Значение
-                                           FROM
-                                               films f,
-                                               film_attribute_values fav,
-                                               film_attributes fa
-                                           WHERE
-                                               f.id = fav.film_id
-                                             AND fa.id = fav.attribute_id
-                                             AND fav.attribute_type_id = 4 /* Выбираем служебные даты */
-                                             AND fav.date_time_value NOTNULL
-  AND fav.date_time_value BETWEEN TO_TIMESTAMP(CONCAT(CURRENT_DATE, ' ', '00:00:00'), 'YYYY-MM-DD HH24:MI:ss')
-    AND TO_TIMESTAMP(CONCAT(CURRENT_DATE + INTERVAL '20 days', ' ', '23:59:59'), 'YYYY-MM-DD HH24:MI:ss');
+CREATE VIEW film_tasks_for_20_days_view AS
+    SELECT
+       f.title as Фильм,
+       fa.name as Задача,
+       fav.datetime_value as Значение
+   FROM
+       films f,
+       film_attribute_values fav,
+       film_attributes fa
+   WHERE
+       f.id = fav.film_id
+     AND fa.id = fav.attribute_id
+     AND fav.attribute_id = 8 /* Выбираем служебные даты */
+     AND fav.datetime_value NOTNULL
+     AND fav.datetime_value BETWEEN TO_TIMESTAMP(CONCAT(CURRENT_DATE, ' ', '00:00:00'), 'YYYY-MM-DD HH24:MI:ss')
+     AND TO_TIMESTAMP(CONCAT(CURRENT_DATE + INTERVAL '20 days', ' ', '23:59:59'), 'YYYY-MM-DD HH24:MI:ss');
 
 
-CREATE VIEW marketing_data AS SELECT
-                                  f.title as Фильм,
-                                  fa.name as Аттрибут,
-                                  fat.name as Тип_аттрибута,
-                                  concat(fav.text_value,fav.string_value,fav.date_time_value) as Значение
-                              FROM
-                                  films f,
-                                  film_attributes fa,
-                                  film_attribute_types fat,
-                                  film_attribute_values fav
-                              WHERE
-                                  f.id = fav.film_id AND fa.id = fav.attribute_id AND fat.id = fav.attribute_type_id
+CREATE VIEW marketing_data AS
+    SELECT
+  f.title as Фильм,
+  fa.name as Аттрибут,
+  fat.type as Тип_аттрибута,
+  concat(fav.string_value,fav.datetime_value::text,fav.int_value::text,fav.float_value::text,fav.boolean_value::text) as Значение
+FROM
+  films f,
+  film_attributes fa,
+  film_attribute_types fat,
+  film_attribute_values fav
+WHERE
+  f.id = fav.film_id AND fa.id = fav.attribute_id AND fa.attribute_type_id = fat.id
