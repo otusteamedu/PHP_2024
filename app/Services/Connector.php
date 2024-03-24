@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\LogLevelEnum;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
@@ -10,6 +11,7 @@ use Elastic\Elasticsearch\Exception\MissingParameterException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Elastic\Elasticsearch\Helper\Iterators\SearchHitIterator;
 use Elastic\Elasticsearch\Helper\Iterators\SearchResponseIterator;
+use Exception;
 
 class Connector
 {
@@ -23,9 +25,9 @@ class Connector
         $env = parse_ini_file(__DIR__ . '/../../.env');
 
         $this->client = ClientBuilder::create()
+            ->setSSLVerification(false)
             ->setHosts([$env['ELASTIC_HOST']]) // https!
             ->setBasicAuthentication('elastic', $env['ELASTIC_PASSWD']) // Пароль
-            ->setCABundle(__DIR__ . $env['ELASTIC_CERT']) // Сертификат
             ->build();
     }
 
@@ -49,7 +51,7 @@ class Connector
     public function bulk(string $dataPath): void
     {
         exec(
-            "curl --location --insecure -u elastic:ueX7wnany_b1spv_j4Fe --request POST 'https://172.29.0.2:9200/_bulk' --header 'Content-Type: application/json' --data-binary '@{$dataPath}'"
+            "curl --location --insecure -u elastic:ueX7wnany_b1spv_j4Fe --request POST 'http://elasticsearch:9200/_bulk' --header 'Content-Type: application/json' --data-binary '@{$dataPath}'"
         );
     }
 
@@ -63,6 +65,9 @@ class Connector
         return $this->client->indices()->delete(['index' => $index])->asBool();
     }
 
+    /**
+     * @throws Exception
+     */
     public function search(array $params): string
     {
         $query = [
@@ -76,9 +81,19 @@ class Connector
             ]
         ];
 
+        new Logger(LogLevelEnum::INFO, ['type' => 'search', ...$params]);
+
         $pages = new SearchResponseIterator($this->client, $query);
 
-        return $this->getResult(new SearchHitIterator($pages));
+        $hits = new SearchHitIterator($pages);
+
+        new Logger(LogLevelEnum::SUCCESS, [
+            'type' => 'search-result',
+            'qty' => $hits->count()
+        ]);
+
+        return $this->getResult($hits);
+
     }
 
     private function getResult(SearchHitIterator $hits): string

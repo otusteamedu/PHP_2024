@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enums\LogLevelEnum;
 use App\Services\Connector;
+use App\Services\Logger;
+use Elastic\Transport\Exception\TransportException;
 
 require '../vendor/autoload.php';
 
@@ -18,8 +21,9 @@ try {
 
         $client->bulk('./../books.json');
     }
-} catch (Exception $e) {
+} catch (TransportException $e) {
     echo $e->getMessage();
+    var_dump($e->getTrace());
 }
 
 $search = readline('Поиск: ');
@@ -42,4 +46,9 @@ $params = [
     ]
 ];
 
-echo $client->search($params);
+try {
+    echo $client->search($params);
+} catch (Exception $e) {
+    echo $e->getMessage();
+    new Logger(LogLevelEnum::ERROR, ['type' => 'search-error', 'message' => $e->getMessage()]);
+}
