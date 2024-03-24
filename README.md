@@ -1,3 +1,9 @@
-# PHP_2023
+## Примеры команд:
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+### Поиск по title
+```php index.php -t рыцОри```
+
+### Пользователь ищет все исторические романы дешевле 2000 рублей (и в наличии) по поисковому запросу "рыцОри"
+```php index.php -t рыцОри -c 'Исторический роман' -p '<2000' -s '>0'```
+
+![img.png](img.png)
