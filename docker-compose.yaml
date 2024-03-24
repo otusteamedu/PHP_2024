@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: otus-postgres
+    user: ${POSTGRES_USER}
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - otus_postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+volumes:
+  otus_postgres_data:
