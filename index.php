@@ -4,29 +4,26 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$app = new AleksandrOrlov\Php2024\Elastic('https://localhost:9200', 'elastic', 'pass1234');
+try {
+    $options = getopt('i:t:c:p:s:');
 
-$options = getopt('t:c:p:s:');
+    if (!isset($options['i'])) {
+        throw new Exception('Index name not set');
+    }
 
-$params = [];
-
-if (isset($options['t'])) {
-    $params['title'] = $options['t'];
+    $elastic = new AleksandrOrlov\Php2024\Elastic(
+        'https://localhost:9200',
+        'elastic',
+        'pass1234'
+    );
+    $index = AleksandrOrlov\Php2024\IndexFactory::create($options['i'], $elastic->getClient());
+    $index->create();
+} catch (Exception $e) {
+    echo $e->getMessage();
+    exit;
 }
 
-if (isset($options['c'])) {
-    $params['category'] = $options['c'];
-}
-
-if (isset($options['p'])) {
-    $params['price'] = $options['p'];
-}
-
-if (isset($options['s'])) {
-    $params['stock'] = $options['s'];
-}
-
-$search = $app->search($params)['hits'];
+$search = $index->search($options)['hits'];
 $total  = $search['total']['value'];
 
 
