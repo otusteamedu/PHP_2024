@@ -7,8 +7,16 @@ require './vendor/autoload.php';
 use Lrazumov\Hw14\App;
 
 try {
-    $mode = $argv[1] ?? 'empty mode';
-    (new App($mode))
+    $shortopts = 'q:g:l:c:s:';
+    $longopts = [
+      'query:',
+      'gte:',
+      'lte:',
+      'category:',
+      'shop:',
+    ];
+    $options = getopt($shortopts, $longopts);
+    (new App($options))
         ->run();
 } catch (Exception $e) {
     echo 'Error: ==========================================';

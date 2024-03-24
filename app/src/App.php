@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Lrazumov\Hw14;
 
-use Exception;
-
 class App
 {
-    private string $mode;
+    private array $options;
 
-    public function __construct(string $mode)
+    public function __construct(array $options)
     {
-        $this->mode = $mode;
+        $this->options = $options;
     }
 
     public function run()
     {
-        echo 'App run with mode: ' . $this->mode . PHP_EOL;
+        $query = (new Query($this->options))
+            ->getQuery();
+        $result = (new Elastic($query))
+            ->search();
+        (new Output($result))
+            ->output();
     }
 }
