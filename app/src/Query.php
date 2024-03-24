@@ -15,21 +15,68 @@ class Query
 
     public function getQuery(): array
     {
-        $query = [];
+        $query = [
+            'query' => [
+                'bool' => [
+                    'must' => [],
+                ],
+            ],
+        ];
+        $nested = [
+            'path' => 'stock',
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'range' => [
+                                'stock' => [
+                                    'gte' => 1,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        if (isset($this->options['shop'])) {
+            $nested['query']['bool']['must'][] = [
+                'term' => [
+                    'stock.shop' => $this->options['shop'],
+                ],
+            ];
+        }
+        $query['query']['bool']['must'][] = $nested;
         if (isset($this->options['query'])) {
-            $query['query'] = $this->options['query'];
+            $query['query']['bool']['must'][] = [
+                'match' => [
+                    'title' => [
+                        'query' => $this->options['query'],
+                        'operator' => 'and',
+                        'fuzziness' => 'auto',
+                    ],
+                ],
+            ];
         }
-        if (isset($this->options['gte'])) {
-            $query['gte'] = $this->options['gte'];
-        }
-        if (isset($this->options['lte'])) {
-            $query['lte'] = $this->options['lte'];
+        if (isset($this->options['gte']) || isset($this->options['lte'])) {
+            $range = [
+                'range' => [
+                    'price' => [],
+                ],
+            ];
+            if (isset($this->options['gte'])) {
+                $range['range']['price']['gte'] = $this->options['gte'];
+            }
+            if (isset($this->options['lte'])) {
+                $range['range']['price']['lte'] = $this->options['lte'];
+            }
+            $query['query']['bool']['must'][] = $range;
         }
         if (isset($this->options['category'])) {
-            $query['category'] = $this->options['category'];
-        }
-        if (isset($this->options['shop'])) {
-            $query['shop'] = $this->options['shop'];
+            $query['query']['bool']['must'][] = [
+                'term' => [
+                    'category' => $this->options['category'],
+                ],
+            ];
         }
         return $query;
     }
