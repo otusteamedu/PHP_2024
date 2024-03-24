@@ -117,6 +117,35 @@ POST /_bulk
 # Search
 GET /otus-test/_search
 
+GET /otus-test/_search
+{
+  "query": {
+    "nested": {
+      "path": "stock", 
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "terms": {
+                "stock.shop": ["Ленина", "Мира1"]
+              }
+            }
+            ,
+            {
+              "range": {
+                "stock.stock": {
+                  "gte": 0,
+                  "lte": 1
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
 # Фильтр по категории
 GET /otus-test/_search
 {
