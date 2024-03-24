@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/http_ca.crt
+/.env
+/books.json
