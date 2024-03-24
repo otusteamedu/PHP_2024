@@ -1,0 +1,156 @@
+-- 1. Выбор всех фильмов на сегодня
+
+"session_start_at","session_end_at","name"
+"2024-03-19 00:00:00","2024-03-19 00:00:00","dracula"
+"2024-03-19 00:00:00","2024-03-19 00:00:00","полет"
+"2024-03-19 00:00:00","2024-03-19 00:00:00","love sroty"
+
+----------------------------------------------------
+
+-- 2. Подсчёт проданных билетов за неделю
+
+"film_id","count"
+"6","19"
+"7","21"
+"8","10"
+
+------------------------------
+
+-- 3. Формирование афиши (фильмы, которые показывают сегодня)
+
+"name","duration","country","derector","description","rental_company","age_limits","actors","attributes"
+"dracula","2.45","китай","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Good fiml corp","18","{""actors"": ""lu keng"",""lu keng""}","(""дата начала продажи билетов"","" "",""2023-12-30 00:00:00"")"
+"dracula","2.45","китай","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Good fiml corp","18","{""actors"": ""lu keng"",""lu keng""}","(""мировая премьера"","" "",""2023-12-05 00:00:00"")"
+"dracula","2.45","китай","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Good fiml corp","18","{""actors"": ""lu keng"",""lu keng""}","(награда,"" "",true)"
+"dracula","2.45","китай","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Good fiml corp","18","{""actors"": ""lu keng"",""lu keng""}","(""премьера в России"","" "",""2023-12-30 00:00:00"")"
+"dracula","2.45","китай","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Good fiml corp","18","{""actors"": ""lu keng"",""lu keng""}","(рецензия,"" "",""Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis assumenda, officia sequi ea magnam, rerum eaque ipsum, quam tempore excepturi commodi tenetur? Similique expedita quam voluptatum ab, animi harum beatae?"")"
+"love sroty","2.50","сша","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Disney Rus","18","{""actors"": ""Bill Muray"",""Junny Gone""}","(""дата начала продажи билетов"","" "",""2023-09-30 00:00:00"")"
+"love sroty","2.50","сша","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Disney Rus","18","{""actors"": ""Bill Muray"",""Junny Gone""}","(""мировая премьера"","" "",""2023-09-11 00:00:00"")"
+"love sroty","2.50","сша","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Disney Rus","18","{""actors"": ""Bill Muray"",""Junny Gone""}","(награда,"" "",true)"
+"love sroty","2.50","сша","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Disney Rus","18","{""actors"": ""Bill Muray"",""Junny Gone""}","(""премьера в России"","" "",""2023-09-30 00:00:00"")"
+"love sroty","2.50","сша","Лю Кенг","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","Disney Rus","18","{""actors"": ""Bill Muray"",""Junny Gone""}","(рецензия,"" "",""Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis assumenda, officia sequi ea magnam, rerum eaque ipsum, quam tempore excepturi commodi tenetur? Similique expedita quam voluptatum ab, animi harum beatae?"")"
+"полет","3.05","россия","Петр Иванов","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","ООО Корона+","18","{""actors"": ""Лев Гириш"",""Ирина Иванова""}","(""дата начала продажи билетов"","" "",""2024-01-15 00:00:00"")"
+"полет","3.05","россия","Петр Иванов","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","ООО Корона+","18","{""actors"": ""Лев Гириш"",""Ирина Иванова""}","(""мировая премьера"","" "",""2023-12-23 00:00:00"")"
+"полет","3.05","россия","Петр Иванов","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","ООО Корона+","18","{""actors"": ""Лев Гириш"",""Ирина Иванова""}","(награда,"" "",true)"
+"полет","3.05","россия","Петр Иванов","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","ООО Корона+","18","{""actors"": ""Лев Гириш"",""Ирина Иванова""}","(""премьера в России"","" "",""2024-01-15 00:00:00"")"
+"полет","3.05","россия","Петр Иванов","Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam, quaerat sequi rerum inventore assumenda, explicabo sed tenetur dicta reiciendis animi minima cum hic maiores dignissimos. Aut expedita id laboriosam sequi?","ООО Корона+","18","{""actors"": ""Лев Гириш"",""Ирина Иванова""}","(рецензия,"" "",""Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis assumenda, officia sequi ea magnam, rerum eaque ipsum, quam tempore excepturi commodi tenetur? Similique expedita quam voluptatum ab, animi harum beatae?"")"
+
+----------------------------------------------------------------------
+
+-- 4. Поиск 3 самых прибыльных фильмов за неделю
+
+"film_id","sum"
+"7","8150,00 ₽"
+"6","6950,00 ₽"
+"8","4050,00 ₽"
+
+-----------------------------------------------------------------------
+
+-- 5. Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс
+
+"name","series","seat","status"
+"средний","1","1",False
+"средний","1","2",False
+"средний","1","3",False
+"средний","1","4",False
+"средний","1","5",False
+"средний","1","6",False
+"средний","1","7",False
+"средний","1","8",False
+"средний","1","9",False
+"средний","1","10",False
+"средний","2","11",False
+"средний","2","12",False
+"средний","2","13",False
+"средний","2","14",False
+"средний","2","15",False
+"средний","2","16",False
+"средний","2","17",False
+"средний","2","18",False
+"средний","2","19",False
+"средний","2","20",False
+"средний","3","21",False
+"средний","3","22",False
+"средний","3","23",False
+"средний","3","24",False
+"средний","3","25",False
+"средний","3","26",False
+"средний","3","27",False
+"средний","3","28",False
+"средний","3","29",False
+"средний","3","30",False
+"средний","4","31",False
+"средний","4","32",False
+"средний","4","33",False
+"средний","4","34",False
+"средний","4","35",False
+"средний","4","36",False
+"средний","4","37",False
+"средний","4","38",False
+"средний","4","39",False
+"средний","4","40",False
+"средний","5","41",False
+"средний","5","42",False
+"средний","5","43",False
+"средний","5","44",False
+"средний","5","45",False
+"средний","5","46",False
+"средний","5","47",False
+"средний","5","48",False
+"средний","5","49",False
+"средний","5","50",False
+"средний","6","51",False
+"средний","6","52",False
+"средний","6","53",False
+"средний","6","54",False
+"средний","6","55",False
+"средний","6","56",False
+"средний","6","57",False
+"средний","6","58",False
+"средний","6","59",False
+"средний","6","60",False
+"средний","7","61",False
+"средний","7","62",False
+"средний","7","63",False
+"средний","7","64",False
+"средний","7","65",False
+"средний","7","66",False
+"средний","7","67",False
+"средний","7","68",False
+"средний","7","69",False
+"средний","7","70",False
+"средний","8","71",False
+"средний","8","72",False
+"средний","8","73",False
+"средний","8","74",False
+"средний","8","75",False
+"средний","8","76",False
+"средний","8","77",False
+"средний","8","78",False
+"средний","8","79",False
+"средний","8","80",False
+"средний","9","81",False
+"средний","9","82",False
+"средний","9","83",False
+"средний","9","84",False
+"средний","9","85",False
+"средний","9","86",False
+"средний","9","87",False
+"средний","9","88",False
+"средний","9","89",False
+"средний","9","90",False
+"средний","10","91",False
+"средний","10","92",False
+"средний","10","93",False
+"средний","10","94",False
+"средний","10","95",False
+"средний","10","96",False
+"средний","10","97",False
+"средний","10","98",False
+"средний","10","99",False
+"средний","10","100",False
+
+-- 6. Вывести диапазон миниальной и максимальной цены за билет на конкретный сеанс
+
+"min","max"
+"350,00 ₽","450,00 ₽"
