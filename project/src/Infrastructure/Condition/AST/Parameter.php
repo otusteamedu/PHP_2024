@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace SFadeev\Hw12\Infrastructure\Condition\AST;
 
-use SFadeev\Hw12\Domain\Condition\Node;
-
 class Parameter extends Node
 {
     public function __construct(

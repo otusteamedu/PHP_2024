@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SFadeev\Hw12\Domain\Service;
+namespace SFadeev\Hw12\Infrastructure\Condition;
 
-use SFadeev\Hw12\Domain\Condition\ParserInterface;
+use SFadeev\Hw12\Domain\Service\ConditionServiceInterface;
 
-class ConditionService
+class ConditionService implements ConditionServiceInterface
 {
     public function __construct(
-        private ParserInterface $parser
+        private Parser $parser
     ) {
     }
 

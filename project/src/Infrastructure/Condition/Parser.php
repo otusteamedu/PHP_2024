@@ -6,12 +6,11 @@ namespace SFadeev\Hw12\Infrastructure\Condition;
 
 use Doctrine\Common\Lexer\Token;
 use RuntimeException;
-use SFadeev\Hw12\Domain\Condition\ParserInterface;
 use SFadeev\Hw12\Infrastructure\Condition\AST\Comparison;
 use SFadeev\Hw12\Infrastructure\Condition\AST\Logical;
 use SFadeev\Hw12\Infrastructure\Condition\AST\Parameter;
 
-class Parser implements ParserInterface
+class Parser
 {
     public function __construct(
         private Lexer $lexer,

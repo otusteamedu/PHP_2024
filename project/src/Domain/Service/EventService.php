@@ -12,7 +12,7 @@ class EventService
 {
     public function __construct(
         private EventRepositoryInterface $eventRepository,
-        private ConditionService $conditionService,
+        private ConditionServiceInterface $conditionService,
     ) {
     }
 

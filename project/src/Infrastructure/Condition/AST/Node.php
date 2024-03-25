@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SFadeev\Hw12\Domain\Condition;
+namespace SFadeev\Hw12\Infrastructure\Condition\AST;
 
 abstract class Node
 {

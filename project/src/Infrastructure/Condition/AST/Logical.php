@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SFadeev\Hw12\Infrastructure\Condition\AST;
 
 use InvalidArgumentException;
-use SFadeev\Hw12\Domain\Condition\Node;
 
 class Logical extends Node
 {
