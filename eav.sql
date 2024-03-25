@@ -76,28 +76,7 @@ VALUES (1, 'Фильм огонь', 1, 1),
        (8, '2024-03-28', 2, 5),
        (9, '2024-04-28', 3, 5);
 
-
 DROP VIEW IF EXISTS `films_analytic`;
-CREATE TABLE `films_analytic`
-(
-    `title` varchar(150),
-    `type`  varchar(45),
-    `name`  varchar(45),
-    `value` varchar(45)
-);
-
-
-DROP VIEW IF EXISTS `films_premiere`;
-CREATE TABLE `films_premiere`
-(
-    `movie`         varchar(150),
-    `actual_today`  varchar(3),
-    `actual_later`  varchar(3),
-    `date_premiere` varchar(45)
-);
-
-
-DROP TABLE IF EXISTS `films_analytic`;
 CREATE VIEW `films_analytic` (`title`, `type`, `name`, `value`)
 AS
 select `fe`.`title`  AS `title`,
@@ -109,7 +88,8 @@ from (((`film_entity` `fe`
     join `film_attributes` `fa` on ((`fav`.`attribute_id` = `fa`.`id`)))
     join `film_attributes_type` `fat` on ((`fat`.`id` = `fa`.`attribute_type_id`)));
 
-DROP TABLE IF EXISTS `films_premiere`;
+DROP
+DROP VIEW IF EXISTS `films_premiere`;
 CREATE VIEW `films_premiere` (`movie`, `actual_today`, `actual_later`, `date_premiere`)
 AS
 select `fe`.`title`                                                      AS `title`,
