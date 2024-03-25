@@ -30,11 +30,98 @@ make start-otus
 
 ##Usage 
 ```
-docker-compose run app php frontend/web/index.php 'valera@gmail.com,valera@gmail.con,valera @gmail.com'
+docker-compose run app php frontend/web/index.php init
+docker-compose run app php frontend/web/index.php test
+docker-compose run app php frontend/web/index.php search '{
+    "query": {
+        "match": {
+            "title": "Кто подставил Терминатора"
+        }
+    }
+}'
+docker-compose run app php frontend/web/index.php search '{
+    "query": {
+        "match": {    
+            "title": {
+                "query": "Терменатора",
+                "fuzziness": "auto"
+            } 
+        }
+    }
+}'
+docker-compose run app php frontend/web/index.php search '{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {
+                        "title": {
+                        "query": "РыцОри",
+                        "fuzziness": "auto"
+                    }
+                    }
+                }
+            ],
+            "filter": [
+                {
+                    "range": {
+                        "price": {
+                            "lt": 2000
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}'
 ```
 or
 
 ```
-docker-compose exec server bash
-php frontend/web/index.php index.php 'valera@gmail.com,valera@gmail.con,valera @gmail.com'
+docker-compose exec app bash
+php frontend/web/index.php index.php init
+php frontend/web/index.php index.php test
+php frontend/web/index.php index.php search '{
+    "query": {
+        "match": {
+            "title": "Кто подставил Терминатора"
+        }
+    }
+}'
+php frontend/web/index.php index.php search '{
+    "query": {
+        "match": {    
+            "title": {
+                "query": "Терменатора",
+                "fuzziness": "auto"
+            } 
+        }
+    }
+}'
+php frontend/web/index.php index.php search '{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "match": {
+                        "title": {
+                        "query": "РыцОри",
+                        "fuzziness": "auto"
+                    }
+                    }
+                }
+            ],
+            "filter": [
+                {
+                    "range": {
+                        "price": {
+                            "lt": 2000
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}'
+
 ```

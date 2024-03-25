@@ -29,5 +29,4 @@ class Creator
                 return (new Test())->exec();
         }
     }
-
 }
