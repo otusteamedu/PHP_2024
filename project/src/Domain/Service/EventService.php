@@ -34,14 +34,10 @@ class EventService
 
         foreach ($events as $event) {
             if ($this->conditionService->match($event->getCondition(), $params)) {
-                $filtered[] = $event;
+                return $event;
             }
         }
 
-        if (count($filtered) === 0) {
-            throw new EventNotFoundException();
-        }
-
-        return $filtered[0];
+        throw new EventNotFoundException();
     }
 }
