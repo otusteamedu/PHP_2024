@@ -12,11 +12,6 @@ class Event implements JsonSerializable
     private string $condition;
     private string $payload;
 
-    /**
-     * @param int $priority
-     * @param string $condition
-     * @param string $payload
-     */
     public function __construct(int $priority, string $condition, string $payload)
     {
         $this->priority = $priority;

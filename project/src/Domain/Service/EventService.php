@@ -13,8 +13,7 @@ class EventService
     public function __construct(
         private EventRepositoryInterface $eventRepository,
         private ConditionService $conditionService,
-    )
-    {
+    ) {
     }
 
     public function save(Event $event): Event

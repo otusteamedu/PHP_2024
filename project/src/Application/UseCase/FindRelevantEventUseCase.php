@@ -11,8 +11,7 @@ class FindRelevantEventUseCase
 {
     public function __construct(
         private EventService $eventService,
-    )
-    {
+    ) {
     }
 
     public function handle(array $params): Event

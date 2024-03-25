@@ -11,19 +11,11 @@ class Logical extends Node
 {
     public const T_AND = 'AND';
 
-    /**
-     * @param Node|bool $leftExpression
-     * @param string $operator
-     * @param Node|bool $rightExpression
-     *
-     * @throws InvalidArgumentException
-     */
     public function __construct(
         public Node|bool $leftExpression,
         public string    $operator,
         public Node|bool $rightExpression,
-    )
-    {
+    ) {
         $allowed = [self::T_AND];
 
         if (!in_array($this->operator, $allowed, true)) {

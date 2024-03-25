@@ -14,8 +14,7 @@ class EventRepository implements EventRepositoryInterface
 
     public function __construct(
         private Client $client
-    )
-    {
+    ) {
     }
 
     public function save(Event $event): Event
@@ -41,6 +40,6 @@ class EventRepository implements EventRepositoryInterface
             $events[] = Event::fromJson($rawEvent);
         }
 
-         return $events;
+        return $events;
     }
 }

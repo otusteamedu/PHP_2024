@@ -14,10 +14,6 @@ class Config
     private string $host;
     private int $port;
 
-    /**
-     * @param string $host
-     * @param int $port
-     */
     private function __construct(string $host, int $port)
     {
         $this->host = $host;
@@ -45,10 +41,6 @@ class Config
         ];
     }
 
-    /**
-     * @param string $projectDir
-     * @return Config
-     */
     public static function create(string $projectDir): Config
     {
         $config = parse_ini_file($projectDir . '/config/redis.ini');
@@ -59,13 +51,6 @@ class Config
         );
     }
 
-    /**
-     * @param string $value
-     * @param string $name
-     * @return int
-     *
-     * @throws RuntimeException
-     */
     private static function parseInt(string $value, string $name): int
     {
         if (false === ($intVal = filter_var($value, FILTER_VALIDATE_INT))) {

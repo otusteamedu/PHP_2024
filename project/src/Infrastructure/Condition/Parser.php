@@ -15,8 +15,7 @@ class Parser implements ParserInterface
 {
     public function __construct(
         private Lexer $lexer,
-    )
-    {
+    ) {
     }
 
     public function parse(string $input): Logical
@@ -47,7 +46,7 @@ class Parser implements ParserInterface
                 $paramExpr = $this->getParameterExpression();
                 $this->lexer->moveNext();
                 $value = $this->getValue();
-                $expression = new Comparison($paramExpr,Comparison::T_EQUAL, $value);
+                $expression = new Comparison($paramExpr, Comparison::T_EQUAL, $value);
                 break;
             default:
                 $this->syntaxError('=');

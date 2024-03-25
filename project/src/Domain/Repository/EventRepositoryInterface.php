@@ -9,15 +9,8 @@ use SFadeev\Hw12\Domain\Exception\EventNotFoundException;
 
 interface EventRepositoryInterface
 {
-    /**
-     * @param Event $event
-     * @return Event
-     */
     public function save(Event $event): Event;
 
-    /**
-     * @return void
-     */
     public function clear(): void;
 
     /**

@@ -15,8 +15,7 @@ class Comparison extends Node
         public Node|int|float|string|bool|null $leftExpression,
         public string                          $operator,
         public Node|int|float|string|bool|null $rightExpression,
-    )
-    {
+    ) {
         $allowed = [self::T_EQUAL];
 
         if (!in_array($this->operator, $allowed, true)) {
@@ -24,7 +23,7 @@ class Comparison extends Node
         }
     }
 
-    function resolve(array $params): bool
+    public function resolve(array $params): bool
     {
         return match ($this->operator) {
             self::T_EQUAL => $this->getValue($this->leftExpression, $params) === $this->getValue($this->rightExpression, $params)

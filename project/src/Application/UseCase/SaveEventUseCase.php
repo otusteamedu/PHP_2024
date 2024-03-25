@@ -11,8 +11,7 @@ class SaveEventUseCase
 {
     public function __construct(
         private EventService $eventService,
-    )
-    {
+    ) {
     }
 
     public function handle(Event $event): Event

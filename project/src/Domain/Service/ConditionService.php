@@ -10,8 +10,7 @@ class ConditionService
 {
     public function __construct(
         private ParserInterface $parser
-    )
-    {
+    ) {
     }
 
     public function match(string $condition, array $params): bool

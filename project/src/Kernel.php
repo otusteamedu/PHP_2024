@@ -13,7 +13,6 @@ use SFadeev\Hw12\Domain\Service\ConditionService;
 use SFadeev\Hw12\Domain\Service\EventService;
 use SFadeev\Hw12\Infrastructure\Condition\Lexer;
 use SFadeev\Hw12\Infrastructure\Condition\Parser;
-use SFadeev\Hw12\Infrastructure\FakeRepository\FakeEventRepository;
 use SFadeev\Hw12\Infrastructure\Redis\Config;
 use SFadeev\Hw12\Infrastructure\Redis\EventRepository;
 
@@ -24,8 +23,7 @@ class Kernel
     private SaveEventUseCase $saveEventUseCase;
 
     public function __construct(
-    )
-    {
+    ) {
         $projectDir = dirname(__DIR__);
 
         $redisConfig = Config::create($projectDir);

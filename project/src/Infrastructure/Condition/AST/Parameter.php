@@ -10,11 +10,10 @@ class Parameter extends Node
 {
     public function __construct(
         public string $name,
-    )
-    {
+    ) {
     }
 
-    function resolve(array $params): int|float|string|bool|null
+    public function resolve(array $params): int|float|string|bool|null
     {
         if (array_key_exists($this->name, $params)) {
             return $params[$this->name];
