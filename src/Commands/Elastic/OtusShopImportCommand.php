@@ -46,7 +46,7 @@ class OtusShopImportCommand extends AbstractCommand
 
         fclose($stream);
 
-        $otusShopRepository = new OtusShopRepository($this->elasticClient);
+        $otusShopRepository = $this->container->get(OtusShopRepository::class);
         $otusShopRepository->bulk($data);
 
         $this->formatter->output('Success import');
