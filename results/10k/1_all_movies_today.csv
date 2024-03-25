@@ -1,0 +1,8 @@
+Nested Loop  (cost=0.15..257.97 rows=50 width=528)
+  ->  Seq Scan on session s  (cost=0.00..249.00 rows=50 width=12)
+        Filter: ((scheduled_at)::date = CURRENT_DATE)
+  ->  Memoize  (cost=0.15..1.13 rows=1 width=520)
+        Cache Key: s.movie_id
+        Cache Mode: logical
+        ->  Index Scan using movie_pkey on movie m  (cost=0.14..1.12 rows=1 width=520)
+              Index Cond: (id = s.movie_id)

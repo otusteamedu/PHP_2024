@@ -1,0 +1,11 @@
+Finalize Aggregate  (cost=57981.06..57981.07 rows=1 width=8) (actual time=76.141..78.518 rows=1 loops=1)
+  ->  Gather  (cost=57980.84..57981.05 rows=2 width=8) (actual time=76.064..78.512 rows=3 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        ->  Partial Aggregate  (cost=56980.84..56980.85 rows=1 width=8) (actual time=66.462..66.462 rows=1 loops=3)
+              ->  Parallel Index Only Scan using idx_ticket_sale_created_at_week_interval on ticket_sale ts  (cost=0.44..53989.04 rows=1196723 width=0) (actual time=0.066..43.182 rows=958031 loops=3)
+                    Index Cond: ((created_at >= CURRENT_DATE) AND (created_at <= (CURRENT_DATE + '7 days'::interval)))
+                    Heap Fetches: 0
+Planning Time: 0.088 ms
+Execution Time: 78.556 ms
+

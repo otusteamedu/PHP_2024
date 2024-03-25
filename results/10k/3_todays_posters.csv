@@ -1,0 +1,23 @@
+Hash Join  (cost=26.62..304.57 rows=869 width=1592)
+  Hash Cond: (mg.genre_id = g.id)
+  ->  Nested Loop  (cost=13.47..289.09 rows=869 width=1080)
+        Join Filter: (m.id = mg.movie_id)
+        ->  Hash Join  (cost=13.30..271.25 rows=50 width=1080)
+              Hash Cond: (m.country_id = c.id)
+              ->  Nested Loop  (cost=0.15..257.97 rows=50 width=568)
+                    ->  Seq Scan on session s  (cost=0.00..249.00 rows=50 width=12)
+                          Filter: ((scheduled_at)::date = CURRENT_DATE)
+                    ->  Memoize  (cost=0.15..1.13 rows=1 width=556)
+                          Cache Key: s.movie_id
+                          Cache Mode: logical
+                          ->  Index Scan using movie_pkey on movie m  (cost=0.14..1.12 rows=1 width=556)
+                                Index Cond: (id = s.movie_id)
+              ->  Hash  (cost=11.40..11.40 rows=140 width=520)
+                    ->  Seq Scan on country c  (cost=0.00..11.40 rows=140 width=520)
+        ->  Memoize  (cost=0.17..1.32 rows=11 width=8)
+              Cache Key: s.movie_id
+              Cache Mode: logical
+              ->  Index Only Scan using movie_genre_pkey on movie_genre mg  (cost=0.15..1.31 rows=11 width=8)
+                    Index Cond: (movie_id = s.movie_id)
+  ->  Hash  (cost=11.40..11.40 rows=140 width=520)
+        ->  Seq Scan on genre g  (cost=0.00..11.40 rows=140 width=520)
