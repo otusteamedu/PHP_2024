@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: app
+    volumes:
+      - .:/data
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
