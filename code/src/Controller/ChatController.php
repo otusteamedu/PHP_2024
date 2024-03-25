@@ -16,6 +16,4 @@ class ChatController extends FrontController
             ->addCommand(new RuleAlways(), new CommandShowHelp())
         ;
     }
-
-
 }
