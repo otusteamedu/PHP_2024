@@ -19,7 +19,7 @@ class OtusShopRemoveIndexCommand extends AbstractCommand
      */
     public function execute(): void
     {
-        $otusShopRepository = new OtusShopRepository($this->elasticClient);
+        $otusShopRepository = $this->container->get(OtusShopRepository::class);
         $otusShopRepository->removeIndex();
         $this->formatter->output('Index deleted');
     }

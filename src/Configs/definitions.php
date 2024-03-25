@@ -6,6 +6,7 @@ use DI\Container;
 use Elastic\Elasticsearch\Client as ElasticClient;
 use Elastic\Elasticsearch\ClientBuilder;
 use RailMukhametshin\Hw\Formatters\ConsoleOutputFormatter;
+use RailMukhametshin\Hw\Repositories\Elastic\OtusShopRepository;
 use RailMukhametshin\Hw\Repositories\EventSystem\EventRepositoryInterface;
 use RailMukhametshin\Hw\Repositories\EventSystem\RedisEventRepository;
 
@@ -36,5 +37,8 @@ return [
             ->setBasicAuthentication('elastic', $password)
             ->setCABundle(__DIR__ . "/../../" . $keyPath)
             ->build();
+    },
+    OtusShopRepository::class => function (Container $container) {
+        return new OtusShopRepository($container->get(ElasticClient::class));
     }
 ];
