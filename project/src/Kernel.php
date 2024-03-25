@@ -9,6 +9,7 @@ use SFadeev\Hw12\Application\UseCase\ClearEventsUseCase;
 use SFadeev\Hw12\Application\UseCase\FindRelevantEventUseCase;
 use SFadeev\Hw12\Application\UseCase\SaveEventUseCase;
 use SFadeev\Hw12\Domain\Entity\Event;
+use SFadeev\Hw12\Domain\Exception\EventNotFoundException;
 use SFadeev\Hw12\Domain\Service\ConditionService;
 use SFadeev\Hw12\Domain\Service\EventService;
 use SFadeev\Hw12\Infrastructure\Condition\Lexer;
@@ -55,7 +56,12 @@ class Kernel
                 break;
             case "find":
                 $params = json_decode($args[2], true, 512, JSON_THROW_ON_ERROR);
-                echo $this->findRelevantEventUseCase->handle($params)->getPayload() . PHP_EOL;
+                try {
+                    $event = $this->findRelevantEventUseCase->handle($params);
+                    echo $event->getPayload() . PHP_EOL;
+                } catch (EventNotFoundException) {
+                    echo 'Event not found.' . PHP_EOL;
+                }
                 break;
         }
     }

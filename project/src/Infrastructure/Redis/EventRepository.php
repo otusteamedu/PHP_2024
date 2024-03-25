@@ -19,7 +19,6 @@ class EventRepository implements EventRepositoryInterface
 
     public function save(Event $event): Event
     {
-        var_dump(json_encode($event, JSON_THROW_ON_ERROR));
         $this->client->zadd(self::KEY, [json_encode($event, JSON_THROW_ON_ERROR) => $event->getPriority()]);
 
         return $event;
