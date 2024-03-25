@@ -13,8 +13,7 @@ $dotenv = Dotenv::createUnsafeImmutable($dirEnv);
 $dotenv->load();
 
 try {
-    $method = (new \hw14\Bootstrap())->getMethod();
-    echo (new \hw14\Creator())->create($method);
+    echo (new \hw14\Creator())->run() . PHP_EOL;
 } catch (\Throwable $e) {
     echo $e->getMessage();
 }
