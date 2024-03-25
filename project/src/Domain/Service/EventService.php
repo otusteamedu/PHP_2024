@@ -30,8 +30,6 @@ class EventService
     {
         $events = $this->eventRepository->findAllWithPriorityOrder();
 
-        $filtered = [];
-
         foreach ($events as $event) {
             if ($this->conditionService->match($event->getCondition(), $params)) {
                 return $event;
