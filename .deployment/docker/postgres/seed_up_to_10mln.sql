@@ -83,8 +83,9 @@ FROM session s
          JOIN hall h ON h.id = s.hall_id
          JOIN seat ON h.id = seat.hall_id;
 
-INSERT INTO ticket_sale (ticket_id, amount, customer_email, created_at)
+INSERT INTO ticket_sale (ticket_id, session_id, amount, customer_email, created_at)
 SELECT t.id,
+       t.session_id,
        mp.price,
        (SELECT CONCAT('user_', SUBSTRING(md5(RANDOM()::text), 1, 10), '@example.com') AS random_email),
        s.scheduled_at

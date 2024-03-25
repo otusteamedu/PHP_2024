@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS ticket_sale
     ticket_id      int         NOT NULL,
     amount         int         NOT NULL,
     customer_email varchar(60) NOT NULL,
-    created_at     date        NOT NULL DEFAULT CURRENT_DATE,
+    created_at     timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_ticket
         FOREIGN KEY (ticket_id)
             REFERENCES ticket (id)

@@ -7,7 +7,7 @@ WHERE s.scheduled_at::date = CURRENT_DATE;
 
 -- 2) Всего продано билетов за неделю
 
-SELECT COUNT(ts.id)
+SELECT COUNT(*)
 FROM ticket_sale ts
 WHERE ts.created_at BETWEEN CURRENT_DATE AND (CURRENT_DATE + '7 days'::interval);
 
@@ -23,14 +23,15 @@ WHERE s.scheduled_at::date = CURRENT_DATE;
 
 -- 4) Три самых прибыльных фильма за неделю
 
-SELECT m.id, m.name
+EXPLAIN ANALYSE
+SELECT m.name
 FROM movie m
          JOIN session s ON m.id = s.movie_id
-         JOIN ticket t ON s.id = t.session_id
-         JOIN ticket_sale ts ON t.id = ts.ticket_id
-WHERE ts.created_at BETWEEN CURRENT_DATE AND (CURRENT_DATE + '7 days'::interval)
-GROUP BY m.id
-ORDER BY SUM(ts.amount) DESC;
+         JOIN ticket_sale ts ON s.id = ts.session_id
+WHERE ts.created_at BETWEEN CURRENT_DATE AND CURRENT_DATE + '7 days'::interval
+GROUP BY m.name
+ORDER BY SUM(ts.amount) DESC
+LIMIT 3;
 
 -- 5) Схема зала для конкретного сеанса
 
