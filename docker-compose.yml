@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  nginx-proxy:
+    build:
+      context: ./nginx-proxy
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - app-network
+
+  nginx-backend-1:
+    build:
+      context: nginx-backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx-backend/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./code:/usr/share/nginx/html:ro
+    networks:
+      - app-network
+
+  nginx-backend-2:
+    build:
+      context: nginx-backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx-backend/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./code:/usr/share/nginx/html:ro
+    networks:
+      - app-network
+
+  php-fpm-1:
+    build:
+      context: ./php-fpm
+      dockerfile: Dockerfile
+    volumes:
+      - ./code:/usr/share/nginx/html:ro
+      - ./php-fpm/redis.ini:/usr/local/etc/php/conf.d/redis.ini
+    networks:
+      - app-network
+
+  php-fpm-2:
+    build:
+      context: ./php-fpm
+      dockerfile: Dockerfile
+    volumes:
+      - ./code:/usr/share/nginx/html:ro
+      - ./php-fpm/redis.ini:/usr/local/etc/php/conf.d/redis.ini
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7.2
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network
+
+volumes:
+  redis-data:
+
+networks:
+  app-network:
+    driver: bridge
