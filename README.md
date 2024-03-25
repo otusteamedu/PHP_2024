@@ -79,16 +79,16 @@ or
 
 ```
 docker-compose exec app bash
-php frontend/web/index.php index.php init
-php frontend/web/index.php index.php test
-php frontend/web/index.php index.php search '{
+php frontend/web/index.php init
+php frontend/web/index.php test
+php frontend/web/index.php search '{
     "query": {
         "match": {
             "title": "Кто подставил Терминатора"
         }
     }
 }'
-php frontend/web/index.php index.php search '{
+php frontend/web/index.php search '{
     "query": {
         "match": {    
             "title": {
@@ -98,7 +98,7 @@ php frontend/web/index.php index.php search '{
         }
     }
 }'
-php frontend/web/index.php index.php search '{
+php frontend/web/index.php search '{
     "query": {
         "bool": {
             "must": [
