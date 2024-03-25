@@ -9,7 +9,7 @@ use RedisException;
 
 class RedisStorage implements EventStorage
 {
-    private const string KEY = 'events';
+    private const KEY = 'events';
     private Redis $redis;
 
     /**
