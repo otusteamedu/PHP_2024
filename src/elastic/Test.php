@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace hw14;
+namespace hw14\elastic;
 
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Response\Elasticsearch;
-use Http\Mock\Client;
+use Http\Mock\Client as MockClient;
 use Nyholm\Psr7\Response;
 
-class ElasticService
+class Test implements ElasticInterface
 {
-    public function testConnection()
+    public function exec()
     {
-        $mock = new Client();
-
         try {
+            $mock = new MockClient();
             $client = ClientBuilder::create()
                 ->setHttpClient($mock)
                 ->build();
@@ -23,18 +22,17 @@ class ElasticService
             $response = new Response(
                 200,
                 [Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME],
-                'This is the body!'
+                'Elastic is ready!'
             );
+
             $mock->addResponse($response);
+            $info = $client->info();
 
-            $result = $client->info();
-
-            echo $result->asString();
+            $result = $info->asString();
         } catch (\Throwable $e) {
             $result = $e->getMessage();
         }
 
         return $result;
     }
-
 }
