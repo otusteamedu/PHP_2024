@@ -13,7 +13,7 @@ class Logical extends Node
 
     public function __construct(
         public Node|bool $leftExpression,
-        public string    $operator,
+        public string $operator,
         public Node|bool $rightExpression,
     ) {
         $allowed = [self::T_AND];

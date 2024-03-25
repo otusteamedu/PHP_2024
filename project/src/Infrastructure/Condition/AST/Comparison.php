@@ -13,7 +13,7 @@ class Comparison extends Node
 
     public function __construct(
         public Node|int|float|string|bool|null $leftExpression,
-        public string                          $operator,
+        public string $operator,
         public Node|int|float|string|bool|null $rightExpression,
     ) {
         $allowed = [self::T_EQUAL];

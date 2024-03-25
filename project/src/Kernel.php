@@ -23,8 +23,8 @@ class Kernel
     private ClearEventsUseCase $clearEventsUseCase;
     private SaveEventUseCase $saveEventUseCase;
 
-    public function __construct(
-    ) {
+    public function __construct()
+    {
         $projectDir = dirname(__DIR__);
 
         $redisConfig = Config::create($projectDir);
