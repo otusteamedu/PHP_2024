@@ -13,6 +13,16 @@
     ],
     "require": {
         "rail-mukhametshin/config-manager": "*",
-        "ext-sockets": "*"
+        "ext-sockets": "*",
+        "elasticsearch/elasticsearch": "^8.12",
+        "phplucidframe/console-table": "^1.2",
+        "ext-redis": "*",
+        "php-di/php-di": "^7.0",
+        "spatie/data-transfer-object": "^3.9"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

@@ -20,6 +20,11 @@ RUN set -eux; \
             zip; \
     rm -rf /var/lib/apt/lists/*
 
+# Use pecl to get Redis extension ready
+RUN pecl install redis \
+   # Redis is installed, enable it
+    && docker-php-ext-enable redis
+
 RUN set -eux; \
     docker-php-ext-install pdo_pgsql; \
     docker-php-ext-install zip; \
