@@ -34,4 +34,3 @@ if (!empty($string) && isBracketsValid($string)) {
     header('HTTP/1.1 400 Bad Request');
     echo "Строка некорректна.";
 }
-
