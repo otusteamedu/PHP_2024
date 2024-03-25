@@ -88,7 +88,7 @@ from (((`film_entity` `fe`
     join `film_attributes` `fa` on ((`fav`.`attribute_id` = `fa`.`id`)))
     join `film_attributes_type` `fat` on ((`fat`.`id` = `fa`.`attribute_type_id`)));
 
-DROP
+
 DROP VIEW IF EXISTS `films_premiere`;
 CREATE VIEW `films_premiere` (`movie`, `actual_today`, `actual_later`, `date_premiere`)
 AS
