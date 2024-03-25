@@ -9,12 +9,16 @@ use Elastic\Elasticsearch\Exception\ServerResponseException;
 use LucidFrame\Console\ConsoleTable;
 use RailMukhametshin\Hw\Commands\AbstractCommand;
 use RailMukhametshin\Hw\Repositories\Elastic\OtusShopRepository;
+use RailMukhametshin\Hw\Traits\ConditionParsableTrait;
+use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
 /**
  * Command example: php app.php otus-shop-search "max-price=1000" "min-price=500" "title=рыцОри" "in-stock=yes"
  */
 class OtusShopSearchCommand extends AbstractCommand
 {
+    use ConditionParsableTrait;
+
     const MAX_PRICE_FIELD = 'max-price';
     const MIN_PRICE_FIELD = 'min-price';
     const IN_STOCK_FIELD = 'in-stock';
@@ -30,6 +34,7 @@ class OtusShopSearchCommand extends AbstractCommand
     /**
      * @throws ClientResponseException
      * @throws ServerResponseException
+     * @throws UnknownProperties
      */
     public function execute(): void
     {
@@ -44,11 +49,11 @@ class OtusShopSearchCommand extends AbstractCommand
     private function parseAndSetSearchParams(OtusShopRepository $otusShopRepository): void
     {
         foreach ($this->argv as $condition) {
-            $fieldValue = $this->parseCondition($condition);
+            $fieldValue = $this->parseCondition($condition, self::FIELDS);
 
             if ($fieldValue !== null) {
-                $value = $fieldValue['value'];
-                switch ($fieldValue['field']) {
+                $value = $fieldValue->value;
+                switch ($fieldValue->field) {
                     case self::MAX_PRICE_FIELD:
                         $otusShopRepository->setSearchMaxPrice((int) $value);
                         break;
@@ -64,24 +69,6 @@ class OtusShopSearchCommand extends AbstractCommand
                 }
             }
         }
-    }
-
-    private function parseCondition(string $condition): ?array
-    {
-        $array = explode('=', $condition);
-
-        if (count($array) !== 2) {
-            return null;
-        }
-
-        if (!in_array($array[0], self::FIELDS)) {
-            return null;
-        }
-
-        return [
-            'field' => $array[0],
-            'value' => $array[1]
-        ];
     }
 
     private function normalizeData(array $data): array
