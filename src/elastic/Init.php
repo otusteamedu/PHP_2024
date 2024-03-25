@@ -32,8 +32,8 @@ class Init implements ElasticInterface
 
     public function exec()
     {
-        //$this->deleteIndex();
-        //$this->createIndex();
+        $this->deleteIndex();
+        $this->createIndex();
         $this->loadData();
 
         return json_encode($this->logs);
