@@ -25,9 +25,6 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install bz2 calendar imap pcntl shmop sockets sysvmsg sysvsem sysvshm intl mbstring pdo_mysql mysqli gettext exif
 
-#Install memcached
-RUN pecl install memcached-3.1.5 && docker-php-ext-enable memcached
-
 # install redis
 RUN pecl install -o -f redis \
     &&  rm -rf /tmp/pear \

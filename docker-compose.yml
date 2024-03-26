@@ -24,24 +24,15 @@ services:
     networks:
       - net
     depends_on:
-      - elasticsearch
+      - redis
 
-  elasticsearch:
-    build:
-      context: docker/elasticsearch/
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
-    container_name: elasticsearch
-    environment:
-      ELASTIC_USERNAME: ${ELASTIC_USERNAME}
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
-      ES_JAVA_OPTS: -Xms512m -Xmx512m
-      discovery.type: single-node
-    ports:
-      - ${ELASTIC_MAPPING_PORT}:${ELASTIC_PORT}
+  redis:
+    build: docker/redis
+    container_name: redis
     volumes:
-      - ./docker/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
-      - ./var/elastic:/usr/share/elasticsearch/data:Z
+      - ./var/redis:/data
+    ports:
+      - ${REDIS_PORT_MAPPING}:${REDIS_PORT}
     networks:
       - net
 networks:
