@@ -1,4 +1,4 @@
-FROM php:8.2-alpine
+FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash libmemcached-dev libzip-dev
 
@@ -12,9 +12,6 @@ RUN if [ ${INSTALL_XDEBUG} = true ];  \
 
 # Пробрасываем xdebug.ini в контейнер php
 COPY ./.deployment/docker/php-fpm/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
-# Sockets
-RUN docker-php-ext-install sockets
 
 ## Configure non-root user
 ARG PUID

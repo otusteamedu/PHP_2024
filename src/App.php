@@ -29,18 +29,18 @@ final class App
      */
     public function run(): void
     {
-        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
-        $dotenv->load();
-        $container = $this->resolveDI();
-        $appType = $this->resolveAppType();
-        /** @var IRun $app */
-        $app = match ($appType) {
-            'server' => $container->get(Server::class),
-            'client' => $container->get(Client::class),
-        };
-        $app->run();
-
-        echo "Выход из приложения!" . PHP_EOL;
+//        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
+//        $dotenv->load();
+//        $container = $this->resolveDI();
+//        $appType = $this->resolveAppType();
+//        /** @var IRun $app */
+//        $app = match ($appType) {
+//            'server' => $container->get(Server::class),
+//            'client' => $container->get(Client::class),
+//        };
+//        $app->run();
+//
+//        echo "Выход из приложения!" . PHP_EOL;
     }
 
     private function resolveDI(): ContainerInterface

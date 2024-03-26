@@ -6,8 +6,8 @@ networks:
     driver: bridge
 
 services:
-  server:
-    container_name: server
+  app:
+    container_name: app
     networks:
       - homework-net
     build:
@@ -22,28 +22,20 @@ services:
       PGID: ${PGID}
     volumes:
       - ./:/var/www/homework
-      - socket:/var/www/homework/tmp
-    command: ["php", "app.php", "server"]
 
-  client:
-    container_name: client
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch:8.12.2
+    ports:
+      - "9137:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+      - .deployment/docker/elasticsearch/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
     networks:
       - homework-net
-    build:
-      context: ./
-      dockerfile: ./.deployment/docker/php-fpm/Dockerfile
-      args:
-        PUID: ${PUID}
-        PGID: ${PGID}
-        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
     environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
-    volumes:
-      - ./:/var/www/homework
-      - socket:/var/www/homework/tmp
-    depends_on:
-      - server
+      ES_JAVA_OPTS: "-Xms4096m -Xmx4096m"
+      discovery.type: single-node
 
 volumes:
-  socket:
+  es_data:
