@@ -1,0 +1,15 @@
+{
+    "name": "dsmolyaninov/hw4",
+    "autoload": {
+        "psr-4": {
+            "Dsmolyaninov\\Hw4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitry Smolyaninov",
+            "email": "smolyaninovda@gmail.com"
+        }
+    ],
+    "require": {}
+}
