@@ -19,8 +19,7 @@ class App
             ->getQuery();
         $result = (new Elastic($query))
             ->search();
-        var_dump($result);
-        // (new Output($result))
-        //     ->output();
+        (new Output($result))
+            ->output();
     }
 }

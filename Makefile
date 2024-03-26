@@ -21,4 +21,4 @@ start:
 ps:
 	docker-compose ps
 run:
-	docker-compose run --rm app php app.php --query=Рыцорь --gte=10 --lte=123 --category="Исторический роман" --shop=Мира
+	docker-compose run --rm app php app.php --query=Рыцорь --gte=1000 --lte=1234 --category="Исторический роман" --shop=Мира

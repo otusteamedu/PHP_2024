@@ -16,11 +16,11 @@ class Output
     public function output(): void
     {
         foreach ($this->result as $key => $item) {
-            echo 'ID: ' . $item['_id'] . PHP_EOL;
-            echo 'Category: ' . $item['_source']['category'] . PHP_EOL;
-            echo 'Shop: ' . $item['_source']['shop'] . PHP_EOL;
-            echo 'Name: ' . $item['_source']['name'] . PHP_EOL;
-            echo 'Price: ' . $item['_source']['price'] . PHP_EOL;
+            echo 'ID: ' . $item->_id . PHP_EOL;
+            echo 'Title: ' . $item->_source->title . PHP_EOL;
+            echo 'Sku: ' . $item->_source->sku . PHP_EOL;
+            echo 'Category: ' . $item->_source->category . PHP_EOL;
+            echo 'Price: ' . $item->_source->price . PHP_EOL;
             echo PHP_EOL;
         }
     }

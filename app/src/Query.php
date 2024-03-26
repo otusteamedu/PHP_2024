@@ -29,7 +29,7 @@ class Query
                     'must' => [
                         [
                             'range' => [
-                                'stock' => [
+                                'stock.stock' => [
                                     'gte' => 1,
                                 ],
                             ],
@@ -45,7 +45,7 @@ class Query
                 ],
             ];
         }
-        $query['query']['bool']['must'][] = $nested;
+        $query['query']['bool']['must'][] = ['nested' => $nested];
         if (isset($this->options['query'])) {
             $query['query']['bool']['must'][] = [
                 'match' => [

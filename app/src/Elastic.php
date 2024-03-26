@@ -18,12 +18,14 @@ class Elastic
     public function search(): array
     {
         $client = ClientBuilder::create()
-            ->setHosts(['http://84.38.181.159:5555/'])
-            // ->setApiKey('<api-key>')
+            ->setHosts([
+                getenv("ELASTIC_HOST")
+            ])
             ->build();
-        return $client->search([
-            'index' => 'otus-test',
+        $result = $client->search([
+            'index' => 'otus-shop',
             'body' => $this->query
         ]);
+        return $result->hits->hits;
     }
 }

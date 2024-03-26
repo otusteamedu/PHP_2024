@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     image: app14
     container_name: app
+    environment:
+      ELASTIC_HOST: ${ELASTIC_HOST}
     volumes:
       - ./app:/data
     networks:
@@ -18,7 +20,7 @@ services:
     image: docker.io/bitnami/elasticsearch:$ELASTIC_VERSION
     restart: always
     ports:
-      - '9999:9200'
+      - '9200:9200'
     environment:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
@@ -30,9 +32,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - ./docker/elk/elasticsearch/data:/usr/share/elasticsearch/data
-      - ./docker/elk/elasticsearch/logs:/usr/share/elasticsearch/logs
     networks:
       - elasticnetwork
 
