@@ -1,0 +1,23 @@
+{
+  "name": "app/php_2024",
+  "autoload": {
+    "psr-4": {
+      "AleksandrOrlov\\Php2024\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "a.orlov",
+      "email": "a.orlov@intec-balance.ru"
+    }
+  ],
+  "require": {
+    "ext-redis": "*"
+  },
+  "require-dev": {},
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
