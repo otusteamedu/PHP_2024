@@ -1,0 +1,18 @@
+{
+    "name": "rmulyukov/hw11",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rmulyukov\\Hw11\\": "app/"
+        }
+    },
+    "require": {
+        "php": ">=8.2",
+        "elasticsearch/elasticsearch": "^8.12"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
