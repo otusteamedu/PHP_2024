@@ -2,6 +2,9 @@
 declare(strict_types=1);
 namespace App;
 
+use App\Services\Client\Client;
+use App\Services\Server\Server;
+
 class App
 {
 
@@ -25,7 +28,7 @@ class App
                 sleep(1);
             }
         }
-        if ($this->command === self::START_SERVER) require_once "server.php";
-        if ($this->command === self::START_CLIENT) require_once "client.php";
+        if ($this->command === self::START_SERVER) (new Server())->run();
+        if ($this->command === self::START_CLIENT) (new Client())->run();
     }
 }

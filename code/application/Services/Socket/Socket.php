@@ -3,85 +3,82 @@ declare(strict_types=1);
 
 namespace App\Services\Socket;
 
+use App\Services\Config\Config;
+
 abstract class Socket
 {
-    # Вынести в config.ini
-    const SOCKET_PATH = '/tmp/phpsocket/socket.sock';
-    protected $init;
-    protected $acceptConn;
 
-    protected function create()
+    private function create(): bool|\Socket
     {
-        try {
-            $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
-            $this->init = $socket;
-        } catch (\Exception) {
-            echo "Не удалось выполнить socket_create(): " . socket_strerror(socket_last_error());
-        }
+        $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
+        if ($socket === false) {
+            echo "Не удалось выполнить socket_create(), причина: " . socket_strerror(socket_last_error()).PHP_EOL;
+            return false;
+        } else echo "Сокет создан.".PHP_EOL;
+        return $socket;
     }
 
-    protected function bind()
+    protected function prepareClient(): bool|\Socket
     {
-        if (file_exists(self::SOCKET_PATH)) unlink(self::SOCKET_PATH);
-        try {
-            socket_bind($this->init,self::SOCKET_PATH);
-        } catch (\Exception) {
-            echo "Не удалось выполнить socket_bind(): " . socket_strerror(socket_last_error());
+        $socket = $this->create();
+        $connection = socket_connect($socket, Config::getSocketPath());
+
+        if ($connection === false) {
+            echo "Не удалось выполнить socket_connect().".PHP_EOL."Причина: " . socket_strerror(socket_last_error($socket)) .PHP_EOL;
+            return false;
         }
+        return $socket;
     }
 
-    protected function listen()
+    protected function prepareServer(): bool|\Socket
     {
-        try {
-            socket_listen($this->init);
-        } catch (\Exception) {
-            echo "Не удалось выполнить socket_listen(), причина: " . socket_strerror(socket_last_error($this->init)) . PHP_EOL;
-        }
+        $socket = $this->bind();
+        if (socket_listen($socket) === false) echo "Не удалось выполнить socket_listen(), причина: " . socket_strerror(socket_last_error($socket)) . PHP_EOL;
+        return $socket;
     }
 
-    protected function accept()
+    private function bind(): bool|\Socket
     {
-        try {
-            $this->acceptConn = socket_accept($this->init);
-
-        } catch (\Exception) {
-            echo "Не удалось выполнить socket_accept(), причина: ".socket_strerror(socket_last_error($this->acceptConn)).PHP_EOL;
-        }
+        $path = Config::getSocketPath();
+        if (file_exists($path)) unlink($path);
+        $socket = $this->create();
+        socket_bind($socket,$path);
+        return $socket;
     }
 
-    protected function write(string $msg): bool
+    protected function accept(\Socket $socket): bool|\Socket
     {
-        $AF_UNIX = AF_UNIX;
-        if (!socket_getsockname($this->acceptConn, $AF_UNIX)) return false;
-        $msg = trim($msg);
-        var_dump($this->acceptConn);
-        if (false === socket_write($this->acceptConn, $msg, strlen($msg))) {
-            echo "Не удалось выполнить socket_write(), причина: ".socket_strerror(socket_last_error($this->acceptConn)).PHP_EOL;
+        $accept = socket_accept($socket);
+        if ($accept === false) {
+            echo "Не удалось выполнить socket_accept(), причина: " . socket_strerror(socket_last_error($socket)).PHP_EOL;
+            return false;
+        }
+        return $accept;
+    }
+
+    protected function write(\Socket $socket,$msg): bool
+    {
+        try {
+            socket_write($socket, $msg, strlen($msg));
+        } catch (\Exception $exception) {
+            echo $exception.PHP_EOL;
             return false;
         }
         return true;
     }
 
-    protected function read() {
-        if (!$this->acceptConn) return false;
-        $str = socket_read($this->acceptConn,2048);
-        if ($str === false) echo "Не удалось выполнить socket_read(): причина: " . socket_strerror(socket_last_error($this->acceptConn)) . PHP_EOL;
-        return $str;
+    protected function read(\Socket $socket,$bite = 2048): bool|string
+    {
+        $socket_read = socket_read($socket,$bite);
+        if ($socket_read === false) {
+            echo "Не удалось выполнить socket_read(), причина: " .
+                socket_strerror(socket_last_error($socket)).PHP_EOL;
+            return false;
+        }
+        return is_string($socket_read)? $socket_read : "Сообщения нет!";
     }
 
-    protected function closeAcceptedCon() {
-        try {
-            socket_close($this->acceptConn);
-        } catch (\Exception $exception) {
-            echo $exception->getMessage();
-        }
-    }
-
-    protected function close() {
-        try {
-            socket_close($this->init);
-        } catch (\Exception $exception) {
-            echo $exception->getMessage();
-        }
+    protected function close(\Socket $socket) {
+        socket_close($socket);
     }
 }
