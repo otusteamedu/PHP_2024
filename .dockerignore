@@ -1,5 +1,3 @@
-.idea/**
-.DS_Store
 code/composer.json
 code/composer.lock
-code/vendor
+code/vendor/**
