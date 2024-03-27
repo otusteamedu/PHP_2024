@@ -23,7 +23,7 @@ class Elastic
             ])
             ->build();
         $result = $client->search([
-            'index' => 'otus-shop',
+            'index' => getenv("ELASTIC_INDEX"),
             'body' => $this->query
         ]);
         return $result->hits->hits;

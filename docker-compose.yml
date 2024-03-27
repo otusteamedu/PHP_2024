@@ -10,6 +10,7 @@ services:
     container_name: app
     environment:
       ELASTIC_HOST: ${ELASTIC_HOST}
+      ELASTIC_INDEX: ${ELASTIC_INDEX}
     volumes:
       - ./app:/data
     networks:
