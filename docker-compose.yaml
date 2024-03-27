@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker
+      dockerfile: ./php/Dockerfile
+    image: hw11/app
+    container_name: hw11-app
+    volumes:
+      - ./app:/app
+      - ./logs/app:/var/log
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    container_name: hw11-es
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - ./docker/es/dump:/es
+      - ./docker/es/data:/usr/share/elasticsearch/data
+
+networks:
+  app-network:
+    driver: bridge
