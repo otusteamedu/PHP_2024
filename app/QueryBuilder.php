@@ -96,16 +96,13 @@ class QueryBuilder
             ]
         ];
 
-        if (!is_null($this->minPrice) || !is_null($this->maxPrice))
-        {
+        if (!is_null($this->minPrice) || !is_null($this->maxPrice)) {
             $default['body']['query']['bool']['filter'][] = $this->createPriceQuery();
         }
-        if ($this->title)
-        {
+        if ($this->title) {
             $default['body']['query']['bool']['must'][] = $this->createTitleQuery();
         }
-        if ($this->category)
-        {
+        if ($this->category) {
             $default['body']['query']['bool']['filter'][] = $this->createCategoryQuery();
         }
 

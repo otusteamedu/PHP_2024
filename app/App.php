@@ -9,7 +9,8 @@ class App
     protected ParamsParser $paramsParser;
     protected View $view;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->paramsParser = new ParamsParser();
         $this->view = new View();
     }

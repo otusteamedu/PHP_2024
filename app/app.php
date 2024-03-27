@@ -15,4 +15,3 @@ try {
     print "Не удается инициализировать прилоежние." . PHP_EOL;
     print $e->getMessage() . PHP_EOL;
 }
-

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 require './vendor/autoload.php';
 
-function get_all_lines($filename) {
+function get_all_lines($filename)
+{
     $file_handle = fopen($filename, 'r');
     while (!feof($file_handle)) {
         yield fgets($file_handle);
     }
 }
-
 
 
 $client = Elastic\Elasticsearch\ClientBuilder::create()
@@ -59,7 +59,7 @@ $client->indices()->create([
             'properties' => [
                 'title' => [
                     'type' => 'text',
-                    'analyzer' =>'my_russian'
+                    'analyzer' => 'my_russian'
                 ],
                 'sku' => [
                     'type' => 'text'

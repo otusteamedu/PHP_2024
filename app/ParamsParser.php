@@ -25,7 +25,7 @@ class ParamsParser
     protected function getMaxPrice(): int|null
     {
         if (isset($this->options['max-price'])) {
-            return (int) $this->options['max-price'];
+            return (int)$this->options['max-price'];
         }
         return null;
     }
