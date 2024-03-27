@@ -27,7 +27,7 @@ services:
     container_name: elasticsearch
     image: elasticsearch:8.12.2
     ports:
-      - "9137:9200"
+      - ${ELASTICSEARCH_PORT}:9200
     volumes:
       - es_data:/usr/share/elasticsearch/data
       - .deployment/docker/elasticsearch/elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,z
