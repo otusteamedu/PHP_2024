@@ -1,0 +1,24 @@
+{
+    "name": "hukimato/es-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Hukimato\\EsApp\\": "."
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniil Aleksandrov",
+            "email": "danay2211@gmail.com"
+        }
+    ],
+    "require": {
+        "elasticsearch/elasticsearch": "^8.12",
+        "phplucidframe/console-table": "^1.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
