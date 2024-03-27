@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  php:
+    container_name: hw11-php
+    hostname: hw11-php
+    build:
+        context: ./docker
+        dockerfile: php/Dockerfile
+    volumes:
+        - ./app:/app
+    networks:
+        - hw11-network
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    image: 'bitnami/elasticsearch:latest'
+    container_name: hw11-elastic
+    hostname: hw11-elastic
+    networks:
+      - hw11-network
+
+networks:
+  hw11-network:
+    driver: bridge
