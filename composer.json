@@ -13,6 +13,13 @@
     ],
     "require": {
         "rail-mukhametshin/config-manager": "*",
-        "ext-sockets": "*"
+        "ext-sockets": "*",
+        "ext-pdo": "*",
+        "loophp/collection": "^7.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
