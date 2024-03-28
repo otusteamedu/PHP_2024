@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: "hw12/nginx"
+    container_name: "hw12-nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/www/redis.local
+      - ./docker/logs/nginx:/var/log/nginx/
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: "hw12/fpm"
+    container_name: "hw12-www"
+    volumes:
+      - ./www:/www/redis.local
+      - ./docker/logs/php.log:/var/log/fpm-php.www.log
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7.2-alpine
+    container_name: "hw12-redis"
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./docker/redis/dаta:/root/redis
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=hukimato
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=1
+    networks:
+      - app-network
+
+  memcached:
+    image: sameersbn/memcached:1.5.6-2
+    container_name: "hw12-memcached"
+    ports:
+      - "11211:11211"
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
