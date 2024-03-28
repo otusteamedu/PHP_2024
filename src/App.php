@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework;
 
+use Alogachev\Homework\Elk\ElkRepository;
 use Alogachev\Homework\Elk\ElkService;
+use Alogachev\Homework\Exception\TestIndexDataNotFoundException;
 use DI\Container;
 use Dotenv\Dotenv;
 use Elastic\Elasticsearch\Client;
@@ -23,9 +25,6 @@ use function DI\get;
 
 final class App
 {
-    private const INDEX_NAME = 'otus-shop';
-    private const INDEX_ALIAS = 'books';
-
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -35,13 +34,18 @@ final class App
     {
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
+        $testDataPath = $_ENV['ELASTICSEARCH_DATA_PATH'] ?? null;
+        if (is_null($testDataPath)) {
+            throw new TestIndexDataNotFoundException();
+        }
+
         $container = $this->resolveDI();
-        $client = $container->get(Client::class);
-        $health = $client->cluster()->health();
-        echo $health->asArray()['status'] . PHP_EOL;
-        $elkSearch = $container->get(ElkService::class)->createIndex();
+        $elkService = $container->get(ElkService::class);
+        $health = $elkService->getClusterHealthCheckArray();
+        echo $health['status'] . PHP_EOL;
+
         try {
-            $this->initIndex($elkSearch);
+            $this->initIndex($elkService, $testDataPath);
         } catch (ElasticsearchException $exception) {
             echo $exception->getMessage() . PHP_EOL;
         }
@@ -66,6 +70,9 @@ final class App
                 ->setHosts(["http://$host:$port"])
                 ->build(),
             ElkService::class => create()->constructor(
+                get(ElkRepository::class)
+            ),
+            ElkRepository::class => create()->constructor(
                 get(Client::class)
             ),
         ]);
@@ -76,59 +83,8 @@ final class App
      * @throws MissingParameterException
      * @throws ServerResponseException
      */
-    private function initIndex(Client $client): void
+    private function initIndex(ElkService $elkService, string $testDataPath): void
     {
-        if ($client->indices()->exists(['index' => self::INDEX_NAME])) {
-            return;
-        }
-
-        $params = [
-            'index' => self::INDEX_NAME,
-            'alias' => self::INDEX_ALIAS,
-            'body' => [
-                'settings' => [
-                    'number_of_shards' => 1,
-                    'number_of_replicas' => 0,
-                    'analysis' => [
-                        'analyzer' => [
-                            'default' => [
-                                'type' => 'russian',
-                            ],
-                        ],
-                    ],
-                ],
-                'mappings' => [
-                    'properties' => [
-                        'title' => [
-                            'type' => 'text',
-                            'analyzer' => 'russian',
-                        ],
-                        'sku' => [
-                            'type' => 'keyword',
-                        ],
-                        'category' => [
-                            'type' => 'keyword',
-                            'analyzer' => 'russian',
-                        ],
-                        'price' => [
-                            'type' => 'integer',
-                        ],
-                        'stock' => [
-                            'type' => 'nested',
-                            'properties' => [
-                                'shop' => [
-                                    'type' => 'keyword',
-                                    'analyzer' => 'russian',
-                                ],
-                                'stock' => [
-                                    'type' => 'integer',
-                                ]
-                            ]
-                        ],
-                    ]
-                ]
-            ],
-        ];
-        $client->indices()->create($params);
+        $elkService->createAndFillBooksIndex($testDataPath);
     }
 }
