@@ -2,53 +2,39 @@
 
 declare(strict_types=1);
 
+use App\Base\Config;
 use App\Enums\LogLevelEnum;
-use App\Services\Connector;
+use App\Search\BookSearch;
+use App\Services\ElasticConnector;
 use App\Services\Logger;
-use Elastic\Transport\Exception\TransportException;
+use Elastic\Elasticsearch\Exception\AuthenticationException;
 
 require '../vendor/autoload.php';
 
-$client = new Connector('otus-shop');
+$settings = require './config/settings.php';
+$env = parse_ini_file(__DIR__ . '/../.env');
+$config = new Config($settings, $env);
 
-/**
- * Создание/заполнение индекса
- */
 try {
-    if (!$client->client->indices()->exists(['index' => 'otus-shop'])->asBool()) {
-        $indexParams = require './settings.php';
-        $client->createIndex($indexParams);
-
-        $client->bulk('./../books.json');
-    }
-} catch (TransportException $e) {
+    $client = new ElasticConnector($config);
+} catch (AuthenticationException $e) {
     echo $e->getMessage();
-    var_dump($e->getTrace());
+    die();
 }
 
-$search = readline('Поиск: ');
+$search = new BookSearch($client);
 
-/**
- * Пример выборки из условия задачи
- */
-$params = [
-    'bool' => [
-        'must' => [
-            ['match' => ['title' => ['query' => $search, 'fuzziness' => 'auto']]],
-            ['term' => ['category.keyword' => 'Исторический роман']]
-        ],
-        'filter' => [
-            ['range' => ['stock.stock' => ['gte' => 0]]],
-            [
-                'range' => ['price' => ['lt' => 2000]],
-            ],
-        ]
-    ]
-];
+foreach ($search->fields() as $field => $fieldName) {
+    $search->$field = readline($fieldName);
+}
 
 try {
-    echo $client->search($params);
+    echo $search->search();
 } catch (Exception $e) {
     echo $e->getMessage();
-    new Logger(LogLevelEnum::ERROR, ['type' => 'search-error', 'message' => $e->getMessage()]);
+    Logger::getInstance()->writeLog(
+        LogLevelEnum::ERROR,
+        ['type' => 'search-error', 'message' => $e->getMessage()],
+        $config->logPath
+    );
 }

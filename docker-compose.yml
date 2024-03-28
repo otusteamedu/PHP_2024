@@ -19,10 +19,12 @@ services:
       - ./docker/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - ./docker/volumes/elasticsearch/data:/usr/share/elasticsearch/data
     environment:
-      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
-      ELASTIC_USERNAME: "elastic"
-      ELASTIC_PASSWORD: "MyPw123"
-      discovery.type: single-node
+      - cluster.name=es-docker-cluster
+      - "ELASTIC_USERNAME=${ELASTIC_USERNAME}"
+      - "ELASTIC_PASSWORD=${ELASTIC_PASSWD}"
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     networks:
       - elastic
     ports:
@@ -60,6 +62,11 @@ services:
     image: kibana:7.16.1
     depends_on:
       - elasticsearch
+    environment:
+      SERVER_NAME: 'kibana'
+#      ELASTICSEARCH_HOSTS: '[ ${ELASTIC_HOST} ]'
+      elasticsearch.username: '${ELASTIC_USERNAME}'
+      elasticsearch.password: '${ELASTIC_PASSWD}'
     volumes:
       - ./docker/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro
     networks:

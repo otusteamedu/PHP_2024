@@ -9,27 +9,40 @@ use Exception;
 
 class Logger
 {
-    private const FILE_PATH = __DIR__ . '/../logs/host_metrics_app.log';
+    protected static Logger|null $instance = null;
 
     /**
      * @throws Exception
      */
-    public function __construct(private readonly LogLevelEnum $level, private readonly string|array $message)
+    protected function __construct()
     {
-        $this->writeLog();
     }
 
-    /**
-     * @throws Exception
-     */
-    private function writeLog(): void
+    public function writeLog(LogLevelEnum $level, string|array $message, string $outputPath): void
     {
         $log = [
             'time' => date('d/m/y H:i', time()),
-            'level' => $this->level->value,
-            'message' => $this->message
+            'level' => $level,
+            'message' => $message
         ];
 
-        file_put_contents(self::FILE_PATH, json_encode($log) . PHP_EOL, FILE_APPEND) or throw new Exception('log err');
+        file_put_contents(
+            $outputPath,
+            json_encode($log) . PHP_EOL,
+            FILE_APPEND
+        );
+    }
+
+    public static function getInstance(): Logger
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    private function __clone()
+    {
     }
 }

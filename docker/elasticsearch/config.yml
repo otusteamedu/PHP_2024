@@ -1,7 +1,5 @@
-cluster.name: "elk"
 network.host: 0.0.0.0 # Для корректной работы внутри контейнера
 
 xpack.security.enabled: false # Для поддержки функционала, обеспечивающего безопасность кластера
 xpack.license.self_generated.type: basic # Тип лицензии "basic"
 xpack.security.authc.api_key.enabled: true # Включить API ключи
-discovery.type: single-node
