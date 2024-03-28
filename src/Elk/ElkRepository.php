@@ -14,7 +14,8 @@ class ElkRepository
 {
     public function __construct(
         private readonly Client $client
-    ) {
+    )
+    {
     }
 
     /**
@@ -51,5 +52,30 @@ class ElkRepository
     public function getHealth(): Elasticsearch
     {
         return $this->client->cluster()->health();
+    }
+
+    /**
+     * @throws ServerResponseException
+     * @throws ClientResponseException
+     */
+    public function search(string $indexName, string $title): Elasticsearch
+    {
+        return $this->client->search([
+            'index' => $indexName,
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            'match' => [
+                                'title' => [
+                                    'query' => $title,
+                                    'fuzziness' => 'AUTO',
+                                ]
+                            ],
+                        ]
+                    ],
+                ]
+            ]
+        ]);
     }
 }

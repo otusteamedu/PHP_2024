@@ -40,12 +40,13 @@ final class App
         }
 
         $container = $this->resolveDI();
-        $elkService = $container->get(ElkService::class);
-        $health = $elkService->getClusterHealthCheckArray();
-        echo $health['status'] . PHP_EOL;
-
         try {
+            /** @var ElkService $elkService */
+            $elkService = $container->get(ElkService::class);
+            $health = $elkService->getClusterHealthCheckArray();
+            echo $health['status'] . PHP_EOL;
             $this->initIndex($elkService, $testDataPath);
+            $this->search($elkService);
         } catch (ElasticsearchException $exception) {
             echo $exception->getMessage() . PHP_EOL;
         }
@@ -53,7 +54,9 @@ final class App
         /*
          * ToDO:
          *  1) Разобраться с анализаторами и токенизаторами для русского языка
-         *  2) Загрузить файл с каталогом книг с помощью _bulk
+         *  2) Разработать модели для поиска, добавить фильтры по категории,
+         *   ранжированные по цене, сортированные по остаткам в магазине.
+         *  3) Сделать обработку аргументов для консольной команды поиска
         */
     }
 
@@ -85,6 +88,16 @@ final class App
      */
     private function initIndex(ElkService $elkService, string $testDataPath): void
     {
-        $elkService->createAndFillBooksIndex($testDataPath);
+        $fullPath = dirname(__DIR__) . '/' . $testDataPath;
+        $elkService->createAndFillBooksIndex($fullPath);
+    }
+
+    /**
+     * @throws ServerResponseException
+     * @throws ClientResponseException
+     */
+    private function search(ElkService $elkService): void
+    {
+        $elkService->search();
     }
 }

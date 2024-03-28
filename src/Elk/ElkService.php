@@ -23,7 +23,7 @@ class ElkService
      * @throws ServerResponseException
      * @throws MissingParameterException
      */
-    public function createAndFillBooksIndex(string $testDataPath): void
+    public function createAndFillBooksIndex(string $dataPath): void
     {
         $params = [
             'index' => self::INDEX_NAME,
@@ -73,10 +73,10 @@ class ElkService
 
         $this->repository->createIndex(self::INDEX_NAME, $params);
         // Заполняем индекс данными для тестирования.
-        $fullPath = dirname(__DIR__) . '/' . $testDataPath;
-        $bulkData = file_get_contents($fullPath);
+
+        $bulkData = file_get_contents($dataPath);
         if (!$bulkData) {
-            throw new InvalidTestDataException($fullPath);
+            throw new InvalidTestDataException($dataPath);
         }
         $this->repository->bulk($bulkData);
     }
@@ -90,5 +90,34 @@ class ElkService
         $health = $this->repository->getHealth();
 
         return $health->asArray();
+    }
+
+    /**
+     * @throws ServerResponseException
+     * @throws ClientResponseException
+     */
+    public function search(): void
+    {
+        $title = 'Рживский';
+
+        $result = $this->repository->search(self::INDEX_NAME, $title);
+        if (empty($result['hits']['hits'])) {
+            echo '====================================================================' . PHP_EOL;
+            echo 'Не удалось ничего найти' . PHP_EOL;
+        }
+        echo '====================================================================' . PHP_EOL;
+
+        foreach ($result['hits']['hits'] as $book) {
+            echo 'Код: ' . $book['_source']['sku'] . PHP_EOL;
+            echo 'Наименование: ' . $book['_source']['title'] . PHP_EOL;
+            echo 'Категория: ' . $book['_source']['category'] . PHP_EOL;
+            echo 'Цена: ' . $book['_source']['price'] . PHP_EOL;
+            echo 'В наличие: ' . PHP_EOL;
+            foreach ($book['_source']['stock'] as $shop) {
+                echo 'Магазин: ' . $shop['shop'] . PHP_EOL;
+                echo 'Количество: ' . $shop['stock'] . PHP_EOL;
+            }
+            echo '====================================================================' . PHP_EOL;
+        }
     }
 }
