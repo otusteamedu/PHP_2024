@@ -3,3 +3,9 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+123.sql
+Cinema_1_model
+/app/config.php
+/app/db.php
+/app/index.php
+app/vendor
