@@ -1,0 +1,10 @@
+{
+  "name": "hukimato/redis-app",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Hukimato\\RedisApp\\": "app/"
+    }
+  },
+  "require": {}
+}

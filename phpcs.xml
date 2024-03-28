@@ -3,7 +3,7 @@
 <ruleset  name="PHP_CodeSniffer">
 
 <description>PHPCS configuration file.</description>
-<!-- check all files in the app directory, feel free to add more files with:
+<!-- check all files in the www directory, feel free to add more files with:
 <file>FOLDER NAME</file>
 -->
 <file>app</file>
