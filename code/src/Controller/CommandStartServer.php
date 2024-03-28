@@ -11,6 +11,9 @@ class CommandStartServer implements Contract\Controller\Command
 
     public function execute(Contract\Request $request): void
     {
-        (new Service\Server($this->getConfig('socket_path')))->start();
+        (new Service\Server($this->getConfig('socket_path')))
+            ->setOutputResource($this->getConfig('output'))
+            ->start()
+        ;
     }
 }

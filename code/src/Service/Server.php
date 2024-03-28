@@ -4,13 +4,9 @@ namespace IraYu\Service;
 
 use IraYu\Service;
 
-class Server
+class Server extends ChatElement
 {
-    public function __construct(protected $socketPath)
-    {
-    }
-
-    public function start()
+    public function start(): void
     {
         $socket = new Service\UnixSocket();
         $socket
@@ -22,14 +18,14 @@ class Server
         $loopPointer = 0;
         do {
             $count = count($clientSockets);
-            echo sprintf("Clients count: %s[%d]%s", $count, $loopPointer++, PHP_EOL);
+            $this->log(sprintf("Clients count: %s[%d]", $count, $loopPointer++));
 
             if ($newSocket = $socket->accept()) {
                 $clientSockets[] = $newSocket;
                 $count = count($clientSockets);
 
                 $newSocket->write('Your number is: ' . $count);
-                echo sprintf("New client connected [%d]%s", $count, PHP_EOL);
+                $this->log(sprintf("New client connected [%d]", $count));
             }
 
             for ($i = 0; $i < $count; $i++) {

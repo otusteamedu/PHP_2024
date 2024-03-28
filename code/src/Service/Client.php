@@ -4,13 +4,9 @@ namespace IraYu\Service;
 
 use IraYu\Service;
 
-class Client
+class Client extends ChatElement
 {
-    public function __construct(protected $socketPath)
-    {
-    }
-
-    public function start()
+    public function start(): void
     {
         $socket = new Service\UnixSocket();
         $socket
@@ -18,10 +14,10 @@ class Client
         ;
 
         while (true) {
-            echo 'New loop' . PHP_EOL;
+            $this->log('New loop');
 
             if ($response = $socket->read()) {
-                echo 'Server: ' . $response . PHP_EOL;
+                $this->log('Server: ' . $response);
             }
 
             $text = readline('Enter text or "break": ');

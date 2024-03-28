@@ -8,9 +8,7 @@ trait Configurable
 
     public function setConfigs(array $configs): static
     {
-
         $this->configs = $configs;
-        echo __CLASS__;
 
         return $this;
     }

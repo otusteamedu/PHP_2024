@@ -27,6 +27,11 @@ class App
 
         $this->options['socket_path'] = $this->options['socket_dir'] . '/' . ($this->options['socket_file'] ?? 'chat.sock');
 
+        $this->options['output'] = isset($this->options['log_file_path']) ?
+            fopen($this->options['log_file_path'], "a") :
+            fopen("php://stdout", "w")
+        ;
+
         return $this;
     }
 

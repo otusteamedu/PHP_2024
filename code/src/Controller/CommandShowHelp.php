@@ -8,6 +8,5 @@ class CommandShowHelp implements Contract\Controller\Command
 {
     public function execute(Contract\Request $request): void
     {
-        echo 'HELP!' . PHP_EOL;
     }
 }
