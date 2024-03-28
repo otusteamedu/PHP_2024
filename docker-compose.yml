@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    image: app/php
+    volumes:
+      - ./:/data/myapp
+    networks:
+      - elastic
+
+    working_dir: /data/myapp
+
+  elasticsearch:
+    image: elasticsearch:7.16.1
+    volumes:
+      - ./docker/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - ./docker/volumes/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      - cluster.name=es-docker-cluster
+      - "ELASTIC_USERNAME=${ELASTIC_USERNAME}"
+      - "ELASTIC_PASSWORD=${ELASTIC_PASSWD}"
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - elastic
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+
+  logstash:
+    image: logstash:7.16.2
+    volumes:
+      - ./docker/logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
+      - ./docker/logstash/pipelines:/usr/share/logstash/config/pipelines:ro
+      - ./docker/logstash/config.yml:/usr/share/logstash/config/logstash.yml:ro
+    environment:
+      LS_JAVA_OPTS: "-Xmx512m -Xms512m"
+    ports:
+      - "5044:5044"
+      - "5000:5000"
+      - "9600:9600"
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+  beats:
+    image: elastic/filebeat:7.16.2
+    volumes:
+      - ./docker/filebeat/config.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./app/logs/:/host_metrics_app/:ro
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: kibana:7.16.1
+    depends_on:
+      - elasticsearch
+    environment:
+      SERVER_NAME: 'kibana'
+#      ELASTICSEARCH_HOSTS: '[ ${ELASTIC_HOST} ]'
+      elasticsearch.username: '${ELASTIC_USERNAME}'
+      elasticsearch.password: '${ELASTIC_PASSWD}'
+    volumes:
+      - ./docker/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro
+    networks:
+      - elastic
+    ports:
+      - "5601:5601"
+
+networks:
+  elastic:
+    driver: bridge
