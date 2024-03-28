@@ -46,6 +46,7 @@ object tbl_ticket {
     + place_id: INT
     + price: MONEY
     + paid: BOOLEAN
+    + booked: BOOLEAN
     --
     PK tbl_ticket_pkey (id)
     FK tbl_ticket_place_id_fkey (place_id) REFERENCES tbl_place(id)

@@ -41,7 +41,8 @@ CREATE TABLE tbl_ticket (
 	show_id INT NOT NULL,
 	place_id INT NOT NULL,
 	price money NOT NULL,
-	paid bool NOT NULL,
+	paid bool NOT NULL DEFAULT false,
+	booked bool NOT NULL DEFAULT false,
 	CONSTRAINT tbl_ticket_pkey PRIMARY KEY (id),
 	CONSTRAINT tbl_ticket_place_id_fkey FOREIGN KEY (place_id) REFERENCES tbl_place(id),
 	CONSTRAINT tbl_ticket_show_id_fkey FOREIGN KEY (show_id) REFERENCES tbl_show(id)
