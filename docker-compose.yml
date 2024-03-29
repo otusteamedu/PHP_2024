@@ -11,6 +11,8 @@ services:
     environment:
       ELASTIC_HOST: ${ELASTIC_HOST}
       ELASTIC_INDEX: ${ELASTIC_INDEX}
+      SHORT_OPTIONS: ${SHORT_OPTIONS}
+      LONG_OPTIONS: ${LONG_OPTIONS}
     volumes:
       - ./app:/data
     networks:

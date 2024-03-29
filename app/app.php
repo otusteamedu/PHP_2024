@@ -7,14 +7,8 @@ require './vendor/autoload.php';
 use Lrazumov\Hw14\App;
 
 try {
-    $shortopts = 'q:g:l:c:s:';
-    $longopts = [
-      'query:',
-      'gte:',
-      'lte:',
-      'category:',
-      'shop:',
-    ];
+    $shortopts = getenv("SHORT_OPTIONS");
+    $longopts = explode(',', getenv("LONG_OPTIONS"));
     $options = getopt($shortopts, $longopts);
     (new App($options))
         ->run();
