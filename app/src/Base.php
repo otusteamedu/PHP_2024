@@ -4,21 +4,17 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Services\ElasticService\DbWorker;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\MissingParameterException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
-use Exception;
 
 class Base
 {
-    public string $index;
-    public DbWorker $client;
+    public QueryBuilder $queryBuilder;
 
     public function __construct()
     {
-        $this->index = 'otus-shop';
-        $this->client = new DbWorker();
+        $this->queryBuilder = new QueryBuilder();
     }
 
     /**
@@ -27,35 +23,20 @@ class Base
      */
     public function run(): void
     {
-        if(!$this->client->isIndex($this->index)) {
-            $data = dirname(__FILE__, 3) . "/books.json";
-            $this->client->createIndex($this->index);
-            $this->client->bulk($data);
-        }
+        $searchData['search_string'] = readline("Поиск: ");
+        $searchData['category'] = readline("Категория: ");
+        $searchData['range_price'] = readline("Выберите диапозон цен [>, >=, <, <=]: ");
+        $searchData['price'] = readline("Цена: ");
 
-        $searchData = readline("Поиск: ");
-
-        $params = [
-            'bool' => [
-                'must' => [
-                    ['match' => ['title' => ['query' => $searchData, 'fuzziness' => 'auto']]],
-                    ['term' => ['category.keyword' => 'Исторический роман']]
-                ],
-                'filter' => [
-                    ['range' => ['stock.stock' => ['gte' => 0]]],
-                    [
-                        'range' => ['price' => ['lt' => 2000]],
-                    ],
-                ]
-            ]
-        ];
-
-        $result = $this->client->getDocbyParams($this->index, $params);
-        $this->getResult($result);
+        $response = $this->queryBuilder->queryBuilder($searchData);
+        $this->getResult($response);
     }
 
     public function getResult(array $data): void
     {
+        echo "Итого " . count($data['hits']['hits']) . " записей";
+        echo PHP_EOL;
+
         printf('%-15s%-15s%-30s', "sku", "stock", "title");
         echo PHP_EOL;
 
