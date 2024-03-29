@@ -63,7 +63,7 @@ class ElkService
                                     'type' => 'keyword',
                                 ],
                                 'stock' => [
-                                    'type' => 'integer',
+                                    'type' => 'short',
                                 ]
                             ]
                         ],
@@ -100,6 +100,7 @@ class ElkService
     public function search(): void
     {
         $title = 'Ржевс';
+        $title = 'Жутки';
         $graterThanPrice = 7000;
         $lessThanPrice = 9000;
         $category1 = 'Исторический роман';

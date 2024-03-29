@@ -91,6 +91,30 @@ class ElkRepository
                                 ],
                             ],
                             [
+                                'nested' => [
+                                    'path' =>'stock',
+                                    'query' => [
+                                        'bool' => [
+                                           'filter' => [
+                                                [
+                                                   'range' => [
+                                                       'stock.stock' => [
+                                                           'gte' => 0,
+                                                       ],
+                                                    ],
+                                                ],
+                                               [
+                                                   'term' => [
+                                                       'stock.shop' => 'Ленина',
+                                                   ],
+                                               ]
+                                            ],
+
+                                        ],
+                                    ],
+                                ],
+                            ],
+                            [
                                 'term' => [
                                     'category' => $category,
                                 ],
