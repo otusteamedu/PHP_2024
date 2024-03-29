@@ -61,7 +61,6 @@ class App
         }
         if (!empty($options['c'])) {
             $conditions = json_decode($options['c'], true);
-
         }
         if (!empty($options['e'])) {
             $name = $options['e'];

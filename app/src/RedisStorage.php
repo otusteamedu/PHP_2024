@@ -17,8 +17,11 @@ class RedisStorage implements Storage
 
     public function set(Event $event): void
     {
-        $response = $this->redis->zAdd(RedisStorage::EVENTS_KEY, $event->getPriority(),
-            json_encode(['conditions' => $event->getConditions(), 'event' => $event->getName()]));
+        $response = $this->redis->zAdd(
+            RedisStorage::EVENTS_KEY,
+            $event->getPriority(),
+            json_encode(['conditions' => $event->getConditions(), 'event' => $event->getName()])
+        );
         echo 'Added ' . $response . " items \n";
     }
 
