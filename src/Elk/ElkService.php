@@ -13,10 +13,12 @@ class ElkService
 {
     private const INDEX_NAME = 'otus-shop';
     private const INDEX_ALIAS = 'books';
+
     public function __construct(
-        private readonly ElkRepository $repository,
+        private readonly ElkRepository  $repository,
         private readonly ElkConsoleView $view,
-    ) {
+    )
+    {
     }
 
     /**
@@ -64,11 +66,11 @@ class ElkService
                                 ],
                                 'stock' => [
                                     'type' => 'short',
-                                ]
-                            ]
+                                ],
+                            ],
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
         ];
 
@@ -99,20 +101,23 @@ class ElkService
      */
     public function search(): void
     {
+
         $title = 'Ржевс';
         $title = 'Жутки';
         $graterThanPrice = 7000;
         $lessThanPrice = 9000;
         $category1 = 'Исторический роман';
         $category2 = 'Искусство';
-
-        $result = $this->repository->search(
+        $query = new ElkBookSearchQuery(
             self::INDEX_NAME,
-            $title,
-            $lessThanPrice,
-            $graterThanPrice,
-            $category1
+            title: $title,
+            category: $category1,
+            lessThanPrice: $lessThanPrice,
+            graterThanPrice: $graterThanPrice,
+            shopName: 'Мира',
         );
+
+        $result = $this->repository->search($query);
         $this->view->render($result);
     }
 }

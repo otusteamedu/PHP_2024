@@ -58,16 +58,55 @@ class ElkRepository
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search(
-        string $indexName,
-        string $title,
-        int    $lessThanPrice,
-        int    $graterThanPrice,
-        string $category,
-    ): Elasticsearch
+    public function search(ElkBookSearchQuery $query): Elasticsearch
     {
+        $baseQuery = [
+            'index' => $query->getIndexName(),
+            'body' => [
+                'query' => [
+                    'bool' => [],
+                ]
+            ],
+        ];
+
+        if (!is_null($query->getTitle())) {
+            $baseQuery['body']['query']['bool']['must'][] = [
+                'match' => [
+                    'title' => [
+                        'query' => $query->getTitle(),
+                        'fuzziness' => 'AUTO',
+                    ],
+                ],
+            ];
+        }
+
+        if (!is_null($query->getCategory())) {
+            $baseQuery['body']['query']['bool']['filter'][] = [
+                'term' => [
+                    'category' => $query->getCategory(),
+                ],
+            ];
+        }
+
+        if (!is_null($query->getLessThanPrice()) || !is_null($query->getGraterThanPrice())) {
+            $range = [
+                'range' => [
+                    'price' => [
+                    ],
+                ],
+            ];
+            if (!is_null($query->getLessThanPrice())) {
+                $range['range']['price']['lt'] = $query->getLessThanPrice();
+            }
+            if (!is_null($query->getGraterThanPrice())) {
+                $range['range']['price']['gt'] = $query->getGraterThanPrice();
+            }
+
+            $baseQuery['body']['query']['bool']['filter'][] = $range;
+        }
+
         return $this->client->search([
-            'index' => $indexName,
+            'index' => $query->getIndexName(),
             'body' => [
                 'query' => [
                     'bool' => [
@@ -75,7 +114,7 @@ class ElkRepository
                             [
                                 'match' => [
                                     'title' => [
-                                        'query' => $title,
+                                        'query' => $query->getTitle(),
                                         'fuzziness' => 'AUTO',
                                     ],
                                 ],
@@ -85,8 +124,8 @@ class ElkRepository
                             [
                                 'range' => [
                                     'price' => [
-                                        'gte' => $graterThanPrice,
-                                        'lt' => $lessThanPrice,
+                                        'gte' => $query->getGraterThanPrice(),
+                                        'lt' => $query->getLessThanPrice(),
                                     ],
                                 ],
                             ],
@@ -105,7 +144,7 @@ class ElkRepository
                                                 ],
                                                [
                                                    'term' => [
-                                                       'stock.shop' => 'Ленина',
+                                                       'stock.shop' => $query->getShopName(),
                                                    ],
                                                ]
                                             ],
@@ -116,7 +155,7 @@ class ElkRepository
                             ],
                             [
                                 'term' => [
-                                    'category' => $category,
+                                    'category' => $query->getCategory(),
                                 ],
                             ],
                         ],
