@@ -1,0 +1,12 @@
+{
+    "name": "kagirova/hw15",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Kagirova\\Hw15\\": "src/"
+        }
+    },
+    "require": {
+        "ext-redis": "*"
+    }
+}
