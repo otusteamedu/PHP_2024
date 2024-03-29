@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  php:
+    container_name: hw-php
+    hostname: hw-php
+    build:
+      context: ./docker
+      dockerfile: php/Dockerfile
+    volumes:
+      - ./app:/app
+    networks:
+      - hw-network
+
+networks:
+  hw-network:
+    driver: bridge

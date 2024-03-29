@@ -1,0 +1,12 @@
+{
+    "name": "rmulyukov/hw",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rmulyukov\\Hw\\": "app/"
+        }
+    },
+    "require": {
+        "php": ">=8.2"
+    }
+}
