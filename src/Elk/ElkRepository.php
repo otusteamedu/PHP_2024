@@ -58,7 +58,13 @@ class ElkRepository
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search(string $indexName, string $title): Elasticsearch
+    public function search(
+        string $indexName,
+        string $title,
+        int    $lessThanPrice,
+        int    $graterThanPrice,
+        string $category,
+    ): Elasticsearch
     {
         return $this->client->search([
             'index' => $indexName,
@@ -66,16 +72,33 @@ class ElkRepository
                 'query' => [
                     'bool' => [
                         'must' => [
-                            'match' => [
-                                'title' => [
-                                    'query' => $title,
-                                    'fuzziness' => 'AUTO',
-                                ]
+                            [
+                                'match' => [
+                                    'title' => [
+                                        'query' => $title,
+                                        'fuzziness' => 'AUTO',
+                                    ],
+                                ],
                             ],
-                        ]
+                        ],
+                        'filter' => [
+                            [
+                                'range' => [
+                                    'price' => [
+                                        'gte' => $graterThanPrice,
+                                        'lt' => $lessThanPrice,
+                                    ],
+                                ],
+                            ],
+                            [
+                                'term' => [
+                                    'category' => $category,
+                                ],
+                            ],
+                        ],
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 }

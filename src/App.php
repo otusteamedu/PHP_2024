@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework;
 
+use Alogachev\Homework\Elk\ElkConsoleView;
 use Alogachev\Homework\Elk\ElkRepository;
 use Alogachev\Homework\Elk\ElkService;
 use Alogachev\Homework\Exception\TestIndexDataNotFoundException;
@@ -44,6 +45,7 @@ final class App
             /** @var ElkService $elkService */
             $elkService = $container->get(ElkService::class);
             $health = $elkService->getClusterHealthCheckArray();
+            // ToDo: Если статус red то выбрасывать исключение.
             echo $health['status'] . PHP_EOL;
             $this->initIndex($elkService, $testDataPath);
             $this->search($elkService);
@@ -73,7 +75,8 @@ final class App
                 ->setHosts(["http://$host:$port"])
                 ->build(),
             ElkService::class => create()->constructor(
-                get(ElkRepository::class)
+                get(ElkRepository::class),
+                get(ElkConsoleView::class),
             ),
             ElkRepository::class => create()->constructor(
                 get(Client::class)

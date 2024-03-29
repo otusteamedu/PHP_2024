@@ -14,7 +14,8 @@ class ElkService
     private const INDEX_NAME = 'otus-shop';
     private const INDEX_ALIAS = 'books';
     public function __construct(
-        private readonly ElkRepository $repository
+        private readonly ElkRepository $repository,
+        private readonly ElkConsoleView $view,
     ) {
     }
 
@@ -98,26 +99,19 @@ class ElkService
      */
     public function search(): void
     {
-        $title = 'Рживский';
+        $title = 'Ржевс';
+        $graterThanPrice = 7000;
+        $lessThanPrice = 9000;
+        $category1 = 'Исторический роман';
+        $category2 = 'Искусство';
 
-        $result = $this->repository->search(self::INDEX_NAME, $title);
-        if (empty($result['hits']['hits'])) {
-            echo '====================================================================' . PHP_EOL;
-            echo 'Не удалось ничего найти' . PHP_EOL;
-        }
-        echo '====================================================================' . PHP_EOL;
-
-        foreach ($result['hits']['hits'] as $book) {
-            echo 'Код: ' . $book['_source']['sku'] . PHP_EOL;
-            echo 'Наименование: ' . $book['_source']['title'] . PHP_EOL;
-            echo 'Категория: ' . $book['_source']['category'] . PHP_EOL;
-            echo 'Цена: ' . $book['_source']['price'] . PHP_EOL;
-            echo 'В наличие: ' . PHP_EOL;
-            foreach ($book['_source']['stock'] as $shop) {
-                echo 'Магазин: ' . $shop['shop'] . PHP_EOL;
-                echo 'Количество: ' . $shop['stock'] . PHP_EOL;
-            }
-            echo '====================================================================' . PHP_EOL;
-        }
+        $result = $this->repository->search(
+            self::INDEX_NAME,
+            $title,
+            $lessThanPrice,
+            $graterThanPrice,
+            $category1
+        );
+        $this->view->render($result);
     }
 }
