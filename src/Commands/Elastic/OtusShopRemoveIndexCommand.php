@@ -8,7 +8,6 @@ use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\MissingParameterException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use RailMukhametshin\Hw\Commands\AbstractCommand;
-use RailMukhametshin\Hw\Repositories\Elastic\OtusShopRepository;
 
 class OtusShopRemoveIndexCommand extends AbstractCommand
 {
@@ -19,8 +18,7 @@ class OtusShopRemoveIndexCommand extends AbstractCommand
      */
     public function execute(): void
     {
-        $otusShopRepository = $this->container->get(OtusShopRepository::class);
-        $otusShopRepository->removeIndex();
+        $this->otusShopRepository->removeIndex();
         $this->formatter->output('Index deleted');
     }
 }

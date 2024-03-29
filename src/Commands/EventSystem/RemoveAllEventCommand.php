@@ -7,7 +7,6 @@ namespace RailMukhametshin\Hw\Commands\EventSystem;
 use DI\DependencyException;
 use DI\NotFoundException;
 use RailMukhametshin\Hw\Commands\AbstractCommand;
-use RailMukhametshin\Hw\Repositories\EventSystem\EventRepositoryInterface;
 
 class RemoveAllEventCommand extends AbstractCommand
 {
@@ -17,8 +16,7 @@ class RemoveAllEventCommand extends AbstractCommand
      */
     public function execute(): void
     {
-        $repository = $this->container->get(EventRepositoryInterface::class);
-        $repository->removeAll();
+        $this->eventRepository->removeAll();
 
         $this->formatter->output('Removed all events');
     }

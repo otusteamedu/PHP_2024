@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RailMukhametshin\Hw\App;
 
-use Elastic\Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
 use DI\Container;
 use Exception;
 use RailMukhametshin\Hw\Commands\Elastic\OtusShopImportCommand;
@@ -17,6 +17,8 @@ use RailMukhametshin\Hw\Commands\StartSocketClientCommand;
 use RailMukhametshin\Hw\Commands\StartSocketServerCommand;
 use RailMukhametshin\Hw\Formatters\ConsoleOutputFormatter;
 use RailMukhametshin\Hw\Managers\ConfigManager;
+use RailMukhametshin\Hw\Repositories\Elastic\OtusShopRepository;
+use RailMukhametshin\Hw\Repositories\EventSystem\EventRepositoryInterface;
 
 class App
 {
@@ -60,11 +62,17 @@ class App
         }
 
         $container = new Container($configManager->getAll());
+        $formatter = $container->get(ConsoleOutputFormatter::class);
 
         try {
-            (new $commandClass($configManager, $container))->execute();
+            (new $commandClass(
+                $configManager,
+                $formatter,
+                $container->get(Client::class),
+                $container->get(OtusShopRepository::class),
+                $container->get(EventRepositoryInterface::class)
+            ))->execute();
         } catch (Exception $exception) {
-            $formatter = $container->get(ConsoleOutputFormatter::class);
             $formatter->output($exception->getMessage(), ConsoleOutputFormatter::COLOR_RED);
         }
     }

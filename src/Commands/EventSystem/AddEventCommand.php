@@ -8,7 +8,6 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use RailMukhametshin\Hw\Commands\AbstractCommand;
 use RailMukhametshin\Hw\Dto\EventSystem\EventObject;
-use RailMukhametshin\Hw\Repositories\EventSystem\EventRepositoryInterface;
 use RailMukhametshin\Hw\Traits\ConditionParsableTrait;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
@@ -32,8 +31,7 @@ class AddEventCommand extends AbstractCommand
      */
     public function execute(): void
     {
-        $repository = $this->container->get(EventRepositoryInterface::class);
-        $repository->add($this->parseAndGetObject());
+        $this->eventRepository->add($this->parseAndGetObject());
     }
 
     /**

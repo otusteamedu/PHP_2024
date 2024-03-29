@@ -8,8 +8,6 @@ use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Exception;
 use RailMukhametshin\Hw\Commands\AbstractCommand;
-use RailMukhametshin\Hw\Formatters\ConsoleOutputFormatter;
-use RailMukhametshin\Hw\Repositories\Elastic\OtusShopRepository;
 
 class OtusShopImportCommand extends AbstractCommand
 {
@@ -46,8 +44,7 @@ class OtusShopImportCommand extends AbstractCommand
 
         fclose($stream);
 
-        $otusShopRepository = $this->container->get(OtusShopRepository::class);
-        $otusShopRepository->bulk($data);
+        $this->otusShopRepository->bulk($data);
 
         $this->formatter->output('Success import');
     }

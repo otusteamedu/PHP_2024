@@ -7,7 +7,6 @@ namespace RailMukhametshin\Hw\Commands\EventSystem;
 use DI\DependencyException;
 use DI\NotFoundException;
 use RailMukhametshin\Hw\Commands\AbstractCommand;
-use RailMukhametshin\Hw\Repositories\EventSystem\EventRepositoryInterface;
 use RailMukhametshin\Hw\Traits\ConditionParsableTrait;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
 
@@ -22,9 +21,8 @@ class SearchEventCommand extends AbstractCommand
      */
     public function execute(): void
     {
-        $repository = $this->container->get(EventRepositoryInterface::class);
         $params = $this->parseAndGetParams();
-        $item = $repository->getByParams($params);
+        $item = $this->eventRepository->getByParams($params);
         if ($item !== null) {
             $this->formatter->output($item->event->name);
         } else {

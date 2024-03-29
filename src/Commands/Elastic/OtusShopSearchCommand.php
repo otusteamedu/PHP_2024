@@ -38,9 +38,8 @@ class OtusShopSearchCommand extends AbstractCommand
      */
     public function execute(): void
     {
-        $otusShopRepository = $this->container->get(OtusShopRepository::class);
-        $this->parseAndSetSearchParams($otusShopRepository);
-        $response = $otusShopRepository->search();
+        $this->parseAndSetSearchParams($this->otusShopRepository);
+        $response = $this->otusShopRepository->search();
         $responseData = $response->asArray();
         $items = $this->normalizeData($responseData);
         $this->formatter->output($this->verticalPrintItems($items));

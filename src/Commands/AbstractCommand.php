@@ -4,25 +4,35 @@ declare(strict_types=1);
 
 namespace RailMukhametshin\Hw\Commands;
 
-use DI\Container;
 use Elastic\Elasticsearch\Client;
+use Psr\Container\ContainerInterface;
 use RailMukhametshin\ConfigManager\ConfigManager;
 use RailMukhametshin\Hw\Formatters\ConsoleOutputFormatter;
+use RailMukhametshin\Hw\Repositories\Elastic\OtusShopRepository;
+use RailMukhametshin\Hw\Repositories\EventSystem\EventRepositoryInterface;
 
 abstract class AbstractCommand implements CommandInterface
 {
     protected ConsoleOutputFormatter $formatter;
     protected ConfigManager $configManager;
     protected Client $elasticClient;
-    protected Container $container;
+    protected OtusShopRepository $otusShopRepository;
+    protected EventRepositoryInterface $eventRepository;
     protected array $argv;
 
-    public function __construct(ConfigManager $configManager, Container $container)
+    public function __construct(
+        ConfigManager $configManager,
+        ConsoleOutputFormatter $formatter,
+        Client $elasticClient,
+        OtusShopRepository $otusShopRepository,
+        EventRepositoryInterface $eventRepository
+    )
     {
-        $this->formatter = $container->get(ConsoleOutputFormatter::class);
+        $this->formatter = $formatter;
         $this->configManager = $configManager;
         $this->argv = array_slice($_SERVER['argv'], 2);
-        $this->elasticClient = $container->get(Client::class);
-        $this->container = $container;
+        $this->elasticClient = $elasticClient;
+        $this->otusShopRepository = $otusShopRepository;
+        $this->eventRepository = $eventRepository;
     }
 }
