@@ -1,0 +1,81 @@
+cinema-# \dit+
+                                                   List of relations
+ Schema |        Name        | Type  |  Owner   |    Table    | Persistence | Access method |    Size    | Description
+--------+--------------------+-------+----------+-------------+-------------+---------------+------------+-------------
+ public | auditorium         | table | postgres |             | permanent   | heap          | 8192 bytes |
+ public | auditorium_name_uk | index | postgres | auditorium  | permanent   | btree         | 16 kB      |
+ public | auditorium_pkey    | index | postgres | auditorium  | permanent   | btree         | 16 kB      |
+ public | country            | table | postgres |             | permanent   | heap          | 8192 bytes |
+ public | country_name_uk    | index | postgres | country     | permanent   | btree         | 16 kB      |
+ public | country_pkey       | index | postgres | country     | permanent   | btree         | 16 kB      |
+ public | genre              | table | postgres |             | permanent   | heap          | 8192 bytes |
+ public | genre_name_uk      | index | postgres | genre       | permanent   | btree         | 16 kB      |
+ public | genre_pkey         | index | postgres | genre       | permanent   | btree         | 16 kB      |
+ public | movie              | table | postgres |             | permanent   | heap          | 16 kB      |
+ public | movie_genre        | table | postgres |             | permanent   | heap          | 0 bytes    |
+ public | movie_genre_pkey   | index | postgres | movie_genre | permanent   | btree         | 8192 bytes |
+ public | movie_name_uk      | index | postgres | movie       | permanent   | btree         | 16 kB      |
+ public | movie_pkey         | index | postgres | movie       | permanent   | btree         | 16 kB      |
+ public | movie_start_date   | index | postgres | movie       | permanent   | btree         | 16 kB      |
+ public | seat               | table | postgres |             | permanent   | heap          | 8192 bytes |
+ public | seat_pkey          | index | postgres | seat        | permanent   | btree         | 16 kB      |
+ public | session            | table | postgres |             | permanent   | heap          | 112 kB     |
+ public | session_pkey       | index | postgres | session     | permanent   | btree         | 48 kB      |
+ public | ticket             | table | postgres |             | permanent   | heap          | 551 MB     |
+ public | ticket_date        | index | postgres | ticket      | permanent   | btree         | 63 MB      |
+ public | ticket_pk          | index | postgres | ticket      | permanent   | btree         | 367 MB     |
+ public | ticket_pkey        | index | postgres | ticket      | permanent   | btree         | 206 MB     |
+(23 rows)
+
+
+cinema=# select schemaname as table_schema,
+       relname as table_name,
+       pg_size_pretty(pg_total_relation_size(relid)) as total_size,
+       pg_size_pretty(pg_relation_size(relid)) as data_size,
+       pg_size_pretty(pg_total_relation_size(relid) - pg_relation_size(relid))
+        as external_size
+from pg_catalog.pg_statio_user_tables
+order by pg_total_relation_size(relid) desc,
+         pg_relation_size(relid) desc;
+ table_schema | table_name  | total_size | data_size  | external_size
+--------------+-------------+------------+------------+---------------
+ public       | ticket      | 1187 MB    | 551 MB     | 636 MB
+ public       | session     | 160 kB     | 80 kB      | 80 kB
+ public       | movie       | 64 kB      | 8192 bytes | 56 kB
+ public       | auditorium  | 40 kB      | 8192 bytes | 32 kB
+ public       | genre       | 40 kB      | 8192 bytes | 32 kB
+ public       | country     | 40 kB      | 8192 bytes | 32 kB
+ public       | seat        | 24 kB      | 8192 bytes | 16 kB
+ public       | movie_genre | 8192 bytes | 0 bytes    | 8192 bytes
+(8 rows)
+
+
+cinema=# SELECT
+    tablename,
+    indexname,
+    indexdef
+FROM
+    pg_indexes
+WHERE
+    schemaname = 'public'
+ORDER BY
+    tablename,
+    indexname;
+  tablename  |     indexname      |                                          indexdef
+-------------+--------------------+---------------------------------------------------------------------------------------------
+ auditorium  | auditorium_name_uk | CREATE UNIQUE INDEX auditorium_name_uk ON public.auditorium USING btree (name)
+ auditorium  | auditorium_pkey    | CREATE UNIQUE INDEX auditorium_pkey ON public.auditorium USING btree (id)
+ country     | country_name_uk    | CREATE UNIQUE INDEX country_name_uk ON public.country USING btree (name)
+ country     | country_pkey       | CREATE UNIQUE INDEX country_pkey ON public.country USING btree (id)
+ genre       | genre_name_uk      | CREATE UNIQUE INDEX genre_name_uk ON public.genre USING btree (name)
+ genre       | genre_pkey         | CREATE UNIQUE INDEX genre_pkey ON public.genre USING btree (id)
+ movie       | movie_name_uk      | CREATE UNIQUE INDEX movie_name_uk ON public.movie USING btree (name)
+ movie       | movie_pkey         | CREATE UNIQUE INDEX movie_pkey ON public.movie USING btree (id)
+ movie       | movie_start_date   | CREATE INDEX movie_start_date ON public.movie USING btree (start_date)
+ movie_genre | movie_genre_pkey   | CREATE UNIQUE INDEX movie_genre_pkey ON public.movie_genre USING btree (genre_id, movie_id)
+ seat        | seat_pkey          | CREATE UNIQUE INDEX seat_pkey ON public.seat USING btree (id)
+ session     | session_pkey       | CREATE UNIQUE INDEX session_pkey ON public.session USING btree (id)
+ ticket      | ticket_date        | CREATE INDEX ticket_date ON public.ticket USING btree (date)
+ ticket      | ticket_pk          | CREATE UNIQUE INDEX ticket_pk ON public.ticket USING btree (date, session_id, seat_id)
+ ticket      | ticket_pkey        | CREATE UNIQUE INDEX ticket_pkey ON public.ticket USING btree (id)
+(15 rows)

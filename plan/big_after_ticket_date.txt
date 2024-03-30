@@ -1,0 +1,81 @@
+-- 2. Подсчёт проданных билетов за неделю
+
+cinema=# explain select count(*) as total
+from public.ticket t
+where t.date >= (current_date - 6) and t.date <= current_date;
+                                                     QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=10841.87..10841.88 rows=1 width=8)
+   ->  Gather  (cost=10841.65..10841.86 rows=2 width=8)
+         Workers Planned: 2
+         ->  Partial Aggregate  (cost=9841.65..9841.66 rows=1 width=8)
+               ->  Parallel Index Only Scan using ticket_date on ticket t  (cost=0.44..9290.61 rows=220417 width=0)
+                     Index Cond: ((date >= (CURRENT_DATE - 6)) AND (date <= CURRENT_DATE))
+(6 rows)
+
+
+
+
+-- 4. Поиск 3 самых прибыльных фильмов за неделю
+
+cinema=# explain select movie, SUM(subtotal) as total
+from (
+    select (count(t.*) * s.price) as subtotal, m.name as movie
+    from public.ticket t
+    inner join public.session s on t.session_id = s.id
+    inner join public.movie m on s.movie_id = m.id
+    where t.date <= current_date and t.date >= (current_date - 6)
+    group by t.session_id, s.price, m.name
+) as subquery
+group by movie
+order by total DESC
+limit 3;
+                                                        QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=112131.06..112131.07 rows=3 width=40)
+   ->  Sort  (cost=112131.06..112131.56 rows=200 width=40)
+         Sort Key: (sum((((count(t.*))::numeric * s.price)))) DESC
+         ->  HashAggregate  (cost=112125.98..112128.48 rows=200 width=40)
+               Group Key: m.name
+               ->  HashAggregate  (cost=84607.54..104565.98 rows=504000 width=53)
+                     Group Key: t.session_id, s.price, m.name
+                     Planned Partitions: 16
+                     ->  Hash Join  (cost=50.59..19143.79 rows=529000 width=67)
+                           Hash Cond: (s.movie_id = m.id)
+                           ->  Hash Join  (cost=37.44..17699.97 rows=529000 width=67)
+                                 Hash Cond: (t.session_id = s.id)
+                                 ->  Index Scan using ticket_date on ticket t  (cost=0.44..16269.44 rows=529000 width=54)
+                                       Index Cond: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - 6)))
+                                 ->  Hash  (cost=22.00..22.00 rows=1200 width=21)
+                                       ->  Seq Scan on session s  (cost=0.00..22.00 rows=1200 width=21)
+                           ->  Hash  (cost=11.40..11.40 rows=140 width=16)
+                                 ->  Seq Scan on movie m  (cost=0.00..11.40 rows=140 width=16)
+ JIT:
+   Functions: 25
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(21 rows)
+
+
+
+-- 5. Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс
+
+cinema=# explain select s.id, s.row_number as row, s.seat_number as number,
+    case
+        when t.session_id is null then false
+        else true
+    end as is_sold
+from public.seat s
+left join public.ticket t on s.id = t.seat_id and t.session_id = 1 and t.date = current_date
+order by s.id;
+                                      QUERY PLAN
+---------------------------------------------------------------------------------------
+ Merge Left Join  (cost=3.81..9.99 rows=60 width=7)
+   Merge Cond: (s.id = t.seat_id)
+   ->  Sort  (cost=3.37..3.52 rows=60 width=6)
+         Sort Key: s.id
+         ->  Seq Scan on seat s  (cost=0.00..1.60 rows=60 width=6)
+   ->  Index Only Scan using ticket_pk on ticket t  (cost=0.44..5.60 rows=58 width=10)
+         Index Cond: ((date = CURRENT_DATE) AND (session_id = 1))
+(7 rows)
+
+
