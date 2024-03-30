@@ -12,6 +12,20 @@ services:
     networks:
       - hw-network
 
+  redis:
+    container_name: hw-redis
+    hostname: hw-redis
+    image: redis:7.2-alpine
+    networks:
+      - hw-network
+
+  elasticsearch:
+    image: 'bitnami/elasticsearch:latest'
+    container_name: hw-elastic
+    hostname: hw-elastic
+    networks:
+      - hw-network
+
 networks:
   hw-network:
     driver: bridge
