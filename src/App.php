@@ -7,6 +7,7 @@ namespace Alogachev\Homework;
 use Alogachev\Homework\Elk\ElkConsoleView;
 use Alogachev\Homework\Elk\ElkRepository;
 use Alogachev\Homework\Elk\ElkService;
+use Alogachev\Homework\Exception\ElkRedStatusException;
 use Alogachev\Homework\Exception\TestIndexDataNotFoundException;
 use DI\Container;
 use Dotenv\Dotenv;
@@ -21,6 +22,7 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+use RuntimeException;
 use function DI\create;
 use function DI\get;
 
@@ -41,25 +43,20 @@ final class App
         }
 
         $container = $this->resolveDI();
+        $args = $this->resolveArgs();
         try {
             /** @var ElkService $elkService */
             $elkService = $container->get(ElkService::class);
             $health = $elkService->getClusterHealthCheckArray();
-            // ToDo: Если статус red то выбрасывать исключение.
+            if ($health['status'] === 'red') {
+                throw new ElkRedStatusException();
+            }
             echo $health['status'] . PHP_EOL;
             $this->initIndex($elkService, $testDataPath);
-            $this->search($elkService);
-        } catch (ElasticsearchException $exception) {
+            $this->search($elkService, $args);
+        } catch (ElasticsearchException | RuntimeException $exception) {
             echo $exception->getMessage() . PHP_EOL;
         }
-
-        /*
-         * ToDO:
-         *  1) Разобраться с анализаторами и токенизаторами для русского языка
-         *  2) Разработать модели для поиска, добавить фильтры по категории,
-         *   ранжированные по цене, сортированные по остаткам в магазине.
-         *  3) Сделать обработку аргументов для консольной команды поиска
-        */
     }
 
     /**
@@ -99,8 +96,21 @@ final class App
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    private function search(ElkService $elkService): void
+    private function search(ElkService $elkService, array $args): void
     {
-        $elkService->search();
+        $elkService->search($args);
+    }
+
+    private function resolveArgs(): array
+    {
+        $args = $_SERVER['argv'];
+        $resolved = [];
+        foreach ($args as $key => $arg) {
+            if (str_starts_with($arg, '--')) {
+                $resolved[substr($arg, 2)] = $args[$key + 1];
+            }
+        }
+
+        return $resolved;
     }
 }

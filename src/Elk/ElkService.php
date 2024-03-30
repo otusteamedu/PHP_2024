@@ -99,22 +99,15 @@ class ElkService
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search(): void
+    public function search(array $searchArgs): void
     {
-
-        $title = 'Ржевс';
-        $title = 'Жутки';
-        $graterThanPrice = 7000;
-        $lessThanPrice = 9000;
-        $category1 = 'Исторический роман';
-        $category2 = 'Искусство';
         $query = new ElkBookSearchQuery(
             self::INDEX_NAME,
-            title: $title,
-            category: $category1,
-            lessThanPrice: $lessThanPrice,
-            graterThanPrice: $graterThanPrice,
-            shopName: 'Мира',
+            title: $searchArgs['title'] ?? null,
+            category: $searchArgs['category'] ?? null,
+            lessThanPrice: isset($searchArgs['ltePrice']) ? (int)$searchArgs['ltePrice'] : null,
+            graterThanPrice: isset($searchArgs['gtPrice']) ? (int)$searchArgs['gtPrice'] : null,
+            shopName: $searchArgs['shopName'] ?? null,
         );
 
         $result = $this->repository->search($query);

@@ -26,6 +26,20 @@ docker compose up -d --build
 4) Установите зависимости после успешного запуска проекта:
 
 ```bash
-docker compose exec server composer install
-docker compose exec client composer install
+docker compose exec app composer install
+```
+
+5) Пример запроса на поиск:
+- title - наименование книги;
+- category - категория книги;
+- shopName - имя магазина;
+- gtPrice - нижняя граница цены;
+- ltePrice - верхняя граница цены.
+
+Можно передать любое количество опций в команду.
+При первом запросе результат может быть пустым, 
+т.к. сначала будет запущено создание индекса и загрузка в него дынных.
+
+```bash
+php app.php --title 'Жутки' --category 'Искусство' --gtPrice 7000 --ltePrice 9000 --shopName 'Мира'
 ```
