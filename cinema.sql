@@ -1,5 +1,5 @@
 CREATE TABLE tbl_film (
-	"id" INT NOT NULL,
+	"id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"title" varchar(255) NOT NULL,
 	"description" text NOT NULL,
 	"duration" INT NOT NULL,
@@ -7,24 +7,25 @@ CREATE TABLE tbl_film (
 );
 
 CREATE TABLE tbl_hall (
-	"id" INT NOT NULL,
+	"id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"name" varchar(255) NOT NULL,
 	CONSTRAINT "tbl_hall_pkey" PRIMARY KEY ("id")
 );
 
 
 CREATE TABLE tbl_place (
-	"id" INT NOT NULL,
+	"id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"hall_id" INT NOT NULL,
 	"row" INT NOT NULL,
 	"col" INT NOT NULL,
+	"markup" INT NOT NULL DEFAULT 0,
 	CONSTRAINT "tbl_place_pkey" PRIMARY KEY ("id"),
 	CONSTRAINT "tbl_place_hall_id_fkey" FOREIGN KEY ("hall_id") REFERENCES tbl_hall("id")
 );
 
 
 CREATE TABLE tbl_show (
-	"id" INT NOT NULL,
+	"id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"film_id" INT NOT NULL,
 	"hall_id" INT NOT NULL,
 	"date" date NOT NULL,
@@ -37,12 +38,11 @@ CREATE TABLE tbl_show (
 );
 
 CREATE TABLE tbl_ticket (
-	id INT NOT NULL,
-	show_id INT NOT NULL,
-	place_id INT NOT NULL,
-	price money NOT NULL,
-	paid bool NOT NULL DEFAULT false,
-	booked bool NOT NULL DEFAULT false,
+	"id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+	"show_id" INT NOT NULL,
+	"place_id" INT NOT NULL,
+	"price" money NOT NULL,
+	"paid" bool NOT NULL DEFAULT false,
 	CONSTRAINT tbl_ticket_pkey PRIMARY KEY (id),
 	CONSTRAINT tbl_ticket_place_id_fkey FOREIGN KEY (place_id) REFERENCES tbl_place(id),
 	CONSTRAINT tbl_ticket_show_id_fkey FOREIGN KEY (show_id) REFERENCES tbl_show(id)
