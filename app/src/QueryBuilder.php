@@ -27,7 +27,7 @@ class QueryBuilder
      */
     public function queryBuilder(array $searchData): array
     {
-        if(!$this->client->isIndex($this->index)) {
+        if (!$this->client->isIndex($this->index)) {
             $data = dirname(__FILE__, 3) . "/books.json";
             $this->client->createIndex($this->index);
             $this->client->bulk($data);
@@ -44,7 +44,7 @@ class QueryBuilder
             'bool' => [
                 'must' => [
                     ['match' => ['title' => ['query' => $searchData['search_string'], 'fuzziness' => 'auto']]],
-                    ['match' => ['category' => ['query'=> $searchData['category'], 'fuzziness' => 'auto']]]
+                    ['match' => ['category' => ['query' => $searchData['category'], 'fuzziness' => 'auto']]]
                 ],
                 'filter' => [
                     ['range' => ['stock.stock' => ['gte' => 0]]],

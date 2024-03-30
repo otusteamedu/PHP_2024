@@ -44,7 +44,7 @@ class Base
             $stock = array_sum(array_column($item['_source']['stock'], 'stock'));
             $title = mb_strimwidth($item['_source']['title'], 0, 30, "...");
 
-            printf('%-15s%-15s%-30s', $item['_source']['sku'], $stock, $title );
+            printf('%-15s%-15s%-30s', $item['_source']['sku'], $stock, $title);
             echo PHP_EOL;;
         }
     }

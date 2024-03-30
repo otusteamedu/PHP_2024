@@ -1,3 +1,7 @@
+{"create":{"_index":"otus-shop","_id":"400-000"}}
+{"title":"Зерновой кофе","sku":"400-000","category":"Сопутствующий товар","price":100,"stock":[{"shop":"Мира","stock":17},{"shop":"Ленина","stock":1}]}
+{"create":{"_index":"otus-shop","_id":"400-001"}}
+{"title":"Растворимый кофе","sku":"400-001","category":"Сопутствующий товар","price":50,"stock":[{"shop":"Мира","stock":17},{"shop":"Ленина","stock":1}]}
 {"create":{"_index":"otus-shop","_id":"500-000"}}
 {"title":"Кто подставил поручика Ржевского на Луне","sku":"500-000","category":"Исторический роман","price":3761,"stock":[{"shop":"Мира","stock":17},{"shop":"Ленина","stock":1}]}
 {"create":{"_index":"otus-shop","_id":"500-001"}}

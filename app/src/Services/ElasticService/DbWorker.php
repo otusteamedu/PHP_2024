@@ -89,7 +89,6 @@ class DbWorker
             ],
         ];
         return $this->client->index($params)->asBool();
-
     }
 
     /**
