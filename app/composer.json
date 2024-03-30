@@ -7,6 +7,13 @@
         }
     },
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.2",
+        "ext-redis": "*",
+        "elasticsearch/elasticsearch": "^8.12"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
