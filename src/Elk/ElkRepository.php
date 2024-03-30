@@ -105,63 +105,33 @@ class ElkRepository
             $baseQuery['body']['query']['bool']['filter'][] = $range;
         }
 
-        return $this->client->search([
-            'index' => $query->getIndexName(),
-            'body' => [
-                'query' => [
-                    'bool' => [
-                        'must' => [
-                            [
-                                'match' => [
-                                    'title' => [
-                                        'query' => $query->getTitle(),
-                                        'fuzziness' => 'AUTO',
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'filter' => [
-                            [
-                                'range' => [
-                                    'price' => [
-                                        'gte' => $query->getGraterThanPrice(),
-                                        'lt' => $query->getLessThanPrice(),
-                                    ],
-                                ],
-                            ],
-                            [
-                                'nested' => [
-                                    'path' =>'stock',
-                                    'query' => [
-                                        'bool' => [
-                                           'filter' => [
-                                                [
-                                                   'range' => [
-                                                       'stock.stock' => [
-                                                           'gte' => 0,
-                                                       ],
-                                                    ],
-                                                ],
-                                               [
-                                                   'term' => [
-                                                       'stock.shop' => $query->getShopName(),
-                                                   ],
-                                               ]
-                                            ],
-
+        if (!is_null($query->getShopName())) {
+            $baseQuery['body']['query']['bool']['filter'][] = [
+                'nested' => [
+                    'path' =>'stock',
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'range' => [
+                                        'stock.stock' => [
+                                            'gt' => 0,
                                         ],
                                     ],
                                 ],
+                                [
+                                    'term' => [
+                                        'stock.shop' => $query->getShopName(),
+                                    ],
+                                ]
                             ],
-                            [
-                                'term' => [
-                                    'category' => $query->getCategory(),
-                                ],
-                            ],
+
                         ],
                     ],
                 ],
-            ],
-        ]);
+            ];
+        }
+
+        return $this->client->search($baseQuery);
     }
 }
