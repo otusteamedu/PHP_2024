@@ -9,6 +9,8 @@ CREATE TABLE tbl_film (
 CREATE TABLE tbl_hall (
 	"id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"name" varchar(255) NOT NULL,
+    "rows" INT not null,
+	"cols" INT not null,
 	CONSTRAINT "tbl_hall_pkey" PRIMARY KEY ("id")
 );
 
@@ -31,6 +33,7 @@ CREATE TABLE tbl_show (
 	"date" date NOT NULL,
 	"time_start" timestamp NOT NULL,
 	"time_end" timestamp NOT NULL,
+    "price" money NOT NULL,
 	CONSTRAINT "no_time_range_overlap" EXCLUDE USING gist (int4range("hall_id", "hall_id", '[]'::text) WITH =, tsrange("time_start", "time_end", '[]'::text) WITH &&),
 	CONSTRAINT "tbl_show_pkey" PRIMARY KEY ("id"),
 	CONSTRAINT "tbl_show_film_id_fkey" FOREIGN KEY ("film_id") REFERENCES tbl_film("id"),
