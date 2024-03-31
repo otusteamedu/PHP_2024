@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+
+  mariadb:
+    image: mariadb
+    restart: always
+    hostname: mariadb
+    container_name: mariadb-hw8
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+    volumes:
+      - data:/var/lib/mysql
+      - ./docker/mariadb:/docker-entrypoint-initdb.d
+
+volumes:
+  data:
