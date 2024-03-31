@@ -24,7 +24,6 @@ object tbl_place {
     + hall_id: INT
     + row: INT
     + col: INT
-    + markup: INT
     --
     PK tbl_place_pkey (id)
     FK tbl_place_hall_id_fkey (hall_id) REFERENCES tbl_hall(id)
@@ -34,7 +33,6 @@ object tbl_show {
     + id: INT
     + film_id: INT
     + hall_id: INT
-    + base_price: MONEY
     + date: DATE
     + time_start: TIMESTAMP
     + time_end: TIMESTAMP
@@ -44,7 +42,7 @@ object tbl_show {
     FK tbl_show_hall_id_fkey (hall_id) REFERENCES tbl_hall(id)
 }
 
-entity "tbl_price" {
+object "tbl_price" {
     + id : INT
     + show_id : INT
     + place_id : INT
@@ -72,5 +70,6 @@ tbl_hall::id ||--o{ tbl_show::hall_id
 tbl_hall::id ||--o{ tbl_place::hall_id
 tbl_place::id ||--o{ tbl_price::place_id
 tbl_show::id ||--o{ tbl_price::show_id
-tbl_price::show_id ||--|| tbl_ticket::show_id
+tbl_price::show_id ||..|| tbl_ticket::show_id
+tbl_price::place_id ||..|| tbl_ticket::place_id
 @enduml

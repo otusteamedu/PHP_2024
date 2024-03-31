@@ -28,29 +28,28 @@ VALUES
 	 ('Зал 4', (RANDOM() * 6 + 8)::integer, (RANDOM() * 6 + 8)::integer);
 
 
-INSERT INTO tbl_place (hall_id,row,col,markup)
+INSERT INTO tbl_place (hall_id,row,col)
 SELECT
     th.id as hall_id,
     tr.num AS row,
-    tc.num AS col,
-    ((RANDOM() * 30 + 10)::integer) as markup
+    tc.num AS col
 FROM
     tbl_hall th,
     LATERAL (SELECT generate_series(1, th.rows) AS num) AS tr,
     LATERAL (SELECT generate_series(1, th.cols) AS num) AS tc;
 
 
-INSERT INTO tbl_show (film_id,hall_id,"date",time_start,time_end, base_price) VALUES
-	 (1,1,'2024-04-01','2024-04-01 09:00:00','2024-04-01 11:16:00', ((RANDOM() * 40 + 20)::integer)::money),
-	 (2,1,'2024-04-02','2024-04-01 13:30:00','2024-04-01 16:08:00', ((RANDOM() * 40 + 20)::integer)::money),
-	 (1,1,'2024-04-04','2024-04-01 20:00:00','2024-04-01 22:16:00', ((RANDOM() * 40 + 20)::integer)::money),
-	 (3,2,'2024-04-03','2024-04-01 17:45:00','2024-04-01 20:59:00', ((RANDOM() * 40 + 20)::integer)::money);
+INSERT INTO tbl_show (film_id,hall_id,"date",time_start,time_end) VALUES
+	 (1,1,'2024-04-01','2024-04-01 09:00:00','2024-04-01 11:16:00'),
+	 (2,1,'2024-04-02','2024-04-01 13:30:00','2024-04-01 16:08:00'),
+	 (1,1,'2024-04-04','2024-04-01 20:00:00','2024-04-01 22:16:00'),
+	 (3,2,'2024-04-03','2024-04-01 17:45:00','2024-04-01 20:59:00');
 
 INSERT INTO tbl_price (show_id,place_id,price)
 SELECT
     ts.id as show_id,
     tp.id as place_id,
-	ceil ((ts.base_price * (1+(tp.markup::numeric / 100)))::numeric)::money AS price
+	((RANDOM() * 40 + 20)::integer)::money AS price
     FROM tbl_show ts
     left join tbl_place tp on tp.hall_id = ts.hall_id;
 
