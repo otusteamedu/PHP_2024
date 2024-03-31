@@ -11,9 +11,6 @@ use Elastic\Elasticsearch\Exception\ServerResponseException;
 
 class ElkService
 {
-    private const INDEX_NAME = 'otus-shop';
-    private const INDEX_ALIAS = 'books';
-
     public function __construct(
         private readonly ElkRepository $repository,
         private readonly ElkConsoleView $view,
@@ -28,8 +25,8 @@ class ElkService
     public function createAndFillBooksIndex(string $dataPath): void
     {
         $params = [
-            'index' => self::INDEX_NAME,
-            'alias' => self::INDEX_ALIAS,
+            'index' => ElkBookDictionary::BOOK_INDEX_NAME,
+            'alias' => ElkBookDictionary::BOOK_INDEX_ALIAS,
             'body' => [
                 'settings' => [
                     'number_of_shards' => 1,
@@ -73,7 +70,7 @@ class ElkService
             ],
         ];
 
-        $this->repository->createIndex(self::INDEX_NAME, $params);
+        $this->repository->createIndex(ElkBookDictionary::BOOK_INDEX_NAME, $params);
         // Заполняем индекс данными для тестирования.
 
         $bulkData = file_get_contents($dataPath);
@@ -101,7 +98,7 @@ class ElkService
     public function search(array $searchArgs): void
     {
         $query = new ElkBookSearchQuery(
-            self::INDEX_NAME,
+            indexName: $searchArgs['indexName'],
             title: $searchArgs['title'] ?? null,
             category: $searchArgs['category'] ?? null,
             lessThanPrice: isset($searchArgs['ltePrice']) ? (int)$searchArgs['ltePrice'] : null,

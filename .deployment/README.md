@@ -30,6 +30,7 @@ docker compose exec app composer install
 ```
 
 5) Пример запроса на поиск:
+- indexName - имя индекса, по которому будет осуществлен поиск;
 - title - наименование книги;
 - category - категория книги;
 - shopName - имя магазина;
@@ -41,5 +42,5 @@ docker compose exec app composer install
 т.к. сначала будет запущено создание индекса и загрузка в него дынных.
 
 ```bash
-php app.php --title 'Жутки' --category 'Искусство' --gtPrice 7000 --ltePrice 9000 --shopName 'Мира'
+php app.php --indexName 'otus-shop' --title 'Жутки' --category 'Искусство' --gtPrice 7000 --ltePrice 9000 --shopName 'Мира'
 ```

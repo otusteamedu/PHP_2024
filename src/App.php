@@ -8,6 +8,7 @@ use Alogachev\Homework\Elk\ElkConsoleView;
 use Alogachev\Homework\Elk\ElkRepository;
 use Alogachev\Homework\Elk\ElkService;
 use Alogachev\Homework\Exception\ElkRedStatusException;
+use Alogachev\Homework\Exception\EmptyIndexNameException;
 use Alogachev\Homework\Exception\TestIndexDataNotFoundException;
 use DI\Container;
 use Dotenv\Dotenv;
@@ -109,6 +110,10 @@ final class App
             if (str_starts_with($arg, '--')) {
                 $resolved[substr($arg, 2)] = $args[$key + 1];
             }
+        }
+
+        if (!isset($resolved['indexName'])) {
+            throw new EmptyIndexNameException();
         }
 
         return $resolved;
