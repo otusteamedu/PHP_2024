@@ -40,21 +40,32 @@ FROM
     LATERAL (SELECT generate_series(1, th.cols) AS num) AS tc;
 
 
-INSERT INTO tbl_show (film_id,hall_id,"date",time_start,time_end, price) VALUES
+INSERT INTO tbl_show (film_id,hall_id,"date",time_start,time_end, base_price) VALUES
 	 (1,1,'2024-04-01','2024-04-01 09:00:00','2024-04-01 11:16:00', ((RANDOM() * 40 + 20)::integer)::money),
 	 (2,1,'2024-04-02','2024-04-01 13:30:00','2024-04-01 16:08:00', ((RANDOM() * 40 + 20)::integer)::money),
 	 (1,1,'2024-04-04','2024-04-01 20:00:00','2024-04-01 22:16:00', ((RANDOM() * 40 + 20)::integer)::money),
 	 (3,2,'2024-04-03','2024-04-01 17:45:00','2024-04-01 20:59:00', ((RANDOM() * 40 + 20)::integer)::money);
 
-INSERT INTO tbl_ticket (show_id,place_id,price,paid)
-SELECT * FROM (
+INSERT INTO tbl_price (show_id,place_id,price)
 SELECT
     ts.id as show_id,
     tp.id as place_id,
-	ceil ((ts.price * (1+(tp.markup::numeric / 100)))::numeric)::money AS price,
-    RANDOM() < 0.5 AS paid
+	ceil ((ts.base_price * (1+(tp.markup::numeric / 100)))::numeric)::money AS price
     FROM tbl_show ts
-    left join tbl_place tp on tp.hall_id = ts.hall_id
+    left join tbl_place tp on tp.hall_id = ts.hall_id;
+
+
+INSERT INTO tbl_ticket (show_id,place_id,price,paid)
+SELECT * FROM (
+    SELECT
+        ts.id as show_id,
+        tp.id as place_id,
+        tpr.price as price,
+        RANDOM() < 0.5 AS paid
+        FROM tbl_show ts
+        left join tbl_place tp on tp.hall_id = ts.hall_id
+        left join
+            tbl_price tpr ON tpr.place_id = tp.id AND tpr.show_id = ts.id
 ) as tt
 WHERE tt.paid = true;
 

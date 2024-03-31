@@ -13,6 +13,8 @@ object tbl_film {
 object tbl_hall {
     + id: INT
     + name: VARCHAR(255)
+    + rows: INT
+    + cols: INT
     --
     PK tbl_hall_pkey (id)
 }
@@ -22,6 +24,7 @@ object tbl_place {
     + hall_id: INT
     + row: INT
     + col: INT
+    + markup: INT
     --
     PK tbl_place_pkey (id)
     FK tbl_place_hall_id_fkey (hall_id) REFERENCES tbl_hall(id)
@@ -31,6 +34,7 @@ object tbl_show {
     + id: INT
     + film_id: INT
     + hall_id: INT
+    + base_price: MONEY
     + date: DATE
     + time_start: TIMESTAMP
     + time_end: TIMESTAMP
@@ -40,22 +44,33 @@ object tbl_show {
     FK tbl_show_hall_id_fkey (hall_id) REFERENCES tbl_hall(id)
 }
 
+entity "tbl_price" {
+    + id : INT
+    + show_id : INT
+    + place_id : INT
+    + price : MONEY
+    --
+    PK tbl_price_pkey (id)
+    FK tbl_price_place_id_fkey (place_id) REFERENCES tbl_place(id)
+    FK tbl_price_show_id_fkey (show_id) REFERENCES tbl_show(id)
+    CONSTRAINT tbl_price_unique UNIQUE (place_id,show_id)
+}
+
 object tbl_ticket {
     + id: INT
     + show_id: INT
     + place_id: INT
     + price: MONEY
     + paid: BOOLEAN
-    + booked: BOOLEAN
     --
     PK tbl_ticket_pkey (id)
-    FK tbl_ticket_place_id_fkey (place_id) REFERENCES tbl_place(id)
-    FK tbl_ticket_show_id_fkey (show_id) REFERENCES tbl_show(id)
+    CONSTRAINT tbl_price_unique UNIQUE (place_id,show_id)
 }
 
 tbl_film::id ||--o{ tbl_show::film_id
 tbl_hall::id ||--o{ tbl_show::hall_id
 tbl_hall::id ||--o{ tbl_place::hall_id
-tbl_place::id ||--o{ tbl_ticket::place_id
-tbl_show::id ||--o{ tbl_ticket::show_id
+tbl_place::id ||--o{ tbl_price::place_id
+tbl_show::id ||--o{ tbl_price::show_id
+tbl_price::show_id ||--|| tbl_ticket::show_id
 @enduml
