@@ -21,8 +21,8 @@ use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-
 use RuntimeException;
+
 use function DI\create;
 use function DI\get;
 

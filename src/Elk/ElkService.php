@@ -15,10 +15,9 @@ class ElkService
     private const INDEX_ALIAS = 'books';
 
     public function __construct(
-        private readonly ElkRepository  $repository,
+        private readonly ElkRepository $repository,
         private readonly ElkConsoleView $view,
-    )
-    {
+    ) {
     }
 
     /**

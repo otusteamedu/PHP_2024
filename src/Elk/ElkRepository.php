@@ -14,8 +14,7 @@ class ElkRepository
 {
     public function __construct(
         private readonly Client $client
-    )
-    {
+    ) {
     }
 
     /**
@@ -108,7 +107,7 @@ class ElkRepository
         if (!is_null($query->getShopName())) {
             $baseQuery['body']['query']['bool']['filter'][] = [
                 'nested' => [
-                    'path' =>'stock',
+                    'path' => 'stock',
                     'query' => [
                         'bool' => [
                             'filter' => [
