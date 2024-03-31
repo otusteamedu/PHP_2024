@@ -45,5 +45,6 @@ CREATE TABLE tbl_ticket (
 	"paid" bool NOT NULL DEFAULT false,
 	CONSTRAINT tbl_ticket_pkey PRIMARY KEY (id),
 	CONSTRAINT tbl_ticket_place_id_fkey FOREIGN KEY (place_id) REFERENCES tbl_place(id),
-	CONSTRAINT tbl_ticket_show_id_fkey FOREIGN KEY (show_id) REFERENCES tbl_show(id)
+	CONSTRAINT tbl_ticket_show_id_fkey FOREIGN KEY (show_id) REFERENCES tbl_show(id),
+    CONSTRAINT tbl_ticket_unique UNIQUE (place_id,show_id)
 );
