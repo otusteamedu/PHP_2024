@@ -1,0 +1,3 @@
+"table_name"	"index_name"	"index_scan_count"	"index_size"	"table_reads_index_count"	"table_reads_seq_count"	"table_reads_count"	"table_writes_count"	"table_size"
+"tickets"	"tickets_sessions_price"	2	"226 MB"	2	89	91	10000000	"574 MB"
+"tickets"	"ticket_seat_session_id"	0	"294 MB"	2	89	91	10000000	"574 MB"
