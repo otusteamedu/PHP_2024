@@ -1,3 +1,17 @@
+CREATE DATABASE `database` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+
+CREATE TABLE IF NOT EXISTS `country` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `genre` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE IF NOT EXISTS `group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
@@ -23,6 +37,23 @@ CREATE TABLE IF NOT EXISTS `hall` (
 CREATE TABLE IF NOT EXISTS `movie` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `duration` tinyint(4) NOT NULL,
+  `year` tinyint(4) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `movie_countries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `movie_id` int(10) unsigned NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `movie_genres` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `movie_id` int(10) unsigned NOT NULL,
+  `genre_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -39,7 +70,8 @@ CREATE TABLE IF NOT EXISTS `movie_margins` (
 CREATE TABLE IF NOT EXISTS `schedule` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `movie_id` int(10) unsigned NOT NULL,
-  `date` date NOT NULL,
+  `date_from` date NOT NULL,
+  `date_to` date NOT NULL,
   `hall_id` int(10) unsigned NOT NULL,
   `price` int(11) NOT NULL,
   PRIMARY KEY (`id`)
