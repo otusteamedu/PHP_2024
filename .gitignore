@@ -3,3 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+.env
+Makefile
+/config/http_ca.crt
+/.vscode/
