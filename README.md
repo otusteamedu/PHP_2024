@@ -1,3 +1,11 @@
-# PHP_2023
+# Book Shop
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+**Требования**
+
+- mbstring
+
+**Использование**
+
+```php
+./app --help
+```
