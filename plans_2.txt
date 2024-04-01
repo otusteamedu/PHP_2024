@@ -1,0 +1,18 @@
+explain SELECT min("Tikets"."price"),max("Tikets"."price") FROM "Tikets" WHERE "Tikets"."session_id" = 10026
+------------------------------------------------------------------------------------------------------------------
+
+"QUERY PLAN"
+"Aggregate  (cost=500.59..500.60 rows=1 width=16)"
+"  ->  Seq Scan on ""Tikets""  (cost=0.00..500.55 rows=8 width=8)"
+"        Filter: (session_id = 10026)"
+
+Запрос выполнен успешно. Общее время выполнения: 143 msec.
+
+-----------------------------------------------------------------------------------------------------------------
+
+"QUERY PLAN"
+"Aggregate  (cost=8.47..8.48 rows=1 width=16)"
+"  ->  Index Scan using ""fki_fk_Tikets_1"" on ""Tikets""  (cost=0.29..8.43 rows=8 width=8)"
+"        Index Cond: (session_id = 10026)"
+
+Запрос выполнен успешно. Общее время выполнения: 79 msec.
