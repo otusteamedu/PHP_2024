@@ -14,8 +14,7 @@ $dotenv->load();
 
 try {
     $storage = new \hw15\redis\Storage();
-    $creator = new \hw15\Creator($storage);
-    echo $creator->execute() . PHP_EOL;
+    echo (new \hw15\Creator($storage))->execute() . PHP_EOL;
 } catch (\Throwable $e) {
     echo $e->getMessage();
 }
