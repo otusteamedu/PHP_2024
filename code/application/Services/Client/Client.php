@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Services\Client;
 
-use App\Services\Config\Config;
 use App\Services\Socket\Socket;
 
 class Client extends Socket
@@ -13,7 +12,7 @@ class Client extends Socket
         $socket = $this->prepareClient();
 
         echo $this->read($socket);
-        $exit = Config::getSockConst("MSG_EXIT");
+        $exit = ($this->socketConst)["MSG_EXIT"];
         while (true) {
 
             $line = readline(PHP_EOL."Введите сообщение:  ");

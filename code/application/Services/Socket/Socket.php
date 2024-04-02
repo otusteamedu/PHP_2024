@@ -5,8 +5,17 @@ namespace App\Services\Socket;
 
 use App\Services\Config\Config;
 
-abstract class Socket
+class Socket
 {
+
+    protected string $socketPath;
+    protected array $socketConst;
+
+    public function __construct(Config $config)
+    {
+        $this->socketPath = $config->getSocketPath();
+        $this->socketConst = $config->getSockConst();
+    }
 
     private function create(): bool|\Socket
     {
@@ -21,9 +30,9 @@ abstract class Socket
     protected function prepareClient(): bool|\Socket
     {
         $socket = $this->create();
-        $connection = socket_connect($socket, Config::getSocketPath());
-
-        if ($connection === false) {
+        try {
+            socket_connect($socket, $this->socketPath);
+        } catch (\Exception $e) {
             echo "Не удалось выполнить socket_connect().".PHP_EOL."Причина: " . socket_strerror(socket_last_error($socket)) .PHP_EOL;
             return false;
         }
@@ -39,7 +48,7 @@ abstract class Socket
 
     private function bind(): bool|\Socket
     {
-        $path = Config::getSocketPath();
+        $path = $this->socketPath;
         if (file_exists($path)) unlink($path);
         $socket = $this->create();
         socket_bind($socket,$path);

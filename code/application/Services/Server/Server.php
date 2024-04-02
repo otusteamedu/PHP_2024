@@ -3,16 +3,14 @@ declare(strict_types=1);
 
 namespace App\Services\Server;
 
-use App\Services\Config\Config;
 use App\Services\Socket\Socket;
 
 class Server extends Socket
 {
 
     public function run() {
-
         $socket = $this->prepareServer();
-        $exit = Config::getSockConst('MSG_EXIT');
+        $exit = ($this->socketConst)['MSG_EXIT'];
         do {
             if (($acceptedConnection = $this->accept($socket)) === false) {
                 break;
