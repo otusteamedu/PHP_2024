@@ -35,7 +35,7 @@ CREATE TABLE `film_entity`
 (
     `id`          int          NOT NULL AUTO_INCREMENT,
     `title`       varchar(150) NOT NULL,
-    `description` text COLLATE utf8mb4_unicode_ci,
+    `description` text,
     PRIMARY KEY (`id`)
 );
 
@@ -51,7 +51,7 @@ CREATE TABLE `film_attribute_values`
     `attribute_id` int NOT NULL,
     `v_int`        int            DEFAULT NULL,
     `v_date`       date           DEFAULT NULL,
-    `v_text`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    `v_text`       text,
     `v_numeric`    decimal(10, 0) DEFAULT NULL,
     `v_bool`       enum('true','false') DEFAULT NULL,
     PRIMARY KEY (`id`),
