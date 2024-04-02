@@ -7,6 +7,7 @@ namespace AleksandrOrlov\Php2024\Mappers;
 use AleksandrOrlov\Php2024\Entities\Hall;
 use AleksandrOrlov\Php2024\Entities\HallRow;
 use AleksandrOrlov\Php2024\Collections\HallRowsCollection;
+use Exception;
 use PDO;
 use PDOStatement;
 
@@ -18,8 +19,6 @@ class HallRowsMapper
 
     private PDOStatement $insertStatement;
 
-    private PDOStatement $updateStatement;
-
     private PDOStatement $deleteStatement;
 
     public function __construct(PDO $pdo)
@@ -30,9 +29,6 @@ class HallRowsMapper
         );
         $this->insertStatement = $pdo->prepare(
             'INSERT INTO hall_rows (hall_id, number, capacity) VALUES (?, ?, ?)'
-        );
-        $this->updateStatement = $pdo->prepare(
-            'UPDATE hall_rows SET hall_id = ?, number = ?, capacity = ? WHERE id = ?'
         );
         $this->deleteStatement = $pdo->prepare(
             'DELETE FROM hall_rows WHERE id = ?'
@@ -112,14 +108,33 @@ class HallRowsMapper
         );
     }
 
-    public function update(HallRow $hallRow): bool
+    public function update(array $values, array $fields): bool
     {
-        return $this->updateStatement->execute([
-            $hallRow->getHallId(),
-            $hallRow->getNumber(),
-            $hallRow->getCapacity(),
-            $hallRow->getId(),
-        ]);
+        if (empty($values['id'])) {
+            throw new Exception('Empty id');
+        }
+
+        foreach ($fields as $fieldName) {
+            if (isset($values[$fieldName])) {
+                $data[$fieldName] = $values[$fieldName];
+            }
+        }
+
+        if (empty($data)) {
+            return true;
+        }
+
+        $prepareFields = implode(', ', array_map(function ($key) {
+            return $key . ' = ?';
+        }, array_keys($data)));
+
+        $data['id'] = $values['id'];
+
+        $statement = $this->pdo->prepare(
+            "UPDATE hall_rows SET $prepareFields WHERE id = ?"
+        );
+
+        return $statement->execute(array_values($data));
     }
 
     public function delete(HallRow $hallRow): bool
