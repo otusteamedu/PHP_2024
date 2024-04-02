@@ -1,5 +1,3 @@
-DROP TABLE IF EXISTS `film_attributes_type`;
-
 CREATE TABLE `film_attributes_type`
 (
     `id`   int         NOT NULL AUTO_INCREMENT,
@@ -15,8 +13,6 @@ VALUES (1, 'bool'),
        (5, 'money'),
        (6, 'numeric'),
        (7, 'text');
-
-DROP TABLE IF EXISTS `film_attributes`;
 
 CREATE TABLE `film_attributes`
 (
@@ -35,8 +31,6 @@ VALUES (1, 'Рецензии критиков', 7),
        (4, 'Ника', 1),
        (5, 'Дата начала продажи билетов', 3);
 
-DROP TABLE IF EXISTS `film_entity`;
-
 CREATE TABLE `film_entity`
 (
     `id`          int          NOT NULL AUTO_INCREMENT,
@@ -49,8 +43,6 @@ INSERT INTO `film_entity` (`id`, `title`, `description`)
 VALUES (1, 'Аватар', 'Аватар'),
        (2, 'Один дома 1', 'Один дома 1'),
        (3, 'Один дома 2', 'Один дома 2');
-
-DROP TABLE IF EXISTS `film_attribute_values`;
 
 CREATE TABLE `film_attribute_values`
 (
@@ -81,7 +73,6 @@ VALUES (1, 1, 1, NULL, NULL, 'Фильм огонь', NULL, NULL),
        (8, 2, 5, NULL, '2024-03-28', NULL, NULL, NULL),
        (9, 3, 5, NULL, '2024-04-28', NULL, NULL, NULL);
 
-DROP VIEW IF EXISTS `films_analytic`;
 CREATE VIEW `films_analytic` (`title`, `type`, `name`, `value`)
 AS
 select `fe`.`title` AS `title`,
@@ -95,7 +86,6 @@ from (((`film_entity` `fe`
     join `film_attributes_type` `fat` on ((`fat`.`id` = `fa`.`attribute_type_id`)));
 
 
-DROP VIEW IF EXISTS `films_premiere`;
 CREATE VIEW `films_premiere` (`movie`, `actual_today`, `actual_later`)
 AS
 select `fe`.`title`                                                       AS `title`,
