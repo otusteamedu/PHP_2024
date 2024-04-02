@@ -8,4 +8,6 @@ class Dictionary
 {
     public const TEST = 'test';
     public const SEARCH = 'search';
+    public const DELETE = 'delete';
+    public const INIT = 'init';
 }

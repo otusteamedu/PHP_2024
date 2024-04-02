@@ -2,7 +2,14 @@
 
 namespace hw15;
 
+
 interface StorageInterface
 {
-    public function exec(string $method, string $value): string;
+    public function add(Event $eventDto);
+
+    public function get(): array;
+
+    public function test();
+
+    public function delete();
 }
