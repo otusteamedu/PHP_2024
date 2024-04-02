@@ -54,35 +54,41 @@ DROP TABLE IF EXISTS `film_attribute_values`;
 
 CREATE TABLE `film_attribute_values`
 (
-    `id`           int         NOT NULL AUTO_INCREMENT,
-    `value`        varchar(45) NOT NULL,
-    `entity_id`    int         NOT NULL,
-    `attribute_id` int         NOT NULL,
+    `id`           int NOT NULL AUTO_INCREMENT,
+    `entity_id`    int NOT NULL,
+    `attribute_id` int NOT NULL,
+    `v_int`        int            DEFAULT NULL,
+    `v_date`       date           DEFAULT NULL,
+    `v_text`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    `v_numeric`    decimal(10, 0) DEFAULT NULL,
+    `v_bool`       enum('true','false') DEFAULT NULL,
     PRIMARY KEY (`id`),
-    KEY `fk_entity_id_idx` (`entity_id`),
-    KEY `fk_attribute_id_idx` (`attribute_id`),
+    KEY            `fk_entity_id_idx` (`entity_id`),
+    KEY            `fk_attribute_id_idx` (`attribute_id`),
     CONSTRAINT `fk_attribute_id` FOREIGN KEY (`attribute_id`) REFERENCES `film_attributes` (`id`),
     CONSTRAINT `fk_entity_id` FOREIGN KEY (`entity_id`) REFERENCES `film_entity` (`id`)
 );
 
-INSERT INTO `film_attribute_values` (`id`, `value`, `entity_id`, `attribute_id`)
-VALUES (1, 'Фильм огонь', 1, 1),
-       (2, 'Фильм не очень', 2, 1),
-       (3, 'Фильм на один раз посмотреть', 3, 1),
-       (4, 'true', 1, 2),
-       (5, 'false', 2, 2),
-       (6, 'false', 3, 2),
-       (7, '2024-02-28', 1, 5),
-       (8, '2024-03-28', 2, 5),
-       (9, '2024-04-28', 3, 5);
+INSERT INTO `film_attribute_values` (`id`, `entity_id`, `attribute_id`, `v_int`, `v_date`, `v_text`, `v_numeric`,
+                                     `v_bool`)
+VALUES (1, 1, 1, NULL, NULL, 'Фильм огонь', NULL, NULL),
+       (2, 2, 1, NULL, NULL, 'Фильм не очень', NULL, NULL),
+       (3, 3, 1, NULL, NULL, 'Фильм на один раз посмотреть', NULL, NULL),
+       (4, 1, 2, NULL, NULL, NULL, NULL, 'true'),
+       (5, 2, 2, NULL, NULL, NULL, NULL, 'false'),
+       (6, 3, 2, NULL, NULL, NULL, NULL, 'false'),
+       (7, 1, 5, NULL, '2024-02-28', NULL, NULL, NULL),
+       (8, 2, 5, NULL, '2024-03-28', NULL, NULL, NULL),
+       (9, 3, 5, NULL, '2024-04-28', NULL, NULL, NULL);
 
 DROP VIEW IF EXISTS `films_analytic`;
 CREATE VIEW `films_analytic` (`title`, `type`, `name`, `value`)
 AS
-select `fe`.`title`  AS `title`,
-       `fat`.`type`  AS `type`,
-       `fa`.`name`   AS `name`,
-       `fav`.`value` AS `value`
+select `fe`.`title` AS `title`,
+       `fat`.`type` AS `type`,
+       `fa`.`name`  AS `name`,
+       COALESCE(fav.v_int, fav.v_text, fav.v_date, fav.v_numeric,
+                fav.v_bool) as value
 from (((`film_entity` `fe`
     join `film_attribute_values` `fav` on ((`fe`.`id` = `fav`.`entity_id`)))
     join `film_attributes` `fa` on ((`fav`.`attribute_id` = `fa`.`id`)))
@@ -90,16 +96,15 @@ from (((`film_entity` `fe`
 
 
 DROP VIEW IF EXISTS `films_premiere`;
-CREATE VIEW `films_premiere` (`movie`, `actual_today`, `actual_later`, `date_premiere`)
+CREATE VIEW `films_premiere` (`movie`, `actual_today`, `actual_later`)
 AS
-select `fe`.`title`                                                      AS `title`,
-       if((`fav`.`value` <= curdate()), 'Да', 'Нет')                     AS `actual_today`,
-       if((`fav`.`value` >= (curdate() + interval 20 day)), 'Да', 'Нет') AS `actual_later`,
-       `fav`.`value`                                                     AS `value`
+select `fe`.`title`                                                       AS `title`,
+       if((`fav`.`v_date` <= curdate()), 'Да', 'Нет')                     AS `actual_today`,
+       if((`fav`.`v_date` >= (curdate() + interval 20 day)), 'Да', 'Нет') AS `actual_later`
 from ((`film_entity` `fe`
     join `film_attribute_values` `fav` on ((`fe`.`id` = `fav`.`entity_id`)))
     join `film_attributes` `fa` on ((`fav`.`attribute_id` = `fa`.`id`)))
-where (`fa`.`id` = 5);
+where (`fav`.`v_date` IS NOT NULL);
 
 SELECT *
 FROM films_premiere;
