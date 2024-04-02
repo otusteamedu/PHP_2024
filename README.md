@@ -1,3 +1,5 @@
-# PHP_2023
-
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+``` 
+docker compose up -d
+docker compose exec db bash
+psql -U postgres
+```
