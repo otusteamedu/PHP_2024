@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres
+    container_name: postgres_docker
+    ports:
+      - "8001:5432"
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: example
