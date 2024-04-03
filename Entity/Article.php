@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace AKagirova\Hw17;
+
 class Article
 {
     private ?string $title = null;

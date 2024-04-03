@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace AKagirova\Hw17;
+
 class ArticleActiveRecord
 {
     private ?int $id = null;
