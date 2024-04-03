@@ -29,99 +29,24 @@ make start-otus
 ```
 
 ##Usage 
-```
-docker-compose run app php frontend/web/index.php init
-docker-compose run app php frontend/web/index.php test
-docker-compose run app php frontend/web/index.php search '{
-    "query": {
-        "match": {
-            "title": "Кто подставил Терминатора"
-        }
-    }
-}'
-docker-compose run app php frontend/web/index.php search '{
-    "query": {
-        "match": {    
-            "title": {
-                "query": "Терменатора",
-                "fuzziness": "auto"
-            } 
-        }
-    }
-}'
-docker-compose run app php frontend/web/index.php search '{
-    "query": {
-        "bool": {
-            "must": [
-                {
-                    "match": {
-                        "title": {
-                        "query": "РыцОри",
-                        "fuzziness": "auto"
-                    }
-                    }
-                }
-            ],
-            "filter": [
-                {
-                    "range": {
-                        "price": {
-                            "lt": 2000
-                        }
-                    }
-                }
-            ]
-        }
-    }
-}'
-```
-or
 
 ```
 docker-compose exec app bash
-php frontend/web/index.php init
 php frontend/web/index.php test
+php frontend/web/index.php init
+
 php frontend/web/index.php search '{
-    "query": {
-        "match": {
-            "title": "Кто подставил Терминатора"
-        }
-    }
-}'
-php frontend/web/index.php search '{
-    "query": {
-        "match": {    
-            "title": {
-                "query": "Терменатора",
-                "fuzziness": "auto"
-            } 
-        }
-    }
-}'
-php frontend/web/index.php search '{
-    "query": {
-        "bool": {
-            "must": [
-                {
-                    "match": {
-                        "title": {
-                        "query": "РыцОри",
-                        "fuzziness": "auto"
-                    }
-                    }
-                }
-            ],
-            "filter": [
-                {
-                    "range": {
-                        "price": {
-                            "lt": 2000
-                        }
-                    }
-                }
-            ]
-        }
-    }
+  "params": {
+    "param1":1,
+    "param2":2
+  }
 }'
 
+
+```
+
+other commands
+
+```
+php frontend/web/index.php delete
 ```
