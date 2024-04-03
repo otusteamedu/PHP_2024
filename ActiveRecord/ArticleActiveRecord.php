@@ -50,7 +50,7 @@ class ArticleActiveRecord
         return $article;
     }
 
-    public function insert(Article $article): int
+    public function insert(Article $article)
     {
         if (ArticleIdentityMap::getId($article) != false) {
             throw new Exception('Такая статлья уже существует');
@@ -67,7 +67,7 @@ class ArticleActiveRecord
         return $this->id;
     }
 
-    public function update(Article $article): bool
+    public function update(Article $article)
     {
         if (($id = ArticleIdentityMap::getId($article)) == false) {
             throw new Exception('Нет статьи с id ' . $id);
@@ -80,7 +80,7 @@ class ArticleActiveRecord
         ]);
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id)
     {
         if (ArticleIdentityMap::getArticle($id) == false) {
             throw new Exception('Нет статьи с id ' . $id);

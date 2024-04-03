@@ -32,17 +32,17 @@ class Article
         return $this->authorId;
     }
 
-    public function setTitle(?string $title): void
+    public function setTitle(?string $title)
     {
         $this->title = $title;
     }
 
-    public function setText(?string $text): void
+    public function setText(?string $text)
     {
         $this->text = $text;
     }
 
-    public function setAuthorId(?int $authorId): void
+    public function setAuthorId(?int $authorId)
     {
         $this->authorId = $authorId;
     }
