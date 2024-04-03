@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace hw15\redis;
+namespace hw15\adapters;
 
-use hw15\Event;
-use hw15\StorageInterface;
+use hw15\entities\EventEntity;
 
 use \Redis;
 
-class Storage implements StorageInterface
+class RedisAdapter implements StorageInterface
 {
     private Redis $store;
 
@@ -43,12 +42,12 @@ class Storage implements StorageInterface
         return $this->store->ping('Test redis');
     }
 
-    public function add(Event $eventDto)
+    public function add(EventEntity $entity)
     {
         $this->store->zAdd(
             $this->key,
-            $eventDto->priority,
-            json_encode($eventDto)
+            $entity->priority,
+            json_encode($entity)
         );
     }
 }

@@ -13,8 +13,7 @@ $dotenv = Dotenv::createUnsafeImmutable($dirEnv);
 $dotenv->load();
 
 try {
-    $storage = new \hw15\redis\Storage();
-    echo (new \hw15\Creator($storage))->execute() . PHP_EOL;
+    echo (new \hw15\Creator())->execute() . PHP_EOL;
 } catch (\Throwable $e) {
     echo $e->getMessage();
 }
