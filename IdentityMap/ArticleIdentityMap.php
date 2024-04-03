@@ -20,7 +20,7 @@ class ArticleIdentityMap
     public static function getArticle($key)
     {
         $inst = self::getInstance();
-        if(isset($inst->articles[$key])){
+        if (isset($inst->articles[$key])) {
             return $inst->articles[$key];
         }
         return false;
