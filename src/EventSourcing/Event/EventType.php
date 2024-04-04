@@ -10,4 +10,9 @@ class EventType
         private readonly string $name,
     ) {
     }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
 }

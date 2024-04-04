@@ -15,4 +15,19 @@ class StoredEvent
         private readonly EventType $event,
     ) {
     }
+
+    public function priority(): string
+    {
+        return $this->priority;
+    }
+
+    public function conditions(): array
+    {
+        return $this->conditions;
+    }
+
+    public function event(): EventType
+    {
+        return $this->event;
+    }
 }

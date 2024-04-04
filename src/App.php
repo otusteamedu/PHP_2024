@@ -28,6 +28,8 @@ final class App
             $container = $this->resolveDI();
             $service = $container->get(EventSourcingService::class);
             $args = $this->resolveArgs();
+
+            call_user_func_array([$service, $args['action']], [$args]);
         } catch (RedisException $exception) {
             throw new RuntimeException(
                 "Ошибка подключения к Redis: " . $exception->getMessage(),
@@ -71,7 +73,16 @@ final class App
         $resolved = [];
         foreach ($args as $key => $arg) {
             if (str_starts_with($arg, '--')) {
-                $resolved[substr($arg, 2)] = $args[$key + 1];
+                $argValue = $args[$key + 1];
+                // Для аргументов массивов
+                if (str_starts_with($argValue, '[') && str_ends_with($argValue, ']')) {
+                    $argValue = explode(
+                        ' ',
+                        substr($argValue, 1, strlen($argValue) - 2)
+                    );
+                }
+
+                $resolved[substr($arg, 2)] = $argValue;
             }
         }
 
