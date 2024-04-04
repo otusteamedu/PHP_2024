@@ -2,8 +2,28 @@ version: "3.9"
 services:
   postgres:
     image: postgres:13.3
+    container_name: postgres
     environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "111"
+      POSTGRES_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      POSTGRES_DATABASE: "${MYSQL_DATABASE}"
+      POSTGRES_USER: "${MYSQL_USER}"
+      POSTGRES_PASSWORD: "${MYSQL_PASSWORD}"
     ports:
       - "5432:5432"
+
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - app-network
