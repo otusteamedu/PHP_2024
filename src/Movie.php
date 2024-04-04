@@ -17,8 +17,7 @@ class Movie
         #[DBField('title')] private $title,
         #[DBField('director')] private string $director,
         #[DBField('release_year')] private int $releaseYear
-    )
-    {
+    ) {
     }
 
     public function getId(): int
