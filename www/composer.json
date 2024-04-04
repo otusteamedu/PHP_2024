@@ -1,9 +1,9 @@
 {
-  "name": "hukimato/redis-app",
+  "name": "hukimato/mysite-app",
   "type": "project",
   "autoload": {
     "psr-4": {
-      "Hukimato\\RedisApp\\": "app/"
+      "Hukimato\\App\\": "app/"
     }
   },
   "require": {}

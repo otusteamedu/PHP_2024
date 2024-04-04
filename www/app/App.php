@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\RedisApp;
+namespace Hukimato\App;
 
-use Hukimato\RedisApp\Actions\ActionInterface;
-use Hukimato\RedisApp\Routers\Router;
+use Hukimato\App\Actions\ActionInterface;
+use Hukimato\App\Routers\Router;
 use Throwable;
 
 class App
@@ -19,6 +19,7 @@ class App
          * @var $actionClass ActionInterface
          */
         $actionClass = Router::route();
+        var_dump($actionClass);die;
         (new $actionClass)->run();
     }
 }

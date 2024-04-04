@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\RedisApp\Views;
+namespace Hukimato\App\Views;
 
 class JsonView
 {

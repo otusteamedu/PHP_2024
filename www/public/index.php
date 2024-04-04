@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use Hukimato\RedisApp\App;
+use Hukimato\App\App;
 
 try {
     $app = new App();

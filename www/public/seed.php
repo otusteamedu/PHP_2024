@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Hukimato\RedisApp\Models\Events\Event;
+use Hukimato\RedisApp\Models\Events\User;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -29,5 +29,5 @@ $redis->connect('redis');
 $redis->auth(['default', 'hukimato']);
 
 for ($i = 0; $i < 100; $i++) {
-    (new Event(randEvent()))->save();
+    (new User(randEvent()))->save();
 }

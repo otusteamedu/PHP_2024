@@ -1,7 +1,7 @@
 FROM nginx:1.24-alpine
 LABEL authors="hukimato"
 
-COPY ./redis.local.conf /etc/nginx/conf.d/mysite.local.conf
+COPY ./mysite.local.conf /etc/nginx/conf.d/mysite.local.conf
 
 WORKDIR /www
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\RedisApp\ParamsHandlers;
+namespace Hukimato\App\ParamsHandlers;
 
 interface ParamsHandlerInterface
 {

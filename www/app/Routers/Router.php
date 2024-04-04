@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\RedisApp\Routers;
+namespace Hukimato\App\Routers;
 
-use Hukimato\RedisApp\Actions\ActionInterface;
-use Hukimato\RedisApp\Actions\Events\DeleteAction;
-use Hukimato\RedisApp\Actions\Events\GetAction;
-use Hukimato\RedisApp\Actions\Events\PostAction;
+use Hukimato\App\Actions\Users\DeleteAction;
+use Hukimato\App\Actions\Users\GetAction;
+use Hukimato\App\Actions\Users\PostAction;
 use Throwable;
 
 class Router
 {
     const ROUTES = [
-        'events' => [
+        'users' => [
             'GET' => GetAction::class,
             'POST' => PostAction::class,
             'DELETE' => DeleteAction::class,

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\RedisApp\Actions;
+namespace Hukimato\App\Actions;
 
-use Hukimato\RedisApp\ParamsHandlers\ParamsHandlerInterface;
+use Hukimato\App\ParamsHandlers\ParamsHandlerInterface;
 
 abstract class ActionInterface
 {

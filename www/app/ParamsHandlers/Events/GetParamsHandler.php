@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\RedisApp\ParamsHandlers\Events;
+namespace Hukimato\App\ParamsHandlers\Events;
 
-use Hukimato\RedisApp\ParamsHandlers\ParamsHandlerInterface;
+use Hukimato\App\ParamsHandlers\ParamsHandlerInterface;
 
 class GetParamsHandler implements ParamsHandlerInterface
 {
