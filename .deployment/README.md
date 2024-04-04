@@ -30,3 +30,14 @@ docker compose up -d --build
 ```bash
 docker compose exec php-fpm composer install
 ```
+
+5) Примеры запросов:
+- добавить новое событие:
+```bash
+php app.php --action addEvent --priority 4000 --name randomEvent --conditions "[param1=1 param2=4]"
+```
+
+- очистить хранилище событий:
+```bash
+php app.php --action clearEvents
+```
