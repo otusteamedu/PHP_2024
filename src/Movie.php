@@ -13,9 +13,9 @@ class Movie
     private ?array $reviews = null;
 
     public function __construct(
-        #[DBField('id')] private int           $id,
-        #[DBField('title')] private            $title,
-        #[DBField('director')] private string  $director,
+        #[DBField('id')] private int $id,
+        #[DBField('title')] private $title,
+        #[DBField('director')] private string $director,
         #[DBField('release_year')] private int $releaseYear
     )
     {

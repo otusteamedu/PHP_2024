@@ -56,7 +56,7 @@ readonly class MovieDataMapper
     public function update(Movie $movie): void
     {
         $existingMovie = $this->findById($movie->getId());
-        if($existingMovie === null) {
+        if ($existingMovie === null) {
             throw new RuntimeException('Update data error');
         }
 
