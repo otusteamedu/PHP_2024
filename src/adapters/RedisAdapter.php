@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace hw15\adapters;
 
 use hw15\entities\EventEntity;
-
-use \Redis;
+use Redis;
 
 class RedisAdapter implements StorageInterface
 {
