@@ -10,8 +10,10 @@ use Attribute;
 class ManyToMany
 {
     function __construct(
+        public string $modelName,
         public string $relationName,
-        public string $localKey
+        public string $localKey,
+        public string $foreignKey,
     ) {
     }
 }

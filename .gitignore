@@ -4,5 +4,5 @@
 .AppleDouble
 .LSOverride
 docker/logs
-docker/redis
+docker/postgresql/db-data/*
 www/vendor

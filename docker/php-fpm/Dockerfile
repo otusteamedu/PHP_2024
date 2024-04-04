@@ -7,6 +7,7 @@ RUN apt update && apt install -y \
     libonig-dev \
     libzip-dev \
     libxml2-dev \
+    libpq-dev \
     libmemcached-dev \
     libmcrypt-dev \
     && pecl install mcrypt-1.0.6 \
@@ -15,7 +16,7 @@ RUN apt update && apt install -y \
     && docker-php-ext-enable redis \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
-    && docker-php-ext-install -j$(nproc)  mbstring zip xml
+    && docker-php-ext-install -j$(nproc)  mbstring zip xml pdo_pgsql
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 

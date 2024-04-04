@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hukimato\App;
 
 use Hukimato\App\Actions\ActionInterface;
+use Hukimato\App\Models\Users\UserMapper;
 use Hukimato\App\Routers\Router;
 use Throwable;
 
@@ -15,6 +16,9 @@ class App
      */
     public function run()
     {
+        $userMapper = new UserMapper();
+        $userMapper->debugQueryStrings();
+        die;
         /**
          * @var $actionClass ActionInterface
          */

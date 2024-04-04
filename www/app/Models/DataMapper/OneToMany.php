@@ -11,7 +11,9 @@ class OneToMany
 {
 
     function __construct(
-        public string $localKey
+        public string $modelName,
+        public string $localKey,
+        public string $foreignKey,
     ) {
     }
 }

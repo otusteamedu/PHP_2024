@@ -6,5 +6,7 @@
       "Hukimato\\App\\": "app/"
     }
   },
-  "require": {}
+  "require": {
+    "ext-pdo": "*"
+  }
 }
