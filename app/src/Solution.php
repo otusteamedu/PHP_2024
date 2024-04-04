@@ -10,14 +10,14 @@ class Solution
      * @param ListNode $head
      * @return Boolean
      */
-    function hasCycle($head): bool {
+    public function hasCycle($head): bool
+    {
         if (is_null($head->next)) {
-            return FALSE;
+            return false;
+        } elseif (is_null($head->val)) {
+            return true;
         }
-        elseif (is_null($head->val)) {
-            return TRUE;
-        }
-        $head->val = NULL;
+        $head->val = null;
         return $this->hasCycle($head->next);
     }
 }
