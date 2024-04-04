@@ -6,6 +6,7 @@ namespace Afilipov\Hw13;
 
 use Closure;
 use PDO;
+use ReflectionClass;
 use RuntimeException;
 
 readonly class MovieDataMapper
@@ -54,13 +55,35 @@ readonly class MovieDataMapper
 
     public function update(Movie $movie): void
     {
-        $query = $this->dbConnection->pdo->prepare("UPDATE movies SET title = :title, director = :director, release_year = :release_year WHERE id = :id");
-        $res = $query->execute([
-            'id' => $movie->getId(),
-            'title' => $movie->getTitle(),
-            'director' => $movie->getDirector(),
-            'release_year' => $movie->getReleaseYear()
-        ]);
+        $existingMovie = $this->findById($movie->getId());
+        if($existingMovie === null) {
+            throw new RuntimeException('Update data error');
+        }
+
+        $updateData = [];
+        $params = ['id' => $movie->getId()];
+
+        $reflectionClass = new ReflectionClass($movie);
+        foreach ($reflectionClass->getProperties() as $property) {
+            $attributes = $property->getAttributes(DBField::class);
+            if (!empty($attributes)) {
+                $fieldName = $attributes[0]->newInstance()->fieldName;
+                $existingValue = $property->getValue($existingMovie);
+                $newValue = $property->getValue($movie);
+
+                if ($existingValue !== $newValue) {
+                    $updateData[] = "$fieldName = :$fieldName";
+                    $params[$fieldName] = $newValue;
+                }
+            }
+        }
+
+        if (empty($updateData)) {
+            return;
+        }
+
+        $query = $this->dbConnection->pdo->prepare("UPDATE movies SET " . implode(', ', $updateData) . " WHERE id = :id");
+        $res = $query->execute($params);
 
         if (!$res) {
             throw new RuntimeException('Update data error');
