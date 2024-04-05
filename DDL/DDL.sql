@@ -2,13 +2,18 @@ CREATE TABLE IF NOT EXISTS films (
     id          varchar(32) UNIQUE PRIMARY KEY,
     name        text,
     cost        decimal(11,2),
-    costLuxe    decimal(11,2)
+    costLuxe    decimal(11,2),
+    genre       text,
+    description text,
+    releaseDate date,
+    country    varchar(32)
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
     id          varchar(32) UNIQUE PRIMARY KEY,
     filmId      varchar(32),
-    time        time,
+    timeBegin   time,
+    timeEnd     time,
     FOREIGN KEY (filmId) REFERENCES films(id)
 );
 

@@ -19,19 +19,31 @@ $films = [
         'id'=>'master_i_margarita',
         'name'=>'Мастер и Маргарита',
         'cost'=>500.00,
-        'costluxe'=>700.00
+        'costluxe'=>700.00,
+        'genre' => 'Драма, Мистика',
+        'description' => 'Фильм по произведению М.А. Булгакова',
+        'releaseDate' => 2019,
+        'country' => 'Россия'
     ],
     [
         'id'=>'onegin',
         'name'=>'Онегин',
         'cost'=>400.00,
-        'costluxe'=>600.00
+        'costluxe'=>600.00,
+        'genre' => 'Драма',
+        'description' => 'Фильм по произведению А.С. Пушкина',
+        'releaseDate' => 2024,
+        'country' => 'Россия'
     ],
     [
         'id'=>'duna_2',
         'name'=>'Дюна 2',
         'cost'=>450.00,
-        'costluxe'=>650.00
+        'costluxe'=>650.00,
+        'genre' => 'Приключения, фэнтези',
+        'description' => 'Фильм на основе романа Дюга Фрэнка Герберта',
+        'releaseDate' => 2024,
+        'country' => 'США'
     ],
 ];
 
@@ -44,12 +56,12 @@ foreach ($films as $film) {
 }
 
 $sessions = [
-    ['id'=>'master_13', 'filmid'=>'master_i_margarita', 'time'=>'13:00:00'],
-    ['id'=>'master_17', 'filmid'=>'master_i_margarita', 'time'=>'17:00:00'],
-    ['id'=>'onegin_11', 'filmid'=>'onegin', 'time'=>'11:00:00'],
-    ['id'=>'onegin_16', 'filmid'=>'onegin', 'time'=>'16:00:00'],
-    ['id'=>'duna2_13', 'filmid'=>'duna_2', 'time'=>'13:00:00'],
-    ['id'=>'duna2_20', 'filmid'=>'duna_2', 'time'=>'20:00:00']
+    ['id'=>'master_13', 'filmid'=>'master_i_margarita', 'timeBegin'=>'13:00:00', 'timeEnd'=>'16:00:00'],
+    ['id'=>'master_17', 'filmid'=>'master_i_margarita', 'timeBegin'=>'17:00:00', 'timeEnd'=>'20:00:00'],
+    ['id'=>'onegin_11', 'filmid'=>'onegin', 'timeBegin'=>'11:00:00', 'timeEnd'=>'14:00:00'],
+    ['id'=>'onegin_16', 'filmid'=>'onegin', 'timeBegin'=>'16:00:00', 'timeEnd'=>'19:00:00'],
+    ['id'=>'duna2_13', 'filmid'=>'duna_2', 'timeBegin'=>'13:00:00', 'timeEnd'=>'16:00:00'],
+    ['id'=>'duna2_20', 'filmid'=>'duna_2', 'timeBegin'=>'20:00:00', 'timeEnd'=>'23:00:00']
 ];
 
 foreach ($sessions as $session) {
