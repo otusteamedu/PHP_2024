@@ -4,26 +4,30 @@ services:
     image: postgres:13.3
     container_name: postgres
     environment:
-      POSTGRES_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      POSTGRES_DATABASE: "${MYSQL_DATABASE}"
-      POSTGRES_USER: "${MYSQL_USER}"
-      POSTGRES_PASSWORD: "${MYSQL_PASSWORD}"
+      POSTGRES_ROOT_PASSWORD: "${POSTGRES_ROOT_PASSWORD}"
+      POSTGRES_DATABASE: "${POSTGRES_DATABASE}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
       - "5432:5432"
+    volumes:
+      - ./DDL:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
 
   php-fpm:
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: mysql
-    ports:
-      - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    env_file: .env
+    container_name: php
     volumes:
-      - ./db:/var/lib/mysql
+      - ./scripts:/data
     networks:
       - app-network
+    depends_on:
+      - postgres
+
+networks:
+  app-network:
+    driver: bridge

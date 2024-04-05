@@ -21,27 +21,21 @@ CREATE TABLE IF NOT EXISTS seats (
     booked      boolean DEFAULT false
 );
 
-CREATE TABLE IF NOT EXISTS payers (
-    id          varchar(32) UNIQUE PRIMARY KEY,
-    ticketCount integer
+CREATE TABLE IF NOT EXISTS orders (
+    id          SERIAL PRIMARY KEY,
+    payerId     varchar(32) UNIQUE,
+    sum         decimal(11,2),
+    ticketCount integer,
+    createTime  timestamp
 );
 
 CREATE TABLE IF NOT EXISTS tickets (
-    id          integer UNIQUE PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
     payerId     varchar(32),
     sessionId   varchar(32),
     seatId      integer,
     amount      decimal(11,2),
-    FOREIGN KEY (payerId) REFERENCES payers(id),
+    FOREIGN KEY (payerId) REFERENCES orders(payerId),
     FOREIGN KEY (sessionId) REFERENCES sessions(id),
     FOREIGN KEY (seatId) REFERENCES seats(id)
 );
-
-CREATE TABLE IF NOT EXISTS orders (
-    id          integer UNIQUE PRIMARY KEY,
-    payerId     varchar(32),
-    sum         decimal(11,2),
-    createTime   timestamp,
-    FOREIGN KEY (payerId) REFERENCES payers(id)
-);
-

@@ -1,8 +1,7 @@
 # PHP_2024
 
-1) Для проверки запускаем БД
+1) Для наполнения БД запускаем команду
 
-`docker run --name habr-pg-13.3 -p 5432:5432 -e POSTGRES_PASSWORD=pgpwd4habr -d postgres:13.3`
-
-2) 
+`docker exec -it php php db_inserts.php
+`
 
