@@ -10,7 +10,7 @@ class Solution
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations(string $digits): array
+    public function letterCombinations(string $digits): array
     {
         if (empty($digits)) {
             return [];
@@ -18,7 +18,7 @@ class Solution
 
         $digits_number = strlen($digits);
         $combinations = [];
-        for ($i = 0; $i < $digits_number; $i++) { 
+        for ($i = 0; $i < $digits_number; $i++) {
             $letters = $this->getLetters(
                 (int) $digits[$i]
             );
@@ -47,7 +47,7 @@ class Solution
             6 => ['m', 'n', 'o'],
             7 => ['p', 'q', 'r', 's'],
             8 => ['t', 'u', 'v'],
-            9 => ['w', 'x', 'y', 'z'],
+            9 => ['w', 'x', 'y', 'z']
         };
     }
 }
