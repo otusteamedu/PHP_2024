@@ -22,7 +22,7 @@ $films = [
         'costluxe'=>700.00,
         'genre' => 'Драма, Мистика',
         'description' => 'Фильм по произведению М.А. Булгакова',
-        'releaseDate' => 2019,
+        'releasedate' => '2019',
         'country' => 'Россия'
     ],
     [
@@ -32,7 +32,7 @@ $films = [
         'costluxe'=>600.00,
         'genre' => 'Драма',
         'description' => 'Фильм по произведению А.С. Пушкина',
-        'releaseDate' => 2024,
+        'releasedate' => '2024',
         'country' => 'Россия'
     ],
     [
@@ -42,7 +42,7 @@ $films = [
         'costluxe'=>650.00,
         'genre' => 'Приключения, фэнтези',
         'description' => 'Фильм на основе романа Дюга Фрэнка Герберта',
-        'releaseDate' => 2024,
+        'releasedate' => '2024',
         'country' => 'США'
     ],
 ];
@@ -56,12 +56,12 @@ foreach ($films as $film) {
 }
 
 $sessions = [
-    ['id'=>'master_13', 'filmid'=>'master_i_margarita', 'timeBegin'=>'13:00:00', 'timeEnd'=>'16:00:00'],
-    ['id'=>'master_17', 'filmid'=>'master_i_margarita', 'timeBegin'=>'17:00:00', 'timeEnd'=>'20:00:00'],
-    ['id'=>'onegin_11', 'filmid'=>'onegin', 'timeBegin'=>'11:00:00', 'timeEnd'=>'14:00:00'],
-    ['id'=>'onegin_16', 'filmid'=>'onegin', 'timeBegin'=>'16:00:00', 'timeEnd'=>'19:00:00'],
-    ['id'=>'duna2_13', 'filmid'=>'duna_2', 'timeBegin'=>'13:00:00', 'timeEnd'=>'16:00:00'],
-    ['id'=>'duna2_20', 'filmid'=>'duna_2', 'timeBegin'=>'20:00:00', 'timeEnd'=>'23:00:00']
+    ['id'=>'master_13', 'filmid'=>'master_i_margarita', 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
+    ['id'=>'master_17', 'filmid'=>'master_i_margarita', 'timebegin'=>'17:00:00', 'timeend'=>'20:00:00'],
+    ['id'=>'onegin_11', 'filmid'=>'onegin', 'timebegin'=>'11:00:00', 'timeend'=>'14:00:00'],
+    ['id'=>'onegin_16', 'filmid'=>'onegin', 'timebegin'=>'16:00:00', 'timeend'=>'19:00:00'],
+    ['id'=>'duna2_13', 'filmid'=>'duna_2', 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
+    ['id'=>'duna2_20', 'filmid'=>'duna_2', 'timebegin'=>'20:00:00', 'timeend'=>'23:00:00']
 ];
 
 foreach ($sessions as $session) {
@@ -134,8 +134,7 @@ foreach ($halls as $hall=>$rows) {
                     'hall'=>$hall,
                     'row'=>$row,
                     'seat'=>$seat[0],
-                    'luxe'=>$seat[1],
-                    'booked'=>$seat[2]
+                    'luxe'=>$seat[1]
                 ]);
 
             } catch (Exception $exception) {
@@ -188,8 +187,6 @@ foreach ($tickets as $ticket) {
     } catch (Exception $exception) {
         echo $exception->getMessage();
     }
-
-    $query = pg_query($db,"UPDATE seats SET booked = true WHERE id = '{$ticket['seatid']}'");
 }
 
 foreach ($payers as $payer) {

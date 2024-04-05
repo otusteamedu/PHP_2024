@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS films (
     costLuxe    decimal(11,2),
     genre       text,
     description text,
-    releaseDate date,
-    country    varchar(32)
+    releaseDate varchar(32),
+    country     varchar(32)
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
@@ -22,8 +22,7 @@ CREATE TABLE IF NOT EXISTS seats (
     hall        integer,
     row         integer,
     seat        integer,
-    luxe        boolean,
-    booked      boolean DEFAULT false
+    luxe        boolean
 );
 
 CREATE TABLE IF NOT EXISTS orders (
