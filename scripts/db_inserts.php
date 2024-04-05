@@ -176,6 +176,8 @@ foreach ($tickets as $ticket) {
     } catch (Exception $exception) {
         echo $exception->getMessage();
     }
+
+    $query = pg_query($db,"UPDATE seats SET booked = true WHERE id = '{$ticket['seatid']}'");
 }
 
 foreach ($payers as $payer) {

@@ -2,6 +2,5 @@
 
 1) Для наполнения БД запускаем команду
 
-`docker exec -it php php db_inserts.php
-`
+`docker exec -it php php db_inserts.php`
 
