@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: hw11-app
+    env_file:
+      - .env
+    volumes:
+      - .:/data
+    networks:
+      - app-network
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    container_name: hw11-elasticsearch
+    hostname: hw11-elasticsearch
+    ports:
+      - 9200:9200
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
