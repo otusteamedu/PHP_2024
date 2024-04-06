@@ -20,16 +20,15 @@ class Solution2
             str_split($digits)
         );
         return $this->getCombinations(
-          array_shift($letters_sets),
-          $letters_sets
+            array_shift($letters_sets),
+            $letters_sets
         );
     }
 
     private function getCombinations(
         array $combinations,
         array $letters_sets
-    ): array
-    {
+    ): array {
         if (empty($letters_sets)) {
             return $combinations;
         }
