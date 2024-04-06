@@ -5,7 +5,6 @@ namespace AKornienko\Php2024\elasticsearch;
 class ELKQueryParams
 {
     private array $params = [
-        'index' => 'otus-shop', // TODO change on getenv
         'body' => [
             'query' => []
         ]
@@ -25,18 +24,23 @@ class ELKQueryParams
                     'query' => $searchParam->value,
                     'fuzziness' => 'auto'
                 ];
-            } else if ($type === 'number') {
-                $this->match[$key] = $searchParam->value;
-            } else if ($type === 'range') {
-                $this->range[$key] = [
-                    'gte' => $searchParam->valueMin,
-                    'lte' => $searchParam->valueMax,
-                ];
+            } else {
+                if ($type === 'number') {
+                    $this->match[$key] = $searchParam->value;
+                } else {
+                    if ($type === 'range') {
+                        $this->range[$key] = [
+                            'gte' => $searchParam->value[0],
+                            'lte' => $searchParam->value[1],
+                        ];
+                    }
+                }
             }
         }
     }
 
-    public function getParams(): array {
+    public function getParams(): array
+    {
         if (count($this->match)) {
             $this->params['body']['query']['bool']['must']['match'] = $this->match;
         }

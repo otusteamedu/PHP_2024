@@ -2,37 +2,43 @@
 
 namespace AKornienko\Php2024\elasticsearch;
 
+use AKornienko\Php2024\Config;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
-use Elastic\Transport\Exception\NoNodeAvailableException;
 use RuntimeException;
 
 class ElasticSearchClient
 {
-    private $client;
-    public function __construct(string $host, string $username, $password) {
+    private \Elastic\Elasticsearch\Client $client;
+    private Config $config;
+
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
         $this->client = ClientBuilder::create()
-            ->setHosts([$host])
-            ->setBasicAuthentication($username, $password)
+            ->setHosts([$config->hostUrl])
+            ->setBasicAuthentication($config->userName, $config->password)
             ->setSSLVerification(false)
             ->build();
     }
 
-    public function bulk(string $index, string $data): void {
+    public function bulk(string $index, string $data): void
+    {
         try {
             $this->client->bulk([
                 'index' => $index,
-                'body'  => $data,
+                'body' => $data,
             ]);
-        } catch (ClientResponseException | ServerResponseException $e) {
+        } catch (ClientResponseException|ServerResponseException $e) {
             print_r($e->getMessage());
             throw new RuntimeException($e->getMessage());
         }
     }
 
-    public function search($searchParams) {
-        $elkSearchParams = new ELKQueryParams($searchParams, getenv("ELK_INDEX_NAME"));
+    public function search($searchParams)
+    {
+        $elkSearchParams = new ELKQueryParams($searchParams, $this->config->indexName);
         $results = $this->client->search($elkSearchParams->getParams())->asArray();
         return $results['hits'];
     }

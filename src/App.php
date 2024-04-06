@@ -1,7 +1,8 @@
 <?php
 
 namespace AKornienko\Php2024;
-use \AKornienko\Php2024\elasticsearch\ElasticSearchClient;
+
+use AKornienko\Php2024\elasticsearch\ElasticSearchClient;
 use Exception;
 
 class App
@@ -9,18 +10,14 @@ class App
     /**
      * @throws Exception
      */
-    public function run(): \Generator
+    public function run(): string
     {
-        $hostName = getenv('ELK_HOST_NAME');
-        $port = getenv('ELK_PORT');
-        $hostUrl = "https://$hostName:$port";
-        $userName = getenv("ELK_USER_NAME");
-        $password = getenv("ELASTIC_PASSWORD");
-        $client = new ElasticSearchClient($hostUrl, $userName, $password);
+        $config = new Config();
+        $client = new ElasticSearchClient(new Config());
 
         switch ($this->getAppType()) {
             case 'init':
-                $dataLoader = new DataLoaderApp($client);
+                $dataLoader = new DataLoaderApp($client, $config);
                 return $dataLoader->run();
             case 'search':
                 $searchApp = new SearchApp($client);

@@ -17,17 +17,16 @@ class SearchApp
     /**
      * @throws Exception
      */
-    public function run(): \Generator
+    public function run(): string
     {
         $searchParam = $this->getSearchParams();
         $results = $this->elasticSearchClient->search($searchParam);
 
         if (!count($results['hits'])) {
-            yield "Ничего не найдено";
-            return;
+            return "Ничего не найдено";
         }
 
-        yield $this->getFormattedResults($results);
+        return $this->getFormattedResults($results);
     }
 
     /**
@@ -39,13 +38,24 @@ class SearchApp
         for ($i = 2; $i < count($_SERVER['argv']); $i++) {
             $optionRaw = explode("=", $_SERVER['argv'][$i]);
             if (count($optionRaw) === 2) {
-                $searchParam[] = new SearchParam($optionRaw[0], $optionRaw[1]);
+                if ($optionRaw[0] === 'title') {
+                    $searchParam[] = SearchParam::title($optionRaw[1]);
+                } else {
+                    if ($optionRaw[0] === 'price') {
+                        $searchParam[] = SearchParam::price($optionRaw[1]);
+                    } else {
+                        if ($optionRaw[0] === 'price-range') {
+                            $searchParam[] = SearchParam::priceRange($optionRaw[1]);
+                        }
+                    }
+                }
             }
         }
         return $searchParam;
     }
 
-    private function getFormattedResults($results): string {
+    private function getFormattedResults($results): string
+    {
         $formattedResults = '';
         foreach ($results['hits'] as $hit) {
             $formattedResults .= "Название: {$hit['_source']['title']}, Категория: {$hit['_source']['category']}, Цена: {$hit['_source']['price']} руб.\n";
