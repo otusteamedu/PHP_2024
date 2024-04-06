@@ -51,88 +51,28 @@ QUERY PLAN   (10000 rows)
 
 
 
-EXPLAIN ANALYSE
-    SELECT m.name, p.price as sum
-FROM tickets
-         LEFT JOIN sessions s on s.id = tickets.session_id
-         LEFT JOIN zones z on z.id = tickets.zone_id
-         LEFT JOIN prices p on z.id = p.zone_id
-         LEFT JOIN movies m on s.movie_id = m.id
-WHERE p.price > 100 and z.number_of_seats > 40;
-
-QUERY PLAN   (10000 rows)
----------------------------------------------------------------------------------------------------------------------------------------------
- Hash Left Join  (cost=77.64..353.39 rows=870 width=530) (actual time=0.237..88.330 rows=3452 loops=1)
-   Hash Cond: (s.movie_id = m.id)
-   ->  Nested Loop Left Join  (cost=64.49..337.91 rows=870 width=22) (actual time=0.195..74.630 rows=3452 loops=1)
-         ->  Hash Join  (cost=64.33..314.61 rows=870 width=22) (actual time=0.163..47.178 rows=3452 loops=1)
-               Hash Cond: (tickets.zone_id = z.id)
-               ->  Seq Scan on tickets  (cost=0.00..204.04 rows=10004 width=16) (actual time=0.015..19.767 rows=10004 loops=1)
-               ->  Hash  (cost=62.61..62.61 rows=137 width=30) (actual time=0.107..0.136 rows=2 loops=1)
-                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                     ->  Hash Join  (cost=36.16..62.61 rows=137 width=30) (actual time=0.075..0.121 rows=2 loops=1)
-                           Hash Cond: (p.zone_id = z.id)
-                           ->  Seq Scan on prices p  (cost=0.00..25.38 rows=410 width=22) (actual time=0.041..0.055 rows=6 loops=1)
-                                 Filter: (price > '100'::numeric)
-                           ->  Hash  (cost=29.62..29.62 rows=523 width=8) (actual time=0.019..0.029 rows=1 loops=1)
-                                 Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                                 ->  Seq Scan on zones z  (cost=0.00..29.62 rows=523 width=8) (actual time=0.008..0.013 rows=1 loops=1)
-                                       Filter: (number_of_seats > 40)
-                                       Rows Removed by Filter: 5
-         ->  Memoize  (cost=0.16..0.18 rows=1 width=16) (actual time=0.002..0.002 rows=1 loops=3452)
-               Cache Key: tickets.session_id
-               Cache Mode: logical
-               Hits: 3444  Misses: 8  Evictions: 0  Overflows: 0  Memory Usage: 1kB
-               ->  Index Scan using sessions_pkey on sessions s  (cost=0.15..0.17 rows=1 width=16) (actual time=0.005..0.006 rows=1 loops=8)
-                     Index Cond: (id = tickets.session_id)
-   ->  Hash  (cost=11.40..11.40 rows=140 width=524) (actual time=0.028..0.036 rows=4 loops=1)
-         Buckets: 1024  Batches: 1  Memory Usage: 9kB
-         ->  Seq Scan on movies m  (cost=0.00..11.40 rows=140 width=524) (actual time=0.007..0.017 rows=4 loops=1)
- Planning Time: 1.077 ms
- Execution Time: 95.128 ms
-(28 rows)
-
 
 EXPLAIN ANALYSE
-    SELECT m.name, p.price
+SELECT movie_id, COUNT(s.id)
 FROM tickets
-         LEFT JOIN sessions s on s.id = tickets.session_id
-         LEFT JOIN zones z on z.id = tickets.zone_id
-         LEFT JOIN prices p on z.id = p.zone_id
-         LEFT JOIN movies m on s.movie_id = m.id
-WHERE p.price > 300 ORDER BY p.price;
+         JOIN sessions s on s.id = tickets.session_id
+WHERE movie_id = 1
+GROUP BY movie_id;
 
-QUERY PLAN   (10000 rows)
------------------------------------------------------------------------------------------------------------------------------------------------
- Sort  (cost=556.93..563.46 rows=2613 width=530) (actual time=81.806..88.046 rows=3310 loops=1)
-   Sort Key: p.price
-   Sort Method: quicksort  Memory: 252kB
-   ->  Hash Left Join  (cost=127.05..408.62 rows=2613 width=530) (actual time=0.264..73.813 rows=3310 loops=1)
-         Hash Cond: (s.movie_id = m.id)
-         ->  Hash Left Join  (cost=113.90..388.47 rows=2613 width=22) (actual time=0.221..60.453 rows=3310 loops=1)
-               Hash Cond: (tickets.session_id = s.id)
-               ->  Hash Join  (cost=76.90..344.59 rows=2613 width=22) (actual time=0.122..46.994 rows=3310 loops=1)
-                     Hash Cond: (tickets.zone_id = z.id)
-                     ->  Seq Scan on tickets  (cost=0.00..204.04 rows=10004 width=16) (actual time=0.020..19.855 rows=10004 loops=1)
-                     ->  Hash  (cost=71.78..71.78 rows=410 width=30) (actual time=0.090..0.109 rows=2 loops=1)
-                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                           ->  Hash Join  (cost=45.33..71.78 rows=410 width=30) (actual time=0.065..0.096 rows=2 loops=1)
-                                 Hash Cond: (p.zone_id = z.id)
-                                 ->  Seq Scan on prices p  (cost=0.00..25.38 rows=410 width=22) (actual time=0.014..0.021 rows=2 loops=1)
-                                       Filter: (price > '300'::numeric)
-                                       Rows Removed by Filter: 4
-                                 ->  Hash  (cost=25.70..25.70 rows=1570 width=8) (actual time=0.038..0.046 rows=6 loops=1)
-                                       Buckets: 2048  Batches: 1  Memory Usage: 17kB
-                                       ->  Seq Scan on zones z  (cost=0.00..25.70 rows=1570 width=8) (actual time=0.006..0.020 rows=6 loops=1)
-               ->  Hash  (cost=22.00..22.00 rows=1200 width=16) (actual time=0.087..0.094 rows=8 loops=1)
-                     Buckets: 2048  Batches: 1  Memory Usage: 17kB
-                     ->  Seq Scan on sessions s  (cost=0.00..22.00 rows=1200 width=16) (actual time=0.007..0.049 rows=8 loops=1)
-         ->  Hash  (cost=11.40..11.40 rows=140 width=524) (actual time=0.029..0.039 rows=4 loops=1)
-               Buckets: 1024  Batches: 1  Memory Usage: 9kB
-               ->  Seq Scan on movies m  (cost=0.00..11.40 rows=140 width=524) (actual time=0.009..0.020 rows=4 loops=1)
- Planning Time: 0.841 ms
- Execution Time: 94.099 ms
-(28 rows)
+QUERY PLAN     (10000 rows)
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=0.29..46.89 rows=1 width=16) (actual time=21.724..21.740 rows=1 loops=1)
+   ->  Nested Loop  (cost=0.29..43.76 rows=1250 width=16) (actual time=0.061..16.334 rows=2513 loops=1)
+         ->  Seq Scan on sessions s  (cost=0.00..1.10 rows=1 width=16) (actual time=0.018..0.032 rows=2 loops=1)
+               Filter: (movie_id = 1)
+               Rows Removed by Filter: 6
+         ->  Index Only Scan using indx_tickets_session_id on tickets  (cost=0.29..30.16 rows=1250 width=8) (actual time=0.021..2.847 rows=1256 loops=2)
+               Index Cond: (session_id = s.id)
+               Heap Fetches: 0
+ Planning Time: 0.289 ms
+ Execution Time: 21.804 ms
+(10 rows)
+
 
 
 EXPLAIN ANALYSE
@@ -142,7 +82,6 @@ FROM tickets as t
          LEFT JOIN movies m on s.movie_id = m.id
 GROUP BY m.id
 ORDER BY sum DESC;
-
 
 QUERY PLAN    (10000 rows)
 ---------------------------------------------------------------------------------------------------------------------------------------
