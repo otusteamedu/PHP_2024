@@ -30,7 +30,7 @@ class ElasticSearchClient
                 'index' => $index,
                 'body' => $data,
             ]);
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             print_r($e->getMessage());
             throw new RuntimeException($e->getMessage());
         }
