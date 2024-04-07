@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  nginx-proxy:
+    image: nginx:latest
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "${APP_PORT:-80}:80"
+    networks:
+      - balancer-network
+    volumes:
+      - ./docker/nginx-proxy/myapp.conf:/etc/nginx/conf.d/myapp.conf
+
+  nginx-first:
+    image: nginx:latest
+    container_name: nginx-first
+    restart: always
+    ports:
+      - "80"
+    volumes:
+      - ./:/data/myapp
+      - ./docker/nginx/myapp.conf:/etc/nginx/conf.d/myapp.conf
+    working_dir: /data/myapp
+    networks:
+      - balancer-network
+
+  nginx-second:
+    image: nginx:latest
+    container_name: nginx-second
+    restart: always
+    ports:
+      - "80"
+    volumes:
+      - ./:/data/myapp
+      - ./docker/nginx/myapp.conf:/etc/nginx/conf.d/myapp.conf
+    working_dir: /data/myapp
+    networks:
+      - balancer-network
+
+  app-first:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app:php-fpm
+    container_name: app-first
+    volumes:
+      - ./:/data/myapp
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    working_dir: /data/myapp
+    networks:
+      - balancer-network
+
+  app-second:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app:php-fpm
+    container_name: app-second
+    volumes:
+      - ./:/data/myapp
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    working_dir: /data/myapp
+    networks:
+      - balancer-network
+
+  memcache:
+    image: memcached:1.6-alpine
+    restart: always
+    ports:
+      - "${MEMCACHED_PORT:-11211}:11211"
+    networks:
+      - balancer-network
+
+networks:
+  balancer-network:
+    driver: bridge
+  memcache:
+    driver: local
