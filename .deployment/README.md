@@ -28,16 +28,21 @@ docker compose up -d --build
 4) Установите зависимости после успешного запуска проекта:
 
 ```bash
-docker compose exec php-fpm composer install
+docker compose exec app composer install
 ```
 
 5) Примеры запросов:
 - добавить новое событие:
 ```bash
-php app.php --action addEvent --priority 4000 --name randomEvent --conditions "[param1=1 param2=4]"
+php app.php --action addEvent --priority 4000 --name randomEvent --description "Something wrong is happening in the world" --conditions "[param1=1 param2=4]"
 ```
 
 - очистить хранилище событий:
 ```bash
 php app.php --action clearEvents
+```
+
+- поиск наиболее подходящего события
+```bash
+php app.php --action findTheMostSuitableEvent  --conditions "[param1=1 param2=4]"
 ```

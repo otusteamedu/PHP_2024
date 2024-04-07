@@ -11,8 +11,8 @@ class StoredEvent
         /**
          * @var string[] $conditions
          */
-        private readonly array $conditions,
-        private readonly EventType $event,
+        private readonly array  $conditions,
+        private readonly Event  $event,
     ) {
     }
 
@@ -26,7 +26,7 @@ class StoredEvent
         return $this->conditions;
     }
 
-    public function event(): EventType
+    public function event(): Event
     {
         return $this->event;
     }

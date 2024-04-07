@@ -47,7 +47,7 @@ class RedisEventRepository
     /**
      * @throws RedisException
      */
-    public function findTheMostSuitableEvent(SearchEventQuery $eventQuery): ?array
+    public function findTheMostSuitableEvent(SearchEventQuery $eventQuery): ?StoredEvent
     {
         $key = $this->createKeyFromConditions($eventQuery->conditions());
         $eventsValue = $this->redis->zRevRange($key, 0, 0);

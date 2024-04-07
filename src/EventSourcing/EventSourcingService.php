@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework\EventSourcing;
 
-use Alogachev\Homework\EventSourcing\Event\EventType;
+use Alogachev\Homework\EventSourcing\Event\Event;
 use Alogachev\Homework\EventSourcing\Event\SearchEventQuery;
 use Alogachev\Homework\EventSourcing\Event\StoredEvent;
 use RedisException;
@@ -24,7 +24,10 @@ class EventSourcingService
         $event = new StoredEvent(
             $data['priority'] ?? 0,
             $data['conditions'] ?? [],
-            new EventType($data['name'] ?? 'unexpected'),
+            new Event(
+                $data['name'] ?? 'unexpected',
+                    $data['description'] ?? []
+            ),
         );
 
         $this->eventRepository->addEvent($event);
@@ -41,11 +44,12 @@ class EventSourcingService
     /**
      * @throws RedisException
      */
-    public function findTheMostSuitableEvent(array $data): array
+    public function findTheMostSuitableEvent(array $data): void
     {
         $query = new SearchEventQuery($data['conditions'] ?? []);
-        $event = $this->eventRepository->findTheMostSuitableEvent($query);
+        $storedEvent = $this->eventRepository->findTheMostSuitableEvent($query);
+        $event = $storedEvent?->event();
 
-        return [];
+        echo (isset($event) ? json_encode($event->toArray()) : 'Подходящего события не найдено') . PHP_EOL;
     }
 }
