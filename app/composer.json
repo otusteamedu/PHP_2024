@@ -1,0 +1,17 @@
+{
+    "name": "alexander-pogorelov/elastic-search",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderPogorelov\\ElasticSearch\\": "src/"
+        }
+    },
+    "require": {
+        "elasticsearch/elasticsearch": "^8.13"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
+    }
+}
