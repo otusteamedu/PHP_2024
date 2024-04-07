@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alogachev\Homework\EventSourcing;
 
 use Alogachev\Homework\EventSourcing\Event\EventType;
+use Alogachev\Homework\EventSourcing\Event\SearchEventQuery;
 use Alogachev\Homework\EventSourcing\Event\StoredEvent;
 use RedisException;
 
@@ -37,8 +38,14 @@ class EventSourcingService
         $this->eventRepository->clearEvents();
     }
 
-    public function findTheMostSuitableEvent(): array
+    /**
+     * @throws RedisException
+     */
+    public function findTheMostSuitableEvent(array $data): array
     {
+        $query = new SearchEventQuery($data['conditions'] ?? []);
+        $event = $this->eventRepository->findTheMostSuitableEvent($query);
+
         return [];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework\EventSourcing;
 
+use Alogachev\Homework\EventSourcing\Event\SearchEventQuery;
 use Alogachev\Homework\EventSourcing\Event\StoredEvent;
 use Redis;
 use RedisException;
@@ -22,11 +23,7 @@ class RedisEventRepository
      */
     public function addEvent(StoredEvent $event): void
     {
-        $key = self::STORAGE_KEY;
-        foreach ($event->conditions() as $condition) {
-            $key .= ':'. $condition;
-        }
-
+        $key = $this->createKeyFromConditions($event->conditions());
         $this->redis->zAdd($key, $event->priority(), serialize($event));
     }
 
@@ -47,8 +44,24 @@ class RedisEventRepository
         }
     }
 
-    public function findTheMostSuitableEvent(): array
+    /**
+     * @throws RedisException
+     */
+    public function findTheMostSuitableEvent(SearchEventQuery $eventQuery): ?array
     {
-        return [];
+        $key = $this->createKeyFromConditions($eventQuery->conditions());
+        $eventsValue = $this->redis->zRevRange($key, 0, 0);
+
+        return isset($eventsValue[0]) ? unserialize($eventsValue[0]) : null;
+    }
+
+    private function createKeyFromConditions(array $conditions): string
+    {
+        $key = self::STORAGE_KEY;
+        foreach ($conditions as $condition) {
+            $key .= ':'. $condition;
+        }
+
+        return $key;
     }
 }
