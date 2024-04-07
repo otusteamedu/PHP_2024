@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    build: php-fpm
+    container_name: ${CONTAINER_NAME_PHP_FPM}
+    volumes:
+      - ./app:/app
+      - ./php-fpm/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./var/php-fpm/logs:/var/logs/php
+    env_file: .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - otus-network
+
+networks:
+  otus-network:
+    driver: bridge
