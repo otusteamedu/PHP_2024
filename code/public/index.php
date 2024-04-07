@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require '../vendor/autoload.php';
 
-use \Irayu\Hw6;
+use Irayu\Hw6;
 
 $emails = [
     'wrongem,ail@mail.ru', 'ri-ght.em1ail@gmail.com', 'really@bad@email', 'test@example.com',
