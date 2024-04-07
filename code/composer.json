@@ -1,0 +1,16 @@
+{
+    "name": "irayu/hw6",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Irayu\\Hw6\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Irina Yurtaeva",
+            "email": "irina.s.yurtaeva@gmail.com"
+        }
+    ],
+    "require": {}
+}
