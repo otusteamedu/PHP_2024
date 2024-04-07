@@ -187,11 +187,11 @@ VALUES ('Иван Петрович', '+79205556677'),
        ('Алексей', '+79205556679'),
        ('Андрей', '+79205556670');
 
-INSERT INTO tickets (session_id, zone_id, visitor_id, row, place)
-VALUES (1, 1, 1, 3, 6),
-       (1, 2, 2, 1, 12),
-       (2, 3, 4, 2, 15),
-       (3, 1, 3, 4, 25);
+INSERT INTO tickets (session_id, zone_id, visitor_id, row, place, selling_price, sale_at)
+VALUES (1, 1, 1, 3, 6, 280.00, now()),
+       (1, 2, 2, 1, 12, 300.00, now()),
+       (2, 3, 4, 2, 15, 320.00, now()),
+       (3, 1, 3, 4, 25, 340.00, now());
 
 SELECT m.name, sum(p.price) as sum
 FROM tickets

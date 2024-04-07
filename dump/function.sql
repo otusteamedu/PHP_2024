@@ -16,12 +16,13 @@ BEGIN
         LOOP
 INSERT INTO tickets (session_id, zone_id, visitor_id, row, place, selling_price, sale_at)
 VALUES (
-           trunc(random() * sessions_qty + 1)::numeric,
-           trunc(random() * zones_qty + 1)::numeric,
-           trunc(random() * visitors_qty + 1)::numeric,
-           trunc(random() * 5 + 1), trunc(random() * zones_qty + 1)::numeric,
-           trunc(random()*(400-250)+250)::numeric,
-           now()
+            trunc(random() * sessions_qty + 1)::numeric,
+            trunc(random() * zones_qty + 1)::numeric,
+            trunc(random() * visitors_qty + 1)::numeric,
+            trunc(random() * 5 + 1),
+            trunc(random() * zones_qty + 1)::numeric,
+            trunc(random() * 150 + 250)::numeric,
+            now()
        );
 END LOOP;
 END
