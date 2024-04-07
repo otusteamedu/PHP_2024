@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: hw14-app
+    env_file:
+      - .env
+    volumes:
+      - .:/data
+    networks:
+      - app-network
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    container_name: hw14-elasticsearch
+    hostname: hw14-elasticsearch
+    ports:
+      - 9200:9200
+    env_file:
+      - .env
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
