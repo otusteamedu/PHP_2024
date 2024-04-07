@@ -1,4 +1,6 @@
 # PHP_2024
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+1) Для наполнения БД запускаем команду
+
+`docker exec -it php php db_inserts.php`
 
