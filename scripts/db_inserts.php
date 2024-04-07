@@ -14,13 +14,32 @@ try {
     echo $exception->getMessage();
 }
 
+$genres = [
+    ['id'=>"drama",'name'=>"Драма"],
+    ['id'=>"fantasy",'name'=>"Фэнтези"],
+    ['id'=>"comedy",'name'=>"Комедия"],
+    ['id'=>"action",'name'=>"Экшен"],
+    ['id'=>"romance",'name'=>"Романс"],
+    ['id'=>"horror",'name'=>"Хоррор"],
+    ['id'=>"adventure",'name'=>"Приключения"],
+    ['id'=>"historical",'name'=>"История"],
+];
+
+foreach ($genres as $genre) {
+    try {
+        $query = pg_insert($db, "genres", $genre);
+    } catch (Exception $exception) {
+        echo $exception->getMessage();
+    }
+}
+
+
 $films = [
     [
         'id'=>'master_i_margarita',
         'name'=>'Мастер и Маргарита',
         'cost'=>500.00,
         'costluxe'=>700.00,
-        'genre' => 'Драма, Мистика',
         'description' => 'Фильм по произведению М.А. Булгакова',
         'releasedate' => '2019',
         'country' => 'Россия'
@@ -30,7 +49,6 @@ $films = [
         'name'=>'Онегин',
         'cost'=>400.00,
         'costluxe'=>600.00,
-        'genre' => 'Драма',
         'description' => 'Фильм по произведению А.С. Пушкина',
         'releasedate' => '2024',
         'country' => 'Россия'
@@ -40,7 +58,6 @@ $films = [
         'name'=>'Дюна 2',
         'cost'=>450.00,
         'costluxe'=>650.00,
-        'genre' => 'Приключения, фэнтези',
         'description' => 'Фильм на основе романа Дюга Фрэнка Герберта',
         'releasedate' => '2024',
         'country' => 'США'
@@ -50,6 +67,23 @@ $films = [
 foreach ($films as $film) {
     try {
         $query = pg_insert($db,'films',$film);
+    } catch (Exception $exception) {
+        echo $exception->getMessage();
+    }
+}
+
+$films_genres = [
+    ['filmid'=>"master_i_margarita",'genreid'=>"drama"],
+    ['filmid'=>"master_i_margarita",'genreid'=>"fantasy"],
+    ['filmid'=>"onegin",'genreid'=>"drama"],
+    ['filmid'=>"onegin",'genreid'=>"historical"],
+    ['filmid'=>"duna_2",'genreid'=>"adventure"],
+    ['filmid'=>"duna_2",'genreid'=>"fantasy"],
+];
+
+foreach ($films_genres as $films_genre) {
+    try {
+        $query = pg_insert($db,'films_genres',$films_genre);
     } catch (Exception $exception) {
         echo $exception->getMessage();
     }

@@ -1,12 +1,23 @@
+CREATE TABLE IF NOT EXISTS genres (
+    id          varchar(32) UNIQUE PRIMARY KEY,
+    name        text
+);
+
 CREATE TABLE IF NOT EXISTS films (
     id          varchar(32) UNIQUE PRIMARY KEY,
     name        text,
     cost        decimal(11,2),
     costLuxe    decimal(11,2),
-    genre       text,
     description text,
     releaseDate varchar(32),
     country     varchar(32)
+);
+
+CREATE TABLE IF NOT EXISTS films_genres (
+    filmid          varchar(32),
+    genreid        varchar(32),
+    FOREIGN KEY (filmid) REFERENCES films(id),
+    FOREIGN KEY (genreid) REFERENCES genres(id)
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
