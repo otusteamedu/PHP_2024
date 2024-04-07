@@ -31,9 +31,11 @@ class LinkedList
     {
         $nodes = explode(',', $_SERVER['argv'][1]) ?? null;
 
-        if (empty($nodes)) return null;
+        if (empty($nodes)) {
+            return null;
+        }
 
-        return array_map('intval', $nodes);;
+        return array_map('intval', $nodes);
     }
 
     /**

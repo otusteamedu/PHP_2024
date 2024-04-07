@@ -25,14 +25,18 @@ class LinkedListCycle
     public function hasCycle(?ListNode $head): bool
     {
         // Если список пуст или содержит только один элемент, значит цикла нет
-        if ($head == null || $head->next == null) return false;
+        if ($head == null || $head->next == null) {
+            return false;
+        }
 
         $count = 0; // Количество узлов в списке
         $visited = []; // Хэш-таблица для отслеживания посещенных узлов
 
         while ($head != null) {
             ++$count;
-            if (!$this->checkNodeValLimits($head->val) || !$this->checkNodeCountLimits($count)) return false;
+            if (!$this->checkNodeValLimits($head->val) || !$this->checkNodeCountLimits($count)) {
+                return false;
+            }
 
             if (isset($visited[$head->val])) {
                 return true; // Если узел уже был посещен, значит, есть цикл

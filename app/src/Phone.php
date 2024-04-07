@@ -12,7 +12,9 @@ class Phone
      */
     public function letterCombinations(?string $digits): array
     {
-        if (!$this->validateData($digits)) return [];
+        if (!$this->validateData($digits)) {
+            return [];
+        }
 
         return $this->generateCombinations($digits, '', []);
     }
