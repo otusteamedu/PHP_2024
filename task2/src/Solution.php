@@ -40,13 +40,15 @@ class Solution
 
         $flag = true;
         $count = 0;
-        while($flag) {
+        while ($flag) {
             for ($i = 0; $i < count($array_letters); $i++) {
                 for ($j = 0; $j < count($array_letters[$i]); $j++) {
                     if ($array_letters[$i][$j] == $array_letters[0][$j]) {
                         $result[] = $array_letters[0][$j] . $array_letters[1][$count];
                     }
-                    if ($count == count($array_letters[1])-1) $flag = false;
+                    if ($count == count($array_letters[1])-1) {
+                        $flag = false;
+                    }
                 }
             }
             $count++;
