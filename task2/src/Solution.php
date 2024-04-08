@@ -46,7 +46,7 @@ class Solution
                     if ($array_letters[$i][$j] == $array_letters[0][$j]) {
                         $result[] = $array_letters[0][$j] . $array_letters[1][$count];
                     }
-                    if ($count == count($array_letters[1])-1) {
+                    if ($count == count($array_letters[1]) - 1) {
                         $flag = false;
                     }
                 }

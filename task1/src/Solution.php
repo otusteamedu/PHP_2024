@@ -10,7 +10,7 @@ class Solution
      * @param ListNode $head
      * @return bool
      */
-    function hasCycle(ListNode $head): bool
+    public function hasCycle(ListNode $head): bool
     {
         $fast = $head->next;
         while ($head != $fast) {
