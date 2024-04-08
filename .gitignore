@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+app/
+task1/vendor/
+task2/vendor/
