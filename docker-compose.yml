@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    image: app/php
+    volumes:
+      - ./:/data/myapp
+    networks:
+      - app
+    working_dir: /data/myapp
+
+  redis:
+    image: redis:7.2-alpine
+    restart: always
+    volumes:
+      - redis:/data
+    networks:
+      - app
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+
+  elasticsearch:
+    image: elasticsearch:7.16.1
+    volumes:
+      - ./docker/elasticsearch/config.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - elastic:/usr/share/elasticsearch/data
+    environment:
+      - cluster.name=es-docker-cluster
+      - "ELASTIC_USERNAME=${ELASTIC_USERNAME}"
+      - "ELASTIC_PASSWORD=${ELASTIC_PASSWORD}"
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - app
+    ports:
+      - "9200:9200"
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  elastic:
+  redis:
