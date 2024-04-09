@@ -6,7 +6,7 @@ namespace App\Validators;
 
 use App\Http\Request;
 use App\Http\Response;
-use App\Exceptions\ValidatorException;
+use Exception;
 
 class StringValidator
 {
@@ -18,7 +18,7 @@ class StringValidator
     }
 
     /**
-     * @throws ValidatorException
+     * @throws Exception
      */
     public function validate(): string
     {
@@ -55,10 +55,10 @@ class StringValidator
     }
 
     /**
-     * @throws ValidatorException
+     * @throws Exception
      */
     private function validateError(string $message)
     {
-        throw new ValidatorException($message);
+        throw new Exception($message);
     }
 }

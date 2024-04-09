@@ -1,6 +1,5 @@
 <?php
 
-use App\Exceptions\ValidatorException;
 use App\Validators\StringValidator;
 
 require '../../vendor/autoload.php';
@@ -14,9 +13,9 @@ $validator = new StringValidator('string');
 try {
     header('HTTP/1.1 ' . 200);
     echo $validator->validate();
-} catch (ValidatorException $e) {
+} catch (Exception $e) {
     header('HTTP/1.1 ' . 422);
-    echo $e->withMessage();
+    echo $e->getMessage();
 }
 
 //hw4 Задание 2 Проверка отработки баланисировщика Nginx

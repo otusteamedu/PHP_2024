@@ -13,7 +13,7 @@ final readonly class MemcachedService
 
     public function __construct(private string $envPath)
     {
-        $this->env = parse_ini_file($this->envPath) ?? [];
+        $this->env = new ParseService($this->envPath) ?? [];
         $this->memcached = new Memcached();
         $this->memcached->addServer("memcache", (int)$this->env['MEMCACHED_PORT']);
     }
