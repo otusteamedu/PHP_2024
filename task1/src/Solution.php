@@ -12,20 +12,16 @@ class Solution
      */
     public function hasCycle(ListNode $head): bool
     {
+        if ($head === null || $head === '') {
+            return false;
+        }
+        $slow = $head;
         $fast = $head->next;
-        while ($head != $fast) {
-            if (is_int($fast->next)) {
-                if ($fast->next >= 0) {
-                    $fast->next = $head;
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            if ($fast->next == null) {
+        while ($slow !== $fast) {
+            if ($fast == null || $fast->next == null) {
                 return false;
             }
-            $head = $head->next;
+            $slow = $slow->next;
             $fast = $fast->next->next;
         }
         return true;
