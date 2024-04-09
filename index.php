@@ -1,26 +1,20 @@
 <?php
-
-//Constraints:
-//
-//The number of nodes in both lists is in the range [0, 50].
-//-100 <= Node.val <= 100
-//Both list1 and list2 are sorted in non-decreasing order.
+declare(strict_types=1);
 
 
-//Definition for a singly-linked list.
+// Definition for a singly-linked list.
 class ListNode {
-    public $val = 0;
-    public $next = null;
-    function __construct($val = 0, $next = null) {
-      $this->val = $val;
-      $this->next = $next;
-    }
+     public $val = 0;
+     public $next = null;
+     function __construct($val = 0, $next = null) {
+         $this->val = $val;
+         $this->next = $next;
+     }
 }
 
 
 class Solution
 {
-
     /**
      * @param ListNode $list1
      * @param ListNode $list2
@@ -28,43 +22,35 @@ class Solution
      */
     function mergeTwoLists($list1, $list2)
     {
-        $list = new ListNode();
-        $link = $list;
+        $result = new ListNode();
+        $current = $result;
+        $iList1 = $iList2 = 0;
 
-        while (!is_null($list1) && !is_null($list2)) {
+        while (
+            !is_null($list1) && !is_null($list2) &&
+            ($iList1 < 50 && $iList2 < 50) &&
+            ($list1->val >= -100 && $list1->val <= 100) &&
+            ($list2->val >= -100 && $list2->val <= 100)
+        ) {
             if ($list1->val <= $list2->val) {
-                $link->next = $list1;
+                $current->next = $list1;
+                $list1 = $list1->next;
+                $iList1++;
             } else {
-                $link->next = $list2;
+                $current->next = $list2;
+                $list2 = $list2->next;
+                $iList2++;
             }
-            
+            $current = $current->next;
         }
-        return $list->next;
+        if (!is_null($list1)) {
+            $current->next = $list1;
+            $current = $current->next;
+        }
+        if (!is_null($list2)) {
+            $current->next = $list2;
+            $current = $current->next;
+        }
+        return $result->next;
     }
 }
-
-//(new Solution())->mergeTwoLists(list1 = [1,2,4], list2 = [1,3,4]);
-
-//$list1 = [-100,-67,0,2,4,40,78,100];
-//$list2 = [-96,-78,0,1,3,4,58,90,98,99];
-//
-//$list = [];
-//
-//for ($i = 0; $i < 50; $i++) {
-//    if (
-//        (count($list1) == $i || count($list2) == $i) ||
-//        ($list1[$i] > 100 || $list2[$i] > 100)
-//    ) break;
-//
-//    if ($list1[$i] < -100 || $list2[$i] < -100) continue;
-//
-//    if ($list1[$i] >= $list2[$i]) {
-//        $list[] = $list2[$i];
-//        $list[] = $list1[$i];
-//    } else {
-//        $list[] = $list1[$i];
-//        $list[] = $list2[$i];
-//    }
-//}
-//
-//print_r($list);
