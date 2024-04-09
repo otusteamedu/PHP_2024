@@ -9,7 +9,6 @@ use Dotenv\Dotenv;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use DI\Container;
-use RedisException;
 use RuntimeException;
 
 use function DI\create;
@@ -26,12 +25,6 @@ final class App
             $args = $this->resolveArgs();
 
 //            call_user_func_array([$service, $args['action']], [$args]);
-        } catch (RedisException $exception) {
-            throw new RuntimeException(
-                "Ошибка подключения к Redis: " . $exception->getMessage(),
-                0,
-                $exception
-            );
         } catch (ContainerExceptionInterface $exception) {
             throw new RuntimeException(
                 "Ошибка подключения зависимостей: " . $exception->getMessage(),

@@ -41,4 +41,4 @@ services:
       - db_data:/var/lib/postgresql/data:rw
 
 volumes:
-  redis_data:
+  db_data:
