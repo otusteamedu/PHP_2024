@@ -1,0 +1,16 @@
+{
+    "name": "victoria-babikova/linked-list-cycle",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VictoriaBabikova",
+            "email": "babikovav8@gmail.com"
+        }
+    ],
+    "require": {}
+}
