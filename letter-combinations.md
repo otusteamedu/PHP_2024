@@ -1,9 +1,6 @@
 # Сложность
 
-$$O(4^n)$$, где n - количество цифр.
-
-**Обоснование**
-В качестве основания берем максимально возможное количество букв для одной цифры. Сложность экспоненциальная, так как имеем столько вложенных циклов, сколько цифр подаётся на вход алгоритму.
+Затрудняюсь оценить. Возможно, $$O(n)$$, где n - количество букв. Алгоритм рекурсивный - трудно его оценить.
 
 # Решение
 
@@ -21,15 +18,6 @@ class Solution
             return [];
         }
 
-        return $this->concat($digits, '');
-    }
-
-    private function concat(string $digits, string $combination): array
-    {
-        if (strlen($digits) === 0) {
-            return [$combination];
-        }
-
         $map = [
             '2' => ['a', 'b', 'c'],
             '3' => ['d', 'e', 'f'],
@@ -41,13 +29,42 @@ class Solution
             '9' => ['w', 'x', 'y', 'z'],
         ];
 
-        $result = [];
+        $pairs = [];
 
-        foreach ($map[substr($digits, 0, 1)] as $letter) {
-            $result[] = $this->concat(substr($digits, 1), "$combination$letter");
+        for ($i = 0; $i < strlen($digits); $i++) {
+            $digit = $digits[$i];
+            $pairs = [...$pairs, ...array_map(fn (string $letter) => [$digit, $letter], $map[$digit])];
         }
 
-        return array_merge(...$result);
+        return $this->concat('', [], $digits, $pairs);
+    }
+
+    private function concat(string $combination, array $result, string $digits, array $pairs): array
+    {
+        if (!$digits) {
+            $result[$combination] = $combination;
+
+            return $result;
+        }
+
+        if (array_key_exists($combination, $result)) {
+            return $result;
+        }
+
+        $currentDigit = substr($digits, 0, 1);
+        $nextDigit = substr($digits, 1);
+
+        $offset = 0;
+        foreach ($pairs as [$digit, $letter]) {
+            $offset++;
+            if ($currentDigit !== $digit) {
+                continue;
+            }
+
+            $result = $this->concat($combination . $letter, $result, $nextDigit, array_slice($pairs, $offset));
+        }
+
+        return $result;
     }
 }
 ```
