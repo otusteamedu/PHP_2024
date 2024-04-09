@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\ConnectorInterface;
+use Exception;
 
 readonly class Search
 {
@@ -10,12 +11,15 @@ readonly class Search
     {
     }
 
-    public function search(array $params)
+    /**
+     * @throws Exception
+     */
+    public function search(array $params): array
     {
         $events = $this->connector->getAll();
 
         if (empty($events)) {
-            return 'Not found';
+            throw new Exception('Not found');
         }
 
         $events = array_filter($events, function ($event) use ($params) {
@@ -39,7 +43,7 @@ readonly class Search
         });
 
         if (empty($events)) {
-            return [];
+            throw new Exception('Not found');
         }
 
         usort($events, function ($a, $b) {

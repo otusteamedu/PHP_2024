@@ -57,12 +57,15 @@ echo 'REDIS' . PHP_EOL;
 $param1 = readline('Значение1: ');
 $param2 = readline('Значение2: ');
 
-$search = new Search($connector->client('redis'));
-$result = $search->search(['param1' => $param1, 'param2' => $param2]);
 
-echo 'Приоритет: ' . $result['priority'] . PHP_EOL;
-echo 'Событие: ' . $result['event'] . PHP_EOL;
-
+try {
+    $search = new Search($connector->client('redis'));
+    $result = $search->search(['param1' => $param1, 'param2' => $param2]);
+    echo 'Приоритет: ' . $result['priority'] . PHP_EOL;
+    echo 'Событие: ' . $result['event'] . PHP_EOL;
+} catch (Exception $exception) {
+    echo $exception->getMessage() . PHP_EOL;
+}
 
 /**
  * SEARCH ELASTIC EXAMPLE
@@ -72,8 +75,11 @@ echo 'ELASTIC' . PHP_EOL;
 $param1 = readline('Значение1: ');
 $param2 = readline('Значение2: ');
 
-$search = new Search($connector->client('elastic'));
-$result = $search->search(['param1' => $param1, 'param2' => $param2]);
-
-echo 'Приоритет: ' . $result['priority'] . PHP_EOL;
-echo 'Событие: ' . $result['event'] . PHP_EOL;
+try {
+    $search = new Search($connector->client('elastic'));
+    $result = $search->search(['param1' => $param1, 'param2' => $param2]);
+    echo 'Приоритет: ' . $result['priority'] . PHP_EOL;
+    echo 'Событие: ' . $result['event'] . PHP_EOL;
+} catch (Exception $exception) {
+    echo $exception->getMessage() . PHP_EOL;
+}
