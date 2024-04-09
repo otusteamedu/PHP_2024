@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework;
 
+use Alogachev\Homework\Actions\HallCreate;
 use Alogachev\Homework\Exception\EmptyActionNameException;
 use Dotenv\Dotenv;
+use PDO;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use DI\Container;
@@ -23,8 +25,9 @@ final class App
         try {
             $container = $this->resolveDI();
             $args = $this->resolveArgs();
+            $service = $container->get(HallCreate::class);
 
-//            call_user_func_array([$service, $args['action']], [$args]);
+            call_user_func_array([$service, $args['action']], [$args]);
         } catch (ContainerExceptionInterface $exception) {
             throw new RuntimeException(
                 "Ошибка подключения зависимостей: " . $exception->getMessage(),
@@ -36,23 +39,30 @@ final class App
 
     private function resolveDI(): ContainerInterface
     {
-//        $host = $_ENV['REDIS_HOST'] ?? null;
-//        $port = $_ENV['REDIS_PORT'] ?? null;
-//
-//        $redis = new Redis();
-//        $redis->connect($host, (int)$port);;
-//
-//        return new Container([
-//            Redis::class => $redis,
+        // postgres data
+        $host = $_ENV['POSTGRES_DB_HOST'] ?? null;
+        $db   = $_ENV['POSTGRES_DB_NAME'] ?? null;
+        $dbPort = $_ENV['POSTGRES_PORT'] ?? null;
+        $user = $_ENV['POSTGRES_USER'] ?? null;
+        $pass = $_ENV['POSTGRES_PASSWORD'] ?? null;
+        $dsn = "pgsql:host=$host;port=$dbPort;dbname=$db;user=$user;password=$pass";
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+
+        $pdo = new PDO($dsn, $user, $pass, $options);
+
+        return new Container([
+            PDO::class => $pdo,
 //            RedisEventRepository::class => create()->constructor(
 //                get(Redis::class)
 //            ),
 //            EventSourcingService::class => create()->constructor(
 //                get(RedisEventRepository::class)
 //            )
-//        ]);
-
-        return new Container();
+        ]);
     }
 
     private function resolveArgs(): array
