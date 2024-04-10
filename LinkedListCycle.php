@@ -23,15 +23,15 @@ class Solution
      */
     public function hasCycle(ListNode $head): bool
     {
-        $visitedNodes = [];
-        $currentNode = $head;
+        $slow = $fast = $head;
 
-        while ($currentNode !== null) {
-            if (in_array($currentNode, $visitedNodes, true)) {
+        while ($fast && $fast->next) {
+            $slow = $slow->next;
+            $fast = $fast->next->next;
+
+            if ($slow === $fast) {
                 return true;
             }
-            $visitedNodes[] = $currentNode;
-            $currentNode = $currentNode->next;
         }
 
         return false;
