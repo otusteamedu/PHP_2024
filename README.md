@@ -1,3 +1,4 @@
-# PHP_2023
+# PHP_2024
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+1. Linked-list-cycle: Алгоритмическая сложность O(n), так как при увеличении количества узлов в связанном списке время на выполнение будет линейно возрастать.
+2. Letter Combinations of a Phone Number: Алгоритмическая сложность O(4^n), так как максимальная длина числа равна 4 и мы перебираем всевозможные комбинации букв через рекурсию. 
