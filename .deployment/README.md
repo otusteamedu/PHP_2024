@@ -34,9 +34,9 @@ docker compose exec app composer install
 ```
 
 5) Примеры запросов:
-- добавить новое событие:
+- добавить новый кинозал:
 ```bash
-php app.php --action addEvent --priority 4000 --name randomEvent --description "Something wrong is happening in the world" --conditions "[param1=1 param2=4]"
+php app.php --action createHall --name "Тестовый кинозал 2" --capacity 250 --rowsCount 25
 ```
 
 - очистить хранилище событий:
