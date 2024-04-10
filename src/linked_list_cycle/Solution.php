@@ -11,7 +11,8 @@ class Solution
      * @param ListNode|null $head
      * @return bool
      */
-    public function hasCycle(?ListNode $head): bool {
+    public function hasCycle(?ListNode $head): bool
+    {
         if ($head === null || $head->next === null) {
             return false;
         }

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Afilipov\Hw14\letter_combinations;
 
-class Solution {
+class Solution
+{
     private array $digitMap = [
         '2' => ['a', 'b', 'c'],
         '3' => ['d', 'e', 'f'],
@@ -22,7 +23,8 @@ class Solution {
      * @param string $digits
      * @return array
      */
-    public function letterCombinations(string $digits): array {
+    public function letterCombinations(string $digits): array
+    {
         $result = [];
         if (empty($digits)) {
             return $result;
@@ -31,7 +33,8 @@ class Solution {
         return $result;
     }
 
-    private function recursive(array &$result, string $current, string $digits, int $index): void {
+    private function recursive(array &$result, string $current, string $digits, int $index): void
+    {
         if ($index === strlen($digits)) {
             $result[] = $current;
             return;
