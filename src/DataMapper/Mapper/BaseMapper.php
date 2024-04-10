@@ -55,17 +55,7 @@ abstract class BaseMapper
         );
     }
 
-    protected function buildUpdateQuery(): string
-    {
-        return '';
-    }
-
     protected function buildSelectQuery(): string
-    {
-        return '';
-    }
-
-    protected function buildDeleteQuery(): string
     {
         return '';
     }

@@ -24,4 +24,9 @@ class HallMapper extends BaseMapper
         // Меняем суррогатный id на реальный.
         $entity->setId((int)$this->pdo->lastInsertId());;
     }
+
+    public function findAllBigHalls(): array
+    {
+        return [];
+    }
 }
