@@ -5,20 +5,23 @@ declare(strict_types=1);
 namespace Alogachev\Homework\DataMapper\Entity;
 
 use Alogachev\Homework\DataMapper\ORM\Column;
+use Alogachev\Homework\DataMapper\ORM\Id;
+use Alogachev\Homework\DataMapper\ORM\IdAttributeDictionary;
 use Alogachev\Homework\DataMapper\ORM\Table;
 
 #[Table(name: 'hall')]
 class Hall
 {
     public function __construct(
-        #[Column(name: 'id', type: 'int', nullable: false)]
+        #[Id(strategy: IdAttributeDictionary::AUTO_INCREMENT_STRATEGY)]
+        #[Column(name: 'id', type: 'integer', nullable: false)]
         private int $id,
         #[Column(name: 'name', type: 'string', nullable: false)]
         private string $name,
         #[Column(name: 'capacity', type: 'integer', nullable: false)]
         private int $capacity,
-        #[Column(name: 'row_count', type: 'integer', nullable: false)]
-        private int $rowCount
+        #[Column(name: 'rows_count', type: 'integer', nullable: false)]
+        private int $rowsCount
     ) {
     }
 
@@ -58,15 +61,30 @@ class Hall
         return $this;
     }
 
-    public function getRowCount(): int
+    public function getRowsCount(): int
     {
-        return $this->rowCount;
+        return $this->rowsCount;
     }
 
-    public function setRowCount(int $rowCount): self
+    public function setRowsCount(int $rowCount): self
     {
-        $this->rowCount = $rowCount;
+        $this->rowsCount = $rowCount;
 
         return $this;
+    }
+
+    public static function create(string $name, int $capacity, int $rowsCount): self
+    {
+        return new self(IdAttributeDictionary::SURROGATE_ID, $name, $capacity, $rowsCount);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'capacity' => $this->capacity,
+            'rows_count' => $this->rowsCount,
+        ];
     }
 }

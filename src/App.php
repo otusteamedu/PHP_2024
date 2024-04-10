@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alogachev\Homework;
 
 use Alogachev\Homework\Actions\HallCreate;
+use Alogachev\Homework\DataMapper\Mapper\HallMapper;
 use Alogachev\Homework\Exception\EmptyActionNameException;
 use Dotenv\Dotenv;
 use PDO;
@@ -56,6 +57,7 @@ final class App
 
         return new Container([
             PDO::class => $pdo,
+            HallCreate::class => create()->constructor(get(HallMapper::class)),
 //            RedisEventRepository::class => create()->constructor(
 //                get(Redis::class)
 //            ),
