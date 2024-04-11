@@ -39,12 +39,12 @@ docker compose exec app composer install
 php app.php --action createHall --name "Тестовый кинозал 2" --capacity 250 --rowsCount 25
 ```
 
-- очистить хранилище событий:
+- вернуть все записи:
 ```bash
-php app.php --action clearEvents
+php app.php --action getAllHalls
 ```
 
-- поиск наиболее подходящего события
+- вернуть зал по id
 ```bash
-php app.php --action findTheMostSuitableEvent  --conditions "[param1=1 param2=4]"
+php app.php --action getHallById --id 1
 ```
