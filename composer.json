@@ -1,20 +1,16 @@
 {
   "name": "otus/ystopchyk",
-  "description": "Otus home work 14",
+  "description": "Otus home work 17",
   "minimum-stability": "dev",
   "type": "project",
   "require": {
     "php": ">=8.0",
-    "vlucas/phpdotenv": "^5.6",
-    "ext-redis": "*"
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {
-      "hw15\\": "src/"
+      "hw17\\": "src/"
     }
   },
-  "prefer-stable": true,
-  "require-dev": {
-    "roave/security-advisories": "dev-latest"
-  }
+  "prefer-stable": true
 }
