@@ -8,13 +8,24 @@ use Alogachev\Homework\DataMapper\ORM\Column;
 use Alogachev\Homework\DataMapper\ORM\Id;
 use Alogachev\Homework\DataMapper\ORM\Table;
 use PDO;
+use PDOStatement;
 use ReflectionClass;
+use ReflectionException;
 
 abstract class BaseMapper
 {
+    protected PDOStatement $selectStatement;
+    protected PDOStatement $selectAllStatement;
+
+    /**
+     * @throws ReflectionException
+     */
     public function __construct(
+        protected string $entityClass,
         protected PDO $pdo
     ) {
+        $this->selectStatement = $this->buildSelectQuery();
+        $this->selectAllStatement = $this->buildSelectAllQuery();
     }
 
     protected function buildInsertQuery(object $entity): string
@@ -55,8 +66,35 @@ abstract class BaseMapper
         );
     }
 
-    protected function buildSelectQuery(): string
+    /**
+     * @throws ReflectionException
+     */
+    private function buildSelectQuery(): PDOStatement
     {
-        return '';
+        $reflectionClass = new ReflectionClass($this->entityClass);
+        $tableAttribute = $reflectionClass->getAttributes(Table::class)[0]->newInstance();
+        $query = 'SELECT * FROM ' . $tableAttribute->name;
+
+        foreach ($reflectionClass->getProperties() as $property) {
+            $idAttribute = $property->getAttributes(Id::class);
+            $idColumn = !empty($idAttribute) ? $property->getAttributes(Column::class)[0]->newInstance() : null;
+            if (isset($idColumn)) {
+                $query .= ' WHERE ' . $idColumn->name.' = :'. $idColumn->name;
+            }
+        }
+
+        return $this->pdo->prepare($query);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function buildSelectAllQuery(): PDOStatement
+    {
+        $reflectionClass = new ReflectionClass($this->entityClass);
+        $tableAttribute = $reflectionClass->getAttributes(Table::class)[0]->newInstance();
+        $query = 'SELECT * FROM ' . $tableAttribute->name;
+
+        return $this->pdo->prepare($query);
     }
 }

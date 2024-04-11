@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Alogachev\Homework\DataMapper\Mapper;
 
 use Alogachev\Homework\DataMapper\Entity\Hall;
+use Alogachev\Homework\DataMapper\Query\QueryItem;
 use PDO;
 
 class HallMapper extends BaseMapper
@@ -25,8 +26,47 @@ class HallMapper extends BaseMapper
         $entity->setId((int)$this->pdo->lastInsertId());;
     }
 
-    public function findAllBigHalls(): array
+    /**
+     * @return Hall[]
+     */
+    public function findAll(): array
     {
-        return [];
+        $this->selectAllStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $this->selectAllStatement->execute();
+        $result = $this->selectAllStatement->fetchAll();
+
+        return $result
+            ? array_map(
+                static fn($hall) => new Hall(
+                    $hall['id'],
+                    $hall['name'],
+                    $hall['capacity'],
+                    $hall['rows_count']
+                ),
+                $result
+            )
+            : [];
+    }
+
+    public function finById(QueryItem $queryItem): ?Hall
+    {
+        $this->selectStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $this->selectStatement->bindValue(
+            ':' . $queryItem->getName(),
+            $queryItem->getValue(),
+            $queryItem->getType()
+        );
+
+        $this->selectStatement->execute();
+        $result = $this->selectStatement->fetch();
+
+        return !empty($result)
+            ? new Hall(
+                $result['id'],
+                $result['name'],
+                $result['capacity'],
+                $result['rows_count']
+            )
+            : null;
     }
 }

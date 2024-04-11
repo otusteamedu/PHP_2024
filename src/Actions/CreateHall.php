@@ -8,13 +8,13 @@ use Alogachev\Homework\DataMapper\Entity\Hall;
 use Alogachev\Homework\DataMapper\Mapper\BaseMapper;
 use Alogachev\Homework\Exception\InvalidInputDataException;
 
-class HallCreate
+class CreateHall
 {
     public function __construct(
         private readonly BaseMapper $hallMapper
     ) {
     }
-    public function createHall(array $data): void
+    public function __invoke(array $data): void
     {
         $this->validate($data);
         $hall = Hall::create($data['name'], (int)$data['capacity'], (int)$data['rowsCount']);

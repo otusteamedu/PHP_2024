@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework;
 
-use Alogachev\Homework\Actions\HallCreate;
+use Alogachev\Homework\Actions\GetAllHalls;
+use Alogachev\Homework\Actions\CreateHall;
+use Alogachev\Homework\Actions\GetHallById;
+use Alogachev\Homework\DataMapper\Entity\Hall;
 use Alogachev\Homework\DataMapper\Mapper\HallMapper;
 use Alogachev\Homework\Exception\EmptyActionNameException;
 use Dotenv\Dotenv;
@@ -26,9 +29,10 @@ final class App
         try {
             $container = $this->resolveDI();
             $args = $this->resolveArgs();
-            $service = $container->get(HallCreate::class);
+            $actionNameSpace = 'Alogachev\\Homework\\Actions\\';
+            $service = $container->get($actionNameSpace . ucfirst($args['action']));
 
-            call_user_func_array([$service, $args['action']], [$args]);
+            call_user_func_array($service, [$args]);
         } catch (ContainerExceptionInterface $exception) {
             throw new RuntimeException(
                 "Ошибка подключения зависимостей: " . $exception->getMessage(),
@@ -57,13 +61,10 @@ final class App
 
         return new Container([
             PDO::class => $pdo,
-            HallCreate::class => create()->constructor(get(HallMapper::class)),
-//            RedisEventRepository::class => create()->constructor(
-//                get(Redis::class)
-//            ),
-//            EventSourcingService::class => create()->constructor(
-//                get(RedisEventRepository::class)
-//            )
+            HallMapper::class => create()->constructor(Hall::class, get(PDO::class)),
+            CreateHall::class => create()->constructor(get(HallMapper::class)),
+            GetAllHalls::class => create()->constructor(get(HallMapper::class)),
+            GetHallById::class => create()->constructor(get(HallMapper::class)),
         ]);
     }
 
