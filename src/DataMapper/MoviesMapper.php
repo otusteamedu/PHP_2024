@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace hw17\DataMapper;
 
+use Pdo;
+use PDOStatement;
+
 class MoviesMapper
 {
     private PDO $pdo;
@@ -30,6 +33,10 @@ class MoviesMapper
         );
     }
 
+    /**
+     * @param int $id
+     * @return Movies
+     */
     public function findById(int $id): Movies
     {
         $this->selectStatement->setFetchMode(PDO::FETCH_ASSOC);
@@ -50,6 +57,10 @@ class MoviesMapper
         );
     }
 
+    /**
+     * @param array $rawMoviesData
+     * @return Movies
+     */
     public function insert(array $rawMoviesData): Movies
     {
         $this->insertStatement->execute([
@@ -76,17 +87,30 @@ class MoviesMapper
         );
     }
 
-    public function update(Movies $movies): bool
+    /**
+     * @param Movies $movie
+     * @return bool
+     */
+    public function update(Movies $movie): bool
     {
         return $this->updateStatement->execute([
-            $movies->getTitle(),
-            $movies->getDescription(),
-            $movies->getAgeLimit(),
-            $movies->getLanguage(),
-            $movies->getGenre(),
-            $movies->getCountry(),
-            $movies->getPremiereDate(),
-            $movies->getMovieDuration()
+            $movie->getTitle(),
+            $movie->getDescription(),
+            $movie->getAgeLimit(),
+            $movie->getLanguage(),
+            $movie->getGenre(),
+            $movie->getCountry(),
+            $movie->getPremiereDate(),
+            $movie->getMovieDuration()
         ]);
+    }
+
+    /**
+     * @param Movies $movie
+     * @return bool
+     */
+    public function delete(Movies $movie): bool
+    {
+        return $this->deleteStatement->execute([$movie->getId()]);
     }
 }

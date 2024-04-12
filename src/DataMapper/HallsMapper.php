@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace hw17\DataMapper;
 
+use Pdo;
+use PDOStatement;
+
 class HallsMapper
 {
     private PDO $pdo;
@@ -30,6 +33,10 @@ class HallsMapper
         );
     }
 
+    /**
+     * @param int $id
+     * @return Halls
+     */
     public function findById(int $id): Halls
     {
         $this->selectStatement->setFetchMode(PDO::FETCH_ASSOC);
@@ -45,6 +52,10 @@ class HallsMapper
         );
     }
 
+    /**
+     * @param array $rawHallsData
+     * @return Halls
+     */
     public function insert(array $rawHallsData): Halls
     {
         $this->insertStatement->execute([
@@ -61,6 +72,10 @@ class HallsMapper
         );
     }
 
+    /**
+     * @param Halls $halls
+     * @return bool
+     */
     public function update(Halls $halls): bool
     {
         return $this->updateStatement->execute([
@@ -68,5 +83,14 @@ class HallsMapper
             $halls->getNumberOfSeats(),
             $halls->getIsPremium()
         ]);
+    }
+
+    /**
+     * @param Halls $hall
+     * @return bool
+     */
+    public function delete(Halls $hall): bool
+    {
+        return $this->deleteStatement->execute([$hall->getId()]);
     }
 }

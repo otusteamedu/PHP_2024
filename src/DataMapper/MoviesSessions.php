@@ -4,16 +4,49 @@ declare(strict_types=1);
 
 namespace hw17\DataMapper;
 
+use Closure;
+
 class MoviesSessions
 {
+    /** @var array Halls $halls */
+    private array $halls = [];
+
+    /** @var array Movies $movies */
+    private array $movies = [];
+
+    /** @var Closure $movieReference */
+    private Closure $movieReference;
+
+    /** @var Closure $hallReference */
+    private Closure $hallReference;
+
     public function __construct(
         private int $id,
-        private int $hallsId,
+        private int $hallId,
         private int $movieId,
         private int $startTime,
         private int $endTime
     ) {
     }
+
+    /**
+     * @param Closure $reference
+     * @return void
+     */
+    public function setMovieReference(Closure $reference): void
+    {
+        $this->movieReference = $reference;
+    }
+
+    /**
+     * @param Closure $reference
+     * @return void
+     */
+    public function setHallReference(Closure $reference): void
+    {
+        $this->hallReference = $reference;
+    }
+
 
     /**
      * @return int
@@ -34,9 +67,9 @@ class MoviesSessions
     /**
      * @return int
      */
-    public function getHallsId(): int
+    public function getHallId(): int
     {
-        return $this->hallsId;
+        return $this->hallId;
     }
 
     /**
@@ -103,5 +136,24 @@ class MoviesSessions
         $this->startTime = $startTime;
 
         return $this;
+    }
+
+
+    public function getHalls(): array
+    {
+        if (!isset($this->halls)) {
+            $this->halls = ($this->hallReference)();
+        }
+
+        return $this->halls;
+    }
+
+    public function getMovies(): array
+    {
+        if (!isset($this->movies)) {
+            $this->movies = ($this->movieReference)();
+        }
+
+        return $this->movies;
     }
 }

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace hw17\DataMapper;
 
+use Pdo;
+use PDOStatement;
+
 class MoviesSessionsMapper
 {
     private PDO $pdo;
@@ -11,6 +14,7 @@ class MoviesSessionsMapper
     private PDOStatement $insertStatement;
     private PDOStatement $updateStatement;
     private PDOStatement $deleteStatement;
+
 
     public function __construct(
         PDO $pdo
@@ -64,13 +68,18 @@ class MoviesSessionsMapper
         );
     }
 
-    public function update(MoviesSessions $movies): bool
+    public function update(MoviesSessions $movieSession): bool
     {
         return $this->updateStatement->execute([
-            $movies->getHallsId(),
-            $movies->getMovieId(),
-            $movies->getStartTime(),
-            $movies->getEndTime()
+            $movieSession->getHallId(),
+            $movieSession->getMovieId(),
+            $movieSession->getStartTime(),
+            $movieSession->getEndTime()
         ]);
+    }
+
+    public function delete(MoviesSessions $movieSession): bool
+    {
+        return $this->deleteStatement->execute([$movieSession->getId()]);
     }
 }
