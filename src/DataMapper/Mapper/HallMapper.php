@@ -79,4 +79,11 @@ class HallMapper extends BaseMapper
         $prepared->bindValue(':id', $entity->getId(), PDO::PARAM_INT);
         $prepared->execute();
     }
+
+    public function delete(Hall $entity): void
+    {
+        $prepared = $this->deleteStatement;
+        $prepared->bindValue(':id', $entity->getId(), PDO::PARAM_INT);
+        $prepared->execute();
+    }
 }

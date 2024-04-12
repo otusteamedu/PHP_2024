@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework;
 
+use Alogachev\Homework\Actions\DeleteHall;
 use Alogachev\Homework\Actions\GetAllHalls;
 use Alogachev\Homework\Actions\CreateHall;
 use Alogachev\Homework\Actions\GetHallById;
@@ -67,6 +68,7 @@ final class App
             GetAllHalls::class => create()->constructor(get(HallMapper::class)),
             GetHallById::class => create()->constructor(get(HallMapper::class)),
             UpdateHall::class => create()->constructor(get(HallMapper::class)),
+            DeleteHall::class => create()->constructor(get(HallMapper::class)),
         ]);
     }
 

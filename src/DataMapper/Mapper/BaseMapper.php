@@ -18,6 +18,7 @@ abstract class BaseMapper
     protected PDOStatement $selectAllStatement;
     protected PDOStatement $insertStatement;
     protected PDOStatement $updateStatement;
+    protected PDOStatement $deleteStatement;
 
     /**
      * @throws ReflectionException
@@ -30,6 +31,7 @@ abstract class BaseMapper
         $this->selectAllStatement = $this->buildSelectAllQuery();
         $this->insertStatement = $this->buildInsertQuery();
         $this->updateStatement = $this->buildUpdateQuery();
+        $this->deleteStatement = $this->buildDeleteQuery();
     }
 
     /**
@@ -88,7 +90,7 @@ abstract class BaseMapper
             $idAttribute = $property->getAttributes(Id::class);
             $idColumn = !empty($idAttribute) ? $property->getAttributes(Column::class)[0]->newInstance() : null;
             if (isset($idColumn)) {
-                $query .= ' WHERE ' . $idColumn->name.' = :'. $idColumn->name;
+                $query .= ' WHERE ' . $idColumn->name . ' = :' . $idColumn->name;
             }
         }
 
@@ -122,11 +124,11 @@ abstract class BaseMapper
                 $idAttribute = $property->getAttributes(Id::class);
                 if (!empty($idAttribute)) {
                     $idColumn = $property->getAttributes(Column::class)[0]->newInstance();
-                    $whereArgs[] = $idColumn->name.' = :'. $idColumn->name;
+                    $whereArgs[] = $idColumn->name . ' = :' . $idColumn->name;
                     return;
                 }
                 $attribute = $property->getAttributes(Column::class)[0]->newInstance();
-                $setArgs[] = $attribute->name.' = :'. $attribute->name;
+                $setArgs[] = $attribute->name . ' = :' . $attribute->name;
             },
             $reflectionClass->getProperties()
         );
@@ -135,6 +137,32 @@ abstract class BaseMapper
             'UPDATE %s SET %s WHERE %s',
             $tableAttribute->name,
             implode(', ', $setArgs),
+            implode(', ', $whereArgs)
+        );
+
+        return $this->pdo->prepare($query);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function buildDeleteQuery(): PDOStatement
+    {
+        $reflectionClass = new ReflectionClass($this->entityClass);
+        $tableAttribute = $reflectionClass->getAttributes(Table::class)[0]->newInstance();
+        $whereArgs = [];
+
+        foreach ($reflectionClass->getProperties() as $property) {
+            $idAttribute = $property->getAttributes(Id::class);
+            $idColumn = !empty($idAttribute) ? $property->getAttributes(Column::class)[0]->newInstance() : null;
+            if (isset($idColumn)) {
+                $whereArgs[] = $idColumn->name . ' = :' . $idColumn->name;
+            }
+        }
+
+        $query =  sprintf(
+            'DELETE FROM %s WHERE %s',
+            $tableAttribute->name,
             implode(', ', $whereArgs)
         );
 

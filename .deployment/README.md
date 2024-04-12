@@ -48,3 +48,13 @@ php app.php --action getAllHalls
 ```bash
 php app.php --action getHallById --id 1
 ```
+
+- обновить запись по id
+```bash
+app.php --action updateHall --id 7 --name "Тестовый кинозал 7" --capacity 260 --rowsCount 26
+```
+
+- удаление записи по id
+```bash
+php app.php --action deleteHall --id 7
+```
