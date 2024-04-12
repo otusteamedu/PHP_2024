@@ -16,6 +16,7 @@ abstract class BaseMapper
 {
     protected PDOStatement $selectStatement;
     protected PDOStatement $selectAllStatement;
+    protected PDOStatement $insertStatement;
 
     /**
      * @throws ReflectionException
@@ -26,11 +27,15 @@ abstract class BaseMapper
     ) {
         $this->selectStatement = $this->buildSelectQuery();
         $this->selectAllStatement = $this->buildSelectAllQuery();
+        $this->insertStatement = $this->buildInsertQuery();
     }
 
-    protected function buildInsertQuery(object $entity): string
+    /**
+     * @throws ReflectionException
+     */
+    private function buildInsertQuery(): PDOStatement
     {
-        $reflectionClass = new ReflectionClass($entity);
+        $reflectionClass = new ReflectionClass($this->entityClass);
         $tableAttribute = $reflectionClass->getAttributes(Table::class)[0]->newInstance();
         // Если у аттрибута тип Id с автоинкрементной стратегией, то не добавляем его в запрос и не требуем его наличия.
         $filteredProperties = array_filter(
@@ -58,12 +63,14 @@ abstract class BaseMapper
             $columns
         );
 
-        return sprintf(
+        $query =  sprintf(
             'INSERT INTO %s (%s) VALUES (%s)',
             $tableAttribute->name,
             implode(', ', $columns),
             implode(', ', $placeholders)
         );
+
+        return $this->pdo->prepare($query);
     }
 
     /**
