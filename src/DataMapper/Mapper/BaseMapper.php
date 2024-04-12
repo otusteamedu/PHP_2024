@@ -17,6 +17,7 @@ abstract class BaseMapper
     protected PDOStatement $selectStatement;
     protected PDOStatement $selectAllStatement;
     protected PDOStatement $insertStatement;
+    protected PDOStatement $updateStatement;
 
     /**
      * @throws ReflectionException
@@ -28,6 +29,7 @@ abstract class BaseMapper
         $this->selectStatement = $this->buildSelectQuery();
         $this->selectAllStatement = $this->buildSelectAllQuery();
         $this->insertStatement = $this->buildInsertQuery();
+        $this->updateStatement = $this->buildUpdateQuery();
     }
 
     /**
@@ -101,6 +103,40 @@ abstract class BaseMapper
         $reflectionClass = new ReflectionClass($this->entityClass);
         $tableAttribute = $reflectionClass->getAttributes(Table::class)[0]->newInstance();
         $query = 'SELECT * FROM ' . $tableAttribute->name;
+
+        return $this->pdo->prepare($query);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function buildUpdateQuery(): PDOStatement
+    {
+        $reflectionClass = new ReflectionClass($this->entityClass);
+        $tableAttribute = $reflectionClass->getAttributes(Table::class)[0]->newInstance();
+        $setArgs = [];
+        $whereArgs = [];
+
+        array_map(
+            function ($property) use (&$setArgs, &$whereArgs) {
+                $idAttribute = $property->getAttributes(Id::class);
+                if (!empty($idAttribute)) {
+                    $idColumn = $property->getAttributes(Column::class)[0]->newInstance();
+                    $whereArgs[] = $idColumn->name.' = :'. $idColumn->name;
+                    return;
+                }
+                $attribute = $property->getAttributes(Column::class)[0]->newInstance();
+                $setArgs[] = $attribute->name.' = :'. $attribute->name;
+            },
+            $reflectionClass->getProperties()
+        );
+
+        $query =  sprintf(
+            'UPDATE %s SET %s WHERE %s',
+            $tableAttribute->name,
+            implode(', ', $setArgs),
+            implode(', ', $whereArgs)
+        );
 
         return $this->pdo->prepare($query);
     }

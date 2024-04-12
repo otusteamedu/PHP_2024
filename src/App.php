@@ -7,6 +7,7 @@ namespace Alogachev\Homework;
 use Alogachev\Homework\Actions\GetAllHalls;
 use Alogachev\Homework\Actions\CreateHall;
 use Alogachev\Homework\Actions\GetHallById;
+use Alogachev\Homework\Actions\UpdateHall;
 use Alogachev\Homework\DataMapper\Entity\Hall;
 use Alogachev\Homework\DataMapper\Mapper\HallMapper;
 use Alogachev\Homework\Exception\EmptyActionNameException;
@@ -65,6 +66,7 @@ final class App
             CreateHall::class => create()->constructor(get(HallMapper::class)),
             GetAllHalls::class => create()->constructor(get(HallMapper::class)),
             GetHallById::class => create()->constructor(get(HallMapper::class)),
+            UpdateHall::class => create()->constructor(get(HallMapper::class)),
         ]);
     }
 

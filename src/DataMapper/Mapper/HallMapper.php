@@ -15,7 +15,7 @@ class HallMapper extends BaseMapper
      *
      * @return void
      */
-    public function insert(object $entity): void
+    public function insert(Hall $entity): void
     {
         $prepared = $this->insertStatement;
         $prepared->bindValue(':name', $entity->getName(), PDO::PARAM_STR);
@@ -68,5 +68,15 @@ class HallMapper extends BaseMapper
                 $result['rows_count']
             )
             : null;
+    }
+
+    public function update(Hall $entity): void
+    {
+        $prepared = $this->updateStatement;
+        $prepared->bindValue(':name', $entity->getName(), PDO::PARAM_STR);
+        $prepared->bindValue(':capacity', $entity->getCapacity(), PDO::PARAM_INT);
+        $prepared->bindValue(':rows_count', $entity->getRowsCount(), PDO::PARAM_INT);
+        $prepared->bindValue(':id', $entity->getId(), PDO::PARAM_INT);
+        $prepared->execute();
     }
 }
