@@ -33,7 +33,7 @@ class DeleteHall
         }
         $this->hallMapper->delete($hall);
 
-        echo "Hall with id {$data['id']} deleted". PHP_EOL;
+        echo "Hall with id {$data['id']} deleted" . PHP_EOL;
     }
 
     private function validate(array $data): void

@@ -34,11 +34,10 @@ class UpdateHall
         $hall
             ->setName($data['name'])
             ->setCapacity((int)$data['capacity'])
-            ->setRowsCount((int)$data['rowsCount'])
-        ;
+            ->setRowsCount((int)$data['rowsCount']);
         $this->hallMapper->update($hall);
 
-        echo "Hall with id {$data['id']} updated". PHP_EOL;
+        echo "Hall with id {$data['id']} updated" . PHP_EOL;
     }
 
     private function validate(array $data): void

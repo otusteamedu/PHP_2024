@@ -23,7 +23,7 @@ class HallMapper extends BaseMapper
         $prepared->bindValue(':rows_count', $entity->getRowsCount(), PDO::PARAM_INT);
         $prepared->execute();
         // Меняем суррогатный id на реальный.
-        $entity->setId((int)$this->pdo->lastInsertId());;
+        $entity->setId((int)$this->pdo->lastInsertId());
     }
 
     /**

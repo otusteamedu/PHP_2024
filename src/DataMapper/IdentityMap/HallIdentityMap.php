@@ -6,5 +6,4 @@ namespace Alogachev\Homework\DataMapper\IdentityMap;
 
 class HallIdentityMap extends BaseIdentityMap
 {
-
 }

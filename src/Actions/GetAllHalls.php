@@ -14,9 +14,6 @@ class GetAllHalls
     ) {
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function __invoke(): void
     {
         $halls = $this->hallMapper->findAll();

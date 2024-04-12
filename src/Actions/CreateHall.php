@@ -14,6 +14,7 @@ class CreateHall
         private readonly BaseMapper $hallMapper
     ) {
     }
+
     public function __invoke(array $data): void
     {
         $this->validate($data);

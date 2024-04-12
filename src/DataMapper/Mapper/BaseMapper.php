@@ -25,9 +25,9 @@ abstract class BaseMapper
      * @throws ReflectionException
      */
     public function __construct(
-        protected string $entityClass,
+        protected string          $entityClass,
         protected BaseIdentityMap $identityMap,
-        protected PDO $pdo
+        protected PDO             $pdo
     ) {
         $this->selectStatement = $this->buildSelectQuery();
         $this->selectAllStatement = $this->buildSelectAllQuery();
@@ -46,7 +46,7 @@ abstract class BaseMapper
         // Если у аттрибута тип Id с автоинкрементной стратегией, то не добавляем его в запрос и не требуем его наличия.
         $filteredProperties = array_filter(
             $reflectionClass->getProperties(),
-            function($property) {
+            function ($property) {
                 $idAttribute = $property->getAttributes(Id::class);
                 $idInstance = !empty($idAttribute) ? $idAttribute[0]->newInstance() : null;
 
@@ -64,12 +64,12 @@ abstract class BaseMapper
 
         $placeholders = array_map(
             function ($column) {
-                return ':'. $column;
+                return ':' . $column;
             },
             $columns
         );
 
-        $query =  sprintf(
+        $query = sprintf(
             'INSERT INTO %s (%s) VALUES (%s)',
             $tableAttribute->name,
             implode(', ', $columns),
@@ -135,7 +135,7 @@ abstract class BaseMapper
             $reflectionClass->getProperties()
         );
 
-        $query =  sprintf(
+        $query = sprintf(
             'UPDATE %s SET %s WHERE %s',
             $tableAttribute->name,
             implode(', ', $setArgs),
@@ -162,7 +162,7 @@ abstract class BaseMapper
             }
         }
 
-        $query =  sprintf(
+        $query = sprintf(
             'DELETE FROM %s WHERE %s',
             $tableAttribute->name,
             implode(', ', $whereArgs)
