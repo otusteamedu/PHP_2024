@@ -3,29 +3,37 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use App\Domain\ValueObject\Title;
 use DateTimeImmutable;
 use App\Domain\ValueObject\Url;
 
 class News
 {
     private ?int $id = null;
-    private string $title;
+    private Title $title;
     private Url $url;
     private DateTimeImmutable $createdAt;
 
     /**
-     * @param string $title
+     * @param Title $title
      * @param Url $url
-     * @param DateTimeImmutable $createdAt
      */
-    public function __construct(string $title, Url $url, DateTimeImmutable $createdAt)
+    public function __construct(
+        Title $title,
+        Url $url,
+    )
     {
         $this->title = $title;
         $this->url = $url;
-        $this->createdAt = $createdAt;
+        $this->createdAt = new DateTimeImmutable();
     }
 
-    public function getTitle(): string
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): Title
     {
         return $this->title;
     }

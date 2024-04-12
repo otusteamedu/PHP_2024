@@ -1,5 +1,7 @@
 {
     "name": "sfadeev/mm-service",
+    "version": "1.0.0",
+    "description": "Collect information and create summary reports about news from web",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -8,14 +10,20 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/dbal": "^3",
+        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/orm": "^3.1",
         "symfony/console": "7.0.*",
+        "symfony/dom-crawler": "7.0.*",
         "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.0.*",
+        "symfony/http-client": "7.0.*",
+        "symfony/property-access": "7.0.*",
         "symfony/runtime": "7.0.*",
+        "symfony/serializer": "7.0.*",
         "symfony/yaml": "7.0.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {

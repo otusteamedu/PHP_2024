@@ -3,25 +3,51 @@ declare(strict_types=1);
 
 namespace App\Domain\Validator;
 
-use App\Domain\Exception\LogicException;
+use App\Domain\Validator\Exception\InvalidUrlException;
+use App\Domain\Validator\Exception\InvalidUrlFormatException;
+use App\Domain\Validator\Exception\InvalidUrlLengthException;
 
 class UrlValidator
 {
-    const PATTERN = '^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|'
-                  . 'www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|'
-                  . 'https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|'
-                  . 'www\.[a-zA-Z0-9]+\.[^\s]{2,})$';
+    public const int MAX_LENGTH = 2048;
 
+    /**
+     * @param string $url
+     * @return void
+     *
+     * @throws InvalidUrlException
+     */
     public static function validate(string $url): void
     {
-       $matchResult = preg_match(self::PATTERN, $url);
+        self::validateLength($url);
+        self::validateFormat($url);
+    }
 
-        if (0 === $matchResult) {
-            throw new InvalidUrlException($url);
+    /**
+     * @param string $url
+     * @return void
+     *
+     * @throws InvalidUrlLengthException
+     */
+    private static function validateLength(string $url): void
+    {
+        $length = mb_strlen($url);
+
+        if ($length > self::MAX_LENGTH) {
+            throw new InvalidUrlLengthException($url, self::MAX_LENGTH);
         }
+    }
 
-        if (false === $matchResult) {
-            throw new LogicException('Error while using regex');
+    /**
+     * @param string $url
+     * @return void
+     *
+     * @throws InvalidUrlFormatException
+     */
+    private static function validateFormat(string $url): void
+    {
+        if (false === filter_var($url, FILTER_VALIDATE_URL)) {
+            throw new InvalidUrlFormatException($url);
         }
     }
 }

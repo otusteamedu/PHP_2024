@@ -1,5 +1,5 @@
 controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/Infrastructure/Symfony/Controller/
+        namespace: App\Infrastructure\Symfony\Controller
     type: attribute

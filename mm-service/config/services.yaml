@@ -22,3 +22,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    _instanceof:
+        App\Application\NewsProvider\NewsProviderInterface:
+            tags: [ 'app.news_provider' ]
+
+    App\Application\NewsProvider\NewsProviderRegistry:
+        arguments:
+            - !tagged_iterator app.news_provider

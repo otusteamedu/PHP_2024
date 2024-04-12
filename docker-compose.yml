@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
   nginx:
@@ -21,6 +21,8 @@ services:
       context: .
       dockerfile: docker/php-fpm/Dockerfile
     restart: on-failure
+    env_file:
+      - .env
     volumes:
       - ./mm-service:/var/www/mm-service
       - ./docker/sock:/sock
@@ -33,10 +35,9 @@ services:
       context: .
       dockerfile: docker/postgres/Dockerfile
     restart: on-failure
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       PGDATA: /var/lib/postgresql/data
     volumes:
       - db-data:/var/lib/postgresql/data:rw
@@ -50,4 +51,5 @@ volumes:
 
 networks:
   mm-network:
+    name: mm-network
     driver: bridge
