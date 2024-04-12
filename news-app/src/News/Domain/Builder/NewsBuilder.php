@@ -9,6 +9,7 @@ use App\News\Domain\Entity\News;
 use App\News\Domain\ValueObject\Content;
 use App\News\Domain\ValueObject\Title;
 use App\NewsCategory\Domain\Entity\Category;
+use InvalidArgumentException;
 
 class NewsBuilder
 {
@@ -50,6 +51,22 @@ class NewsBuilder
 
     public function build(): News
     {
+        if (empty($this->title)) {
+            throw new InvalidArgumentException('Title cannot be empty');
+        }
+
+        if (empty($this->content)) {
+            throw new InvalidArgumentException('Content cannot be empty');
+        }
+
+        if (empty($this->category)) {
+            throw new InvalidArgumentException('Category cannot be empty');
+        }
+
+        if (empty($this->createdAt)) {
+            throw new InvalidArgumentException('Created at cannot be empty');
+        }
+
         return new News(
             $this->id,
             $this->title,
