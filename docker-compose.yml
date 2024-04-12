@@ -1,0 +1,44 @@
+version: "3.8"
+
+networks:
+  homework-net:
+    name: homework-net
+    driver: bridge
+
+services:
+  app:
+    container_name: app
+    networks:
+      - homework-net
+    build:
+      context: ./
+      dockerfile: ./.deployment/docker/php-fpm/Dockerfile
+      args:
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./:/var/www/homework
+
+  postgres:
+    container_name: postgres
+    networks:
+      - homework-net
+    build:
+      context: ./.deployment/docker/postgre
+      dockerfile: ./Dockerfile
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      POSTGRES_HOST: ${POSTGRES_DB_HOST}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+
+volumes:
+  db_data:
