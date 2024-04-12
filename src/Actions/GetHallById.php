@@ -25,6 +25,6 @@ class GetHallById
 
         $hall = $this->hallMapper->finById($queryParam);
 
-        echo json_encode($hall->toArray()) . PHP_EOL;;
+        echo json_encode($hall->toArray()) . PHP_EOL;
     }
 }

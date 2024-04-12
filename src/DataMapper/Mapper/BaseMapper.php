@@ -25,9 +25,9 @@ abstract class BaseMapper
      * @throws ReflectionException
      */
     public function __construct(
-        protected string          $entityClass,
+        protected string $entityClass,
         protected BaseIdentityMap $identityMap,
-        protected PDO             $pdo
+        protected PDO $pdo
     ) {
         $this->selectStatement = $this->buildSelectQuery();
         $this->selectAllStatement = $this->buildSelectAllQuery();

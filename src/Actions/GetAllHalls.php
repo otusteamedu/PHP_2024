@@ -18,9 +18,10 @@ class GetAllHalls
     {
         $halls = $this->hallMapper->findAll();
 
-        echo json_encode(['halls' => array_map(
-                static fn($hall) => $hall->toArray(),
-                $halls
-            )]) . PHP_EOL;
+        echo json_encode(
+                [
+                    'halls' => array_map(static fn($hall) => $hall->toArray(), $halls),
+                ]
+            ) . PHP_EOL;
     }
 }
