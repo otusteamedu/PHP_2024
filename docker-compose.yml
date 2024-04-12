@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: mm_nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: on-failure
+    ports:
+      - "80:80"
+    volumes:
+      - ./mm-service:/var/www/mm-service
+      - ./docker/sock:/sock
+    networks:
+      - mm-network
+
+  php:
+    container_name: mm_php
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    restart: on-failure
+    volumes:
+      - ./mm-service:/var/www/mm-service
+      - ./docker/sock:/sock
+    networks:
+      - mm-network
+
+  postgres:
+    container_name: mm_postgres
+    build:
+      context: .
+      dockerfile: docker/postgres/Dockerfile
+    restart: on-failure
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    ports:
+      - "5432:5432"
+    networks:
+      - mm-network
+
+volumes:
+  db-data:
+
+networks:
+  mm-network:
+    driver: bridge
