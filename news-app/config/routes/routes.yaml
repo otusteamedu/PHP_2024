@@ -1,0 +1,16 @@
+api_news_create:
+  path: /api/news
+  controller: App\Controller\News\CreateAction
+  methods: POST
+api_news_list:
+  path: /api/news
+  controller: App\Controller\News\ListAction
+  methods: GET
+api_news_get_by_id:
+  path: /api/news/{id}
+  controller: App\Controller\News\GetByIdAction
+  methods: GET
+api_subscribe_category:
+  path: /api/category/subscribe
+  controller: App\Controller\NewsCategory\SubscribeAction
+  methods: POST

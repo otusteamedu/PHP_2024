@@ -1,0 +1,92 @@
+version: '3'
+
+services:
+  nginx_main:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - network
+    volumes:
+      - ./docker/nginx/main.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - nginx1
+      - nginx2
+
+  nginx1:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "81:80"
+    container_name: '${CONTAINER_NAME_NGINX}1'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - network
+
+  nginx2:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "82:80"
+    container_name: '${CONTAINER_NAME_NGINX}2'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - network
+
+  php-fpm1:
+    build:
+      context: docker/php-fpm
+    networks:
+      - network
+    container_name: '${CONTAINER_NAME_PHP_FPM_1}'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+      - ./docker/php-fpm/sock1.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+
+  php-fpm2:
+    build:
+      context: docker/php-fpm
+    networks:
+      - network
+    container_name: '${CONTAINER_NAME_PHP_FPM_2}'
+    volumes:
+      - .:/var/www/html
+      - ./docker/php-fpm/sock:/sock
+      - ./docker/php-fpm/sock2.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      # You should definitely change the password in production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    volumes:
+      - database_data:/var/lib/postgresql/data:rw
+    networks:
+      - network
+      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./docker/db/data:/var/lib/postgresql/data:rw
+###< doctrine/doctrine-bundle ###
+
+volumes:
+###> doctrine/doctrine-bundle ###
+  database_data:
+###< doctrine/doctrine-bundle ###
+
+networks:
+  network:
+    driver: bridge
