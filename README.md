@@ -27,26 +27,3 @@ composer install
 ```
 make start-otus
 ```
-
-##Usage 
-
-```
-docker-compose exec app bash
-php frontend/web/index.php test
-php frontend/web/index.php init
-
-php frontend/web/index.php search '{
-  "params": {
-    "param1":1,
-    "param2":2
-  }
-}'
-
-
-```
-
-other commands
-
-```
-php frontend/web/index.php delete
-```
