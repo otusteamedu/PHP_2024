@@ -50,6 +50,11 @@ class HallMapper extends BaseMapper
 
     public function finById(QueryItem $queryItem): ?Hall
     {
+        $identityId = (string)$queryItem->getValue();
+        if ($this->identityMap->isExists($identityId)) {
+            return $this->identityMap->get($identityId);
+        }
+
         $this->selectStatement->setFetchMode(PDO::FETCH_ASSOC);
         $this->selectStatement->bindValue(
             ':' . $queryItem->getName(),
@@ -59,6 +64,18 @@ class HallMapper extends BaseMapper
 
         $this->selectStatement->execute();
         $result = $this->selectStatement->fetch();
+        $hall = !empty($result)
+            ? new Hall(
+                $result['id'],
+                $result['name'],
+                $result['capacity'],
+                $result['rows_count']
+            )
+            : null;
+
+        if (isset($hall)) {
+            $this->identityMap->add($hall);
+        }
 
         return !empty($result)
             ? new Hall(

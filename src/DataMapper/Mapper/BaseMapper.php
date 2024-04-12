@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework\DataMapper\Mapper;
 
+use Alogachev\Homework\DataMapper\IdentityMap\BaseIdentityMap;
 use Alogachev\Homework\DataMapper\ORM\Column;
 use Alogachev\Homework\DataMapper\ORM\Id;
 use Alogachev\Homework\DataMapper\ORM\Table;
@@ -25,6 +26,7 @@ abstract class BaseMapper
      */
     public function __construct(
         protected string $entityClass,
+        protected BaseIdentityMap $identityMap,
         protected PDO $pdo
     ) {
         $this->selectStatement = $this->buildSelectQuery();

@@ -10,6 +10,7 @@ use Alogachev\Homework\Actions\CreateHall;
 use Alogachev\Homework\Actions\GetHallById;
 use Alogachev\Homework\Actions\UpdateHall;
 use Alogachev\Homework\DataMapper\Entity\Hall;
+use Alogachev\Homework\DataMapper\IdentityMap\HallIdentityMap;
 use Alogachev\Homework\DataMapper\Mapper\HallMapper;
 use Alogachev\Homework\Exception\EmptyActionNameException;
 use Dotenv\Dotenv;
@@ -63,7 +64,12 @@ final class App
 
         return new Container([
             PDO::class => $pdo,
-            HallMapper::class => create()->constructor(Hall::class, get(PDO::class)),
+            HallMapper::class => create()->constructor(
+                Hall::class,
+                get(HallIdentityMap::class),
+                get(PDO::class)
+            ),
+            HallIdentityMap::class => create()->constructor(),
             CreateHall::class => create()->constructor(get(HallMapper::class)),
             GetAllHalls::class => create()->constructor(get(HallMapper::class)),
             GetHallById::class => create()->constructor(get(HallMapper::class)),
