@@ -4,59 +4,33 @@ declare(strict_types=1);
 
 namespace Hukimato\App\Models\Posts;
 
-use Hukimato\App\Models\DataMapper\PrimaryKey;
+use Closure;
+use Hukimato\App\Models\Users\User;
 
 class Post
 {
-    #[PrimaryKey]
-    private int $id;
-
-    private string $title;
-
-    private string $content;
-
     public function __construct(
-        int    $id,
-        string $title,
-        string $content,
-
+        public string               $title,
+        public string               $content,
+        protected User|Closure|null $user = null,
+        public ?int                 $id = null,
     )
     {
-        $this->id = $id;
-        $this->title = $title;
-        $this->content = $content;
     }
 
-    public function getId(): int
+    public function getUser(): User|Closure
     {
-        return $this->id;
+        if ($this->user instanceof Closure) {
+            $this->user = ($this->user)();
+        }
+        return $this->user;
     }
 
-    public function setId(int $id): Post
+    public function setUser(User|Closure $user): Post
     {
-        $this->id = $id;
+        $this->user = $user;
         return $this;
     }
 
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
 
-    public function setTitle(string $title): Post
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    public function getContent(): string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): Post
-    {
-        $this->content = $content;
-        return $this;
-    }
 }

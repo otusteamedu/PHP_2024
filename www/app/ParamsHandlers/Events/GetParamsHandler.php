@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace Hukimato\App\ParamsHandlers\Events;
 
-use Hukimato\App\ParamsHandlers\ParamsHandlerInterface;
+use Hukimato\App\ParamsHandlers\BaseParamsHandler;
 
-class GetParamsHandler implements ParamsHandlerInterface
+class GetParamsHandler extends BaseParamsHandler
 {
 
-    public function getParams()
+    public function getParams(string $urlPath, string $urlPattern)
     {
-        return $_GET;
+        $data = static::getParamsFromUrlPath($urlPath, $urlPattern);
+
+        return $_GET + $data;
     }
 }

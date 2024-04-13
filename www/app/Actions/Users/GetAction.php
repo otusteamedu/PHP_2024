@@ -4,22 +4,27 @@ declare(strict_types=1);
 
 namespace Hukimato\App\Actions\Users;
 
-use Hukimato\App\Actions\ActionInterface;
-use Hukimato\App\Models\Events\User;
+use Hukimato\App\Actions\BaseAction;
+use Hukimato\App\Components\PgPdo;
+use Hukimato\App\Models\Users\UserMapper;
+use Hukimato\App\ParamsHandlers\BaseParamsHandler;
 use Hukimato\App\ParamsHandlers\Events\GetParamsHandler;
-use Hukimato\App\ParamsHandlers\ParamsHandlerInterface;
 use Hukimato\App\Views\JsonView;
 
-class GetAction extends ActionInterface
+class GetAction extends BaseAction
 {
 
     public function run()
     {
-        $event = User::find(static::getParamsHandler()->getParams());
-        echo JsonView::render($event);
+        $requestData = $this->getParams();
+
+        $userMapper = new UserMapper(PgPdo::getInstance());
+        $user = $userMapper->findOne($requestData['username']);
+
+        echo JsonView::render($user);
     }
 
-    protected function getParamsHandler(): ParamsHandlerInterface
+    protected function getParamsHandler(): BaseParamsHandler
     {
         return new GetParamsHandler();
     }

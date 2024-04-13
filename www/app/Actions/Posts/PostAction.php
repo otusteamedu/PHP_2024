@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\App\Actions\Users;
+namespace Hukimato\App\Actions\Posts;
 
 use Hukimato\App\Actions\BaseAction;
 use Hukimato\App\Components\PgPdo;
-use Hukimato\App\Models\Users\User;
+use Hukimato\App\Models\Posts\Post;
+use Hukimato\App\Models\Posts\PostMapper;
 use Hukimato\App\Models\Users\UserMapper;
 use Hukimato\App\ParamsHandlers\BaseParamsHandler;
 use Hukimato\App\ParamsHandlers\Events\PostParamsHandler;
@@ -21,12 +22,18 @@ class PostAction extends BaseAction
         $requestBody = $requestData['body'];
 
         $userMapper = new UserMapper(PgPdo::getInstance());
-        $result = $userMapper->insert(new User(
-            $requestBody['username'],
-            $requestBody['email'],
+
+        $user = $userMapper->findOne($requestData['username']);
+
+
+        $postMapper = new PostMapper(PgPdo::getInstance());
+        $result = $postMapper->insert($requestData['username'], new Post(
+            $requestBody['title'],
+            $requestBody['content'],
+            $user
         ));
 
-        echo JsonView::render(['message' => $result]);
+        echo JsonView::render($result);
     }
 
     protected function getParamsHandler(): BaseParamsHandler

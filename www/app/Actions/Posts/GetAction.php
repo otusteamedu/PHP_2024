@@ -2,25 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Hukimato\App\Actions\Users;
+namespace Hukimato\App\Actions\Posts;
 
 use Hukimato\App\Actions\BaseAction;
 use Hukimato\App\Components\PgPdo;
-use Hukimato\App\Models\Users\UserMapper;
+use Hukimato\App\Models\Posts\PostMapper;
 use Hukimato\App\ParamsHandlers\BaseParamsHandler;
 use Hukimato\App\ParamsHandlers\Events\GetParamsHandler;
 use Hukimato\App\Views\JsonView;
 
-class DeleteAction extends BaseAction
+class GetAction extends BaseAction
 {
+
     public function run()
     {
         $requestData = $this->getParams();
 
-        $userMapper = new UserMapper(PgPdo::getInstance());
-        $result = $userMapper->delete($requestData['username']);
+        $postMapper = new PostMapper(PgPdo::getInstance());
+        $post = $postMapper->findOne((int)$requestData['post_id']);
 
-        echo JsonView::render(['message' => $result]);
+        echo JsonView::render($post);
     }
 
     protected function getParamsHandler(): BaseParamsHandler

@@ -54,12 +54,12 @@ abstract class AbstractDataMapper
      */
     protected static function constructInsertQuery(): string
     {
-        $propsNames = static::getPropertiesNames(static::getModelClassProperties());
+        $scalarPropsNames = static::getPropertiesNames(static::filterProperties(static::getModelClassProperties(), Scalar::class));
         $tableName = static::getTableName();
 
         $query = "INSERT INTO $tableName ";
-        $query .= "(" . implode(", ", $propsNames) . ") ";
-        $query .= "VALUES (" . str_repeat('?, ', count($propsNames) - 1) . "?" . ")";
+        $query .= "(" . implode(", ", $scalarPropsNames) . ") ";
+        $query .= "VALUES (" . str_repeat('?, ', count($scalarPropsNames) - 1) . "?" . ")";
         return $query;
     }
 
@@ -69,16 +69,17 @@ abstract class AbstractDataMapper
      */
     protected static function constructUpdateQuery(): string
     {
-        $propsNames = static::getPropertiesNames(static::getModelClassProperties());
+        $scalarPropsNames = static::getPropertiesNames(static::filterProperties(static::getModelClassProperties(), Scalar::class));
         $tableName = static::getTableName();
 
         $query = "UPDATE $tableName SET ";
-        $query .= implode(" = ?, ", $propsNames) . " = ? ";
+        $query .= implode(" = ?, ", $scalarPropsNames) . " = ? ";
         $query .= static::constructPrimaryKeyCondition();
         return $query;
     }
 
     /**
+     * Возвращает строку с SQL условием со всеми полями, которые имею аттрибут PrimaryKey.
      * @throws ReflectionException
      * @throws Exception
      */
@@ -97,7 +98,13 @@ abstract class AbstractDataMapper
         return $query;
     }
 
-    protected static function filterProperties(array $props,  $attributeClassName): array
+    /**
+     * Возвращает свойства класса, у которых атрибут $attributeClassName
+     * @param ReflectionProperty[] $props
+     * @param string $attributeClassName
+     * @return ReflectionProperty[]
+     */
+    protected static function filterProperties(array $props, $attributeClassName): array
     {
         return array_filter($props, function (ReflectionProperty $prop) use ($attributeClassName) {
             return !empty($prop->getAttributes($attributeClassName));
@@ -105,6 +112,7 @@ abstract class AbstractDataMapper
     }
 
     /**
+     * Возвращает список имен свойств класса
      * @param ReflectionProperty[] $props
      * @return string[]
      */
@@ -115,18 +123,9 @@ abstract class AbstractDataMapper
         }, $props);
     }
 
-    /**
-     * Метод возвращает массив скалярных свойств класса
-     * @return string[]
-     * @throws ReflectionException
-     * @throws Exception
-     */
-    protected static function getScalarProperties(): array
-    {
-        return (new ReflectionClass(static::getModelName()))->getProperties(ReflectionProperty::IS_PUBLIC);
-    }
 
     /**
+     * Возвращает свойства класса
      * @return ReflectionProperty[] - все свойства модели
      * @throws ReflectionException
      * @throws Exception
@@ -152,6 +151,7 @@ abstract class AbstractDataMapper
 
 
     /**
+     * Возвращает имя таблицы в БД
      * @return string Имя таблицы в БД
      * @throws Exception
      */
@@ -161,6 +161,7 @@ abstract class AbstractDataMapper
     }
 
     /**
+     * Возврает имя модели, в которую маппятся данные
      * @return string Имя модели, в которую маппятся данные
      * @throws Exception
      */

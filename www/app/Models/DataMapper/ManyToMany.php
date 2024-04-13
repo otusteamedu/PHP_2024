@@ -14,6 +14,7 @@ class ManyToMany
         public string $relationName,
         public string $localKey,
         public string $foreignKey,
-    ) {
+    )
+    {
     }
 }

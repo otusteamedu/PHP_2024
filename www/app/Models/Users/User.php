@@ -5,63 +5,37 @@ declare(strict_types=1);
 namespace Hukimato\App\Models\Users;
 
 use Closure;
-use Hukimato\App\Models\DataMapper\ManyToMany;
-use Hukimato\App\Models\DataMapper\OneToMany;
-use Hukimato\App\Models\DataMapper\PrimaryKey;
 use Hukimato\App\Models\Posts\Post;
 
 class User
 {
-    #[PrimaryKey]
-    #[Property]
-    public string $username;
-
-    #[PrimaryKey]
-    public string $id;
-
-
-    #[OneToMany(
-        modelName: Post::class,
-        localKey: 'username',
-        foreignKey: 'user_username',
-    )]
-    /** @var Post[] $posts */
-    protected array|Closure $posts;
-
-
-    #[ManyToMany(
-        modelName: User::class,
-        relationName: 'user_to_followers',
-        localKey: 'username',
-        foreignKey: 'user_username'
-    )]
-    /** @var User[] $followers */
-    protected array|Closure $followers;
-
 
     public function __construct(
-        string $username,
-        array|Closure  $followers,
-        array|Closure  $posts,
+        public string           $username,
 
+        public string           $email,
+
+        /** @var Post[] $posts */
+        protected array|Closure $posts = [],
+
+        /** @var User[] $friends */
+        protected array|Closure $friends = [],
     )
     {
-        $this->username = $username;
-        $this->followers = $followers;
-        $this->posts = $posts;
+
     }
 
-    public function getFollowers(): array
+    public function getFriends(): array
     {
-        if ($this->followers instanceof Closure) {
-            $this->followers = ($this->followers)();
+        if ($this->friends instanceof Closure) {
+            $this->friends = ($this->friends)();
         }
-        return $this->followers;
+        return $this->friends;
     }
 
-    public function setFollowers(array $followers): User
+    public function setFriends(array $friends): User
     {
-        $this->followers = $followers;
+        $this->friends = $friends;
         return $this;
     }
 
