@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\UseCase\NewsGetListUseCase\Boundary;
+namespace App\Application\UseCase\NewsCreateUseCase\Boundary;
 
 use App\Domain\Entity\News;
 
