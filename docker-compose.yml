@@ -9,6 +9,8 @@ services:
       dockerfile: nginx/Dockerfile
     volumes:
       - ./app:/app
+    depends_on:
+      - php
     ports:
       - "8080:80"
     networks:
@@ -23,7 +25,6 @@ services:
     volumes:
       - ./app:/app
     depends_on:
-      - nginx
       - postgres
     networks:
       - hw1-network
@@ -40,20 +41,6 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "54321:5432"
-    networks:
-      - hw1-network
-
-  memcache:
-    container_name: hw1-memcache
-    hostname: hw1-memcache
-    image: memcached:1.6.23-alpine
-    networks:
-      - hw1-network
-
-  redis:
-    container_name: hw1-redis
-    hostname: hw1-redis
-    image: redis:7.2.4-alpine
     networks:
       - hw1-network
 

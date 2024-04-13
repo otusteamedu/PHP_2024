@@ -7,13 +7,6 @@ RUN apk update && apk add --no-cache --virtual .build-temp-deps \
     #postgres
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql \
-    #memcache
-    && pecl install memcache \
-    && docker-php-ext-enable memcache \
-    #redis
-    && pecl install --force redis \
-    && rm -rf /tmp/pear \
-    && docker-php-ext-enable redis \
     #composer
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet \
     && rm -rf /root/.composer/cache \
