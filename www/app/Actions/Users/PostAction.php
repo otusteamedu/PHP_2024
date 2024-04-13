@@ -14,7 +14,6 @@ use Hukimato\App\Views\JsonView;
 
 class PostAction extends BaseAction
 {
-
     public function run()
     {
         $requestData = $this->getParams();

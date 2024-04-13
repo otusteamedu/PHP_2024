@@ -13,7 +13,6 @@ use Hukimato\App\Views\JsonView;
 
 class GetAction extends BaseAction
 {
-
     public function run()
     {
         $requestData = $this->getParams();
