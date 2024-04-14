@@ -4,6 +4,12 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 
 ## Развертывание
 ### Сборка
+Установка переменных .env.
+```shell script
+cp ./.env.template .env &&
+cp ./mm-service/.env.template ./mm-service/.env
+```
+Сборка контейнеров
 ```shell script
 docker-compose build
 ```
