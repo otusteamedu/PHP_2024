@@ -18,6 +18,4 @@ readonly class ParseService
     {
         return parse_ini_file($envPath);
     }
-
 }
-

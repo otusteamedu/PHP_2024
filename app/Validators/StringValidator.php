@@ -62,4 +62,3 @@ class StringValidator
         throw new Exception($message);
     }
 }
-

@@ -18,4 +18,3 @@ final readonly class MemcachedService
         $this->memcached->addServer("memcache", (int)$this->env['MEMCACHED_PORT']);
     }
 }
-
