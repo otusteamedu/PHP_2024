@@ -110,7 +110,8 @@ class PostMapper
                 function () use ($post) {
                     return (new UserMapper($this->pdo))->findOne($post['user_username']);
                 },
-                $post['id']);
+                $post['id']
+            );
         }
 
         return $posts;

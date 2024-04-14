@@ -10,12 +10,11 @@ use Hukimato\App\Models\Users\User;
 class Post
 {
     public function __construct(
-        public string               $title,
-        public string               $content,
+        public string $title,
+        public string $content,
         protected User|Closure|null $user = null,
-        public ?int                 $id = null,
-    )
-    {
+        public ?int $id = null,
+    ) {
     }
 
     public function getUser(): User|Closure

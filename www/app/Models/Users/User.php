@@ -9,20 +9,17 @@ use Hukimato\App\Models\Posts\Post;
 
 class User
 {
-
     public function __construct(
-        public string           $username,
+        public string $username,
 
-        public string           $email,
+        public string $email,
 
         /** @var Post[] $posts */
         protected array|Closure $posts = [],
 
         /** @var User[] $friends */
         protected array|Closure $friends = [],
-    )
-    {
-
+    ) {
     }
 
     public function getFriends(): array
