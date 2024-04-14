@@ -1,0 +1,14 @@
+{
+    "name": "a.kornienko/php_2024",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AKornienko\\Php2024\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
