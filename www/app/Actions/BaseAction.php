@@ -13,8 +13,7 @@ abstract class BaseAction
         protected readonly string $urlPath,
         /** паттерн соответсвующий запросу */
         protected readonly string $urlPattern,
-    )
-    {
+    ) {
     }
 
     protected function getParams(): array

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hukimato\App\Actions\Posts;
 
 use Hukimato\App\Actions\BaseAction;
-use Hukimato\App\Components\PgPdo;
+use Hukimato\App\Components\PdoFactory;
 use Hukimato\App\Models\Posts\PostMapper;
 use Hukimato\App\ParamsHandlers\BaseParamsHandler;
 use Hukimato\App\ParamsHandlers\Events\GetParamsHandler;
@@ -17,7 +17,7 @@ class ListAction extends BaseAction
     {
         $requestData = $this->getParams();
 
-        $postMapper = new PostMapper(PgPdo::getInstance());
+        $postMapper = new PostMapper(PdoFactory::createPgPDO());
         $posts = $postMapper->findAllByUser($requestData['username']);
 
         echo JsonView::render($posts);

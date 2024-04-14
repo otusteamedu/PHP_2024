@@ -18,6 +18,8 @@ class PostMapper
 
     protected PDOStatement $selectStatement;
 
+    protected PDOStatement $findByUserStatement;
+
     protected PDOStatement $insertStatement;
 
     protected PDOStatement $updateStatement;
@@ -41,6 +43,9 @@ class PostMapper
         );
         $this->deleteStatement = $this->pdo->prepare(
             "DELETE FROM " . self::TABLE_NAME . " WHERE id =?"
+        );
+        $this->findByUserStatement = $this->pdo->prepare(
+            "SELECT * FROM " . self::TABLE_NAME . " WHERE user_username =?"
         );
     }
 
@@ -94,9 +99,8 @@ class PostMapper
 
     public function findAllByUser(string $username): array
     {
-        $query = $this->pdo->prepare("SELECT * FROM " . self::TABLE_NAME . " WHERE user_username =?");
-        $query->execute([$username]);
-        $result = $query->fetchAll();
+        $this->findByUserStatement->execute([$username]);
+        $result = $this->findByUserStatement->fetchAll();
 
         $posts = [];
         foreach ($result as $post) {

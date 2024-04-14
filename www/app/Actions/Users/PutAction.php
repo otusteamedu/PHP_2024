@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hukimato\App\Actions\Users;
 
 use Hukimato\App\Actions\BaseAction;
-use Hukimato\App\Components\PgPdo;
+use Hukimato\App\Components\PdoFactory;
 use Hukimato\App\Models\Users\User;
 use Hukimato\App\Models\Users\UserMapper;
 use Hukimato\App\ParamsHandlers\BaseParamsHandler;
@@ -19,7 +19,7 @@ class PutAction extends BaseAction
         $requestData = $this->getParams();
         $requestBody = $requestData['body'];
 
-        $userMapper = new UserMapper(PgPdo::getInstance());
+        $userMapper = new UserMapper(PdoFactory::createPgPDO());
         $user = $userMapper->findOne($requestData['username']);
 
         $result = $userMapper->update($requestData['username'], new User(

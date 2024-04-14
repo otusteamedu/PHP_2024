@@ -9,12 +9,11 @@ use Attribute;
 #[Attribute]
 class ManyToMany
 {
-    function __construct(
+    public function __construct(
         public string $modelName,
         public string $relationName,
         public string $localKey,
         public string $foreignKey,
-    )
-    {
+    ) {
     }
 }

@@ -13,7 +13,6 @@ use ReflectionProperty;
 
 abstract class AbstractDataMapper
 {
-
     protected PDO $pdo;
 
     protected PDOStatement $selectStatement;

@@ -9,8 +9,7 @@ use Attribute;
 #[Attribute]
 class OneToMany
 {
-
-    function __construct(
+    public function __construct(
         public string $modelName,
         public string $localKey,
         public string $foreignKey,

@@ -9,7 +9,7 @@ use Attribute;
 #[Attribute]
 class Relation
 {
-    function __construct(
+    public function __construct(
         public string $mapperClassName,
     )
     {
