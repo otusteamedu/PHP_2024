@@ -1,0 +1,36 @@
+version: "3.8"
+
+networks:
+  app_network:
+    name: ${APP_NAME}_network
+
+services:
+  nginx:
+    image: "nginx:stable-alpine"
+    container_name: ${APP_NAME}_nginx
+    volumes:
+      - .:/var/www/app
+      - ./docker/nginx/app.conf:/etc/nginx/conf.d/app.conf:ro
+    networks:
+      - app_network
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: ./docker/php
+    container_name: ${APP_NAME}_php
+    env_file: .env
+    volumes:
+      - .:/var/www/app
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    networks:
+      - app_network
+
+  composer:
+    image: composer:latest
+    container_name: ${APP_NAME}_composer
+    working_dir: /var/www/app
+    command: [ "composer", "install" ]
+    volumes:
+      - .:/var/www/app
