@@ -12,8 +12,7 @@ readonly class Url
 
     public function __construct(
         string $value
-    )
-    {
+    ) {
         UrlValidator::validate($value);
 
         $this->value = $value;

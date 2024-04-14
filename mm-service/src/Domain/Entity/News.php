@@ -1,10 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
 use App\Domain\ValueObject\Title;
-use DateTimeImmutable;
 use App\Domain\ValueObject\Url;
 
 class News
@@ -12,20 +12,15 @@ class News
     private ?int $id = null;
     private Title $title;
     private Url $url;
-    private DateTimeImmutable $createdAt;
+    private \DateTimeImmutable $createdAt;
 
-    /**
-     * @param Title $title
-     * @param Url $url
-     */
     public function __construct(
         Title $title,
         Url $url,
-    )
-    {
+    ) {
         $this->title = $title;
         $this->url = $url;
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -43,7 +38,7 @@ class News
         return $this->url;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }

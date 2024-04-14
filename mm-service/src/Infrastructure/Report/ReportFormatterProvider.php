@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Report;
@@ -18,9 +19,6 @@ class ReportFormatterProvider implements ReportFormatterProviderInterface
     }
 
     /**
-     * @param string $format
-     * @return ReportFormatter
-     *
      * @throws FormatterNotFoundException
      */
     public function getByFormatDefinition(string $format): ReportFormatter

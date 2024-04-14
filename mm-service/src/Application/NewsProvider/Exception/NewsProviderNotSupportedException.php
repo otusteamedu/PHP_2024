@@ -1,11 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\NewsProvider\Exception;
 
-use RuntimeException;
-
-class NewsProviderNotSupportedException extends RuntimeException
+class NewsProviderNotSupportedException extends \RuntimeException
 {
     public function __construct()
     {

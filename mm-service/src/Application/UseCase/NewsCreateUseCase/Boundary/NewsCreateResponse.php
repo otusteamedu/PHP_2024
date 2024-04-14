@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\UseCase\NewsCreateUseCase\Boundary;
@@ -9,9 +10,6 @@ class NewsCreateResponse
 {
     private int $id;
 
-    /**
-     * @param int $id
-     */
     public function __construct(int $id)
     {
         $this->id = $id;
@@ -22,10 +20,6 @@ class NewsCreateResponse
         return $this->id;
     }
 
-    /**
-     * @param News $news
-     * @return self
-     */
     public static function fromBoundary(News $news): self
     {
         return new self(

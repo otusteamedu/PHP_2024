@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\UseCase\NewsReportCreateUseCase\Boundary;
@@ -7,15 +8,12 @@ readonly class NewsCreateReportRequest
 {
     /**
      * @param int[] $ids
-     * @param string $format
-     * @param string|null $template
      */
     public function __construct(
         private array $ids,
         private string $format,
         private ?string $template,
-    )
-    {
+    ) {
     }
 
     /**
@@ -26,9 +24,6 @@ readonly class NewsCreateReportRequest
         return $this->ids;
     }
 
-    /**
-     * @return string
-     */
     public function getFormat(): string
     {
         return $this->format;

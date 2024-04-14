@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\UseCase\NewsReportCreateUseCase;
@@ -10,10 +11,9 @@ use App\Domain\Repository\NewsRepositoryInterface;
 final class NewsCreateReportUseCase
 {
     public function __construct(
-        private NewsRepositoryInterface  $newsRepository,
+        private NewsRepositoryInterface $newsRepository,
         private ReportGeneratorInterface $reportGenerator,
-    )
-    {
+    ) {
     }
 
     public function __invoke(NewsCreateReportRequest $request): string

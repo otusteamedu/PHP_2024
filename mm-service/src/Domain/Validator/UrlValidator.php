@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Validator;
@@ -12,9 +13,6 @@ class UrlValidator
     public const int MAX_LENGTH = 2048;
 
     /**
-     * @param string $url
-     * @return void
-     *
      * @throws InvalidUrlException
      */
     public static function validate(string $url): void
@@ -24,9 +22,6 @@ class UrlValidator
     }
 
     /**
-     * @param string $url
-     * @return void
-     *
      * @throws InvalidUrlLengthException
      */
     private static function validateLength(string $url): void
@@ -39,9 +34,6 @@ class UrlValidator
     }
 
     /**
-     * @param string $url
-     * @return void
-     *
      * @throws InvalidUrlFormatException
      */
     private static function validateFormat(string $url): void

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\UseCase\NewsGetListUseCase;
@@ -11,13 +12,10 @@ final readonly class NewsGetListUseCase
 {
     public function __construct(
         private NewsRepositoryInterface $newsRepository,
-    )
-    {
+    ) {
     }
 
     /**
-     * @return NewsListResponse
-     *
      * @throws NewsProviderNotSupportedException
      */
     public function __invoke(): NewsListResponse

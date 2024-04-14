@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\NewsProvider;
@@ -13,8 +14,7 @@ class NewsProviderRegistry implements NewsProviderRegistryInterface
      */
     public function __construct(
         private iterable $newsProviders,
-    )
-    {
+    ) {
     }
 
     public function supports(array $newsDeterminationAttributes): bool
@@ -29,9 +29,6 @@ class NewsProviderRegistry implements NewsProviderRegistryInterface
     }
 
     /**
-     * @param array $newsDeterminationAttributes
-     * @return News
-     *
      * @throws NewsProviderNotSupportedException
      */
     public function retrieveNews(array $newsDeterminationAttributes): News

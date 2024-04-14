@@ -1,26 +1,19 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\UseCase\NewsGetListUseCase\Boundary;
 
 use App\Domain\Entity\News;
-use DateTimeImmutable;
 
 class NewsGetResponse
 {
-    /**
-     * @param int $id
-     * @param string $title
-     * @param DateTimeImmutable $createdAt
-     * @param string $url
-     */
     public function __construct(
         private int $id,
         private string $title,
-        private DateTimeImmutable $createdAt,
+        private \DateTimeImmutable $createdAt,
         private string $url,
-    )
-    {
+    ) {
     }
 
     public function getId(): int
@@ -33,7 +26,7 @@ class NewsGetResponse
         return $this->title;
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
     }

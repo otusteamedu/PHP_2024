@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Validator;
@@ -15,9 +16,6 @@ class TitleValidator
     public const int MAX_LENGTH = 255;
 
     /**
-     * @param string $title
-     * @return void
-     *
      * @throws InvalidTitleException
      */
     public static function validate(string $title): void
@@ -27,9 +25,6 @@ class TitleValidator
     }
 
     /**
-     * @param string $title
-     * @return void
-     *
      * @throws InvalidTitleLengthException
      */
     private static function validateLength(string $title): void
@@ -42,9 +37,6 @@ class TitleValidator
     }
 
     /**
-     * @param string $title
-     * @return void
-     *
      * @throws InvalidTitleFormatException
      */
     private static function validateFormat(string $title): void

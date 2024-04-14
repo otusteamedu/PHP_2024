@@ -1,16 +1,16 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\FileStorage;
 
-use DateTime;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 class NewsReportFileStorage implements FileStorage
 {
-    const PUBLIC_DIRECTORY = './public';
-    const SUBDIRECTORY = './news_reports';
+    public const PUBLIC_DIRECTORY = './public';
+    public const SUBDIRECTORY = './news_reports';
 
     private string $directory;
     private string $baseUrl;
@@ -20,8 +20,7 @@ class NewsReportFileStorage implements FileStorage
         string $projectDir,
         string $baseUrl,
         Filesystem $filesystem,
-    )
-    {
+    ) {
         $this->directory = Path::join($projectDir, self::PUBLIC_DIRECTORY, self::SUBDIRECTORY);
         $this->baseUrl = $baseUrl;
         $this->filesystem = $filesystem;
@@ -38,13 +37,13 @@ class NewsReportFileStorage implements FileStorage
         return $fileName;
     }
 
-    public function getPublicUrl(string $fileName): string
+    public function getPublicUrl(string $filename): string
     {
-        return $this->baseUrl . Path::getDirectory(self::SUBDIRECTORY) . $fileName;
+        return $this->baseUrl.Path::getDirectory(self::SUBDIRECTORY).$filename;
     }
 
     protected function generateFullName(string $format): string
     {
-        return (new DateTime())->format('YmdHis') . '_' . uniqid() . ".$format";
+        return (new \DateTime())->format('YmdHis').'_'.uniqid().".$format";
     }
 }

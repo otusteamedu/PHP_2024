@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Doctrine\Type;
@@ -7,7 +8,6 @@ use App\Domain\ValueObject\Title;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
-use Throwable;
 
 class TitleType extends Type
 {
@@ -33,7 +33,7 @@ class TitleType extends Type
 
         try {
             return new Title($value);
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             throw ConversionException::conversionFailed($value, $this->getName(), $e);
         }
     }

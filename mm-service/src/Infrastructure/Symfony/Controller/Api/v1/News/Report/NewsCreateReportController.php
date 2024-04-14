@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Symfony\Controller\Api\v1\News\Report;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(
     '/api/v1/news/report',
-    name: 'news_list',
+    name: 'news_create_report',
     methods: ['GET']
 )]
 class NewsCreateReportController extends AbstractController
@@ -23,8 +24,7 @@ class NewsCreateReportController extends AbstractController
     public function __construct(
         private NewsCreateReportUseCase $createReportUseCase,
         private NewsReportFileStorage $newsReportFileStorage,
-    )
-    {
+    ) {
     }
 
     public function __invoke(Request $request): Response
@@ -58,10 +58,10 @@ HTML;
 
         $content = $this->createReportUseCase->__invoke($boundary);
 
-        $fileName = $this->newsReportFileStorage->save($format, $content);
+        $filename = $this->newsReportFileStorage->save($format, $content);
 
         return new JsonResponse([
-            'url' => $this->newsReportFileStorage->getPublicUrl($fileName),
+            'url' => $this->newsReportFileStorage->getPublicUrl($filename),
         ]);
     }
 }

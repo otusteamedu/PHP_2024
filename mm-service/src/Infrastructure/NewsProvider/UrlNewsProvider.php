@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\NewsProvider;
@@ -16,13 +17,11 @@ class UrlNewsProvider implements NewsProviderInterface
 {
     public function __construct(
         private readonly HttpClientInterface $httpClient,
-    )
-    {
+    ) {
     }
 
     /**
      * @param mixed[] $newsDeterminationAttributes
-     * @return bool
      */
     public function supports(array $newsDeterminationAttributes): bool
     {
@@ -31,7 +30,6 @@ class UrlNewsProvider implements NewsProviderInterface
 
     /**
      * @param mixed[] $newsDeterminationAttributes
-     * @return News
      *
      * @throws InvalidNewsDeterminationAttributesException
      */
@@ -53,7 +51,6 @@ class UrlNewsProvider implements NewsProviderInterface
 
     /**
      * @param mixed[] $attributes
-     * @return Url
      *
      * @throws InvalidNewsDeterminationAttributesException
      */

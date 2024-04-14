@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Report;
@@ -9,8 +10,7 @@ class ReportGenerator implements ReportGeneratorInterface
 {
     public function __construct(
         private ReportFormatterProviderInterface $reportFormatterProvider,
-    )
-    {
+    ) {
     }
 
     public function generate(mixed $data, string $format, array $context = []): string

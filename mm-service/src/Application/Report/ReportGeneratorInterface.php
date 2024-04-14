@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\Report;
@@ -7,13 +8,10 @@ use App\Application\Report\Exception\UnsupportedReportException;
 
 interface ReportGeneratorInterface
 {
-    const FORMAT_HTML = 'html';
+    public const FORMAT_HTML = 'html';
 
     /**
-     * @param mixed $data
-     * @param string $format
-     * @param array $context
-     * @return string
+     * @param mixed[] $context
      *
      * @throws UnsupportedReportException
      */

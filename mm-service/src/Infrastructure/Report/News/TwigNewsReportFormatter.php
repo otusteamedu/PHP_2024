@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Report\News;
@@ -13,14 +14,12 @@ class TwigNewsReportFormatter extends ReportFormatter
 {
     public function __construct(
         private readonly Environment $twig,
-    )
-    {
+    ) {
     }
 
     /**
-     * @param News $data
+     * @param News    $data
      * @param mixed[] $context
-     * @return void
      *
      * @throws UnsupportedReportException
      */
@@ -51,8 +50,6 @@ class TwigNewsReportFormatter extends ReportFormatter
 
     /**
      * @param News $data
-     * @param array $context
-     * @return string
      */
     protected function process(mixed $data, array $context = []): string
     {

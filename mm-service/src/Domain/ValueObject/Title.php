@@ -12,8 +12,7 @@ readonly class Title
 
     public function __construct(
         string $value
-    )
-    {
+    ) {
         TitleValidator::validate($value);
 
         $this->value = $value;

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Repository;
@@ -17,6 +18,7 @@ interface NewsRepositoryInterface
 
     /**
      * @param int[] $ids
+     *
      * @return News[]
      *
      * @throws NewsNotFoundException

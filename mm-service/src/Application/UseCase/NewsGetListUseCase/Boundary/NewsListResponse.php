@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Application\UseCase\NewsGetListUseCase\Boundary;
@@ -12,8 +13,7 @@ class NewsListResponse
      */
     public function __construct(
         private array $items
-    )
-    {
+    ) {
     }
 
     public function getItems(): array
@@ -23,12 +23,11 @@ class NewsListResponse
 
     /**
      * @param News[] $boundaryItems
-     * @return self
      */
     public static function fromBoundary(array $boundaryItems): self
     {
         return new self(
-            array_map(fn(News $news) => NewsGetResponse::fromBoundary($news), $boundaryItems),
+            array_map(fn (News $news) => NewsGetResponse::fromBoundary($news), $boundaryItems),
         );
     }
 }

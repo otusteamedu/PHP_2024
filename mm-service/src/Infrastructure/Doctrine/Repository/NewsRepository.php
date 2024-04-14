@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Doctrine\Repository;
@@ -27,6 +28,7 @@ class NewsRepository extends ServiceEntityRepository implements NewsRepositoryIn
 
     /**
      * @param int[] $ids
+     *
      * @return News[]
      *
      * @throws NewsNotFoundException
@@ -40,7 +42,7 @@ class NewsRepository extends ServiceEntityRepository implements NewsRepositoryIn
             ->getResult();
 
         if (count($newsList) < count($ids)) {
-            $foundedIds = array_map(fn(News $news) => $news->getId(), $newsList);
+            $foundedIds = array_map(fn (News $news) => $news->getId(), $newsList);
             throw new NewsNotFoundException(array_diff($ids, $foundedIds));
         }
 

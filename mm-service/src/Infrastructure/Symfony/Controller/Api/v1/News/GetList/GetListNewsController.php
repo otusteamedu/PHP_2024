@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Symfony\Controller\Api\v1\News\GetList;
@@ -21,8 +22,7 @@ final class GetListNewsController extends AbstractController
     public function __construct(
         private NewsGetListUseCase $newsGetListUseCase,
         private SerializerInterface $serializer,
-    )
-    {
+    ) {
     }
 
     public function __invoke(Request $request): JsonResponse
