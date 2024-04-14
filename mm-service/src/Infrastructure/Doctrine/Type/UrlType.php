@@ -26,7 +26,8 @@ class UrlType extends Type
 
         if (!is_string($value)) {
             throw ConversionException::conversionFailedInvalidType(
-                $value, $this->getName(),
+                $value,
+                $this->getName(),
                 ['null', 'string', Url::class]
             );
         }

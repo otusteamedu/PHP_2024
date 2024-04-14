@@ -10,7 +10,7 @@ use App\Domain\Validator\Exception\InvalidUrlLengthException;
 
 class UrlValidator
 {
-    public const int MAX_LENGTH = 2048;
+    public const MAX_LENGTH = 2048;
 
     /**
      * @throws InvalidUrlException

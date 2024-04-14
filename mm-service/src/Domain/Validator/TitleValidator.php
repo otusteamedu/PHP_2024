@@ -11,9 +11,9 @@ use App\Domain\Validator\Exception\InvalidTitleLengthException;
 
 class TitleValidator
 {
-    public const string PATTERN = '/^[ЁА-яёA-Za-z0-9\s\-_,.;:()]+$/';
-    public const int MIN_LENGTH = 2;
-    public const int MAX_LENGTH = 255;
+    public const PATTERN = '/^[ЁА-яёA-Za-z0-9\s\-_,.;:()]+$/';
+    public const MIN_LENGTH = 2;
+    public const MAX_LENGTH = 255;
 
     /**
      * @throws InvalidTitleException

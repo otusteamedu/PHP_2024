@@ -39,11 +39,11 @@ class NewsReportFileStorage implements FileStorage
 
     public function getPublicUrl(string $filename): string
     {
-        return $this->baseUrl.Path::getDirectory(self::SUBDIRECTORY).$filename;
+        return $this->baseUrl . Path::getDirectory(self::SUBDIRECTORY) . $filename;
     }
 
     protected function generateFullName(string $format): string
     {
-        return (new \DateTime())->format('YmdHis').'_'.uniqid().".$format";
+        return (new \DateTime())->format('YmdHis') . '_' . uniqid() . ".$format";
     }
 }
