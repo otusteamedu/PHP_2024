@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Symfony\Controller\Api\v1\News\Report;
 
+use App\Application\Report\ReportGeneratorInterface;
 use App\Application\UseCase\NewsReportCreateUseCase\Boundary\NewsCreateReportRequest;
 use App\Application\UseCase\NewsReportCreateUseCase\NewsCreateReportUseCase;
+use App\Infrastructure\FileStorage\NewsReportFileStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,6 +22,7 @@ class NewsCreateReportController extends AbstractController
 {
     public function __construct(
         private NewsCreateReportUseCase $createReportUseCase,
+        private NewsReportFileStorage $newsReportFileStorage,
     )
     {
     }
@@ -27,10 +31,37 @@ class NewsCreateReportController extends AbstractController
     {
         $ids = $request->get('ids', []);
 
-        $boundary = new NewsCreateReportRequest($ids);
+        $template = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News Report</title>
+</head>
+<body>
+<h1>News Report</h1>
+<ul id="news_list">
+    {% for news in newsList %}
+        <li><a href="{{ news.url }}">{{ news.title }}</a></li>
+    {% endfor %}
+</ul>
+</body>
+</html>
+HTML;
 
-        $report = $this->createReportUseCase->__invoke($boundary);
+        $format = ReportGeneratorInterface::FORMAT_HTML;
 
-        return new Response($report, Response::HTTP_OK);
+        $boundary = new NewsCreateReportRequest(
+            $ids,
+            $format,
+            $template
+        );
+
+        $content = $this->createReportUseCase->__invoke($boundary);
+
+        $fileName = $this->newsReportFileStorage->save($format, $content);
+
+        return new JsonResponse([
+            'url' => $this->newsReportFileStorage->getPublicUrl($fileName),
+        ]);
     }
 }

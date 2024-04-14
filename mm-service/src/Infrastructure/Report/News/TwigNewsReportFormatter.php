@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Report\News;
 
 use App\Application\Report\Exception\UnsupportedReportException;
-use App\Application\Report\ReportFormatter;
+use App\Application\Report\ReportGeneratorInterface;
 use App\Domain\Entity\News;
+use App\Infrastructure\Report\ReportFormatter;
 use Twig\Environment;
 
 class TwigNewsReportFormatter extends ReportFormatter
@@ -62,5 +63,10 @@ class TwigNewsReportFormatter extends ReportFormatter
         $template = $this->twig->createTemplate($context['template']);
 
         return $this->twig->render($template, ['newsList' => $data]);
+    }
+
+    public static function getFormatDefinition(): string
+    {
+        return ReportGeneratorInterface::FORMAT_HTML;
     }
 }

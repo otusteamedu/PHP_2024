@@ -10,6 +10,9 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $projectDir: '%kernel.project_dir%'
+            $baseUrl: '%env(string:APP_BASE_URL)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -26,7 +29,13 @@ services:
     _instanceof:
         App\Application\NewsProvider\NewsProviderInterface:
             tags: [ 'app.news_provider' ]
+        \App\Infrastructure\Report\ReportFormatter:
+            tags: [ 'app.report_formatter_provider' ]
 
     App\Application\NewsProvider\NewsProviderRegistry:
         arguments:
             - !tagged_iterator app.news_provider
+
+    App\Infrastructure\Report\ReportFormatterProvider:
+        arguments:
+            - !tagged_iterator { tag: 'app.report_formatter_provider', default_index_method: 'getFormatDefinition' }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\Report;
+namespace App\Infrastructure\Report;
 
 use App\Application\Report\Exception\UnsupportedReportException;
 
@@ -36,4 +36,5 @@ abstract class ReportFormatter
      * @return mixed
      */
     abstract protected function process(mixed $data, array $context = []): mixed;
+    abstract public static function getFormatDefinition(): string;
 }
