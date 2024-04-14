@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+docker/logs
+docker/postgresql/db-data/*
+www/vendor
