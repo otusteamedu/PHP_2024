@@ -11,12 +11,9 @@ class User
 {
     public function __construct(
         public string $username,
-
         public string $email,
-
         /** @var Post[] $posts */
         protected array|Closure $posts = [],
-
         /** @var User[] $friends */
         protected array|Closure $friends = [],
     ) {

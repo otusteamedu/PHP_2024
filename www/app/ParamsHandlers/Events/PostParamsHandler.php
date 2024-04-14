@@ -8,7 +8,6 @@ use Hukimato\App\ParamsHandlers\BaseParamsHandler;
 
 class PostParamsHandler extends BaseParamsHandler
 {
-
     public function getParams(string $urlPath, string $urlPattern)
     {
         $data = static::getParamsFromUrlPath($urlPath, $urlPattern);

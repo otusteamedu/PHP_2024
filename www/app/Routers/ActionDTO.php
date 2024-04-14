@@ -10,8 +10,6 @@ class ActionDTO
         public readonly string $actionClass,
         public readonly string $urlPattern,
         public readonly string $urlPath,
-    )
-    {
-
+    ) {
     }
 }

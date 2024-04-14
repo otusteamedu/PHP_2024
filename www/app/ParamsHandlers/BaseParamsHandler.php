@@ -15,6 +15,5 @@ abstract class BaseParamsHandler
         return array_filter($data, function ($key) {
             return !is_int($key);
         }, ARRAY_FILTER_USE_KEY);
-
     }
 }
