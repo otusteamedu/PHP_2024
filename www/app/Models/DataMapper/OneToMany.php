@@ -13,7 +13,6 @@ class OneToMany
         public string $modelName,
         public string $localKey,
         public string $foreignKey,
-    )
-    {
+    ) {
     }
 }

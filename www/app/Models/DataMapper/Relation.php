@@ -11,7 +11,6 @@ class Relation
 {
     public function __construct(
         public string $mapperClassName,
-    )
-    {
+    ) {
     }
 }
