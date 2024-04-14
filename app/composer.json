@@ -1,0 +1,12 @@
+{
+    "name": "alexander-pogorelov/redis",
+    "autoload": {
+        "psr-4": {
+            "AlexanderPogorelov\\Redis\\": "src/"
+        }
+    },
+    "require": {
+      "ext-redis": "*",
+      "ramsey/uuid": "^4.7"
+    }
+}
