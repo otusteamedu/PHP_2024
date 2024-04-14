@@ -15,3 +15,4 @@ readonly class Response
         return $this->content;
     }
 }
+
