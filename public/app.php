@@ -16,3 +16,13 @@ while (!is_null($mergedList->next)) {
     echo $mergedList->val . PHP_EOL;
     $mergedList = $mergedList->next;
 }
+
+$node1 = new ListNode(1);
+$node2 = new ListNode(2, $node1);
+$node3 = new ListNode(3, $node2);
+$node4 = new ListNode(4, $node3);
+$node5 = new ListNode(5, $node4);
+$node1->next = $node5;
+dump($node5);
+
+
