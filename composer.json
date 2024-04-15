@@ -1,0 +1,11 @@
+{
+  "repositories": [
+    {
+      "url": "https://github.com/Rustyam/hw3.git",
+      "type": "vcs"
+    }
+  ],
+  "require": {
+    "rmulyukov/hw3": "^2.0"
+  }
+}
