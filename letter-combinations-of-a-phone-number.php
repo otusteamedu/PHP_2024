@@ -2,54 +2,47 @@
 
 declare(strict_types=1);
 
-// Сложность O(3^n)
+// Сложность O(4^n)
 
-class Solution {
-
+class Solution
+{
     const MAPPING = [
         2 => ['a', 'b', 'c'],
         3 => ['d', 'e', 'f'],
         4 => ['g', 'h', 'i'],
         5 => ['j', 'k', 'l'],
         6 => ['m', 'n', 'o'],
-        7 => ['p', 'q', 'r','s'],
+        7 => ['p', 'q', 'r', 's'],
         8 => ['t', 'u', 'v'],
         9 => ['w', 'x', 'y', 'z'],
     ];
+
+    public array $result = [];
 
     /**
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits) {
-        $arrays = [];
-        for ($i=0; $i < strlen($digits); $i++) {
-            $arrays[] = self::MAPPING[$digits[$i]];
-        }
-        return self::combinations($arrays);
-    }
-
-    public static function combinations($arrays) {
-        if (empty($arrays)) {
+    function letterCombinations(string $digits)
+    {
+        if (strlen($digits) == 0) {
             return [];
         }
 
-        if (count($arrays) === 1) {
-            return $arrays[0];
-        }
+        return $this->backTracking(0, $digits);
+    }
 
-        $topArray = array_pop($arrays);
-
-        $sumOfOtherArrays = self::combinations($arrays);
-
-        $result = [];
-
-        for ($i = 0; $i < count($topArray); $i++) {
-            for ($j = 0; $j < count($sumOfOtherArrays); $j++) {
-                $result[] = $sumOfOtherArrays[$j] . $topArray[$i];
+    function backTracking($index, $digits, $combine = '')
+    {
+        foreach (self::MAPPING[$digits[$index]] as $currentSymbol) {
+            if (self::MAPPING[$digits[$index + 1]]) {
+                $this->backTracking($index + 1, $digits, $combine . $currentSymbol);
+            } else {
+                $this->result[] = $combine . $currentSymbol;
             }
         }
-
-        return $result;
+        return $this->result;
     }
 }
+
+var_dump((new Solution())->letterCombinations('22'));
