@@ -5,7 +5,7 @@
 2) Заполнить поля в `.env` файле. Для примера можно взять данные ниже:
 
 ```dotenv
-COMPOSE_PROJECT_NAME=homework8
+COMPOSE_PROJECT_NAME=homework19
 
 ###> php-fpm ###
 PUID=1000
