@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Alogachev\Homework\CycledList;
+use Alogachev\Homework\LetterCombination;
 use Alogachev\Homework\ListNode;
 
 $node1 = new ListNode(1);
@@ -15,4 +16,8 @@ $node1->next = $node5;
 $isCycled = new CycledList();
 echo $isCycled->hasCycle($node1) . PHP_EOL;
 
+$digits = '23';
 
+$letterCombinator = new LetterCombination();
+$letterCombination = $letterCombinator->letterCombinations($digits);
+var_dump($letterCombination);
