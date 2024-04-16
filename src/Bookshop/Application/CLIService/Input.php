@@ -11,7 +11,7 @@ class Input
     public function __construct(
         private readonly Command $command,
         private readonly array $args = []
-    ){
+    ) {
     }
 
     public function getCommand(): Command
