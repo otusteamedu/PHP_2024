@@ -1,3 +1,9 @@
-# PHP_2024
+## Bookshop
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+### Примеры команд
+``` app.php --help```<br>
+``` app.php create-index```<br>
+``` app.php search --title="Терминатор" --category="Детектив" --priceTo=3000 --shop="Мира" --stock=15```<br>
+
+
+
