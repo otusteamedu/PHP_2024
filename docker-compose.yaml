@@ -1,0 +1,55 @@
+services:
+
+  php-cli:
+    build:
+      context: ./docker/php-cli
+    container_name: php-cli
+    volumes:
+      - ./src:/app/elasticsearch
+    environment:
+      LC_ALL: "C.UTF-8"
+    networks:
+      - net
+    stdin_open: true
+    tty: true
+
+  elasticsearch:
+    build:
+      context: ./docker/elasticsearch
+    container_name: elasticsearch
+    environment:
+      discovery.type: single-node
+      ELASTIC_USERNAME: "${ELASTICSEARCH_USERNAME}"
+      ELASTIC_PASSWORD: "${ELASTICSEARCH_PASSWORD}"
+      xpack.security.enabled: false
+      bootstrap.memory_lock: true
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "${ELASTICSEARCH_PORT}:9200"
+    networks:
+      - net
+    stdin_open: true
+    tty: true
+
+  kibana:
+    build:
+      context: ./docker/kibana
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      SERVER_NAME: 'kibana'
+      elasticsearch.username: '${ELASTICSEARCH_USERNAME}'
+      elasticsearch.password: '${ELASTICSEARCH_PASSWORD}'
+    volumes:
+      - ./docker/kibana/config.yaml:/usr/share/kibana/config/kibana.yaml:ro
+    networks:
+      - net
+    ports:
+      - "${KIBANA_PORT}:5601"
+
+networks:
+  net:
+    driver: bridge

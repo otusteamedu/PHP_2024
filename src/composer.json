@@ -1,0 +1,25 @@
+{
+    "name": "alexander-gladkov/bookshop",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderGladkov\\Bookshop\\": "Bookshop/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Gladkov"
+        }
+    ],
+    "require": {
+        "elasticsearch/elasticsearch": "^8.12",
+        "docopt/docopt": "^1.0",
+        "ext-mbstring": "*",
+        "phplucidframe/console-table": "^1.2"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
