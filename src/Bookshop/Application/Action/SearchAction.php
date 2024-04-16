@@ -35,7 +35,7 @@ class SearchAction extends BaseAction
             ->addHeader('Stock');
 
         foreach ($searchResult->getHits() as $hit) {
-            $stocksArr = array_map(function($stock) {
+            $stocksArr = array_map(function ($stock) {
                 return $stock['shop'] . ' - ' . $stock['stock'];
             }, $hit['stock']);
             $stocksOneLine = implode('; ', $stocksArr);

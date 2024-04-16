@@ -10,5 +10,5 @@ use AlexanderGladkov\Bookshop\Application\Application;
 try {
     (new Application())->run();
 } catch (Throwable $e) {
-    echo $e->getMessage() .PHP_EOL;
+    echo $e->getMessage() . PHP_EOL;
 }

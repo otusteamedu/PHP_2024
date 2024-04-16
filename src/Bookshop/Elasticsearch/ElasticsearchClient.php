@@ -37,7 +37,7 @@ class ElasticsearchClient
             throw new RuntimeException($response->asString());
         } catch (MissingParameterException $e) {
             throw new LogicException($e->getMessage());
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }
@@ -48,7 +48,7 @@ class ElasticsearchClient
             $this->client->indices()->create(['index' => $indexName]);
         } catch (MissingParameterException $e) {
             throw new LogicException($e->getMessage());
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }
@@ -64,7 +64,7 @@ class ElasticsearchClient
             $this->client->indices()->open(['index' => $indexName]);
         } catch (MissingParameterException $e) {
             throw new LogicException($e->getMessage());
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }
@@ -78,7 +78,7 @@ class ElasticsearchClient
             ]);
         } catch (MissingParameterException $e) {
             throw new LogicException($e->getMessage());
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }
@@ -89,7 +89,7 @@ class ElasticsearchClient
             $this->client->indices()->delete(['index' => $indexName]);
         } catch (MissingParameterException $e) {
             throw new LogicException($e->getMessage());
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }
@@ -107,7 +107,7 @@ class ElasticsearchClient
             }
 
             throw new RuntimeException($response->asString());
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }
@@ -142,7 +142,7 @@ class ElasticsearchClient
 
         try {
             $this->client->bulk($params);
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }
@@ -156,7 +156,7 @@ class ElasticsearchClient
 
         try {
             $this->client->bulk($params);
-        } catch (ClientResponseException|ServerResponseException $e) {
+        } catch (ClientResponseException | ServerResponseException $e) {
             throw new RuntimeException($e->getMessage());
         }
     }

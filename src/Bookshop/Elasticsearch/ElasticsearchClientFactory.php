@@ -34,8 +34,7 @@ class ElasticsearchClientFactory
         string $host,
         string $username,
         string $password
-    ): ElasticsearchClient
-    {
+    ): ElasticsearchClient {
         $client = ClientBuilder::create()
             ->setHosts([$host])
             ->setBasicAuthentication($username, $password)

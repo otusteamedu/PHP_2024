@@ -9,8 +9,7 @@ class SearchResult
     public function __construct(
         private readonly int $totalCount,
         private readonly array $hits
-    )
-    {
+    ){
     }
 
     public function getTotalCount(): int

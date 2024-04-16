@@ -56,8 +56,7 @@ class QueryBuildHelper
         mixed $gteValue,
         mixed $lteValue,
         ?array $additionalParameters = null
-    ): array
-    {
+    ): array {
         $parameters = ['gte' => $gteValue, 'lte' => $lteValue];
         $parameters = $this->addAdditionalParameters($parameters, $additionalParameters);
         return $this->range($field, $parameters);

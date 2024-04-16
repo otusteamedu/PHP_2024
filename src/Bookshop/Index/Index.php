@@ -25,7 +25,7 @@ class Index
     {
         $this->elasticsearchClient->createIndex($this->indexName);
         $this->elasticsearchClient->createSettings($this->indexName, $this->getSettingsDescription());
-        $this->elasticsearchClient->createMappings($this->indexName,$this->getMappingsDescription());
+        $this->elasticsearchClient->createMappings($this->indexName, $this->getMappingsDescription());
     }
 
     public function fillByString(string $indexData): void
