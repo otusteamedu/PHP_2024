@@ -89,8 +89,8 @@ INSERT INTO values VALUES ('master_i_margarita','reviews','Рецензия 1'),
 
 
 
-CREATE VIEW film_tasks AS
-SELECT f.name,a.name FROM values
-JOIN films f on values.film_id = f.id
-JOIN attributes a on values.attribute_id = a.id
-WHERE value = CURRENT_DATE;
+-- CREATE VIEW film_tasks AS
+-- SELECT f.name,a.name FROM values
+-- JOIN films f on values.film_id = f.id
+-- JOIN attributes a on values.attribute_id = a.id
+-- WHERE value = CURRENT_DATE;
