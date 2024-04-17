@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+
+  php:
+    container_name: app-php
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/var/www/app
+    networks:
+      - symfony
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  queue:
+    container_name: app-queue
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/var/www/app
+    depends_on:
+        - php
+    networks:
+      - symfony
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["php", "bin/console", "messenger:consume", "async"]
+
+  nginx:
+    container_name: app-nginx
+    image: nginx:stable-alpine
+    ports:
+      - '127.0.0.1:8080:80'
+    volumes:
+      - .:/var/www/app
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - symfony
+
+networks:
+  symfony:
+    name: app-network
