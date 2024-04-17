@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  php:
+    container_name: otus-php-architecture--php
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/var/www/app
+    networks:
+      - symfony
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  nginx:
+    container_name: otus-php-architecture--nginx
+    image: nginx:stable-alpine
+    ports:
+      - '127.0.0.1:8080:80'
+    volumes:
+      - .:/var/www/app
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - symfony
+
+networks:
+  symfony:
+    name: otus-php-architecture--network
