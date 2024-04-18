@@ -12,16 +12,19 @@ class CycledList
      */
     public function hasCycle($head): bool
     {
-        $visited = [];
+        if ($head === null || $head->next === null) {
+            return false;
+        }
 
-        while ($head!== null) {
-            $nodeId = spl_object_hash($head);
-            if (isset($visited[$nodeId])) {
+        $slow = $head;
+        $fast = $head->next;
+
+        while ($fast !== null && $fast->next !== null) {
+            if ($slow === $fast) {
                 return true;
             }
-
-            $visited[$nodeId] = true;
-            $head = $head->next;
+            $slow = $slow->next;
+            $fast = $fast->next->next;
         }
 
         return false;
