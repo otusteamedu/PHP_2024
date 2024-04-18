@@ -89,8 +89,11 @@ INSERT INTO values VALUES ('master_i_margarita','reviews','Рецензия 1'),
 
 
 
--- CREATE VIEW film_tasks AS
--- SELECT f.name,a.name FROM values
--- JOIN films f on values.film_id = f.id
--- JOIN attributes a on values.attribute_id = a.id
--- WHERE value = CURRENT_DATE;
+-- CREATE VIEW VIEW1 ("фильм", "атрибут", "задачи актуальные на сегодня", "задачи актуальные через 20 дней") AS
+-- SELECT "Films".name, "Films_attribute".name,
+--        CASE WHEN "Films_attributeValue".value_datetime::date = CURRENT_DATE THEN "Films_attributeValue".value_datetime::date ELSE NULL END,
+--        CASE WHEN "Films_attributeValue".value_datetime::date = (CURRENT_DATE + '20 days'::interval) THEN "Films_attributeValue".value_datetime::date ELSE NULL END
+-- FROM "Films"
+--          INNER JOIN "Films_attribute" ON "Films".id="Films_attribute".film_id
+--          INNER JOIN "Films_attributeType" ON "Films_attribute".id="Films_attributeType".attribute_id
+--          INNER JOIN "Films_attributeValue" ON "Films_attributeType".id="Films_attributeValue".attributetype_id;
