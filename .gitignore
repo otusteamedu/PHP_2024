@@ -1,6 +1,12 @@
 .env
 .idea/
 /vendor/
+/var/
 .DS_Store
 .AppleDouble
 .LSOverride
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/

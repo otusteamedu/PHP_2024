@@ -3,7 +3,7 @@
 ##################
 
 DOCKER_COMPOSE = docker-compose -f ./.deployment/docker/docker-compose.yml --env-file ./.deployment/docker/.env
-DOCKER_EXEC_PHP = docker exec -it homework21-php-fpm
+DOCKER_EXEC_PHP = docker exec -it php-fpm
 
 ##################
 # Docker compose
@@ -19,7 +19,7 @@ dc_stop:
 	${DOCKER_COMPOSE} stop
 
 dc_up:
-	${DOCKER_COMPOSE} up -d --remove-orphans
+	${DOCKER_COMPOSE} up -d
 
 dc_up_build:
 	${DOCKER_COMPOSE} up -d --build
