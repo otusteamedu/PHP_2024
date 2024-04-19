@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./site-files:/data:z
+      - ./docker/configs/sites/application.local.conf:/etc/nginx/conf.d/application.local.conf
+    networks:
+      - docker-network
+
+  php-fpm:
+    build: ./docker/php-fpm
+    image: mshubin/php7.4
+    container_name: php
+    restart: always
+    volumes:
+      - ./site-files:/data:z
+    networks:
+      - docker-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+
+  db:
+    image: mysql:5.7.22
+    container_name: mysql
+    restart: always
+# раскоментировать для доступа извне
+#    ports:
+#      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./mysql:/var/lib/mysql
+    networks:
+      - docker-network
+
+networks:
+  docker-network:
+    driver: bridge
