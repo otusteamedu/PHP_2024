@@ -1,0 +1,79 @@
+version: '3.7'
+
+services:
+  nginx-load-balancer:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./conf/nginx/nginx-load-balancer.conf:/etc/nginx/conf.d/default.conf
+      - ./src/static:/usr/share/nginx/html
+    networks:
+      - app-network
+
+  nginx-server-1:
+    image: nginx:latest
+    container_name: 'nginx-server-1'
+    expose:
+      - 80
+    volumes:
+      - ./conf/nginx/nginx-server.conf:/etc/nginx/conf.d/default.conf
+      - ./src:/var/www/html
+    networks:
+      - app-network
+
+  nginx-server-2:
+    image: nginx:latest
+    container_name: 'nginx-server-2'
+    expose:
+      - 80
+    volumes:
+      - ./conf/nginx/nginx-server.conf:/etc/nginx/conf.d/default.conf
+      - ./src:/var/www/html
+    networks:
+      - app-network
+
+  php-fpm-1:
+    build:
+      context: ./conf/php
+      dockerfile: Dockerfile
+    container_name: 'php-fpm-1'
+    expose:
+      - 9000
+    volumes:
+      - ./src:/var/www/html
+      - ./conf/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - app-network
+
+  php-fpm-2:
+    build:
+      context: ./conf/php
+      dockerfile: Dockerfile
+    container_name: 'php-fpm-2'
+    expose:
+      - 9000
+    volumes:
+      - ./src:/var/www/html
+      - ./conf/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - app-network
+
+  repcached1:
+    image: oktec/repcached
+    container_name: 'repcached1'
+    ports:
+      - "11211:11211"
+    networks:
+      - app-network
+
+  repcached2:
+    image: oktec/repcached
+    container_name: 'repcached2'
+    command: memcached -u root -m 64 -p 11211 -x repcached1 -X 11212 -vv
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
