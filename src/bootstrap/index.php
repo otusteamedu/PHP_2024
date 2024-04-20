@@ -10,6 +10,10 @@ try {
     $app = new App();
     echo $app->run();
 } catch (Exception $e) {
-    http_response_code(400);
+    try {
+        http_response_code(400);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
     echo $e->getMessage();
 }
