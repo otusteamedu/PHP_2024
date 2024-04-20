@@ -1,17 +1,17 @@
 CREATE TABLE IF NOT EXISTS films (
-     id          varchar(32) UNIQUE PRIMARY KEY,
-     name        text
+    id          varchar(32) UNIQUE PRIMARY KEY,
+    name        text
 );
 
-CREATE TABLE IF NOT EXISTS attribute_types (
-    id varchar(32) UNIQUE PRIMARY KEY
+CREATE TABLE IF NOT EXISTS film_attribute_types (
+    id          varchar(32) UNIQUE PRIMARY KEY
 );
 
-CREATE TABLE IF NOT EXISTS attributes (
+CREATE TABLE IF NOT EXISTS film_attributes (
     id                  varchar(32) UNIQUE PRIMARY KEY,
     attributetype_id    varchar(32),
     name                text,
-    FOREIGN KEY (attributetype_id) REFERENCES attribute_types(id)
+    FOREIGN KEY (attributetype_id) REFERENCES film_attribute_types(id)
 );
 
 
@@ -24,8 +24,51 @@ CREATE TABLE IF NOT EXISTS values (
     value_float     decimal(11,2) DEFAULT NULL,
     value_int       integer DEFAULT NULL,
     FOREIGN KEY (film_id) REFERENCES films(id),
-    FOREIGN KEY (attribute_id) REFERENCES attributes(id)
+    FOREIGN KEY (attribute_id) REFERENCES film_attributes(id)
 );
+
+CREATE TABLE IF NOT EXISTS sessions (
+    id          varchar(32) UNIQUE PRIMARY KEY,
+    filmId      varchar(32),
+    time        time,
+    FOREIGN KEY (filmId) REFERENCES films(id)
+);
+
+CREATE TABLE IF NOT EXISTS seats (
+    id          SERIAL UNIQUE PRIMARY KEY,
+    hall        integer,
+    row         integer,
+    seat        integer,
+    luxe        boolean,
+    booked      boolean DEFAULT false
+);
+
+CREATE TABLE IF NOT EXISTS payers (
+    id          varchar(32) UNIQUE PRIMARY KEY,
+    ticketCount integer
+);
+
+CREATE TABLE IF NOT EXISTS tickets (
+    id          integer UNIQUE PRIMARY KEY,
+    payerId     varchar(32),
+    sessionId   varchar(32),
+    seatId      integer,
+    amount      decimal(11,2),
+    FOREIGN KEY (payerId) REFERENCES payers(id),
+    FOREIGN KEY (sessionId) REFERENCES sessions(id),
+    FOREIGN KEY (seatId) REFERENCES seats(id)
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id          integer UNIQUE PRIMARY KEY,
+    payerId     varchar(32),
+    sum         decimal(11,2),
+    createTime   timestamp,
+    FOREIGN KEY (payerId) REFERENCES payers(id)
+);
+
+
+
 
 
 INSERT INTO films VALUES ('master_i_margarita','Мастер и Маргарита'),('onegin','Онегин'),('duna_2','Дюна 2');
