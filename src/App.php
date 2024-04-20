@@ -2,67 +2,41 @@
 
 declare(strict_types=1);
 
-namespace AShutov\Hw5;
+namespace AShutov\Hw14;
 
+use Elastic\Elasticsearch\Exception\AuthenticationException;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Exception\MissingParameterException;
+use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Exception;
 
 class App
 {
-    private ?Server $server = null;
-    private ?Client $client = null;
-    /**
-     * @throws Exception
-     */
-    public function run($arg)
-    {
-        $config = $this->readConfig(dirname(__DIR__) . '/config/config.ini');
-
-        switch ($arg) {
-            case 'server':
-                $this->server = new Server(new Socket($config));
-                break;
-            case 'client':
-                $this->client = new Client(new Socket($config));
-                break;
-            default:
-                throw new Exception("Неверный аргумент. Выберите server или client" . PHP_EOL);
-        }
-    }
+    public function __construct(
+        private mixed $settings,
+        private mixed $env,
+        private string $dump
+    ) {}
 
     /**
+     * @throws AuthenticationException
+     * @throws ClientResponseException
+     * @throws ServerResponseException
+     * @throws MissingParameterException
      * @throws Exception
      */
-    public function getAnswer(): \Generator
+    public function run(): string
     {
-        if ($this->client !== null) {
-            foreach ($this->client->start() as $answer) {
-                yield $answer;
-            }
+        $config = new Config($this->settings, $this->env);
+        $client = new ElasticHandler($config);
+        $client->createIndex($config->elasticIndex, false);
+        $client->bulk($this->dump);
+        $search = new BookSearch($client);
+
+        foreach ($search->fields() as $field => $fieldName) {
+            $search->$field = readline($fieldName);
         }
 
-        if ($this->server !== null) {
-            foreach ($this->server->start() as $answer) {
-                yield $answer;
-            }
-        }
-    }
-
-
-    /**
-     * @throws Exception
-     */
-    private function readConfig(string $path): array
-    {
-        if (!file_exists($path)) {
-            throw new Exception("Файл конфига не найден");
-        }
-
-        $config = parse_ini_file($path);
-
-        if ($config === false) {
-            throw new Exception("Неверно составлен файл конфига");
-        }
-
-        return $config;
+        return $search->search();
     }
 }

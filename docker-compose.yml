@@ -1,29 +1,42 @@
-version: "3.8"
+version: '3'
 
 services:
-  app:
+  php-fpm:
     build:
-      context: ./docker/php
+      context: docker/php
       dockerfile: Dockerfile
-    container_name: hw14-app
-    env_file:
-      - .env
     volumes:
-      - .:/data
+      - ./:/data/myapp
     networks:
-      - app-network
+      - elastic
+    working_dir: /data/myapp
 
   elasticsearch:
     image: elasticsearch:8.8.0
-    container_name: hw14-elasticsearch
-    hostname: hw14-elasticsearch
     ports:
       - 9200:9200
-    env_file:
-      - .env
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=true
     networks:
-      - app-network
+      - elastic
+
+  kibana:
+    image: kibana:8.8.0
+    depends_on:
+      - elasticsearch
+    environment:
+      SERVER_NAME: 'kibana'
+      elasticsearch.username: '${ELASTIC_USER}'
+      elasticsearch.password: '${ELASTIC_PASSWORD}'
+    volumes:
+      - ./docker/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro
+    networks:
+      - elastic
+    ports:
+      - "5601:5601"
 
 networks:
-  app-network:
+  elastic:
     driver: bridge

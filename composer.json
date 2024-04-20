@@ -8,7 +8,8 @@
     }
   },
   "require": {
-    "elasticsearch/elasticsearch": "^8.13"
+    "elasticsearch/elasticsearch": "^8.13",
+    "ext-readline": "*"
   },
   "config": {
     "allow-plugins": {
