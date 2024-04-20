@@ -16,7 +16,9 @@ class App
         private mixed $settings,
         private mixed $env,
         private string $dump
-    ) {}
+    ) {
+
+    }
 
     /**
      * @throws AuthenticationException

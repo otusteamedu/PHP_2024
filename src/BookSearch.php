@@ -89,8 +89,8 @@ class BookSearch
 
             if ($source['stock']) {
                 $result .= 'На складах: ' . array_sum(
-                        array_column($source['stock'], 'stock')
-                    ) . ' шт.' . PHP_EOL;
+                    array_column($source['stock'], 'stock')
+                ) . ' шт.' . PHP_EOL;
             }
             $result .= '-----------' . PHP_EOL;
         }
