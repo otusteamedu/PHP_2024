@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS film_attributes (
     FOREIGN KEY (attributetype_id) REFERENCES film_attribute_types(id)
 );
 
-
 CREATE TABLE IF NOT EXISTS values (
     film_id         varchar(32) ,
     attribute_id    varchar(32),
@@ -29,9 +28,11 @@ CREATE TABLE IF NOT EXISTS values (
 
 CREATE TABLE IF NOT EXISTS sessions (
     id          varchar(32) UNIQUE PRIMARY KEY,
-    filmId      varchar(32),
-    time        time,
-    FOREIGN KEY (filmId) REFERENCES films(id)
+    film_id      varchar(32),
+    date        date,
+    timeBegin   time,
+    timeEnd     time,
+    FOREIGN KEY (film_id) REFERENCES films(id)
 );
 
 CREATE TABLE IF NOT EXISTS seats (
@@ -39,43 +40,33 @@ CREATE TABLE IF NOT EXISTS seats (
     hall        integer,
     row         integer,
     seat        integer,
-    luxe        boolean,
-    booked      boolean DEFAULT false
-);
-
-CREATE TABLE IF NOT EXISTS payers (
-    id          varchar(32) UNIQUE PRIMARY KEY,
-    ticketCount integer
-);
-
-CREATE TABLE IF NOT EXISTS tickets (
-    id          integer UNIQUE PRIMARY KEY,
-    payerId     varchar(32),
-    sessionId   varchar(32),
-    seatId      integer,
-    amount      decimal(11,2),
-    FOREIGN KEY (payerId) REFERENCES payers(id),
-    FOREIGN KEY (sessionId) REFERENCES sessions(id),
-    FOREIGN KEY (seatId) REFERENCES seats(id)
+    luxe        boolean
 );
 
 CREATE TABLE IF NOT EXISTS orders (
-    id          integer UNIQUE PRIMARY KEY,
-    payerId     varchar(32),
+    id          SERIAL PRIMARY KEY,
+    payer       varchar(32) UNIQUE,
     sum         decimal(11,2),
-    createTime   timestamp,
-    FOREIGN KEY (payerId) REFERENCES payers(id)
+    ticketCount integer,
+    createTime  timestamp
 );
 
+CREATE TABLE IF NOT EXISTS tickets (
+    id          SERIAL PRIMARY KEY,
+    payer_id     varchar(32),
+    session_id   varchar(32),
+    seat_id      integer,
+    amount      decimal(11,2),
+    FOREIGN KEY (payer_id) REFERENCES orders(payer),
+    FOREIGN KEY (session_id) REFERENCES sessions(id),
+    FOREIGN KEY (seat_id) REFERENCES seats(id)
+);
 
+INSERT INTO films VALUES ('master_i_margarita','Мастер и Маргарита'),('onegin','Онегин'),('duna_2','Дюна 2'), ('gents','Джентельмены'), ('last_samurai','Последний самурай');
 
+INSERT INTO film_attribute_types VALUES ('text'),('date'),('bool'),('float'),('integer');
 
-
-INSERT INTO films VALUES ('master_i_margarita','Мастер и Маргарита'),('onegin','Онегин'),('duna_2','Дюна 2');
-
-INSERT INTO attribute_types VALUES ('text'),('date'),('bool'),('float'),('integer');
-
-INSERT INTO attributes VALUES ('reviews','text','Рецензии'),
+INSERT INTO film_attributes VALUES ('reviews','text','Рецензии'),
                               ('award_oscar','bool','Премия Оскар'),
                               ('award_nika','bool','Премия Ника'),
                               ('world_premiere_date','date','Дата мировой премьеры'),
@@ -133,30 +124,36 @@ INSERT INTO values VALUES ('master_i_margarita','reviews','Рецензия 1',n
                           ('duna_2','task_1','',CURRENT_DATE + INTERVAL '20 days',null,null,null),
                           ('duna_2','task_2','',CURRENT_DATE + INTERVAL '20 days',null,null,null),
                           ('duna_2','task_3','',CURRENT_DATE,null,null,null),
-                          ('duna_2','task_4','',CURRENT_DATE,null,null,null)
+                          ('duna_2','task_4','',CURRENT_DATE,null,null,null),
+
+                          ('gents','reviews','Рецензия 1',null,null,null,null),
+                          ('gents','reviews','Рецензия 2',null,null,null,null),
+                          ('gents','award_oscar','',null,true,null,null),
+                          ('gents','award_nika','',null,false,null,null),
+                          ('gents','world_premiere_date','','2024-04-30 12:00:00',null,null,null),
+                          ('gents','ru_premiere_date','','2024-04-30 12:00:00',null,null,null),
+                          ('gents','ticket_trade_begin','','2024-04-25 12:00:00',null,null,null),
+                          ('gents','ticket_trade_end','','2024-05-15 12:00:00',null,null,null),
+                          ('gents','seat_price','',null,null,400.00,null),
+                          ('gents','seat_price_luxe','',null,null,500.00,null),
+                          ('gents','task_1','',CURRENT_DATE,null,null,null),
+                          ('gents','task_2','',CURRENT_DATE,null,null,null),
+                          ('gents','task_3','',CURRENT_DATE + INTERVAL '20 days',null,null,null),
+                          ('gents','task_4','',CURRENT_DATE + INTERVAL '20 days',null,null,null),
+
+                          ('last_samurai','reviews','Рецензия 1',null,null,null,null),
+                          ('last_samurai','reviews','Рецензия 2',null,null,null,null),
+                          ('last_samurai','award_oscar','',null,true,null,null),
+                          ('last_samurai','award_nika','',null,false,null,null),
+                          ('last_samurai','world_premiere_date','','2024-04-30 12:00:00',null,null,null),
+                          ('last_samurai','ru_premiere_date','','2024-04-30 12:00:00',null,null,null),
+                          ('last_samurai','ticket_trade_begin','','2024-04-25 12:00:00',null,null,null),
+                          ('last_samurai','ticket_trade_end','','2024-05-15 12:00:00',null,null,null),
+                          ('last_samurai','seat_price','',null,null,600.00,null),
+                          ('last_samurai','seat_price_luxe','',null,null,700.00,null),
+                          ('last_samurai','task_1','',CURRENT_DATE,null,null,null),
+                          ('last_samurai','task_2','',CURRENT_DATE,null,null,null),
+                          ('last_samurai','task_3','',CURRENT_DATE + INTERVAL '20 days',null,null,null),
+                          ('last_samurai','task_4','',CURRENT_DATE + INTERVAL '20 days',null,null,null)
                           ;
 
-
-CREATE INDEX IND_VALUES
-    ON values(film_id,attribute_id,value_bool,value_date,value_text,value_float,value_int);
-
-CREATE VIEW system_data AS
-SELECT f.name Фильм,
-       CASE WHEN value_date::date = CURRENT_DATE THEN a.name END AS Задачи_на_сегодня,
-       CASE WHEN value_date::date = CURRENT_DATE + INTERVAL '20 days' THEN a.name END AS Задачи_на_будущее
-FROM (SELECT * FROM values WHERE attribute_id LIKE 'task_%') AS vals
-         JOIN films f on f.id = film_id
-         JOIN attributes a on a.id = attribute_id
-;
-
-CREATE VIEW marketing AS
-SELECT f.name Фильмы, at.id Тип_аттрибута, a.name Аттрибут,
-        CASE WHEN at.id = 'bool' THEN values.value_bool::text
-            WHEN at.id = 'date'THEN values.value_date::text
-            WHEN at.id = 'text'THEN values.value_text::text
-            WHEN at.id = 'float'THEN values.value_float::text END
-        AS Значение FROM values
-    JOIN films f on values.film_id = f.id
-    JOIN attributes a on a.id = values.attribute_id
-    JOIN attribute_types at on at.id = a.attributetype_id
-;
