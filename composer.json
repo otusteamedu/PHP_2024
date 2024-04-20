@@ -1,0 +1,5 @@
+{
+    "require": {
+        "andrei-buinovskii/otus-composer-package": "^1.0"
+    }
+}
