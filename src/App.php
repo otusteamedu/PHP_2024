@@ -17,7 +17,6 @@ class App
         private mixed $env,
         private string $dump
     ) {
-
     }
 
     /**
