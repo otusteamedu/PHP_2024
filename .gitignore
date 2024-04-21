@@ -1,5 +1,9 @@
+*.iml
 .idea/
 /vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
+
+vendor
+composer.lock
