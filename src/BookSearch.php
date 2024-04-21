@@ -7,7 +7,7 @@ namespace AShutov\Hw14;
 use Elastic\Elasticsearch\Helper\Iterators\SearchHitIterator;
 use Exception;
 
-class BookSearch
+class BookSearch implements SearchInterface
 {
     public ElasticHandler $client;
     public string $query;
