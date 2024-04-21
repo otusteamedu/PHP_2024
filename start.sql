@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS place (
     type_id INTEGER NOT NULL,
     CONSTRAINT fk_place_type FOREIGN KEY (type_id) REFERENCES place_type,
     CONSTRAINT fk_cinema_room FOREIGN KEY (cinema_room_id) REFERENCES cinema_room
-)
+);
 
 INSERT INTO place (row, seat, cinema_room_id, type_id)
 VALUES (1, 1, 1, 1),
@@ -457,47 +457,49 @@ CREATE TABLE client (
 
 INSERT INTO client(email) VALUES ('test1@mail.ru'), ('test2@mail.ru'), ('test3@mail.ru');
 
-CREATE TABLE ticket (
+CREATE TABLE tickets (
     id SERIAL PRIMARY KEY,
     client_id INTEGER NOT NULL,
     price_place_id INTEGER NOT NULL,
+    discount NUMERIC(5,2) CHECK (discount >= 0) NOT NULL,
+    actual_price NUMERIC(7, 2) NOT NULL,
     CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES client,
     CONSTRAINT fk_price_place FOREIGN KEY (price_place_id) REFERENCES price_place
 );
 
-INSERT INTO ticket (client_id, price_place_id)
-VALUES (1, 1),
-       (1, 10),
-       (1, 100),
-       (1, 200),
-       (1, 300),
-       (1, 102),
-       (1, 104),
-       (1, 106),
-       (1, 202),
-       (1, 204),
-       (1, 206),
-       (2, 2),
-       (2, 20),
-       (2, 101),
-       (2, 201),
-       (2, 301),
-       (2, 105),
-       (2, 107),
-       (2, 109),
-       (2, 203),
-       (2, 205),
-       (2, 207),
-       (2, 307),
-       (3, 3),
-       (3, 30),
-       (3, 102),
-       (3, 211),
-       (3, 311),
-       (3, 115),
-       (3, 117),
-       (3, 119),
-       (3, 213),
-       (3, 215),
-       (3, 217),
-       (3, 317);
+INSERT INTO tickets (client_id, price_place_id, discount, actual_price)
+VALUES (1, 1, 0, 100),
+       (1, 10, 0, 100),
+       (1, 100, 0, 200),
+       (1, 200, 0, 200),
+       (1, 300, 0, 200),
+       (1, 102, 0, 200),
+       (1, 104, 0, 200),
+       (1, 106, 10, 180),
+       (1, 202, 10, 180),
+       (1, 204, 15, 170),
+       (1, 206, 0, 200),
+       (2, 2, 5, 190),
+       (2, 20, 10, 180),
+       (2, 101, 0, 300),
+       (2, 201, 5, 385),
+       (2, 301, 5, 385),
+       (2, 105, 5, 385),
+       (2, 107, 10, 360),
+       (2, 109, 20, 340),
+       (2, 203, 0, 400),
+       (2, 205, 0, 400),
+       (2, 207, 0, 400),
+       (2, 307, 0, 400),
+       (3, 3, 0, 400),
+       (3, 30, 0, 400),
+       (3, 102, 0, 400),
+       (3, 211, 10, 360),
+       (3, 311, 11, 355),
+       (3, 115, 12, 350),
+       (3, 117, 15, 345),
+       (3, 119, 0, 500),
+       (3, 213, 0, 500),
+       (3, 215, 10, 330),
+       (3, 217, 20, 300),
+       (3, 317, 0, 500);
