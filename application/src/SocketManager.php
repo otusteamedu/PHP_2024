@@ -7,7 +7,8 @@ use Socket;
 
 class SocketManager
 {
-    const SOCKET_PATH = '/tmp/hw5.sock';
+    const SOCKET_PATH = '/tmp/hw_socket/hw5.sock';
+    //const SOCKET_PATH = '/hw5.sock';
 
     public Socket $socket;
 

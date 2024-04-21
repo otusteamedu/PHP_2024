@@ -9,21 +9,23 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./application:/data/application
+      - ./tmp_socket:/tmp/hw_socket
     networks:
       - hw5_bridge
 
-#  php_client:
-#    container_name: php_client
-#    image: pavelsergeevich/hw5/php_client
-#    build:
-#      context: ./dockerfiles/php_client
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./application:/data/application
-#    networks:
-#      - hw5_bridge
-#    depends_on:
-#      - php_server
+  php_client:
+    container_name: php_client
+    image: pavelsergeevich/hw5/php_client
+    build:
+      context: ./dockerfiles/php_client
+      dockerfile: Dockerfile
+    volumes:
+      - ./application:/data/application
+      - ./tmp_socket:/tmp/hw_socket
+    networks:
+      - hw5_bridge
+    depends_on:
+      - php_server
 
 networks:
   hw5_bridge:

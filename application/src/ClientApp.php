@@ -20,15 +20,41 @@ class ClientApp implements Runnable
     /**
      * @throws Exception
      */
-    public function run(): void
+    public function run()
     {
         $this->isRunning = true;
+
+        foreach ($this->yieldedRun() as $answer) {
+            echo $answer;
+        }
+
+//        while ($this->isRunning) {
+//
+//            sleep(1);
+//            $query = readline("\nВведите команду (info - для подсказки):\n >>> ");
+//            $queryArgs = explode(' ', trim($query));
+//            $answer = $this->getAnswerAndHandleQuery($queryArgs);
+//            if ($answer['answer']) {
+//                echo $answer['answer'];
+//                //yield $answer['answer'];
+//            }
+//
+//            if ($answer['isFinish']) {
+//                $this->socketManager->socketClose();
+//                $this->isRunning = false;
+//            }
+//        }
+    }
+
+    private function yieldedRun() {
         while ($this->isRunning) {
+
+            sleep(1);
             $query = readline("\nВведите команду (info - для подсказки):\n >>> ");
             $queryArgs = explode(' ', trim($query));
             $answer = $this->getAnswerAndHandleQuery($queryArgs);
             if ($answer['answer']) {
-                echo $answer['answer'];
+                yield $answer['answer'];
             }
 
             if ($answer['isFinish']) {
