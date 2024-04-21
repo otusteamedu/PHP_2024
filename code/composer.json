@@ -1,0 +1,10 @@
+{
+    "name": "alexander-pogorelov/algorithm",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderPogorelov\\Algorithm\\": "src/"
+        }
+    },
+    "require": {}
+}
