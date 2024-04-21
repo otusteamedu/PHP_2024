@@ -1,0 +1,3 @@
+2024/04/21 08:18:21 [error] 21#21: *2 directory index of "/data/hw15.local/" is forbidden, client: 172.21.0.1, server: www.hw15.local, request: "GET / HTTP/1.1", host: "hw15.local"
+2024/04/21 08:18:21 [error] 21#21: *2 open() "/data/hw15.local/favicon.ico" failed (2: No such file or directory), client: 172.21.0.1, server: www.hw15.local, request: "GET /favicon.ico HTTP/1.1", host: "hw15.local", referrer: "http://hw15.local/"
+2024/04/21 08:19:03 [error] 21#21: *2 "/data/hw15.local/asd/index.php" is not found (2: No such file or directory), client: 172.21.0.1, server: www.hw15.local, request: "GET /asd/ HTTP/1.1", host: "hw15.local"

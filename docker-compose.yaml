@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nginx_service:
+    image: nginx:latest
+    container_name: nginx_hw15
+    ports:
+      - "80:80"
+    volumes:
+      - .:/data/hw15.local
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/log:/var/log/nginx
+    networks:
+      - hw15_network
+    depends_on:
+      - php_service
+
+  php_service:
+    image: pananin/php_hw15
+    container_name: php_hw15
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - .:/data/hw15.local
+    networks:
+      - hw15_network
+
+networks:
+  hw15_network:
+    driver: bridge
