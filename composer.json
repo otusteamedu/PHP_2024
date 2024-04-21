@@ -1,0 +1,10 @@
+{
+  "name": "ashutov/hw14",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "AShutov\\Hw14\\": "src/"
+    }
+  }
+}

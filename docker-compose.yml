@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/data/myapp
+    networks:
+      - redis
+    working_dir: /data/myapp
+
+networks:
+  redis:
+    driver: bridge
