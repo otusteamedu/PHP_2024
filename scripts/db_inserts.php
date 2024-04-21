@@ -15,16 +15,16 @@ try {
 }
 
 $sessions = [
-    ['id'=>'master_13', 'film_id'=>'master_i_margarita', 'date' => null, 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
-    ['id'=>'master_17', 'film_id'=>'master_i_margarita', 'date' => null, 'timebegin'=>'17:00:00', 'timeend'=>'20:00:00'],
-    ['id'=>'onegin_11', 'film_id'=>'onegin', 'date' => null, 'timebegin'=>'11:00:00', 'timeend'=>'14:00:00'],
-    ['id'=>'onegin_16', 'film_id'=>'onegin', 'date' => null, 'timebegin'=>'16:00:00', 'timeend'=>'19:00:00'],
-    ['id'=>'duna2_13', 'film_id'=>'duna_2', 'date' => null, 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
-    ['id'=>'duna2_20', 'film_id'=>'duna_2', 'date' => null, 'timebegin'=>'20:00:00', 'timeend'=>'23:00:00'],
-    ['id'=>'gents_13_20', 'film_id'=>'gents', 'date' => null, 'timebegin'=>'13:20:00', 'timeend'=>'17:00:00'],
-    ['id'=>'gents_19_45', 'film_id'=>'gents', 'date' => null, 'timebegin'=>'19:45:00', 'timeend'=>'23:25:00'],
-    ['id'=>'last_samurai_15', 'film_id'=>'last_samurai', 'date' => null, 'timebegin'=>'15:00:00', 'timeend'=>'18:00:00'],
-    ['id'=>'last_samurai_22', 'film_id'=>'last_samurai', 'date' => null, 'timebegin'=>'22:00:00', 'timeend'=>'01:00:00']
+    ['id'=>'master_13', 'film_id'=>'master_i_margarita', 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
+    ['id'=>'master_17', 'film_id'=>'master_i_margarita', 'timebegin'=>'17:00:00', 'timeend'=>'20:00:00'],
+    ['id'=>'onegin_11', 'film_id'=>'onegin', 'timebegin'=>'11:00:00', 'timeend'=>'14:00:00'],
+    ['id'=>'onegin_16', 'film_id'=>'onegin', 'timebegin'=>'16:00:00', 'timeend'=>'19:00:00'],
+    ['id'=>'duna2_13', 'film_id'=>'duna_2', 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
+    ['id'=>'duna2_20', 'film_id'=>'duna_2', 'timebegin'=>'20:00:00', 'timeend'=>'23:00:00'],
+    ['id'=>'gents_13_20', 'film_id'=>'gents', 'timebegin'=>'13:20:00', 'timeend'=>'17:00:00'],
+    ['id'=>'gents_19_45', 'film_id'=>'gents', 'timebegin'=>'19:45:00', 'timeend'=>'23:25:00'],
+    ['id'=>'last_samurai_15', 'film_id'=>'last_samurai', 'timebegin'=>'15:00:00', 'timeend'=>'18:00:00'],
+    ['id'=>'last_samurai_22', 'film_id'=>'last_samurai', 'timebegin'=>'22:00:00', 'timeend'=>'01:00:00']
 ];
 
 foreach ($sessions as $session) {
@@ -109,12 +109,13 @@ foreach ($halls as $hall=>$rows) {
 
 $tickets = [];
 
-for ($id = 1; $id <= 30; ++$id) {
+for ($id = 1; $id <= 300; ++$id) {
     $tickets[] = [
-        'payer_id' => 'payer_'.rand(1,15),
-        'session_id' => $sessions[rand(0,5)]['id'],
+        'payer_id' => 'payer_'.rand(1,100),
+        'session_id' => $sessions[rand(0,9)]['id'],
         'seat_id' => rand(1,933),
-        'amount' => 0
+        'amount' => 0,
+        'date' => date("Y-m-d",time() - rand(0,1000000)),
     ];
 }
 $payers = [];
@@ -152,7 +153,8 @@ foreach ($tickets as $ticket) {
             'payer_id' => $ticket['payer_id'],
             'session_id' => $ticket['session_id'],
             'seat_id' => $ticket['seat_id'],
-            'amount' => $ticket['amount']
+            'amount' => $ticket['amount'],
+            'date' => $ticket['date']
         ]);
 
     } catch (Exception $exception) {
