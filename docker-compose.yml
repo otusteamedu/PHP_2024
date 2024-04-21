@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/data/myapp
+    networks:
+      - elastic
+    working_dir: /data/myapp
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    ports:
+      - 9200:9200
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=true
+    networks:
+      - elastic
+
+  kibana:
+    image: kibana:8.8.0
+    depends_on:
+      - elasticsearch
+    environment:
+      SERVER_NAME: 'kibana'
+      elasticsearch.username: '${ELASTIC_USER}'
+      elasticsearch.password: '${ELASTIC_PASSWORD}'
+    volumes:
+      - ./docker/kibana/config.yml:/usr/share/kibana/config/kibana.yml:ro
+    networks:
+      - elastic
+    ports:
+      - "5601:5601"
+
+networks:
+  elastic:
+    driver: bridge
