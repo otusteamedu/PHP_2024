@@ -26,20 +26,20 @@ CREATE TABLE IF NOT EXISTS values (
     FOREIGN KEY (attribute_id) REFERENCES film_attributes(id)
 );
 
-CREATE TABLE IF NOT EXISTS sessions (
-    id          varchar(32) UNIQUE PRIMARY KEY,
-    film_id      varchar(32),
-    timeBegin   time,
-    timeEnd     time,
-    FOREIGN KEY (film_id) REFERENCES films(id)
-);
-
 CREATE TABLE IF NOT EXISTS seats (
     id          SERIAL UNIQUE PRIMARY KEY,
-    hall        integer,
     row         integer,
     seat        integer,
     luxe        boolean
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+    id          varchar(32) UNIQUE PRIMARY KEY,
+    film_id     varchar(32),
+    hall        integer,
+    timeBegin   time,
+    timeEnd     time,
+    FOREIGN KEY (film_id) REFERENCES films(id)
 );
 
 CREATE TABLE IF NOT EXISTS orders (
