@@ -1,0 +1,23 @@
+{
+    "name": "alexander-gladkov/analytics",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderGladkov\\Analytics\\": "Analytics/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Gladkov"
+        }
+    ],
+    "require": {
+      "ext-mbstring": "*",
+      "ext-redis": "*"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

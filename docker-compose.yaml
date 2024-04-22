@@ -1,0 +1,32 @@
+services:
+
+  php-cli:
+    build:
+      context: ./docker/php-cli
+    container_name: php-cli
+    volumes:
+      - ./src:/app/analytics
+    environment:
+      LC_ALL: "C.UTF-8"
+    networks:
+      - net
+    stdin_open: true
+
+  redis:
+    build:
+      context: ./docker/redis
+    container_name: redis
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - "${REDIS_PORT}:6379"
+    networks:
+      - net
+    # Если нужен пароль:
+    #environment:
+    #  REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    #command: sh -c 'exec redis-server --requirepass "$REDIS_PASSWORD"'
+
+networks:
+  net:
+    driver: bridge
