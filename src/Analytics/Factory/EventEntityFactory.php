@@ -7,7 +7,6 @@ namespace AlexanderGladkov\Analytics\Factory;
 use AlexanderGladkov\Analytics\Entity\Event;
 use AlexanderGladkov\Analytics\Request\AddRequest;
 
-
 class EventEntityFactory
 {
     public function createByArray(array $eventData): Event

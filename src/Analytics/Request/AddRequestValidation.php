@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace AlexanderGladkov\Analytics\Request;
 
 use AlexanderGladkov\Analytics\Application\Arg\AddArg;
-
 use LogicException;
 
 class AddRequestValidation
