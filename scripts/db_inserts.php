@@ -1,5 +1,7 @@
 <?php
 declare(strict_types=1);
+ini_set("memory_limit","2048M");
+
 
 $db = null;
 
@@ -105,7 +107,9 @@ foreach ($hall as $row=>$seats) {
 
 $tickets = [];
 
-for ($id = 1; $id <= 1000; ++$id) {
+$count = 1000;
+
+for ($id = 1; $id <= $count; ++$id) {
     $tickets[] = [
         'payer_id' => 'payer_'.rand(1,100),
         'session_id' => $sessions[rand(0,9)]['id'],
@@ -114,6 +118,9 @@ for ($id = 1; $id <= 1000; ++$id) {
         'date' => date("Y-m-d",time() - rand(-100000,700000)),
     ];
 }
+
+
+
 $payers = [];
 foreach ($tickets as $ticket) {
     $luxeOrNot = pg_fetch_row(pg_query($db,"SELECT luxe FROM seats where id = {$ticket['seat_id']};"));
