@@ -11,12 +11,18 @@ use DateTimeInterface;
 
 class News
 {
+    private int $id;
 
     public function __construct(
         private Title $title,
         private Url $url,
         private DateTimeInterface $createdAt,
     ) {
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getTitle(): Title

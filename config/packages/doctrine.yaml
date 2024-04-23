@@ -7,16 +7,23 @@ doctrine:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true
-        validate_xml_mapping: true
+#        validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App:
+            Entity:
                 type: xml
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Infrastructure/Database/ORM'
+                dir: '%kernel.project_dir%/src/Infrastructure/Database/ORM/Entity'
                 prefix: 'App\Domain\Entity'
-                alias: App
+                alias: Entity
+
+            ValueObjects: # Новая конфигурация для объектов-значения
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Infrastructure/Database/ORM/ValueObject'
+                prefix: 'App\Domain\ValueObject'
+                alias: ValueObject
         controller_resolver:
             auto_mapping: true
 
