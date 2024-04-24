@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    image: app/php
+    volumes:
+      - ./:/data/myapp
+    networks:
+      - app
+    working_dir: /data/myapp
+
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - 'app-mysql:/var/lib/mysql'
+      - './docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql'
+    networks:
+      - app
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
+      retries: 3
+      timeout: 5s
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  app-mysql:
