@@ -16,10 +16,13 @@ class User
     private ?string $lastName = null;
     private ?string $email = null;
 
+    private array $changes = [];
+
     public function __construct()
     {
         $this->connection = new Connection();
     }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,6 +53,7 @@ class User
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
+        $this->changes['first_name'] = $firstName;
 
         return $this;
     }
@@ -57,6 +61,7 @@ class User
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
+        $this->changes['last_name'] = $lastName;
 
         return $this;
     }
@@ -64,6 +69,7 @@ class User
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+        $this->changes['email'] = $email;
 
         return $this;
     }
@@ -122,15 +128,24 @@ class User
 
     public function update(): int
     {
-        return $this->connection->execute(
-            'UPDATE users SET first_name = :first_name, last_name = :last_name, email = :email WHERE id = :id',
-            [
-                'first_name' => $this->getFirstName(),
-                'last_name' => $this->getLastName(),
-                'email' => $this->getEmail(),
-                'id' => $this->getId(),
-            ]
+        $columns = [];
+
+        foreach ($this->changes as $key => $value) {
+            if ($key !== 'id') {
+                $columns[] = "`$key`" . '=' . ":{$key}";
+            }
+        }
+
+        $columns = implode(', ', $columns);
+
+        $result = $this->connection->execute(
+            "UPDATE users SET $columns WHERE id = :id",
+            $this->changes + ['id' => $this->getId()],
         );
+
+        $this->changes = [];
+
+        return $result;
     }
 
     public function delete(int|null $id = null): false|PDOStatement

@@ -55,6 +55,7 @@ foreach ($users as $user) {
 /**
  * UPDATE
  */
+$user = (new User())->findOneById(1);
 $user->setEmail('new_user_email@mail.ru');
 $user->update();
 echo ((new User())->findOneById(1))->getEmail() . PHP_EOL;
