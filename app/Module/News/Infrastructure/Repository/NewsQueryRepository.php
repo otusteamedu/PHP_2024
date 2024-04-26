@@ -6,9 +6,8 @@ namespace Module\News\Infrastructure\Repository;
 
 use Core\Domain\ValueObject\Uuid;
 use Exception;
-use Module\News\Domain\Entity\NewsCollection;
-use Module\News\Domain\Factory\NewsFactory;
 use Module\News\Domain\Repository\NewsQueryRepositoryInterface;
+use Module\News\Infrastructure\Factory\NewsFactory;
 use Module\News\Infrastructure\Model\NewsModel;
 
 use function array_map;
@@ -23,26 +22,26 @@ final readonly class NewsQueryRepository implements NewsQueryRepositoryInterface
     /**
      * @throws Exception
      */
-    public function getAll(): NewsCollection
+    public function getAll(): array
     {
-        $data = NewsModel::query()->get()->toArray();
-        return $this->factory->createCollectionByRaw($data);
+        return $this->factory->createByCollection(
+            NewsModel::query()->get()
+        );
     }
 
     /**
      * @throws Exception
      */
-    public function getAllByIds(Uuid $id, Uuid ...$ids): NewsCollection
+    public function getAllByIds(Uuid $id, Uuid ...$ids): array
     {
         $ids[] = $id;
         $ids = array_map(static fn (Uuid $id): string => $id->getValue(), $ids);
 
-        $data = NewsModel::query()
+        $collection = NewsModel::query()
             ->whereIn('id', $ids)
             ->get()
-            ->toArray()
         ;
 
-        return $this->factory->createCollectionByRaw($data);
+        return $this->factory->createByCollection($collection);
     }
 }

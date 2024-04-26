@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Module\News\Infrastructure\Service;
 
 use Illuminate\Support\Facades\File;
+use Module\News\Application\Service\Dto\NewsDto;
 use Module\News\Application\Service\Interface\ReportGeneratorServiceInterface;
-use Module\News\Domain\Entity\NewsCollection;
 use Module\News\Domain\ValueObject\Url;
 
 final class HtmlReportGeneratorService implements ReportGeneratorServiceInterface
 {
-    public function generate(NewsCollection $newsCollection): Url
+    public function generate(NewsDto $newsDto, NewsDto ...$newsDtoList): Url
     {
+        $newsDtoList[] = $newsDto;
         $path = $this->getStoragePath();
-        $content = $this->prepareContent($newsCollection);
+        $content = $this->prepareContent(...$newsDtoList);
         file_put_contents($path, $content);
 
         return new Url(asset($path));
@@ -31,16 +32,12 @@ final class HtmlReportGeneratorService implements ReportGeneratorServiceInterfac
         return "$storagePath/$name";
     }
 
-    private function prepareContent(NewsCollection $newsCollection): string
+    private function prepareContent(NewsDto ...$newsDtoList): string
     {
-        $body = ['<ul>'];
-        foreach ($newsCollection->all() as $news) {
-            $url = $news->getUrl()->getValue();
-            $title = $news->getTitle()->getValue();
-            $body[] = "<li><a href='$url'>$title</a></li>";
+        $body = '<ul>';
+        foreach ($newsDtoList as $news) {
+            $body .= "<li><a href='{$news->url}'>{$news->title}</a></li>";
         }
-        $body[] = '</ul>';
-
-        return implode('', $body);
+        return $body . '</ul>';
     }
 }

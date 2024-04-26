@@ -16,7 +16,7 @@ final readonly class GetListUseCase
 
     public function __invoke(): ListResponse
     {
-        $newsCollection = $this->repository->getAll();
+        $news = $this->repository->getAll();
         return new ListResponse(
             ...array_map(static function (News $news): ListItem {
                 return new ListItem(
@@ -25,7 +25,7 @@ final readonly class GetListUseCase
                     $news->getTitle()->getValue(),
                     $news->getDate()
                 );
-            }, $newsCollection->all())
+            }, $news)
         );
     }
 }
