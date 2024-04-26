@@ -12,6 +12,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method News[] findAll()
+ * @method News[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class NewsRepository extends ServiceEntityRepository implements NewsInterface
 {
@@ -26,15 +27,5 @@ class NewsRepository extends ServiceEntityRepository implements NewsInterface
     {
         $this->entityManager->persist($news);
         $this->entityManager->flush();
-    }
-
-    public function getTitles(array $ids): array
-    {
-        return $this->createQueryBuilder('n')
-            ->select('n.title.value as title')
-            ->andWhere('n.id IN (:ids)')
-            ->setParameter('ids', $ids)
-            ->getQuery()
-            ->getResult();
     }
 }

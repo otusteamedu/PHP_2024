@@ -1,5 +1,5 @@
 <ul>
     {% for item in titles %}
-        <li>{{ item.title|e }}</li>
+        <li>{{ item.getValue() }}</li>
     {% endfor %}
 </ul>

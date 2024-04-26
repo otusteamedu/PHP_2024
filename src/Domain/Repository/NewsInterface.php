@@ -9,5 +9,4 @@ use App\Domain\Entity\News;
 interface NewsInterface
 {
     public function save(News $news): void;
-    public function getTitles(array $ids): array;
 }
