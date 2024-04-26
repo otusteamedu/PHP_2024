@@ -8,17 +8,17 @@ use PDO;
 use PDOStatement;
 class Film
 {
-    private ?int        $id = null;
-    private ?string     $name = null;
-    private ?string     $duration = null;
-    private ?int        $manufacturer = null;
-    private ?int        $director = null;
-    private ?string     $description = null;
-    private ?int        $rental_company = null;
-    private ?int        $age_limits = null;
-    private ?string     $actors = null;
-    private ?string     $film_links = null;
-    private PDO         $pdo;
+    private ?int $id = null;
+    private ?string $name = null;
+    private ?string $duration = null;
+    private ?int $manufacturer = null;
+    private ?int $director = null;
+    private ?string $description = null;
+    private ?int $rental_company = null;
+    private ?int $age_limits = null;
+    private ?string $actors = null;
+    private ?string $film_links = null;
+    private PDO $pdo;
     private PDOStatement $insertStatement;
     private PDOStatement $updateStatement;
     private PDOStatement $deleteStatement;
