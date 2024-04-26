@@ -6,6 +6,7 @@ namespace VictoriaBabikova\DbWorkerApp\Database\RowGateway;
 
 use PDO;
 use PDOStatement;
+
 class Film
 {
     private ?int $id = null;
