@@ -53,3 +53,7 @@ SELECT
     date(CURRENT_DATE + INTERVAL '3 days' - random() * ((CURRENT_DATE + INTERVAL '10 days') - CURRENT_DATE))
 FROM generate_series(1,10000);
 
+-- Индексы
+CREATE INDEX ON public.sessions(id,film_id,timebegin);
+CREATE INDEX ON public.films(id,name);
+CREATE INDEX ON public.tickets(amount,date);
