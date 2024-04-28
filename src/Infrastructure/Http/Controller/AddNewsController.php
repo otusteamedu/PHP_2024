@@ -11,16 +11,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
-
+#[Route(path: '/news/create', name: 'news_create', methods: 'POST')]
 class AddNewsController extends  AbstractController
 {
-    #[Route(path: '/news/create', name: 'news_create', methods: 'POST')]
-    public function addNews(
+    public function __invoke(
        #[MapRequestPayload] AddNewsRequest $request,
         AddNewsUseCase $addNewsUseCase,
     ): Response {
-        call_user_func_array($addNewsUseCase, [$request]);
+        $result = call_user_func_array($addNewsUseCase, [$request]);
 
-        return $this->json(['success' => true]);
+        return $this->json($result);
     }
 }
