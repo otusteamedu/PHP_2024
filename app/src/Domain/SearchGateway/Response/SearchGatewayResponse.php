@@ -13,8 +13,7 @@ class SearchGatewayResponse {
    * Construct Response.
    */
   public function __construct(
-    public readonly array $traces,
-    public readonly string $answer
+    public readonly array $traces
   ) {
   }
 
