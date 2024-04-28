@@ -16,6 +16,8 @@ services:
   php_client:
     container_name: php_client
     image: pavelsergeevich/hw5/php_client
+    stdin_open: true
+    tty: true
     build:
       context: ./dockerfiles/php_client
       dockerfile: Dockerfile

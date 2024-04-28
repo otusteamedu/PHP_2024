@@ -24,32 +24,32 @@ class ClientApp implements Runnable
     {
         $this->isRunning = true;
 
-        foreach ($this->yieldedRun() as $answer) {
-            echo $answer;
-        }
-
-//        while ($this->isRunning) {
-//
-//            sleep(1);
-//            $query = readline("\nВведите команду (info - для подсказки):\n >>> ");
-//            $queryArgs = explode(' ', trim($query));
-//            $answer = $this->getAnswerAndHandleQuery($queryArgs);
-//            if ($answer['answer']) {
-//                echo $answer['answer'];
-//                //yield $answer['answer'];
-//            }
-//
-//            if ($answer['isFinish']) {
-//                $this->socketManager->socketClose();
-//                $this->isRunning = false;
-//            }
+//        foreach ($this->yieldedRun() as $answer) {
+//            echo $answer;
 //        }
+
+        while ($this->isRunning) {
+
+            //sleep(1);
+            $query = readline("\nВведите команду (info - для подсказки):\n >>> ");
+            $queryArgs = explode(' ', trim($query));
+            $answer = $this->getAnswerAndHandleQuery($queryArgs);
+            if ($answer['answer']) {
+                echo $answer['answer'];
+                //yield $answer['answer'];
+            }
+
+            if ($answer['isFinish']) {
+                $this->socketManager->socketClose();
+                $this->isRunning = false;
+            }
+        }
     }
 
     private function yieldedRun() {
         while ($this->isRunning) {
 
-            sleep(1);
+            //sleep(1);
             $query = readline("\nВведите команду (info - для подсказки):\n >>> ");
             $queryArgs = explode(' ', trim($query));
             $answer = $this->getAnswerAndHandleQuery($queryArgs);
