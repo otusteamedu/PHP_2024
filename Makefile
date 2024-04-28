@@ -45,6 +45,8 @@ app_bash:
 	${DOCKER_EXEC_PHP} bash
 com_i:
 	${DOCKER_EXEC_PHP} composer install
+com_r:
+	${DOCKER_EXEC_PHP} composer require
 test:
 	${DOCKER_EXEC_PHP} php bin/phpunit
 cache:

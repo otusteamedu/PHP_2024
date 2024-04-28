@@ -2,6 +2,8 @@
 framework:
     secret: '%env(APP_SECRET)%'
     session: true
+    serializer:
+        enabled: true
 
 when@test:
     framework:
