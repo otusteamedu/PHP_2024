@@ -54,6 +54,7 @@ SELECT
 FROM generate_series(1,10000);
 
 
-
-
+CREATE INDEX ON public.sessions(id,film_id,timebegin);
+CREATE INDEX ON public.films(id,name);
+CREATE INDEX ON public.tickets(amount,date);
 
