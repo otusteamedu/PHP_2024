@@ -16,27 +16,27 @@ try {
     echo $exception->getMessage();
 }
 
-$sessions = [
-    ['id'=>'master_13', 'film_id'=>'master_i_margarita', 'hall' => 1, 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
-    ['id'=>'master_17', 'film_id'=>'master_i_margarita', 'hall' => 1, 'timebegin'=>'17:00:00', 'timeend'=>'20:00:00'],
-    ['id'=>'onegin_09_30', 'film_id'=>'onegin', 'hall' => 1, 'timebegin'=>'09:30:00', 'timeend'=>'12:30:00'],
-    ['id'=>'onegin_16', 'film_id'=>'onegin', 'hall' => 2, 'timebegin'=>'16:00:00', 'timeend'=>'19:00:00'],
-    ['id'=>'duna2_12_30', 'film_id'=>'duna_2', 'hall' => 2, 'timebegin'=>'12:30:00', 'timeend'=>'15:30:00'],
-    ['id'=>'duna2_21', 'film_id'=>'duna_2', 'hall' => 1, 'timebegin'=>'21:00:00', 'timeend'=>'24:00:00'],
-    ['id'=>'gents_13_30', 'film_id'=>'gents', 'hall' => 3, 'timebegin'=>'13:30:00', 'timeend'=>'17:00:00'],
-    ['id'=>'gents_19_45', 'film_id'=>'gents', 'hall' => 2, 'timebegin'=>'19:45:00', 'timeend'=>'23:25:00'],
-    ['id'=>'last_samurai_10', 'film_id'=>'last_samurai', 'hall' => 3, 'timebegin'=>'10:00:00', 'timeend'=>'13:00:00'],
-    ['id'=>'last_samurai_22', 'film_id'=>'last_samurai', 'hall' => 3, 'timebegin'=>'22:00:00', 'timeend'=>'01:00:00']
-];
+//$sessions = [
+//    ['id'=>'master_13', 'film_id'=>'master_i_margarita', 'hall' => 1, 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
+//    ['id'=>'master_17', 'film_id'=>'master_i_margarita', 'hall' => 1, 'timebegin'=>'17:00:00', 'timeend'=>'20:00:00'],
+//    ['id'=>'onegin_09_30', 'film_id'=>'onegin', 'hall' => 1, 'timebegin'=>'09:30:00', 'timeend'=>'12:30:00'],
+//    ['id'=>'onegin_16', 'film_id'=>'onegin', 'hall' => 2, 'timebegin'=>'16:00:00', 'timeend'=>'19:00:00'],
+//    ['id'=>'duna2_12_30', 'film_id'=>'duna_2', 'hall' => 2, 'timebegin'=>'12:30:00', 'timeend'=>'15:30:00'],
+//    ['id'=>'duna2_21', 'film_id'=>'duna_2', 'hall' => 1, 'timebegin'=>'21:00:00', 'timeend'=>'24:00:00'],
+//    ['id'=>'gents_13_30', 'film_id'=>'gents', 'hall' => 3, 'timebegin'=>'13:30:00', 'timeend'=>'17:00:00'],
+//    ['id'=>'gents_19_45', 'film_id'=>'gents', 'hall' => 2, 'timebegin'=>'19:45:00', 'timeend'=>'23:25:00'],
+//    ['id'=>'last_samurai_10', 'film_id'=>'last_samurai', 'hall' => 3, 'timebegin'=>'10:00:00', 'timeend'=>'13:00:00'],
+//    ['id'=>'last_samurai_22', 'film_id'=>'last_samurai', 'hall' => 3, 'timebegin'=>'22:00:00', 'timeend'=>'01:00:00']
+//];
 
-foreach ($sessions as $session) {
-    try {
-        $query = pg_insert($db,'sessions',$session);
-
-    } catch (Exception $exception) {
-        echo $exception->getMessage();
-    }
-}
+//foreach ($sessions as $session) {
+//    try {
+//        $query = pg_insert($db,'sessions',$session);
+//
+//    } catch (Exception $exception) {
+//        echo $exception->getMessage();
+//    }
+//}
 
 $luxe = 6;
 $hall = [];
@@ -107,12 +107,12 @@ foreach ($hall as $row=>$seats) {
 
 $tickets = [];
 
-$count = 1000;
+$count = 500;
 
 for ($id = 1; $id <= $count; ++$id) {
     $tickets[] = [
-        'payer_id' => 'payer_'.rand(1,100),
-        'session_id' => $sessions[rand(0,9)]['id'],
+        'payer_id' => 'payer_100',
+        'session_id' => rand(1,140),
         'seat_id' => rand(1,311),
         'amount' => 0,
         'date' => date("Y-m-d",time() - rand(-100000,700000)),
@@ -125,12 +125,12 @@ $payers = [];
 foreach ($tickets as $ticket) {
     $luxeOrNot = pg_fetch_row(pg_query($db,"SELECT luxe FROM seats where id = {$ticket['seat_id']};"));
     $luxeOrNot = $luxeOrNot[0];
-    $cost = pg_query($db,"SELECT value_float FROM values where 
+    $cost = pg_query($db,"SELECT value_float FROM values where
                                      film_id = (SELECT film_id FROM sessions WHERE sessions.id = '{$ticket['session_id']}')
                                      AND attribute_id = 'seat_price'
 ;");
     $cost = pg_fetch_row($cost);
-    $cost_luxe = pg_query($db,"SELECT value_float FROM values where 
+    $cost_luxe = pg_query($db,"SELECT value_float FROM values where
                                      film_id = (SELECT film_id FROM sessions WHERE sessions.id = '{$ticket['session_id']}')
                                      AND attribute_id = 'seat_price_luxe'
 ;");
@@ -170,7 +170,7 @@ foreach ($payers as $payer) {
     $ticketQuantity = pg_fetch_row(pg_query($db,"SELECT count(*) FROM tickets where payer_id = '{$payer}';"));
     $ticketsSum = pg_fetch_row(pg_query($db,"SELECT sum(amount) FROM tickets where payer_id = '{$payer}';"));
 
-    $query = pg_query($db,"UPDATE orders SET 
+    $query = pg_query($db,"UPDATE orders SET
                   ticketcount = {$ticketQuantity[0]},
                   sum = {$ticketsSum[0]},
                   createtime = CURRENT_TIMESTAMP

@@ -34,11 +34,12 @@ CREATE TABLE IF NOT EXISTS seats (
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
-    id          varchar(32) UNIQUE PRIMARY KEY,
+    id          SERIAL UNIQUE PRIMARY KEY,
     film_id     varchar(32),
     hall        integer,
     timeBegin   time,
     timeEnd     time,
+    date        date,
     FOREIGN KEY (film_id) REFERENCES films(id)
 );
 
@@ -53,7 +54,7 @@ CREATE TABLE IF NOT EXISTS orders (
 CREATE TABLE IF NOT EXISTS tickets (
     id          SERIAL PRIMARY KEY,
     payer_id     varchar(32),
-    session_id   varchar(32),
+    session_id   integer,
     seat_id      integer,
     amount      decimal(11,2),
     date        date,
@@ -157,3 +158,11 @@ INSERT INTO values VALUES ('master_i_margarita','reviews','Рецензия 1',n
                           ('last_samurai','task_4','',CURRENT_DATE + INTERVAL '20 days',null,null,null)
                           ;
 
+INSERT INTO sessions (film_id, hall, timebegin, timeend, date)
+SELECT
+    (array(SELECT id FROM films))[floor(random() * (SELECT COUNT(id)-1 FROM films)) + 1],
+    floor(random()*10)+1,
+    '13:00:00',
+    '16:00:00',
+    date(CURRENT_DATE + random() * ((CURRENT_DATE + INTERVAL '14 days') - CURRENT_DATE))
+FROM generate_series(1,140);

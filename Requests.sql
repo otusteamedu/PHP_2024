@@ -1,7 +1,7 @@
 
 -- 1. Выбор всех фильмов на сегодня
 
-EXPLAIN analyse SELECT DISTINCT name Фильм FROM films JOIN sessions s on films.id = s.film_id;
+EXPLAIN analyse SELECT DISTINCT name Фильм FROM films JOIN sessions s on films.id = s.film_id AND s.date = CURRENT_DATE;
 
 -- 2. Подсчет проданных билетов за неделю
 
@@ -47,9 +47,13 @@ EXPLAIN analyse SELECT f.name Фильм, ss.timebegin Начало_сеанса
 INSERT INTO tickets (payer_id,session_id,seat_id,amount,date)
 SELECT
     'payer_100',
-    (array(SELECT id FROM sessions))[floor(random()*(SELECT count(id)-1 FROM public.sessions)+1)],
+    floor(random()*140 + 1),
     floor((random()*310) + 1),
     500.00,
     date(CURRENT_DATE + INTERVAL '3 days' - random() * ((CURRENT_DATE + INTERVAL '10 days') - CURRENT_DATE))
 FROM generate_series(1,10000);
+
+
+
+
 

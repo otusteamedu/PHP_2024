@@ -1,21 +1,24 @@
 
 -- 1. Выбор всех фильмов на сегодня
 
-EXPLAIN analyse SELECT DISTINCT name Фильм FROM films JOIN sessions s on films.id = s.film_id;
+EXPLAIN analyse SELECT DISTINCT name Фильм FROM films JOIN sessions s on films.id = s.film_id AND s.date = CURRENT_DATE;
 
 Анализ на 10 000 записей:
 
-HashAggregate  (cost=38.58..40.58 rows=200 width=32) (actual time=0.030..0.033 rows=5 loops=1)
-  Group Key: films.name
-  Batches: 1  Memory Usage: 40kB
-  ->  Hash Join  (cost=22.82..37.63 rows=380 width=32) (actual time=0.021..0.026 rows=10 loops=1)
-        Hash Cond: ((s.film_id)::text = (films.id)::text)
-        ->  Seq Scan on sessions s  (cost=0.00..13.80 rows=380 width=82) (actual time=0.006..0.007 rows=10 loops=1)
-        ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.008..0.009 rows=5 loops=1)
-              Buckets: 1024  Batches: 1  Memory Usage: 9kB
-              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.004..0.005 rows=5 loops=1)
-Planning Time: 0.279 ms
-Execution Time: 0.083 ms
+Unique  (cost=27.22..27.26 rows=8 width=32) (actual time=0.159..0.165 rows=4 loops=1)
+  ->  Sort  (cost=27.22..27.24 rows=8 width=32) (actual time=0.158..0.160 rows=8 loops=1)
+        Sort Key: films.name
+        Sort Method: quicksort  Memory: 25kB
+        ->  Hash Join  (cost=4.20..27.10 rows=8 width=32) (actual time=0.113..0.119 rows=8 loops=1)
+              Hash Cond: ((films.id)::text = (s.film_id)::text)
+              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.041..0.042 rows=5 loops=1)
+              ->  Hash  (cost=4.10..4.10 rows=8 width=10) (actual time=0.064..0.064 rows=8 loops=1)
+                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                    ->  Seq Scan on sessions s  (cost=0.00..4.10 rows=8 width=10) (actual time=0.018..0.059 rows=8 loops=1)
+                          Filter: (date = CURRENT_DATE)
+                          Rows Removed by Filter: 132
+Planning Time: 0.690 ms
+Execution Time: 0.214 ms
 
 ------
 Анализ на 1 000 000 записей:
