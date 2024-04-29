@@ -11,4 +11,4 @@ RUN docker-php-ext-install sockets && docker-php-ext-enable sockets
 #Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-CMD [ "php", "app.php", "server"]
+CMD [ "php", "app.php", "waiter"]

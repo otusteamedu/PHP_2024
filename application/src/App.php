@@ -22,13 +22,14 @@ class App implements Runnable
     {
         $this->appName = $_SERVER['argv'][1];
 
-        if ($this->appName !== 'server' && $this->appName !== 'client') {
+        if ($this->appName !== 'server' && $this->appName !== 'client' && $this->appName !== 'waiter') {
             throw new \Exception('Необходимо передать первым аргументом название приложения (\'server\' или \'client\')');
         }
 
         $this->appClassName = match ($this->appName) {
             'client' => 'Pavelsergeevich\\Hw5\\ClientApp',
             'server' => 'Pavelsergeevich\\Hw5\\ServerApp',
+            'waiter' => 'Pavelsergeevich\\Hw5\\WaiterApp'
         };
 
         if (!class_exists($this->appClassName)) {
