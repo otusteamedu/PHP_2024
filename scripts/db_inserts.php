@@ -16,28 +16,6 @@ try {
     echo $exception->getMessage();
 }
 
-//$sessions = [
-//    ['id'=>'master_13', 'film_id'=>'master_i_margarita', 'hall' => 1, 'timebegin'=>'13:00:00', 'timeend'=>'16:00:00'],
-//    ['id'=>'master_17', 'film_id'=>'master_i_margarita', 'hall' => 1, 'timebegin'=>'17:00:00', 'timeend'=>'20:00:00'],
-//    ['id'=>'onegin_09_30', 'film_id'=>'onegin', 'hall' => 1, 'timebegin'=>'09:30:00', 'timeend'=>'12:30:00'],
-//    ['id'=>'onegin_16', 'film_id'=>'onegin', 'hall' => 2, 'timebegin'=>'16:00:00', 'timeend'=>'19:00:00'],
-//    ['id'=>'duna2_12_30', 'film_id'=>'duna_2', 'hall' => 2, 'timebegin'=>'12:30:00', 'timeend'=>'15:30:00'],
-//    ['id'=>'duna2_21', 'film_id'=>'duna_2', 'hall' => 1, 'timebegin'=>'21:00:00', 'timeend'=>'24:00:00'],
-//    ['id'=>'gents_13_30', 'film_id'=>'gents', 'hall' => 3, 'timebegin'=>'13:30:00', 'timeend'=>'17:00:00'],
-//    ['id'=>'gents_19_45', 'film_id'=>'gents', 'hall' => 2, 'timebegin'=>'19:45:00', 'timeend'=>'23:25:00'],
-//    ['id'=>'last_samurai_10', 'film_id'=>'last_samurai', 'hall' => 3, 'timebegin'=>'10:00:00', 'timeend'=>'13:00:00'],
-//    ['id'=>'last_samurai_22', 'film_id'=>'last_samurai', 'hall' => 3, 'timebegin'=>'22:00:00', 'timeend'=>'01:00:00']
-//];
-
-//foreach ($sessions as $session) {
-//    try {
-//        $query = pg_insert($db,'sessions',$session);
-//
-//    } catch (Exception $exception) {
-//        echo $exception->getMessage();
-//    }
-//}
-
 $luxe = 6;
 $hall = [];
 for ($row = 0; $row <= 10; ++$row) {
@@ -86,9 +64,6 @@ for ($row = 0; $row <= 10; ++$row) {
     }
 }
 
-
-
-
 foreach ($hall as $row=>$seats) {
     foreach ($seats as $seat) {
         try {
@@ -114,8 +89,7 @@ for ($id = 1; $id <= $count; ++$id) {
         'payer_id' => 'payer_100',
         'session_id' => rand(1,140),
         'seat_id' => rand(1,311),
-        'amount' => 0,
-        'date' => date("Y-m-d",time() - rand(-100000,700000)),
+        'amount' => 0
     ];
 }
 
@@ -143,7 +117,8 @@ foreach ($tickets as $ticket) {
         try {
             $query = pg_insert($db,'orders', [
                 'payer' => $ticket['payer_id'],
-                'ticketcount' => 1
+                'ticketcount' => 1,
+                'date' => date("Y-m-d",time() - rand(0,700000)),
             ]);
 
         } catch (Exception $exception) {
@@ -156,8 +131,7 @@ foreach ($tickets as $ticket) {
             'payer_id' => $ticket['payer_id'],
             'session_id' => $ticket['session_id'],
             'seat_id' => $ticket['seat_id'],
-            'amount' => $ticket['amount'],
-            'date' => $ticket['date']
+            'amount' => $ticket['amount']
         ]);
 
     } catch (Exception $exception) {
@@ -172,8 +146,7 @@ foreach ($payers as $payer) {
 
     $query = pg_query($db,"UPDATE orders SET
                   ticketcount = {$ticketQuantity[0]},
-                  sum = {$ticketsSum[0]},
-                  createtime = CURRENT_TIMESTAMP
+                  sum = {$ticketsSum[0]}
             WHERE payer = '{$payer}'");
 
 }

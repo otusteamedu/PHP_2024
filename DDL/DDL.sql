@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS orders (
     payer       varchar(32) UNIQUE,
     sum         decimal(11,2),
     ticketCount integer,
-    createTime  timestamp
+    date        date
 );
 
 CREATE TABLE IF NOT EXISTS tickets (
@@ -57,7 +57,6 @@ CREATE TABLE IF NOT EXISTS tickets (
     session_id   integer,
     seat_id      integer,
     amount      decimal(11,2),
-    date        date,
     FOREIGN KEY (payer_id) REFERENCES orders(payer),
     FOREIGN KEY (session_id) REFERENCES sessions(id),
     FOREIGN KEY (seat_id) REFERENCES seats(id)
@@ -164,5 +163,5 @@ SELECT
     floor(random()*10)+1,
     '13:00:00',
     '16:00:00',
-    date(CURRENT_DATE + random() * ((CURRENT_DATE + INTERVAL '14 days') - CURRENT_DATE))
-FROM generate_series(1,140);
+    date((CURRENT_DATE + INTERVAL '7 days') - random() * ((CURRENT_DATE + INTERVAL '50 days') - CURRENT_DATE))
+FROM generate_series(1,10000);

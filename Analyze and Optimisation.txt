@@ -3,174 +3,221 @@
 
 EXPLAIN analyse SELECT DISTINCT name Фильм FROM films JOIN sessions s on films.id = s.film_id AND s.date = CURRENT_DATE;
 
-Unique  (cost=27.22..27.26 rows=8 width=32) (actual time=0.159..0.165 rows=4 loops=1)
-  ->  Sort  (cost=27.22..27.24 rows=8 width=32) (actual time=0.158..0.160 rows=8 loops=1)
-        Sort Key: films.name
-        Sort Method: quicksort  Memory: 25kB
-        ->  Hash Join  (cost=4.20..27.10 rows=8 width=32) (actual time=0.113..0.119 rows=8 loops=1)
-              Hash Cond: ((films.id)::text = (s.film_id)::text)
-              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.041..0.042 rows=5 loops=1)
-              ->  Hash  (cost=4.10..4.10 rows=8 width=10) (actual time=0.064..0.064 rows=8 loops=1)
-                    Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                    ->  Seq Scan on sessions s  (cost=0.00..4.10 rows=8 width=10) (actual time=0.018..0.059 rows=8 loops=1)
-                          Filter: (date = CURRENT_DATE)
-                          Rows Removed by Filter: 132
-Planning Time: 0.690 ms
-Execution Time: 0.214 ms
 
-------
-Анализ на 1 000 000 записей:
-------
+10 000 записей
 
-HashAggregate  (cost=38.58..40.58 rows=200 width=32) (actual time=0.109..0.113 rows=5 loops=1)
+HashAggregate  (cost=262.73..264.50 rows=177 width=32) (actual time=4.445..4.451 rows=4 loops=1)
   Group Key: films.name
   Batches: 1  Memory Usage: 40kB
-  ->  Hash Join  (cost=22.82..37.63 rows=380 width=32) (actual time=0.093..0.101 rows=10 loops=1)
+  ->  Hash Join  (cost=22.82..262.29 rows=177 width=32) (actual time=0.261..4.286 rows=177 loops=1)
         Hash Cond: ((s.film_id)::text = (films.id)::text)
-        ->  Seq Scan on sessions s  (cost=0.00..13.80 rows=380 width=82) (actual time=0.046..0.048 rows=10 loops=1)
-        ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.027..0.027 rows=5 loops=1)
+        ->  Seq Scan on sessions s  (cost=0.00..239.00 rows=177 width=9) (actual time=0.187..3.813 rows=177 loops=1)
+              Filter: (date = CURRENT_DATE)
+              Rows Removed by Filter: 9823
+        ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.044..0.046 rows=5 loops=1)
               Buckets: 1024  Batches: 1  Memory Usage: 9kB
-              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.020..0.022 rows=5 loops=1)
-Planning Time: 0.533 ms
-Execution Time: 0.316 ms
+              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.024..0.027 rows=5 loops=1)
+Planning Time: 0.419 ms
+Execution Time: 4.541 ms
 
+1 000 000 записей
 
-Результат после добавления индекса на таблицы sessions(id,film_id,timebegin) и films(id,name).
-
-
-Unique  (cost=19.33..19.38 rows=10 width=32) (actual time=0.073..0.082 rows=5 loops=1)
-  ->  Sort  (cost=19.33..19.35 rows=10 width=32) (actual time=0.072..0.076 rows=10 loops=1)
-        Sort Key: films.name
-        Sort Method: quicksort  Memory: 25kB
-        ->  Hash Join  (cost=1.23..19.16 rows=10 width=32) (actual time=0.042..0.051 rows=10 loops=1)
-              Hash Cond: ((films.id)::text = (s.film_id)::text)
-              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.013..0.014 rows=5 loops=1)
-              ->  Hash  (cost=1.10..1.10 rows=10 width=82) (actual time=0.018..0.019 rows=10 loops=1)
+HashAggregate  (cost=18354.21..18356.21 rows=200 width=32) (actual time=185.322..188.854 rows=4 loops=1)
+  Group Key: films.name
+  Batches: 1  Memory Usage: 40kB
+  ->  Gather  (cost=1022.83..18300.29 rows=21567 width=32) (actual time=1.241..176.155 rows=19898 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        ->  Hash Join  (cost=22.82..15143.59 rows=8986 width=32) (actual time=0.429..167.612 rows=6633 loops=3)
+              Hash Cond: ((s.film_id)::text = (films.id)::text)
+              ->  Parallel Seq Scan on sessions s  (cost=0.00..15097.00 rows=8986 width=9) (actual time=0.054..161.508 rows=6633 loops=3)
+                    Filter: (date = CURRENT_DATE)
+                    Rows Removed by Filter: 326701
+              ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.084..0.085 rows=5 loops=3)
                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                    ->  Seq Scan on sessions s  (cost=0.00..1.10 rows=10 width=82) (actual time=0.006..0.009 rows=10 loops=1)
-Planning Time: 0.211 ms
-Execution Time: 0.121 ms
+                    ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.054..0.056 rows=5 loops=3)
+Planning Time: 0.542 ms
+Execution Time: 188.906 ms
+
+
+
+
+Результат после добавления индекса на sessions(date). Производительность повысилась на 300%.
+
+HashAggregate  (cost=9547.86..9549.86 rows=200 width=32) (actual time=66.716..66.721 rows=4 loops=1)
+  Group Key: films.name
+  Batches: 1  Memory Usage: 40kB
+  ->  Hash Join  (cost=266.40..9493.94 rows=21567 width=32) (actual time=4.246..59.484 rows=19898 loops=1)
+        Hash Cond: ((s.film_id)::text = (films.id)::text)
+        ->  Bitmap Heap Scan on sessions s  (cost=243.57..9414.08 rows=21567 width=9) (actual time=4.123..49.237 rows=19898 loops=1)
+              Recheck Cond: (date = CURRENT_DATE)
+              Heap Blocks: exact=7934
+              ->  Bitmap Index Scan on sessions_date_idx  (cost=0.00..238.18 rows=21567 width=0) (actual time=2.601..2.602 rows=19898 loops=1)
+                    Index Cond: (date = CURRENT_DATE)
+        ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.016..0.018 rows=5 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.010..0.011 rows=5 loops=1)
+Planning Time: 0.883 ms
+Execution Time: 66.793 ms
+
+
+
 
 
 -- 2. Подсчет проданных билетов за неделю
 
-SELECT SUM(amount) FROM tickets WHERE date between CURRENT_DATE - INTERVAL '7 days' AND CURRENT_DATE;
+EXPLAIN analyse SELECT SUM(amount) FROM public.sessions
+JOIN tickets t on sessions.id = t.session_id
+WHERE date between CURRENT_DATE - INTERVAL '7 days' AND CURRENT_DATE;
 
 Анализ на 10 000 записей:
 
-Aggregate  (cost=333.88..333.89 rows=1 width=32) (actual time=12.150..12.155 rows=1 loops=1)
-  ->  Seq Scan on tickets  (cost=0.00..314.00 rows=7953 width=5) (actual time=0.016..9.450 rows=7953 loops=1)
-        Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
-        Rows Removed by Filter: 2047
-Planning Time: 0.141 ms
-Execution Time: 12.205 ms
+Aggregate  (cost=537.98..537.99 rows=1 width=32) (actual time=16.785..16.788 rows=1 loops=1)
+  ->  Hash Join  (cost=333.76..534.02 rows=1581 width=5) (actual time=10.148..15.370 rows=1614 loops=1)
+        Hash Cond: (t.session_id = sessions.id)
+        ->  Seq Scan on tickets t  (cost=0.00..174.00 rows=10000 width=9) (actual time=0.050..2.526 rows=10000 loops=1)
+        ->  Hash  (cost=314.00..314.00 rows=1581 width=4) (actual time=10.081..10.082 rows=1581 loops=1)
+              Buckets: 2048  Batches: 1  Memory Usage: 72kB
+              ->  Seq Scan on sessions  (cost=0.00..314.00 rows=1581 width=4) (actual time=0.066..8.986 rows=1581 loops=1)
+                    Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
+                    Rows Removed by Filter: 8419
+Planning Time: 0.244 ms
+Execution Time: 16.832 ms
 
 
 ------
 Анализ на 1 000 000 записей:
 ------
 
-Finalize Aggregate  (cost=20129.17..20129.18 rows=1 width=32) (actual time=107.723..109.390 rows=1 loops=1)
-  ->  Gather  (cost=20128.94..20129.15 rows=2 width=32) (actual time=107.591..109.383 rows=3 loops=1)
+Finalize Aggregate  (cost=32952.40..32952.41 rows=1 width=32) (actual time=608.220..612.244 rows=1 loops=1)
+  ->  Gather  (cost=32952.18..32952.39 rows=2 width=32) (actual time=607.345..611.378 rows=3 loops=1)
         Workers Planned: 2
         Workers Launched: 2
-        ->  Partial Aggregate  (cost=19128.94..19128.95 rows=1 width=32) (actual time=103.327..103.327 rows=1 loops=3)
-              ->  Parallel Seq Scan on tickets  (cost=0.00..18296.38 rows=333027 width=5) (actual time=0.024..85.585 rows=266928 loops=3)
-                    Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
-                    Rows Removed by Filter: 66738
-Planning Time: 0.139 ms
-Execution Time: 109.433 ms
+        ->  Partial Aggregate  (cost=31952.18..31952.19 rows=1 width=32) (actual time=602.824..602.827 rows=1 loops=3)
+              ->  Parallel Hash Join  (cost=19051.34..31784.73 rows=66978 width=5) (actual time=379.312..590.691 rows=52815 loops=3)
+                    Hash Cond: (t.session_id = sessions.id)
+                    ->  Parallel Seq Scan on tickets t  (cost=0.00..11629.25 rows=420625 width=9) (actual time=0.022..86.975 rows=336500 loops=3)
+                    ->  Parallel Hash  (cost=18222.00..18222.00 rows=66347 width=4) (actual time=377.431..377.432 rows=53276 loops=3)
+                          Buckets: 262144  Batches: 1  Memory Usage: 8352kB
+                          ->  Parallel Seq Scan on sessions  (cost=0.00..18222.00 rows=66347 width=4) (actual time=0.173..326.924 rows=53276 loops=3)
+                                Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
+                                Rows Removed by Filter: 280058
+Planning Time: 0.473 ms
+Execution Time: 612.292 ms
 
 
-Оптимизации: После добавления индекса tickets(amount,date) план не изменился.
 
-Finalize Aggregate  (cost=20129.17..20129.18 rows=1 width=32) (actual time=107.723..109.390 rows=1 loops=1)
-  ->  Gather  (cost=20128.94..20129.15 rows=2 width=32) (actual time=107.591..109.383 rows=3 loops=1)
+Результат после добавления индекса на sessions(date). Производительность повысилась на 70%.
+
+Finalize Aggregate  (cost=27246.78..27246.79 rows=1 width=32) (actual time=371.575..375.220 rows=1 loops=1)
+  ->  Gather  (cost=27246.56..27246.77 rows=2 width=32) (actual time=371.186..375.209 rows=3 loops=1)
         Workers Planned: 2
         Workers Launched: 2
-        ->  Partial Aggregate  (cost=19128.94..19128.95 rows=1 width=32) (actual time=103.327..103.327 rows=1 loops=3)
-              ->  Parallel Seq Scan on tickets  (cost=0.00..18296.38 rows=333027 width=5) (actual time=0.024..85.585 rows=266928 loops=3)
-                    Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
-                    Rows Removed by Filter: 66738
-Planning Time: 0.139 ms
-Execution Time: 109.433 ms
+        ->  Partial Aggregate  (cost=26246.56..26246.57 rows=1 width=32) (actual time=361.551..361.555 rows=1 loops=3)
+              ->  Parallel Hash Join  (cost=13345.72..26079.11 rows=66978 width=5) (actual time=109.804..340.430 rows=52815 loops=3)
+                    Hash Cond: (t.session_id = sessions.id)
+                    ->  Parallel Seq Scan on tickets t  (cost=0.00..11629.25 rows=420625 width=9) (actual time=0.036..81.964 rows=336500 loops=3)
+                    ->  Parallel Hash  (cost=12516.38..12516.38 rows=66347 width=4) (actual time=108.834..108.835 rows=53276 loops=3)
+                          Buckets: 262144  Batches: 1  Memory Usage: 8352kB
+                          ->  Parallel Bitmap Heap Scan on sessions  (cost=2176.57..12516.38 rows=66347 width=4) (actual time=13.162..79.080 rows=53276 loops=3)
+                                Recheck Cond: ((date >= (CURRENT_DATE - '7 days'::interval)) AND (date <= CURRENT_DATE))
+                                Heap Blocks: exact=3174
+                                ->  Bitmap Index Scan on sessions_date_idx  (cost=0.00..2136.76 rows=159233 width=0) (actual time=16.445..16.445 rows=159827 loops=1)
+                                      Index Cond: ((date >= (CURRENT_DATE - '7 days'::interval)) AND (date <= CURRENT_DATE))
+Planning Time: 0.649 ms
+Execution Time: 375.281 ms
+
 
 
 -- 3. Формирование афиши (фильмы, которые показывают сегодня)
 
-SELECT name Фильм,s.timebegin Время_начала FROM films JOIN sessions s on films.id = s.film_id;
+SELECT name Фильм,s.timebegin Время_начала FROM films JOIN sessions s on films.id = s.film_id AND s.date = CURRENT_DATE;
 
 Анализ на 10 000 записей:
 
-Hash Join  (cost=22.82..37.63 rows=380 width=40) (actual time=0.054..0.113 rows=10 loops=1)
+Hash Join  (cost=22.82..262.29 rows=177 width=40) (actual time=0.025..4.045 rows=177 loops=1)
   Hash Cond: ((s.film_id)::text = (films.id)::text)
-  ->  Seq Scan on sessions s  (cost=0.00..13.80 rows=380 width=90) (actual time=0.015..0.039 rows=10 loops=1)
-  ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.013..0.014 rows=5 loops=1)
+  ->  Seq Scan on sessions s  (cost=0.00..239.00 rows=177 width=17) (actual time=0.011..3.878 rows=177 loops=1)
+        Filter: (date = CURRENT_DATE)
+        Rows Removed by Filter: 9823
+  ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.008..0.010 rows=5 loops=1)
         Buckets: 1024  Batches: 1  Memory Usage: 9kB
-        ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.006..0.007 rows=5 loops=1)
-Planning Time: 0.203 ms
-Execution Time: 0.145 ms
+        ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.004..0.005 rows=5 loops=1)
+Planning Time: 0.104 ms
+Execution Time: 4.382 ms
 
 
 ------
 Анализ на 1 000 000 записей:
 ------
 
-Hash Join  (cost=22.82..37.63 rows=380 width=40) (actual time=0.027..0.032 rows=10 loops=1)
-  Hash Cond: ((s.film_id)::text = (films.id)::text)
-  ->  Seq Scan on sessions s  (cost=0.00..13.80 rows=380 width=90) (actual time=0.009..0.010 rows=10 loops=1)
-  ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.009..0.010 rows=5 loops=1)
-        Buckets: 1024  Batches: 1  Memory Usage: 9kB
-        ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.005..0.006 rows=5 loops=1)
-Planning Time: 0.103 ms
-Execution Time: 0.054 ms
+Gather  (cost=1022.83..18300.29 rows=21567 width=40) (actual time=0.638..270.639 rows=19898 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  ->  Hash Join  (cost=22.82..15143.59 rows=8986 width=40) (actual time=0.370..230.127 rows=6633 loops=3)
+        Hash Cond: ((s.film_id)::text = (films.id)::text)
+        ->  Parallel Seq Scan on sessions s  (cost=0.00..15097.00 rows=8986 width=17) (actual time=0.059..215.815 rows=6633 loops=3)
+              Filter: (date = CURRENT_DATE)
+              Rows Removed by Filter: 326701
+        ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.042..0.043 rows=5 loops=3)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.028..0.030 rows=5 loops=3)
+Planning Time: 0.351 ms
+Execution Time: 272.588 ms
 
-Оптимизации: При добавленном индексов sessions(id,film_id,timebegin) и films(id,name) план не изменился. Индексы не используются.
 
-Hash Join  (cost=1.11..2.25 rows=10 width=40) (actual time=0.035..0.045 rows=10 loops=1)
+
+Результат после добавления индекса на sessions(date). Производительность повысилась на 500%.
+
+Hash Join  (cost=266.40..9493.94 rows=21567 width=40) (actual time=4.056..52.960 rows=19898 loops=1)
   Hash Cond: ((s.film_id)::text = (films.id)::text)
-  ->  Seq Scan on sessions s  (cost=0.00..1.10 rows=10 width=90) (actual time=0.009..0.011 rows=10 loops=1)
-  ->  Hash  (cost=1.05..1.05 rows=5 width=114) (actual time=0.015..0.015 rows=5 loops=1)
+  ->  Bitmap Heap Scan on sessions s  (cost=243.57..9414.08 rows=21567 width=17) (actual time=4.026..43.564 rows=19898 loops=1)
+        Recheck Cond: (date = CURRENT_DATE)
+        Heap Blocks: exact=7934
+        ->  Bitmap Index Scan on sessions_date_idx  (cost=0.00..238.18 rows=21567 width=0) (actual time=2.212..2.213 rows=19898 loops=1)
+              Index Cond: (date = CURRENT_DATE)
+  ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.018..0.019 rows=5 loops=1)
         Buckets: 1024  Batches: 1  Memory Usage: 9kB
-        ->  Seq Scan on films  (cost=0.00..1.05 rows=5 width=114) (actual time=0.006..0.008 rows=5 loops=1)
-Planning Time: 0.532 ms
-Execution Time: 0.077 ms
+        ->  Seq Scan on films  (cost=0.00..15.70 rows=570 width=114) (actual time=0.012..0.013 rows=5 loops=1)
+Planning Time: 0.218 ms
+Execution Time: 54.228 ms
+
 
 
 
 -- 4. Поиск 3 самых прибыльных фильмов за неделю
 
-SELECT f.name, SUM(amount) FROM tickets
-    JOIN sessions s on tickets.session_id = s.id
-    JOIN films f on f.id = s.film_id
+EXPLAIN analyse SELECT f.name, SUM(amount) FROM sessions s
+JOIN public.tickets t on s.id = t.session_id
+JOIN films f on f.id = s.film_id
 WHERE date between CURRENT_DATE - INTERVAL '7 days' AND CURRENT_DATE
 GROUP BY f.name ORDER BY sum DESC LIMIT 3
 ;
 
 Анализ на 10 000 записей:
 
-Limit  (cost=442.37..442.38 rows=3 width=64) (actual time=20.854..20.867 rows=3 loops=1)
-  ->  Sort  (cost=442.37..442.87 rows=200 width=64) (actual time=20.852..20.862 rows=3 loops=1)
-        Sort Key: (sum(tickets.amount)) DESC
+Limit  (cost=574.02..574.03 rows=3 width=64) (actual time=18.265..18.277 rows=3 loops=1)
+  ->  Sort  (cost=574.02..574.52 rows=200 width=64) (actual time=18.262..18.272 rows=3 loops=1)
+        Sort Key: (sum(t.amount)) DESC
         Sort Method: quicksort  Memory: 25kB
-        ->  HashAggregate  (cost=437.28..439.78 rows=200 width=64) (actual time=20.818..20.835 rows=5 loops=1)
+        ->  HashAggregate  (cost=568.94..571.44 rows=200 width=64) (actual time=18.238..18.251 rows=4 loops=1)
               Group Key: f.name
               Batches: 1  Memory Usage: 40kB
-              ->  Hash Join  (cost=41.38..397.52 rows=7953 width=37) (actual time=0.080..16.452 rows=7953 loops=1)
+              ->  Hash Join  (cost=356.59..561.03 rows=1581 width=37) (actual time=12.626..17.406 rows=1614 loops=1)
                     Hash Cond: ((s.film_id)::text = (f.id)::text)
-                    ->  Hash Join  (cost=18.55..353.66 rows=7953 width=87) (actual time=0.023..13.146 rows=7953 loops=1)
-                          Hash Cond: ((tickets.session_id)::text = (s.id)::text)
-                          ->  Seq Scan on tickets  (cost=0.00..314.00 rows=7953 width=16) (actual time=0.010..8.877 rows=7953 loops=1)
-                                Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
-                                Rows Removed by Filter: 2047
-                          ->  Hash  (cost=13.80..13.80 rows=380 width=164) (actual time=0.008..0.010 rows=10 loops=1)
-                                Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                                ->  Seq Scan on sessions s  (cost=0.00..13.80 rows=380 width=164) (actual time=0.003..0.005 rows=10 loops=1)
-                    ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.039..0.041 rows=5 loops=1)
+                    ->  Hash Join  (cost=333.76..534.02 rows=1581 width=14) (actual time=12.591..16.556 rows=1614 loops=1)
+                          Hash Cond: (t.session_id = s.id)
+                          ->  Seq Scan on tickets t  (cost=0.00..174.00 rows=10000 width=9) (actual time=0.006..1.212 rows=10000 loops=1)
+                          ->  Hash  (cost=314.00..314.00 rows=1581 width=13) (actual time=12.563..12.566 rows=1581 loops=1)
+                                Buckets: 2048  Batches: 1  Memory Usage: 87kB
+                                ->  Seq Scan on sessions s  (cost=0.00..314.00 rows=1581 width=13) (actual time=0.010..11.180 rows=1581 loops=1)
+                                      Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
+                                      Rows Removed by Filter: 8419
+                    ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.023..0.024 rows=5 loops=1)
                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                          ->  Seq Scan on films f  (cost=0.00..15.70 rows=570 width=114) (actual time=0.033..0.036 rows=5 loops=1)
-Planning Time: 0.283 ms
-Execution Time: 20.950 ms
+                          ->  Seq Scan on films f  (cost=0.00..15.70 rows=570 width=114) (actual time=0.017..0.019 rows=5 loops=1)
+Planning Time: 0.377 ms
+Execution Time: 18.439 ms
 
 
 
@@ -178,210 +225,199 @@ Execution Time: 20.950 ms
 Анализ на 1 000 000 записей:
 ------
 
-Limit  (cost=23454.74..23454.75 rows=3 width=64) (actual time=197.080..198.832 rows=3 loops=1)
-  ->  Sort  (cost=23454.74..23454.75 rows=5 width=64) (actual time=197.078..198.830 rows=3 loops=1)
-        Sort Key: (sum(tickets.amount)) DESC
+Limit  (cost=33384.50..33384.50 rows=3 width=64) (actual time=933.325..940.184 rows=3 loops=1)
+  ->  Sort  (cost=33384.50..33385.00 rows=200 width=64) (actual time=933.323..940.180 rows=3 loops=1)
+        Sort Key: (sum(t.amount)) DESC
         Sort Method: quicksort  Memory: 25kB
-        ->  Finalize GroupAggregate  (cost=23453.38..23454.68 rows=5 width=64) (actual time=197.066..198.823 rows=5 loops=1)
+        ->  Finalize GroupAggregate  (cost=33329.74..33381.91 rows=200 width=64) (actual time=933.244..940.119 rows=4 loops=1)
               Group Key: f.name
-              ->  Gather Merge  (cost=23453.38..23454.54 rows=10 width=64) (actual time=197.059..198.812 rows=15 loops=1)
+              ->  Gather Merge  (cost=33329.74..33376.41 rows=400 width=64) (actual time=933.218..940.084 rows=12 loops=1)
                     Workers Planned: 2
                     Workers Launched: 2
-                    ->  Sort  (cost=22453.35..22453.36 rows=5 width=64) (actual time=193.736..193.738 rows=5 loops=3)
+                    ->  Sort  (cost=32329.72..32330.22 rows=200 width=64) (actual time=921.412..921.420 rows=4 loops=3)
                           Sort Key: f.name
                           Sort Method: quicksort  Memory: 25kB
                           Worker 0:  Sort Method: quicksort  Memory: 25kB
                           Worker 1:  Sort Method: quicksort  Memory: 25kB
-                          ->  Partial HashAggregate  (cost=22453.23..22453.29 rows=5 width=64) (actual time=193.697..193.700 rows=5 loops=3)
+                          ->  Partial HashAggregate  (cost=32319.57..32322.07 rows=200 width=64) (actual time=921.134..921.144 rows=4 loops=3)
                                 Group Key: f.name
-                                Batches: 1  Memory Usage: 24kB
-                                Worker 0:  Batches: 1  Memory Usage: 24kB
-                                Worker 1:  Batches: 1  Memory Usage: 24kB
-                                ->  Hash Join  (cost=2.34..20788.10 rows=333027 width=37) (actual time=0.137..153.355 rows=266928 loops=3)
+                                Batches: 1  Memory Usage: 40kB
+                                Worker 0:  Batches: 1  Memory Usage: 40kB
+                                Worker 1:  Batches: 1  Memory Usage: 40kB
+                                ->  Hash Join  (cost=19074.16..31984.68 rows=66978 width=37) (actual time=417.905..841.730 rows=52815 loops=3)
                                       Hash Cond: ((s.film_id)::text = (f.id)::text)
-                                      ->  Hash Join  (cost=1.23..19542.29 rows=333027 width=87) (actual time=0.063..116.656 rows=266928 loops=3)
-                                            Hash Cond: ((tickets.session_id)::text = (s.id)::text)
-                                            ->  Parallel Seq Scan on tickets  (cost=0.00..18296.38 rows=333027 width=16) (actual time=0.024..77.161 rows=266928 loops=3)
-                                                  Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
-                                                  Rows Removed by Filter: 66738
-                                            ->  Hash  (cost=1.10..1.10 rows=10 width=164) (actual time=0.018..0.018 rows=10 loops=3)
-                                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                                                  ->  Seq Scan on sessions s  (cost=0.00..1.10 rows=10 width=164) (actual time=0.009..0.011 rows=10 loops=3)
-                                      ->  Hash  (cost=1.05..1.05 rows=5 width=114) (actual time=0.038..0.039 rows=5 loops=3)
+                                      ->  Parallel Hash Join  (cost=19051.34..31784.73 rows=66978 width=14) (actual time=417.816..794.756 rows=52815 loops=3)
+                                            Hash Cond: (t.session_id = s.id)
+                                            ->  Parallel Seq Scan on tickets t  (cost=0.00..11629.25 rows=420625 width=9) (actual time=0.007..118.607 rows=336500 loops=3)
+                                            ->  Parallel Hash  (cost=18222.00..18222.00 rows=66347 width=13) (actual time=416.287..416.288 rows=53276 loops=3)
+                                                  Buckets: 262144  Batches: 1  Memory Usage: 9920kB
+                                                  ->  Parallel Seq Scan on sessions s  (cost=0.00..18222.00 rows=66347 width=13) (actual time=0.036..363.306 rows=53276 loops=3)
+                                                        Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
+                                                        Rows Removed by Filter: 280058
+                                      ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.034..0.035 rows=5 loops=3)
                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                                            ->  Seq Scan on films f  (cost=0.00..1.05 rows=5 width=114) (actual time=0.026..0.029 rows=5 loops=3)
-Planning Time: 0.441 ms
-Execution Time: 198.909 ms
+                                            ->  Seq Scan on films f  (cost=0.00..15.70 rows=570 width=114) (actual time=0.022..0.024 rows=5 loops=3)
+Planning Time: 0.733 ms
+Execution Time: 940.327 ms
 
 
 
-Оптимизации: Добавлены индексы tickets(amount,date), sessions(id,film_id,timebegin) и films(id,name). План выполнения не изменился, индексы не используются.
+Результат после добавления индекса на sessions(date). Производительность повысилась на 80%.
 
-Limit  (cost=23454.74..23454.75 rows=3 width=64) (actual time=193.472..195.223 rows=3 loops=1)
-  ->  Sort  (cost=23454.74..23454.75 rows=5 width=64) (actual time=193.470..195.221 rows=3 loops=1)
-        Sort Key: (sum(tickets.amount)) DESC
+Limit  (cost=27678.88..27678.88 rows=3 width=64) (actual time=533.943..537.554 rows=3 loops=1)
+  ->  Sort  (cost=27678.88..27679.38 rows=200 width=64) (actual time=533.941..537.550 rows=3 loops=1)
+        Sort Key: (sum(t.amount)) DESC
         Sort Method: quicksort  Memory: 25kB
-        ->  Finalize GroupAggregate  (cost=23453.38..23454.68 rows=5 width=64) (actual time=193.457..195.215 rows=5 loops=1)
+        ->  Finalize GroupAggregate  (cost=27624.12..27676.29 rows=200 width=64) (actual time=533.912..537.539 rows=4 loops=1)
               Group Key: f.name
-              ->  Gather Merge  (cost=23453.38..23454.54 rows=10 width=64) (actual time=193.449..195.204 rows=15 loops=1)
+              ->  Gather Merge  (cost=27624.12..27670.79 rows=400 width=64) (actual time=533.884..537.503 rows=12 loops=1)
                     Workers Planned: 2
                     Workers Launched: 2
-                    ->  Sort  (cost=22453.35..22453.36 rows=5 width=64) (actual time=190.480..190.482 rows=5 loops=3)
+                    ->  Sort  (cost=26624.10..26624.60 rows=200 width=64) (actual time=501.206..501.214 rows=4 loops=3)
                           Sort Key: f.name
                           Sort Method: quicksort  Memory: 25kB
                           Worker 0:  Sort Method: quicksort  Memory: 25kB
                           Worker 1:  Sort Method: quicksort  Memory: 25kB
-                          ->  Partial HashAggregate  (cost=22453.23..22453.29 rows=5 width=64) (actual time=190.449..190.452 rows=5 loops=3)
+                          ->  Partial HashAggregate  (cost=26613.95..26616.45 rows=200 width=64) (actual time=501.032..501.041 rows=4 loops=3)
                                 Group Key: f.name
-                                Batches: 1  Memory Usage: 24kB
-                                Worker 0:  Batches: 1  Memory Usage: 24kB
-                                Worker 1:  Batches: 1  Memory Usage: 24kB
-                                ->  Hash Join  (cost=2.34..20788.10 rows=333027 width=37) (actual time=0.092..151.075 rows=266928 loops=3)
+                                Batches: 1  Memory Usage: 40kB
+                                Worker 0:  Batches: 1  Memory Usage: 40kB
+                                Worker 1:  Batches: 1  Memory Usage: 40kB
+                                ->  Hash Join  (cost=13368.54..26279.06 rows=66978 width=37) (actual time=118.176..445.440 rows=52815 loops=3)
                                       Hash Cond: ((s.film_id)::text = (f.id)::text)
-                                      ->  Hash Join  (cost=1.23..19542.29 rows=333027 width=87) (actual time=0.051..115.048 rows=266928 loops=3)
-                                            Hash Cond: ((tickets.session_id)::text = (s.id)::text)
-                                            ->  Parallel Seq Scan on tickets  (cost=0.00..18296.38 rows=333027 width=16) (actual time=0.020..75.872 rows=266928 loops=3)
-                                                  Filter: ((date <= CURRENT_DATE) AND (date >= (CURRENT_DATE - '7 days'::interval)))
-                                                  Rows Removed by Filter: 66738
-                                            ->  Hash  (cost=1.10..1.10 rows=10 width=164) (actual time=0.015..0.016 rows=10 loops=3)
-                                                  Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                                                  ->  Seq Scan on sessions s  (cost=0.00..1.10 rows=10 width=164) (actual time=0.007..0.010 rows=10 loops=3)
-                                      ->  Hash  (cost=1.05..1.05 rows=5 width=114) (actual time=0.022..0.022 rows=5 loops=3)
+                                      ->  Parallel Hash Join  (cost=13345.72..26079.11 rows=66978 width=14) (actual time=118.078..402.256 rows=52815 loops=3)
+                                            Hash Cond: (t.session_id = s.id)
+                                            ->  Parallel Seq Scan on tickets t  (cost=0.00..11629.25 rows=420625 width=9) (actual time=0.016..100.991 rows=336500 loops=3)
+                                            ->  Parallel Hash  (cost=12516.38..12516.38 rows=66347 width=13) (actual time=116.553..116.554 rows=53276 loops=3)
+                                                  Buckets: 262144  Batches: 1  Memory Usage: 9920kB
+                                                  ->  Parallel Bitmap Heap Scan on sessions s  (cost=2176.57..12516.38 rows=66347 width=13) (actual time=14.562..76.659 rows=53276 loops=3)
+                                                        Recheck Cond: ((date >= (CURRENT_DATE - '7 days'::interval)) AND (date <= CURRENT_DATE))
+                                                        Heap Blocks: exact=2916
+                                                        ->  Bitmap Index Scan on sessions_date_idx  (cost=0.00..2136.76 rows=159233 width=0) (actual time=15.257..15.258 rows=159827 loops=1)
+                                                              Index Cond: ((date >= (CURRENT_DATE - '7 days'::interval)) AND (date <= CURRENT_DATE))
+                                      ->  Hash  (cost=15.70..15.70 rows=570 width=114) (actual time=0.034..0.035 rows=5 loops=3)
                                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                                            ->  Seq Scan on films f  (cost=0.00..1.05 rows=5 width=114) (actual time=0.013..0.015 rows=5 loops=3)
-Planning Time: 1.573 ms
-Execution Time: 195.275 ms
-
-
-
-
+                                            ->  Seq Scan on films f  (cost=0.00..15.70 rows=570 width=114) (actual time=0.024..0.026 rows=5 loops=3)
+Planning Time: 0.725 ms
+Execution Time: 538.107 ms
 
 
 
 -- 5. Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс (как сделать компактнее не придумал)
 
-SELECT DISTINCT s.id, s.row, s.seat,
-    CASE WHEN s.id = t.seat_id THEN true ELSE false END AS Занятые_места
-    FROM seats s
-    JOIN tickets t on t.date = CURRENT_DATE + INTERVAL '1 days' AND t.session_id = 'last_samurai_10'
+EXPLAIN analyse SELECT DISTINCT s.id, s.row, s.seat,
+CASE WHEN s.id = t.seat_id THEN true ELSE false END AS Занятые_места
+FROM seats s
+JOIN tickets t on t.session_id = '1'
 EXCEPT
 SELECT DISTINCT s.id, s.row, s.seat, false FROM seats s
-    JOIN tickets t on t.date = CURRENT_DATE + INTERVAL '1 days' AND t.session_id = 'last_samurai_10'
-    WHERE s.id = t.seat_id
+JOIN tickets t on t.session_id = '1'
+WHERE s.id = t.seat_id
 ;
 
 ------
 Анализ на 10 000 записей:
 ------
 
-HashSetOp Except  (cost=1196.30..1525.96 rows=622 width=17) (actual time=36.905..36.937 rows=311 loops=1)
-  ->  Append  (cost=1196.30..1518.58 rows=738 width=17) (actual time=34.855..36.756 rows=507 loops=1)
-"        ->  Subquery Scan on ""*SELECT* 1""  (cost=1196.30..1210.30 rows=622 width=17) (actual time=34.854..35.078 rows=409 loops=1)"
-              ->  HashAggregate  (cost=1196.30..1204.08 rows=622 width=13) (actual time=34.852..35.019 rows=409 loops=1)
+HashSetOp Except  (cost=872.98..1110.30 rows=622 width=17) (actual time=46.189..46.267 rows=311 loops=1)
+  ->  Append  (cost=872.98..1103.22 rows=708 width=17) (actual time=38.484..45.895 rows=463 loops=1)
+"        ->  Subquery Scan on ""*SELECT* 1""  (cost=872.98..886.97 rows=622 width=17) (actual time=38.482..39.243 rows=387 loops=1)"
+              ->  HashAggregate  (cost=872.98..880.75 rows=622 width=13) (actual time=38.479..39.053 rows=387 loops=1)
 "                    Group Key: s.id, s.""row"", s.seat, CASE WHEN (s.id = t.seat_id) THEN true ELSE false END"
                     Batches: 1  Memory Usage: 73kB
-                    ->  Nested Loop  (cost=0.00..835.54 rows=36076 width=13) (actual time=0.029..17.592 rows=36076 loops=1)
-                          ->  Seq Scan on seats s  (cost=0.00..5.11 rows=311 width=12) (actual time=0.010..0.350 rows=311 loops=1)
-                          ->  Materialize  (cost=0.00..289.58 rows=116 width=4) (actual time=0.000..0.021 rows=116 loops=311)
-                                ->  Seq Scan on tickets t  (cost=0.00..289.00 rows=116 width=4) (actual time=0.015..1.799 rows=116 loops=1)
-                                      Filter: (((session_id)::text = 'last_samurai_10'::text) AND (date = (CURRENT_DATE + '1 day'::interval)))
-                                      Rows Removed by Filter: 9884
-"        ->  Subquery Scan on ""*SELECT* 2""  (cost=302.28..304.60 rows=116 width=17) (actual time=1.576..1.628 rows=98 loops=1)"
-              ->  Unique  (cost=302.28..303.44 rows=116 width=13) (actual time=1.574..1.608 rows=98 loops=1)
-                    ->  Sort  (cost=302.28..302.57 rows=116 width=13) (actual time=1.572..1.584 rows=116 loops=1)
+                    ->  Nested Loop  (cost=0.00..605.52 rows=26746 width=13) (actual time=0.076..19.570 rows=26746 loops=1)
+                          ->  Seq Scan on seats s  (cost=0.00..5.11 rows=311 width=12) (actual time=0.020..0.545 rows=311 loops=1)
+                          ->  Materialize  (cost=0.00..199.43 rows=86 width=4) (actual time=0.000..0.027 rows=86 loops=311)
+                                ->  Seq Scan on tickets t  (cost=0.00..199.00 rows=86 width=4) (actual time=0.049..4.544 rows=86 loops=1)
+                                      Filter: (session_id = 1)
+                                      Rows Removed by Filter: 9914
+"        ->  Subquery Scan on ""*SELECT* 2""  (cost=210.99..212.71 rows=86 width=17) (actual time=6.516..6.585 rows=76 loops=1)"
+              ->  Unique  (cost=210.99..211.85 rows=86 width=13) (actual time=6.511..6.561 rows=76 loops=1)
+                    ->  Sort  (cost=210.99..211.20 rows=86 width=13) (actual time=6.505..6.526 rows=86 loops=1)
 "                          Sort Key: s_1.id, s_1.""row"", s_1.seat"
-                          Sort Method: quicksort  Memory: 30kB
-                          ->  Hash Join  (cost=9.00..298.30 rows=116 width=13) (actual time=0.144..1.530 rows=116 loops=1)
+                          Sort Method: quicksort  Memory: 29kB
+                          ->  Hash Join  (cost=9.00..208.22 rows=86 width=13) (actual time=0.252..5.177 rows=86 loops=1)
                                 Hash Cond: (t_1.seat_id = s_1.id)
-                                ->  Seq Scan on tickets t_1  (cost=0.00..289.00 rows=116 width=4) (actual time=0.034..1.365 rows=116 loops=1)
-                                      Filter: (((session_id)::text = 'last_samurai_10'::text) AND (date = (CURRENT_DATE + '1 day'::interval)))
-                                      Rows Removed by Filter: 9884
-                                ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.100..0.101 rows=311 loops=1)
+                                ->  Seq Scan on tickets t_1  (cost=0.00..199.00 rows=86 width=4) (actual time=0.085..4.224 rows=86 loops=1)
+                                      Filter: (session_id = 1)
+                                      Rows Removed by Filter: 9914
+                                ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.150..0.154 rows=311 loops=1)
                                       Buckets: 1024  Batches: 1  Memory Usage: 22kB
-                                      ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.012..0.052 rows=311 loops=1)
-Planning Time: 0.414 ms
-Execution Time: 37.032 ms
+                                      ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.015..0.079 rows=311 loops=1)
+Planning Time: 0.436 ms
+Execution Time: 46.836 ms
 
 ------
 Анализ на 1 000 000 записей:
 ------
-HashSetOp Except  (cost=106775.19..126331.26 rows=622 width=17) (actual time=904.822..906.334 rows=311 loops=1)
-  ->  Append  (cost=106775.19..126318.82 rows=1244 width=17) (actual time=860.222..906.205 rows=931 loops=1)
-"        ->  Subquery Scan on ""*SELECT* 1""  (cost=106775.19..106789.19 rows=622 width=17) (actual time=860.221..860.351 rows=621 loops=1)"
-              ->  HashAggregate  (cost=106775.19..106782.97 rows=622 width=13) (actual time=860.220..860.310 rows=621 loops=1)
+
+HashSetOp Except  (cost=70290.58..84823.70 rows=622 width=17) (actual time=1748.257..1751.413 rows=311 loops=1)
+  ->  Append  (cost=70290.58..84811.26 rows=1244 width=17) (actual time=1679.778..1751.046 rows=931 loops=1)
+"        ->  Subquery Scan on ""*SELECT* 1""  (cost=70290.58..70304.58 rows=622 width=17) (actual time=1679.776..1680.155 rows=621 loops=1)"
+              ->  HashAggregate  (cost=70290.58..70298.36 rows=622 width=13) (actual time=1679.774..1680.061 rows=621 loops=1)
 "                    Group Key: s.id, s.""row"", s.seat, CASE WHEN (s.id = t.seat_id) THEN true ELSE false END"
-                    Batches: 1  Memory Usage: 81kB
-                    ->  Nested Loop  (cost=1000.15..71834.34 rows=3494085 width=13) (actual time=11.131..439.460 rows=3424421 loops=1)
-                          ->  Index Scan using seats_pkey on seats s  (cost=0.15..17.81 rows=311 width=12) (actual time=0.007..0.217 rows=311 loops=1)
-                          ->  Materialize  (cost=1000.00..19433.34 rows=11235 width=4) (actual time=0.036..0.553 rows=11011 loops=311)
-                                ->  Gather  (cost=1000.00..19377.17 rows=11235 width=4) (actual time=11.118..47.058 rows=11011 loops=1)
+                    Batches: 1  Memory Usage: 73kB
+                    ->  Nested Loop  (cost=1000.15..47948.34 rows=2234224 width=13) (actual time=0.409..840.842 rows=2266257 loops=1)
+                          ->  Index Scan using seats_pkey on seats s  (cost=0.15..17.81 rows=311 width=12) (actual time=0.018..3.445 rows=311 loops=1)
+                          ->  Materialize  (cost=1000.00..14435.13 rows=7184 width=4) (actual time=0.002..0.930 rows=7287 loops=311)
+                                ->  Gather  (cost=1000.00..14399.21 rows=7184 width=4) (actual time=0.381..66.407 rows=7287 loops=1)
                                       Workers Planned: 2
                                       Workers Launched: 2
-                                      ->  Parallel Seq Scan on tickets t  (cost=0.00..17253.67 rows=4681 width=4) (actual time=5.151..34.715 rows=3670 loops=3)
-                                            Filter: (((session_id)::text = 'last_samurai_10'::text) AND (date = (CURRENT_DATE + '1 day'::interval)))
-                                            Rows Removed by Filter: 329996
-"        ->  Subquery Scan on ""*SELECT* 2""  (cost=19510.97..19523.41 rows=622 width=17) (actual time=44.302..45.808 rows=310 loops=1)"
-              ->  HashAggregate  (cost=19510.97..19517.19 rows=622 width=13) (actual time=44.300..45.784 rows=310 loops=1)
+                                      ->  Parallel Seq Scan on tickets t  (cost=0.00..12680.81 rows=2993 width=4) (actual time=0.043..65.981 rows=2429 loops=3)
+                                            Filter: (session_id = 1)
+                                            Rows Removed by Filter: 334071
+"        ->  Subquery Scan on ""*SELECT* 2""  (cost=14488.02..14500.46 rows=622 width=17) (actual time=67.179..70.597 rows=310 loops=1)"
+              ->  HashAggregate  (cost=14488.02..14494.24 rows=622 width=13) (actual time=67.177..70.518 rows=310 loops=1)
 "                    Group Key: s_1.id, s_1.""row"", s_1.seat, (false)"
                     Batches: 1  Memory Usage: 57kB
-                    ->  Gather  (cost=1009.00..19398.62 rows=11235 width=13) (actual time=0.222..43.934 rows=11011 loops=1)
+                    ->  Gather  (cost=1009.00..14416.18 rows=7184 width=13) (actual time=1.262..65.258 rows=7287 loops=1)
                           Workers Planned: 2
                           Workers Launched: 2
-                          ->  Hash Join  (cost=9.00..17275.12 rows=4681 width=13) (actual time=2.333..31.129 rows=3670 loops=3)
+                          ->  Hash Join  (cost=9.00..12697.78 rows=2993 width=13) (actual time=0.409..58.352 rows=2429 loops=3)
                                 Hash Cond: (t_1.seat_id = s_1.id)
-                                ->  Parallel Seq Scan on tickets t_1  (cost=0.00..17253.67 rows=4681 width=4) (actual time=2.230..30.395 rows=3670 loops=3)
-                                      Filter: (((session_id)::text = 'last_samurai_10'::text) AND (date = (CURRENT_DATE + '1 day'::interval)))
-                                      Rows Removed by Filter: 329996
-                                ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.059..0.060 rows=311 loops=3)
+                                ->  Parallel Seq Scan on tickets t_1  (cost=0.00..12680.81 rows=2993 width=4) (actual time=0.035..55.647 rows=2429 loops=3)
+                                      Filter: (session_id = 1)
+                                      Rows Removed by Filter: 334071
+                                ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.198..0.199 rows=311 loops=3)
                                       Buckets: 1024  Batches: 1  Memory Usage: 22kB
-                                      ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.009..0.031 rows=311 loops=3)
-Planning Time: 0.748 ms
-JIT:
-  Functions: 66
-"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
-"  Timing: Generation 3.202 ms, Inlining 0.000 ms, Optimization 1.449 ms, Emission 19.982 ms, Total 24.633 ms"
-Execution Time: 941.624 ms
+                                      ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.024..0.101 rows=311 loops=3)
+Planning Time: 0.651 ms
+Execution Time: 1751.732 ms
 
 
-Оптимизации: Добавлены индексы seats(id,row,seat,luxe), tickets(amount,date), sessions(id,film_id,timebegin) и films(id,name). План выполнения не изменился, индексы не используются..
 
-HashSetOp Except  (cost=106775.19..126331.26 rows=622 width=17) (actual time=904.822..906.334 rows=311 loops=1)
-  ->  Append  (cost=106775.19..126318.82 rows=1244 width=17) (actual time=860.222..906.205 rows=931 loops=1)
-"        ->  Subquery Scan on ""*SELECT* 1""  (cost=106775.19..106789.19 rows=622 width=17) (actual time=860.221..860.351 rows=621 loops=1)"
-              ->  HashAggregate  (cost=106775.19..106782.97 rows=622 width=13) (actual time=860.220..860.310 rows=621 loops=1)
+Результат после добавления индекса на sessions(date) и tickets(session_id). Производительность повысилась на 20%.
+
+HashSetOp Except  (cost=63701.36..71656.40 rows=622 width=17) (actual time=1463.558..1463.589 rows=311 loops=1)
+  ->  Append  (cost=63701.36..71643.96 rows=1244 width=17) (actual time=1452.128..1463.341 rows=931 loops=1)
+"        ->  Subquery Scan on ""*SELECT* 1""  (cost=63701.36..63715.36 rows=622 width=17) (actual time=1452.127..1452.339 rows=621 loops=1)"
+              ->  HashAggregate  (cost=63701.36..63709.14 rows=622 width=13) (actual time=1452.126..1452.255 rows=621 loops=1)
 "                    Group Key: s.id, s.""row"", s.seat, CASE WHEN (s.id = t.seat_id) THEN true ELSE false END"
-                    Batches: 1  Memory Usage: 81kB
-                    ->  Nested Loop  (cost=1000.15..71834.34 rows=3494085 width=13) (actual time=11.131..439.460 rows=3424421 loops=1)
-                          ->  Index Scan using seats_pkey on seats s  (cost=0.15..17.81 rows=311 width=12) (actual time=0.007..0.217 rows=311 loops=1)
-                          ->  Materialize  (cost=1000.00..19433.34 rows=11235 width=4) (actual time=0.036..0.553 rows=11011 loops=311)
-                                ->  Gather  (cost=1000.00..19377.17 rows=11235 width=4) (actual time=11.118..47.058 rows=11011 loops=1)
-                                      Workers Planned: 2
-                                      Workers Launched: 2
-                                      ->  Parallel Seq Scan on tickets t  (cost=0.00..17253.67 rows=4681 width=4) (actual time=5.151..34.715 rows=3670 loops=3)
-                                            Filter: (((session_id)::text = 'last_samurai_10'::text) AND (date = (CURRENT_DATE + '1 day'::interval)))
-                                            Rows Removed by Filter: 329996
-"        ->  Subquery Scan on ""*SELECT* 2""  (cost=19510.97..19523.41 rows=622 width=17) (actual time=44.302..45.808 rows=310 loops=1)"
-              ->  HashAggregate  (cost=19510.97..19517.19 rows=622 width=13) (actual time=44.300..45.784 rows=310 loops=1)
-"                    Group Key: s_1.id, s_1.""row"", s_1.seat, (false)"
+                    Batches: 1  Memory Usage: 73kB
+                    ->  Nested Loop  (cost=84.25..41359.12 rows=2234224 width=13) (actual time=1.246..713.128 rows=2266257 loops=1)
+                          ->  Index Scan using seats_pkey on seats s  (cost=0.15..17.81 rows=311 width=12) (actual time=0.013..3.955 rows=311 loops=1)
+                          ->  Materialize  (cost=84.10..7845.91 rows=7184 width=4) (actual time=0.004..0.699 rows=7287 loops=311)
+                                ->  Bitmap Heap Scan on tickets t  (cost=84.10..7809.99 rows=7184 width=4) (actual time=1.224..17.570 rows=7287 loops=1)
+                                      Recheck Cond: (session_id = 1)
+                                      Heap Blocks: exact=4633
+                                      ->  Bitmap Index Scan on tickets_session_id_idx  (cost=0.00..82.30 rows=7184 width=0) (actual time=0.616..0.616 rows=7287 loops=1)
+                                            Index Cond: (session_id = 1)
+"        ->  Subquery Scan on ""*SELECT* 2""  (cost=7909.94..7922.38 rows=622 width=17) (actual time=10.809..10.917 rows=310 loops=1)"
+              ->  HashAggregate  (cost=7909.94..7916.16 rows=622 width=13) (actual time=10.808..10.872 rows=310 loops=1)
+"                    Group Key: s_1.id, s_1.""row"", s_1.seat, false"
                     Batches: 1  Memory Usage: 57kB
-                    ->  Gather  (cost=1009.00..19398.62 rows=11235 width=13) (actual time=0.222..43.934 rows=11011 loops=1)
-                          Workers Planned: 2
-                          Workers Launched: 2
-                          ->  Hash Join  (cost=9.00..17275.12 rows=4681 width=13) (actual time=2.333..31.129 rows=3670 loops=3)
-                                Hash Cond: (t_1.seat_id = s_1.id)
-                                ->  Parallel Seq Scan on tickets t_1  (cost=0.00..17253.67 rows=4681 width=4) (actual time=2.230..30.395 rows=3670 loops=3)
-                                      Filter: (((session_id)::text = 'last_samurai_10'::text) AND (date = (CURRENT_DATE + '1 day'::interval)))
-                                      Rows Removed by Filter: 329996
-                                ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.059..0.060 rows=311 loops=3)
-                                      Buckets: 1024  Batches: 1  Memory Usage: 22kB
-                                      ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.009..0.031 rows=311 loops=3)
-Planning Time: 0.748 ms
-JIT:
-  Functions: 66
-"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
-"  Timing: Generation 3.202 ms, Inlining 0.000 ms, Optimization 1.449 ms, Emission 19.982 ms, Total 24.633 ms"
-Execution Time: 941.624 ms
-
+                    ->  Hash Join  (cost=93.10..7838.10 rows=7184 width=13) (actual time=1.244..8.733 rows=7287 loops=1)
+                          Hash Cond: (t_1.seat_id = s_1.id)
+                          ->  Bitmap Heap Scan on tickets t_1  (cost=84.10..7809.99 rows=7184 width=4) (actual time=1.041..5.981 rows=7287 loops=1)
+                                Recheck Cond: (session_id = 1)
+                                Heap Blocks: exact=4633
+                                ->  Bitmap Index Scan on tickets_session_id_idx  (cost=0.00..82.30 rows=7184 width=0) (actual time=0.482..0.482 rows=7287 loops=1)
+                                      Index Cond: (session_id = 1)
+                          ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.129..0.129 rows=311 loops=1)
+                                Buckets: 1024  Batches: 1  Memory Usage: 22kB
+                                ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.015..0.084 rows=311 loops=1)
+Planning Time: 0.869 ms
+Execution Time: 1464.262 ms
 
 
 
@@ -391,83 +427,83 @@ Execution Time: 941.624 ms
 SELECT f.name Фильм, ss.timebegin Начало_сеанса, MIN(v.value_float) Мин_цена, MAX(v.value_float) Макс_цена  FROM sessions ss
     JOIN films f ON ss.film_id = f.id
     JOIN values v on f.id = v.film_id AND v.attribute_id LIKE 'seat_price%'
-WHERE ss.id = 'last_samurai_10'
+WHERE ss.id = '1'
 GROUP BY f.name, ss.timebegin;
 
-Анализ на 10 000 записей:
+Анализ на 10 000 записей (применяются базовые индексы на pkey):
 
-GroupAggregate  (cost=13.95..13.98 rows=1 width=104) (actual time=0.155..0.156 rows=1 loops=1)
+GroupAggregate  (cost=17.87..17.90 rows=1 width=104) (actual time=0.291..0.293 rows=1 loops=1)
 "  Group Key: f.name, ss.timebegin"
-  ->  Sort  (cost=13.95..13.96 rows=1 width=45) (actual time=0.145..0.146 rows=2 loops=1)
+  ->  Sort  (cost=17.87..17.88 rows=1 width=45) (actual time=0.228..0.282 rows=2 loops=1)
 "        Sort Key: f.name, ss.timebegin"
         Sort Method: quicksort  Memory: 25kB
-        ->  Nested Loop  (cost=0.30..13.94 rows=1 width=45) (actual time=0.120..0.133 rows=2 loops=1)
+        ->  Nested Loop  (cost=0.44..17.86 rows=1 width=45) (actual time=0.103..0.115 rows=2 loops=1)
               Join Filter: ((ss.film_id)::text = (f.id)::text)
-              ->  Nested Loop  (cost=0.15..10.17 rows=1 width=105) (actual time=0.053..0.059 rows=2 loops=1)
+              ->  Nested Loop  (cost=0.29..10.30 rows=2 width=32) (actual time=0.077..0.084 rows=2 loops=1)
                     Join Filter: ((ss.film_id)::text = (v.film_id)::text)
                     Rows Removed by Join Filter: 8
-                    ->  Index Scan using sessions_pkey on sessions ss  (cost=0.15..8.17 rows=1 width=90) (actual time=0.022..0.024 rows=1 loops=1)
-                          Index Cond: ((id)::text = 'last_samurai_10'::text)
-"                    ->  Seq Scan on ""values"" v  (cost=0.00..1.88 rows=10 width=15) (actual time=0.017..0.029 rows=10 loops=1)"
+                    ->  Index Scan using sessions_pkey on sessions ss  (cost=0.29..8.30 rows=1 width=17) (actual time=0.040..0.041 rows=1 loops=1)
+                          Index Cond: (id = 1)
+"                    ->  Seq Scan on ""values"" v  (cost=0.00..1.88 rows=10 width=15) (actual time=0.028..0.036 rows=10 loops=1)"
                           Filter: ((attribute_id)::text ~~ 'seat_price%'::text)
                           Rows Removed by Filter: 60
-              ->  Index Scan using films_pkey on films f  (cost=0.15..3.77 rows=1 width=114) (actual time=0.034..0.034 rows=1 loops=2)
+              ->  Index Scan using films_pkey on films f  (cost=0.15..3.77 rows=1 width=114) (actual time=0.013..0.013 rows=1 loops=2)
                     Index Cond: ((id)::text = (v.film_id)::text)
-Planning Time: 0.121 ms
-Execution Time: 0.033ms
+Planning Time: 0.812 ms
+Execution Time: 0.441 ms
+
 
 
 ------
-Анализ на 1 000 000 записей:
+Анализ на 1 000 000 записей (применяются базовые индексы на pkey):
 ------
 
-GroupAggregate  (cost=4.17..4.22 rows=2 width=104) (actual time=0.052..0.054 rows=1 loops=1)
+GroupAggregate  (cost=18.01..18.04 rows=1 width=104) (actual time=0.588..0.590 rows=1 loops=1)
 "  Group Key: f.name, ss.timebegin"
-  ->  Sort  (cost=4.17..4.18 rows=2 width=45) (actual time=0.044..0.046 rows=2 loops=1)
+  ->  Sort  (cost=18.01..18.02 rows=1 width=45) (actual time=0.511..0.513 rows=2 loops=1)
 "        Sort Key: f.name, ss.timebegin"
         Sort Method: quicksort  Memory: 25kB
-        ->  Nested Loop  (cost=1.14..4.16 rows=2 width=45) (actual time=0.032..0.037 rows=2 loops=1)
+        ->  Nested Loop  (cost=0.57..18.00 rows=1 width=45) (actual time=0.479..0.501 rows=2 loops=1)
               Join Filter: ((ss.film_id)::text = (f.id)::text)
-              Rows Removed by Join Filter: 8
-              ->  Hash Join  (cost=1.14..3.05 rows=1 width=105) (actual time=0.028..0.031 rows=2 loops=1)
-                    Hash Cond: ((v.film_id)::text = (ss.film_id)::text)
-"                    ->  Seq Scan on ""values"" v  (cost=0.00..1.88 rows=10 width=15) (actual time=0.009..0.016 rows=10 loops=1)"
+              ->  Nested Loop  (cost=0.42..10.44 rows=2 width=32) (actual time=0.365..0.375 rows=2 loops=1)
+                    Join Filter: ((ss.film_id)::text = (v.film_id)::text)
+                    Rows Removed by Join Filter: 8
+                    ->  Index Scan using sessions_pkey on sessions ss  (cost=0.42..8.44 rows=1 width=17) (actual time=0.019..0.021 rows=1 loops=1)
+                          Index Cond: (id = 1)
+"                    ->  Seq Scan on ""values"" v  (cost=0.00..1.88 rows=10 width=15) (actual time=0.333..0.345 rows=10 loops=1)"
                           Filter: ((attribute_id)::text ~~ 'seat_price%'::text)
                           Rows Removed by Filter: 60
-                    ->  Hash  (cost=1.12..1.12 rows=1 width=90) (actual time=0.006..0.007 rows=1 loops=1)
-                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                          ->  Seq Scan on sessions ss  (cost=0.00..1.12 rows=1 width=90) (actual time=0.004..0.004 rows=1 loops=1)
-                                Filter: ((id)::text = 'last_samurai_10'::text)
-                                Rows Removed by Filter: 9
-              ->  Seq Scan on films f  (cost=0.00..1.05 rows=5 width=114) (actual time=0.001..0.001 rows=5 loops=2)
-Planning Time: 0.343 ms
-Execution Time: 0.097 ms
+              ->  Index Scan using films_pkey on films f  (cost=0.15..3.77 rows=1 width=114) (actual time=0.056..0.057 rows=1 loops=2)
+                    Index Cond: ((id)::text = (v.film_id)::text)
+Planning Time: 0.535 ms
+Execution Time: 0.647 ms
 
 
 
-Оптимизации: Добавлены индексы values(id_attribute,value_float), seats(id,row,seat,luxe), tickets(amount,date), sessions(id,film_id,timebegin), films(id,name). План выполнения не изменился, индексы не используются.
 
-GroupAggregate  (cost=4.17..4.22 rows=2 width=104) (actual time=0.057..0.059 rows=1 loops=1)
+
+Оптимизации: Производительность не отличается, так как используются стандартные индексы *_pkey.
+
+GroupAggregate  (cost=18.01..18.04 rows=1 width=104) (actual time=0.261..0.265 rows=1 loops=1)
 "  Group Key: f.name, ss.timebegin"
-  ->  Sort  (cost=4.17..4.18 rows=2 width=45) (actual time=0.049..0.050 rows=2 loops=1)
+  ->  Sort  (cost=18.01..18.02 rows=1 width=45) (actual time=0.223..0.226 rows=2 loops=1)
 "        Sort Key: f.name, ss.timebegin"
         Sort Method: quicksort  Memory: 25kB
-        ->  Nested Loop  (cost=1.14..4.16 rows=2 width=45) (actual time=0.036..0.041 rows=2 loops=1)
+        ->  Nested Loop  (cost=0.57..18.00 rows=1 width=45) (actual time=0.156..0.185 rows=2 loops=1)
               Join Filter: ((ss.film_id)::text = (f.id)::text)
-              Rows Removed by Join Filter: 8
-              ->  Hash Join  (cost=1.14..3.05 rows=1 width=105) (actual time=0.032..0.034 rows=2 loops=1)
-                    Hash Cond: ((v.film_id)::text = (ss.film_id)::text)
-"                    ->  Seq Scan on ""values"" v  (cost=0.00..1.88 rows=10 width=15) (actual time=0.011..0.018 rows=10 loops=1)"
+              ->  Nested Loop  (cost=0.42..10.44 rows=2 width=32) (actual time=0.123..0.139 rows=2 loops=1)
+                    Join Filter: ((ss.film_id)::text = (v.film_id)::text)
+                    Rows Removed by Join Filter: 8
+                    ->  Index Scan using sessions_pkey on sessions ss  (cost=0.42..8.44 rows=1 width=17) (actual time=0.066..0.070 rows=1 loops=1)
+                          Index Cond: (id = 1)
+"                    ->  Seq Scan on ""values"" v  (cost=0.00..1.88 rows=10 width=15) (actual time=0.046..0.055 rows=10 loops=1)"
                           Filter: ((attribute_id)::text ~~ 'seat_price%'::text)
                           Rows Removed by Filter: 60
-                    ->  Hash  (cost=1.12..1.12 rows=1 width=90) (actual time=0.007..0.007 rows=1 loops=1)
-                          Buckets: 1024  Batches: 1  Memory Usage: 9kB
-                          ->  Seq Scan on sessions ss  (cost=0.00..1.12 rows=1 width=90) (actual time=0.004..0.004 rows=1 loops=1)
-                                Filter: ((id)::text = 'last_samurai_10'::text)
-                                Rows Removed by Filter: 9
-              ->  Seq Scan on films f  (cost=0.00..1.05 rows=5 width=114) (actual time=0.001..0.002 rows=5 loops=2)
-Planning Time: 0.559 ms
-Execution Time: 0.098 ms
+              ->  Index Scan using films_pkey on films f  (cost=0.15..3.77 rows=1 width=114) (actual time=0.018..0.018 rows=1 loops=2)
+                    Index Cond: ((id)::text = (v.film_id)::text)
+Planning Time: 1.242 ms
+Execution Time: 0.643 ms
+
 
 
 
