@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Kagirova\Hw15\Application;
 
 use Kagirova\Hw15\Domain\Entity\Event;

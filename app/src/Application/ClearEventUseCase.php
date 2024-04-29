@@ -13,7 +13,8 @@ class ClearEventUseCase
         $this->storage = $storage;
     }
 
-    public function run() {
+    public function run()
+    {
         $this->storage->clear();
     }
 }
