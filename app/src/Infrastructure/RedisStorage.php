@@ -31,7 +31,8 @@ class RedisStorage implements StorageInterface
     {
         $events = $this->redis->zRevRangeByScore(
             RedisStorage::EVENTS_KEY, '+inf', '-inf',
-            ['withscores' => true]);
+            ['withscores' => true]
+        );
         foreach ($events as $eventKey => $eventValue) {
             $eventData = json_decode($eventKey, true);
             $conditionsMet = true;
