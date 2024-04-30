@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.3
+    container_name: postgres
+    environment:
+      POSTGRES_ROOT_PASSWORD: "${POSTGRES_ROOT_PASSWORD}"
+      POSTGRES_DATABASE: "${POSTGRES_DATABASE}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./DDL:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    env_file: .env
+    container_name: php
+    volumes:
+      - ./scripts:/data
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+
+networks:
+  app-network:
+    driver: bridge
