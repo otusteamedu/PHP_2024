@@ -31,40 +31,46 @@ CREATE TABLE IF NOT EXISTS movie_attribute_value (
     id SERIAL PRIMARY KEY,
     movie_id INTEGER NOT NULL,
     attribute_id INTEGER NOT NULL,
-    value JSONB NOT NULL,
+    value_timestamp timestamp with time zone,
+    value_int INTEGER,
+    value_string VARCHAR,
+    value_text TEXT,
+    value_float FLOAT,
     CONSTRAINT fk_movie_attribute_movie_id FOREIGN KEY (movie_id) REFERENCES movie,
     CONSTRAINT fk_attribute_id FOREIGN KEY (attribute_id) REFERENCES movie_attribute
 );
 
-INSERT INTO movie_attribute_value(movie_id, attribute_id, value)
-VALUES (1, 7, '{"dateStart": 1714521599}'), (1, 8, '{"dateStart": 1711929600}');
-INSERT INTO movie_attribute_value(movie_id, attribute_id, value)
-VALUES (1, 5, '{"dateStart": 1714621599}'), (1, 6, '{"dateStart": 1714821599}');
-INSERT INTO movie_attribute_value(movie_id, attribute_id, value)
-VALUES (2, 5, '{"dateStart": 1713709168}'), (2, 6, '{"dateStart": 1713709168}');
-INSERT INTO movie_attribute_value(movie_id, attribute_id, value)
-VALUES (3, 5, '{"dateStart": 2713709168}'), (3, 6, '{"dateStart": 2713709168}');
+INSERT INTO movie_attribute_value(movie_id, attribute_id, value_timestamp)
+VALUES (1, 7, '2024-05-15 12:00:00+03'), (1, 8, '2024-05-01 12:00:00+03');
+INSERT INTO movie_attribute_value(movie_id, attribute_id, value_timestamp)
+VALUES (1, 5, '2024-06-01 12:00:00+03'), (1, 6, '2024-06-10 12:00:00+03');
+INSERT INTO movie_attribute_value(movie_id, attribute_id, value_timestamp)
+VALUES (2, 5, '2024-06-02 12:00:00+03'), (2, 6, '2024-06-12 12:00:00+03');
+INSERT INTO movie_attribute_value(movie_id, attribute_id, value_timestamp)
+VALUES (3, 5, '2024-06-03 12:00:00+03'), (3, 6, '2024-06-13 12:00:00+03');
+INSERT INTO movie_attribute_value(movie_id, attribute_id, value_timestamp)
+VALUES (3, 5, '2024-04-30 12:40:00+03'), (3, 5, '2024-04-30 12:40:00+03');
 
 
 CREATE VIEW important_events_20_days AS
-SELECT m.title, ma.name, to_timestamp((value ->> 'dateStart')::BIGINT) as event_start FROM movie_attribute_value AS mav
+SELECT m.title, ma.name, mav.value_timestamp FROM movie_attribute_value AS mav
 INNER JOIN movie AS m
 ON mav.movie_id = m.id
 INNER JOIN movie_attribute AS ma
 ON mav.attribute_id = ma.id
-WHERE ma.type_id = 3 AND to_timestamp((value ->> 'dateStart')::BIGINT) > CURRENT_DATE + INTERVAL '20 day';
+WHERE ma.type_id = 3 AND mav.value_timestamp > CURRENT_DATE + INTERVAL '20 day';
 
 CREATE VIEW important_events_now AS
-SELECT m.title, ma.name, to_timestamp((value ->> 'dateStart')::BIGINT) as event_start FROM movie_attribute_value AS mav
+SELECT m.title, ma.name, mav.value_timestamp FROM movie_attribute_value AS mav
 INNER JOIN movie AS m
 ON mav.movie_id = m.id
 INNER JOIN movie_attribute AS ma
 ON mav.attribute_id = ma.id
-WHERE ma.type_id = 3 AND (to_timestamp((value ->> 'dateStart')::BIGINT) >= CURRENT_DATE) AND (to_timestamp((value ->> 'dateStart')::BIGINT) < CURRENT_DATE + INTERVAL '1 day');
+WHERE ma.type_id = 3 AND (mav.value_timestamp >= CURRENT_DATE) AND (mav.value_timestamp < CURRENT_DATE + INTERVAL '1 day');
 
 
 CREATE VIEW all_attributes AS
-SELECT m.title, mat.name AS attribute_type_name, ma.name AS attribute_name, mav.value FROM movie_attribute_value AS mav
+SELECT m.title, mat.name AS attribute_type_name, ma.name AS attribute_name, mav.* FROM movie_attribute_value AS mav
 INNER JOIN movie AS m ON m.id = mav.movie_id
 INNER JOIN movie_attribute AS ma ON mav.attribute_id = ma.id
 INNER JOIN movie_attribute_type AS mat ON ma.type_id = mat.id;
