@@ -305,119 +305,70 @@ Execution Time: 538.107 ms
 
 -- 5. Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс (как сделать компактнее не придумал)
 
-EXPLAIN analyse SELECT DISTINCT s.id, s.row, s.seat,
-CASE WHEN s.id = t.seat_id THEN true ELSE false END AS Занятые_места
-FROM seats s
-JOIN tickets t on t.session_id = '1'
-EXCEPT
-SELECT DISTINCT s.id, s.row, s.seat, false FROM seats s
-JOIN tickets t on t.session_id = '1'
-WHERE s.id = t.seat_id
-;
+EXPLAIN analyse SELECT DISTINCT s.id, s.row, s.seat,t.seat_id Купленные_места FROM seats s
+    LEFT JOIN tickets t ON t.seat_id = s.id AND t.session_id = '1';
 
 ------
 Анализ на 10 000 записей:
 ------
 
-HashSetOp Except  (cost=872.98..1110.30 rows=622 width=17) (actual time=46.189..46.267 rows=311 loops=1)
-  ->  Append  (cost=872.98..1103.22 rows=708 width=17) (actual time=38.484..45.895 rows=463 loops=1)
-"        ->  Subquery Scan on ""*SELECT* 1""  (cost=872.98..886.97 rows=622 width=17) (actual time=38.482..39.243 rows=387 loops=1)"
-              ->  HashAggregate  (cost=872.98..880.75 rows=622 width=13) (actual time=38.479..39.053 rows=387 loops=1)
-"                    Group Key: s.id, s.""row"", s.seat, CASE WHEN (s.id = t.seat_id) THEN true ELSE false END"
-                    Batches: 1  Memory Usage: 73kB
-                    ->  Nested Loop  (cost=0.00..605.52 rows=26746 width=13) (actual time=0.076..19.570 rows=26746 loops=1)
-                          ->  Seq Scan on seats s  (cost=0.00..5.11 rows=311 width=12) (actual time=0.020..0.545 rows=311 loops=1)
-                          ->  Materialize  (cost=0.00..199.43 rows=86 width=4) (actual time=0.000..0.027 rows=86 loops=311)
-                                ->  Seq Scan on tickets t  (cost=0.00..199.00 rows=86 width=4) (actual time=0.049..4.544 rows=86 loops=1)
-                                      Filter: (session_id = 1)
-                                      Rows Removed by Filter: 9914
-"        ->  Subquery Scan on ""*SELECT* 2""  (cost=210.99..212.71 rows=86 width=17) (actual time=6.516..6.585 rows=76 loops=1)"
-              ->  Unique  (cost=210.99..211.85 rows=86 width=13) (actual time=6.511..6.561 rows=76 loops=1)
-                    ->  Sort  (cost=210.99..211.20 rows=86 width=13) (actual time=6.505..6.526 rows=86 loops=1)
-"                          Sort Key: s_1.id, s_1.""row"", s_1.seat"
-                          Sort Method: quicksort  Memory: 29kB
-                          ->  Hash Join  (cost=9.00..208.22 rows=86 width=13) (actual time=0.252..5.177 rows=86 loops=1)
-                                Hash Cond: (t_1.seat_id = s_1.id)
-                                ->  Seq Scan on tickets t_1  (cost=0.00..199.00 rows=86 width=4) (actual time=0.085..4.224 rows=86 loops=1)
-                                      Filter: (session_id = 1)
-                                      Rows Removed by Filter: 9914
-                                ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.150..0.154 rows=311 loops=1)
-                                      Buckets: 1024  Batches: 1  Memory Usage: 22kB
-                                      ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.015..0.079 rows=311 loops=1)
-Planning Time: 0.436 ms
-Execution Time: 46.836 ms
+HashAggregate  (cost=211.30..214.41 rows=311 width=16) (actual time=1.874..1.972 rows=311 loops=1)
+"  Group Key: s.id, s.""row"", s.seat, t.seat_id"
+  Batches: 1  Memory Usage: 45kB
+  ->  Hash Right Join  (cost=9.00..208.19 rows=311 width=16) (actual time=0.198..1.724 rows=315 loops=1)
+        Hash Cond: (t.seat_id = s.id)
+        ->  Seq Scan on tickets t  (cost=0.00..199.00 rows=75 width=4) (actual time=0.034..1.450 rows=75 loops=1)
+              Filter: (session_id = 1)
+              Rows Removed by Filter: 9925
+        ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.157..0.158 rows=311 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 22kB
+              ->  Seq Scan on seats s  (cost=0.00..5.11 rows=311 width=12) (actual time=0.014..0.082 rows=311 loops=1)
+Planning Time: 0.212 ms
+Execution Time: 2.058 ms
+
 
 ------
 Анализ на 1 000 000 записей:
 ------
 
-HashSetOp Except  (cost=70290.58..84823.70 rows=622 width=17) (actual time=1748.257..1751.413 rows=311 loops=1)
-  ->  Append  (cost=70290.58..84811.26 rows=1244 width=17) (actual time=1679.778..1751.046 rows=931 loops=1)
-"        ->  Subquery Scan on ""*SELECT* 1""  (cost=70290.58..70304.58 rows=622 width=17) (actual time=1679.776..1680.155 rows=621 loops=1)"
-              ->  HashAggregate  (cost=70290.58..70298.36 rows=622 width=13) (actual time=1679.774..1680.061 rows=621 loops=1)
-"                    Group Key: s.id, s.""row"", s.seat, CASE WHEN (s.id = t.seat_id) THEN true ELSE false END"
-                    Batches: 1  Memory Usage: 73kB
-                    ->  Nested Loop  (cost=1000.15..47948.34 rows=2234224 width=13) (actual time=0.409..840.842 rows=2266257 loops=1)
-                          ->  Index Scan using seats_pkey on seats s  (cost=0.15..17.81 rows=311 width=12) (actual time=0.018..3.445 rows=311 loops=1)
-                          ->  Materialize  (cost=1000.00..14435.13 rows=7184 width=4) (actual time=0.002..0.930 rows=7287 loops=311)
-                                ->  Gather  (cost=1000.00..14399.21 rows=7184 width=4) (actual time=0.381..66.407 rows=7287 loops=1)
-                                      Workers Planned: 2
-                                      Workers Launched: 2
-                                      ->  Parallel Seq Scan on tickets t  (cost=0.00..12680.81 rows=2993 width=4) (actual time=0.043..65.981 rows=2429 loops=3)
-                                            Filter: (session_id = 1)
-                                            Rows Removed by Filter: 334071
-"        ->  Subquery Scan on ""*SELECT* 2""  (cost=14488.02..14500.46 rows=622 width=17) (actual time=67.179..70.597 rows=310 loops=1)"
-              ->  HashAggregate  (cost=14488.02..14494.24 rows=622 width=13) (actual time=67.177..70.518 rows=310 loops=1)
-"                    Group Key: s_1.id, s_1.""row"", s_1.seat, (false)"
-                    Batches: 1  Memory Usage: 57kB
-                    ->  Gather  (cost=1009.00..14416.18 rows=7184 width=13) (actual time=1.262..65.258 rows=7287 loops=1)
-                          Workers Planned: 2
-                          Workers Launched: 2
-                          ->  Hash Join  (cost=9.00..12697.78 rows=2993 width=13) (actual time=0.409..58.352 rows=2429 loops=3)
-                                Hash Cond: (t_1.seat_id = s_1.id)
-                                ->  Parallel Seq Scan on tickets t_1  (cost=0.00..12680.81 rows=2993 width=4) (actual time=0.035..55.647 rows=2429 loops=3)
-                                      Filter: (session_id = 1)
-                                      Rows Removed by Filter: 334071
-                                ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.198..0.199 rows=311 loops=3)
-                                      Buckets: 1024  Batches: 1  Memory Usage: 22kB
-                                      ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.024..0.101 rows=311 loops=3)
-Planning Time: 0.651 ms
-Execution Time: 1751.732 ms
+HashAggregate  (cost=14373.72..14445.03 rows=7131 width=16) (actual time=76.944..84.957 rows=311 loops=1)
+"  Group Key: s.id, s.""row"", s.seat, t.seat_id"
+  Batches: 1  Memory Usage: 225kB
+  ->  Hash Right Join  (cost=1009.00..14302.41 rows=7131 width=16) (actual time=1.343..80.003 rows=7168 loops=1)
+        Hash Cond: (t.seat_id = s.id)
+        ->  Gather  (cost=1000.00..14274.43 rows=7131 width=4) (actual time=1.164..75.117 rows=7167 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              ->  Parallel Seq Scan on tickets t  (cost=0.00..12561.33 rows=2971 width=4) (actual time=0.038..61.943 rows=2389 loops=3)
+                    Filter: (session_id = 1)
+                    Rows Removed by Filter: 330944
+        ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.168..0.170 rows=311 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 22kB
+              ->  Seq Scan on seats s  (cost=0.00..5.11 rows=311 width=12) (actual time=0.018..0.088 rows=311 loops=1)
+Planning Time: 0.838 ms
+Execution Time: 85.101 ms
 
 
 
-Результат после добавления индекса на sessions(date) и tickets(session_id). Производительность повысилась на 20%.
 
-HashSetOp Except  (cost=63701.36..71656.40 rows=622 width=17) (actual time=1463.558..1463.589 rows=311 loops=1)
-  ->  Append  (cost=63701.36..71643.96 rows=1244 width=17) (actual time=1452.128..1463.341 rows=931 loops=1)
-"        ->  Subquery Scan on ""*SELECT* 1""  (cost=63701.36..63715.36 rows=622 width=17) (actual time=1452.127..1452.339 rows=621 loops=1)"
-              ->  HashAggregate  (cost=63701.36..63709.14 rows=622 width=13) (actual time=1452.126..1452.255 rows=621 loops=1)
-"                    Group Key: s.id, s.""row"", s.seat, CASE WHEN (s.id = t.seat_id) THEN true ELSE false END"
-                    Batches: 1  Memory Usage: 73kB
-                    ->  Nested Loop  (cost=84.25..41359.12 rows=2234224 width=13) (actual time=1.246..713.128 rows=2266257 loops=1)
-                          ->  Index Scan using seats_pkey on seats s  (cost=0.15..17.81 rows=311 width=12) (actual time=0.013..3.955 rows=311 loops=1)
-                          ->  Materialize  (cost=84.10..7845.91 rows=7184 width=4) (actual time=0.004..0.699 rows=7287 loops=311)
-                                ->  Bitmap Heap Scan on tickets t  (cost=84.10..7809.99 rows=7184 width=4) (actual time=1.224..17.570 rows=7287 loops=1)
-                                      Recheck Cond: (session_id = 1)
-                                      Heap Blocks: exact=4633
-                                      ->  Bitmap Index Scan on tickets_session_id_idx  (cost=0.00..82.30 rows=7184 width=0) (actual time=0.616..0.616 rows=7287 loops=1)
-                                            Index Cond: (session_id = 1)
-"        ->  Subquery Scan on ""*SELECT* 2""  (cost=7909.94..7922.38 rows=622 width=17) (actual time=10.809..10.917 rows=310 loops=1)"
-              ->  HashAggregate  (cost=7909.94..7916.16 rows=622 width=13) (actual time=10.808..10.872 rows=310 loops=1)
-"                    Group Key: s_1.id, s_1.""row"", s_1.seat, false"
-                    Batches: 1  Memory Usage: 57kB
-                    ->  Hash Join  (cost=93.10..7838.10 rows=7184 width=13) (actual time=1.244..8.733 rows=7287 loops=1)
-                          Hash Cond: (t_1.seat_id = s_1.id)
-                          ->  Bitmap Heap Scan on tickets t_1  (cost=84.10..7809.99 rows=7184 width=4) (actual time=1.041..5.981 rows=7287 loops=1)
-                                Recheck Cond: (session_id = 1)
-                                Heap Blocks: exact=4633
-                                ->  Bitmap Index Scan on tickets_session_id_idx  (cost=0.00..82.30 rows=7184 width=0) (actual time=0.482..0.482 rows=7287 loops=1)
-                                      Index Cond: (session_id = 1)
-                          ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.129..0.129 rows=311 loops=1)
-                                Buckets: 1024  Batches: 1  Memory Usage: 22kB
-                                ->  Seq Scan on seats s_1  (cost=0.00..5.11 rows=311 width=12) (actual time=0.015..0.084 rows=311 loops=1)
-Planning Time: 0.869 ms
-Execution Time: 1464.262 ms
+Результат после добавления индекса tickets(session_id). Производительность повысилась на 350%.
+
+HashAggregate  (cost=7838.62..7909.93 rows=7131 width=16) (actual time=26.011..26.184 rows=311 loops=1)
+"  Group Key: s.id, s.""row"", s.seat, t.seat_id"
+  Batches: 1  Memory Usage: 225kB
+  ->  Hash Right Join  (cost=92.69..7767.31 rows=7131 width=16) (actual time=2.828..21.089 rows=7168 loops=1)
+        Hash Cond: (t.seat_id = s.id)
+        ->  Bitmap Heap Scan on tickets t  (cost=83.69..7739.34 rows=7131 width=4) (actual time=1.855..14.734 rows=7167 loops=1)
+              Recheck Cond: (session_id = 1)
+              Heap Blocks: exact=4601
+              ->  Bitmap Index Scan on tickets_session_id_idx  (cost=0.00..81.91 rows=7131 width=0) (actual time=1.271..1.272 rows=7167 loops=1)
+                    Index Cond: (session_id = 1)
+        ->  Hash  (cost=5.11..5.11 rows=311 width=12) (actual time=0.960..0.962 rows=311 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 22kB
+              ->  Seq Scan on seats s  (cost=0.00..5.11 rows=311 width=12) (actual time=0.768..0.859 rows=311 loops=1)
+Planning Time: 0.496 ms
+Execution Time: 26.400 ms
+
 
 
 
