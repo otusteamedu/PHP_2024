@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AShutov\Hw15\Requests;
 
-use AShutov\Hw15\Models\Conditions;
+use AShutov\Hw15\Conditions;
 use Exception;
 
 class GetEventRequest
@@ -20,7 +20,7 @@ class GetEventRequest
         $this->request = json_decode($this->getUserRequestParams(), true);
 
         if (!$this->isValid()) {
-            throw new Exception('invalid user request');
+            throw new Exception('Неверный запрос');
         }
         $this->conditions = new Conditions($this->request);
     }
@@ -30,6 +30,7 @@ class GetEventRequest
         if (!$this->request) {
             return false;
         }
+
         return true;
     }
 

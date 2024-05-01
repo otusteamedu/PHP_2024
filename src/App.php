@@ -7,19 +7,20 @@ namespace AShutov\Hw15;
 use AShutov\Hw15\Requests\AddEventRequest;
 use AShutov\Hw15\Requests\GetEventRequest;
 use Exception;
+use RedisException;
 
 class App
 {
     /**
      * @throws Exception
-     * @throws \RedisException
+     * @throws RedisException
      */
     public function run(): string
     {
         $config = new Config();
         $eventsService = new EventsService($config);
 
-        switch ($this->getAppType()) {
+        switch ($this->getType()) {
             case 'add':
                 $request = new AddEventRequest();
                 return $eventsService->addEvent($request);
@@ -29,11 +30,11 @@ class App
             case 'removeAll':
                 return $eventsService->removeAllEvents();
             default:
-                throw new Exception("Укажите тип реквеста");
+                throw new Exception("Неверный тип запроса");
         }
     }
 
-    private function getAppType(): string
+    private function getType(): string
     {
         return $_SERVER['argv'][1] ?? '';
     }

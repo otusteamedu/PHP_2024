@@ -25,8 +25,6 @@ services:
       test: [ "CMD", "redis-cli", "ping" ]
       retries: 3
       timeout: 5s
-    ports:
-      - "6379:6379"
     volumes:
       - ./redis_db:/data
     environment:

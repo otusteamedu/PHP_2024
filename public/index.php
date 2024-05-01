@@ -14,5 +14,5 @@ try {
     $message = $app->run();
     print_r($message . PHP_EOL);
 } catch (Throwable $e) {
-    print_r($e->getMessage());
+    print_r($e->getMessage() . PHP_EOL);
 }

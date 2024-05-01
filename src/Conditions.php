@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AShutov\Hw15\Models;
+namespace AShutov\Hw15;
 
 readonly class Conditions
 {
@@ -10,17 +10,15 @@ readonly class Conditions
 
     public function __construct(array $conditions)
     {
-        $rawConditions = $conditions;
-        ksort($rawConditions);
-        $this->conditions = $rawConditions;
+        $this->conditions = $conditions;
     }
 
     public function toString(): string
     {
         $value = '';
 
-        foreach ($this->conditions as $key => $value) {
-            $value .= "$key:$value;";
+        foreach ($this->conditions as $key => $val) {
+            $value .= "$key:$val;";
         }
 
         return $value;

@@ -11,7 +11,7 @@ use RedisException;
 
 class RedisClient implements StorageClientInterface
 {
-    const EVENTS_SET_NAME = 'events';
+    const EVENTS_NAME = 'events';
     private Redis $redis;
 
     /**
@@ -36,7 +36,7 @@ class RedisClient implements StorageClientInterface
     {
         $this->saveEventKey($key);
 
-        return $this->redis->zAdd($key, $value->priority, json_encode($value));
+        return $this->redis->zAdd($key, $value->priority, $value->event);
     }
 
     /**
@@ -55,6 +55,8 @@ class RedisClient implements StorageClientInterface
         $allEvents = $this->getAllEventsKeys();
 
         if (is_array($allEvents)) {
+            $this->redis->del(self::EVENTS_NAME);
+
             return $this->redis->del($allEvents);
         }
 
@@ -63,7 +65,7 @@ class RedisClient implements StorageClientInterface
 
     private function saveEventKey(string $key): void
     {
-        $this->redis->sAdd(self::EVENTS_SET_NAME, $key);
+        $this->redis->sAdd(self::EVENTS_NAME, $key);
     }
 
     /**
@@ -71,6 +73,6 @@ class RedisClient implements StorageClientInterface
      */
     private function getAllEventsKeys(): false|array|Redis
     {
-        return $this->redis->sMembers(self::EVENTS_SET_NAME);
+        return $this->redis->sMembers(self::EVENTS_NAME);
     }
 }

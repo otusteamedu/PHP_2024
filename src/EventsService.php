@@ -13,8 +13,8 @@ class EventsService
     const ADD_EVENT = "event был добавлен";
     const NO_ADD_EVENT = "event не был добавлен";
     const NO_EVENT = "event не найден";
-    const EVENTS_REMOVED = "все event были удалены";
-    const EVENTS_NOT_REMOVED = "event не были удалены";
+    const EVENTS_REMOVED = "все events были удалены";
+    const EVENTS_NOT_REMOVED = "events не были удалены";
     private StorageClientInterface $client;
 
     /**
