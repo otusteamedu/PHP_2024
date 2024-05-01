@@ -60,5 +60,62 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data:rw
 
+  chrome:
+    image: selenium/node-chrome:4.2.2-20220609
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    networks:
+      - homework-net
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - "6900:5900"
+
+  edge:
+    image: selenium/node-edge:4.2.2-20220609
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    networks:
+      - homework-net
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - "6901:5900"
+
+  firefox:
+    image: selenium/node-firefox:4.2.2-20220609
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    networks:
+      - homework-net
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - "6902:5900"
+
+  selenium-hub:
+    image: selenium/hub:4.2.2-20220609
+    container_name: selenium-hub
+    networks:
+      - homework-net
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
 volumes:
   db_data:

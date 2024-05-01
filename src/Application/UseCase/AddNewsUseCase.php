@@ -11,6 +11,9 @@ use App\Application\UseCase\Response\AddNewsResponse;
 use App\Domain\Entity\News;
 use App\Domain\Interface\NewsRepositoryInterface;
 use DOMDocument;
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
 
 class AddNewsUseCase
 {
@@ -31,18 +34,38 @@ class AddNewsUseCase
         if ($html === false) {
             throw new FailedToLoadHtmlContent();
         }
+        // Settings
+        $host = 'http://selenium-hub:4444/wd/hub';  // Адрес Selenium Grid
+        $windowSize = '1280.1224';
+        $userAgent = 'Chrome test';
+        $seleniumConnectionTimeout = 10*1000; // 10 seconds
+        $seleniumCompletionTimeout = 60*1000; // 60 seconds
 
-        libxml_use_internal_errors(true);  // Подавление ошибок парсинга
-        $this->htmlParser->loadHTML($html);
-        libxml_clear_errors();  // Очистка ошибок после загрузки
+        // Chromium args
+        $chromiumArgs = [
+            '--window-size=' . $windowSize,
+            '--user-agent=' . $userAgent,
+        ];
 
-        $titleTag = $this->htmlParser->getElementsByTagName('title')->item(0);
+        //Chrome setting uo options
+        $chromeOptions = new ChromeOptions();
+        $chromeOptions->setExperimentalOption('w3c', false);
+        $chromeOptions->addArguments($chromiumArgs);
 
-        if (is_null($titleTag)) {
+        $capabilities = DesiredCapabilities::chrome();
+        $capabilities->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+
+        $driver = RemoteWebDriver::create($host, $capabilities, $seleniumConnectionTimeout, $seleniumCompletionTimeout);
+        $driver->get($url);
+        $title = $driver->getTitle();
+
+        if (is_null($title)) {
             throw new PageTitleNotFoundException();
         }
 
-        $news = News::createNew($titleTag->textContent, $url);
+        $driver->quit();
+
+        $news = News::createNew($title, $url);
 
         $this->newsRepository->addAndSaveNews($news);
 
