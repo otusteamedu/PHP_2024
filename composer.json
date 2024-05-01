@@ -1,10 +1,14 @@
 {
-  "name": "ashutov/hw14",
+  "name": "ashutov/hw15",
   "minimum-stability": "stable",
   "license": "proprietary",
   "autoload": {
     "psr-4": {
-      "AShutov\\Hw14\\": "src/"
+      "AShutov\\Hw15\\": "src/"
     }
+  },
+  "require": {
+    "vlucas/phpdotenv": "*",
+    "ext-redis": "*"
   }
 }

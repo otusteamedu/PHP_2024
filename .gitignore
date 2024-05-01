@@ -5,3 +5,4 @@
 .LSOverride
 .env
 *.log
+/redis_db/
