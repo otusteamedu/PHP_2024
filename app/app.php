@@ -11,7 +11,11 @@ $db = new PDO('pgsql:host=localhost;port=5432;dbname=Cinema', 'postgres', 'root'
 $filmObj = new FilmFinder($db);
 
 $film = $filmObj->findOneById(5);
-print_r($film);
 
 $films = $filmObj->getAllFilms();
-print_r($films);
+
+$film->setName("dracula 2");
+
+$film->update(
+    ["name" => $film->getName()]
+);

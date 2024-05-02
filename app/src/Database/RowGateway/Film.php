@@ -32,7 +32,18 @@ class Film
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
         $this->updateStatement = $pdo->prepare(
-            'UPDATE public."Films" SET id=?, name=?, duration=?, manufacturer=?, director=?, description=?, rental_company=?, age_limits=?, actors=?, film_links=? WHERE id = ?'
+            'UPDATE public."Films" SET 
+                          id=COALESCE(:id, id), 
+                          name=COALESCE(:name, name), 
+                          duration=COALESCE(:duration,duration), 
+                          manufacturer=COALESCE(:manufacturer,manufacturer), 
+                          director=COALESCE(:director, director), 
+                          description=COALESCE(:description, description), 
+                          rental_company=COALESCE(:rental_company, rental_company), 
+                          age_limits=COALESCE(:age_limits, age_limits), 
+                          actors=COALESCE(:actors, actors), 
+                          film_links=COALESCE(:film_links, film_links) 
+                      WHERE id = :id_film'
         );
         $this->deleteStatement = $pdo->prepare(
             'DELETE FROM public."Films" WHERE id = ?'
@@ -252,21 +263,25 @@ class Film
     }
 
     /**
+     * @param $array
      * @return bool
      */
-    public function update(): bool
+    public function update($array): bool
     {
+        extract($array, EXTR_SKIP);
+
         return $this->updateStatement->execute([
-            $this->id,
-            $this->name,
-            $this->duration,
-            $this->manufacturer,
-            $this->director,
-            $this->description,
-            $this->rental_company,
-            $this->age_limits,
-            $this->actors,
-            $this->film_links
+            "id" => $id ?? null,    // используя id и id_film позволяет обращятся к idшнику фильма, но перезаписывать его
+            "name" => $name ?? null,
+            "duration" => $duration ?? null,
+            "manufacturer" => $manufacturer ?? null,
+            "director" => $director ?? null,
+            "description" => $description ?? null,
+            "rental_company" => $rental_company ?? null,
+            "age_limits" => $age_limits ?? null,
+            "actors" => $actors ?? null,
+            "film_links" => $film_links ?? null,
+            "id_film" => $this->id,
         ]);
     }
 
