@@ -271,7 +271,7 @@ class Film
         extract($array, EXTR_SKIP);
 
         return $this->updateStatement->execute([
-            "id" => $id ?? null,    // используя id и id_film позволяет обращятся к idшнику фильма, но перезаписывать его
+            "id" => $id ?? null,    // используя id и id_film позволяет обращятся к idшнику фильма, но не перезаписывать его
             "name" => $name ?? null,
             "duration" => $duration ?? null,
             "manufacturer" => $manufacturer ?? null,
