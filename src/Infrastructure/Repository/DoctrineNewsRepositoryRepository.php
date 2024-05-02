@@ -21,4 +21,12 @@ class DoctrineNewsRepositoryRepository extends ServiceEntityRepository implement
         $this->getEntityManager()->persist($news);
         $this->getEntityManager()->flush();
     }
+
+    public function getNewsList(): array
+    {
+        return $this
+            ->createQueryBuilder('n')
+            ->getQuery()
+            ->getResult();
+    }
 }
