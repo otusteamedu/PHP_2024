@@ -1,0 +1,18 @@
+{
+    "name": "victoria-babikova/db-worker-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "VictoriaBabikova\\DbWorkerApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VictoriaBabikova",
+            "email": "babikovav8@gmail.com"
+        }
+    ],
+    "require": {
+      "ext-pdo": "*"
+    }
+}
