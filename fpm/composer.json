@@ -1,0 +1,17 @@
+{
+  "name": "aleksnoname/otus",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "App\\": "application/"
+    }
+  },
+  "require": {
+    "elasticsearch/elasticsearch": "^8.13"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}

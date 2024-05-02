@@ -1,2 +1,5 @@
 .idea/**
 .DS_Store
+data/vendor/**
+data/composer.json
+data/composer.lock
