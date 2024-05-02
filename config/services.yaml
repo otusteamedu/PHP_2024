@@ -2,8 +2,12 @@ parameters:
 
 services:
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        autowire: true
+        autoconfigure: true
+
+        bind:
+            $seleniumGridUrl: '%env(SELENIUM_GRID_URL)%'
+
     App\:
         resource: '../src/'
         exclude:
