@@ -7,7 +7,7 @@ namespace App\Application\UseCase\Response;
 readonly class AddNewsResponse
 {
     public function __construct(
-        public readonly int $id,
+        public int $id,
     ) {
     }
 }
