@@ -4,18 +4,20 @@ declare(strict_types=1);
 namespace App\ElasticSearch;
 
 
+use Console_Table;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
+use JetBrains\PhpStorm\ArrayShape;
 
 class Elasticsearch
 {
-    private Client $client;
     const HOST = 'elasticsearch:9200';
+    const INDEX = "otus-shop";
 
-    public function __construct() {
+    private function clientInit() {
         try {
-            $this->client = ClientBuilder::create()
+            return ClientBuilder::create()
                 ->setHosts([self::HOST])
                 ->build();
         } catch (AuthenticationException $e) {
@@ -23,9 +25,61 @@ class Elasticsearch
         }
     }
 
-    public function search(array $params): array
+    //{
+//  "title":"Кто подставил поручика Ржевского на Луне",
+//  "sku":"500-000",
+//  "category":"Исторический роман",
+//  "price":3761,
+//  "stock":[
+//      {"shop":"Мира","stock":17},
+//      {"shop":"Ленина","stock":1}
+//  ]
+//}
+
+
+    # Request: index.php title='рыцОри' category='Исторические романы' price='0-2000'
+    # 'title' => "рыцОри", 'category' => "Исторические романы", 'price' => array(0,2000)
+
+    public function search(array $request)
     {
-        return $params;
+        $client = $this->clientInit();
+        var_dump($request);
+        $params = [
+            "index" => self::INDEX,
+            "body"  => [
+                "query" => [
+                    "match" => [ "title" => $request['title']]
+//                    "match" => [
+//                        "content" => [
+//                            "query" => $request['title'],
+//                            "fuzziness" => "auto"
+//
+//                        ]
+//
+//                    ]
+                ]
+            ]
+        ];
+
+
+
+
+        $response = $client->search($params);
+        $response = $response['hits']['hits'];
+//        var_dump($response);
+        $tbl = new Console_Table();
+
+        $tbl->setHeaders(array('Название', 'Стоимость'));
+
+        foreach ($response as $item) {
+            $tbl->addRow(array(
+                $item['_source']['title'],
+                $item['_source']['price'].' RUB'
+            ));
+        }
+
+        echo $tbl->getTable();
+
     }
 
 }

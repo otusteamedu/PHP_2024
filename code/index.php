@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 use App\App;
 
-require_once(__DIR__.'/vendor/autoload.php');
+require_once(dirname(__DIR__).'/vendor/autoload.php');
 
 
 
 try {
     $client = new App();
 
-    $client->run($argv);
+    return $client->run($argv);
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

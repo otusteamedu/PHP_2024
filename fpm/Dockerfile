@@ -1,5 +1,7 @@
 FROM php:8.2-fpm
 
+EXPOSE 9000
+
 RUN apt-get update && apt-get install -y \
     curl \
     wget \
@@ -12,24 +14,22 @@ RUN apt-get update && apt-get install -y \
 	libmcrypt-dev \
 	libmemcached-dev \
 	zlib1g-dev \
-	libssl-dev
-#    && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip \
-#	&& docker-php-ext-configure sockets \
-#	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
-#    && docker-php-ext-install -j$(nproc) gd
+	libssl-dev \
+    && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip \
+	&& docker-php-ext-configure sockets \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd \
 #    && pecl install redis && docker-php-ext-enable redis \
 #    && pecl install -f memcached-3.2.0 && docker-php-ext-enable memcached \
 #    && pecl install xdebug && docker-php-ext-enable xdebug \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-
-
-#COPY ./composer.json /data/composer.json
 
 WORKDIR /data
-#VOLUME /data
+#COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+#COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./composer.json /data/composer.json
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN composer install && composer dump-autoload
-ENV COMPOSER_ALLOW_SUPERUSER 1
 
 CMD ["php-fpm"]

@@ -9,26 +9,16 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class App extends Elasticsearch
 {
-    public function run(array $argv): array
+    public function run(array $argv)
     {
         $params = $this->validate($argv);
 
         $elastic = new Elasticsearch();
         return $elastic->search($params);
-
     }
 
-//{
-//  "title":"Кто подставил поручика Ржевского на Луне",
-//  "sku":"500-000",
-//  "category":"Исторический роман",
-//  "price":3761,
-//  "stock":[
-//      {"shop":"Мира","stock":17},
-//      {"shop":"Ленина","stock":1}
-//  ]
-//}
 
+    # Request: index.php title='рыцОри' category='Исторические романы' price='0-2000'
     #[ArrayShape(['title' => "string", 'category' => "string", 'price' => "array"])]
     private function validate(array $params): array
     {
@@ -57,7 +47,6 @@ class App extends Elasticsearch
                 $prepared['price'] = [$exp[0],$exp[1]];
             }
         }
-
         return $prepared;
     }
 

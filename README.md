@@ -7,7 +7,7 @@
 
 2. Для заполнения индекса выполняем команду:
 
-    `docker exec -it php-fpm curl --location --insecure --request POST 'elasticsearch:9200/_bulk' --header 'Content-Type: application/json' --data-binary "@books.json"`
+    `docker exec -it php-fpm curl --location --insecure --request POST 'elasticsearch:9200/_bulk' --header 'Content-Type: application/json' --data-binary "@app/books.json"`
 
 
 Цель:
