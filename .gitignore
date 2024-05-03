@@ -6,6 +6,7 @@
 .LSOverride
 .env
 /app2/
+/app7/
 
 ###> symfony/framework-bundle ###
 /app/.env.local
