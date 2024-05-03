@@ -3,11 +3,12 @@ version: "3"
 services:
   php-fpm:
     build:
-      context: fpm
-      dockerfile: ./Dockerfile
+      context: ./docker
+      dockerfile: Dockerfile
     container_name: php-fpm
     volumes:
-      - ./data:/data
+      - ./code:/data
+      - ./docker/composer.json:/data/composer.json
     networks:
       - php-fpm-network
 
