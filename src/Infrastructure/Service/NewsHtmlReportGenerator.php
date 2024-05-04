@@ -12,6 +12,7 @@ class NewsHtmlReportGenerator implements ReportGeneratorInterface
     public function __construct(
         private readonly string $reportFilePath,
         private readonly string $reportUrl,
+        private readonly string $newsReportFilePrefix,
     ) {
     }
 
@@ -22,12 +23,12 @@ class NewsHtmlReportGenerator implements ReportGeneratorInterface
     {
         $reportContent = $this->createContent($data);
 
-        $filename = 'news_report_' . date('Ymd_His') . '.html';
+        $filename = $this->newsReportFilePrefix . date('Ymd_His') . '.html';
         $filePath = $this->reportFilePath . DIRECTORY_SEPARATOR . $filename;
 
         file_put_contents($filePath, $reportContent);
 
-        return $this->reportUrl . $filePath;
+        return $this->reportUrl . DIRECTORY_SEPARATOR . $filename;
     }
 
     /**
