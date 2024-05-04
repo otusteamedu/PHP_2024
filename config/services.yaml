@@ -7,6 +7,9 @@ services:
 
         bind:
             $seleniumGridUrl: '%env(SELENIUM_GRID_URL)%'
+            $reportFilePath: '%kernel.project_dir%%env(REPORT_FILE_PATH)%'
+            $newsReportFilePrefix: '%env(NEWS_REPORT_FILE_PREFIX)%'
+            $reportUrl: '%env(REPORT_URL)%'
 
     App\:
         resource: '../src/'

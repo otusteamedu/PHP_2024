@@ -5,11 +5,22 @@ declare(strict_types=1);
 namespace App\Application\UseCase;
 
 use App\Application\UseCase\Response\CreateReportResponse;
+use App\Domain\Repository\NewsRepositoryInterface;
+use App\Domain\Service\ReportGeneratorInterface;
 
 class CreateReportUseCase
 {
+    public function __construct(
+        private readonly NewsRepositoryInterface $newsRepository,
+        private readonly ReportGeneratorInterface $newsReportGenerator,
+    ) {
+    }
+
     public function __invoke(): CreateReportResponse
     {
-        return new CreateReportResponse('report/path/report.html');
+        $newsList = $this->newsRepository->getNewsList();
+        $fileLink = $this->newsReportGenerator->generateReport($newsList);
+
+        return new CreateReportResponse($fileLink);
     }
 }
