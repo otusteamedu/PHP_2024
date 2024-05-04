@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Normalizer;
 
 use App\Domain\Entity\News;
-use App\Domain\Interface\NormalizerInterface;
+use App\Domain\Service\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormalizerInterface;
 
 class SymfonyNewsNormalizer implements NormalizerInterface, SymfonyNormalizerInterface

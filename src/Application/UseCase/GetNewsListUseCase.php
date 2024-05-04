@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Application\UseCase;
 
 use App\Application\UseCase\Response\GetNewsListResponse;
-use App\Domain\Interface\NewsRepositoryInterface;
-use App\Domain\Interface\NormalizerInterface;
+use App\Domain\Repository\NewsRepositoryInterface;
+use App\Domain\Service\NormalizerInterface;
 
 class GetNewsListUseCase
 {

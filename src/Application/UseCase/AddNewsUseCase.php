@@ -6,11 +6,11 @@ namespace App\Application\UseCase;
 
 use App\Application\Exception\FailedToLoadHtmlContent;
 use App\Application\Exception\PageTitleNotFoundException;
-use App\Application\Interface\GetPageTitleInterface;
+use App\Application\Service\GetPageTitleInterface;
 use App\Application\UseCase\Request\AddNewsRequest;
 use App\Application\UseCase\Response\AddNewsResponse;
 use App\Domain\Entity\News;
-use App\Domain\Interface\NewsRepositoryInterface;
+use App\Domain\Repository\NewsRepositoryInterface;
 
 class AddNewsUseCase
 {

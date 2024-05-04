@@ -18,7 +18,7 @@ doctrine:
                 prefix: 'App\Domain\Entity'
                 alias: Entity
 
-            ValueObjects: # Новая конфигурация для объектов-значения
+            ValueObjects:
                 type: xml
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Infrastructure/Database/ORM/ValueObject'
