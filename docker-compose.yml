@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: app
+    volumes:
+      - .:/app
+    depends_on:
+      - elastic
+    env_file:
+      - .env
+    networks:
+      - net
+
+  elastic:
+    image: elasticsearch:8.12.2
+    container_name: elastic
+    ports:
+      - "9200:9200"
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - discovery.type=single-node
+    networks:
+      - net
+networks:
+  net:
+    driver: bridge
