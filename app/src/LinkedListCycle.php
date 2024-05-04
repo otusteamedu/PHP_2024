@@ -19,6 +19,8 @@ class LinkedListCycle
     const NODE_VAL_LIMIT_MAX = 100000;
 
     /**
+     * Алгоритмическая сложность - O(n), где
+     * n - количество узлов в связанном списке
      * @param ListNode|null $head
      * @return bool
      */

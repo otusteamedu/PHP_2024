@@ -7,6 +7,9 @@ namespace Otus\Hw14;
 class Phone
 {
     /**
+     * Алгоритмическая сложность - O(k^n), где
+     * k - среднее количество букв, соответствующих каждой цифре,
+     * n - количество цифр в строке.
      * @param string|null $digits
      * @return array
      */
