@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JuliaZhigareva\OtusComposerPackage;
 
 use Exception;
+
 class Server
 {
     private Socket $socket;
@@ -50,4 +51,3 @@ class Server
         $this->socket->close();
     }
 }
-
