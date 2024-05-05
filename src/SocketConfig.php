@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JuliaZhigareva\OtusComposerPackage;
 
 use DomainException;
+
  readonly class SocketConfig
 {
      public string $socketPath;
@@ -26,5 +27,4 @@ use DomainException;
          $this->socketPath = $socketPath;
          $this->maxLength = (int)$maxLength;
      }
-
 }

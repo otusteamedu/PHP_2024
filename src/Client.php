@@ -39,4 +39,3 @@ class Client
         $this->socket->close();
     }
 }
-

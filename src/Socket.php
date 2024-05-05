@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JuliaZhigareva\OtusComposerPackage;
 
 use Exception;
+
 class Socket
 {
     private \Socket $socket;
