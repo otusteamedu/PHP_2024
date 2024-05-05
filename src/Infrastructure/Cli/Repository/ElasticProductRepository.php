@@ -41,13 +41,13 @@ readonly class ElasticProductRepository implements ProductRepositoryInterface
                         $param->field => ['gte' => $param->value]
                     ],
                 ];
-            }  elseif ($param->comparisonType === ValueMatchingType::LESS_THAN) {
+            } elseif ($param->comparisonType === ValueMatchingType::LESS_THAN) {
                 $searchConditions[] = [
                     'range' => [
                         $param->field => ['lte' => $param->value]
                     ],
                 ];
-            }  elseif ($param->comparisonType === ValueMatchingType::ENTRY) {
+            } elseif ($param->comparisonType === ValueMatchingType::ENTRY) {
                 $searchConditions[] = [
                     'match' => [
                         $param->field => [
