@@ -44,7 +44,7 @@ class PostRequestValidator extends AbstractRequestValidator
     /**
      * @return void
      */
-    private function checkPostString():void
+    private function checkPostString(): void
     {
         if (empty($this->postString)) {
             $this->addError('String parameter is empty');

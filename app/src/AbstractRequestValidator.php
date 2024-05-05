@@ -6,8 +6,8 @@ namespace Otus\Hw4;
 
 abstract class AbstractRequestValidator
 {
-    const int BAD_REQUEST_CODE = 400;
-    const int OK_CODE = 200;
+    const INT BAD_REQUEST_CODE = 400;
+    const INT OK_CODE = 200;
 
     /**
      * @var array|string[]
