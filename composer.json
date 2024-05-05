@@ -1,0 +1,19 @@
+{
+  "name": "shtorm/homework14",
+  "type": "project",
+  "require": {
+    "elasticsearch/elasticsearch": "^8.13",
+    "symfony/console": "^7.0",
+    "php": ">=8.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
