@@ -1,0 +1,25 @@
+{
+    "name": "dsmolyaninov/hw5",
+    "autoload": {
+        "psr-4": {
+            "Dsmolyaninov\\Hw5\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitry Smolyaninov",
+            "email": "smolyaninovda@gmail.com"
+        }
+    ],
+    "require": {
+      "ext-sockets": "*",
+      "ext-pcntl": "*",
+      "ext-readline": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10"
+    },
+    "scripts": {
+        "phpstan": "./vendor/bin/phpstan analyse"
+    }
+}
