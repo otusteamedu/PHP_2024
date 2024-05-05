@@ -19,8 +19,8 @@ class ElasticSearchGateway implements SearchGatewayInterface {
    * Constructor.
    */
   public function __construct(
-    private HttpClientInterface $voiceflowClient,
-    private SerializerInterface $serializer
+    // private HttpClientInterface $voiceflowClient,
+    // private SerializerInterface $serializer
   ) {
   }
 
@@ -29,7 +29,13 @@ class ElasticSearchGateway implements SearchGatewayInterface {
    */
   public function search(SearchGatewayRequest $request): SearchGatewayResponse {
     try {
-      $result = [];
+      $result = [
+        'query' => $request->query,
+        'gte' => $request->gte,
+        'lte' => $request->lte,
+        'category' => $request->category,
+        'shop' => $request->shop
+      ];
       return new SearchGatewayResponse(
         $result
       );

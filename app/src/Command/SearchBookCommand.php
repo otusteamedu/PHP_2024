@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use App\Application\UseCase\SearchUseCase;
+use App\Application\UseCase\Request\SearchRequest;
 
 #[AsCommand(
     name: 'app:search-book',
@@ -16,7 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class SearchBookCommand extends Command
 {
-    public function __construct()
+    public function __construct(private SearchUseCase $useCase)
     {
         parent::__construct();
     }
@@ -50,6 +52,23 @@ class SearchBookCommand extends Command
         }
         if ($shop = $input->getOption('shop')) {
             $io->note(sprintf('Shop: %s', $shop));
+        }
+
+        try {
+            $request = new SearchRequest(
+                $query ?? NULL,
+                $gte ?? NULL,
+                $lte ?? NULL,
+                $category ?? NULL,
+                $shop ?? NULL
+            );
+            $response = ($this->useCase)($request);
+            $io->success(
+                json_encode($response->traces)
+            );
+        }
+        catch (\Throwable $th) {
+            $io->error($th->getMessage());
         }
 
         $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
