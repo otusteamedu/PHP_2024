@@ -12,7 +12,6 @@ readonly class SearchProductResponse
         public string $category,
         public int $price,
         public int $stock
-    )
-    {
+    ) {
     }
 }
