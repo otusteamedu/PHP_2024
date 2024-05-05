@@ -6,7 +6,7 @@ namespace App\Domain\Dto;
 
 use App\Domain\Enum\ValueMatchingType;
 
-class SearchCondition
+readonly class SearchCondition
 {
     public function __construct(
         public string $field,

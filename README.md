@@ -1,3 +1,16 @@
-# PHP_2024
+# Приложение для поиска на Elasticsearch
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Консольное приложение поиска по базе товаров
+
+## Требования
+
+- PHP 8.2
+
+## Запуск локального окружения
+
+- Установить значения окружения на основе файла ```.env.example```
+- Выполнить ```docker-compose up --build```
+- Перейти в контейнер ```docker exec -it {APP_NAME}_php bash```
+- Запустить приложение в нужном режиме, выполнив команду:
+    - Загрузка дампа данных в базу ```php app.php app:load-dump {путь_до_файла_json}```
+    - Запуск поиска по базе пример ```php app.php app:search "category*исторические романы" "title*рыцОри" "price<2000" "stock>1"``` 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Response;
 
-class SearchProductResponse
+readonly class SearchProductResponse
 {
     public function __construct(
         public string $id,
