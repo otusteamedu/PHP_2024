@@ -4,4 +4,4 @@
 .AppleDouble
 .LSOverride
 .env
-./docker/elasticsearch/*
+./docker/elasticsearch/data/
