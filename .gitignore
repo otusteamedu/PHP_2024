@@ -1,5 +1,6 @@
 .idea/
 /vendor/
+app/vendor/
 var/
 .DS_Store
 .AppleDouble

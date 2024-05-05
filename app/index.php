@@ -1,25 +1,22 @@
 <?php
 
-//phpinfo();
+declare(strict_types=1);
 
-$options = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => false
-];
+require 'vendor/autoload.php';
+
+use Otus\Hw4\PostRequestValidator;
+
+echo "Запрос обработал контейнер: {$_SERVER['HOSTNAME']}" . PHP_EOL;
 
 try {
-    $pdo = new PDO(
-        getenv('MYSQL_DSN'),
-        getenv('MYSQL_USER'),
-        getenv('MYSQL_PASSWORD'),
-        $options
+    $validator = new PostRequestValidator(
+        $_SERVER["REQUEST_METHOD"] ?? '',
+        $_POST['string'] ?? ''
     );
-    echo "Соединение установлено успешно!";
-} catch (PDOException $e) {
-    die("Ошибка подключения к базе данных: " . $e->getMessage());
+
+    http_response_code($validator->getResponseCode());
+    echo $validator->getMessage();
+} catch (Exception $exception) {
+    http_response_code(400);
+    echo $exception->getMessage() . PHP_EOL;
 }
-
-// Дальнейшая работа с базой данных...
-
-// Закрытие соединения (если оно больше не нужно)
-$pdo = null;
