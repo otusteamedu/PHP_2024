@@ -34,7 +34,11 @@ class App extends Elasticsearch
         ];
 
         foreach ($params as $param) {
+
+            $param = trim($param);
+            $param = str_replace('  ',' ',$param);
             $explode = explode('=',$param);
+
             if ($explode[0] == 'title') {
                 $prepared['title'] = (string)$explode[1];
             }

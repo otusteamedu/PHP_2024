@@ -44,20 +44,57 @@ class Elasticsearch
     {
         $client = $this->clientInit();
         var_dump($request);
+
+//        ["match"=> ["category" => $category]],
+//        ["match"=> ["title" => $title]],
+//        ["range" => ["price" => $price]],
+//        ["range" => ["stock.stock" =>["gte"=>"1"]]]
+
+
+
+        if (empty($request['category'])) {
+            $category = [
+                'match_all' => (object)[]
+
+            ];
+        } else $category = [
+            "match"=> [
+                "category" => [
+                    "query" => $request['category'],
+                    "fuzziness" => "2",
+                    "operator" => "AND"
+                ]
+            ]
+        ];
+
+        $title = [
+            "match"=> [
+                "title" =>[
+                    "query" => $request['title'],
+                    "fuzziness" => "2"
+                ]
+            ]
+        ];
+
+        $price = [
+            "range" => [
+                "price" => [
+                    "gte" => 0,
+                    "lte" => 2000
+                ]
+            ]
+        ];
+
+        $stock = ["range" => ["stock.stock" =>["gte"=>"1"]]];
+
         $params = [
             "index" => self::INDEX,
             "body"  => [
                 "query" => [
-                    "match" => [ "title" => $request['title']]
-//                    "match" => [
-//                        "content" => [
-//                            "query" => $request['title'],
-//                            "fuzziness" => "auto"
-//
-//                        ]
-//
-//                    ]
-                ]
+                    "bool" => [
+                        "must" => [ $category, $title, $price, $stock ]
+                    ]
+                ],
             ]
         ];
 
@@ -66,19 +103,19 @@ class Elasticsearch
 
         $response = $client->search($params);
         $response = $response['hits']['hits'];
-//        var_dump($response);
-        $tbl = new Console_Table();
-
-        $tbl->setHeaders(array('Название', 'Стоимость'));
-
-        foreach ($response as $item) {
-            $tbl->addRow(array(
-                $item['_source']['title'],
-                $item['_source']['price'].' RUB'
-            ));
-        }
-
-        echo $tbl->getTable();
+        var_dump($response);
+//        $tbl = new Console_Table();
+//        $tbl->setHeaders(array('Название', 'Стоимость','Релевантность'));
+//
+//        foreach ($response as $item) {
+//            $tbl->addRow(array(
+//                $item['_source']['title'],
+//                $item['_source']['price'].' RUB',
+//                $item['_source']['stock']['stock']
+//            ));
+//        }
+//
+//        echo $tbl->getTable();
 
     }
 
