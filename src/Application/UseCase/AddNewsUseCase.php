@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
-use App\Application\ContentDownloaderInterface;
+use App\Application\ContentDownloader\ContentDownloaderInterface;
 use App\Application\UseCase\Request\AddNewsRequest;
 use App\Application\UseCase\Response\AddNewsResponse;
 use App\Domain\Entity\News;
@@ -12,7 +12,7 @@ use App\Domain\Exception\DomainException;
 use App\Domain\ObjectValue\Title;
 use App\Domain\ObjectValue\Url;
 use App\Domain\Repository\NewsRepositoryInterface;
-use App\Infrastructure\HtmlParser;
+use App\Infrastructure\Parser\HtmlParser;
 
 class AddNewsUseCase
 {

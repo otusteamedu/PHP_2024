@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
-use App\Application\ReportMakerInterface;
-use App\Application\StaticFileStorageInterface;
+use App\Application\ReportMaker\ReportMakerInterface;
 use App\Application\UseCase\Request\MakeConsolidatedReportRequest;
+use App\Application\UseCase\Request\NewsItemRequest;
 use App\Application\UseCase\Response\ConsolidatedReportResponse;
+use App\Domain\Entity\News;
 use App\Domain\Exception\DomainException;
 use App\Domain\Repository\NewsRepositoryInterface;
+use App\Infrastructure\StaticFileStorage\StaticFileStorageInterface;
 
 class MakeReportUseCase
 {
@@ -31,14 +33,16 @@ class MakeReportUseCase
             throw new DomainException('News not found');
         }
 
-        $content = $this->reportMaker->makeReport($newsList);
+        $newsItems = array_map(
+            static fn (News $item) => new NewsItemRequest($item->getUrl()->getValue(), $item->getTitle()->getValue()),
+            $newsList
+        );
+
+        $content = $this->reportMaker->makeReport($newsItems);
         if (empty($content)) {
             throw new DomainException('Failed to create consolidated report');
         }
 
-        $fileName = 'report_' . time() . '.html';
-        $this->fileStorage->saveReportFile($fileName, $content);
-
-        return new ConsolidatedReportResponse($this->fileStorage->getStaticReportFileUriPath($fileName));
+        return new ConsolidatedReportResponse($this->fileStorage->saveReportFile($content));
     }
 }

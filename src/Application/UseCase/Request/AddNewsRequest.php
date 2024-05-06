@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Request;
 
-class AddNewsRequest
+readonly class AddNewsRequest
 {
-    public function __construct(public readonly string $url)
+    public function __construct(public string $url)
     {
     }
 }

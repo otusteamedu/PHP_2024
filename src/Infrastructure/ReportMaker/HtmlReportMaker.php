@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure;
+namespace App\Infrastructure\ReportMaker;
 
-use App\Application\ReportMakerInterface;
+use App\Application\ReportMaker\ReportMakerInterface;
 
 class HtmlReportMaker implements ReportMakerInterface
 {
@@ -12,7 +12,7 @@ class HtmlReportMaker implements ReportMakerInterface
     {
         $content = "<ul>";
         foreach ($newsList as $news) {
-            $content .= "<li><a href=\"{$news->getUrl()->getValue()}\">{$news->getTitle()->getValue()}</a></li>";
+            $content .= "<li><a href=\"{$news->url}\">{$news->title}</a></li>";
         }
         $content .= "<ul>";
 

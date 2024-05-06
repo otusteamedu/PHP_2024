@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure;
+namespace App\Infrastructure\ContentDownloader;
 
-use App\Application\ContentDownloaderInterface;
+use App\Application\ContentDownloader\ContentDownloaderInterface;
 use App\Domain\Exception\DomainException;
 
 class FileContentDownloader implements ContentDownloaderInterface

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure;
+namespace App\Infrastructure\Parser;
 
-use App\Application\HtmlParserInterface;
+use App\Application\Parser\HtmlParserInterface;
 use App\Domain\Exception\DomainException;
 
 class HtmlParser implements HtmlParserInterface
