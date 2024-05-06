@@ -25,6 +25,6 @@ final class MakeReportController extends AbstractController
         } catch (\Throwable $e) {
             return $this->json(['Error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
-        return $this->json(['url' => $this->generateUrl('/reports/' . $response->fileUriPath)]);
+        return $this->json(['url' => $this->generateUrl($response->fileUriPath)]);
     }
 }
