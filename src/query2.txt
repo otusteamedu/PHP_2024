@@ -1,0 +1,62 @@
+-- 2 Подсчёт проданных билетов за неделю
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    COUNT(*)
+FROM
+    tickets t
+WHERE
+  t.sold_at >= CURRENT_TIMESTAMP - '1 week'::interval AND
+  t.sold_at < CURRENT_TIMESTAMP;
+
+
+
+EXPLAIN ANALYZE на 10000 строк.
+
+| QUERY PLAN                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------- |
+| Aggregate  (cost=255.40..255.41 rows=1 width=8) (actual time=1.462..1.463 rows=1 loops=1)                     |
+|   ->  Seq Scan on tickets t  (cost=0.00..255.30 rows=41 width=0) (actual time=0.010..1.425 rows=1193 loops=1) |
+|         Filter: ((sold_at < CURRENT_TIMESTAMP) AND (sold_at >= (CURRENT_TIMESTAMP - '7 days'::interval)))     |
+|         Rows Removed by Filter: 8807                                                                          |
+| Planning Time: 4.113 ms                                                                                       |
+| Execution Time: 1.475 ms                                                                                      |
+
+
+
+EXPLAIN ANALYZE на 10000000 строк.
+
+| QUERY PLAN                                                                                                                                    |
+| --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Finalize Aggregate  (cost=147204.95..147204.96 rows=1 width=8) (actual time=5253.929..5259.724 rows=1 loops=1)                                |
+|   ->  Gather  (cost=147204.74..147204.95 rows=2 width=8) (actual time=5253.810..5259.711 rows=3 loops=1)                                      |
+|         Workers Planned: 2                                                                                                                    |
+|         Workers Launched: 2                                                                                                                   |
+|         ->  Partial Aggregate  (cost=146204.74..146204.75 rows=1 width=8) (actual time=5229.797..5229.797 rows=1 loops=3)                     |
+|               ->  Parallel Seq Scan on tickets t  (cost=0.00..146161.75 rows=17195 width=0) (actual time=3.174..5212.605 rows=388446 loops=3) |
+|                     Filter: ((sold_at < CURRENT_TIMESTAMP) AND (sold_at >= (CURRENT_TIMESTAMP - '7 days'::interval)))                         |
+|                     Rows Removed by Filter: 2944888                                                                                           |
+| Planning Time: 2.683 ms                                                                                                                       |
+| JIT:                                                                                                                                          |
+|   Functions: 14                                                                                                                               |
+|   Options: Inlining false, Optimization false, Expressions true, Deforming true                                                               |
+|   Timing: Generation 1.448 ms, Inlining 0.000 ms, Optimization 0.342 ms, Emission 7.727 ms, Total 9.517 ms                                    |
+| Execution Time: 5270.816 ms                                                                                                                   |
+
+
+
+Добавил индекс по полю tickets.sold_at:
+CREATE INDEX index__tickets__sold_at ON tickets(sold_at) WHERE sold_at IS NOT NULL;
+
+| QUERY PLAN                                                                                                                                                                       |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Finalize Aggregate  (cost=23401.26..23401.27 rows=1 width=8) (actual time=42.855..45.056 rows=1 loops=1)                                                                         |
+|   ->  Gather  (cost=23401.04..23401.25 rows=2 width=8) (actual time=42.850..45.052 rows=3 loops=1)                                                                               |
+|         Workers Planned: 2                                                                                                                                                       |
+|         Workers Launched: 2                                                                                                                                                      |
+|         ->  Partial Aggregate  (cost=22401.04..22401.05 rows=1 width=8) (actual time=33.976..33.976 rows=1 loops=3)                                                              |
+|               ->  Parallel Index Only Scan using index__tickets__sold_at on tickets t  (cost=0.44..21153.33 rows=499085 width=0) (actual time=0.139..21.887 rows=388327 loops=3) |
+|                     Index Cond: ((sold_at >= (CURRENT_TIMESTAMP - '7 days'::interval)) AND (sold_at < CURRENT_TIMESTAMP))                                                        |
+|                     Heap Fetches: 0                                                                                                                                              |
+| Planning Time: 0.055 ms                                                                                                                                                          |
+| Execution Time: 45.073 ms                                                                                                                                                        |                                                                                                                                         |
+

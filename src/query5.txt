@@ -1,0 +1,87 @@
+--5 Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    st.row_number,
+    st.seat_number,
+    CASE
+        WHEN t.sold_at IS NOT NULL THEN '+'
+        ELSE ' '
+    END AS state
+FROM
+    sessions s
+        INNER JOIN seats st ON s.hall_id = st.hall_id AND s.id = 1
+        LEFT JOIN tickets t ON st.id = t.seat_id AND t.session_id = s.id
+ORDER BY
+    st.row_number,
+    st.seat_number;
+
+
+
+EXPLAIN ANALYZE на 10000 строк.
+
+| QUERY PLAN                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sort  (cost=26.43..26.45 rows=5 width=36) (actual time=0.240..0.245 rows=200 loops=1)                                                                         |
+|   Sort Key: st.row_number, st.seat_number                                                                                                                     |
+|   Sort Method: quicksort  Memory: 31kB                                                                                                                        |
+|   ->  Nested Loop Left Join  (cost=0.59..26.38 rows=5 width=36) (actual time=0.012..0.220 rows=200 loops=1)                                                   |
+|         ->  Nested Loop  (cost=0.30..22.82 rows=5 width=12) (actual time=0.008..0.043 rows=200 loops=1)                                                       |
+|               ->  Index Scan using sessions_pkey on sessions s  (cost=0.15..8.17 rows=1 width=6) (actual time=0.004..0.004 rows=1 loops=1)                    |
+|                     Index Cond: (id = 1)                                                                                                                      |
+|               ->  Index Scan using index__seats__hall_id on seats st  (cost=0.15..12.65 rows=200 width=10) (actual time=0.002..0.020 rows=200 loops=1)        |
+|                     Index Cond: (hall_id = s.hall_id)                                                                                                         |
+|         ->  Index Scan using tickets__session_id__seat_id__unique on tickets t  (cost=0.29..0.70 rows=1 width=16) (actual time=0.001..0.001 rows=1 loops=200) |
+|               Index Cond: ((session_id = 1) AND (seat_id = st.id))                                                                                            |
+| Planning Time: 3.876 ms                                                                                                                                       |
+| Execution Time: 0.265 ms                                                                                                                                      |
+
+
+
+EXPLAIN ANALYZE на 10000000 строк.
+
+| QUERY PLAN                                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Sort  (cost=51.40..51.90 rows=200 width=36) (actual time=0.477..0.483 rows=200 loops=1)                                                                      |
+|   Sort Key: st.row_number, st.seat_number                                                                                                                    |
+|   Sort Method: quicksort  Memory: 31kB                                                                                                                       |
+|   ->  Hash Left Join  (cost=20.72..43.76 rows=200 width=36) (actual time=0.394..0.454 rows=200 loops=1)                                                      |
+|         Hash Cond: (st.id = t.seat_id)                                                                                                                       |
+|         ->  Nested Loop  (cost=0.44..22.96 rows=200 width=12) (actual time=0.117..0.151 rows=200 loops=1)                                                    |
+|               ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..8.31 rows=1 width=6) (actual time=0.004..0.004 rows=1 loops=1)                   |
+|                     Index Cond: (id = 1)                                                                                                                     |
+|               ->  Index Scan using index__seats__hall_id on seats st  (cost=0.15..12.65 rows=200 width=10) (actual time=0.111..0.127 rows=200 loops=1)       |
+|                     Index Cond: (hall_id = s.hall_id)                                                                                                        |
+|         ->  Hash  (cost=16.18..16.18 rows=328 width=16) (actual time=0.272..0.272 rows=200 loops=1)                                                          |
+|               Buckets: 1024  Batches: 1  Memory Usage: 17kB                                                                                                  |
+|               ->  Index Scan using index__tickets__session_id on tickets t  (cost=0.43..16.18 rows=328 width=16) (actual time=0.117..0.249 rows=200 loops=1) |
+|                     Index Cond: (session_id = 1)                                                                                                             |
+| Planning Time: 3.822 ms                                                                                                                                      |
+| Execution Time: 0.503 ms                                                                                                                                     |
+
+
+
+В целом необходимые индексы уже существуют, так как они сразу создавались для всех внешних ключей.
+Чтобы ускорить запрос можно, в качестве примера, модифицировать индекс index__tickets__session_id:
+DROP INDEX index__tickets__session_id;
+CREATE INDEX index__tickets__session_id ON tickets(session_id) INCLUDE(seat_id, sold_at);
+
+
+| QUERY PLAN                                                                                                                                                        |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sort  (cost=49.40..49.90 rows=200 width=36) (actual time=0.163..0.170 rows=200 loops=1)                                                                           |
+|   Sort Key: st.row_number, st.seat_number                                                                                                                         |
+|   Sort Method: quicksort  Memory: 31kB                                                                                                                            |
+|   ->  Hash Left Join  (cost=18.72..41.76 rows=200 width=36) (actual time=0.068..0.142 rows=200 loops=1)                                                           |
+|         Hash Cond: (st.id = t.seat_id)                                                                                                                            |
+|         ->  Nested Loop  (cost=0.44..22.96 rows=200 width=12) (actual time=0.010..0.050 rows=200 loops=1)                                                         |
+|               ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..8.31 rows=1 width=6) (actual time=0.005..0.006 rows=1 loops=1)                        |
+|                     Index Cond: (id = 1)                                                                                                                          |
+|               ->  Index Scan using index__seats__hall_id on seats st  (cost=0.15..12.65 rows=200 width=10) (actual time=0.003..0.024 rows=200 loops=1)            |
+|                     Index Cond: (hall_id = s.hall_id)                                                                                                             |
+|         ->  Hash  (cost=14.18..14.18 rows=328 width=16) (actual time=0.054..0.054 rows=200 loops=1)                                                               |
+|               Buckets: 1024  Batches: 1  Memory Usage: 17kB                                                                                                       |
+|               ->  Index Only Scan using index__tickets__session_id on tickets t  (cost=0.43..14.18 rows=328 width=16) (actual time=0.013..0.031 rows=200 loops=1) |
+|                     Index Cond: (session_id = 1)                                                                                                                  |
+|                     Heap Fetches: 0                                                                                                                               |
+| Planning Time: 0.227 ms                                                                                                                                           |
+| Execution Time: 0.192 ms                                                                                                                                          |                                                                                                                               |

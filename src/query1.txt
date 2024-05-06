@@ -1,0 +1,47 @@
+-- 1 Выбор всех фильмов на сегодня
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    m.*
+FROM
+    movies m
+WHERE
+    m.release_date <= CURRENT_DATE;
+
+
+
+EXPLAIN ANALYZE на 10000 строк.
+
+| QUERY PLAN                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------- |
+| Seq Scan on movies m  (cost=0.00..878.33 rows=3185 width=558) (actual time=0.005..1.528 rows=2951 loops=1) |
+|   Filter: (release_date <= CURRENT_DATE)                                                                   |
+|   Rows Removed by Filter: 7049                                                                             |
+| Planning Time: 0.626 ms                                                                                    |
+| Execution Time: 1.591 ms                                                                                   |                                                                                      |
+
+
+
+EXPLAIN ANALYZE на 10000000 строк. (Количество записей в таблице movies не менялось)
+
+| QUERY PLAN                                                                                                 |
+| ---------------------------------------------------------------------------------------------------------- |
+| Seq Scan on movies m  (cost=0.00..877.13 rows=3181 width=558) (actual time=0.007..1.645 rows=2924 loops=1) |
+|   Filter: (release_date <= CURRENT_DATE)                                                                   |
+|   Rows Removed by Filter: 7076                                                                             |
+| Planning Time: 0.033 ms                                                                                    |
+| Execution Time: 1.727 ms                                                                                   |                                                                       |                                                                                                  |
+
+
+
+Добавил индекс по полю movies.release_date:
+CREATE INDEX index__movies__release_date ON movies(release_date);
+
+| QUERY PLAN                                                                                                                                |
+| ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Bitmap Heap Scan on movies m  (cost=55.10..833.26 rows=2944 width=554) (actual time=0.169..0.797 rows=2924 loops=1)                       |
+|   Recheck Cond: (release_date <= CURRENT_DATE)                                                                                            |
+|   Heap Blocks: exact=724                                                                                                                  |
+|   ->  Bitmap Index Scan on index__movies__release_date  (cost=0.00..54.37 rows=2944 width=0) (actual time=0.115..0.115 rows=2924 loops=1) |
+|         Index Cond: (release_date <= CURRENT_DATE)                                                                                        |
+| Planning Time: 0.035 ms                                                                                                                   |
+| Execution Time: 0.861 ms                                                                                                                  |                                                                           |
