@@ -1,0 +1,68 @@
+-- 3  Формирование афиши (фильмы, которые показывают сегодня)
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    m.title, s.starts_at
+FROM movies m
+    INNER JOIN sessions s ON m.id = s.movie_id AND
+      s.starts_at >= CURRENT_DATE AND
+      s.starts_at < CURRENT_DATE + '1 day'::interval
+ORDER BY s.starts_at;
+
+
+
+EXPLAIN ANALYZE на 10000 строк.
+
+| QUERY PLAN                                                                                                                                                |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sort  (cost=100.04..100.06 rows=8 width=524) (actual time=0.064..0.065 rows=24 loops=1)                                                                   |
+|   Sort Key: s.starts_at                                                                                                                                   |
+|   Sort Method: quicksort  Memory: 26kB                                                                                                                    |
+|   ->  Nested Loop  (cost=23.55..99.92 rows=8 width=524) (actual time=0.017..0.057 rows=24 loops=1)                                                        |
+|         ->  Bitmap Heap Scan on sessions s  (cost=23.26..33.50 rows=8 width=12) (actual time=0.010..0.012 rows=24 loops=1)                                |
+|               Recheck Cond: ((starts_at >= CURRENT_DATE) AND (starts_at < (CURRENT_DATE + '1 day'::interval)))                                            |
+|               Heap Blocks: exact=1                                                                                                                        |
+|               ->  Bitmap Index Scan on sessions__hall_id__starts_at__unique  (cost=0.00..23.26 rows=8 width=0) (actual time=0.007..0.007 rows=24 loops=1) |
+|                     Index Cond: ((starts_at >= CURRENT_DATE) AND (starts_at < (CURRENT_DATE + '1 day'::interval)))                                        |
+|         ->  Index Scan using movies_pkey on movies m  (cost=0.29..8.30 rows=1 width=520) (actual time=0.002..0.002 rows=1 loops=24)                       |
+|               Index Cond: (id = s.movie_id)                                                                                                               |
+| Planning Time: 3.247 ms                                                                                                                                   |
+| Execution Time: 0.081 ms                                                                                                                                  |
+
+
+
+EXPLAIN ANALYZE на 10000000 строк.
+
+| QUERY PLAN                                                                                                                         |
+| ---------------------------------------------------------------------------------------------------------------------------------- |
+| Sort  (cost=1660.48..1660.54 rows=23 width=32) (actual time=6.606..6.607 rows=24 loops=1)                                          |
+|   Sort Key: s.starts_at                                                                                                            |
+|   Sort Method: quicksort  Memory: 26kB                                                                                             |
+|   ->  Nested Loop  (cost=0.29..1659.96 rows=23 width=32) (actual time=0.012..6.594 rows=24 loops=1)                                |
+|         ->  Seq Scan on sessions s  (cost=0.00..1493.00 rows=23 width=12) (actual time=0.004..6.511 rows=24 loops=1)               |
+|               Filter: ((starts_at >= CURRENT_DATE) AND (starts_at < (CURRENT_DATE + '1 day'::interval)))                           |
+|               Rows Removed by Filter: 49976                                                                                        |
+|         ->  Index Scan using movies_pkey on movies m  (cost=0.29..7.26 rows=1 width=28) (actual time=0.003..0.003 rows=1 loops=24) |
+|               Index Cond: (id = s.movie_id)                                                                                        |
+| Planning Time: 4.819 ms                                                                                                            |
+| Execution Time: 6.634 ms                                                                                                           |
+
+
+
+Добавил индекс по полю sessions.starts_at:
+CREATE INDEX index__sessions__starts_at ON sessions(starts_at);
+
+| QUERY PLAN                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sort  (cost=247.28..247.34 rows=23 width=32) (actual time=0.553..0.555 rows=24 loops=1)                                                         |
+|   Sort Key: s.starts_at                                                                                                                         |
+|   Sort Method: quicksort  Memory: 26kB                                                                                                          |
+|   ->  Nested Loop  (cost=4.82..246.76 rows=23 width=32) (actual time=0.501..0.542 rows=24 loops=1)                                              |
+|         ->  Bitmap Heap Scan on sessions s  (cost=4.53..79.80 rows=23 width=12) (actual time=0.495..0.496 rows=24 loops=1)                      |
+|               Recheck Cond: ((starts_at >= CURRENT_DATE) AND (starts_at < (CURRENT_DATE + '1 day'::interval)))                                  |
+|               Heap Blocks: exact=1                                                                                                              |
+|               ->  Bitmap Index Scan on index__sessions__starts_at  (cost=0.00..4.53 rows=23 width=0) (actual time=0.492..0.492 rows=24 loops=1) |
+|                     Index Cond: ((starts_at >= CURRENT_DATE) AND (starts_at < (CURRENT_DATE + '1 day'::interval)))                              |
+|         ->  Index Scan using movies_pkey on movies m  (cost=0.29..7.26 rows=1 width=28) (actual time=0.002..0.002 rows=1 loops=24)              |
+|               Index Cond: (id = s.movie_id)                                                                                                     |
+| Planning Time: 2.993 ms                                                                                                                         |
+| Execution Time: 0.569 ms                                                                                                                        |

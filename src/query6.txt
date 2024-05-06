@@ -1,0 +1,51 @@
+--6 Вывести диапазон минимальной и максимальной цены за билет на конкретный сеанс
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    MAX(t.price),
+    MIN(t.price)
+FROM tickets t
+WHERE t.session_id = 1;
+
+
+
+EXPLAIN ANALYZE на 10000 строк.
+
+| QUERY PLAN                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Aggregate  (cost=13.79..13.79 rows=1 width=64) (actual time=0.047..0.047 rows=1 loops=1)                                                        |
+|   ->  Index Scan using index__tickets__session_id on tickets t  (cost=0.29..12.79 rows=200 width=5) (actual time=0.005..0.024 rows=200 loops=1) |
+|         Index Cond: (session_id = 1)                                                                                                            |
+| Planning Time: 0.093 ms                                                                                                                         |
+| Execution Time: 0.059 ms                                                                                                                        |
+
+
+
+EXPLAIN ANALYZE на 10000000 строк.
+
+| QUERY PLAN                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Aggregate  (cost=17.82..17.83 rows=1 width=64) (actual time=0.048..0.048 rows=1 loops=1)                                                        |
+|   ->  Index Scan using index__tickets__session_id on tickets t  (cost=0.43..16.18 rows=328 width=5) (actual time=0.006..0.025 rows=200 loops=1) |
+|         Index Cond: (session_id = 1)                                                                                                            |
+| Planning Time: 0.592 ms                                                                                                                         |
+| Execution Time: 0.062 ms                                                                                                                        |
+
+
+Можно добавить индекс для небольшого ускорения запроса.
+CREATE INDEX index__tickets__session_id__price ON tickets(session_id, price);
+
+| QUERY PLAN                                                                                                                                                                 |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Result  (cost=0.96..0.97 rows=1 width=64) (actual time=0.024..0.025 rows=1 loops=1)                                                                                        |
+|   InitPlan 1 (returns $0)                                                                                                                                                  |
+|     ->  Limit  (cost=0.43..0.48 rows=1 width=5) (actual time=0.016..0.016 rows=1 loops=1)                                                                                  |
+|           ->  Index Only Scan Backward using index__tickets__session_id__price on tickets t  (cost=0.43..15.00 rows=328 width=5) (actual time=0.015..0.015 rows=1 loops=1) |
+|                 Index Cond: ((session_id = 1) AND (price IS NOT NULL))                                                                                                     |
+|                 Heap Fetches: 0                                                                                                                                            |
+|   InitPlan 2 (returns $1)                                                                                                                                                  |
+|     ->  Limit  (cost=0.43..0.48 rows=1 width=5) (actual time=0.006..0.006 rows=1 loops=1)                                                                                  |
+|           ->  Index Only Scan using index__tickets__session_id__price on tickets t_1  (cost=0.43..15.00 rows=328 width=5) (actual time=0.006..0.006 rows=1 loops=1)        |
+|                 Index Cond: ((session_id = 1) AND (price IS NOT NULL))                                                                                                     |
+|                 Heap Fetches: 0                                                                                                                                            |
+| Planning Time: 0.092 ms                                                                                                                                                    |
+| Execution Time: 0.035 ms                                                                                                                                                   |                                                                                                                                              |
