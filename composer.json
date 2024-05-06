@@ -1,0 +1,19 @@
+{
+    "name": "dsmolyaninov/hw6",
+    "description": "Библиотека для верификации адресов электронной почты через проверку формата и DNS MX-записей.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Dsmolyaninov\\Hw6\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitry Smolyaninov",
+            "email": "smolyaninovda@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0 || ^8.0"
+    }
+}
