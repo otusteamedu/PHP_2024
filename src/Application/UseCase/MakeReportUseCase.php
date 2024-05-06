@@ -11,15 +11,13 @@ use App\Application\UseCase\Response\ConsolidatedReportResponse;
 use App\Domain\Entity\News;
 use App\Domain\Exception\DomainException;
 use App\Domain\Repository\NewsRepositoryInterface;
-use App\Infrastructure\StaticFileStorage\StaticFileStorageInterface;
 
 class MakeReportUseCase
 {
 
     public function __construct(
-        private NewsRepositoryInterface    $newsRepository,
-        private ReportMakerInterface       $reportMaker,
-        private StaticFileStorageInterface $fileStorage
+        private NewsRepositoryInterface $newsRepository,
+        private ReportMakerInterface $reportMaker
     ) {}
 
     public function __invoke(MakeConsolidatedReportRequest $request)
@@ -38,11 +36,6 @@ class MakeReportUseCase
             $newsList
         );
 
-        $content = $this->reportMaker->makeReport($newsItems);
-        if (empty($content)) {
-            throw new DomainException('Failed to create consolidated report');
-        }
-
-        return new ConsolidatedReportResponse($this->fileStorage->saveReportFile($content));
+        return new ConsolidatedReportResponse($this->reportMaker->makeReport($newsItems));
     }
 }

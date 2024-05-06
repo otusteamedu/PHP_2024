@@ -10,7 +10,7 @@ interface ReportMakerInterface
 {
     /**
      * @param NewsItemRequest[] $newsList
-     * @return string
+     * @return string Путь к файлу отчета
      */
     public function makeReport(array $newsList): string;
 }

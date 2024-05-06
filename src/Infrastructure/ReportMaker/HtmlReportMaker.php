@@ -5,9 +5,15 @@ declare(strict_types=1);
 namespace App\Infrastructure\ReportMaker;
 
 use App\Application\ReportMaker\ReportMakerInterface;
+use App\Domain\Exception\DomainException;
+use App\Infrastructure\StaticFileStorage\StaticFileStorageInterface;
 
 class HtmlReportMaker implements ReportMakerInterface
 {
+    public function __construct(readonly private StaticFileStorageInterface $fileStorage)
+    {
+    }
+
     public function makeReport(array $newsList): string
     {
         $content = "<ul>";
@@ -16,6 +22,11 @@ class HtmlReportMaker implements ReportMakerInterface
         }
         $content .= "<ul>";
 
-        return $content;
+        $filePath = $this->fileStorage->saveReportFile($content);
+        if (empty($filePath)) {
+            throw new DomainException('Could not save file');
+        }
+
+        return $filePath;
     }
 }
