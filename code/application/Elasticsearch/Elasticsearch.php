@@ -8,7 +8,7 @@ use Console_Table;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
-use JetBrains\PhpStorm\ArrayShape;
+
 
 class Elasticsearch
 {
@@ -50,40 +50,43 @@ class Elasticsearch
 //        ["range" => ["price" => $price]],
 //        ["range" => ["stock.stock" =>["gte"=>"1"]]]
 
+        $terms = [];
 
-
-        if (empty($request['category'])) {
-            $category = [
-                'match_all' => (object)[]
-
-            ];
-        } else $category = [
-            "match"=> [
-                "category" => [
-                    "query" => $request['category'],
-                    "fuzziness" => "2",
-                    "operator" => "AND"
-                ]
-            ]
-        ];
-
-        $title = [
-            "match"=> [
-                "title" =>[
-                    "query" => $request['title'],
-                    "fuzziness" => "2"
-                ]
-            ]
-        ];
-
-        $price = [
-            "range" => [
-                "price" => [
-                    "gte" => 0,
-                    "lte" => 2000
-                ]
-            ]
-        ];
+        foreach ($request as $key => $value) {
+            if (empty($value)) {
+                $terms[$key] = [
+                    'match_all' => (object)[]
+                ];
+            } else if ($key == 'category') {
+                $terms[$key] = [
+                    "match"=> [
+                        "category" => [
+                            "query" => $request['category'],
+                            "fuzziness" => "2",
+                            "operator" => "AND"
+                        ]
+                    ]
+                ];
+            } else if ($key == 'title') {
+                $terms[$key] = [
+                    "match"=> [
+                        "title" =>[
+                            "query" => $request['title'],
+                            "fuzziness" => "2"
+                        ]
+                    ]
+                ];
+            } else if ($key == 'price') {
+                $terms[$key] = [
+                    "range" => [
+                        "price" => [
+                            "gte" => $request['price'][0],
+                            "lte" => $request['price'][1]
+                        ]
+                    ]
+                ];
+            }
+        }
 
         $stock = ["range" => ["stock.stock" =>["gte"=>"1"]]];
 
@@ -92,7 +95,7 @@ class Elasticsearch
             "body"  => [
                 "query" => [
                     "bool" => [
-                        "must" => [ $category, $title, $price, $stock ]
+                        "must" => [ $terms['category'], $terms['title'], $terms['price'], $stock ]
                     ]
                 ],
             ]
@@ -104,18 +107,20 @@ class Elasticsearch
         $response = $client->search($params);
         $response = $response['hits']['hits'];
         var_dump($response);
-//        $tbl = new Console_Table();
-//        $tbl->setHeaders(array('Название', 'Стоимость','Релевантность'));
-//
-//        foreach ($response as $item) {
-//            $tbl->addRow(array(
-//                $item['_source']['title'],
-//                $item['_source']['price'].' RUB',
-//                $item['_source']['stock']['stock']
-//            ));
-//        }
-//
-//        echo $tbl->getTable();
+        $tbl = new Console_Table();
+        $tbl->setHeaders(array('Название','Релевантность','Стоимость','Наличие'));
+
+        foreach ($response as $item) {
+            $tbl->addRow(array(
+                $item['_source']['title'],
+                $item['_score'],
+                $item['_source']['price'].' RUB',
+                'улица '.$item['_source']['stock'][0]['shop'].' - '.$item['_source']['stock'][0]['stock'].' , '
+                .'улица '.$item['_source']['stock'][1]['shop'].' - '.$item['_source']['stock'][1]['stock']
+            ));
+        }
+
+        echo $tbl->getTable();
 
     }
 
