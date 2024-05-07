@@ -3,55 +3,27 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Entities\BookSearch;
+use Console_Table;
 
-use App\Elasticsearch\Elasticsearch;
-use JetBrains\PhpStorm\ArrayShape;
 
-class App extends Elasticsearch
+class App
 {
     public function run(array $argv)
     {
-        $params = $this->validate($argv);
-
-        $elastic = new Elasticsearch();
-        return $elastic->search($params);
+        $search = new BookSearch($argv);
+        return $this->showTableResult($search->search());
     }
 
+    private function showTableResult($result) {
+        $tbl = new Console_Table();
+        $tbl->setHeaders(array('Название','Релевантность','Стоимость','Наличие'));
 
-    # Request: index.php title='рыцОри' category='Исторические романы' price='0-2000'
-    #[ArrayShape(['title' => "string", 'category' => "string", 'price' => "array"])]
-    private function validate(array $params): array
-    {
-        if (count($params) < 1) {
-            echo "Usage: php index.php <param1> <param2>... <paramN>\n";
-            exit(1);
+        foreach ($result as $item) {
+            $tbl->addRow(array($item['title'], $item['score'], $item['price'], $item['stock']));
         }
 
-        $prepared = [
-            'title' => '',
-            'category' => '',
-            'price' => []
-        ];
-
-        foreach ($params as $param) {
-
-            $param = trim($param);
-            $param = str_replace('  ',' ',$param);
-            $explode = explode('=',$param);
-
-            if ($explode[0] == 'title') {
-                $prepared['title'] = (string)$explode[1];
-            }
-            if ($explode[0] == 'category') {
-                $prepared['category'] = (string)$explode[1];
-            }
-            if ($explode[0] == 'price') {
-                $price = (string)$explode[1];
-                $exp = explode('-',$price);
-                $prepared['price'] = [$exp[0],$exp[1]];
-            }
-        }
-        return $prepared;
+        return $tbl->getTable();
     }
 
 }

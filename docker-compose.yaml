@@ -6,6 +6,7 @@ services:
       context: ./fpm
       dockerfile: Dockerfile
     container_name: php-fpm
+    env_file: .env
     volumes:
       - ./code:/data/app
     networks:
