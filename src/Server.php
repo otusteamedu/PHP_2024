@@ -29,7 +29,7 @@ class Server
     /**
      * @throws Exception
      */
-    public function start(): void
+    public function start(): \Generator
     {
         $client = $this->socket->accept();
 
@@ -37,7 +37,7 @@ class Server
             $message = $this->socket->read($client);
 
             if ($message) {
-                echo $message . PHP_EOL;
+                yield $message;
             }
 
             if ($message === 'STOP') {
