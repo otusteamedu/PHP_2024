@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: app
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    networks:
+      - net
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
