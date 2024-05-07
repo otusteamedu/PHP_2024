@@ -1,0 +1,21 @@
+{
+    "name": "julia-zhigareva/socket-chat",
+    "description": "unix socket chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "JuliaZhigareva\\SocketChat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "uvzhigaryova",
+            "email": "juliazhigaryova@yandex.ru"
+        }
+    ],
+    "require": {
+        "php": ">7.1",
+        "ext-sockets": "*",
+        "ext-readline": "*"
+    }
+}
