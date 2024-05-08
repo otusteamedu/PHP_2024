@@ -1,0 +1,66 @@
+2024/05/08 15:08:06 [notice] 1#1: using the "epoll" event method
+2024/05/08 15:08:06 [notice] 1#1: nginx/1.25.5
+2024/05/08 15:08:06 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/05/08 15:08:06 [notice] 1#1: OS: Linux 6.6.12-linuxkit
+2024/05/08 15:08:06 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/05/08 15:08:06 [notice] 1#1: start worker processes
+2024/05/08 15:08:06 [notice] 1#1: start worker process 28
+2024/05/08 15:08:06 [notice] 1#1: start worker process 29
+2024/05/08 15:08:06 [notice] 1#1: start worker process 30
+2024/05/08 15:08:06 [notice] 1#1: start worker process 31
+2024/05/08 15:13:19 [error] 29#29: *1 open() "/data/test.local/favicon.ico" failed (2: No such file or directory), client: 192.168.65.1, server: test.local, request: "GET /favicon.ico HTTP/1.1", host: "test.local", referrer: "http://test.local/"
+2024/05/08 15:14:21 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/05/08 15:14:21 [notice] 28#28: gracefully shutting down
+2024/05/08 15:14:21 [notice] 28#28: exiting
+2024/05/08 15:14:21 [notice] 29#29: gracefully shutting down
+2024/05/08 15:14:21 [notice] 29#29: exiting
+2024/05/08 15:14:21 [notice] 30#30: gracefully shutting down
+2024/05/08 15:14:21 [notice] 30#30: exiting
+2024/05/08 15:14:21 [notice] 31#31: gracefully shutting down
+2024/05/08 15:14:21 [notice] 28#28: exit
+2024/05/08 15:14:21 [notice] 29#29: exit
+2024/05/08 15:14:21 [notice] 30#30: exit
+2024/05/08 15:14:21 [notice] 31#31: exiting
+2024/05/08 15:14:21 [notice] 31#31: exit
+2024/05/08 15:14:21 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2024/05/08 15:14:21 [notice] 1#1: worker process 29 exited with code 0
+2024/05/08 15:14:21 [notice] 1#1: signal 29 (SIGIO) received
+2024/05/08 15:14:21 [notice] 1#1: signal 17 (SIGCHLD) received from 28
+2024/05/08 15:14:21 [notice] 1#1: worker process 28 exited with code 0
+2024/05/08 15:14:21 [notice] 1#1: signal 29 (SIGIO) received
+2024/05/08 15:14:21 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2024/05/08 15:14:21 [notice] 1#1: worker process 30 exited with code 0
+2024/05/08 15:14:21 [notice] 1#1: worker process 31 exited with code 0
+2024/05/08 15:14:21 [notice] 1#1: signal 17 (SIGCHLD) received from 31
+2024/05/08 15:14:21 [notice] 1#1: exit
+2024/05/08 15:16:43 [notice] 1#1: using the "epoll" event method
+2024/05/08 15:16:43 [notice] 1#1: nginx/1.25.5
+2024/05/08 15:16:43 [notice] 1#1: built by gcc 12.2.0 (Debian 12.2.0-14) 
+2024/05/08 15:16:43 [notice] 1#1: OS: Linux 6.6.12-linuxkit
+2024/05/08 15:16:43 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2024/05/08 15:16:43 [notice] 1#1: start worker processes
+2024/05/08 15:16:43 [notice] 1#1: start worker process 28
+2024/05/08 15:16:43 [notice] 1#1: start worker process 29
+2024/05/08 15:16:43 [notice] 1#1: start worker process 30
+2024/05/08 15:16:43 [notice] 1#1: start worker process 31
+2024/05/08 15:33:22 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2024/05/08 15:33:22 [notice] 28#28: gracefully shutting down
+2024/05/08 15:33:22 [notice] 28#28: exiting
+2024/05/08 15:33:22 [notice] 29#29: gracefully shutting down
+2024/05/08 15:33:22 [notice] 29#29: exiting
+2024/05/08 15:33:22 [notice] 30#30: gracefully shutting down
+2024/05/08 15:33:22 [notice] 30#30: exiting
+2024/05/08 15:33:22 [notice] 31#31: gracefully shutting down
+2024/05/08 15:33:22 [notice] 31#31: exiting
+2024/05/08 15:33:22 [notice] 28#28: exit
+2024/05/08 15:33:22 [notice] 29#29: exit
+2024/05/08 15:33:22 [notice] 30#30: exit
+2024/05/08 15:33:22 [notice] 31#31: exit
+2024/05/08 15:33:22 [notice] 1#1: signal 17 (SIGCHLD) received from 28
+2024/05/08 15:33:22 [notice] 1#1: worker process 28 exited with code 0
+2024/05/08 15:33:22 [notice] 1#1: signal 29 (SIGIO) received
+2024/05/08 15:33:22 [notice] 1#1: signal 17 (SIGCHLD) received from 31
+2024/05/08 15:33:22 [notice] 1#1: worker process 29 exited with code 0
+2024/05/08 15:33:22 [notice] 1#1: worker process 30 exited with code 0
+2024/05/08 15:33:22 [notice] 1#1: worker process 31 exited with code 0
+2024/05/08 15:33:22 [notice] 1#1: exit

@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+#  nginx:
+#    build:
+#      context: ./webserver/nginx
+#      dockerfile: Dockerfile
+#    image: myapp/nginx
+#    container_name: nginx
+#    ports:
+#      - 80:80
+#    volumes:
+#      - ./data:/data/test.local
+#      - ./logs/nginx:/var/log/nginx
+#    networks:
+#      - app-network
+
+  fpm:
+    build:
+      context: ./webserver/fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: fpm
+    env_file: .env
+    volumes:
+      - ./data:/data/test.local
+      - ./logs/php:/var/log/php
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: 'redis'
+    expose:
+      - 6379
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
