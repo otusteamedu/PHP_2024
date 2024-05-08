@@ -1,10 +1,12 @@
 <?php
 
-namespace AKornienko\Php2024;
+namespace AKornienko\Php2024\Infrastructure;
 
-use AKornienko\Php2024\requests\AddEventRequest;
+use AKornienko\Php2024\Application\StorageClient;
+use AKornienko\Php2024\Domain\Event;
 use Exception;
 use Redis;
+use RedisException;
 
 class RedisClient extends StorageClient
 {
@@ -28,10 +30,10 @@ class RedisClient extends StorageClient
      * @throws RedisException
      * @throws \RedisException
      */
-    public function addEvent(string $key, AddEventRequest $value): int|false
+    public function addEvent(string $key, int $priority, Event $event): int|false
     {
         $this->saveEventKey($key);
-        return $this->redis->zAdd($key, $value->priority, json_encode($value));
+        return $this->redis->zAdd($key, $priority, json_encode($event->getValue()));
     }
 
     /**

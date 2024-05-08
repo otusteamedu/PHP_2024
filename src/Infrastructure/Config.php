@@ -1,6 +1,6 @@
 <?php
 
-namespace AKornienko\Php2024;
+namespace AKornienko\Php2024\Infrastructure;
 
 readonly class Config
 {
