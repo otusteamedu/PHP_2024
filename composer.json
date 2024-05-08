@@ -10,5 +10,8 @@
         "allow-plugins": {
             "php-http/discovery": true
         }
-    }
+    },
+  "require": {
+    "ext-redis": "*"
+  }
 }

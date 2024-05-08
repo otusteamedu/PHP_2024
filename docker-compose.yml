@@ -5,7 +5,7 @@ services:
     build:
       context: ./docker/fpm
       dockerfile: Dockerfile
-    container_name: hw12-app
+    container_name: hw14-app
     env_file:
       - .env
     volumes:
