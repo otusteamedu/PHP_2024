@@ -12,57 +12,46 @@ use Elastic\Elasticsearch\ClientBuilder;
 /**
  * Voiceflow AiGateway.
  */
-class ElasticSearchGateway implements SearchGatewayInterface {
-
-  /**
-   * Interact by text with AiGateway.
-   */
-  public function search(SearchGatewayRequest $request): SearchGatewayResponse {
-    try {
-
-      $result = [
-        'query' => $request->query,
-        'gte' => $request->gte,
-        'lte' => $request->lte,
-        'category' => $request->category,
-        'shop' => $request->shop
-      ];
-
-        $client = ClientBuilder::create()
-            ->setHosts([
-                getenv("ELASTIC_HOST")
-            ])
-            ->build();
-        $result = $client->search([
-            'index' => getenv("ELASTIC_INDEX"),
-            'body' => $this->getQuery(
-              $request->query,
-              $request->gte,
-              $request->lte,
-              $request->category,
-              $request->shop
-            ),
-        ]);
-
-      return new SearchGatewayResponse(
-        $result['hits']['hits']
-      );
-    }
-    catch (\Throwable $th) {
-      throw new \Exception(
-        $th->getMessage()
-      );
-    }
-  }
-
-  private function getQuery(
-    string $query_string,
-    int $gte = NULL,
-    int $lte = NULL,
-    string $category = NULL,
-    string $shop = NULL
-  ): array
+class ElasticSearchGateway implements SearchGatewayInterface
+{
+    /**
+     * Interact by text with AiGateway.
+     */
+    public function search(SearchGatewayRequest $request): SearchGatewayResponse
     {
+        try {
+            $client = ClientBuilder::create()
+                ->setHosts([
+                    getenv("ELASTIC_HOST")
+                ])
+                ->build();
+            $result = $client->search([
+                'index' => getenv("ELASTIC_INDEX"),
+                'body' => $this->getQuery(
+                    $request->query,
+                    $request->gte,
+                    $request->lte,
+                    $request->category,
+                    $request->shop
+                ),
+            ]);
+            return new SearchGatewayResponse(
+                $result['hits']['hits']
+            );
+        } catch (\Throwable $th) {
+            throw new \Exception(
+                $th->getMessage()
+            );
+        }
+    }
+
+    private function getQuery(
+        string $query_string,
+        int $gte = NULL,
+        int $lte = NULL,
+        string $category = NULL,
+        string $shop = NULL
+    ): array {
         $query = [
             'query' => [
                 'bool' => [
@@ -128,5 +117,4 @@ class ElasticSearchGateway implements SearchGatewayInterface {
         }
         return $query;
     }
-
 }

@@ -7,31 +7,31 @@ namespace App\Domain\ValueObject;
 /**
  * Shop value object.
  */
-class Shop {
-  /**
-   * Value.
-   */
-  private string $value;
+class Shop
+{
+    /**
+     * Value.
+     */
+    private string $value;
 
-  /**
-   * Construct.
-   */
-  public function __construct(string $value) {
-    $this->value = $value;
-  }
+    /**
+     * Construct.
+     */
+    public function __construct(string $value) {
+        $this->value = $value;
+    }
 
-  /**
-   * Get value.
-   */
-  public function getValue(): string {
-    return $this->value;
-  }
+    /**
+     * Get value.
+     */
+    public function getValue(): string {
+        return $this->value;
+    }
 
-  /**
-   * Convert to string.
-   */
-  public function __toString(): string {
-    return $this->value;
-  }
-
+    /**
+     * Convert to string.
+     */
+    public function __toString(): string {
+        return $this->value;
+    }
 }
