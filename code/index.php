@@ -1,17 +1,16 @@
 <?php
 
 declare(strict_types=1);
+require 'vendor/autoload.php';
+
+use Otus\Hw4\RequestValidator;
+
+echo "Запрос обработал контейнер: {$_SERVER['HOSTNAME']}" . PHP_EOL;
 
 $string = $_POST['string'] ?? '';
-$bracketsCounter = 0;
 
-foreach (str_split($string) as $char) {
-    if ($char == '(') {
-        $bracketsCounter++;
-    } elseif ($char == ')') {
-        $bracketsCounter--;
-    }
-}
+$requestValidator = new RequestValidator();
+$bracketsCounter = $requestValidator->validate($string);
 
 if (!empty($string) && $bracketsCounter === 0) {
     http_response_code(200);
