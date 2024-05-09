@@ -24,7 +24,8 @@ class Search
         private Lte $lte,
         private Category $category,
         private Shop $shop
-    ) {}
+    ) {
+    }
 
     /**
      * Get query.
