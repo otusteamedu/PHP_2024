@@ -1,9 +1,9 @@
 <?php
+
 namespace Otus\Hw4;
 
 class RequestValidator
 {
-
     /**
      * @param $postString
      * @return int
@@ -20,7 +20,7 @@ class RequestValidator
                 }
             }
         }
-        
+
         return $bracketsCounter;
     }
 }
