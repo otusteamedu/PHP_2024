@@ -14,8 +14,9 @@ class RequestValidator
             if ($char == '(') {
                 $bracketsCounter++;
             } elseif ($char == ')') {
-                if($bracketsCounter != 0)
+                if($bracketsCounter != 0){
                     $bracketsCounter--;
+                }
             }
         }
 
@@ -23,3 +24,4 @@ class RequestValidator
     }
 }
 ?>
+
