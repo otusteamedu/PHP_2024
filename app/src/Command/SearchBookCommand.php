@@ -56,11 +56,11 @@ class SearchBookCommand extends Command
 
         try {
             $request = new SearchRequest(
-                $query ?? NULL,
-                $gte ?? NULL,
-                $lte ?? NULL,
-                $category ?? NULL,
-                $shop ?? NULL
+                $query ?? null,
+                $gte ?? null,
+                $lte ?? null,
+                $category ?? null,
+                $shop ?? null
             );
             $response = ($this->useCase)($request);
             $data = array_map(function (array $trace): array {
@@ -85,8 +85,7 @@ class SearchBookCommand extends Command
                 ->setRows($data)
             ;
             $table->render();
-        }
-        catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             $io->error($th->getMessage());
         }
 

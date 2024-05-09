@@ -7,14 +7,13 @@ namespace App\Domain\SearchGateway\Response;
 /**
  * Response class.
  */
-class SearchGatewayResponse {
-
-  /**
-   * Construct Response.
-   */
-  public function __construct(
-    public readonly array $traces
-  ) {
-  }
-
+class SearchGatewayResponse
+{
+    /**
+     * Construct Response.
+     */
+    public function __construct(
+        public readonly array $traces
+    ) {
+    }
 }

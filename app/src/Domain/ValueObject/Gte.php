@@ -17,7 +17,8 @@ class Gte
     /**
      * Construct.
      */
-    public function __construct(int $value) {
+    public function __construct(int $value)
+    {
         $this->assertGteIsValid($value);
         $this->value = $value;
     }
@@ -25,14 +26,16 @@ class Gte
     /**
      * Get value.
      */
-    public function getValue(): int {
+    public function getValue(): int
+    {
         return $this->value;
     }
 
     /**
      * Assert validation.
      */
-    private function assertGteIsValid(int $value) {
+    private function assertGteIsValid(int $value)
+    {
         if ($value < 0) {
             throw new \InvalidArgumentException(
                 "Gte must be greater than or equal to zero."
@@ -43,7 +46,8 @@ class Gte
     /**
      * Convert to string.
      */
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return (string) $this->value;
     }
 }

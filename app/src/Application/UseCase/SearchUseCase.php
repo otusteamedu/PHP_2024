@@ -20,40 +20,39 @@ use App\Domain\ValueObject\Shop;
  */
 class SearchUseCase
 {
+    /**
+     * Construct use case.
+     */
+    public function __construct(
+        private SearchGatewayInterface $searchGateway
+    ) {
+    }
 
-  /**
-   * Construct use case.
-   */
-  public function __construct(
-    private SearchGatewayInterface $searchGateway
-  ) {
-  }
-
-  /**
-   * Use case as it is.
-   */
-  public function __invoke(SearchRequest $request): SearchResponse {
-    $search = new Search(
-      new Query($request->query),
-      new Gte($request->gte),
-      new Lte($request->lte),
-      new Category($request->category),
-      new Shop($request->shop)
-    );
-    $gatewayResponse = $this->searchGateway->search(
-      new SearchGatewayRequest(
-        (string) $search->getQuery(),
-        (int) $search->getGte()
-          ->getValue(),
-        (int) $search->getLte()
-          ->getValue(),
-        (string) $search->getCategory(),
-        (string) $search->getShop()
-      )
-    );
-    return new SearchResponse(
-      $gatewayResponse->traces
-    );
-  }
-
+    /**
+     * Use case as it is.
+     */
+    public function __invoke(SearchRequest $request): SearchResponse
+    {
+        $search = new Search(
+            new Query($request->query),
+            new Gte($request->gte),
+            new Lte($request->lte),
+            new Category($request->category),
+            new Shop($request->shop)
+        );
+        $gatewayResponse = $this->searchGateway->search(
+            new SearchGatewayRequest(
+                (string) $search->getQuery(),
+                (int) $search->getGte()
+                    ->getValue(),
+                (int) $search->getLte()
+                    ->getValue(),
+                (string) $search->getCategory(),
+                (string) $search->getShop()
+            )
+        );
+        return new SearchResponse(
+            $gatewayResponse->traces
+        );
+    }
 }

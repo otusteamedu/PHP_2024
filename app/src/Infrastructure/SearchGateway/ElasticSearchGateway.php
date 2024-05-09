@@ -47,10 +47,10 @@ class ElasticSearchGateway implements SearchGatewayInterface
 
     private function getQuery(
         string $query_string,
-        int $gte = NULL,
-        int $lte = NULL,
-        string $category = NULL,
-        string $shop = NULL
+        int $gte = null,
+        int $lte = null,
+        string $category = null,
+        string $shop = null
     ): array {
         $query = [
             'query' => [

@@ -10,11 +10,10 @@ use App\Domain\SearchGateway\Response\SearchGatewayResponse;
 /**
  * Interface for search gateway.
  */
-interface SearchGatewayInterface {
-
-  /**
-   * Interact by text with AiGateway.
-   */
-  public function search(SearchGatewayRequest $request): SearchGatewayResponse;
-
+interface SearchGatewayInterface
+{
+    /**
+     * Interact by text with AiGateway.
+     */
+    public function search(SearchGatewayRequest $request): SearchGatewayResponse;
 }
