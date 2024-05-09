@@ -4,7 +4,7 @@ namespace App\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -63,9 +63,28 @@ class SearchBookCommand extends Command
                 $shop ?? NULL
             );
             $response = ($this->useCase)($request);
-            $io->success(
-                json_encode($response->traces)
-            );
+            $data = array_map(function (array $trace): array {
+                $source = $trace['_source'];
+                return [
+                    'title' => $source['title'],
+                    'sku' => $source['sku'],
+                    'category' => $source['category'],
+                    'price' => $source['price'],
+                    'stock' => implode(
+                        ', ',
+                        array_map(
+                            fn(array $stock) => sprintf('%s: %s', $stock['shop'], $stock['stock']),
+                            $source['stock']
+                        )
+                    ),
+                ];
+            }, $response->traces);
+            $table = new Table($output);
+            $table
+                ->setHeaders(['Title', 'SKU', 'Category', 'Price', 'Stock'])
+                ->setRows($data)
+            ;
+            $table->render();
         }
         catch (\Throwable $th) {
             $io->error($th->getMessage());
