@@ -13,8 +13,7 @@ class Movie
     private Closure $genresReference;
     private ?array $genres = null;
 
-    public function __construct
-    (
+    public function __construct(
         private string $title,
         private DateTime $releaseDate,
         private int $duration,

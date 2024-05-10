@@ -14,8 +14,7 @@ class PDOFactory
         string $dbName,
         string $user,
         string $password
-    ): PDO
-    {
+    ): PDO {
         $dns = "pgsql:host=$host;port=$port;dbname=$dbName;user=$user;password=$password;";
         $options = [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

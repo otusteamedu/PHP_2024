@@ -47,7 +47,7 @@ class GenreEntityHelper extends BaseEntityHelper
     private function createFetchMoviesClosure(int $genreId): Closure
     {
         $movieEntityHelper = EntityHelpers::getMovieHelper($this->pdo);
-        return function() use($genreId, $movieEntityHelper) : array {
+        return function () use ($genreId, $movieEntityHelper): array {
             $this->selectMoviesStatement->bindValue(':genre_id', $genreId);
             $this->selectMoviesStatement->execute();
             $rows = $this->selectMoviesStatement->fetchAll();

@@ -78,7 +78,7 @@ class GenreDataMapper extends BaseDataMapper
 
         $genres = [];
         foreach ($rows as $row) {
-            $genres []= $this->genreEntityHelper->createByRow($row);
+            $genres[] = $this->genreEntityHelper->createByRow($row);
         }
 
         return $genres;

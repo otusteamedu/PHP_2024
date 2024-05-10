@@ -44,8 +44,8 @@ class MovieDataMapper extends BaseDataMapper
         );
 
         $this->updateStatement = $this->pdo->prepare(
-            'UPDATE movies SET '.
-                'title = :title, release_date = :release_date, duration = :duration, description = :description '.
+            'UPDATE movies SET ' .
+                'title = :title, release_date = :release_date, duration = :duration, description = :description ' .
             'WHERE id = :id'
         );
 
@@ -54,7 +54,7 @@ class MovieDataMapper extends BaseDataMapper
         );
 
         $this->deleteMovieGenresStatement = $this->pdo->prepare(
-           'DELETE FROM movies_genres WHERE movie_id = :movie_id'
+            'DELETE FROM movies_genres WHERE movie_id = :movie_id'
         );
     }
 
@@ -83,7 +83,7 @@ class MovieDataMapper extends BaseDataMapper
 
         $movies = [];
         foreach ($rows as $row) {
-            $movies []= $this->movieEntityHelper->createByRow($row);
+            $movies[] = $this->movieEntityHelper->createByRow($row);
         }
 
         return $movies;

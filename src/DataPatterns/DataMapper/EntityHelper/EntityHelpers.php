@@ -25,7 +25,7 @@ class EntityHelpers
         return self::getInstance()->getHelper($pdo, GenreEntityHelper::class);
     }
 
-    private  static function getInstance(): self
+    private static function getInstance(): self
     {
         if (self::$instance === null) {
             self::$instance = new self();
@@ -44,7 +44,7 @@ class EntityHelpers
         return $this->helpers[$key];
     }
 
-    private  function getKey(PDO $pdo, string $className): string
+    private function getKey(PDO $pdo, string $className): string
     {
         return spl_object_hash($pdo) . '-' . $className;
     }
