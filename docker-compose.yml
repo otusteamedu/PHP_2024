@@ -1,26 +1,26 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  php-client:
-    build:
-      context: ./php
-      dockerfile: Dockerfile
-    container_name: php-client
+  server:
+    build: .
     volumes:
-      - ./code:/data
+      - ./app:/app
+    working_dir: /app
+    command: php app.php server
+    networks:
+      - app_network
+
+  client:
+    build: .
     depends_on:
-      - php-server
-    networks:
-      - app-network
-  php-server:
-    build:
-      context: ./php
-      dockerfile: Dockerfile
-    container_name: php-server
+      - server
     volumes:
-      - ./code:/data
+      - ./app:/app
+    working_dir: /app
+    command: php app.php client
     networks:
-      - app-network
+      - app_network
+
 networks:
-  app-network:
+  app_network:
     driver: bridge

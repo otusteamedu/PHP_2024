@@ -1,0 +1,10 @@
+{
+  "name": "abuinovskiy/hw5",
+  "description": "unix socket chat",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "ABuynovskiy\\Hw5\\": "src/"
+    }
+  }
+}
