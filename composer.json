@@ -1,0 +1,19 @@
+{
+  "name": "abuynovskiy/hw6",
+  "description": "Библиотека для проверки адресов электронной почты через проверку формата и DNS MX-записей.",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "ABuinovskiy\\Hw6\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Andrey Buynovskiy",
+      "email": "andre15101993@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.0 || ^8.0"
+  }
+}
