@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Tory495\Elasticsearch;
 
-use Elastic\Elasticsearch\ClientBuilder;
-use Elastic\Elasticsearch\Exception\AuthenticationException;
-use Dotenv\Dotenv;
 class App
 {
     /**
@@ -17,7 +14,43 @@ class App
     {
         $searchService = new SearchService();
         $client = $searchService->createClient();
-        $response = $client->info();
-        echo (string) $response->getBody();
+        $result = $client->search([
+            'index' => 'otus-shop',
+            'body' => [
+                'size' => 10_000,
+                'query' => [
+                    'bool' => [
+                        'must' => [
+                            [
+                                'match' => [
+                                    'title' => [
+                                        'query' => 'рыцОри',
+                                        'fuzziness' => 'auto'
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'filter' => [
+                            [
+                                'range' => [
+                                    'price' => [
+                                        'lte' => 2000
+                                    ]
+                                ]
+                            ],
+                            [
+                                'range' => [
+                                    'stock.stock' => [
+                                        'gt' => 0
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        var_dump($result->asArray());
     }
 }
