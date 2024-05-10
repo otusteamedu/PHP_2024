@@ -12,9 +12,8 @@
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.0.*",
         "symfony/runtime": "7.0.*",
-        "symfony/yaml": "7.0.*"
-    },
-    "require-dev": {
+        "symfony/yaml": "7.0.*",
+        "ext-redis": "*"
     },
     "config": {
         "allow-plugins": {

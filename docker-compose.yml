@@ -5,10 +5,10 @@ networks:
     name: ${APP_NAME}_network
 
 services:
-  php:
+  app:
     build:
       context: ./docker/php
-    container_name: ${APP_NAME}_php
+    container_name: ${APP_NAME}_app
     env_file: .env
     volumes:
       - .:/var/www/app
@@ -29,7 +29,7 @@ services:
     networks:
       - app_network
     depends_on:
-      - php
+      - app
 
   redis:
     image: redis:latest
@@ -41,11 +41,3 @@ services:
     restart: always
     networks:
       - app_network
-
-  composer:
-    image: composer:latest
-    container_name: ${APP_NAME}_composer
-    working_dir: /var/www/app
-    command: ["composer", "install"]
-    volumes:
-      - .:/var/www/app
