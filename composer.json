@@ -1,0 +1,21 @@
+{
+    "name": "pozys/php_2024",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pozys\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Культяпов Константин",
+            "email": "pozys@mail.ru"
+        }
+    ],
+    "require": {},
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
+}
