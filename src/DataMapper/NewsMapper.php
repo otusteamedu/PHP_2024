@@ -14,31 +14,23 @@ class NewsMapper
 {
     private const TABLE = 'news';
 
-    private IdentityMap $identityMap;
     private PDOStatement $selectStatement;
     private PDOStatement $insertStatement;
-    private PDOStatement $updateStatement;
     private PDOStatement $deleteStatement;
 
-    public function __construct(private PDO $pdo)
+    public function __construct(private PDO $pdo, private IdentityMap $identityMap)
     {
-        $this->identityMap = new IdentityMap();
-
         $this->selectStatement = $pdo->prepare(
-            "SELECT * FROM " . self::TABLE . " WHERE id = ?"
+            'SELECT * FROM ' . self::TABLE . ' WHERE id = ?'
         );
         $this->selectStatement->setFetchMode(PDO::FETCH_OBJ);
 
         $this->insertStatement = $pdo->prepare(
-            "INSERT INTO " . self::TABLE . " (url, title) VALUES (?, ?)"
-        );
-
-        $this->updateStatement = $pdo->prepare(
-            "UPDATE " . self::TABLE . " SET url = ?, title = ? WHERE id = ?"
+            'INSERT INTO ' . self::TABLE . ' (url, title) VALUES (?, ?)'
         );
 
         $this->deleteStatement = $pdo->prepare(
-            "DELETE FROM " . self::TABLE . " WHERE id = ?"
+            'DELETE FROM ' . self::TABLE . ' WHERE id = ?'
         );
     }
 
@@ -61,15 +53,27 @@ class NewsMapper
         return $news;
     }
 
-    public function update(News $news): void
+    public function update(int $id, array $data): void
     {
-        $this->updateStatement->execute([
-            $news->getUrl()->getValue(),
-            $news->getTitle()->getValue(),
-            $news->getId(),
-        ]);
+        if (count($data) === 0) {
+            return;
+        }
 
-        $this->identityMap->add($news, $news->getId());
+        $updateFields = implode(
+            ', ',
+            array_map(static fn (string $property) => "$property = ?", array_keys($data))
+        );
+
+        $updateStatement = $this->pdo->prepare(
+            'UPDATE ' . self::TABLE . ' SET ' . $updateFields . ' WHERE id = ?'
+        );
+
+        if (!$updateStatement->execute([...array_values($data), $id])) {
+            throw new \RuntimeException('Failed to update news with id ' . $id);
+        }
+
+        $news = $this->findById($id);
+        $this->identityMap->add($news, $id);
     }
 
     public function findById(int $id): ?News
@@ -95,7 +99,9 @@ class NewsMapper
 
     public function delete(News $news): void
     {
-        $this->deleteStatement->execute([$news->getId()]);
+        if (!$this->deleteStatement->execute([$news->getId()])) {
+            throw new \RuntimeException('Failed to delete news with id ' . $news->getId());
+        }
 
         $this->identityMap->remove(News::class, $news->getId());
     }
