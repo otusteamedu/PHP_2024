@@ -18,7 +18,7 @@ class Solution
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists(ListNode $list1, ListNode $list2): ListNode
     {
         $head = new ListNode();
         $current = $head;
