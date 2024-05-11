@@ -23,7 +23,7 @@ class Solution
      * @param string $digits
      * @return string[]
      */
-    function letterCombinations(string $digits)
+    public function letterCombinations(string $digits): array
     {
         if ($digits === '') {
             return [];
@@ -34,13 +34,13 @@ class Solution
         return $this->output;
     }
 
-    function processDigit(string $combination, int $digitIndex)
+    private function processDigit(string $combination, int $digitIndex): void
     {
         $digit = $this->digits[$digitIndex];
         $letters = $this->digitsToLetters[$digit];
         foreach ($letters as $letter) {
             if ($digitIndex < count($this->digits) - 1) {
-                $this->processDigit($combination . $letter, $digitIndex +1);
+                $this->processDigit($combination . $letter, $digitIndex + 1);
             } else {
                 $this->output[$this->outputIndex++] = $combination . $letter;
             }
