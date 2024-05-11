@@ -8,12 +8,12 @@ use Otus\Hw4\RequestValidator;
 
 echo "Запрос обработал контейнер: {$_SERVER['HOSTNAME']}" . PHP_EOL;
 
-$string = $_POST['string'] ?? '';
+$string = $_GET['string'] ?? '';
 
 $requestValidator = new RequestValidator();
-$bracketsCounter = $requestValidator->validate($string);
+$bracketsIsValid = $requestValidator->validate($string);
 
-if (!empty($string) && $bracketsCounter === 0) {
+if (!empty($string) && $bracketsIsValid) {
     http_response_code(200);
     header('Content-Type: text/plain; charset=utf-8');
     return "Строка корректна.";
