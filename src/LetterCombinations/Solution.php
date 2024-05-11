@@ -16,7 +16,6 @@ class Solution
     ];
 
     private array $output = [];
-    private int $outputIndex = 0;
     private array $digits  = [];
 
     /**
@@ -42,7 +41,7 @@ class Solution
             if ($digitIndex < count($this->digits) - 1) {
                 $this->processDigit($combination . $letter, $digitIndex + 1);
             } else {
-                $this->output[$this->outputIndex++] = $combination . $letter;
+                $this->output[] = $combination . $letter;
             }
         }
     }
