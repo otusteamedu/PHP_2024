@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS movie_attribute_value (
     attribute_id INTEGER NOT NULL,
     value_timestamp timestamp with time zone,
     value_int INTEGER,
-    value_string VARCHAR,
+    value_bool BOOLEAN,
     value_text TEXT,
     value_float FLOAT,
     CONSTRAINT fk_movie_attribute_movie_id FOREIGN KEY (movie_id) REFERENCES movie,
