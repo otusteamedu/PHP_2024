@@ -27,7 +27,6 @@ class Brackets
         $arrayOfBrackets = str_split($this->string);
 
         $countOfOpenBrackets = 0;
-        $countOfClosedBrackets = 0;
         if ($arrayOfBrackets[0] !== '(' && end($arrayOfBrackets) !== ')') {
             throw new \Exception('Wrong string');
         }
@@ -40,18 +39,15 @@ class Brackets
             if ($bracket === '(') {
                 $countOfOpenBrackets++;
             } else {
-                $countOfClosedBrackets++;
+                $countOfOpenBrackets--;
             }
 
-            if ($countOfClosedBrackets > $countOfOpenBrackets) {
+            if ($countOfOpenBrackets < 0) {
                 throw new \Exception('Closed brackets more than opened');
-            } elseif ($countOfClosedBrackets === $countOfOpenBrackets) {
-                $countOfOpenBrackets = 0;
-                $countOfClosedBrackets = 0;
             }
         }
 
-        if ($countOfClosedBrackets !== $countOfOpenBrackets) {
+        if ($countOfOpenBrackets !== 0) {
             throw new \Exception('Brackets count is wrong');
         }
     }
