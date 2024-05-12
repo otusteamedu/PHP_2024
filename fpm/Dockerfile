@@ -26,4 +26,8 @@ WORKDIR /data
 
 VOLUME /data
 
+COPY ./composer.json /data/composer.json
+
+RUN composer install && composer dump-autoload
+
 CMD ["php-fpm"]
