@@ -5,11 +5,22 @@ https://drawsql.app/teams/dev-280/diagrams/hw7
 ## DDL
 
 ```sql
+CREATE TABLE `movie_country`
+(
+    `movie_id`   INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `country_id` INT NOT NULL
+);
 CREATE TABLE `movie`
 (
     `id`       INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `title`    VARCHAR(100) NOT NULL,
-    `duration` INT          NOT NULL
+    `duration` INT          NOT NULL,
+    `year`     INT          NOT NULL
+);
+CREATE TABLE `genre`
+(
+    `id`   INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL
 );
 CREATE TABLE `customer`
 (
@@ -33,7 +44,8 @@ CREATE TABLE `screening`
     `id`            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `movie_id`      INT       NOT NULL,
     `auditorium_id` INT       NOT NULL,
-    `start_time`    TIMESTAMP NOT NULL
+    `start_time`    TIMESTAMP NOT NULL,
+    `end_time`      TIMESTAMP NOT NULL
 );
 ALTER TABLE
     `screening`
@@ -41,6 +53,11 @@ ALTER TABLE
 ALTER TABLE
     `screening`
     ADD INDEX `screening_auditorium_id_index`(`auditorium_id`);
+CREATE TABLE `country`
+(
+    `id`   INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL
+);
 CREATE TABLE `ticket`
 (
     `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -67,6 +84,14 @@ CREATE TABLE `type`
     `name`  VARCHAR(100) NOT NULL,
     `price` INT          NOT NULL
 );
+CREATE TABLE `movie_genre`
+(
+    `movie_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `genre_id` INT NOT NULL
+);
+ALTER TABLE
+    `movie_genre`
+    ADD CONSTRAINT `movie_genre_movie_id_foreign` FOREIGN KEY (`movie_id`) REFERENCES `genre` (`id`);
 ALTER TABLE
     `screening`
     ADD CONSTRAINT `screening_auditorium_id_foreign` FOREIGN KEY (`auditorium_id`) REFERENCES `auditorium` (`id`);
@@ -80,6 +105,12 @@ ALTER TABLE
     `order_ticket`
     ADD CONSTRAINT `order_ticket_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`);
 ALTER TABLE
+    `movie_country`
+    ADD CONSTRAINT `movie_country_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`);
+ALTER TABLE
+    `movie_genre`
+    ADD CONSTRAINT `movie_genre_genre_id_foreign` FOREIGN KEY (`genre_id`) REFERENCES `movie` (`id`);
+ALTER TABLE
     `screening`
     ADD CONSTRAINT `screening_movie_id_foreign` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`);
 ALTER TABLE
@@ -88,6 +119,9 @@ ALTER TABLE
 ALTER TABLE
     `order_ticket`
     ADD CONSTRAINT `order_ticket_ticket_id_foreign` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`);
+ALTER TABLE
+    `movie_country`
+    ADD CONSTRAINT `movie_country_movie_id_foreign` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`);
 ALTER TABLE
     `ticket`
     ADD CONSTRAINT `ticket_seat_id_foreign` FOREIGN KEY (`seat_id`) REFERENCES `seat` (`id`);
