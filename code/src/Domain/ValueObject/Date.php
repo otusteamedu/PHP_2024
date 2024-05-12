@@ -18,7 +18,8 @@ class Date
         return $this->value;
     }
 
-    public function __toString(): string {
+    public function __toString(): string
+    {
         return $this->value->format('Y-m-d');
     }
 }

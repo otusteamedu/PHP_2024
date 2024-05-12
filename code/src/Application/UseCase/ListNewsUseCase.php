@@ -8,7 +8,6 @@ use Irayu\Hw15\Domain;
 
 class ListNewsUseCase
 {
-
     public function __construct(
         private Domain\Repository\NewsRepositoryInterface $newsRepository,
     ) {
@@ -18,8 +17,7 @@ class ListNewsUseCase
     {
         if ($request->pageSize > 0) {
             $result = $this->newsRepository->getByPage($request->pageNumber, $request->pageSize);
-        }
-        else {
+        } else {
             $result = $this->newsRepository->getAll();
         }
 

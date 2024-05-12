@@ -17,15 +17,15 @@ class CreateReportNewsController extends JsonController
     public function __construct(
         Infrastructure\Repository\FileNewsRepository $newsRepository,
         Infrastructure\Repository\FileReportRepository $reportRepository,
-    )
-    {
+    ) {
         $this->useCase = new Application\UseCase\CreateReportNewsUseCase(
             $newsRepository,
             $reportRepository,
         );
     }
 
-    protected function applyUseCase(Request $request, Response $response, array $args): array {
+    protected function applyUseCase(Request $request, Response $response, array $args): array
+    {
         $newsItemResponse = ($this->useCase)(
             new Application\UseCase\Request\CreateReportNewsItemRequest(
                 $request->getParsedBody()['id'],

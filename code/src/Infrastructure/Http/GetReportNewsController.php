@@ -17,15 +17,15 @@ class GetReportNewsController
     public function __construct(
         Infrastructure\Repository\FileNewsRepository $newsRepository,
         Infrastructure\Repository\FileReportRepository $reportRepository,
-    )
-    {
+    ) {
         $this->useCase = new Application\UseCase\GetReportNewsUseCase(
             $newsRepository,
             $reportRepository,
         );
     }
 
-    protected function applyUseCase(Request $request, Response $response, array $args): string {
+    protected function applyUseCase(Request $request, Response $response, array $args): string
+    {
         $newsItemResponse = ($this->useCase)(
             new Application\UseCase\Request\GetReportNewsItemRequest(
                 (int) $args['id'],
@@ -43,9 +43,9 @@ class GetReportNewsController
         return '<ul>' . implode('', $items) . '</ul>';
     }
 
-    public function __invoke(Request $request, Response $response, array $args): Response {
+    public function __invoke(Request $request, Response $response, array $args): Response
+    {
         try {
-
             $file = 'report.html';
             $result = $this->applyUseCase($request, $response, $args);
 
@@ -54,7 +54,7 @@ class GetReportNewsController
                 ->withHeader('Content-Description', 'File Transfer')
                 ->withHeader('Content-Type', 'application/octet-stream')
                 ->withHeader('Content-Type', 'application/download')
-                ->withHeader('Content-Disposition', 'attachment;filename="'.basename($file).'"')
+                ->withHeader('Content-Disposition', 'attachment;filename="' . basename($file) . '"')
                 ->withHeader('Expires', '0')
                 ->withHeader('Cache-Control', 'must-revalidate')
                 ->withHeader('Pragma', 'public')

@@ -85,9 +85,9 @@ class FileNewsRepository implements Domain\Repository\NewsRepositoryInterface
             new Domain\ValueObject\Date(\DateTime::createFromFormat(static::DATE_FORMAT, $item['date'])),
         );
 
-       (new \ReflectionProperty($newsItem::class, 'id'))
+        (new \ReflectionProperty($newsItem::class, 'id'))
            ->setValue($newsItem, $id)
-       ;
+        ;
 
         return $newsItem;
     }

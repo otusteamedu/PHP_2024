@@ -17,8 +17,7 @@ class NewsItemLoader
         $htmlContent = file_get_contents($this->url);
 
         $dom = new \DOMDocument();
-        if ($dom->loadHTML($htmlContent, LIBXML_NOWARNING | LIBXML_NOERROR))
-        {
+        if ($dom->loadHTML($htmlContent, LIBXML_NOWARNING | LIBXML_NOERROR)) {
             $xpath = new \DOMXPath($dom);
 
             $titleNode = $xpath->query('//title')->item(0);
@@ -34,7 +33,6 @@ class NewsItemLoader
             );
         } else {
             throw new \Exception('Failed to load HTML content');
-
         }
     }
 }

@@ -18,8 +18,7 @@ class CreateReportNewsUseCase
     {
         $newsItems = [];
         foreach ($request->ids as $id) {
-            if ($news = $this->newsRepository->findById((int)$id))
-            {
+            if ($news = $this->newsRepository->findById((int)$id)) {
                 $newsItems[] = $news->getId();
             }
         }

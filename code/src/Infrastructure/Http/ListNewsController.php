@@ -21,7 +21,8 @@ class ListNewsController extends JsonController
         );
     }
 
-    protected function applyUseCase(Request $request, Response $response, array $args): array {
+    protected function applyUseCase(Request $request, Response $response, array $args): array
+    {
         $newsItemResponse = ($this->useCase)(
             new Application\UseCase\Request\ListNewsItemRequest(
                 $request->getQueryParams()['pageNumber'] ?? null,

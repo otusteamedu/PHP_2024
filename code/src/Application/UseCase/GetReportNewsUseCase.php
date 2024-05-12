@@ -18,13 +18,13 @@ class GetReportNewsUseCase
     {
         $newsItems = [];
 
-        if (($report = $this->reportRepository->findById($request->id))
+        if (
+            ($report = $this->reportRepository->findById($request->id))
             && $report->getHash() === $request->hash
         ) {
             $newsItems = [];
             foreach ($report->getNewsItemIds() as $newsItemId) {
-                if ($news = $this->newsRepository->findById((int)$newsItemId))
-                {
+                if ($news = $this->newsRepository->findById((int)$newsItemId)) {
                     $newsItems[] = $news;
                 }
             }

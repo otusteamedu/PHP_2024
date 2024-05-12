@@ -13,8 +13,7 @@ class Report
 
     public function __construct(
         private array $newsItemIds,
-    )
-    {
+    ) {
         $this->generateHash();
     }
 

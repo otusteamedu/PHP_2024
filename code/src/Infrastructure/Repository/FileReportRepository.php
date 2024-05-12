@@ -65,9 +65,9 @@ class FileReportRepository implements Domain\Repository\ReportRepositoryInterfac
             $item['newsIds']
         );
 
-       (new \ReflectionProperty($report::class, 'id'))
+        (new \ReflectionProperty($report::class, 'id'))
            ->setValue($report, $id)
-       ;
+        ;
         (new \ReflectionProperty($report::class, 'hash'))
             ->setValue($report, $item['hash'])
         ;
