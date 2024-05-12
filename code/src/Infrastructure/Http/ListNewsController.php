@@ -10,7 +10,7 @@ use Irayu\Hw15\Domain;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class ListNewsController extends DefaultNewsController
+class ListNewsController extends JsonController
 {
     private Application\UseCase\ListNewsUseCase $useCase;
 

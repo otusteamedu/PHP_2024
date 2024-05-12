@@ -53,11 +53,7 @@ class FileNewsRepository implements Domain\Repository\NewsRepositoryInterface
     {
         $data = $this->load();
         if (array_key_exists($id, $data['items'])) {
-            return new Domain\Entity\NewsItem(
-                new Domain\ValueObject\Url($data['items'][$id]['url']),
-                new Domain\ValueObject\Title($data['items'][$id]['title']),
-                new Domain\ValueObject\Date(\DateTime::createFromFormat(static::DATE_FORMAT, $data['items'][$id]['date'])),
-            );
+            return $this->createNewsItem($data['items'][$id], $id);
         }
 
         return null;
@@ -81,7 +77,7 @@ class FileNewsRepository implements Domain\Repository\NewsRepositoryInterface
         return [];
     }
 
-    private static function createNewsItem($item, $id): Domain\Entity\NewsItem
+    private function createNewsItem($item, $id): Domain\Entity\NewsItem
     {
         $newsItem = new Domain\Entity\NewsItem(
             new Domain\ValueObject\Url($item['url']),

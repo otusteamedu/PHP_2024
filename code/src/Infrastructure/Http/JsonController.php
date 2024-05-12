@@ -10,7 +10,7 @@ use Irayu\Hw15\Domain;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-abstract class DefaultNewsController
+abstract class JsonController
 {
     abstract protected function applyUseCase(Request $request, Response $response, array $args): array;
 
@@ -20,8 +20,6 @@ abstract class DefaultNewsController
             $response->getBody()->write(json_encode($result));
             $response->withStatus(201);
         } catch (\Throwable $e) {
-
-            throw $e;
             $errorResponse = [
                 'message' => $e->getMessage()
             ];

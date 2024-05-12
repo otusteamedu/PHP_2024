@@ -17,12 +17,10 @@ class ListNewsUseCase
 
     public function __invoke(Request\ListNewsItemRequest $request): Response\ListNewsItemResponse
     {
-        if ($request->pageSize > 0)
-        {
+        if ($request->pageSize > 0) {
             $result = $this->newsRepository->getByPage($request->pageNumber, $request->pageSize);
         }
-        else
-        {
+        else {
             $result = $this->newsRepository->getAll();
         }
 

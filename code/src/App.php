@@ -2,6 +2,8 @@
 
 namespace Irayu\Hw15;
 
+use Irayu\Hw15\Infrastructure\Repository\FileNewsRepository;
+use PhpParser\Node\Expr\Include_;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -33,7 +35,8 @@ class App
         $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
         $futureConfigs = [
-            'repoPath' => __DIR__ . '/../data/news.db'
+            'repoPath' => __DIR__ . '/../data/news.db',
+            'reportPath' => __DIR__ . '/../data/report.db',
         ];
 
         $app->post('/api/news/add', function (Request $request, Response $response, $args) use ($futureConfigs) {
@@ -46,9 +49,16 @@ class App
                 new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath'])
             ))($request, $response, $args);
         });
-        $app->post('/api/news/report', function (Request $request, Response $response, $args) use ($futureConfigs) {
-            return (new Infrastructure\Http\ReportNewsController(
-                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath'])
+        $app->post('/api/news/report/create', function (Request $request, Response $response, $args) use ($futureConfigs) {
+            return (new Infrastructure\Http\CreateReportNewsController(
+                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath']),
+                new Infrastructure\Repository\FileReportRepository($futureConfigs['reportPath'])
+            ))($request, $response, $args);
+        });
+        $app->get('/api/news/report/get/{id}/{hash}', function (Request $request, Response $response, $args) use ($futureConfigs) {
+            return (new Infrastructure\Http\GetReportNewsController(
+                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath']),
+                new Infrastructure\Repository\FileReportRepository($futureConfigs['reportPath'])
             ))($request, $response, $args);
         });
         $app->run();
