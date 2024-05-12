@@ -11,8 +11,7 @@ class CreateReportNewsUseCase
     public function __construct(
         private readonly Domain\Repository\NewsRepositoryInterface $newsRepository,
         private readonly Domain\Repository\ReportRepositoryInterface $reportRepository,
-    )
-    {
+    ) {
     }
 
     public function __invoke(Request\CreateReportNewsItemRequest $request): Response\CreateReportNewsItemResponse

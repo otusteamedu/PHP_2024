@@ -11,8 +11,7 @@ class ListNewsUseCase
 
     public function __construct(
         private Domain\Repository\NewsRepositoryInterface $newsRepository,
-    )
-    {
+    ) {
     }
 
     public function __invoke(Request\ListNewsItemRequest $request): Response\ListNewsItemResponse

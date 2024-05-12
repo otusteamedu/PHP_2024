@@ -8,7 +8,6 @@ class AddNewsItemResponse implements DefaultNewsItemResponse
 {
     public function __construct(
         public readonly int $id,
-    )
-    {
+    ) {
     }
 }

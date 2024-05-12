@@ -13,7 +13,6 @@ class ListNewsItemResponse implements DefaultNewsItemResponse
          * @var Domain\Entity\NewsItem[]
          */
         public readonly array $items,
-    )
-    {
+    ) {
     }
 }

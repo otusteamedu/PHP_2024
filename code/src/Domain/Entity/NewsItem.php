@@ -14,8 +14,7 @@ class NewsItem
         private Domain\ValueObject\Url $url,
         private Domain\ValueObject\Title $title,
         private Domain\ValueObject\Date $date,
-    )
-    {
+    ) {
     }
 
     /**

@@ -9,7 +9,6 @@ class ListNewsItemRequest implements DefaultNewsItemRequest
     public function __construct(
         public readonly ?int $pageNumber,
         public readonly ?int $pageSize,
-    )
-    {
+    ) {
     }
 }

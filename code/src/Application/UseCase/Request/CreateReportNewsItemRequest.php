@@ -8,7 +8,6 @@ class CreateReportNewsItemRequest implements DefaultNewsItemRequest
 {
     public function __construct(
         public readonly array $ids,
-    )
-    {
+    ) {
     }
 }

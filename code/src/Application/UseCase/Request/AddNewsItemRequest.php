@@ -10,7 +10,6 @@ class AddNewsItemRequest implements DefaultNewsItemRequest
         public readonly string $url,
         public readonly string $title,
         public readonly \DateTime $date,
-    )
-    {
+    ) {
     }
 }

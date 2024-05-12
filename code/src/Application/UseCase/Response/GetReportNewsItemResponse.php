@@ -11,7 +11,6 @@ class GetReportNewsItemResponse implements DefaultNewsItemResponse
     public function __construct(
         public readonly ?Domain\Entity\Report $report,
         public readonly array $items,
-    )
-    {
+    ) {
     }
 }
