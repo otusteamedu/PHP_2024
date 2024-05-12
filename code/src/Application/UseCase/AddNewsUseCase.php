@@ -12,8 +12,7 @@ class AddNewsUseCase
 {
     public function __construct(
         private Domain\Repository\NewsRepositoryInterface $newsRepository,
-    ) {
-    }
+    ) {}
 
     public function __invoke(AddNewsItemRequest $request): AddNewsItemResponse
     {
