@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  php-fpm:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/data
+    networks:
+      - mysql-network
+    depends_on:
+      - db
+    working_dir: /data
+  db:
+    build:
+      context: docker/mysql
+    image: mysql-otus:8
+    environment:
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    networks:
+      - mysql-network
+networks:
+  mysql-network:
+    driver: bridge
