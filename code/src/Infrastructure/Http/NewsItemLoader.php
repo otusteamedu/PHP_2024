@@ -12,7 +12,8 @@ class NewsItemLoader
     {
     }
 
-    public function run(): Application\UseCase\Request\AddNewsItemRequest {
+    public function run(): Application\UseCase\Request\AddNewsItemRequest
+    {
         $htmlContent = file_get_contents($this->url);
 
         $dom = new \DOMDocument();

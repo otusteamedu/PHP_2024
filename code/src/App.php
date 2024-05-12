@@ -2,15 +2,12 @@
 
 namespace Irayu\Hw15;
 
-use Irayu\Hw15\Infrastructure\Repository\FileNewsRepository;
-use PhpParser\Node\Expr\Include_;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 class App
 {
-
     public function run()
     {
         $app = AppFactory::create();

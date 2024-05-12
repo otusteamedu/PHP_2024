@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Irayu\Hw15\Application\UseCase\Response;
+namespace Irayu\Hw15\Application\UseCase\Request;
 
-use Irayu\Hw15\Domain;
-
-class CreateReportNewsItemResponse implements DefaultNewsItemResponse
+class GetReportNewsItemRequest implements DefaultNewsItemRequest
 {
     public function __construct(
         public readonly int $id,

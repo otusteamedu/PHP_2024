@@ -45,6 +45,7 @@ class FileReportRepository implements Domain\Repository\ReportRepositoryInterfac
             $data = ['lastId' => 0, 'items' => []];
         }
         $this->lastId = (int)$data['lastId'];
+
         return $data;
     }
 
