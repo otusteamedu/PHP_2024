@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: irayu/php
+    container_name: otus-php--php
+    volumes:
+       - ./code:/data/ira.yu
+       - ./logs/php:/var/log/php
+    networks:
+      - otus-php-network
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: irayu/nginx
+    container_name: otus-php--nginx
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/ira.yu
+       - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - php
+    networks:
+      - otus-php-network
+
+networks:
+  otus-php-network:
+    driver: bridge
