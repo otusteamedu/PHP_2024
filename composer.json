@@ -1,0 +1,14 @@
+{
+  "name": "ashutov/hw17",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "autoload": {
+    "psr-4": {
+      "AShutov\\Hw17\\": "src/"
+    }
+  },
+  "require": {
+    "vlucas/phpdotenv": "*",
+    "ext-pdo": "*"
+  }
+}
