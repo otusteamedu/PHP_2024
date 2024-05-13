@@ -9,8 +9,14 @@ use App\Exceptions\Chat\AdapterException;
 use App\Interfaces\Chat\AdapterInterface;
 use App\Network\SocketManager;
 
-final class AdapterFactory
+final readonly class AdapterFactory
 {
+    public function __construct(
+        private SocketManager $socketManager,
+        private SocketConfig $socketConfig,
+    ) {
+    }
+
     public function make(string $type): AdapterInterface
     {
         $class = match ($type) {
@@ -19,6 +25,6 @@ final class AdapterFactory
             default => throw AdapterException::unknownType($type),
         };
 
-        return new $class(new SocketManager(), new SocketConfig());
+        return new $class($this->socketManager, $this->socketConfig);
     }
 }
