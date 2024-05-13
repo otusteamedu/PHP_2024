@@ -1,27 +1,21 @@
-version: '3.8'
+version: '3'
 
 services:
   server:
     build:
-      context: ./.docker/php-cli
-      dockerfile: Dockerfile
+      dockerfile: ./.docker/php-cli/server/Dockerfile
     volumes:
-      - ./app:/app
-    working_dir: /app
-    command: php app.php server
+      - ./src:/data
     networks:
       - app_network
 
   client:
     build:
-      context: ./.docker/php-cli
-      dockerfile: Dockerfile
+      dockerfile: ./.docker/php-cli/client/Dockerfile
     depends_on:
       - server
     volumes:
-      - ./app:/app
-    working_dir: /app
-    command: php app.php client
+      - ./src:/data
     networks:
       - app_network
 
