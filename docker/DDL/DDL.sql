@@ -26,13 +26,6 @@ CREATE TABLE IF NOT EXISTS values (
     FOREIGN KEY (attribute_id) REFERENCES film_attributes(id)
 );
 
-CREATE TABLE IF NOT EXISTS seats (
-    id          SERIAL UNIQUE PRIMARY KEY,
-    row         integer,
-    seat        integer,
-    luxe        boolean
-);
-
 CREATE TABLE IF NOT EXISTS sessions (
     id          SERIAL UNIQUE PRIMARY KEY,
     film_id     varchar(32),
@@ -43,24 +36,31 @@ CREATE TABLE IF NOT EXISTS sessions (
     FOREIGN KEY (film_id) REFERENCES films(id)
 );
 
-CREATE TABLE IF NOT EXISTS orders (
-    id          SERIAL PRIMARY KEY,
-    payer       varchar(32) UNIQUE,
-    sum         decimal(11,2),
-    ticketCount integer,
-    date        date
-);
-
-CREATE TABLE IF NOT EXISTS tickets (
-    id          SERIAL PRIMARY KEY,
-    payer_id     varchar(32),
-    session_id   integer,
-    seat_id      integer,
-    amount      decimal(11,2),
-    FOREIGN KEY (payer_id) REFERENCES orders(payer),
-    FOREIGN KEY (session_id) REFERENCES sessions(id),
-    FOREIGN KEY (seat_id) REFERENCES seats(id)
-);
+-- CREATE TABLE IF NOT EXISTS seats (
+--     id          SERIAL UNIQUE PRIMARY KEY,
+--     row         integer,
+--     seat        integer,
+--     luxe        boolean
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS orders (
+--     id          SERIAL PRIMARY KEY,
+--     payer       varchar(32) UNIQUE,
+--     sum         decimal(11,2),
+--     ticketCount integer,
+--     date        date
+-- );
+--
+-- CREATE TABLE IF NOT EXISTS tickets (
+--     id          SERIAL PRIMARY KEY,
+--     payer_id     varchar(32),
+--     session_id   integer,
+--     seat_id      integer,
+--     amount      decimal(11,2),
+--     FOREIGN KEY (payer_id) REFERENCES orders(payer),
+--     FOREIGN KEY (session_id) REFERENCES sessions(id),
+--     FOREIGN KEY (seat_id) REFERENCES seats(id)
+-- );
 
 INSERT INTO films VALUES ('master_i_margarita','Мастер и Маргарита'),('onegin','Онегин'),('duna_2','Дюна 2'), ('gents','Джентельмены'), ('last_samurai','Последний самурай');
 
@@ -164,4 +164,4 @@ SELECT
     '13:00:00',
     '16:00:00',
     date((CURRENT_DATE + INTERVAL '7 days') - random() * ((CURRENT_DATE + INTERVAL '50 days') - CURRENT_DATE))
-FROM generate_series(1,10000);
+FROM generate_series(1,100);
