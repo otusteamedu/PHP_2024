@@ -21,7 +21,7 @@ final class App
     private function getAdapterType(): string
     {
         if ($_SERVER['argc'] !== 2) {
-            throw AppException::wrongArgumentsCount(2);
+            throw AppException::wrongArgumentCount(2);
         }
 
         return strtolower(trim($_SERVER['argv'][1]));
