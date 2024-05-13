@@ -12,6 +12,8 @@
  * }
  */
 
+namespace sd;
+
 class Solution
 {
     /**
