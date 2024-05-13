@@ -1,3 +1,3 @@
-# PHP_2024
+# Info
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+**docker-compose up -d --build** Билд
