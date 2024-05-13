@@ -1,15 +1,8 @@
 <?php
-require './vendor/autoload.php';
 
-$emails = [
-    'some@mail.ru',
-    '@email.ru',
-    'some@email',
-    'som--asd---a_asde@mail.ru',
-];
-foreach ($emails as $email) {
-    echo "<br>Validate result for email {$email} is: " . (int)src\Validator\Email::validate($email);
-}
+use src\Check\Email;
+
+require './vendor/autoload.php';
 ?>
 
 <!doctype html>
@@ -23,7 +16,10 @@ foreach ($emails as $email) {
     <title>Document</title>
 </head>
 <body>
-
+<?php
+$emailChecker = new Email();
+echo $emailChecker->getEmailCheckResult();
+?>
 </body>
 </html>
 
