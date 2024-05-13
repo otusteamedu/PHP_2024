@@ -11,15 +11,15 @@
  *     }
  * }
  */
+
 class Solution
 {
-
     /**
      * @param ListNode $list1
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists($list1, $list2): ListNode
     {
         $array = [];
 
@@ -43,11 +43,8 @@ class Solution
             if ($list1?->val === null && $list2?->val === null) {
                 $isHasNumbers = false;
             }
-
         }
-        $listNodes = [];
 
-        $i = 0;
         for ($i = count($array); $i--; $i >= 0) {
             if ($i === count($array)) {
                 $next = null;
@@ -58,6 +55,5 @@ class Solution
         }
 
         return $listNode;
-
     }
 }
