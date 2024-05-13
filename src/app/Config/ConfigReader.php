@@ -24,7 +24,8 @@ readonly class ConfigReader
 
     private function __construct(
         private array $config
-    ) {}
+    ) {
+    }
 
     private static function loadConfig(string $path): array
     {

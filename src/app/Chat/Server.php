@@ -15,7 +15,8 @@ readonly class Server implements AdapterInterface
     public function __construct(
         private SocketManager $socketManager,
         private SocketConfig $socketConfig,
-    ) {}
+    ) {
+    }
 
     public function run(): Generator
     {
