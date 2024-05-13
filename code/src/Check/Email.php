@@ -17,7 +17,6 @@ class Email
         if (!empty($emails)) {
             $this->arrayOfEmails = $emails;
         }
-
     }
 
     public function getEmailCheckResult()
@@ -29,5 +28,4 @@ class Email
 
         return $code;
     }
-
 }
