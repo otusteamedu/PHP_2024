@@ -5,10 +5,20 @@ spl_autoload_register(function ($class) {
     include $class . '.php';
 });
 
+$emails = [
+    'some@mail.ru',
+    '@email.ru',
+    'some@email',
+    'som--asd---a_asde@mail.ru',
+];
+foreach ($emails as $email) {
+    echo "<br>Validate result for email {$email} is: " . (int)src\Validator\Email::validate($email);
+}
 ?>
 
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
