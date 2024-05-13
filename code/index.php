@@ -1,62 +1,63 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
 <?php
-$newLine = '<br>';
 
-if (class_exists('Redis')) {
-    $redis = new \Redis();
-    try {
-        $redis->connect('redis', getenv('REDIS_PORT'));
+/**
+ * Definition for a singly-linked list.
+ * class ListNode {
+ *     public $val = 0;
+ *     public $next = null;
+ *     function __construct($val = 0, $next = null) {
+ *         $this->val = $val;
+ *         $this->next = $next;
+ *     }
+ * }
+ */
+class Solution
+{
 
-        echo 'Redis connected:' . $redis->ping() . $newLine;
-        $redis->close();
-    } catch (\Exception $e) {
-        echo "Redis error: {$e->getMessage()} $newLine";
+    /**
+     * @param ListNode $list1
+     * @param ListNode $list2
+     * @return ListNode
+     */
+    function mergeTwoLists($list1, $list2)
+    {
+        $array = [];
+
+        $isEmptyLists = $list1?->val === null && $list2?->val === null;
+
+        if ($isEmptyLists) {
+            return new ListNode(null);
+        }
+
+        $isHasNumbers = true;
+
+        while ($isHasNumbers) {
+            if ($list1?->val !== null && ($list1->val <= $list2->val) || $list2->val === null) {
+                $array[] = $list1->val;
+                $list1 = $list1?->next;
+            } elseif ($list2?->val !== null) {
+                $array[] = $list2->val;
+                $list2 = $list2?->next;
+            }
+
+            if ($list1?->val === null && $list2?->val === null) {
+                $isHasNumbers = false;
+            }
+
+        }
+        $listNodes = [];
+
+        $i = 0;
+        for ($i = count($array); $i--; $i >= 0) {
+            if ($i === count($array)) {
+                $next = null;
+            } else {
+                $next = $listNode;
+            }
+            $listNode = new ListNode($array[$i], $next);
+        }
+
+        return $listNode;
+
     }
 }
-
-try {
-    $memcached = new \Memcached();
-    $memcachedServerConnection = $memcached->addServer('memcached', getenv('MEMCACHED_PORT'));
-
-    if ($memcachedServerConnection === true) {
-        echo 'Memcached is connected' . $newLine;
-    } else {
-        echo 'Memcached is not connected' . $newLine;
-    }
-} catch (Exception $e) {
-    echo "Memcached error: {$e->getMessage()} $newLine";
-}
-
-$host = getenv('MYSQL_HOST');
-$db = getenv('MYSQL_DATABASE');
-$user = getenv('MYSQL_USER');
-$pass = getenv('MYSQL_ROOT_PASSWORD');
-$charset = getenv('MYSQL_CHARSET');
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-
-try {
-    $opt = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_EMULATE_PREPARES => false,
-    ];
-
-    $pdo = new PDO($dsn, $user, $pass, $opt);
-    echo 'PDO is connected' . $newLine;
-} catch (PDOException $e) {
-    echo "PDO error: {$e->getMessage()} $newLine";
-}
-?>
-</body>
-</html>
-
