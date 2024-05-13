@@ -1,0 +1,14 @@
+{
+    "name": "erybkin/hw6",
+    "type": "project",
+    "require": {
+        "ext-sockets": "*",
+        "ext-pcntl": "*",
+        "ext-readline": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}

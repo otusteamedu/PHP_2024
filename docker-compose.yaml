@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  server:
+    build:
+      dockerfile: ./.docker/php-cli/server/Dockerfile
+    volumes:
+      - ./src:/data
+    networks:
+      - app_network
+
+  client:
+    build:
+      dockerfile: ./.docker/php-cli/client/Dockerfile
+    depends_on:
+      - server
+    volumes:
+      - ./src:/data
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
