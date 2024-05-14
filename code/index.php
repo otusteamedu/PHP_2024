@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -23,39 +22,26 @@ class Solution
      */
     public function mergeTwoLists($list1, $list2): ListNode
     {
-        $array = [];
-
+        $dummy = new ListNode();
+        $current = $dummy;
         $isEmptyLists = $list1?->val === null && $list2?->val === null;
 
         if ($isEmptyLists) {
             return new ListNode(null);
         }
 
-        $isHasNumbers = true;
-
-        while ($isHasNumbers) {
+        while ($list1?->val !== null || $list2?->val !== null) {
             if ($list1?->val !== null && ($list1->val <= $list2->val) || $list2->val === null) {
-                $array[] = $list1->val;
+                $current->next = $list1;
                 $list1 = $list1?->next;
             } elseif ($list2?->val !== null) {
-                $array[] = $list2->val;
+                $current->next = $list2;
                 $list2 = $list2?->next;
             }
 
-            if ($list1?->val === null && $list2?->val === null) {
-                $isHasNumbers = false;
-            }
+            $current = $current->next;
         }
 
-        for ($i = count($array); $i--; $i >= 0) {
-            if ($i === count($array)) {
-                $next = null;
-            } else {
-                $next = $listNode;
-            }
-            $listNode = new ListNode($array[$i], $next);
-        }
-
-        return $listNode;
+        return $dummy->next;
     }
 }
