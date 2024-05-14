@@ -1,0 +1,63 @@
+version: "3.8"
+
+networks:
+  example-net:
+    name: example-net
+    driver: bridge
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    networks:
+      - example-net
+    build:
+      context: ../../
+      dockerfile: ./.deployment/docker/php-fpm/Dockerfile
+      args:
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./../../:/var/www/homework
+
+  nginx:
+    container_name: nginx
+    networks:
+      - example-net
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+      args:
+        PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+        PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_PORT}
+    environment:
+      PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+      PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_CONTAINER}
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+    volumes:
+      - ./../../:/var/www/homework:rw
+    depends_on:
+      - php-fpm
+
+  postgres:
+    container_name: postgres
+    networks:
+      - example-net
+    build:
+      context: ./postgres
+      dockerfile: ./Dockerfile
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      POSTGRES_HOST: ${POSTGRES_DB_HOST}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_example_data:/var/lib/postgresql/data:rw
+volumes:
+  db_example_data:
