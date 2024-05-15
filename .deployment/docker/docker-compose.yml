@@ -1,15 +1,15 @@
 version: "3.8"
 
 networks:
-  example-net:
-    name: example-net
+  homework-net:
+    name: homework-net
     driver: bridge
 
 services:
   php-fpm:
     container_name: php-fpm
     networks:
-      - example-net
+      - homework-net
     build:
       context: ../../
       dockerfile: ./.deployment/docker/php-fpm/Dockerfile
@@ -26,7 +26,7 @@ services:
   nginx:
     container_name: nginx
     networks:
-      - example-net
+      - homework-net
     build:
       context: ./nginx
       dockerfile: ./Dockerfile
@@ -46,7 +46,7 @@ services:
   postgres:
     container_name: postgres
     networks:
-      - example-net
+      - homework-net
     build:
       context: ./postgres
       dockerfile: ./Dockerfile
@@ -58,6 +58,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - db_example_data:/var/lib/postgresql/data:rw
+      - db_homework_data:/var/lib/postgresql/data:rw
 volumes:
-  db_example_data:
+  db_homework_data:
