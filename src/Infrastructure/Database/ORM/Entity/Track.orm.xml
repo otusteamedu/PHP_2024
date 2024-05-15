@@ -1,0 +1,18 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <entity
+            name="App\Domain\Entity\Track"
+            table="news"
+            repository-class="App\Infrastructure\Repository\DoctrineTrackRepository"
+    >
+        <id name="id" type="integer" length="11">
+            <generator strategy="AUTO" />
+        </id>
+        <field name="author" type="string" length="60" nullable="false" />
+        <embedded name="genre" use-column-prefix="false" class="App\Domain\ValueObject\Genre" />
+        <embedded name="duration" use-column-prefix="false" class="App\Domain\ValueObject\TrackDuration" />
+    </entity>
+</doctrine-mapping>
