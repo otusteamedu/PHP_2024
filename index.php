@@ -33,30 +33,53 @@ function hasCycle(ListNode $head): bool
 
 // Leetcode task 17
 
-function letterCombinations(string $digits): array
-{
-    $letterMap = [
-        '2' => ['a', 'b', 'c'],
-        '3' => ['d', 'e', 'f'],
-        '4' => ['g', 'h', 'i'],
-        '5' => ['j', 'k', 'l'],
-        '6' => ['m', 'n', 'o'],
-        '7' => ['p', 'q', 'r','s'],
-        '8' => ['t', 'u', 'v'],
-        '9' => ['w', 'x', 'y', 'z'],
-    ];
 
-    $digitsLength = strlen($digits);
-    $result = [];
-    for ($i = 0; $i < $digitsLength; $i++) {
-        foreach ($letterMap[$digits[$i]] as $letArrHead) {
-            if ($digitsLength === 1) $result[] = $letArrHead;
-            for ($j = $i+1; $j < $digitsLength; $j++) {
-                foreach ($letterMap[$digits[$j]] as $letArrTail) {
-                    $result[] = $letArrHead. $letArrTail;
+class Solution
+{
+
+    /**
+     * @param String $digits
+     * @return String[]
+     */
+    function letterCombinations(string $digits): array
+    {
+        $letterMap = [
+            '2' => ['a', 'b', 'c'],
+            '3' => ['d', 'e', 'f'],
+            '4' => ['g', 'h', 'i'],
+            '5' => ['j', 'k', 'l'],
+            '6' => ['m', 'n', 'o'],
+            '7' => ['p', 'q', 'r', 's'],
+            '8' => ['t', 'u', 'v'],
+            '9' => ['w', 'x', 'y', 'z'],
+        ];
+
+        $digitsLength = strlen($digits);
+        if ($digitsLength === 1) return $letterMap[$digits[0]];
+
+        $result = [];
+        $data = [];
+        for ($i = 0; $i < $digitsLength; $i++) {
+            $data[] = $letterMap[$digits[$i]];
+        }
+        $this->mergeLetters($data, $result);
+        return $result;
+    }
+
+
+    function mergeLetters(array $lettersArr, &$result)
+    {
+        $countDigits = count($lettersArr);
+        for ($i = 0; $i < $countDigits; $i++) {
+            foreach ($lettersArr[$i] as $cur) {
+                if ($i + 1 < $countDigits) {
+                    foreach ($lettersArr[$i + 1] as $next) {
+                        $result[] = $cur . $next;
+                    }
                 }
             }
+            array_shift($lettersArr);
+            $this->mergeLetters($lettersArr, $result);
         }
     }
-    return $result;
 }
