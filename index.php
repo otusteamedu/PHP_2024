@@ -55,6 +55,7 @@ class Solution
         ];
 
         $digitsLength = strlen($digits);
+        if ($digitsLength === 0) return [];
         if ($digitsLength === 1) return $letterMap[$digits[0]];
 
         $result = [];
@@ -66,20 +67,35 @@ class Solution
         return $result;
     }
 
-
-    function mergeLetters(array $lettersArr, &$result)
+    function mergeLetters(array $lettersArr,&$result, int $param = 0)
     {
-        $countDigits = count($lettersArr);
-        for ($i = 0; $i < $countDigits; $i++) {
-            foreach ($lettersArr[$i] as $cur) {
-                if ($i + 1 < $countDigits) {
-                    foreach ($lettersArr[$i + 1] as $next) {
-                        $result[] = $cur . $next;
-                    }
+        for ($f = 0; $f < count($lettersArr[$param]); $f++) {
+            $level = $param;
+            $word = $lettersArr[$level][$f];
+            if ($level+1 < count($lettersArr)) {
+                $level++;
+                for ($n = 0; $n < count($lettersArr[$level]); $n++) {
+                    $word .= $lettersArr[$level][$n];
+                    if ($level+1 < count($lettersArr)) {
+                        $level++;
+                        for ($nn = 0; $nn < count($lettersArr[$level]); $nn++) {
+                            $word .= $lettersArr[$level][$nn];
+                            if ($level+1 < count($lettersArr)) {
+                                $level++;
+                                for ($nnn = 0; $nnn < count($lettersArr[$level]); $nnn++) {
+                                    $word .= $lettersArr[$level][$nnn];
+                                    $result[] = $word;
+                                    $word = substr($word, 0, -1);
+                                }
+                                $level--;
+                            } else $result[] = $word;
+                            $word = substr($word, 0, -1);
+                        }
+                        $level--;
+                    } else $result[] = $word;
+                    $word = substr($word, 0, -1);
                 }
-            }
-            array_shift($lettersArr);
-            $this->mergeLetters($lettersArr, $result);
+            } else $result[] = $word;
         }
     }
 }
