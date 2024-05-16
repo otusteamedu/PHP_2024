@@ -5,7 +5,7 @@
 >
     <entity
             name="App\Domain\Entity\Track"
-            table="news"
+            table="track"
             repository-class="App\Infrastructure\Repository\DoctrineTrackRepository"
     >
         <id name="id" type="integer" length="11">
