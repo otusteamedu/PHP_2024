@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Layer\Domain\Entity\Product;
+namespace App\Layer\Domain\Entity\Product\StrategyProduct;
 
 use App\Layer\Domain\Entity\EntityInterface\CompositeInterface;
 use App\Layer\Domain\Entity\EntityInterface\ProductInterface;

@@ -2,46 +2,54 @@
 
 declare(strict_types=1);
 
-namespace App\Layer\Domain\Entity\Product;
+namespace App\Layer\Domain\Entity\Product\StrategyProduct;
 
 use App\Layer\Domain\Entity\EntityInterface\CompositeInterface;
 use App\Layer\Domain\Entity\EntityInterface\ProductInterface;
 use App\Layer\Domain\Entity\Product\Ingredient\Ingredient;
 use App\Layer\Domain\Entity\Trait\CompositeTrait;
 
-class Hotdog implements ProductInterface, CompositeInterface
+class Burger implements ProductInterface, CompositeInterface
 {
     use CompositeTrait;
 
     private function getIngredients(): array
     {
-        return [
+       return [
             [
-                "name" => "булочка с кунжутом",
+                "name" => "булочка",
                 "price" => 5
             ],
             [
-                "name" => "сосиска",
-                "price" => 8
+                "name" => "говядина",
+                "price" => 10
             ],
             [
-                "name" => "кетчуп",
+                "name" => "салат Айсберг",
                 "price" => 5
             ],
             [
-                "name" => "майонез",
+                "name" => "соус барбекю",
                 "price" => 4
             ],
             [
-                "name" => "маринованные огурцы",
+                "name" => "сыр Гауда",
                 "price" => 6
+            ],
+            [
+                "name" => "соус Бургер",
+                "price" => 5
+            ],
+            [
+                "name" => "помидор",
+                "price" => 5
             ],
         ];
     }
 
     public function getName(): string
     {
-        return "Hotdog";
+        return "Burger";
     }
 
     public function createProduct(): void

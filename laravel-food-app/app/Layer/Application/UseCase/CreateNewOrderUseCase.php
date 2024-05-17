@@ -10,7 +10,6 @@ use App\Layer\Domain\Entity\Order\Order;
 use App\Layer\Domain\Entity\Product\Product;
 use App\Layer\Domain\Entity\Product\ProductAdapter\Pizza;
 use App\Layer\Domain\Entity\Product\ProductAdapter\PizzaAdapter;
-use App\Layer\Domain\Entity\Product\ProxyStrategyProduct\ProxyProduct;
 
 class CreateNewOrderUseCase
 {
@@ -24,7 +23,7 @@ class CreateNewOrderUseCase
         $order = new Order();
 
         foreach ($request->request->all()['order']['product'] as $product) {
-            $strategy_product = "App\Layer\Domain\Entity\Product\\" . $product;
+            $strategy_product = "App\Layer\Domain\Entity\Product\StrategyProduct\\" . $product;
 
             //$object = new ProxyProduct(new $strategy_product);
 
