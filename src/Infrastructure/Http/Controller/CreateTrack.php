@@ -20,6 +20,6 @@ class CreateTrack extends AbstractController
     ): Response {
         $result = call_user_func_array($createTrackUseCase, [$request]);;
 
-        return $this->json([$result]);
+        return $this->json($result);
     }
 }

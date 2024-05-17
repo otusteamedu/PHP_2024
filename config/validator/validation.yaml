@@ -1,0 +1,22 @@
+App\Application\UseCase\Request\CreateTrackRequest:
+  properties:
+    author:
+      - NotBlank:
+          message: Не передано значение author
+      - Length:
+          max: 60
+          maxMessage: Превышена максимальная длина имени автора {{ limit }}. Текущая длина {{ value_length }}
+    genre:
+      - NotBlank:
+          message: Не передано значение genre
+      - Length:
+          max: 60
+      - Choice:
+          message: Не известный жанр {{ value }}
+          callback: [App\Domain\Enum\AllowedGenreEnum, 'values']
+    duration:
+      - NotBlank:
+          message: Не передано значение duration
+      - Length:
+          max: 11
+          maxMessage: Превышена максимальное количество символов для трека {{ limit }}. Текущая длина {{ value_length }}

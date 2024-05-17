@@ -58,4 +58,13 @@ class Track
 
         return $this;
     }
+
+    public static function create(string $author, string $genre, int $duration): self
+    {
+        return new self(
+            $author,
+            new Genre($genre),
+            new TrackDuration($duration)
+        );
+    }
 }
