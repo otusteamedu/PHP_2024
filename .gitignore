@@ -1,5 +1,7 @@
 .idea/
-/vendor/
+/www/vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
+Dockerfile
+/docker/
