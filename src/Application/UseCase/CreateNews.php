@@ -10,22 +10,23 @@ use App\Application\UseCase\Request\CreateNewsRequest;
 use App\Application\UseCase\Response\CreateNewsResponse;
 use App\Domain\ValueObject\Url;
 use App\Domain\ValueObject\Title;
-use App\Domain\Dom\DocumentInterface;
+use App\Application\Helper\DocumentParserInterface;
+use App\Application\Helper\Request\DocumentParserRequest;
 
 class CreateNews
 {
     public function __construct(
         private NewsInterface $newsRepository,
-        private DocumentInterface $document
+        private DocumentParserInterface $documentParser
     ) {}
 
     public function __invoke(CreateNewsRequest $request): CreateNewsResponse
     {
-        $title = $this->document->getTitleByUrl($request->url);
+        $docParserResponse = $this->documentParser->parse(new DocumentParserRequest($request->url));
 
         $news = new News(
             new Url($request->url),
-            new Title($title)
+            new Title($docParserResponse->title)
         );
 
         $this->newsRepository->save($news);

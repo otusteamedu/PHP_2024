@@ -16,6 +16,6 @@ class GetNews
      */
     public function __invoke(): array
     {
-        return $this->newsRepository->findAll();
+        return $this->newsRepository->findBy([]);
     }
 }
