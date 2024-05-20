@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Socket;
 
-use App\Services\Config\Config;
+use App\Domain\TransportInterface\TransportInterface;
+use App\Infrastructure\Config\Config;
 
-class Socket
+class Socket implements TransportInterface
 {
 
     protected string $socketPath;
@@ -27,7 +28,7 @@ class Socket
         return $socket;
     }
 
-    protected function prepareClient(): bool|\Socket
+    public function prepareClient(): bool|\Socket
     {
         $socket = $this->create();
         try {
@@ -39,7 +40,7 @@ class Socket
         return $socket;
     }
 
-    protected function prepareServer(): bool|\Socket
+    public function prepareServer(): bool|\Socket
     {
         $socket = $this->bind();
         if (socket_listen($socket) === false) echo "Не удалось выполнить socket_listen(), причина: " . socket_strerror(socket_last_error($socket)) . PHP_EOL;
@@ -55,7 +56,7 @@ class Socket
         return $socket;
     }
 
-    protected function accept(\Socket $socket): bool|\Socket
+    public function accept(): bool|\Socket
     {
         $accept = socket_accept($socket);
         if ($accept === false) {
@@ -65,7 +66,7 @@ class Socket
         return $accept;
     }
 
-    protected function write(\Socket $socket,$msg): bool
+    public function write($msg): bool
     {
         try {
             socket_write($socket, $msg, strlen($msg));
@@ -76,7 +77,7 @@ class Socket
         return true;
     }
 
-    protected function read(\Socket $socket,$bite = 2048): bool|string
+    public function read(\Socket $socket,$bite = 2048): bool|string
     {
         $socket_read = socket_read($socket,$bite);
         if ($socket_read === false) {
@@ -87,7 +88,23 @@ class Socket
         return is_string($socket_read)? $socket_read : "Сообщения нет!";
     }
 
-    protected function close(\Socket $socket) {
+    public function close() {
         socket_close($socket);
+    }
+
+    /**
+     * @return string
+     */
+    public function getExitKey(): string
+    {
+        return $this->socketConst;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function closeAll()
+    {
+        // TODO: Implement closeAll() method.
     }
 }

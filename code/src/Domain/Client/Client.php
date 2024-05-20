@@ -3,27 +3,28 @@ declare(strict_types=1);
 
 namespace App\Domain\Client;
 
-use App\Services\Socket\Socket;
 
-class Client extends Socket
+use App\Domain\TransportInterface\TransportInterface;
+
+class Client
 {
-    public function run() {
+    public function run(TransportInterface $transport) {
 
-        $socket = $this->prepareClient();
+        $transport->prepareClient();
 
-        echo $this->read($socket);
-        $exit = ($this->socketConst)["MSG_EXIT"];
+        echo $transport->read();
+        $exit = $transport->getExitKey();
         while (true) {
 
             $line = readline(PHP_EOL."Введите сообщение:  ");
             if ($line == '') continue;
 
-            if ($this->write($socket,$line) === false) {
-                $this->close($socket);
+            if ($transport->write($line) === false) {
+                $transport->close();
                 break;
             }
 
-            $out = $this->read($socket);
+            $out = $transport->read();
 
             echo PHP_EOL.$out.PHP_EOL;
 
@@ -31,7 +32,7 @@ class Client extends Socket
                 break;
             }
         }
-        $this->close($socket);
+        $transport->close();
     }
 
 

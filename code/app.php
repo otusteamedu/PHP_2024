@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use App\ServerRun;
+
+use App\Application\ServerRun\ServerRun;
 
 require_once(__DIR__.'/vendor/autoload.php');
 

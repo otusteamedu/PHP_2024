@@ -2,32 +2,32 @@
 declare(strict_types=1);
 namespace App\Application\ClientRun;
 
-use App\Services\Client\Client;
-use App\Services\Config\Config;
-use App\Services\Server\Server;
+
+use App\Domain\Client\Client;
+use App\Domain\TransportInterface\TransportInterface;
 
 class ClientRun
 {
 
-    private string $command;
-    private Config $config;
-    const START_SERVER = "server";
     const START_CLIENT = "client";
+    /**
+     * @var TransportInterface
+     */
+    private TransportInterface $transport;
+    private string $command;
+
     /**
      * App constructor.
      * @param string $argv
+     * @param TransportInterface $transport
      */
-    public function __construct(string $argv)
+    public function __construct(string $argv, TransportInterface $transport)
     {
         $this->command = $argv;
-        $this->config = new Config();
+        $this->transport = $transport;
     }
 
     public function run() {
-
-        $conf = $this->config;
-
-        if ($this->command === self::START_SERVER) (new Server($conf))->run();
-        if ($this->command === self::START_CLIENT) (new Client($conf))->run();
+        if ($this->command === self::START_CLIENT) (new Client())->run($this->transport);
     }
 }

@@ -3,26 +3,27 @@ declare(strict_types=1);
 
 namespace App\Domain\Server;
 
-use App\Services\Socket\Socket;
 
-class Server extends Socket
+use App\Domain\TransportInterface\TransportInterface;
+
+class Server
 {
 
-    public function run() {
-        $socket = $this->prepareServer();
-        $exit = ($this->socketConst)['MSG_EXIT'];
+    public function run(TransportInterface $transport) {
+        $transport->prepareServer();
+        $exit = $transport->getExitKey();
         do {
-            if (($acceptedConnection = $this->accept($socket)) === false) {
+            if (($acceptedConnection = $transport->accept()) === false) {
                 break;
             }
 
             $msg = "Добро пожаловать на тестовый сервер PHP. ".PHP_EOL.
                 "Чтобы отключиться, наберите '".$exit."'.".PHP_EOL;
 
-            $this->write($acceptedConnection,$msg);
+            $transport->write($msg);
 
             while (true) {
-                if (false === ($readMsg = $this->read($acceptedConnection))) {
+                if (false === ($readMsg = $transport->read())) {
                     break 2;
                 }
 
@@ -36,13 +37,13 @@ class Server extends Socket
                 }
 
                 $talkback = "PHP: Вы сказали '$readMsg'.".PHP_EOL;
-                $this->write($acceptedConnection,$talkback);
+                $transport->write($talkback);
                 echo "$readMsg".PHP_EOL;
             }
-            socket_close($acceptedConnection);
+            $transport->close();
         } while (true);
 
-        socket_close($socket);
+        $transport->closeAll();
     }
 
 }
