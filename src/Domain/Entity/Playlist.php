@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use App\Domain\ValueObject\Email;
+
 class Playlist
 {
     private int $id;
 
     public function __construct(
-        private string $user,
+        private Email $user,
         private string $name,
         private array $tracks = [],
     ) {
@@ -20,12 +22,12 @@ class Playlist
         return $this->id;
     }
 
-    public function getUser(): string
+    public function getUser(): Email
     {
         return $this->user;
     }
 
-    public function setUser(string $user): self
+    public function setUser(Email $user): self
     {
         $this->user = $user;
 
@@ -54,5 +56,10 @@ class Playlist
         $this->tracks = $tracks;
 
         return $this;
+    }
+
+    public static function createEmptyPlaylist(string $user, string $name): self
+    {
+        return new self(new Email($user), $name);
     }
 }

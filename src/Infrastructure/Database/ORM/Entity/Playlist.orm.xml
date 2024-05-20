@@ -11,7 +11,7 @@
         <id name="id" type="integer" length="11">
             <generator strategy="AUTO" />
         </id>
-        <field name="user" type="string" length="60" nullable="false" />
+        <embedded name="user" use-column-prefix="false" class="App\Domain\ValueObject\Email" />
         <field name="name" type="string" length="60" nullable="false" />
         <many-to-many field="tracks" target-entity="App\Domain\Entity\Track">
             <join-table name="playlist_track">
