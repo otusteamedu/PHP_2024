@@ -20,3 +20,14 @@ App\Application\UseCase\Request\CreateTrackRequest:
       - Length:
           max: 11
           maxMessage: Превышена максимальное количество символов для трека {{ limit }}. Текущая длина {{ value_length }}
+
+App\Application\UseCase\Request\GetTracksByGenreRequest:
+  properties:
+    genre:
+      - NotBlank:
+          message: Не передано значение genre
+      - Length:
+          max: 60
+      - Choice:
+          message: Не известный жанр {{ value }}
+          callback: [ App\Domain\Enum\AllowedGenreEnum, 'values' ]

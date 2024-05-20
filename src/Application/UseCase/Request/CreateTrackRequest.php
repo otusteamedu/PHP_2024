@@ -9,9 +9,9 @@ use App\Domain\ValueObject\Genre;
 readonly class CreateTrackRequest
 {
     public function __construct(
-        public string $author,
-        public string $genre,
-        public int $duration,
+        public ?string $author,
+        public ?string $genre,
+        public ?int $duration,
     ) {
     }
 }

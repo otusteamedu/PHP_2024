@@ -6,7 +6,7 @@ namespace App\Domain\ValueObject;
 
 use InvalidArgumentException;
 
-class TrackDuration
+class TrackDuration implements IGetFormatedDuration
 {
     private int $value;
 
@@ -19,6 +19,11 @@ class TrackDuration
     public function getValue(): int
     {
         return $this->value;
+    }
+
+    public function getFormatedDuration(): string
+    {
+        return gmdate('i:s', $this->value);
     }
 
     private function setValue(int $value): void
