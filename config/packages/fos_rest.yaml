@@ -1,0 +1,22 @@
+# Read the documentation: https://symfony.com/doc/master/bundles/FOSRestBundle/index.html
+fos_rest:
+  body_converter:
+    enabled: true
+  serializer:
+    serialize_null: true
+  #       validate: true
+  #       validation_errors_argument: validationErrors # This is the default value
+  param_fetcher_listener: true
+  #    allowed_methods_listener:  true
+  #    routing_loader: true
+  #    view:
+  #        view_response_listener:  true
+  #    exception:
+  #        codes:
+  #            App\Exception\MyException: 403
+  #        messages:
+  #            App\Exception\MyException: Forbidden area.
+  format_listener:
+    rules:
+      - { path: ^/api/v1, prefer_extension: true, fallback_format: json, priorities: [ json, html ] }
+      - { path: '^/', stop: true }
