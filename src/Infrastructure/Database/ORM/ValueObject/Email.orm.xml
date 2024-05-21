@@ -4,6 +4,6 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
 >
     <embeddable name="App\Domain\ValueObject\Email">
-        <field name="value" column="user" type="string" length="60" nullable="false" />
+        <field name="value" column="user_email" type="string" length="60" nullable="false" />
     </embeddable>
 </doctrine-mapping>

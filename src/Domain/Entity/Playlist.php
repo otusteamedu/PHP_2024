@@ -11,9 +11,9 @@ class Playlist
     private int $id;
 
     public function __construct(
-        private Email $user,
+        private Email $userEmail,
         private string $name,
-        private array $tracks = [],
+        private iterable $tracks = [],
     ) {
     }
 
@@ -24,12 +24,12 @@ class Playlist
 
     public function getUser(): Email
     {
-        return $this->user;
+        return $this->userEmail;
     }
 
-    public function setUser(Email $user): self
+    public function setUser(Email $userEmail): self
     {
-        $this->user = $user;
+        $this->userEmail = $userEmail;
 
         return $this;
     }

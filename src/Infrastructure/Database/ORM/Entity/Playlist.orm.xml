@@ -6,12 +6,12 @@
     <entity
             name="App\Domain\Entity\Playlist"
             table="playlist"
-            repository-class="App\Infrastructure\Repository\DoctrineTrackRepository"
+            repository-class="App\Infrastructure\Repository\DoctrinePlaylistRepository"
     >
         <id name="id" type="integer" length="11">
             <generator strategy="AUTO" />
         </id>
-        <embedded name="user" use-column-prefix="false" class="App\Domain\ValueObject\Email" />
+        <embedded name="userEmail" use-column-prefix="false" class="App\Domain\ValueObject\Email" />
         <field name="name" type="string" length="60" nullable="false" />
         <many-to-many field="tracks" target-entity="App\Domain\Entity\Track">
             <join-table name="playlist_track">

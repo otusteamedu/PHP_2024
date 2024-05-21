@@ -12,3 +12,7 @@ services:
             - '../src/Domain/Entity/'
             - '../src/Domain/ValueObject/'
             - '../src/Kernel.php'
+
+    App\Infrastructure\Database\EventListener\PreFlushEventListener:
+        tags:
+            - { name: doctrine.event_listener, event: preFlush }
