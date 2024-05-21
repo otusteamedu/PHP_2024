@@ -5,11 +5,11 @@ namespace App\Infrastructure\Config;
 
 class Config
 {
-    const CONFIG_PATH = __DIR__.'/../../config/config.ini';
+    const CONFIG_PATH = __DIR__.'/config.ini';
     const SOCKET_PATH = 'SOCKET_PATH';
     const SOCK_CONST_SECTION = 'Socket_constants';
-    private string $socket_path = '';
-    private array $socket_const = [];
+    private ?string $socket_path = '';
+    private ?array $socket_const = [];
 
     public function __construct()
     {

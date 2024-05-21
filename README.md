@@ -15,4 +15,4 @@
 
 `docker run --name php_client -it --network=otus_php_app --volumes-from php_server otus-php_client bash`
 
-3) Запускаем приложение `php app.php client`
+3) Запускаем приложение `php app/app.php client`

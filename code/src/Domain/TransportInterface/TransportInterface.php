@@ -11,5 +11,4 @@ interface TransportInterface
     public function write(string $msg);
     public function read();
     public function close();
-    public function closeAll();
 }

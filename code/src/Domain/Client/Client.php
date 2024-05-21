@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Client;
 
-
 use App\Domain\TransportInterface\TransportInterface;
 
 class Client
@@ -34,7 +33,4 @@ class Client
         }
         $transport->close();
     }
-
-
-
 }

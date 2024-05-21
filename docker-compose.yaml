@@ -6,25 +6,12 @@ services:
       context: ./docker
       dockerfile: Dockerfile
     container_name: 'php_server'
-    command: php app.php server
+    command: php app/app.php server
     volumes:
-    - ./code:/data
+    - ./code/src:/data/app
     - "phpsocket:/tmp/phpsocket"
     networks:
       - php_app
-
-#  php_client:
-#    build:
-#      context: ./docker
-#      dockerfile: Dockerfile
-#    container_name: 'php_client'
-#    volumes:
-#      - ./code:/data
-#      - "phpsocket:/tmp/phpsocket"
-#    networks:
-#      - php_app
-#    depends_on:
-#      - php_server
 
 volumes:
   phpsocket:

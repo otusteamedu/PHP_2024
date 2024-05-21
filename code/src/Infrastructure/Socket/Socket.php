@@ -9,8 +9,10 @@ use App\Infrastructure\Config\Config;
 class Socket implements TransportInterface
 {
 
-    protected string $socketPath;
-    protected array $socketConst;
+    protected ?string $socketPath;
+    protected ?array $socketConst;
+    private \Socket $socket;
+    private ?\Socket $socketAccepted = null;
 
     public function __construct(Config $config)
     {
@@ -18,56 +20,56 @@ class Socket implements TransportInterface
         $this->socketConst = $config->getSockConst();
     }
 
-    private function create(): bool|\Socket
+    private function create()
     {
         $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
         if ($socket === false) {
             echo "Не удалось выполнить socket_create(), причина: " . socket_strerror(socket_last_error()).PHP_EOL;
-            return false;
+
         } else echo "Сокет создан.".PHP_EOL;
-        return $socket;
+        $this->socket = $socket;
     }
 
-    public function prepareClient(): bool|\Socket
+    public function prepareClient()
     {
-        $socket = $this->create();
+        $this->create();
         try {
-            socket_connect($socket, $this->socketPath);
+            socket_connect($this->socket, $this->socketPath);
         } catch (\Exception $e) {
-            echo "Не удалось выполнить socket_connect().".PHP_EOL."Причина: " . socket_strerror(socket_last_error($socket)) .PHP_EOL;
-            return false;
+            echo "Не удалось выполнить socket_connect().".PHP_EOL."Причина: " . socket_strerror(socket_last_error($this->socket)) .PHP_EOL;
         }
-        return $socket;
     }
 
-    public function prepareServer(): bool|\Socket
+    public function prepareServer()
     {
-        $socket = $this->bind();
-        if (socket_listen($socket) === false) echo "Не удалось выполнить socket_listen(), причина: " . socket_strerror(socket_last_error($socket)) . PHP_EOL;
-        return $socket;
+        $this->bind();
+        if (socket_listen($this->socket) === false) echo "Не удалось выполнить socket_listen(), причина: " . socket_strerror(socket_last_error($this->socket)) . PHP_EOL;
     }
 
-    private function bind(): bool|\Socket
+    private function bind()
     {
         $path = $this->socketPath;
         if (file_exists($path)) unlink($path);
-        $socket = $this->create();
-        socket_bind($socket,$path);
-        return $socket;
+        $this->create();
+        socket_bind($this->socket,$path);
     }
 
-    public function accept(): bool|\Socket
+    public function accept(): bool
     {
-        $accept = socket_accept($socket);
-        if ($accept === false) {
-            echo "Не удалось выполнить socket_accept(), причина: " . socket_strerror(socket_last_error($socket)).PHP_EOL;
-            return false;
+        $socket = $this->socket;
+        try {
+            $accept = socket_accept($socket);
+        } catch (\Exception $e) {
+                echo "Не удалось выполнить socket_accept(), причина: " . socket_strerror(socket_last_error($socket)).PHP_EOL;
+        return false;
         }
-        return $accept;
+        $this->socketAccepted = $accept;
+        return true;
     }
 
     public function write($msg): bool
     {
+        $socket = $this->socketAccepted?? $this->socket;
         try {
             socket_write($socket, $msg, strlen($msg));
         } catch (\Exception $exception) {
@@ -77,8 +79,9 @@ class Socket implements TransportInterface
         return true;
     }
 
-    public function read(\Socket $socket,$bite = 2048): bool|string
+    public function read($bite = 2048): bool|string
     {
+        $socket = $this->socketAccepted?? $this->socket;
         $socket_read = socket_read($socket,$bite);
         if ($socket_read === false) {
             echo "Не удалось выполнить socket_read(), причина: " .
@@ -89,6 +92,7 @@ class Socket implements TransportInterface
     }
 
     public function close() {
+        $socket = $this->socketAccepted?? $this->socket;
         socket_close($socket);
     }
 
@@ -97,14 +101,7 @@ class Socket implements TransportInterface
      */
     public function getExitKey(): string
     {
-        return $this->socketConst;
+        return $this->socketConst['MSG_EXIT'];
     }
 
-    /**
-     * @return mixed
-     */
-    public function closeAll()
-    {
-        // TODO: Implement closeAll() method.
-    }
 }

@@ -43,7 +43,7 @@ class Server
             $transport->close();
         } while (true);
 
-        $transport->closeAll();
+        $transport->close();
     }
 
 }

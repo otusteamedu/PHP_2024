@@ -9,8 +9,6 @@ use App\Domain\TransportInterface\TransportInterface;
 class ServerRun
 {
 
-    private string $command;
-    const START_SERVER = "server";
     /**
      * @var TransportInterface
      */
@@ -19,16 +17,15 @@ class ServerRun
 
     /**
      * App constructor.
-     * @param string $argv
      * @param TransportInterface $transport
      */
-    public function __construct(string $argv, TransportInterface $transport)
+    public function __construct(TransportInterface $transport)
     {
-        $this->command = $argv;
         $this->transport = $transport;
     }
 
     public function run() {
-        if ($this->command === self::START_SERVER) (new Server())->run($this->transport);
+        $server = new Server();
+        $server->run($this->transport);
     }
 }
