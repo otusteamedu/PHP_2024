@@ -13,6 +13,7 @@ services:
             - '../src/Domain/ValueObject/'
             - '../src/Kernel.php'
 
-    App\Infrastructure\Database\EventListener\PreFlushEventListener:
+    App\Infrastructure\Database\EventListener\CollectionSubstitutionEventListener:
         tags:
             - { name: doctrine.event_listener, event: preFlush }
+            - { name: doctrine.event_listener, event: postFlush }
