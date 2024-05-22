@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use App\Domain\Collection\TracksCollection;
 use App\Domain\ValueObject\Email;
 
 class Playlist
 {
     private int $id;
+    private iterable $tracks;
 
     public function __construct(
         private Email $userEmail,
         private string $name,
-        private iterable $tracks = [],
     ) {
+        $this->tracks = new TracksCollection();
     }
 
     public function getId(): int
@@ -46,20 +48,35 @@ class Playlist
         return $this;
     }
 
-    public function getTracks(): array
+    public function getTracks(): TracksCollection
     {
         return $this->tracks;
     }
 
-    public function setTracks(array $tracks): self
+    public function setTrackCollection(array $tracks): self
     {
-        $this->tracks = $tracks;
+        $this->tracks = new TracksCollection($tracks);
 
         return $this;
     }
 
-    public static function createEmptyPlaylist(string $user, string $name): self
+    public function addTrack(Track $track): self
     {
-        return new self(new Email($user), $name);
+        $this->tracks->add($track);
+
+        return $this;
+    }
+
+    public function removeTrack(Track $track): self
+    {
+        $this->tracks->remove($track);
+
+        return $this;
+    }
+
+    public static function createEmptyPlaylist(string $user, string $name, array $tracks): self
+    {
+        return (new self(new Email($user), $name))
+            ->setTrackCollection($tracks);
     }
 }

@@ -18,7 +18,7 @@ class CreatePlaylistUseCase
 
     public function __invoke(CreatePlaylistRequest $request): CreatePlaylistResponse
     {
-        $playlist = Playlist::createEmptyPlaylist($request->user, $request->name);
+        $playlist = Playlist::createEmptyPlaylist($request->user, $request->name, []);
         $this->playlistRepository->save($playlist);
 
         return new CreatePlaylistResponse($playlist->getId());
