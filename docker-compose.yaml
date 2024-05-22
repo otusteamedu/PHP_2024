@@ -1,0 +1,57 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: "otus/nginx"
+    container_name: "otus-nginx"
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/www/mysite.local
+      - ./docker/logs/nginx:/var/log/nginx/
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: "otus/fpm"
+    container_name: "otus-www"
+    volumes:
+      - ./www:/www/mysite.local
+      - ./docker/logs/php.log:/var/log/fpm-php.www.log
+    networks:
+      - app-network
+
+  postgresql:
+    image: postgres:14.7-alpine
+    container_name: "otus-postgresql"
+    environment:
+      POSTGRES_USER: hukimato
+      POSTGRES_PASSWORD: hukimato
+      POSTGRES_DB: hukimato
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/postgresql/db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  memcached:
+    container_name: memcached
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

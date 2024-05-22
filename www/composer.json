@@ -1,0 +1,44 @@
+{
+  "name": "hukimato/news-api",
+  "description": "Несложный REST API для новостного сайта",
+  "license": "",
+  "authors": [
+    {
+      "name": "Daniil Aleksandrov",
+      "email": "danay2211@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "doctrine/dbal": "^4.0",
+    "doctrine/orm": "^3.1",
+    "monolog/monolog": "^2.8",
+    "php-di/php-di": "^6.4",
+    "slim/psr7": "^1.5",
+    "slim/slim": "^4.10",
+    "symfony/cache": "^7.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    },
+    "process-timeout": 0,
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "start": "php -S localhost:8080 -t public",
+    "test": "phpunit"
+  }
+}
