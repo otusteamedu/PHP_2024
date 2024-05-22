@@ -29,5 +29,4 @@ readonly class SearchService
         );
         return $elasticClient->search(['index' => $arguments->index, 'body' => $query]);
     }
-
 }

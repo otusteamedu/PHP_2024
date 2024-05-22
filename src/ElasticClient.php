@@ -11,7 +11,8 @@ use Elastic\Elasticsearch\Exception\AuthenticationException;
 readonly class ElasticClient
 {
     public function __construct(private ElasticConfig $config)
-    {}
+    {
+    }
 
     /**
      * @throws AuthenticationException
@@ -24,5 +25,4 @@ readonly class ElasticClient
             ->setBasicAuthentication($this->config->username, $this->config->password)
             ->build();
     }
-
 }

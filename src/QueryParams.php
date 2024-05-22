@@ -13,5 +13,4 @@ readonly class QueryParams
         public int $minPrice
     ) {
     }
-
 }

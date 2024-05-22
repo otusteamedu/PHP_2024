@@ -18,5 +18,4 @@ class App
         $resultsFormatter = new Formatter();
         return $resultsFormatter->formatResults($result['hits'] ?? []);
     }
-
 }

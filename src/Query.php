@@ -58,5 +58,4 @@ class Query
 
         return $query;
     }
-
 }

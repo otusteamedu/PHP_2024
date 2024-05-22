@@ -8,7 +8,6 @@ use DomainException;
 
 readonly class ElasticConfig
 {
-
     public string $host;
     public bool $sslVerification;
     public string $username;
@@ -43,5 +42,4 @@ readonly class ElasticConfig
         $this->username = $username;
         $this->password = $password;
     }
-
 }

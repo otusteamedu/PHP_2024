@@ -17,5 +17,4 @@ class Formatter
         }
         return $formattedResults;
     }
-
 }
