@@ -31,3 +31,21 @@ App\Application\UseCase\Request\GetTracksByGenreRequest:
       - Choice:
           message: Не известный жанр {{ value }}
           callback: [ App\Domain\Enum\AllowedGenreEnum, 'values' ]
+
+App\Application\UseCase\Request\CreatePlaylistRequest:
+  properties:
+    name:
+      - NotBlank:
+          message: Не передано имя плейлиста
+    user:
+      - NotBlank:
+          message: Не передана электронная почта владельца плейлиста
+      - Length:
+          max: 60
+      - Email:
+          message: Неверный формат электронной почты владельца плейлиста
+    tracks:
+      - All:
+        - Type:
+            type: integer
+            message: Неверный формат трека в плейлисте

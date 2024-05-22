@@ -27,6 +27,18 @@ class DoctrineTrackRepository extends ServiceEntityRepository implements ITrackR
             ->getResult();
     }
 
+    public function findTracksById(array $ids): array
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        return $queryBuilder
+            ->where($queryBuilder->expr()->in('t.id', ':ids'))
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
+
     public function save(Track $track): void
     {
         $this->getEntityManager()->persist($track);

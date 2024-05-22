@@ -15,5 +15,11 @@ interface ITrackRepository
      */
     public function getTracksByGenre(Genre $genre): array;
 
+    /**
+     * @param array $ids
+     * @return Track[]
+     */
+    public function findTracksById(array $ids): array;
+
     public function save(Track $track): void;
 }

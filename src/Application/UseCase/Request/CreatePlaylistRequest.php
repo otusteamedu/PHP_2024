@@ -9,6 +9,7 @@ readonly class CreatePlaylistRequest
     public function __construct(
         public ?string $name,
         public ?string $user,
+        public array $tracks = []
     ) {
     }
 }
