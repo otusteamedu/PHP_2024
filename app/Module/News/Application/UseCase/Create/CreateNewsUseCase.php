@@ -6,12 +6,12 @@ namespace Module\News\Application\UseCase\Create;
 
 use Module\News\Application\Service\Interface\UrlParserServiceInterface;
 use Module\News\Domain\Factory\NewsFactory;
-use Module\News\Domain\Repository\NewsCommandRepositoryInterface;
+use Module\News\Domain\Repository\NewsRepositoryInterface;
 
 final readonly class CreateNewsUseCase
 {
     public function __construct(
-        private NewsCommandRepositoryInterface $repository,
+        private NewsRepositoryInterface $repository,
         private UrlParserServiceInterface $urlParserService,
         private NewsFactory $factory,
     ) {

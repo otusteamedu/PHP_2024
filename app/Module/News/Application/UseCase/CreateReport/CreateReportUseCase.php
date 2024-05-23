@@ -8,12 +8,12 @@ use Core\Domain\ValueObject\Uuid;
 use Module\News\Application\Service\Dto\NewsDto;
 use Module\News\Application\Service\Interface\ReportGeneratorServiceInterface;
 use Module\News\Domain\Entity\News;
-use Module\News\Domain\Repository\NewsQueryRepositoryInterface;
+use Module\News\Domain\Repository\NewsRepositoryInterface;
 
 final readonly class CreateReportUseCase
 {
     public function __construct(
-        private NewsQueryRepositoryInterface $repository,
+        private NewsRepositoryInterface $repository,
         private ReportGeneratorServiceInterface $reportGeneratorService,
     ) {
     }

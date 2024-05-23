@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Module\News\Application\UseCase\GetList;
 
 use Module\News\Domain\Entity\News;
-use Module\News\Domain\Repository\NewsQueryRepositoryInterface;
+use Module\News\Domain\Repository\NewsRepositoryInterface;
 
 final readonly class GetListUseCase
 {
     public function __construct(
-        private NewsQueryRepositoryInterface $repository,
+        private NewsRepositoryInterface $repository,
     ) {
     }
 

@@ -9,5 +9,5 @@ use Module\News\Domain\ValueObject\Url;
 
 interface ReportGeneratorServiceInterface
 {
-    public function generate(NewsDto $newsDto, NewsDto ...$newsDtoList): Url;
+    public function generate(NewsDto ...$newsDtoList): Url;
 }

@@ -7,8 +7,9 @@ namespace Module\News\Domain\Repository;
 use Core\Domain\ValueObject\Uuid;
 use Module\News\Domain\Entity\News;
 
-interface NewsQueryRepositoryInterface
+interface NewsRepositoryInterface
 {
+    public function create(News $news): void;
     /**
      * @return News[]
      */
@@ -16,5 +17,5 @@ interface NewsQueryRepositoryInterface
     /**
      * @return News[]
      */
-    public function getAllByIds(Uuid $id, Uuid ...$ids): array;
+    public function getAllByIds(Uuid ...$ids): array;
 }

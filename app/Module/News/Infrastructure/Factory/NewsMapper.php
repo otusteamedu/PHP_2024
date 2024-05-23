@@ -15,12 +15,12 @@ use Module\News\Domain\ValueObject\Url;
 use Module\News\Infrastructure\Model\NewsModel;
 use ReflectionObject;
 
-final class NewsFactory
+final class NewsMapper
 {
     /**
      * @throws Exception
      */
-    public function create(NewsModel $model): News
+    public function fromModel(NewsModel $model): News
     {
         $news = new News(
             new Uuid($model->id),
@@ -35,10 +35,10 @@ final class NewsFactory
     /**
      * @throws Exception
      */
-    public function createByCollection(Collection $newsModels): array
+    public function fromCollection(Collection $newsModels): array
     {
         return array_map(function (NewsModel $model): News {
-            return $this->create($model);
+            return $this->fromModel($model);
         }, $newsModels->all());
     }
 

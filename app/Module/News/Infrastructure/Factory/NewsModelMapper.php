@@ -7,9 +7,9 @@ namespace Module\News\Infrastructure\Factory;
 use Module\News\Domain\Entity\News;
 use Module\News\Infrastructure\Model\NewsModel;
 
-final class NewsModelFactory
+final class NewsModelMapper
 {
-    public function create(News $news): NewsModel
+    public function fromEntity(News $news): NewsModel
     {
         $model = new NewsModel();
         $model->id = $news->getId();

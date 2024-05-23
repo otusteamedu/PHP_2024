@@ -11,9 +11,8 @@ use Module\News\Domain\ValueObject\Url;
 
 final class HtmlReportGeneratorService implements ReportGeneratorServiceInterface
 {
-    public function generate(NewsDto $newsDto, NewsDto ...$newsDtoList): Url
+    public function generate(NewsDto ...$newsDtoList): Url
     {
-        $newsDtoList[] = $newsDto;
         $path = $this->getStoragePath();
         $content = $this->prepareContent(...$newsDtoList);
         file_put_contents($path, $content);
