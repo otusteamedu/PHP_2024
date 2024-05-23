@@ -1,7 +1,5 @@
 .idea/
 /www/vendor/
-.DS_Store
-.AppleDouble
-.LSOverride
-Dockerfile
-/docker/
+/docker/logs
+/docker/postgresql/db-data
+/docker/redis/dаta
