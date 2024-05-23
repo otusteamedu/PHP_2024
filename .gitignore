@@ -3,3 +3,4 @@
 code_old/composer.json
 code_old/composer.lock
 code_old/vendor
+.env
