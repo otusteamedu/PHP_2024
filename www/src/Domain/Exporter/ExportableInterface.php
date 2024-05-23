@@ -6,5 +6,5 @@ namespace App\Domain\Exporter;
 
 interface ExportableInterface
 {
-    public function accept(ExporterInterface $exporter);
+    public function accept(ExporterInterface $exporter): string;
 }

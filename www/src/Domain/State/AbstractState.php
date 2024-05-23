@@ -40,6 +40,11 @@ abstract class AbstractState
         }
     }
 
+    public function toScalar()
+    {
+        return self::getScalarFromState($this);
+    }
+
     public static function getScalarFromState(AbstractState $state): int
     {
         return array_search($state::class, self::MAP_SCALAR_STATE_CLASS, true);

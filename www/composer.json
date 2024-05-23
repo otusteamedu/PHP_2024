@@ -18,7 +18,8 @@
     "php-di/php-di": "^6.4",
     "slim/psr7": "^1.5",
     "slim/slim": "^4.10",
-    "symfony/cache": "^7.0"
+    "symfony/cache": "^7.0",
+    "tecnickcom/tcpdf": "^6.7"
   },
   "config": {
     "allow-plugins": {

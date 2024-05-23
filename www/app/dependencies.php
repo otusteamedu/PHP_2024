@@ -3,12 +3,15 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
+use App\Infrastructure\Exporter\BaseExporter;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Psr7\Factory\StreamFactory;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -26,5 +29,12 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+        StreamFactoryInterface::class => function (ContainerInterface $container) {
+            return new StreamFactory();
+        },
+        \App\Domain\Exporter\ExporterInterface::class => function (ContainerInterface $container) {
+            return new BaseExporter();
+        }
     ]);
+
 };

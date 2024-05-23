@@ -6,6 +6,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\News\News;
 use App\Domain\News\NewsRepository;
+use App\Domain\State\AbstractState;
 use App\Infrastructure\Entity;
 use Doctrine\ORM\EntityRepository;
 
@@ -30,10 +31,11 @@ class NewsPGRepository extends EntityRepository implements NewsRepository
         return $news->getDomainModel();
     }
 
-    public function update(News $news): News
+    public function updateState(News $news): News
     {
-        $newsEntity = Entity\NewsEntity::getEntityFromDomainModel($news, $this->getEntityManager());
-
+        /** @var Entity\NewsEntity $newsEntity */
+        $newsEntity = parent::find($news->getId());
+        $newsEntity->setState($news->getState()->toScalar());
 
         $this->getEntityManager()->flush();
         return $news;
@@ -41,7 +43,6 @@ class NewsPGRepository extends EntityRepository implements NewsRepository
     public function save(News $news): News
     {
         $newsEntity = Entity\NewsEntity::getEntityFromDomainModel($news, $this->getEntityManager());
-
 
         $this->getEntityManager()->persist($newsEntity);
         $this->getEntityManager()->flush();

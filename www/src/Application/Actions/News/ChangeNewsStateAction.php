@@ -16,11 +16,11 @@ class ChangeNewsStateAction extends NewsAction
         $newState = (int) $this->resolveArg('state');
         $newState = AbstractState::getStateFromScalar($newState);
 
-        $user = $this->newsRepository->findNewsOfId($userId);
-        $user->setState($newState);
+        $news = $this->newsRepository->findNewsOfId($userId);
+        $news->setState($newState);
 
-        $this->newsRepository->update($user);
+        $news = $this->newsRepository->updateState($news);
 
-        return $this->respondWithData($user);
+        return $this->respondWithData($news);
     }
 }

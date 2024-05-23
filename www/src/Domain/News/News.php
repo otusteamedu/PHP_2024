@@ -126,9 +126,9 @@ class News implements JsonSerializable, ExportableInterface
         return $this;
     }
 
-    public function accept(ExporterInterface $exporter)
+    public function accept(ExporterInterface $exporter): string
     {
-        $exporter->exportNews($this);
+        return $exporter->exportNews($this);
     }
 
     public function jsonSerialize(): array
@@ -140,6 +140,7 @@ class News implements JsonSerializable, ExportableInterface
             'author' => $this->author,
             'category' => $this->category,
             'body' => $this->body,
+            'state' => $this->state::getName(),
         ];
     }
 }

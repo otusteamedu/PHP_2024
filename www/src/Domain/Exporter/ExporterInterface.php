@@ -8,5 +8,7 @@ use App\Domain\News\News;
 
 interface ExporterInterface
 {
-    public function exportNews(News $news);
+    public function exportNews(News $news): string;
+
+    public static function GetConcreteExporter(string $fileExtension): static;
 }

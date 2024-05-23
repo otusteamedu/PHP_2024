@@ -36,7 +36,7 @@ return function (App $app) {
         $group->post('', \App\Application\Actions\News\CreateNewsAction::class);
         $group->get('/{id}', \App\Application\Actions\News\ViewNewsAction::class);
         $group->get('/{id}/state/{state}', \App\Application\Actions\News\ChangeNewsStateAction::class);
-        $group->get('/export/{id}', \App\Application\Actions\News\DownloadNewsAction::class);
+        $group->get('/export/{id}.{extension}', \App\Application\Actions\News\DownloadNewsAction::class);
     });
 
     $app->group('/categories', function (Group $group) {
