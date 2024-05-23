@@ -13,8 +13,6 @@ class ViewNewsAction extends NewsAction
         $userId = (int) $this->resolveArg('id');
         $user = $this->newsRepository->findNewsOfId($userId);
 
-        $this->logger->info("User of id `{$userId}` was viewed.");
-
         return $this->respondWithData($user);
     }
 }

@@ -27,6 +27,8 @@ interface NewsRepository
      */
     public function save(News $news): News;
 
+    public function update(News $news): News;
+
     /**
      * @param News $news
      */

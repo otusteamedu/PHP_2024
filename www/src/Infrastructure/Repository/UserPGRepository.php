@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repository;
 
 
-use App\Domain\Category\Category;
 use App\Domain\User\User;
 use App\Domain\User\UserRepository;
-use App\Infrastructure\Entity\News;
+use App\Infrastructure\Entity\UserEntity;
 use Doctrine\ORM\EntityRepository;
-use App\Infrastructure\Entity\User as EntityUser;
 
 class UserPGRepository extends EntityRepository implements UserRepository
 {
@@ -19,10 +17,11 @@ class UserPGRepository extends EntityRepository implements UserRepository
      */
     public function findAll(): array
     {
+        /** @var UserEntity[] $users */
         $users = parent::findAll();
 
         foreach ($users as &$user) {
-            $user = $this->buildDomainUser($user);
+            $user = $user->getDomainModel();
         }
 
         return $users;
@@ -30,46 +29,24 @@ class UserPGRepository extends EntityRepository implements UserRepository
 
     public function findById(string $nickname): User
     {
-        $user = $this->find($nickname);
-
-        $user = $this->buildDomainUser($user);
-
-        return $user;
+        $user = parent::find($nickname);
+        return $user->getDomainModel();
     }
 
     public function save(User $user): User
     {
-//        $user->setNews(json_encode($user->getNews()));
-        $this->getEntityManager()->persist($user);
+        $userEntity = UserEntity::getEntityFromDomainModel($user);
+
+        $this->getEntityManager()->persist($userEntity);
         $this->getEntityManager()->flush();
         return $user;
     }
 
     public function delete(User $user): void
     {
-        $this->getEntityManager()->remove($user);
+        $userEntity = UserEntity::getEntityFromDomainModel($user);
+
+        $this->getEntityManager()->remove($userEntity);
         $this->getEntityManager()->flush();
-    }
-
-    protected static function buildEntityUser(User $user): EntityUser
-    {
-        return new EntityUser(
-            $user->getUsername(),
-            $user->getNews(),
-        );
-    }
-
-    protected function buildDomainUser(EntityUser $user): User
-    {
-        $news = [];
-        $newsIds = $user->getNews();
-        foreach ($newsIds as $newsId) {
-            $news[] = $this
-                ->getEntityManager()
-                ->getRepository(News::class)
-                ->find($newsId);
-        }
-        $user->setNews($news);
-        return $user;
     }
 }

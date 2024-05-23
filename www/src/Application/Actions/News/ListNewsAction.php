@@ -15,7 +15,7 @@ class ListNewsAction extends NewsAction
     {
         $users = $this->newsRepository->findAll();
 
-        $this->logger->info("News list was viewed.");
+//        $this->logger->info("News list was viewed.");
 
         return $this->respondWithData($users);
     }

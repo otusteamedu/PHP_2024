@@ -13,20 +13,16 @@ return function (\DI\ContainerBuilder $containerBuilder) {
         \Doctrine\ORM\EntityManager::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
-            $config = ORMSetup::createConfiguration(
+            $config = ORMSetup::createAttributeMetadataConfiguration(
+                paths: [
+                    __DIR__ . "/../src/Infrastructure/Entity"
+                ],
                 isDevMode: true,
             );
-            $driver = new \Doctrine\Persistence\Mapping\Driver\StaticPHPDriver(__DIR__ . "/../src/Infrastructure/Entity");
-            $config->setMetadataDriverImpl($driver);
 
             $connection = DriverManager::getConnection($settings->get('db'), $config);
 
             $em = new EntityManager($connection, $config);
-
-//            \Doctrine\ORM\Tools\Console\ConsoleRunner::run(
-//                new \Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider($em),
-//                []
-//            );
 
             return $em;
         },

@@ -47,14 +47,6 @@ class News implements JsonSerializable, ExportableInterface
         $this->category = $category;
         $this->state = $state;
         $this->body = $body;
-//        $dom = new DOMDocument;
-//        $dom->loadHTML($body);
-//        if ($dom->validate()) {
-//            $this->body = $body;
-//        }
-//        else {
-//            throw new \InvalidArgumentException('Invalid HTML in body');
-//        }
     }
 
     public function getId(): ?int
@@ -130,7 +122,7 @@ class News implements JsonSerializable, ExportableInterface
 
     public function setState(AbstractState $state): News
     {
-        $this->state = $state;
+        $this->state = $this->state->getAllowedTransition($state);
         return $this;
     }
 

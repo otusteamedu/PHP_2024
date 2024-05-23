@@ -16,7 +16,8 @@ class LoginAction extends UserAction
 
         $user = $this->userRepository->findById($username);
 
-        session_start();
+        if (session_status() !== PHP_SESSION_ACTIVE)
+            session_start();
         $_SESSION['username'] = $user->getUsername();
         return $this->respondWithData($user->getUsername());
     }

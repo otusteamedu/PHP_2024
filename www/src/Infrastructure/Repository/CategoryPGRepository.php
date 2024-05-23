@@ -6,7 +6,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Category\Category;
 use App\Domain\Category\CategoryRepository;
-use App\Infrastructure\Entity;
+use App\Infrastructure\Entity\CategoryEntity;
 use Doctrine\ORM\EntityRepository;
 
 class CategoryPGRepository extends EntityRepository implements CategoryRepository
@@ -17,10 +17,11 @@ class CategoryPGRepository extends EntityRepository implements CategoryRepositor
      */
     public function findAll(): array
     {
+        /** @var CategoryEntity[] $categories */
         $categories = $this->findAll();
 
         foreach ($categories as &$category) {
-            $category = $this->buildDomainCategory($category);
+            $category = $category->getDomainModel();
         }
 
         return $categories;
@@ -30,49 +31,25 @@ class CategoryPGRepository extends EntityRepository implements CategoryRepositor
     {
         $category = $this->find($id);
 
-        $category = $this->buildDomainCategory($category);
+        $category = $category->getDomainModel();
 
         return $category;
     }
 
     public function save(Category $category): Category
     {
-        $category = static::buildEntityCategory($category);
+        $categoryEntity = CategoryEntity::getEntityFromDomainModel($category);
 
-        $this->getEntityManager()->persist($category);
+        $this->getEntityManager()->persist($categoryEntity);
         $this->getEntityManager()->flush();
         return $category;
     }
 
     public function delete(Category $category): void
     {
-        $category = static::buildEntityCategory($category);
+        $categoryEntity = CategoryEntity::getEntityFromDomainModel($category);
 
-        $this->getEntityManager()->remove($category);
+        $this->getEntityManager()->remove($categoryEntity);
         $this->getEntityManager()->flush();
-    }
-
-    protected static function buildEntityCategory(Category $category): Entity\Category
-    {
-        return new Entity\Category(
-            $category->getTitle(),
-            $category->getId(),
-            $category->getSubscribers()
-        );
-    }
-
-    protected function buildDomainCategory(Entity\Category $category): Category
-    {
-        $usersIds = $category->getSubscribers();
-        $users = [];
-        foreach ($usersIds as $userId) {
-            $users[] = $this
-                ->getEntityManager()
-                ->getRepository(Entity\User::class)
-                ->find($userId);
-        }
-        $category->setSubscribers($users);
-
-        return $category;
     }
 }

@@ -16,7 +16,7 @@ return function (ContainerBuilder $containerBuilder) {
             $em = $container->get(EntityManager::class);
 
             $cmf = $em->getMetadataFactory();
-            $class = $cmf->getMetadataFor(Entity\User::class);
+            $class = $cmf->getMetadataFor(Entity\UserEntity::class);
 
             return new \App\Infrastructure\Repository\UserPGRepository($em, $class);
         },
@@ -24,7 +24,7 @@ return function (ContainerBuilder $containerBuilder) {
             $em = $container->get(EntityManager::class);
 
             $cmf = $em->getMetadataFactory();
-            $class = $cmf->getMetadataFor(Entity\News::class);
+            $class = $cmf->getMetadataFor(Entity\NewsEntity::class);
 
             return new \App\Infrastructure\Repository\NewsPGRepository($em, $class);
         },
@@ -32,7 +32,7 @@ return function (ContainerBuilder $containerBuilder) {
             $em = $container->get(EntityManager::class);
 
             $cmf = $em->getMetadataFactory();
-            $class = $cmf->getMetadataFor(Entity\Category::class);
+            $class = $cmf->getMetadataFor(Entity\CategoryEntity::class);
 
             return new \App\Infrastructure\Repository\CategoryPGRepository($em, $class);
         },

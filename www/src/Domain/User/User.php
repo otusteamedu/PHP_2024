@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User;
 
+use App\Domain\Category\Category;
 use App\Domain\DomainInterface\ObserverInterface;
 use App\Domain\News\News;
 use JsonSerializable;
@@ -16,10 +17,16 @@ class User implements JsonSerializable, ObserverInterface
      */
     protected array $news;
 
-    public function __construct(string $username, array $news = [])
+    /**
+     * @var Category[]
+     */
+    protected array $categories;
+
+    public function __construct(string $username, array $news = [], array $categories = [])
     {
         $this->username = strtolower($username);
         $this->news = $news;
+        $this->categories = $categories;
     }
 
     public function __get(string $name): mixed
@@ -45,7 +52,7 @@ class User implements JsonSerializable, ObserverInterface
     {
         return [
             'username' => $this->username,
-            'news' => $this->news,
+//            'news' => $this->news,
         ];
     }
 
@@ -75,4 +82,16 @@ class User implements JsonSerializable, ObserverInterface
     {
         return $this->username;
     }
+
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(array $categories): void
+    {
+        $this->categories = $categories;
+    }
+
+
 }

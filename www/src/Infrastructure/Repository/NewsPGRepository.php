@@ -6,41 +6,53 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\News\News;
 use App\Domain\News\NewsRepository;
-use App\Domain\User\User;
-use Doctrine\ORM\EntityRepository;
 use App\Infrastructure\Entity;
+use Doctrine\ORM\EntityRepository;
 
 class NewsPGRepository extends EntityRepository implements NewsRepository
 {
-    public function findNewsOfId(int $id): News
+    public function findAll(): array
     {
-        return $this->find($id);
+        /** @var Entity\NewsEntity[] $categories */
+        $newsList = parent::findAll();
+
+        foreach ($newsList as &$news) {
+            $news = $news->getDomainModel();
+        }
+
+        return $newsList;
     }
 
+    public function findNewsOfId(int $id): News
+    {
+        $news = $this->find($id);
+
+        return $news->getDomainModel();
+    }
+
+    public function update(News $news): News
+    {
+        $newsEntity = Entity\NewsEntity::getEntityFromDomainModel($news, $this->getEntityManager());
+
+
+        $this->getEntityManager()->flush();
+        return $news;
+    }
     public function save(News $news): News
     {
-        $news = static::buildEntityNews($news);
-        $this->getEntityManager()->persist($news);
+        $newsEntity = Entity\NewsEntity::getEntityFromDomainModel($news, $this->getEntityManager());
+
+
+        $this->getEntityManager()->persist($newsEntity);
         $this->getEntityManager()->flush();
         return $news;
     }
 
     public function delete(News $news): void
     {
-        $news = static::buildEntityNews($news);
-        $this->getEntityManager()->remove($news);
-        $this->getEntityManager()->flush();
-    }
+        $newsEntity = Entity\NewsEntity::getEntityFromDomainModel($news);
 
-    protected static function buildEntityNews(News $news): Entity\News
-    {
-        return new Entity\News(
-            $news->getId(),
-            $news->getTitle(),
-            $news->getAuthor(),
-            $news->getCreatedAt(),
-            $news->getCategory(),
-            $news->getBody(),
-        );
+        $this->getEntityManager()->remove($newsEntity);
+        $this->getEntityManager()->flush();
     }
 }

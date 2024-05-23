@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Actions\User;
 
 use App\Domain\User\User;
-use App\Infrastructure\Entity\User as EntityUser;
+use App\Infrastructure\Entity\UserEntity as EntityUser;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
 
@@ -22,11 +22,7 @@ class CreateUserAction extends UserAction
         $user = new User($rawBody['username']);
 
 
-        $this->userRepository->save(new EntityUser(
-            $user->getUsername(),
-                []
-            )
-        );
+        $this->userRepository->save($user);
 
         return $this->respondWithData($user);
     }
