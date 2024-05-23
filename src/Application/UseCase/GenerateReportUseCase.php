@@ -13,10 +13,9 @@ use App\Domain\Repository\Query\NewsByIdsQuery;
 readonly class GenerateReportUseCase
 {
     public function __construct(
-        private NewsRepositoryInterface  $newsRepository,
+        private NewsRepositoryInterface $newsRepository,
         private ReportGeneratorInterface $reportGenerator,
-    )
-    {
+    ) {
     }
 
     public function __invoke(GenerateReportForm $form): GenerateReportResponse

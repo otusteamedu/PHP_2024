@@ -11,8 +11,7 @@ readonly class GetAllNewsUseCase
 {
     public function __construct(
         private NewsRepositoryInterface $newsRepository,
-    )
-    {
+    ) {
     }
 
     public function __invoke(): GetAllNewsResponse

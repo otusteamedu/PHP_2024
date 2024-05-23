@@ -17,11 +17,10 @@ use App\Domain\ValueObject\Url;
 readonly class CreateNewsUseCase
 {
     public function __construct(
-        private ClientInterface             $client,
-        private NewsRepositoryInterface     $newsRepository,
+        private ClientInterface $client,
+        private NewsRepositoryInterface $newsRepository,
         private NewsTitleExtractorInterface $newsTitleExtractor,
-    )
-    {
+    ) {
     }
 
     public function __invoke(CreateNewsForm $form): CreateNewsResponse

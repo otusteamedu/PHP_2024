@@ -16,7 +16,7 @@ $connectionParams = [
     'user' => getenv('MYSQL_USER'),
     'password' => getenv('MYSQL_PASSWORD'),
     'dbname' => getenv('MYSQL_DATABASE'),
-];;
+];
 $conn = DriverManager::getConnection($connectionParams, $config);
 $entityManager = new EntityManager($conn, $config);
 

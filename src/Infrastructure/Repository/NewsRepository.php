@@ -11,7 +11,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 readonly class NewsRepository implements NewsRepositoryInterface
 {
-
     public function __construct(private EntityManagerInterface $entityManager)
     {
     }

@@ -6,7 +6,7 @@ namespace App\Domain\Repository\Query;
 
 readonly class NewsByIdsQuery
 {
-   public function __construct(public array $ids)
-   {
-   }
+    public function __construct(public array $ids)
+    {
+    }
 }
