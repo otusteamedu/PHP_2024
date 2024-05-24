@@ -1,0 +1,12 @@
+version: "3.3"
+
+services:
+
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: app29
+    container_name: app29
+    volumes:
+      - ./app:/data
