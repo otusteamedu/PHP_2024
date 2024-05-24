@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Application\ReportMaker;
 
 use App\Application\UseCase\Request\NewsItemRequest;
+use App\Application\UseCase\Response\MakeReportResponse;
 
 interface ReportMakerInterface
 {
     /**
      * @param NewsItemRequest[] $newsList
-     * @return string Путь к файлу отчета
      */
-    public function makeReport(array $newsList): string;
+    public function makeReport(array $newsList): MakeReportResponse;
 }

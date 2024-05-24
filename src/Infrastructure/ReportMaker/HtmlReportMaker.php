@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\ReportMaker;
 
 use App\Application\ReportMaker\ReportMakerInterface;
+use App\Application\UseCase\Response\MakeReportResponse;
 use App\Domain\Exception\DomainException;
 use App\Infrastructure\StaticFileStorage\StaticFileStorageInterface;
 
@@ -14,7 +15,7 @@ class HtmlReportMaker implements ReportMakerInterface
     {
     }
 
-    public function makeReport(array $newsList): string
+    public function makeReport(array $newsList): MakeReportResponse
     {
         $content = "<ul>";
         foreach ($newsList as $news) {
@@ -27,6 +28,6 @@ class HtmlReportMaker implements ReportMakerInterface
             throw new DomainException('Could not save file');
         }
 
-        return $filePath;
+        return new MakeReportResponse($filePath);
     }
 }

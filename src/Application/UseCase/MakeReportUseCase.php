@@ -12,12 +12,12 @@ use App\Domain\Entity\News;
 use App\Domain\Exception\DomainException;
 use App\Domain\Repository\NewsRepositoryInterface;
 
-class MakeReportUseCase
+readonly class MakeReportUseCase
 {
 
     public function __construct(
         private NewsRepositoryInterface $newsRepository,
-        private ReportMakerInterface $reportMaker
+        private ReportMakerInterface    $reportMaker
     ) {}
 
     public function __invoke(MakeConsolidatedReportRequest $request)
@@ -36,6 +36,6 @@ class MakeReportUseCase
             $newsList
         );
 
-        return new ConsolidatedReportResponse($this->reportMaker->makeReport($newsItems));
+        return new ConsolidatedReportResponse($this->reportMaker->makeReport($newsItems)->filePath);
     }
 }

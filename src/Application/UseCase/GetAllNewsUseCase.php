@@ -8,9 +8,9 @@ use App\Application\UseCase\Response\NewsResponse;
 use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
 
-class GetAllNewsUseCase
+readonly class GetAllNewsUseCase
 {
-    public function __construct(private readonly NewsRepositoryInterface $newsRepository)
+    public function __construct(private NewsRepositoryInterface $newsRepository)
     {
     }
 

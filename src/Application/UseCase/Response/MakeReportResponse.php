@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Response;
 
-readonly class AddNewsResponse
+readonly class MakeReportResponse
 {
-
-    public function __construct(public int $id)
+    public function __construct(public string $filePath)
     {
     }
 }

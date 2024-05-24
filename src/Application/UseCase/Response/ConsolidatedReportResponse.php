@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Response;
 
-class ConsolidatedReportResponse
+readonly class ConsolidatedReportResponse
 {
-    public function __construct(public readonly string $fileUriPath)
+    public function __construct(public string $fileUriPath)
     {
     }
 }
