@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once dirname(dirname(__DIR__)).'/vendor/autoload.php';
+
 $db = null;
 
 try {
@@ -20,17 +22,6 @@ try {
 //
 //var_dump(pg_fetch_all(pg_query($db,"SELECT * FROM news;")));
 
-// Маршруты
-// [маршрут => функция которая будет вызвана]
-$routes = [
-    // срабатывает при вызове корня или /index.php
-    '/' => 'hello',
-    // срабатывает при вызове /about или /index.php/about
-    '/about' => 'about',
-    // динамические страницы
-    '/page' => 'page'
-];
-
 // возвращает путь запроса
 // вырезает index.php из пути
 function getRequestPath(): string
@@ -41,4 +32,12 @@ function getRequestPath(): string
 
 }
 
-echo getRequestPath();
+//echo getRequestPath();
+
+$news_url = 'https://lenta.ru/news/2024/05/24/byvshiy-zavod-nissan-v-rossii-otpravil-sotrudnikov-v-prostoy/';
+
+
+$meta = get_meta_tags($news_url);
+
+echo $meta['title'];
+
