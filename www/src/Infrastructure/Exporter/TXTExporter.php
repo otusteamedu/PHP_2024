@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Exporter;
 
-use App\Domain\Exporter\ExporterInterface;
 use App\Domain\News\News;
 
 class TXTExporter extends BaseExporter

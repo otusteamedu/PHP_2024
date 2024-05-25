@@ -7,9 +7,6 @@ use App\Application\Handlers\ShutdownHandler;
 use App\Application\ResponseEmitter\ResponseEmitter;
 use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\ORMSetup;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
 
@@ -19,7 +16,7 @@ require __DIR__ . '/../vendor/autoload.php';
 $containerBuilder = new ContainerBuilder();
 
 if (false) { // Should be set to true in production
-	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
 
 // Set up settings
@@ -31,8 +28,8 @@ $dependencies = require __DIR__ . '/../app/dependencies.php';
 $dependencies($containerBuilder);
 
 // Set up repositories
-$repositories = require __DIR__ . '/../app/repositories.php';
-$repositories($containerBuilder);
+//$repositories = require __DIR__ . '/../app/repositories.php';
+//$repositories($containerBuilder);
 
 $doctrine = require __DIR__ . '/../app/doctrine.php';
 $doctrine($containerBuilder);

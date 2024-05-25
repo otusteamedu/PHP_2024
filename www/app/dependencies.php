@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
+use App\Domain\Exporter\ExporterInterface;
 use App\Infrastructure\Exporter\BaseExporter;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
@@ -32,7 +33,7 @@ return function (ContainerBuilder $containerBuilder) {
         StreamFactoryInterface::class => function (ContainerInterface $container) {
             return new StreamFactory();
         },
-        \App\Domain\Exporter\ExporterInterface::class => function (ContainerInterface $container) {
+        ExporterInterface::class => function (ContainerInterface $container) {
             return new BaseExporter();
         }
     ]);

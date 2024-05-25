@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\User;
 
+use App\Domain\User\User;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ViewUserAction extends UserAction
+class ViewUserAction extends BaseUserAction
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function action(): Response
     {
         $username = $this->resolveArg('username');
-        $user = $this->userRepository->findById($username);
-
-        $this->logger->info("User of id `{$username}` was viewed.");
-
+        $user = $this->entityManager->find(User::class, $username);
         return $this->respondWithData($user);
     }
 }

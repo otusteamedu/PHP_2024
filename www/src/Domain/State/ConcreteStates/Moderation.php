@@ -18,4 +18,11 @@ class Moderation extends AbstractState
     {
         return 'moderation';
     }
+
+    public function getNewsNotificationCallback(int $newsId): callable
+    {
+        return function (array $news) {
+            return $news;
+        };
+    }
 }

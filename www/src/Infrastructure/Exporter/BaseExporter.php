@@ -6,13 +6,14 @@ namespace App\Infrastructure\Exporter;
 
 use App\Domain\Exporter\ExporterInterface;
 use App\Domain\News\News;
+use Exception;
 
 class BaseExporter implements ExporterInterface
 {
 
     public function exportNews(News $news): string
     {
-        throw new \Exception("Base Exporter does not support exportNews");
+        throw new Exception("Base Exporter does not support exportNews");
     }
 
     public static function GetConcreteExporter(string $fileExtension): static
@@ -25,7 +26,7 @@ class BaseExporter implements ExporterInterface
             case 'html':
                 return new HTMLExporter();
             default:
-                throw new \Exception('Unsupported file extension');
+                throw new Exception('Unsupported file extension');
         }
     }
 }

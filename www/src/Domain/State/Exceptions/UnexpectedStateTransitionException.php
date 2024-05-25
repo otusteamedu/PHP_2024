@@ -13,8 +13,9 @@ class UnexpectedStateTransitionException extends DomainException
     public function __construct(
         AbstractState $firstState,
         AbstractState $secondState
-    ) {
-        $this->message =  "Transition from " . $firstState::getName(). " to ". $secondState::getName(). " is not allowed";
+    )
+    {
+        $this->message = "Transition from " . $firstState::getName() . " to " . $secondState::getName() . " is not allowed";
         parent::__construct($this->message);
     }
 }

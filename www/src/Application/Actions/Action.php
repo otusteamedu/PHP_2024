@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Actions;
 
 use App\Domain\DomainException\DomainRecordNotFoundException;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Log\LoggerInterface;
@@ -15,15 +16,18 @@ abstract class Action
 {
     protected LoggerInterface $logger;
 
+    protected EntityManager $entityManager;
+
     protected Request $request;
 
     protected Response $response;
 
     protected array $args;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, EntityManager $entityManager)
     {
         $this->logger = $logger;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -86,7 +90,7 @@ abstract class Action
         $this->response->getBody()->write($json);
 
         return $this->response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus($payload->getStatusCode());
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus($payload->getStatusCode());
     }
 }

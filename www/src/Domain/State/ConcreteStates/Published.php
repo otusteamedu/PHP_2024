@@ -17,4 +17,11 @@ class Published extends AbstractState
     {
         return 'published';
     }
+
+    public function getNewsNotificationCallback(int $newsId): callable
+    {
+        return function (array $news) use ($newsId) {
+            return array_unique(array_merge($news, [$newsId]));
+        };
+    }
 }

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Application\Actions\Category;
 
 use App\Domain\Category\Category;
+use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class CreateCategoryAction extends CategoryAction
+class CreateCategoryAction extends BaseCategoryAction
 {
 
     protected function action(): Response
@@ -15,12 +16,13 @@ class CreateCategoryAction extends CategoryAction
         $rawBody = $this->request->getParsedBody();
 
         if (empty($rawBody['title'])) {
-            throw new \Exception("No title");
+            throw new Exception("No title");
         }
 
         $category = new Category(title: $rawBody['title']);
 
-        $this->categoryRepository->save($category);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
 
         return $this->respondWithData($category);
     }

@@ -22,4 +22,11 @@ class Draft extends AbstractState
     {
         return 'draft';
     }
+
+    public function getNewsNotificationCallback(int $newsId): callable
+    {
+        return function (array $news) {
+            return $news;
+        };
+    }
 }

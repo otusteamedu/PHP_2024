@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\DomainInterface;
+namespace App\Domain\Observer;
 
 interface ObservableInterface
 {
@@ -10,5 +10,5 @@ interface ObservableInterface
 
     public function removeObserver(ObserverInterface $observer): void;
 
-    public function notifyObservers(): void;
+    public function notifyObservers(callable $callback): void;
 }

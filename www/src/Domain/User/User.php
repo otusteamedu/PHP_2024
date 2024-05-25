@@ -5,49 +5,65 @@ declare(strict_types=1);
 namespace App\Domain\User;
 
 use App\Domain\Category\Category;
-use App\Domain\DomainInterface\ObserverInterface;
-use App\Domain\News\News;
+use App\Domain\Observer\ObserverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
+use ReturnTypeWillChange;
 
+#[ORM\Entity()]
+#[ORM\Table(name: 'users')]
 class User implements JsonSerializable, ObserverInterface
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'string', unique: true)]
     protected string $username;
-    /**
-     * @var News[] Новости о появлении которых надо уведомить пользователя.
-     */
+
+    #[ORM\Column(type: 'json')]
     protected array $news;
 
-    /**
-     * @var Category[]
-     */
-    protected array $categories;
+    #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'subscribers')]
+    protected Collection $categories;
 
     public function __construct(string $username, array $news = [], array $categories = [])
     {
-        $this->username = strtolower($username);
+        $this->username = $username;
         $this->news = $news;
-        $this->categories = $categories;
+        $this->categories = new ArrayCollection($categories);
     }
-
-    public function __get(string $name): mixed
-    {
-        $methodName = 'get' . ucfirst($name);
-        return $this->$methodName();
-    }
-
-    public function __set(string $name, $value): void
-    {
-        $methodName = 'set' . ucfirst($name);
-        $this->$methodName($value);
-    }
-
 
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    #[\ReturnTypeWillChange]
+    public function setUsername(string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function getNews(): array
+    {
+        return $this->news;
+    }
+
+    public function setNews(array $news): void
+    {
+        $this->news = $news;
+    }
+
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function setCategories(Collection $categories): void
+    {
+        $this->categories = $categories;
+    }
+
+    #[ReturnTypeWillChange]
     public function jsonSerialize(): array
     {
         return [
@@ -56,42 +72,13 @@ class User implements JsonSerializable, ObserverInterface
         ];
     }
 
-    public function handleNotification(array $data = [])
+    public function handleNotification(callable $callback): void
     {
-        $this->news[] = $data['news'];
-    }
-
-    public function getNews(): array
-    {
-        return $this->news;
-    }
-
-    public function setNews(array $news): User
-    {
-        $this->news = $news;
-        return $this;
-    }
-
-    public function clearNews(): User
-    {
-        $this->news = [];
-        return $this;
+        $this->news = $callback($this->news);
     }
 
     public function getID(): string|int
     {
-        return $this->username;
+        return $this->getUsername();
     }
-
-    public function getCategories(): array
-    {
-        return $this->categories;
-    }
-
-    public function setCategories(array $categories): void
-    {
-        $this->categories = $categories;
-    }
-
-
 }

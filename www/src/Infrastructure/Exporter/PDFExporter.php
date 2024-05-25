@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Exporter;
 
-use App\Domain\Exporter\ExporterInterface;
 use App\Domain\News\News;
 use TCPDF;
 
@@ -19,7 +18,7 @@ class PDFExporter extends BaseExporter
         $pdf->setFontSubsetting(true);
 
         $pdf->setFont('freeserif', '', 12);
-        
+
         $pdf->AddPage();
 
         // set color for text

@@ -4,40 +4,39 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\News;
 
-use App\Application\Actions\Action;
 use App\Domain\Exporter\ExporterInterface;
-use App\Domain\News\NewsRepository;
+use App\Domain\News\News;
+use Doctrine\ORM\EntityManager;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 
-class DownloadNewsAction extends Action
+class DownloadNewsAction extends BaseNewsAction
 {
     private StreamFactoryInterface $streamFactory;
-    private NewsRepository $newsRepository;
     private ExporterInterface $exporter;
 
 
     public function __construct(
-        LoggerInterface $logger,
-        NewsRepository $newsRepository,
-        ExporterInterface $exporterFactory,
+        LoggerInterface        $logger,
+        EntityManager          $entityManager,
+        ExporterInterface      $exporterFactory,
         StreamFactoryInterface $streamFactory
-    ) {
-        parent::__construct($logger);
+    )
+    {
+        parent::__construct($logger, $entityManager);
         $this->streamFactory = $streamFactory;
-        $this->newsRepository = $newsRepository;
         $this->exporter = $exporterFactory;
     }
 
     protected function action(): Response
     {
-        $fileExtension = (string) $this->resolveArg('extension');
+        $fileExtension = (string)$this->resolveArg('extension');
         $exporter = $this->exporter::GetConcreteExporter($fileExtension);
 
 
-        $newsId = (int) $this->resolveArg('id');
-        $news = $this->newsRepository->findNewsOfId($newsId);
+        $newsId = (int)$this->resolveArg('id');
+        $news = $this->entityManager->find(News::class, $newsId);
 
         $fileSource = $news->accept($exporter);
 

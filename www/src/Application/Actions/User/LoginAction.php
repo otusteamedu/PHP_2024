@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\User;
 
+use App\Domain\User\User;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class LoginAction extends UserAction
+class LoginAction extends BaseUserAction
 {
 
     protected function action(): Response
@@ -14,7 +15,7 @@ class LoginAction extends UserAction
         $rawBody = $this->request->getParsedBody();
         $username = $rawBody['username'];
 
-        $user = $this->userRepository->findById($username);
+        $user = $this->entityManager->find(User::class, $username);
 
         if (session_status() !== PHP_SESSION_ACTIVE)
             session_start();

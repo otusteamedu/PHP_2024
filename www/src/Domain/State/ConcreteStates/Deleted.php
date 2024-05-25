@@ -17,4 +17,11 @@ class Deleted extends AbstractState
     {
         return 'deleted';
     }
+
+    public function getNewsNotificationCallback(int $newsId): callable
+    {
+        return function (array $news) use ($newsId) {
+            return array_diff($news, [$newsId]);
+        };
+    }
 }

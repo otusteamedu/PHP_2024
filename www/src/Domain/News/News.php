@@ -11,33 +11,45 @@ use App\Domain\State\AbstractState;
 use App\Domain\State\ConcreteStates\Draft;
 use App\Domain\User\User;
 use DateTime;
-use DOMDocument;
+use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 
+#[ORM\Entity()]
+#[ORM\Table(name: 'news')]
 class News implements JsonSerializable, ExportableInterface
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
     protected ?int $id;
 
+    #[ORM\Column(type: 'string', unique: true)]
     protected string $title;
 
-    protected \DateTime $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    protected DateTime $createdAt;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(name: 'author_username', referencedColumnName: 'username')]
     protected User $author;
 
+    #[ORM\ManyToOne(targetEntity: Category::class)]
     protected Category $category;
 
+    #[ORM\Column(type: 'string')]
     protected ?string $body;
 
+    #[ORM\Column(type: 'state')]
     protected AbstractState $state;
 
     public function __construct(
-        ?int     $id,
-        string   $title,
-        User     $author,
-        DateTime $createdAt,
-        Category   $category,
-        string   $body,
-        AbstractState    $state = new Draft(),
+        ?int          $id,
+        string        $title,
+        User          $author,
+        DateTime      $createdAt,
+        Category      $category,
+        string        $body,
+        AbstractState $state = new Draft(),
     )
     {
         $this->id = $id;

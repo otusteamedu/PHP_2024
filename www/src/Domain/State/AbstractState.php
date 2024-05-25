@@ -12,6 +12,7 @@ use App\Domain\State\ConcreteStates\Updated;
 use App\Domain\State\Exceptions\AllowedStatesNotDeclaredException;
 use App\Domain\State\Exceptions\UnexpectedStateScalarMappingException;
 use App\Domain\State\Exceptions\UnexpectedStateTransitionException;
+use Exception;
 
 abstract class AbstractState
 {
@@ -27,6 +28,8 @@ abstract class AbstractState
         3 => Updated::class,
     ];
 
+    abstract public function getNewsNotificationCallback(int $newsId): callable;
+
     /**
      * @throws UnexpectedStateScalarMappingException
      */
@@ -35,7 +38,7 @@ abstract class AbstractState
         try {
             $class = self::MAP_SCALAR_STATE_CLASS[$state];
             return new $class();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new UnexpectedStateScalarMappingException($state);
         }
     }

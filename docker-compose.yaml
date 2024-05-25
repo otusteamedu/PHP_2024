@@ -23,11 +23,16 @@ services:
       dockerfile: Dockerfile
     image: "otus/fpm"
     container_name: "otus-www"
+    entrypoint:
+      - php scripts/doctrine.php orm:schema-tool:create
     volumes:
       - ./www:/www/mysite.local
       - ./docker/logs/php.log:/var/log/fpm-php.www.log
     networks:
       - app-network
+    depends_on:
+      - postgresql
+      - memcached
 
   postgresql:
     image: postgres:14.7-alpine

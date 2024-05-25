@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\News;
 
+use App\Domain\News\News;
 use Slim\Psr7\Response;
 
-class ListNewsAction extends NewsAction
+class ListNewsAction extends BaseNewsAction
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function action(): Response
     {
-        $users = $this->newsRepository->findAll();
-
-//        $this->logger->info("News list was viewed.");
-
+        $users = $this->entityManager->getRepository(News::class)->findAll();
         return $this->respondWithData($users);
     }
 }

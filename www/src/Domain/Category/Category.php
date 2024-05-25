@@ -4,37 +4,42 @@ declare(strict_types=1);
 
 namespace App\Domain\Category;
 
-use App\Domain\DomainInterface\ObservableInterface;
-use App\Domain\DomainInterface\ObserverInterface;
+use App\Domain\Observer\ObservableInterface;
+use App\Domain\Observer\ObserverInterface;
 use App\Domain\User\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
-class Category implements ObservableInterface, \JsonSerializable
+#[ORM\Entity()]
+#[ORM\Table(name: 'categories')]
+class Category implements ObservableInterface, JsonSerializable
 {
-    protected ?int $id;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue]
+    private ?int $id;
 
-    protected string $title;
+    #[ORM\Column(type: 'string', unique: true)]
+    private string $title;
 
-    /**
-     * @var User[] - array of User IDs
-     */
-    protected array $subscribers;
+    #[ORM\JoinTable(name: 'subscribers')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'subscriber_username', referencedColumnName: 'username')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'categories')]
+    protected Collection $subscribers;
 
-    public function getSubscribers(): array
+
+    public function __construct(
+        string $title,
+        ?int   $id = null,
+        array  $subscribers = []
+    )
     {
-        return $this->subscribers;
-    }
-
-    public function setSubscribers(array $subscribers): Category
-    {
-        $this->subscribers = $subscribers;
-        return $this;
-    }
-
-    public function __construct(string $title, ?int $id = null, array $subscribers = [])
-    {
-        $this->id = $id;
         $this->title = $title;
-        $this->subscribers = $subscribers;
+        $this->id = $id;
+        $this->subscribers = new ArrayCollection($subscribers);
     }
 
     public function getId(): ?int
@@ -42,10 +47,9 @@ class Category implements ObservableInterface, \JsonSerializable
         return $this->id;
     }
 
-    public function setId(int $id): Category
+    public function setId(?int $id): void
     {
         $this->id = $id;
-        return $this;
     }
 
     public function getTitle(): string
@@ -53,26 +57,35 @@ class Category implements ObservableInterface, \JsonSerializable
         return $this->title;
     }
 
-    public function setTitle(string $title): Category
+    public function setTitle(string $title): void
     {
         $this->title = $title;
-        return $this;
+    }
+
+    public function getSubscribers(): Collection
+    {
+        return $this->subscribers;
+    }
+
+    public function setSubscribers(Collection $subscribers): void
+    {
+        $this->subscribers = $subscribers;
     }
 
     public function addObserver(ObserverInterface $observer): void
     {
-        $this->subscribers[] = $observer;
+        $this->getSubscribers()->add($observer);
     }
 
     public function removeObserver(ObserverInterface $observer): void
     {
-        unset($this->subscribers[$observer->getID()]);
+        $this->getSubscribers()->removeElement($observer);
     }
 
-    public function notifyObservers(array $data = []): void
+    public function notifyObservers(callable $callback): void
     {
         foreach ($this->subscribers as $user) {
-            $user->handleNotification($data);
+            $user->handleNotification($callback);
         }
     }
 

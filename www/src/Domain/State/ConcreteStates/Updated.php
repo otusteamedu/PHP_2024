@@ -17,4 +17,11 @@ class Updated extends AbstractState
     {
         return 'updated';
     }
+
+    public function getNewsNotificationCallback(int $newsId): callable
+    {
+        return function (array $news) use ($newsId) {
+            return array_unique(array_merge($news, [$newsId]));
+        };
+    }
 }
