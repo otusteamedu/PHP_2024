@@ -1,7 +1,7 @@
 -- Drop tables if they exist
 DROP TABLE IF EXISTS `ticket_purchase`;
-DROP TABLE IF EXISTS `purchase`;
 DROP TABLE IF EXISTS `ticket`;
+DROP TABLE IF EXISTS `purchase`;
 DROP TABLE IF EXISTS `seat`;
 DROP TABLE IF EXISTS `seat_type`;
 DROP TABLE IF EXISTS `showtime`;
@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `cinema` (
 CREATE TABLE IF NOT EXISTS `screen_type` (
 	`id` int AUTO_INCREMENT NOT NULL UNIQUE,
 	`type` varchar(255) NOT NULL,
+    `price_factor` decimal(10,0) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`)
 );
 
@@ -46,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `film` (
 	`duration` int,
 	`release_date` date,
 	`description` text,
+    `price` decimal(10, 2) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -55,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `showtime` (
 	`film_id` int,
 	`start` datetime NOT NULL,
 	`end` datetime NOT NULL,
+    `price_factor` decimal(10, 2) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`),
     FOREIGN KEY (`screen_id`) REFERENCES `screen`(`id`),
     FOREIGN KEY (`film_id`) REFERENCES `film`(`id`)
@@ -63,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `showtime` (
 CREATE TABLE IF NOT EXISTS `seat_type` (
 	`id` int AUTO_INCREMENT NOT NULL UNIQUE,
 	`type` text NOT NULL,
-	`price_factor` decimal(10,0) NOT NULL,
+	`price_factor` decimal(10, 2) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`)
 );
 
@@ -78,17 +81,6 @@ CREATE TABLE IF NOT EXISTS `seat` (
     FOREIGN KEY (`screen_id`) REFERENCES `screen`(`id`),
     FOREIGN KEY (`seat_type`) REFERENCES `seat_type`(`id`),
     UNIQUE (`screen_id`, `block`, `row_number`, `seat_number`)
-);
-
-CREATE TABLE IF NOT EXISTS `ticket` (
-	`id` int AUTO_INCREMENT NOT NULL UNIQUE,
-	`showtime_id` int NOT NULL,
-	`seat_id` int NOT NULL,
-	`price` decimal(10,0) NOT NULL,
-	PRIMARY KEY (`id`),
-    FOREIGN KEY (`showtime_id`) REFERENCES `showtime`(`id`),
-    FOREIGN KEY (`seat_id`) REFERENCES `seat`(`id`),
-    UNIQUE (`showtime_id`, `seat_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `user` (
@@ -130,11 +122,16 @@ CREATE TABLE IF NOT EXISTS `purchase` (
     FOREIGN KEY (`employer_id`) REFERENCES `employer`(`id`)
 );
 
-CREATE TABLE IF NOT EXISTS `ticket_purchase` (
-	`purchase_id` int NOT NULL,
-	`ticket_id` int NOT NULL,
-	PRIMARY KEY (`purchase_id`, `ticket_id`),
+CREATE TABLE IF NOT EXISTS `ticket` (
+	`id` int AUTO_INCREMENT NOT NULL UNIQUE,
+    `purchase_id` int NOT NULL,
+	`showtime_id` int NOT NULL,
+	`seat_id` int NOT NULL,
+	`price` decimal(10,0) NOT NULL,
+    PRIMARY KEY (`id`),
     FOREIGN KEY (`purchase_id`) REFERENCES `purchase`(`id`),
-    FOREIGN KEY (`ticket_id`) REFERENCES `ticket`(`id`)
+    FOREIGN KEY (`showtime_id`) REFERENCES `showtime`(`id`),
+    FOREIGN KEY (`seat_id`) REFERENCES `seat`(`id`),
+    UNIQUE (`showtime_id`, `seat_id`)
 );
 
