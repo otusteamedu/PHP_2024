@@ -1,5 +1,9 @@
 .idea/
-/vendor/
-.DS_Store
-.AppleDouble
-.LSOverride
+/docker/logs
+/docker/postgresql/db-data
+/docker/redis/dаta
+www/vendor/
+www/logs/*
+!www/logs/README.md
+www/var/cache/
+!www/var/cache/.gitignore

@@ -6,10 +6,11 @@
 <!-- check all files in the app directory, feel free to add more files with:
 <file>FOLDER NAME</file>
 -->
-<file>app</file>
+<file>www</file>
 
 <!-- exclude our migrations directory from the violation check-->
 <exclude-pattern>*/migrations/*</exclude-pattern>
+<exclude-pattern>*/vendor/*</exclude-pattern>
 
 <!-- ignore warnings and display ERRORS only -->
 <arg  value="np"/>
