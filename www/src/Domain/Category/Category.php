@@ -33,10 +33,9 @@ class Category implements ObservableInterface, JsonSerializable
 
     public function __construct(
         string $title,
-        ?int   $id = null,
-        array  $subscribers = []
-    )
-    {
+        ?int $id = null,
+        array $subscribers = []
+    ) {
         $this->title = $title;
         $this->id = $id;
         $this->subscribers = new ArrayCollection($subscribers);

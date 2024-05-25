@@ -18,12 +18,11 @@ class DownloadNewsAction extends BaseNewsAction
 
 
     public function __construct(
-        LoggerInterface        $logger,
-        EntityManager          $entityManager,
-        ExporterInterface      $exporterFactory,
+        LoggerInterface $logger,
+        EntityManager $entityManager,
+        ExporterInterface $exporterFactory,
         StreamFactoryInterface $streamFactory
-    )
-    {
+    ) {
         parent::__construct($logger, $entityManager);
         $this->streamFactory = $streamFactory;
         $this->exporter = $exporterFactory;
@@ -32,7 +31,7 @@ class DownloadNewsAction extends BaseNewsAction
     protected function action(): Response
     {
         $fileExtension = (string)$this->resolveArg('extension');
-        $exporter = $this->exporter::GetConcreteExporter($fileExtension);
+        $exporter = $this->exporter::getConcreteExporter($fileExtension);
 
 
         $newsId = (int)$this->resolveArg('id');

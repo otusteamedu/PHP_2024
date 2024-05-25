@@ -11,7 +11,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 class ListUserNewsAction extends Action
 {
-
     protected function action(): Response
     {
         $session = $this->request->getAttribute('session');

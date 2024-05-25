@@ -9,7 +9,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 class ListUsersAction extends BaseUserAction
 {
-
     protected function action(): Response
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();

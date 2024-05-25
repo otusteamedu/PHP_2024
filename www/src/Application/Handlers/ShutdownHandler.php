@@ -17,11 +17,10 @@ class ShutdownHandler
     private bool $displayErrorDetails;
 
     public function __construct(
-        Request          $request,
+        Request $request,
         HttpErrorHandler $errorHandler,
-        bool             $displayErrorDetails
-    )
-    {
+        bool $displayErrorDetails
+    ) {
         $this->request = $request;
         $this->errorHandler = $errorHandler;
         $this->displayErrorDetails = $displayErrorDetails;

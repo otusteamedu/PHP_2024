@@ -10,7 +10,6 @@ use Slim\Exception\HttpBadRequestException;
 
 class CreateUserAction extends BaseUserAction
 {
-
     protected function action(): Response
     {
         $rawBody = $this->request->getParsedBody();

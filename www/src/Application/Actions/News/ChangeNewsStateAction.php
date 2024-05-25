@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 class ChangeNewsStateAction extends BaseNewsAction
 {
-
     protected function action(): Response
     {
         $newsId = (int)$this->resolveArg('id');

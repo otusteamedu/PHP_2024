@@ -10,13 +10,12 @@ use Exception;
 
 class BaseExporter implements ExporterInterface
 {
-
     public function exportNews(News $news): string
     {
         throw new Exception("Base Exporter does not support exportNews");
     }
 
-    public static function GetConcreteExporter(string $fileExtension): static
+    public static function getConcreteExporter(string $fileExtension): static
     {
         switch ($fileExtension) {
             case 'pdf':

@@ -10,7 +10,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 class CreateCategoryAction extends BaseCategoryAction
 {
-
     protected function action(): Response
     {
         $rawBody = $this->request->getParsedBody();

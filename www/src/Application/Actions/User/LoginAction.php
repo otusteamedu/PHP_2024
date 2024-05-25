@@ -9,7 +9,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 
 class LoginAction extends BaseUserAction
 {
-
     protected function action(): Response
     {
         $rawBody = $this->request->getParsedBody();
@@ -17,8 +16,9 @@ class LoginAction extends BaseUserAction
 
         $user = $this->entityManager->find(User::class, $username);
 
-        if (session_status() !== PHP_SESSION_ACTIVE)
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
+        }
         $_SESSION['username'] = $user->getUsername();
         return $this->respondWithData($user->getUsername());
     }

@@ -10,5 +10,5 @@ interface ExporterInterface
 {
     public function exportNews(News $news): string;
 
-    public static function GetConcreteExporter(string $fileExtension): static;
+    public static function getConcreteExporter(string $fileExtension): static;
 }

@@ -15,6 +15,5 @@ Title: {$news->getTitle()}
 Body: {$news->getBody()}
 Author: {$news->getAuthor()->getUsername()}
 TXT;
-
     }
 }

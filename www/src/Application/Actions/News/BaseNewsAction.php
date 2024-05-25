@@ -8,5 +8,4 @@ use App\Application\Actions\Action;
 
 abstract class BaseNewsAction extends Action
 {
-
 }

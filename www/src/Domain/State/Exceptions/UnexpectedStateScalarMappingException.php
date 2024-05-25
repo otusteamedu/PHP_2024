@@ -10,8 +10,7 @@ class UnexpectedStateScalarMappingException extends DomainException
 {
     public function __construct(
         int $scalar
-    )
-    {
+    ) {
         $this->message = "State to $scalar is unknown";
         parent::__construct($this->message);
     }

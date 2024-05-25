@@ -45,7 +45,6 @@ return function (App $app) {
         $group->get('/{id}', ViewNewsAction::class);
         $group->patch('/{id}', ChangeNewsStateAction::class);
         $group->get('/export/{id}.{extension}', DownloadNewsAction::class);
-
     });
 
     $app->group('/categories', function (Group $group) {

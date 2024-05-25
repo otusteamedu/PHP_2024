@@ -19,11 +19,10 @@ class ActionPayload implements JsonSerializable
     private ?ActionError $error;
 
     public function __construct(
-        int          $statusCode = 200,
-                     $data = null,
+        int $statusCode = 200,
+        $data = null,
         ?ActionError $error = null
-    )
-    {
+    ) {
         $this->statusCode = $statusCode;
         $this->data = $data;
         $this->error = $error;

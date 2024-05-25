@@ -43,15 +43,14 @@ class News implements JsonSerializable, ExportableInterface
     protected AbstractState $state;
 
     public function __construct(
-        ?int          $id,
-        string        $title,
-        User          $author,
-        DateTime      $createdAt,
-        Category      $category,
-        string        $body,
+        ?int $id,
+        string $title,
+        User $author,
+        DateTime $createdAt,
+        Category $category,
+        string $body,
         AbstractState $state = new Draft(),
-    )
-    {
+    ) {
         $this->id = $id;
         $this->title = $title;
         $this->author = $author;

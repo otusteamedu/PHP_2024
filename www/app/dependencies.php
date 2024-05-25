@@ -37,5 +37,4 @@ return function (ContainerBuilder $containerBuilder) {
             return new BaseExporter();
         }
     ]);
-
 };
