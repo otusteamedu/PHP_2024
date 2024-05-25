@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Infrastructure\Response;
 
 use JsonSerializable;
 
@@ -28,7 +28,7 @@ class ActionError implements JsonSerializable
         $this->description = $description;
     }
 
-    public function getType(): string
+    public function getFormat(): string
     {
         return $this->type;
     }

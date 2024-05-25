@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\News\Converter;
+namespace App\Infrastructure\Converter;
 
+use App\Application\UseCase\News\Converter\ReportConverterInterface;
+use App\Domain\Enum\ReportFormat;
 use App\Domain\ValueObject\ReportLine;
 
 class HTMLReportConverter implements ReportConverterInterface
@@ -15,8 +17,8 @@ class HTMLReportConverter implements ReportConverterInterface
         }, $reportLines)) . "\n</ul>";
     }
 
-    public function fileExtension(): string
+    public function getFormat(): ReportFormat
     {
-        return 'html';
+        return ReportFormat::HTML;
     }
 }

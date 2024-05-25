@@ -8,9 +8,9 @@ use Illuminate\Support\Collection;
 
 interface NewsRepositoryInterface
 {
-    public function save(News $news): int;
+    public function save(News $news): void;
 
-    public function findWhereIn(array $values, ?string $column = 'id'): Collection;
+    public function findByIds(array $ids): Collection;
 
     public function all(): Collection;
 }

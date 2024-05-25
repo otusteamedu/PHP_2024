@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-use App\Application\Handlers\HttpErrorHandler;
-use App\Application\Handlers\ShutdownHandler;
-use App\Application\ResponseEmitter\ResponseEmitter;
-use App\Application\Settings\SettingsInterface;
+use App\Infrastructure\Settings\SettingsInterface;
+use App\Infrastructure\Handlers\{HttpErrorHandler, ShutdownHandler};
+use App\Infrastructure\ResponseEmitter\ResponseEmitter;
 use DI\ContainerBuilder;
-use Slim\Factory\AppFactory;
-use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\Factory\{AppFactory, ServerRequestCreatorFactory};
 
 require __DIR__ . '/../vendor/autoload.php';
 

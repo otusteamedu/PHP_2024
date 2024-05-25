@@ -18,6 +18,8 @@ class AddNewsUseCase
     {
         $news = new News(new Url($request->url), new NewsTitle($request->title));
 
-        return $this->newsRepository->save($news);
+        $this->newsRepository->save($news);
+
+        return $news->getId();
     }
 }

@@ -16,9 +16,9 @@ abstract class AbstractDatabaseRepository
     {
     }
 
-    public function findWhereIn(array $values, ?string $column = 'id'): Collection
+    public function findByIds(array $values): Collection
     {
-        return $this->table()->whereIn($column, $values)->get();
+        return $this->table()->whereIn('id', $values)->get();
     }
 
     public function all(): Collection

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\UseCase\News;
 
 use App\Application\UseCase\News\DTO\ListNewsResponse;
-use App\Domain\Entity\News\NewsRepositoryInterface;
+use App\Domain\Entity\News\{News, NewsRepositoryInterface};
 
 class ListNewsUseCase
 {
@@ -13,8 +13,16 @@ class ListNewsUseCase
     {
     }
 
-    public function __invoke(): ListNewsResponse
+    public function __invoke(): array
     {
-        return new ListNewsResponse($this->newsRepository->all());
+        return $this->newsRepository->all()
+            ->map(function (News $news) {
+                new ListNewsResponse(
+                    $news->getId(),
+                    $news->getDate(),
+                    $news->getTitle(),
+                    $news->getUrl(),
+                );
+            })->all();
     }
 }

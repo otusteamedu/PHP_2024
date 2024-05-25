@@ -7,22 +7,25 @@ namespace App\Infrastructure\Persistence\Repository;
 use App\Domain\Entity\News\{News, NewsRepositoryInterface};
 use App\Domain\ValueObject\{NewsTitle, Url};
 use Illuminate\Support\Collection;
+use ReflectionClass;
 
 class DatabaseNewsRepository extends AbstractDatabaseRepository implements NewsRepositoryInterface
 {
     protected static string $table = 'news';
 
-    public function save(News $news): int
+    public function save(News $news): void
     {
-        return $this->dbManager->table('news')->insertGetId([
+        $id = $this->dbManager->table('news')->insertGetId([
             'url' => $news->getUrl()->getValue(),
             'title' => $news->getTitle()->getValue(),
         ]);
+
+        $news = $this->setId($news, $id);
     }
 
-    public function findWhereIn(array $values, ?string $column = 'id'): Collection
+    public function findByIds(array $values): Collection
     {
-        return parent::findWhereIn($values, $column)->map($this->toModel(...));
+        return parent::findByIds($values)->map($this->toModel(...));
     }
 
     public function all(): Collection
@@ -35,5 +38,14 @@ class DatabaseNewsRepository extends AbstractDatabaseRepository implements NewsR
         $news = new News(new Url($source->url), new NewsTitle($source->title));
 
         return $news->fill($source);
+    }
+
+    private function setId(News $news, int $id): News
+    {
+        $reflectionClass = new ReflectionClass($news);
+        $property = $reflectionClass->getProperty('id');
+        $property->setValue($news, $id);
+
+        return $news;
     }
 }

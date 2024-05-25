@@ -44,6 +44,7 @@ class News implements Arrayable
         return $this;
     }
 
+    #TODO: next step refactor
     public function toArray(): array
     {
         return [

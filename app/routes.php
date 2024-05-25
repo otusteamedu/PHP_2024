@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 use App\Application\UseCase\News\{AddNewsUseCase, GenerateReportUseCase, ListNewsUseCase};
-use App\Application\UseCase\News\Converter\HTMLReportConverter;
 use App\Application\UseCase\News\DTO\StoreNewsRequest;
-use App\Application\Settings\SettingsInterface;
+use App\Infrastructure\Converter\HTMLReportConverter;
+use App\Infrastructure\Settings\SettingsInterface;
 use App\Infrastructure\Export\FileSystemReportSaver;
 use App\Infrastructure\Persistence\Repository\DatabaseNewsRepository;
+use App\Infrastructure\Response\Action;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -28,11 +29,9 @@ return function (App $app) {
         $group->get('', function (Request $request, Response $response, array $args) {
             $news = ($this->get(ListNewsUseCase::class))();
             $payload = compact('news');
-            $response->getBody()->write(json_encode($payload));
+            $actionResponse = new Action($response, 201);
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
+            return $actionResponse->respondWithData($payload);
         });
         $group->post('', function (Request $request, Response $response, array $args) {
             $body = $request->getParsedBody();
@@ -44,29 +43,26 @@ return function (App $app) {
             $id = (new AddNewsUseCase($this->get(DatabaseNewsRepository::class)))($newsRequest);
 
             $payload = compact('id');
-            $response->getBody()->write(json_encode($payload));
+            $actionResponse = new Action($response, 201);
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(201);
+            return $actionResponse->respondWithData($payload);
         });
         $group->get('/report-html/{ids:.*}', function (Request $request, Response $response, array $args) {
+            $converter = $this->get(HTMLReportConverter::class);
+            $settings = $this->get(SettingsInterface::class);
+
             $action = $this->make(GenerateReportUseCase::class, [
-                'reportConverter' => $this->get(HTMLReportConverter::class),
+                'reportConverter' => $converter,
                 'reportExporter' => $this->get(FileSystemReportSaver::class),
             ]);
 
-            $settings = $this->get(SettingsInterface::class);
-
             $ids = array_map('intval', explode('/', $args['ids']));
-            $file = $action($settings, ...$ids);
+            $file = $action(...$ids);
 
             $payload = compact('file');
-            $response->getBody()->write(json_encode($payload));
+            $actionResponse = new Action($response);
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
+            return $actionResponse->respondWithData($payload);
         });
     });
 };

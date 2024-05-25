@@ -6,4 +6,4 @@
 !/logs/README.md
 .phpunit.result.cache
 /tmp/*
-!/tmp/README.md
+!/tmp/.gitkeep

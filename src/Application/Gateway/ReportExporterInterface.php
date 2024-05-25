@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Gateway;
 
-use App\Application\UseCase\News\Converter\ReportConverterInterface;
-use App\Application\Settings\SettingsInterface;
+use App\Domain\Enum\ReportFormat;
 
 interface ReportExporterInterface
 {
-    public function export(
-        string $report,
-        ReportConverterInterface $converter,
-        ?SettingsInterface $settings = null
-    ): mixed;
+    public function export(string $report, ReportFormat $reportFormat): mixed;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Application\Middleware\SessionMiddleware;
+use App\Infrastructure\Middleware\SessionMiddleware;
 use Slim\App;
 
 return function (App $app) {
