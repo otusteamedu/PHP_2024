@@ -23,4 +23,6 @@ interface CategoryRepository
     public function save(Category $category): Category;
 
     public function delete(Category $category): void;
+
+    public function updateSubscribers(Category $category): Category;
 }

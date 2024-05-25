@@ -41,7 +41,7 @@ return function (App $app) {
 
     $app->group('/categories', function (Group $group) {
         $group->post('', \App\Application\Actions\Category\CreateCategoryAction::class);
-        $group->get('/{user_id}/{category_id}', \App\Application\Actions\Category\SubscribeCategoryAction::class);
+        $group->post('/sub/{category_id}', \App\Application\Actions\Category\SubscribeCategoryAction::class);
     });
 
     $app->group('/auth', function (Group $group) {
