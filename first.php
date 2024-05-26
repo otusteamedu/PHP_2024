@@ -15,18 +15,21 @@ class Solution
      * @param ListNode $head
      * @return Boolean
      */
-    public function hasCycle(ListNode $head): bool
+    public function hasCycle(?ListNode $head): bool
     {
-        $stack = [];
-        while (!is_null($head)) {
-            if (in_array(spl_object_id($head), $stack, true)) {
-                return true;
-            }
-
-            $stack[] = spl_object_id($head);
-            $head = $head->next;
+        if ($head === null || $head->next === null) {
+            return false;
         }
-        return false;
 
+        $slow = $head;
+        $fast = $head->next;
+        while ($slow !== $fast) {
+            if ($fast === null || $fast->next === null) {
+                return false;
+            }
+            $slow = $slow->next;
+            $fast = $fast->next->next;
+        }
+        return true;
     }
 }
