@@ -6,7 +6,7 @@ namespace App\Application\UseCase\Response;
 
 final readonly class CreateReportResponse
 {
-    public function __construct(public string $fileName)
+    public function __construct(public string $reportContent)
     {
     }
 }

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
-use App\Domain\Contract\ValueObjectInterface;
-use App\Domain\Exceptions\Validate\UrlValidateException;
+use App\Domain\Exception\Validate\UrlValidateException;
 
-class Url implements ValueObjectInterface
+class Url
 {
     private string $url;
 

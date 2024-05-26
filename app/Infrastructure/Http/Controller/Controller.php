@@ -11,6 +11,10 @@ abstract class Controller
 {
     protected ?Request $request = null;
 
+    public function __construct()
+    {
+    }
+
     /**
      * @throws Exception
      */

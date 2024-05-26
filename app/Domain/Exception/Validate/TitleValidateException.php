@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Exceptions\Validate;
+namespace App\Domain\Exception\Validate;
 
 class TitleValidateException extends \Exception
 {

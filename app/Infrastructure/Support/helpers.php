@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 function config(string $key, $default = null): mixed
 {
-    $config = require_once __DIR__ . '/../config/main.php';
+    $config = require __DIR__ . '/../config/main.php';
 
     return $config[$key] ?? $default;
 }

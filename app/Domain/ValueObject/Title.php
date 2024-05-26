@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
-use App\Domain\Contract\ValueObjectInterface;
-use App\Domain\Exceptions\Validate\TitleValidateException;
+use App\Domain\Exception\Validate\TitleValidateException;
 
-class Title implements ValueObjectInterface
+class Title
 {
     protected string $title;
 

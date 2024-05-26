@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
-use App\Domain\Contract\EntityInterface;
-
-class News implements EntityInterface
+class News
 {
-    public function __construct(
-        protected int $id,
-        protected string $date,
-        protected string $url,
-        protected string $title,
-    ) {
-    }
+    private int $id;
+    private string $date;
+    private string $url;
+    private string $title;
 
     /**
      * @return int

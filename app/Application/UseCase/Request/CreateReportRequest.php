@@ -6,9 +6,7 @@ namespace App\Application\UseCase\Request;
 
 final readonly class CreateReportRequest
 {
-    public function __construct(
-        public array $ids,
-        public string $templatePath
-    ) {
+    public function __construct(public array $ids)
+    {
     }
 }

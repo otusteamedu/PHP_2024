@@ -21,11 +21,30 @@ final class App
         $params = $request->getAll();
         $actionName = $request->getAction();
 
-        $controllerClass = 'App\\Infrastructure\\Http\\Controller\\' . ucfirst($controllerName) . "Controller";
+        $controllerClass = 'App\\Infrastructure\\Http\\Controller\\'
+            . ucfirst(dashesToCamelCase($controllerName))
+            . "Controller";
+
 
         class_exists($controllerClass) or throw new \Exception('class not found');
 
-        $controller = new $controllerClass();
+        $services = [];
+
+        $classConstruct = new \ReflectionMethod($controllerClass,'__construct');
+
+        if (count($classConstruct->getParameters())) {
+            $servicesPath = config('service_namespace');
+
+            foreach ($classConstruct->getParameters() as $service) {
+                $serviceClass = $servicesPath . ucfirst($service->getName());
+
+                if (class_exists($serviceClass)) {
+                    $services[] = new $serviceClass();
+                }
+            }
+        }
+
+        $controller = new $controllerClass(...$services);
         $refObject = new \ReflectionClass($controller);
         $refProperty = $refObject->getProperty('request');
         $refProperty->setValue($controller, $request);

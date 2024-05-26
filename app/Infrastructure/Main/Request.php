@@ -46,11 +46,7 @@ final readonly class Request
     protected function parseRequest(): void
     {
         if (preg_match_all(self::URL_PATTERN, $this->uri, $matches)) {
-            $this->controller = preg_replace_callback(
-                '/((-)(\w))/',
-                static fn($matches) => strtoupper($matches[2]),
-                $matches['controller'][0]
-            );
+            $this->controller = $matches['controller'][0];
             $this->action = $matches['action'][0];
             $this->params = $matches['params'][0] == '' ? null : $matches['params'][0];
         }
