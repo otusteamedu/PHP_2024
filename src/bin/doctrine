@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config/constants.php';
+
+use AlexanderGladkov\CleanArchitecture\Infrastructure\Console\Doctrine\MigrationsCommands;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
+use DI\Container;
+
+/** @var Container $container  */
+$container = require CONTAINER_CONFIG_DIR . '/container.php';
+$migrationsConfig = require  CONFIG_DIR . '/migrations.php';
+try {
+    $entityManager = $container->get(EntityManager::class);
+    $migrationCommands = (new MigrationsCommands($migrationsConfig, $entityManager))->getList();
+    ConsoleRunner::run(new SingleManagerProvider($entityManager), $migrationCommands);
+} catch (Throwable $e) {
+    echo $e->getMessage();
+    exit(0);
+}
