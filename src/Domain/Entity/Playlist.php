@@ -73,10 +73,4 @@ class Playlist
 
         return $this;
     }
-
-    public static function createEmptyPlaylist(string $user, string $name, array $tracks): self
-    {
-        return (new self(new Email($user), $name))
-            ->setTrackCollection($tracks);
-    }
 }

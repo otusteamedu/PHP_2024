@@ -14,11 +14,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/track/create', name: 'app_create_track', methods: ['POST'])]
 class CreateTrackController extends AbstractController
 {
+    public function __construct(
+        private readonly CreateTrackUseCase $createTrackUseCase,
+    ) {
+    }
+
     public function __invoke(
         #[MapRequestPayload] CreateTrackRequest $request,
-        CreateTrackUseCase $createTrackUseCase,
     ): Response {
-        $result = call_user_func_array($createTrackUseCase, [$request]);;
+        $result = ($this->createTrackUseCase)($request);
 
         return $this->json($result);
     }

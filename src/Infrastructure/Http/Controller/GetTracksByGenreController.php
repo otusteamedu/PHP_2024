@@ -14,11 +14,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/tracks/genre', name: 'app_get_tracks_by_genre', methods: ['GET'])]
 class GetTracksByGenreController extends AbstractController
 {
+    public function __construct(
+        private readonly GetTracksByGenreUseCase $tracksByGenreUseCase,
+    ) {
+    }
+
     public function __invoke(
-        GetTracksByGenreUseCase $tracksByGenreUseCase,
         #[MapQueryString] GetTracksByGenreRequest $request,
     ): Response {
-        $result = call_user_func_array($tracksByGenreUseCase, [$request]);;
+        $result = ($this->tracksByGenreUseCase)($request);
 
         return $this->json($result);
     }

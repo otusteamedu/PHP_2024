@@ -8,6 +8,8 @@ use App\Application\UseCase\Request\CreateTrackRequest;
 use App\Application\UseCase\Response\CreateTrackResponse;
 use App\Domain\Entity\Track;
 use App\Domain\Repository\ITrackRepository;
+use App\Domain\ValueObject\Genre;
+use App\Domain\ValueObject\TrackDuration;
 
 class CreateTrackUseCase
 {
@@ -18,7 +20,11 @@ class CreateTrackUseCase
 
     public function __invoke(CreateTrackRequest $request): CreateTrackResponse
     {
-        $track = Track::create($request->author, $request->genre, $request->duration);
+        $track = new Track(
+            $request->author,
+            new Genre($request->genre),
+            new TrackDuration($request->duration),
+        );
         $this->trackRepository->save($track);
 
         return new CreateTrackResponse($track->getId());

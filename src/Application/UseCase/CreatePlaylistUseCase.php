@@ -9,6 +9,7 @@ use App\Application\UseCase\Response\CreatePlaylistResponse;
 use App\Domain\Entity\Playlist;
 use App\Domain\Repository\IPlaylistRepository;
 use App\Domain\Repository\ITrackRepository;
+use App\Domain\ValueObject\Email;
 
 class CreatePlaylistUseCase
 {
@@ -21,7 +22,11 @@ class CreatePlaylistUseCase
     public function __invoke(CreatePlaylistRequest $request): CreatePlaylistResponse
     {
         $tracks = $this->trackRepository->findTracksById($request->tracks);
-        $playlist = Playlist::createEmptyPlaylist($request->user, $request->name, $tracks);
+        $playlist = (new Playlist(
+            new Email($request->user),
+            $request->name
+        ))
+            ->setTrackCollection($tracks);
         $this->playlistRepository->save($playlist);
 
         return new CreatePlaylistResponse($playlist->getId());
