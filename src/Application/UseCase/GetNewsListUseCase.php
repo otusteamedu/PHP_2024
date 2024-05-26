@@ -19,6 +19,7 @@ class GetNewsListUseCase
     public function __invoke(): GetNewsListResponse
     {
         $newsList = [];
+        // Сделать маппер с дтошками
         foreach ($this->newsRepository->getNewsList() as $news) {
             $newsList[] = $this->normalizer->normalize($news);
         }

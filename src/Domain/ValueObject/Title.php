@@ -20,7 +20,7 @@ class Title
     {
         return $this->value;
     }
-
+    // Убрать
     private function setValue(string $value): void
     {
         $this->assertLength($value);

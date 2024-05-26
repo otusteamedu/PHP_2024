@@ -11,6 +11,7 @@ class FailedToLoadHtmlContent extends RuntimeException
 {
     public function __construct(?Throwable $previous = null)
     {
+        // Объединить с PageTitle
         parent::__construct('Не удалось прочитать содержимое страницы', 400, $previous);
     }
 }

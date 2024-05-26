@@ -14,11 +14,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/news/create', name: 'news_create', methods: 'POST')]
 class AddNewsController extends  AbstractController
 {
+    public function __construct(
+        private readonly AddNewsUseCase $addNewsUseCase,
+    ) {
+    }
+
     public function __invoke(
        #[MapRequestPayload] AddNewsRequest $request,
-        AddNewsUseCase $addNewsUseCase,
     ): Response {
-        $result = call_user_func_array($addNewsUseCase, [$request]);
+        $result = $this->addNewsUseCase($request);
 
         return $this->json($result);
     }
