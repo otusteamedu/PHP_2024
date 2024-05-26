@@ -49,3 +49,13 @@ App\Application\UseCase\Request\CreatePlaylistRequest:
         - Type:
             type: integer
             message: Неверный формат трека в плейлисте
+
+App\Application\UseCase\Request\GetPlaylistsByUserRequest:
+  properties:
+    user:
+      - NotBlank:
+          message: Не передана электронная почта владельца плейлиста
+      - Length:
+          max: 60
+      - Email:
+          message: Неверный формат электронной почты владельца плейлиста
