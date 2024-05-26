@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Response;
 
-use App\Application\Service\UseCaseResponseInterface;
-
-readonly class GetNewsReportResponse implements UseCaseResponseInterface
+readonly class GetNewsReportResponse
 {
-    public function __construct(private string $link)
+    public function __construct(public string $url, public array $warnings = [])
     {
-    }
-
-    public function getData(): mixed
-    {
-        return $this->link;
     }
 }

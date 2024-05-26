@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
-use App\Domain\Exception\InvalidArgumentException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,16 +30,16 @@ class Name
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     private function assertValidName(string $value): void
     {
         if ('' === $value) {
-            throw new InvalidArgumentException('Name cannot be empty');
+            throw new \InvalidArgumentException('Name cannot be empty');
         }
 
         if (mb_strlen($value) > 255) {
-            throw new InvalidArgumentException('Name cannot be longer than 255 characters');
+            throw new \InvalidArgumentException('Name cannot be longer than 255 characters');
         }
     }
 }

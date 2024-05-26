@@ -11,24 +11,34 @@ use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
 use App\Domain\ValueObject\Name;
 use App\Domain\ValueObject\Url;
+use Psr\Log\LoggerInterface;
 
-readonly class CreateNewsUseCase
+class CreateNewsUseCase
 {
     public function __construct(
-        private NewsRepositoryInterface $repository,
-        private DomParserInterface $parser,
+        private readonly NewsRepositoryInterface $repository,
+        private readonly DomParserInterface $parser,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     public function __invoke(CreateNewsRequest $request): CreateNewsResponse
     {
-        $title = $this->parser->parseTag($request->url, 'title');
-        $news = new News(
-            new Url($request->url),
-            new Name($title),
-        );
-        $this->repository->save($news);
+        try {
+            $dto = $this->parser->parseTag($request->url, 'title');
+            $news = new News(
+                new Url($request->url),
+                new Name($dto->tagText),
+            );
+            $this->repository->save($news);
 
-        return new CreateNewsResponse($news->getId());
+            return new CreateNewsResponse($news->getId());
+        } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+            throw new \Exception('Unable to create news.');
+        }
     }
 }

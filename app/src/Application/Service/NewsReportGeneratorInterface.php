@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Service;
+namespace App\Application\Service;
 
-use App\Domain\Dto\NewsReportDto;
+use App\Application\Dto\NewsReportDto;
 
 interface NewsReportGeneratorInterface
 {

@@ -4,6 +4,5 @@
 .AppleDouble
 .LSOverride
 .env
-app/.env
 app/vendor
 app/var

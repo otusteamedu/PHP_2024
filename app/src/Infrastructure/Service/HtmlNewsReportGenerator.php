@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Service;
+namespace App\Infrastructure\Service;
 
-use App\Domain\Dto\NewsReportDto;
+use App\Application\Dto\NewsReportDto;
+use App\Application\Service\NewsReportGeneratorInterface;
 use App\Domain\Entity\News;
-use App\Domain\Service\NewsReportGeneratorInterface;
+use Ramsey\Uuid\Uuid;
 
 class HtmlNewsReportGenerator implements NewsReportGeneratorInterface
 {
+    private const EXTENSION = 'html';
+
     /**
      * @param News[] $news
      */
@@ -23,7 +26,7 @@ class HtmlNewsReportGenerator implements NewsReportGeneratorInterface
 
         $content .= '</ul>';
 
-        return new NewsReportDto($this->render($content), 'html');
+        return new NewsReportDto($this->render($content), Uuid::uuid4()->toString(), self::EXTENSION);
     }
 
     private function render(string $content): string

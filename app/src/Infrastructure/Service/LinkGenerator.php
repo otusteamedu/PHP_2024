@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Service;
 
+use App\Application\Dto\LinkGeneratorDto;
 use App\Application\Service\LinkGeneratorInterface;
 
 class LinkGenerator implements LinkGeneratorInterface
@@ -12,8 +13,8 @@ class LinkGenerator implements LinkGeneratorInterface
     {
     }
 
-    public function generate(string $filename): string
+    public function generate(string $filename): LinkGeneratorDto
     {
-        return sprintf('%s/%s/%s', $this->host, $this->path, $filename);
+        return new LinkGeneratorDto(sprintf('%s/%s/%s', $this->host, $this->path, $filename));
     }
 }

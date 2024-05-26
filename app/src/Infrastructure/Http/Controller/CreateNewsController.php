@@ -13,13 +13,14 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CreateNewsController extends AbstractController
 {
-    private CreateNewsUseCase $useCase;
-
-    public function __construct(CreateNewsUseCase $useCase)
-    {
-        $this->useCase = $useCase;
+    public function __construct(
+        private CreateNewsUseCase $useCase,
+    ) {
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('api/v1/news', name: 'news_create', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] CreateNewsRequest $request): CreateNewsResponse
     {

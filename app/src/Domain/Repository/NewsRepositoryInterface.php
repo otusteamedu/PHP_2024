@@ -21,4 +21,6 @@ interface NewsRepositoryInterface
      * @throws EntityNotFoundException
      */
     public function findAllByIds(array $ids): array;
+
+    public function getNewsCount(): int;
 }

@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Response;
 
-use App\Application\Service\UseCaseResponseInterface;
+use App\Application\Dto\NewsDto;
+use App\Domain\Entity\News;
 
-readonly class GetNewsListResponse implements UseCaseResponseInterface
+readonly class GetNewsListResponse
 {
-    public function __construct(private array $news)
-    {
-    }
-
-    public function getData(): mixed
-    {
-        return $this->news;
+    /**
+     * @param NewsDto[] $news
+     */
+    public function __construct(
+        public array $news,
+        public int $offset,
+        public int $limit,
+        public int $total,
+    ) {
     }
 }

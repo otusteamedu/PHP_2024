@@ -8,12 +8,9 @@ use App\Domain\ValueObject\Name;
 use App\Domain\ValueObject\Url;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Attribute\Context;
-use Symfony\Component\Serializer\Attribute\Ignore;
-use Symfony\Component\Serializer\Attribute\SerializedName;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 #[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class News
 {
     #[ORM\Id]
@@ -28,7 +25,6 @@ class News
     private Name $name;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
-    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i'])]
     private \DateTimeImmutable $date;
 
     public function __construct(
@@ -37,7 +33,6 @@ class News
     ) {
         $this->name = $name;
         $this->url = $url;
-        $this->date = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -45,7 +40,6 @@ class News
         return $this->id;
     }
 
-    #[Ignore]
     public function getUrl(): Url
     {
         return $this->url;
@@ -58,7 +52,6 @@ class News
         return $this;
     }
 
-    #[Ignore]
     public function getName(): Name
     {
         return $this->name;
@@ -76,22 +69,9 @@ class News
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): self
+    #[ORM\PrePersist]
+    public function setDate(): void
     {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    #[SerializedName('name')]
-    public function getNameValue(): string
-    {
-        return $this->name->getValue();
-    }
-
-    #[SerializedName('url')]
-    public function getUrlValue(): string
-    {
-        return $this->url->getValue();
+        $this->date = new \DateTimeImmutable();
     }
 }

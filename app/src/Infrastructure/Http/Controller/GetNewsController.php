@@ -17,6 +17,9 @@ class GetNewsController extends AbstractController
     {
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('api/v1/news', name: 'get_news_create', methods: ['GET'])]
     public function __invoke(#[MapQueryString] GetNewsListRequest $request = new GetNewsListRequest()): GetNewsListResponse
     {

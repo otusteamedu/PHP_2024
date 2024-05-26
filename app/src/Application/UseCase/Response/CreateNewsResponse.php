@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Response;
 
-use App\Application\Service\UseCaseResponseInterface;
-
-readonly class CreateNewsResponse implements UseCaseResponseInterface
+readonly class CreateNewsResponse
 {
-    public function __construct(private int $id)
+    public function __construct(public int $id)
     {
-    }
-
-    public function getData(): mixed
-    {
-        return $this->id;
     }
 }

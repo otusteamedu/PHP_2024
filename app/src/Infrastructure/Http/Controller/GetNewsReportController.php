@@ -17,6 +17,9 @@ class GetNewsReportController extends AbstractController
     {
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('api/v1/news-report', name: 'get_news_report', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] GetNewsReportRequest $request): GetNewsReportResponse
     {

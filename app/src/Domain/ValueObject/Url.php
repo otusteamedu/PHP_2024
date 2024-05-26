@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
-use App\Domain\Exception\InvalidArgumentException;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,12 +30,12 @@ class Url
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     private function assertValidUrl(string $value): void
     {
         if (!filter_var($value, FILTER_VALIDATE_URL)) {
-            throw new InvalidArgumentException('Invalid URL');
+            throw new \InvalidArgumentException('Invalid URL');
         }
     }
 }

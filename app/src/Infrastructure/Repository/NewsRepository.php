@@ -47,4 +47,12 @@ class NewsRepository extends ServiceEntityRepository implements NewsRepositoryIn
 
         return $news;
     }
+
+    public function getNewsCount(): int
+    {
+        return $this->createQueryBuilder('n')
+            ->select('COUNT(n.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
