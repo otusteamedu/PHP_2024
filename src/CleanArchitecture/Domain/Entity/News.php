@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use LogicException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -17,7 +18,7 @@ final class News
     #[ORM\Id]
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    private int $id;
+    private ?int $id = null;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIMETZ_IMMUTABLE, nullable: false)]
     private DateTimeImmutable $createdAt;
@@ -39,7 +40,7 @@ final class News
         $this->createdAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -59,8 +60,15 @@ final class News
         return $this->title;
     }
 
-    public function setTitle(string $title): void
+    public function editTitle(string $title): void
     {
+        if ($this->id === null) {
+            throw new LogicException();
+        }
+
         $this->title = $title;
+        // Можно также установить дату, если считаем, что дата это момент парсинга странцы, а не дата создания
+        // записи в БД.
+        //$this->createdAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }
 }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Application;
+
 use Slim\App;
 
 class MiddlewareInitialization

@@ -39,5 +39,4 @@ class ParseUrlService implements ParseUrlServiceInterface
 
         return $matches[1];
     }
-
 }

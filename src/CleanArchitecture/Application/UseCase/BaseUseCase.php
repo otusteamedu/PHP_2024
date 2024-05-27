@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Application\UseCase;
-use AlexanderGladkov\CleanArchitecture\Application\Exception\RequestValidationException;
-use AlexanderGladkov\CleanArchitecture\Domain\Exception\DomainValidationException;
+use AlexanderGladkov\CleanArchitecture\Domain\Exception\ValidationException;
 use AlexanderGladkov\CleanArchitecture\Domain\Service\ValidationServiceInterface;
 
 abstract class BaseUseCase
@@ -14,24 +13,13 @@ abstract class BaseUseCase
     }
 
     /**
-     * @throws RequestValidationException
+     * @throws ValidationException
      */
-    protected function validateRequestModel(object $model): void
+    protected function validateModel(object $model): void
     {
         $errors = $this->validationService->validate($model);
         if (count($errors) > 0) {
-            throw new RequestValidationException($errors);
-        }
-    }
-
-    /**
-     * @throws DomainValidationException
-     */
-    protected function validateDomainModel(object $model): void
-    {
-        $errors = $this->validationService->validate($model);
-        if (count($errors) > 0) {
-            throw new DomainValidationException($errors);
+            throw new ValidationException($errors);
         }
     }
 }

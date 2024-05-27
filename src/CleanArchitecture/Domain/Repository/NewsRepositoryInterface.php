@@ -10,6 +10,15 @@ interface NewsRepositoryInterface
 {
     public function save(News $news): void;
     public function findByUrl(string $url): ?News;
+
+    /**
+     * @param array $ids
+     * @return News[]
+     */
     public function findByIds(array $ids): array;
+
+    /**
+     * @return News[]
+     */
     public function findAll(): array;
 }

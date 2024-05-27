@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller;
 
-use AlexanderGladkov\CleanArchitecture\Application\Request\AddNewsRequest;
-use AlexanderGladkov\CleanArchitecture\Application\Request\GenerateNewsReportRequest;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\AddNewsRequest;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\GenerateNewsReportRequest;
 use AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl\TitleNotFoundException;
 use AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl\UrlNotFoundException;
-use AlexanderGladkov\CleanArchitecture\Application\Exception\RequestValidationException;
 use AlexanderGladkov\CleanArchitecture\Application\UseCase\AddNewsUseCase;
 use AlexanderGladkov\CleanArchitecture\Application\UseCase\GenerateNewsReportUseCase;
 use AlexanderGladkov\CleanArchitecture\Application\UseCase\GetNewsUseCase;
-use AlexanderGladkov\CleanArchitecture\Domain\Exception\DomainValidationException;
+use AlexanderGladkov\CleanArchitecture\Domain\Exception\ValidationException;
 use AlexanderGladkov\CleanArchitecture\Infrastructure\Factory\Response\JsonResponseFactory;
 use AlexanderGladkov\CleanArchitecture\Infrastructure\Service\View\ViewService;
 use DI\Container;
@@ -40,7 +39,7 @@ class NewsController
             $news = ($useCase)(new AddNewsRequest($url));
         } catch (TitleNotFoundException|UrlNotFoundException $e) {
             return $this->jsonResponseFactory->createGeneralErrorResponse($response, $e->getMessage(), 400);
-        } catch (RequestValidationException|DomainValidationException $e) {
+        } catch (ValidationException $e) {
             return $this->jsonResponseFactory->createErrorsResponse($response, $e->getErrors(), 400);
         } catch (RuntimeException) {
             return $this->jsonResponseFactory->createDefaultGeneralErrorResponse($response);
@@ -79,7 +78,7 @@ class NewsController
         $ids = $body['ids'] ?? null;
         try {
             $link = ($useCase)(new GenerateNewsReportRequest($ids));
-        } catch (RequestValidationException $e) {
+        } catch (ValidationException $e) {
             return $this->jsonResponseFactory->createErrorsResponse($response, $e->getErrors(), 400);
         } catch (RuntimeException) {
             return $this->jsonResponseFactory->createDefaultGeneralErrorResponse($response);

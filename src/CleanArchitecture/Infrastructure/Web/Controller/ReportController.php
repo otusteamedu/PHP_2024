@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller;
 
-use AlexanderGladkov\CleanArchitecture\Application\Request\GetNewsReportRequest;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\GetNewsReportRequest;
 use AlexanderGladkov\CleanArchitecture\Application\Service\Report\ReportFileNotFoundException;
 use AlexanderGladkov\CleanArchitecture\Application\UseCase\GetNewsReportUseCase;
 use AlexanderGladkov\CleanArchitecture\Infrastructure\Factory\Response\FileResponseFactory;
@@ -31,7 +31,7 @@ class ReportController
         $useCase = $this->container->get(GetNewsReportUseCase::class);
         try {
             $filename = $args['filename'];
-            $reportFullFilename =  ($useCase)(new GetNewsReportRequest($filename));
+            $reportFullFilename = ($useCase)(new GetNewsReportRequest($filename));
         } catch (ReportFileNotFoundException) {
             return $this->htmlResponseFactory->createDefault404NotFoundResponse($response);
         }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Service\Validation;
 
-
-
 use AlexanderGladkov\CleanArchitecture\Domain\Service\ValidationServiceInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

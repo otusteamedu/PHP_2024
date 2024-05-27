@@ -23,13 +23,18 @@ class JsonResponseFactory
         return $this->createResponse($response, ['errors' => $value], $statusCode);
     }
 
+    public function createGeneralErrorsResponse(Response $response, array $messages, int $statusCode = 500): Response
+    {
+        return $this->createErrorsResponse($response, ['general' => $messages], $statusCode);
+    }
+
     public function createGeneralErrorResponse(Response $response, string $message, int $statusCode = 500): Response
     {
-        return $this->createResponse($response, ['errors' => ['general' => $message]], $statusCode);
+        return $this->createGeneralErrorsResponse($response, [$message], $statusCode);
     }
 
     public function createDefaultGeneralErrorResponse(Response $response, int $statusCode = 500): Response
     {
-        return $this->createResponse($response, ['errors' => ['general' => 'Произошла ошибка']], $statusCode);
+        return $this->createGeneralErrorResponse($response, 'Произошла ошибка', $statusCode);
     }
 }

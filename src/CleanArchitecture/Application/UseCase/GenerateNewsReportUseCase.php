@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Application\UseCase;
 
-use AlexanderGladkov\CleanArchitecture\Application\Request\GenerateNewsReportRequest;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\GenerateNewsReportRequest;
 use AlexanderGladkov\CleanArchitecture\Application\Service\GenerateLink\GenerateLinkServiceInterface;
 use AlexanderGladkov\CleanArchitecture\Application\Service\Report\NewsReportServiceInterface;
+use AlexanderGladkov\CleanArchitecture\Domain\Exception\ValidationException;
 use AlexanderGladkov\CleanArchitecture\Domain\Repository\NewsRepositoryInterface;
 use AlexanderGladkov\CleanArchitecture\Domain\Service\ValidationServiceInterface;
-use AlexanderGladkov\CleanArchitecture\Application\Exception\RequestValidationException;
 
 class GenerateNewsReportUseCase extends BaseUseCase
 {
@@ -23,11 +23,11 @@ class GenerateNewsReportUseCase extends BaseUseCase
     }
 
     /**
-     * @throws RequestValidationException
+     * @throws ValidationException
      */
     public function __invoke(GenerateNewsReportRequest $request): string
     {
-        $this->validateRequestModel($request);
+        $this->validateModel($request);
         $news = $this->newsRepository->findByIds($request->getIds());
         $filename =  $this->newsReportService->generateReport($news);
         return $this->generateLinkService->generateNewsReportFileLink($filename);

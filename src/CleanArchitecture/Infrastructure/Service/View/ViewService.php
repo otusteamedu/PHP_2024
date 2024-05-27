@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Service\View;
 use AlexanderGladkov\CleanArchitecture\Domain\Entity\News;
 
-
 class ViewService
 {
+    /**
+     * @param News[] $news
+     * @return array
+     */
     public function prepareNews(array $news): array
     {
         return array_map(function(News $news) {

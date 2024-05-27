@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexanderGladkov\CleanArchitecture\Application\Request;
+namespace AlexanderGladkov\CleanArchitecture\Application\UseCase\Request;
 
 class GetNewsReportRequest
 {

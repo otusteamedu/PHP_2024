@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Application\UseCase;
 
-use AlexanderGladkov\CleanArchitecture\Application\Request\GetNewsReportRequest;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\GetNewsReportRequest;
 use AlexanderGladkov\CleanArchitecture\Application\Service\Report\NewsReportServiceInterface;
 use AlexanderGladkov\CleanArchitecture\Application\Service\Report\ReportFileNotFoundException;
 

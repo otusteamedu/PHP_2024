@@ -9,5 +9,3 @@ use AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Application\Applicatio
 
 $container = require CONTAINER_CONFIG_DIR . '/container.php';
 (new Application($container))->run();
-
-

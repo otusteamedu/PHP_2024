@@ -8,6 +8,7 @@ interface ValidationServiceInterface
 {
     /**
      * @param mixed $object
+     * @return array
      */
     public function validate(mixed $object): array;
 }

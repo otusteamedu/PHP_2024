@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace AlexanderGladkov\CleanArchitecture\Application\Exception;
+namespace AlexanderGladkov\CleanArchitecture\Domain\Exception;
 
 use Exception;
 use Throwable;
 
-class RequestValidationException extends Exception
+class ValidationException extends Exception
 {
     private array $errors;
 
