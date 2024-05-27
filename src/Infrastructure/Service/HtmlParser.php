@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Service;
 
-use App\Application\Service\GetPageTitleInterface;
+use App\Application\Exception\FailedToLoadHtmlContent;
+use App\Application\Service\ArticleParserInterface;
+use App\Application\Service\DTO\ParsedArticleDto;
+use App\Application\Service\Exception\HtmlParserException;
+use App\Domain\ValueObject\Url;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
-class HtmlParser implements GetPageTitleInterface
+class HtmlParser implements ArticleParserInterface
 {
     private int $connectionTimeout;
     private int $completionTimeout;
@@ -37,14 +41,20 @@ class HtmlParser implements GetPageTitleInterface
             ->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
     }
 
-    public function getPageTitle(string $url): ?string
+    public function parseArticle(Url $url): ParsedArticleDto
     {
+        $html = file_get_contents($url->getValue());
+
+        if ($html === false) {
+            throw new HtmlParserException('Не удалось прочитать содержимое страницы');
+        }
+
         $driver = $this->getDriver();
         $driver->get($url);
         $title = $driver->getTitle();
         $driver->quit();
 
-        return $title;
+        return new ParsedArticleDto($title);
     }
 
     private function getDriver(): RemoteWebDriver

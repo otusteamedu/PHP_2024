@@ -6,7 +6,6 @@ namespace App\Domain\Entity;
 
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
-use DateTimeImmutable;
 use DateTimeInterface;
 
 class News
@@ -52,14 +51,5 @@ class News
     public function getCreatedAt(): DateTimeInterface
     {
         return $this->createdAt;
-    }
-
-    public static function createNew(string $title, string $url): self
-    {
-        return new self(
-            new Title($title),
-            new Url($url),
-            new DateTimeImmutable()
-        );
     }
 }
