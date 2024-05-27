@@ -14,7 +14,8 @@ class Solution
      * @param int $denominator
      * @return string
      */
-    public function fractionToDecimal(int $numerator, int $denominator): string {
+    public function fractionToDecimal(int $numerator, int $denominator): string
+    {
         if ($denominator === 0) {
             throw new InvalidArgumentException("Denominator cannot be zero.");
         }
@@ -57,7 +58,7 @@ class Solution
             $remainder *= 10;
             $nextDigit = intdiv($remainder, $denominator);
             $result .= $nextDigit;
-            
+
             $remainder %= $denominator;
         }
 
