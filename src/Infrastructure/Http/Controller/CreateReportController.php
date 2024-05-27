@@ -12,9 +12,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/report/create', name: 'report_create', methods: 'POST')]
 class CreateReportController extends AbstractController
 {
-    public function __invoke(CreateReportUseCase $createReportUseCase): Response
+    public function __construct(
+        private readonly CreateReportUseCase $createReportUseCase,
+    ) {
+    }
+
+    public function __invoke(): Response
     {
-        $result = call_user_func_array($createReportUseCase, []);
+        $result = ($this->createReportUseCase)();
 
         return $this->json($result);
     }

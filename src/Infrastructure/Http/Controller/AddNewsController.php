@@ -22,7 +22,7 @@ class AddNewsController extends  AbstractController
     public function __invoke(
        #[MapRequestPayload] AddNewsRequest $request,
     ): Response {
-        $result = $this->addNewsUseCase($request);
+        $result = ($this->addNewsUseCase)($request);
 
         return $this->json($result);
     }

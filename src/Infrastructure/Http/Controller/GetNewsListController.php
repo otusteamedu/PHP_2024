@@ -12,9 +12,14 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/news', name: 'news_list', methods: 'GET')]
 class GetNewsListController extends AbstractController
 {
-    public function __invoke(GetNewsListUseCase $getNewsList): Response
+    public function __construct(
+        private readonly GetNewsListUseCase $getNewsList,
+    ) {
+    }
+
+    public function __invoke(): Response
     {
-        $result = call_user_func_array($getNewsList, []);
+        $result = ($this->getNewsList)();
 
         return $this->json($result);
     }
