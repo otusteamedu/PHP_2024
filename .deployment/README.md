@@ -47,7 +47,6 @@ REPORT_FILE_PATH=/public/reports
 NEWS_REPORT_FILE_PREFIX=news_report_
 REPORT_URL=http://localhost:8888/reports
 ###< reports ###
-###< postgres ###
 ```
 
 3) Ввести команды (при необходимости можно изменить `docker-compose` или `docker compose` в Makefile):

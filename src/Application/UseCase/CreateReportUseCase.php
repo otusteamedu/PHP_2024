@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\UseCase;
 
 use App\Application\UseCase\Response\CreateReportResponse;
+use App\Application\UseCase\Response\DTO\ReportDto;
 use App\Domain\Repository\NewsRepositoryInterface;
 use App\Domain\Service\ReportGeneratorInterface;
 
@@ -21,6 +22,6 @@ class CreateReportUseCase
         $newsList = $this->newsRepository->getNewsList();
         $fileLink = $this->newsReportGenerator->generateReport($newsList);
 
-        return new CreateReportResponse($fileLink);
+        return new CreateReportResponse(new ReportDto($fileLink));
     }
 }

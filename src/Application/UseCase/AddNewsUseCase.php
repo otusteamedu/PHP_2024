@@ -9,6 +9,7 @@ use App\Application\Exception\PageTitleNotFoundException;
 use App\Application\Service\GetPageTitleInterface;
 use App\Application\UseCase\Request\AddNewsRequest;
 use App\Application\UseCase\Response\AddNewsResponse;
+use App\Application\UseCase\Response\DTO\AddedNewsDto;
 use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
 
@@ -41,6 +42,6 @@ class AddNewsUseCase
 
         $this->newsRepository->addAndSaveNews($news);
 
-        return new AddNewsResponse($news->getId());
+        return new AddNewsResponse(new AddedNewsDto($news->getId()));
     }
 }

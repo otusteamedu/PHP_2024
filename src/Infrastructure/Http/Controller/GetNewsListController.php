@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/news', name: 'news_list', methods: 'GET')]
-class GetNewsList extends AbstractController
+class GetNewsListController extends AbstractController
 {
     public function __invoke(GetNewsListUseCase $getNewsList): Response
     {
