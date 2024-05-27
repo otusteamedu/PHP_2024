@@ -18,6 +18,7 @@ class SymfonyTrackNormalizer implements INormalizer, NormalizerInterface
     {
         return [
             'id' => $object->getId(),
+            'name' => $object->getName(),
             'author' => $object->getAuthor(),
             'genre' => $object->getGenre()->getValue(),
             'duration' => (new TrackDurationAddDescription($object->getDuration()))->getFormatedDuration(),

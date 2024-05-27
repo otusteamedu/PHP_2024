@@ -11,8 +11,14 @@
         <id name="id" type="integer" length="11">
             <generator strategy="AUTO" />
         </id>
+        <field name="name" type="string" length="60" nullable="false" />
         <field name="author" type="string" length="60" nullable="false" />
         <embedded name="genre" use-column-prefix="false" class="App\Domain\ValueObject\Genre" />
         <embedded name="duration" use-column-prefix="false" class="App\Domain\ValueObject\TrackDuration" />
+        <many-to-many field="playlists" target-entity="App\Domain\Entity\Playlist" mapped-by="tracks">
+            <cascade>
+                <cascade-all />
+            </cascade>
+        </many-to-many>
     </entity>
 </doctrine-mapping>

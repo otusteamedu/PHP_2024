@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Collection\PlaylistCollection;
 use App\Domain\Entity\Playlist;
 use App\Domain\Repository\IPlaylistRepository;
 use App\Domain\ValueObject\Email;
@@ -17,18 +18,18 @@ class DoctrinePlaylistRepository extends ServiceEntityRepository implements IPla
         parent::__construct($registry, Playlist::class);
     }
 
-    /**
-     * @param Email $user
-     * @return Playlist[]
-     */
-    public function findPlaylistsByUser(Email $user): array
+    public function findPlaylistsByUser(Email $user): PlaylistCollection
     {
-        return $this
+        $result = $this
             ->createQueryBuilder('p')
-            ->where('p.userName = :user')
-            ->setParameter('user', $user)
+            ->select('p', 't')
+            ->leftJoin('p.tracks', 't')
+            ->where('p.userEmail.value = :user')
+            ->setParameter('user', $user->getValue())
             ->getQuery()
             ->getResult();
+
+        return new PlaylistCollection($result);
     }
 
     public function save(Playlist $track): void

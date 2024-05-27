@@ -13,7 +13,7 @@
         </id>
         <embedded name="userEmail" use-column-prefix="false" class="App\Domain\ValueObject\Email" />
         <field name="name" type="string" length="60" nullable="false" />
-        <many-to-many field="tracks" target-entity="App\Domain\Entity\Track">
+        <many-to-many field="tracks" target-entity="App\Domain\Entity\Track" inversed-by="playlists">
             <join-table name="playlist_track">
                 <join-columns>
                     <join-column name="playlist_id" referenced-column-name="id" nullable="false" unique="false" />

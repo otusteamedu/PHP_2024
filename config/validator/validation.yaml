@@ -1,14 +1,17 @@
 App\Application\UseCase\Request\CreateTrackRequest:
   properties:
+    name:
+      - NotBlank:
+          message: Не передано название трека
     author:
       - NotBlank:
-          message: Не передано значение author
+          message: Не передано имя автора
       - Length:
           max: 60
           maxMessage: Превышена максимальная длина имени автора {{ limit }}. Текущая длина {{ value_length }}
     genre:
       - NotBlank:
-          message: Не передано значение genre
+          message: Не передан жанр трека
       - Length:
           max: 60
       - Choice:
@@ -16,7 +19,7 @@ App\Application\UseCase\Request\CreateTrackRequest:
           callback: [App\Domain\Enum\AllowedGenreEnum, 'values']
     duration:
       - NotBlank:
-          message: Не передано значение duration
+          message: Не передана длительность трека
       - Length:
           max: 11
           maxMessage: Превышена максимальное количество символов для трека {{ limit }}. Текущая длина {{ value_length }}
@@ -25,7 +28,7 @@ App\Application\UseCase\Request\GetTracksByGenreRequest:
   properties:
     genre:
       - NotBlank:
-          message: Не передано значение genre
+          message: Не передан жанр трека
       - Length:
           max: 60
       - Choice:

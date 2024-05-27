@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
-use App\Domain\Collection\TracksCollection;
 use App\Domain\ValueObject\Email;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Playlist
 {
     private int $id;
-    private iterable $tracks;
+    private Collection $tracks;
 
     public function __construct(
         private Email $userEmail,
         private string $name,
     ) {
-        $this->tracks = new TracksCollection();
+        $this->tracks = new ArrayCollection();
     }
 
     public function getId(): int
@@ -24,12 +25,12 @@ class Playlist
         return $this->id;
     }
 
-    public function getUser(): Email
+    public function getUserEmail(): Email
     {
         return $this->userEmail;
     }
 
-    public function setUser(Email $userEmail): self
+    public function setUserEmail(Email $userEmail): self
     {
         $this->userEmail = $userEmail;
 
@@ -48,14 +49,14 @@ class Playlist
         return $this;
     }
 
-    public function getTracks(): TracksCollection
+    public function getTracks(): Collection
     {
         return $this->tracks;
     }
 
     public function setTrackCollection(array $tracks): self
     {
-        $this->tracks = new TracksCollection($tracks);
+        $this->tracks = new ArrayCollection($tracks);
 
         return $this;
     }
@@ -69,7 +70,7 @@ class Playlist
 
     public function removeTrack(Track $track): self
     {
-        $this->tracks->remove($track);
+        $this->tracks->removeElement($track);
 
         return $this;
     }

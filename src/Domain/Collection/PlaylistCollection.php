@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Domain\Collection;
 
 use App\Domain\Collection\Iterator\ArrayIterator;
-use App\Domain\Entity\Track;
+use App\Domain\Entity\Playlist;
 use Closure;
 use InvalidArgumentException;
 use Traversable;
 
-class TracksCollection implements ArrayCollectionInterface
+class PlaylistCollection implements ArrayCollectionInterface
 {
     public function __construct(
         private array $elements = []
@@ -67,10 +67,10 @@ class TracksCollection implements ArrayCollectionInterface
 
     private function assertType(mixed $element): void
     {
-        if (!($element instanceof Track)) {
+        if (!($element instanceof Playlist)) {
             throw new InvalidArgumentException(
                 'Неверный тип элемента коллекции. Требуется объект '
-                . Track::class
+                . Playlist::class
             );
         }
     }

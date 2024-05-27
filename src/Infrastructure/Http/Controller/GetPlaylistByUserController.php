@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/user/playlists/', name: 'app_get_user_playlist', methods: ['GET'])]
+#[Route('/user/playlists', name: 'app_get_user_playlist', methods: ['GET'])]
 class GetPlaylistByUserController extends AbstractController
 {
     public function __construct(

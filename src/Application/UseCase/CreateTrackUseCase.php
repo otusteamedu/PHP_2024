@@ -21,6 +21,7 @@ class CreateTrackUseCase
     public function __invoke(CreateTrackRequest $request): CreateTrackResponse
     {
         $track = new Track(
+            $request->name,
             $request->author,
             new Genre($request->genre),
             new TrackDuration($request->duration),
