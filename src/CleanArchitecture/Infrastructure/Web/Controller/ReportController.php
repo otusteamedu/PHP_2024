@@ -13,7 +13,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-
 class ReportController
 {
     public function __construct(
@@ -23,7 +22,7 @@ class ReportController
     ) {
     }
 
-    public function getNewsReport(Request $request, Response $response, array $args):  Response
+    public function getNewsReport(Request $request, Response $response, array $args): Response
     {
         /**
          * @var GetNewsReportUseCase $useCase

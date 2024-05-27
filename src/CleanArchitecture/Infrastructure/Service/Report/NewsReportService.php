@@ -37,14 +37,14 @@ class NewsReportService implements NewsReportServiceInterface
     {
         try {
             $html = $this->twig->getEnvironment()->render('/report/news.html.twig', ['news' => $news]);
-        } catch (LoaderError|RuntimeError|SyntaxError $e) {
+        } catch (LoaderError | RuntimeError | SyntaxError $e) {
             throw new RuntimeException($e->getMessage());
         }
 
         $this->createReportsDirectoryIfNotExists();
         $filename = 'news.html';
         $fullFilename = $this->reportsDirectory . '/' . $filename;
-        file_put_contents($fullFilename , $html);
+        file_put_contents($fullFilename, $html);
         return $filename;
     }
 

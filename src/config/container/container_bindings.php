@@ -18,27 +18,26 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-
 use Slim\Views\Twig;
 
 return [
     'settings' => require CONFIG_DIR . '/settings.php',
-    'host' => function(ContainerInterface $container) {
+    'host' => function (ContainerInterface $container) {
         return $container->get('settings')['general']['host'];
     },
-    ValidatorInterface::class => function() {
+    ValidatorInterface::class => function () {
         $builder = new Symfony\Component\Validator\ValidatorBuilder();
         $builder->enableAttributeMapping();
         return $builder->getValidator();
     },
-    LoggerInterface::class => function(ContainerInterface $container) {
+    LoggerInterface::class => function (ContainerInterface $container) {
         $loggerSettings = $container->get('settings')['logger'];
         $logger = new Monolog\Logger('app');
         $logger->pushHandler(new StreamHandler($loggerSettings['log_path'], Level::Debug));
         $logger->pushHandler(new FirePHPHandler());
         return $logger;
     },
-    EntityManager::class => function(ContainerInterface $container) {
+    EntityManager::class => function (ContainerInterface $container) {
         $doctrineSettings =  $container->get('settings')['doctrine'];
         $isDevelopmentMode = $doctrineSettings['development_mode'];
 
@@ -57,7 +56,7 @@ return [
         $connection = DriverManager::getConnection($doctrineSettings['connection']);
         return new EntityManager($connection, $config);
     },
-    Twig::class => function(ContainerInterface $container) {
+    Twig::class => function (ContainerInterface $container) {
         $twigSettings = $container->get('settings')['twig'];
         return Twig::create($twigSettings['templates_directory'], [
             'cache' => $twigSettings['cache_directory'],

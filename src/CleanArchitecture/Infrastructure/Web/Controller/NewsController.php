@@ -27,7 +27,7 @@ class NewsController
     ) {
     }
 
-    public function addNews(Request $request, Response $response, array $args):  Response
+    public function addNews(Request $request, Response $response, array $args): Response
     {
         /**
          * @var AddNewsUseCase $useCase
@@ -37,7 +37,7 @@ class NewsController
             $body = $request->getParsedBody();
             $url = $body['url'] ?? null;
             $news = ($useCase)(new AddNewsRequest($url));
-        } catch (TitleNotFoundException|UrlNotFoundException $e) {
+        } catch (TitleNotFoundException | UrlNotFoundException $e) {
             return $this->jsonResponseFactory->createGeneralErrorResponse($response, $e->getMessage(), 400);
         } catch (ValidationException $e) {
             return $this->jsonResponseFactory->createErrorsResponse($response, $e->getErrors(), 400);
@@ -48,7 +48,7 @@ class NewsController
         return $this->jsonResponseFactory->createResponse($response, ['id' => $news->getId()]);
     }
 
-    public function getNews(Request $request, Response $response, array $args):  Response
+    public function getNews(Request $request, Response $response, array $args): Response
     {
         /**
          * @var GetNewsUseCase $useCase
@@ -68,7 +68,7 @@ class NewsController
         return $this->jsonResponseFactory->createResponse($response, ['news' => $news]);
     }
 
-    public function generateReport(Request $request, Response $response, array $args):  Response
+    public function generateReport(Request $request, Response $response, array $args): Response
     {
         /**
          * @var GenerateNewsReportUseCase $useCase

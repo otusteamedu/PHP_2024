@@ -24,7 +24,7 @@ class FileResponseFactory
         return $response
             ->withStatus($statusCode)
             ->withHeader('Content-type', 'application/text-html')
-            ->withHeader('Content-Disposition', 'attachment;filename= '. $filename)
+            ->withHeader('Content-Disposition', 'attachment;filename= ' . $filename)
             ->withHeader('Content-Length', filesize($fullFilename))
             ->withHeader('Content-Transfer-Encoding', 'Binary')
             ->withBody($stream);

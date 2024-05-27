@@ -6,7 +6,7 @@ require_once __DIR__ . '/constants.php';
 
 use AlexanderGladkov\CleanArchitecture\Infrastructure\Config\ApplicationConfig;
 
-return function(ApplicationConfig $config): array {
+return function (ApplicationConfig $config): array {
     return [
         'general' => [
             'host' => 'http://application.local:8000',

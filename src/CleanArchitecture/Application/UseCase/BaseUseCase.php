@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Application\UseCase;
+
 use AlexanderGladkov\CleanArchitecture\Domain\Exception\ValidationException;
 use AlexanderGladkov\CleanArchitecture\Domain\Service\ValidationServiceInterface;
 
