@@ -26,15 +26,6 @@ services:
       - .env
     networks:
       - app-network
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-    depends_on:
-      - mysql
-    networks:
-      - app-network
   mysql:
     image: mysql:8.3.0
     container_name: mysql
