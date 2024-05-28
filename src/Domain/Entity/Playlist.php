@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
+use App\Domain\Collection\TracksCollection;
 use App\Domain\ValueObject\Email;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -54,9 +55,9 @@ class Playlist
         return $this->tracks;
     }
 
-    public function setTrackCollection(array $tracks): self
+    public function setTrackCollection(TracksCollection $tracks): self
     {
-        $this->tracks = new ArrayCollection($tracks);
+        $this->tracks = new ArrayCollection($tracks->toArray());
 
         return $this;
     }

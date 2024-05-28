@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\UseCase\DTO\TrackDto;
 use App\Application\UseCase\Request\GetTracksByGenreRequest;
 use App\Application\UseCase\Response\GetTracksByGenreResponse;
 use App\Domain\Repository\ITrackRepository;
-use App\Domain\Service\INormalizer;
 use App\Domain\ValueObject\Genre;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class GetTracksByGenreUseCase
 {
     public function __construct(
-        private readonly ITrackRepository $trackRepository,
-        private readonly INormalizer $trackNormalizer,
+        private readonly ITrackRepository    $trackRepository,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -23,8 +24,8 @@ class GetTracksByGenreUseCase
         $tracks = $this->trackRepository->getTracksByGenre(new Genre($request->genre));
         $normalizedTracks = [];
         foreach ($tracks as $track) {
-            $normalizedTracks[] = $this->trackNormalizer->normalize($track);
-        };
+            $normalizedTracks[] = $this->serializer->normalize($track, TrackDto::class);
+        }
 
         return new GetTracksByGenreResponse($normalizedTracks);
     }

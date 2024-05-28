@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Collection\TracksCollection;
 use App\Domain\Entity\Track;
 use App\Domain\Repository\ITrackRepository;
 use App\Domain\ValueObject\Genre;
@@ -17,14 +18,16 @@ class DoctrineTrackRepository extends ServiceEntityRepository implements ITrackR
         parent::__construct($registry, Track::class);
     }
 
-    public function getTracksByGenre(Genre $genre): array
+    public function getTracksByGenre(Genre $genre): TracksCollection
     {
-        return $this
+        $result = $this
             ->createQueryBuilder('t')
             ->where('t.genre.value = :genre')
             ->setParameter('genre', $genre->getValue())
             ->getQuery()
             ->getResult();
+
+        return new TracksCollection($result);
     }
 
     public function findTracksById(array $ids): array
