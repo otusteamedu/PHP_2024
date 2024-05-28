@@ -5,7 +5,7 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
 
-class DbNewsRepository implements NewsRepositoryInterface
+class PostgresNewsRepository implements NewsRepositoryInterface
 {
     private $init;
 
