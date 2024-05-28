@@ -15,9 +15,7 @@ readonly class FilmDataMapper
     private PDOStatement $deleteStatement;
     private PDOStatement $selectAllStatement;
 
-    public function __construct(
-        private MysqlConnect $connect
-    )
+    public function __construct(private MysqlConnect $connect)
     {
         $this->pdo = $this->connect->pdo;
         $this->insertStatement = $this->pdo->prepare("INSERT INTO films (name, genre, description) VALUES (:name, :genre, :description)");
@@ -106,5 +104,4 @@ readonly class FilmDataMapper
         }
         return $films;
     }
-
 }
