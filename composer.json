@@ -1,0 +1,12 @@
+{
+    "name": "ahar/hw13",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Ahar\\Hw13\\": "src/"
+        }
+    },
+    "require": {
+      "ext-pdo": "*"
+    }
+}
