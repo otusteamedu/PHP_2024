@@ -4,19 +4,31 @@ namespace Ahar\Hw13;
 
 use DomainException;
 use PDO;
+use PDOStatement;
 
 readonly class FilmDataMapper
 {
+    private PDO $pdo;
+
+    private PDOStatement $insertStatement;
+    private PDOStatement $findByIdStatement;
+    private PDOStatement $deleteStatement;
+    private PDOStatement $selectAllStatement;
+
     public function __construct(
         private MysqlConnect $connect
     )
     {
+        $this->pdo = $this->connect->pdo;
+        $this->insertStatement = $this->pdo->prepare("INSERT INTO films (name, genre, description) VALUES (:name, :genre, :description)");
+        $this->deleteStatement = $this->pdo->prepare("DELETE FROM films WHERE id = :id");
+        $this->findByIdStatement = $this->pdo->prepare("SELECT * FROM films WHERE id = :id");
+        $this->selectAllStatement = $this->pdo->prepare("SELECT * FROM films");
     }
 
     public function insert(array $data): Film
     {
-        $query = $this->connect->pdo->prepare("INSERT INTO films (name, genre, description) VALUES (:name, :genre, :description)");
-        $res = $query->execute([
+        $res = $this->insertStatement->execute([
             'name' => $data['name'],
             'genre' => $data['genre'],
             'description' => $data['description'],
@@ -27,7 +39,7 @@ readonly class FilmDataMapper
         }
 
         return new Film(
-            (int)$this->connect->pdo->lastInsertId(),
+            (int)$this->pdo->lastInsertId(),
             $data['name'],
             $data['genre'],
             $data['description'],
@@ -65,8 +77,7 @@ readonly class FilmDataMapper
 
     public function delete(int $id): void
     {
-        $query = $this->connect->pdo->prepare("DELETE FROM films WHERE id = :id");
-        $res = $query->execute(['id' => $id]);
+        $res = $this->deleteStatement->execute(['id' => $id]);
 
         if (!$res) {
             throw new DomainException('Ошибка удаления');
@@ -75,9 +86,8 @@ readonly class FilmDataMapper
 
     public function findById(int $id): ?Film
     {
-        $query = $this->connect->pdo->prepare("SELECT * FROM films WHERE id = :id");
-        $query->execute(['id' => $id]);
-        $result = $query->fetch(PDO::FETCH_ASSOC);
+        $this->findByIdStatement->execute(['id' => $id]);
+        $result = $this->findByIdStatement->fetch(PDO::FETCH_ASSOC);
 
         if (!$result) {
             return null;
@@ -88,8 +98,7 @@ readonly class FilmDataMapper
 
     public function fetchAll(): array
     {
-        $query = $this->connect->pdo->query("SELECT * FROM films");
-        $results = $query->fetchAll(PDO::FETCH_ASSOC);
+        $results = $this->selectAllStatement->fetchAll(PDO::FETCH_ASSOC);
 
         $films = [];
         foreach ($results as $result) {
