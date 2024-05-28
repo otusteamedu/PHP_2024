@@ -1,0 +1,21 @@
+{
+  "name": "hukimato/otus",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "hukimato",
+      "email": "danay2211@gmail.com"
+    }
+  ],
+  "require": {
+    "php-amqplib/php-amqplib": "^2.0",
+    "symfony/mailer": "^7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Common\\": "common/"
+    }
+  }
+}
