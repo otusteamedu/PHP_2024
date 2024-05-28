@@ -19,4 +19,3 @@ echo "\n";
 $decorator2 = new ConcreteDecorator2($component);
 echo "Вызов операции компонента с декоратором 2:\n";
 echo $decorator2->operation();
-
