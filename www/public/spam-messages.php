@@ -21,5 +21,3 @@ for ($i = 0; $i < $count; $i++) {
     $rabbit->sendMessage($msg);
     echo "Sent $msg->message" . PHP_EOL;
 }
-
-

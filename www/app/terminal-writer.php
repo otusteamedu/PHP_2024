@@ -22,13 +22,13 @@ while (true) {
             echo $message->message . PHP_EOL;
             if ($message->notify) {
                 try {
-                    if (!$mailer)
+                    if (!$mailer) {
                         $mailer = new \Common\MailerWrapper();
+                    }
                     $mailer->send($message->email, "Process for $message->user finished", $message->message);
                 } catch (TransportExceptionInterface $exception) {
                     echo $exception->getMessage() . PHP_EOL;
                 }
-
             }
         }
     } catch (\Throwable $exception) {

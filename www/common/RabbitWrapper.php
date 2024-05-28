@@ -47,8 +47,9 @@ class RabbitWrapper
     public function getMessageOrNull(): ?MessageDTO
     {
         $message = $this->getChannel()->basic_get($this->queue, true, null);
-        if ($message)
+        if ($message) {
             return MessageDTO::buildFromJSONString($message->body);
+        }
         return null;
     }
 }

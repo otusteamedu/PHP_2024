@@ -10,9 +10,8 @@ readonly class MessageDTO implements \JsonSerializable
         public ?string $message,
         public ?string $email,
         public ?string $user,
-        public bool    $notify,
-    )
-    {
+        public bool $notify,
+    ) {
     }
 
     public static function buildFromArray(array $rawData): static
