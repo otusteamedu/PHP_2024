@@ -1,41 +1,8 @@
 <?php
 
-
-interface Strategy
-{
-    public function doOperation(int $num1, int $num2): int;
-}
-
-class ConcreteStrategyAdd implements Strategy
-{
-    public function doOperation(int $num1, int $num2): int
-    {
-        return $num1 + $num2;
-    }
-}
-
-class ConcreteStrategyMultiply implements Strategy
-{
-    public function doOperation(int $num1, int $num2): int
-    {
-        return $num1 * $num2;
-    }
-}
-
-class Context
-{
-    private $strategy;
-
-    public function __construct(Strategy $strategy)
-    {
-        $this->strategy = $strategy;
-    }
-
-    public function executeStrategy(int $num1, int $num2): int
-    {
-        return $this->strategy->doOperation($num1, $num2);
-    }
-}
+use Ahar\Hw16\strategy\ConcreteStrategyAdd;
+use Ahar\Hw16\strategy\ConcreteStrategyMultiply;
+use Ahar\Hw16\strategy\Context;
 
 $context = new Context(new ConcreteStrategyAdd());
 echo "Сложение: " . $context->executeStrategy(10, 5) . "\n";

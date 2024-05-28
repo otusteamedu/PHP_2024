@@ -1,40 +1,18 @@
 <?php
 
-interface Service
-{
-    public function request(): string;
-}
+use Ahar\Hw16\proxy\Proxy;
+use Ahar\Hw16\proxy\RealService;
+use Ahar\Hw16\proxy\Service;
 
-class RealService implements Service
-{
-    public function request(): string
-    {
-        return "Реальный сервис: выполнение запроса\n";
-    }
-}
-
-class Proxy implements Service
-{
-    private $realService;
-
-    public function request(): string
-    {
-        if ($this->realService === null) {
-            $this->realService = new RealService();
-        }
-        return "Прокси: предварительные операции\n" . $this->realService->request();
-    }
-}
-
-function clientCode(Service $service)
+function client_code(Service $service)
 {
     echo $service->request();
 }
 
 echo "Вызов RealService через клиентский код:\n";
-clientCode(new RealService());
+client_code(new RealService());
 
 echo "\n";
 
 echo "Вызов Proxy через клиентский код:\n";
-clientCode(new Proxy());
+client_code(new Proxy());
