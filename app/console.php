@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-use Rmulyukov\Hw\App;
-use Rmulyukov\Hw\Application\UseCase\Publish\PublishUseCase;
+use Rmulyukov\Hw\Application\UseCase\Consume\ConsumeUseCase;
 use Rmulyukov\Hw\Config;
+use Rmulyukov\Hw\ConsoleApp;
 use Rmulyukov\Hw\Infrastructure\Service\RabbitMessageBusService;
-use Rmulyukov\Hw\Request;
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
-$config = new Config(require_once __DIR__ . '/../config/config.php');
+$config = new Config(require_once __DIR__ . '/config/config.php');
 
 try {
-    $app = new App(
-        new PublishUseCase(
+    $app = new ConsoleApp(
+        new ConsumeUseCase(
             new RabbitMessageBusService(
                 $config->getRabbitHost(),
                 $config->getRabbitPort(),
@@ -23,8 +22,7 @@ try {
             )
         )
     );
-    $app->run(new Request());
-    echo "Message published";
+    $app->run();
 } catch (Throwable $throwable) {
     echo $throwable->getMessage();
 }

@@ -1,6 +1,21 @@
 version: '3.9'
 
 services:
+  nginx:
+    container_name: hw-nginx
+    hostname: hw-nginx
+    build:
+      context: ./docker
+      dockerfile: nginx/Dockerfile
+    volumes:
+      - ./app:/app
+    depends_on:
+      - php
+    ports:
+      - "8080:80"
+    networks:
+      - hw-network
+
   php:
     container_name: hw-php
     hostname: hw-php
@@ -9,8 +24,26 @@ services:
       dockerfile: php/Dockerfile
     volumes:
       - ./app:/app
+    depends_on:
+      - rabbit
     networks:
       - hw-network
+
+  rabbit:
+    image: rabbitmq:3.13-management-alpine
+    container_name: hw-rabbit
+    hostname: hw-rabbit
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+    volumes:
+      - ./docker/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+    networks:
+      - hw-network
+
 
 networks:
   hw-network:
