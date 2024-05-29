@@ -16,14 +16,9 @@ class DatabaseQueryResult implements Iterator
     protected int $key;
     protected stdClass|bool $result;
 
-    public function __construct(string $query)
+    public function __construct(string $query, PDO $pdo)
     {
-        $this->pdo = new PDO(
-            'pgsql:host=localhost;port=5432;dbname=otus;',
-            'postgres',
-            'postgres',
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
+        $this->pdo = $pdo;
         $this->execute($query);
     }
 
@@ -46,12 +41,7 @@ class DatabaseQueryResult implements Iterator
             $this->key
         );
 
-
-        if ($this->result === false) {
-            return false;
-        }
-
-        return true;
+        return (bool)$this->result;
     }
 
     public function key(): int

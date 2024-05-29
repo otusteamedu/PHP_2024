@@ -4,6 +4,7 @@ namespace AleksandrOrlov\Php2024\Builder;
 
 use Exception;
 use AleksandrOrlov\Php2024\Query\DatabaseQueryResult;
+use PDO;
 
 class SelectQueryBuilder
 {
@@ -56,6 +57,12 @@ class SelectQueryBuilder
 
     public function execute(): DatabaseQueryResult
     {
-        return new DatabaseQueryResult($this->getSQL());
+        $pdo = new PDO(
+            'pgsql:host=localhost;port=5432;dbname=otus;',
+            'postgres',
+            'postgres',
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
+        return new DatabaseQueryResult($this->getSQL(), $pdo);
     }
 }
