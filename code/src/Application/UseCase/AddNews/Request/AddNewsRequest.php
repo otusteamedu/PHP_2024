@@ -8,7 +8,6 @@ readonly class AddNewsRequest
     public function __construct(
         public string $url,
         public string $title,
-        public string $date
     )
     {}
 

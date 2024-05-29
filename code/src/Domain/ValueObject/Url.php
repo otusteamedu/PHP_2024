@@ -14,7 +14,7 @@ class Url
         $this->url = $url;
     }
 
-    public function getValue(): string
+    public function __toString(): string
     {
         return $this->url;
     }

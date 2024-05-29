@@ -1,13 +1,14 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
+use PgSql\Connection;
 
-class PostgresNewsRepository implements NewsRepositoryInterface
+class PostgreNewsRepository implements NewsRepositoryInterface
 {
-    private $init;
+    private ?Connection $init;
 
 
     public function __construct(
@@ -24,8 +25,16 @@ class PostgresNewsRepository implements NewsRepositoryInterface
     public function save(News $news): void
     {
         $query = pg_query($this->init,
-            "INSERT INTO news (url, title, date) VALUES 
-                                        ('".$news->getUrl()."')");
+            "INSERT INTO news (url, title, date) 
+                VALUES (
+                        '".$news->getUrl()."',
+                         '".$news->getTitle()."',
+                          CURRENT_DATE
+                ) RETURNING id;");
+
+        $row = pg_fetch_row($query);
+        $id = (int)$row[0];
+        $news->setId($id);
     }
 
     public function findById(int $id): ?News

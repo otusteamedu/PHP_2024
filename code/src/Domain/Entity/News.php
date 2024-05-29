@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
-
-use App\Domain\ValueObject\Date;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
 
@@ -16,7 +14,6 @@ class News
     public function __construct(
         private Url $url,
         private Title $title,
-        private readonly Date $date
     )
     {}
 
@@ -44,11 +41,6 @@ class News
         return $this->title;
     }
 
-    public function getDate(): Date
-    {
-        return $this->date;
-    }
-
     /**
      * @param Url $url
      */
@@ -63,6 +55,11 @@ class News
     public function setTitle(Title $title): void
     {
         $this->title = $title;
+    }
+
+    public function setId(int $int): void
+    {
+        $this->id = $int;
     }
 
 }

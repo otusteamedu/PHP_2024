@@ -12,7 +12,7 @@ class Title
             $this->title = $title;
         }
 
-    public function getValue(): string
+    public function __toString(): string
     {
         return $this->title;
     }

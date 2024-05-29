@@ -2,9 +2,9 @@
 
 namespace App\Application\UseCase\AddNews\Response;
 
-class AddNewsResponse
+readonly class AddNewsResponse
 {
     public function __construct(
-        public string $id
+        public int $id
     ) {}
 }
