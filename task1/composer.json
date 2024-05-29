@@ -1,0 +1,17 @@
+{
+    "name": "victoria-babikova/intersection-node",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "VictoriaBabikova\\IntersectionNode\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VictoriaBabikova",
+            "email": "babikovav8@gmail.com"
+        }
+    ],
+    "require": {
+    }
+}
