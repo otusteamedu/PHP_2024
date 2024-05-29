@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\UseCase\DTO\CreatedPlaylistDto;
 use App\Application\UseCase\Request\CreatePlaylistRequest;
 use App\Application\UseCase\Response\CreatePlaylistResponse;
 use App\Domain\Entity\Playlist;
@@ -29,6 +30,6 @@ class CreatePlaylistUseCase
             ->setTrackCollection($tracks);
         $this->playlistRepository->save($playlist);
 
-        return new CreatePlaylistResponse($playlist->getId());
+        return new CreatePlaylistResponse(new CreatedPlaylistDto($playlist->getId()));
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\UseCase\DTO\CreatedTrackDto;
 use App\Application\UseCase\Request\CreateTrackRequest;
 use App\Application\UseCase\Response\CreateTrackResponse;
 use App\Domain\Entity\Track;
@@ -28,6 +29,6 @@ class CreateTrackUseCase
         );
         $this->trackRepository->save($track);
 
-        return new CreateTrackResponse($track->getId());
+        return new CreateTrackResponse(new CreatedTrackDto($track->getId()));
     }
 }

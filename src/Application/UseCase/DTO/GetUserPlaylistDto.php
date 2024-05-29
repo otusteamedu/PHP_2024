@@ -9,6 +9,9 @@ readonly class GetUserPlaylistDto
     public function __construct(
         public int $id,
         public string $name,
+        /**
+         * @var TrackDto[] $tracks
+         */
         public array $tracks,
     ) {
     }

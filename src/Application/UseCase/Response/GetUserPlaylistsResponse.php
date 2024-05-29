@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Response;
 
-use App\Domain\Collection\PlaylistCollection;
+use App\Application\UseCase\DTO\GetUserPlaylistDto;
 
 readonly class GetUserPlaylistsResponse
 {
     public function __construct(
-        public PlaylistCollection $playlists,
+        /**
+         * @var GetUserPlaylistDto[] $playlists
+         */
+        public array $playlists,
     ) {
     }
 }
