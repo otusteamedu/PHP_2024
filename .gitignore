@@ -5,3 +5,5 @@
 /www/vendor/
 /docker/logs
 /docker/postgresql/db-data
+/docker/rabbitmq/*
+.env

@@ -23,27 +23,27 @@ services:
       dockerfile: Dockerfile
     image: "otus/fpm"
     container_name: "otus-www"
+    env_file:
+      - .env
     volumes:
       - ./www:/www/mysite.local
       - ./docker/logs/php.log:/var/log/fpm-php.www.log
     networks:
       - app-network
 
-  postgresql:
-    image: postgres:14.7-alpine
-    container_name: "otus-postgresql"
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    hostname: rabbitmq
+    container_name: "otus-rabbitmq"
     environment:
-      POSTGRES_USER: hukimato
-      POSTGRES_PASSWORD: hukimato
-      POSTGRES_DB: hukimato
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
     ports:
-      - "5432:5432"
+      - "15672:15672"
     volumes:
-      - ./docker/postgresql/db-data:/var/lib/postgresql/data
+      - ./docker/rabbitmq:/var/lib/rabbitmq
     networks:
       - app-network
-
 
 networks:
   app-network:

@@ -3,6 +3,7 @@ FROM php:8.2-fpm-bullseye
 LABEL authors="hukimato"
 
 RUN apt update && apt install -y \
+    sendmail \
     libfreetype6-dev \
     libonig-dev \
     libzip-dev \
@@ -16,7 +17,7 @@ RUN apt update && apt install -y \
     && docker-php-ext-enable redis \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
-    && docker-php-ext-install -j$(nproc)  mbstring zip xml pdo_pgsql
+    && docker-php-ext-install -j$(nproc)  mbstring zip xml pdo_pgsql bcmath
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
