@@ -2,12 +2,17 @@
 
 declare(strict_types=1);
 
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+
 error_reporting(E_ALL ^ E_DEPRECATED);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$rabbit = new \Common\RabbitWrapper();
-$rabbit->initQueue();
+$settings = \Common\Settings::buildFromEnvVars();
+$rabbit = new \Common\RabbitWrapper(
+    $settings->rabbitmqQueueName,
+    new AMQPStreamConnection($settings->rabbitmqHost, $settings->rabbitmqPort, $settings->rabbitmqUser, $settings->rabbitmqPass)
+);
 
 $messageContent = file_get_contents('php://input');
 
