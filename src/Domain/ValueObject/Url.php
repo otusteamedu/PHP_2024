@@ -13,18 +13,13 @@ class Url
     public function __construct(
         string $value
     ) {
-        $this->setValue($value);
+        $this->assertUrl($value);
+        $this->value = $value;
     }
 
     public function getValue(): string
     {
         return $this->value;
-    }
-
-    private function setValue(string $value): void
-    {
-        $this->assertUrl($value);
-        $this->value = $value;
     }
 
     private function assertUrl(string $value): void

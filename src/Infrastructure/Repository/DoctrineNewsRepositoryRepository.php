@@ -16,7 +16,7 @@ class DoctrineNewsRepositoryRepository extends ServiceEntityRepository implement
         parent::__construct($registry, News::class);
     }
 
-    public function addAndSaveNews(News $news): void
+    public function save(News $news): void
     {
         $this->getEntityManager()->persist($news);
         $this->getEntityManager()->flush();

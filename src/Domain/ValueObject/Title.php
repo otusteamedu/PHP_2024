@@ -13,18 +13,13 @@ class Title
     public function __construct(
         string $value
     ) {
-        $this->setValue($value);
+        $this->assertLength($value);
+        $this->value = $value;
     }
 
     public function getValue(): string
     {
         return $this->value;
-    }
-    // Убрать
-    private function setValue(string $value): void
-    {
-        $this->assertLength($value);
-        $this->value = $value;
     }
 
     private function assertLength(string $value): void

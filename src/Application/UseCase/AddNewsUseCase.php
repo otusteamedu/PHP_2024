@@ -6,6 +6,7 @@ namespace App\Application\UseCase;
 
 use App\Application\Exception\PageTitleNotFoundException;
 use App\Application\Service\ArticleParserInterface;
+use App\Application\Service\DTO\ParseArticleDto;
 use App\Application\UseCase\Request\AddNewsRequest;
 use App\Application\UseCase\Response\AddNewsResponse;
 use App\Application\UseCase\Response\DTO\AddedNewsDto;
@@ -28,7 +29,7 @@ class AddNewsUseCase
     {
         $url = new Url($request->url);
 
-        $article = $this->getPageTitle->parseArticle($url);
+        $article = $this->getPageTitle->parseArticle(new ParseArticleDto($url));
 
         if (is_null($article->title)) {
             throw new PageTitleNotFoundException();
@@ -40,7 +41,7 @@ class AddNewsUseCase
             new DateTimeImmutable()
         );;
 
-        $this->newsRepository->addAndSaveNews($news);
+        $this->newsRepository->save($news);
 
         return new AddNewsResponse(new AddedNewsDto($news->getId()));
     }

@@ -6,9 +6,9 @@ namespace App\Infrastructure\Service;
 
 use App\Application\Exception\FailedToLoadHtmlContent;
 use App\Application\Service\ArticleParserInterface;
+use App\Application\Service\DTO\ParseArticleDto;
 use App\Application\Service\DTO\ParsedArticleDto;
 use App\Application\Service\Exception\HtmlParserException;
-use App\Domain\ValueObject\Url;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -41,9 +41,10 @@ class HtmlParser implements ArticleParserInterface
             ->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
     }
 
-    public function parseArticle(Url $url): ParsedArticleDto
+    public function parseArticle(ParseArticleDto $parseArticleDto): ParsedArticleDto
     {
-        $html = file_get_contents($url->getValue());
+        $url = $parseArticleDto->url->getValue();
+        $html = file_get_contents($url);
 
         if ($html === false) {
             throw new HtmlParserException('Не удалось прочитать содержимое страницы');

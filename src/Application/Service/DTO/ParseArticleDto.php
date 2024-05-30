@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Service\DTO;
 
-readonly class ParsedArticleDto
+use App\Domain\ValueObject\Url;
+
+readonly class ParseArticleDto
 {
     public function __construct(
-        public ?string $title = null,
+        public Url $url,
     ) {
     }
 }

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\Service\DTO\ReportGeneratorInputDto;
+use App\Application\Service\ReportGeneratorInterface;
 use App\Application\UseCase\Response\CreateReportResponse;
 use App\Application\UseCase\Response\DTO\ReportDto;
 use App\Domain\Repository\NewsRepositoryInterface;
-use App\Domain\Service\ReportGeneratorInterface;
 
 class CreateReportUseCase
 {
@@ -20,8 +21,8 @@ class CreateReportUseCase
     public function __invoke(): CreateReportResponse
     {
         $newsList = $this->newsRepository->getNewsList();
-        $fileLink = $this->newsReportGenerator->generateReport($newsList);
+        $fileLink = $this->newsReportGenerator->generateReport(new ReportGeneratorInputDto($newsList));
 
-        return new CreateReportResponse(new ReportDto($fileLink));
+        return new CreateReportResponse(new ReportDto($fileLink->reportUrl->getValue()));
     }
 }

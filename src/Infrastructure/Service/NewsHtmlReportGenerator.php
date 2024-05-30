@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Service;
 
+use App\Application\Service\DTO\ReportGeneratorInputDto;
+use App\Application\Service\DTO\ReportGeneratorOutputDto;
+use App\Application\Service\ReportGeneratorInterface;
 use App\Domain\Entity\News;
-use App\Domain\Service\ReportGeneratorInterface;
+use App\Domain\ValueObject\Url;
 
 class NewsHtmlReportGenerator implements ReportGeneratorInterface
 {
@@ -16,19 +19,17 @@ class NewsHtmlReportGenerator implements ReportGeneratorInterface
     ) {
     }
 
-    /**
-     * @param News[] $data
-     */
-    public function generateReport(array $data): string
+    public function generateReport(ReportGeneratorInputDto $inputDto): ReportGeneratorOutputDto
     {
-        $reportContent = $this->createContent($data);
+        $reportContent = $this->createContent($inputDto->newsList);
 
         $filename = $this->newsReportFilePrefix . date('Ymd_His') . '.html';
         $filePath = $this->reportFilePath . DIRECTORY_SEPARATOR . $filename;
 
         file_put_contents($filePath, $reportContent);
+        $reportUrl = $this->reportUrl . DIRECTORY_SEPARATOR . $filename;
 
-        return $this->reportUrl . DIRECTORY_SEPARATOR . $filename;
+        return new ReportGeneratorOutputDto(new Url($reportUrl));
     }
 
     /**

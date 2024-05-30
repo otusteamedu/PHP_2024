@@ -8,7 +8,7 @@ use App\Domain\Entity\News;
 
 interface NewsRepositoryInterface
 {
-    public function addAndSaveNews(News $news): void;
+    public function save(News $news): void;
 
     /**
      * @return News[]
