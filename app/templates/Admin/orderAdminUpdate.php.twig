@@ -1,0 +1,49 @@
+{% extends 'indexAdmin.php.twig' %}
+
+{% block content %}
+    <form name="order" action="/orderAdmin/update?id={{ orderAdmin.id }}" method="post">
+        <div class="card product " style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">№ {{ orderAdmin.id }}</h5>
+                <p class="card-text">Пользователь {{ orderAdmin.user_id }}</p>
+                <label for="address">Адресс</label><input class="card-text" name="address"
+                                                          value="{{ orderAdmin.address }}">
+                <label for="phone">Телефон</label><input class="card-text"  name="phone" value="{{ orderAdmin.phone }}">
+                <label for="email">email</label><input class="card-text" name="email" value="{{ orderAdmin.email }}">
+                <label for="status">Статус</label>
+                <select class="comeBackBtn" name="status" class="card-title">
+                    {% for option in orderAdmin.statusOptions %}
+                        <option name="{{ option }}" value="{{ option }}"
+                                {% if option == orderAdmin.status %}selected="selected"{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Имя продукта</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Количество</th>
+                <th scope="col">Стоимость</th>
+
+            </tr>
+            </thead>
+            {% for product in products %}
+            <tr>
+                <th scope="col">  {{ product.name_product }} </th>
+                <th scope="col">  {{ product.price_product }}  </th>
+                <th scope="col"><input type="text" name="order_list[{{ product.goods_id }}]" value="{{ product.amount }}"></th>
+                <th scope="col">  {{ product.total_price }} </th>
+                {% endfor %}
+        </table>
+        <div>
+            <h5>Итого:{{ orderAdmin.summary }}</h5>
+            <input class="comeBackBtn" type="submit" value="обновить">
+        </div>
+
+    </form>
+
+
+{% endblock %}

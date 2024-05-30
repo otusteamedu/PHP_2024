@@ -1,0 +1,17 @@
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "./"
+        }
+
+    },
+    "require": {
+        "twig/twig": "^3.0",
+        "symfony/asset": "^5.0",
+      "ext-pdo": "*",
+        "phpunit/phpunit": "^8.5",
+        "symfony/cache": "*",
+        "predis/predis": "*"
+    }
+
+}

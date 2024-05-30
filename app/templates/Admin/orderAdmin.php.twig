@@ -1,0 +1,51 @@
+{% extends 'indexAdmin.php.twig' %}
+
+{% block content %}
+    <div class="card product " style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">№ {{ orderAdmin.id }}</h5>
+            <p class="card-text">Пользователь {{ orderAdmin.user_id }}</p>
+            <p class="card-text">Адресс {{ orderAdmin.address }}</p>
+            <p class="card-text">Телефон {{ orderAdmin.phone }}</p>
+            <p class="card-text">email {{ orderAdmin.email }}</p>
+            <form name="change" action="/orderAdmin/update?id={{ orderAdmin.id }}" method="post">
+                <select name="status" class="card-title">
+                    {% for option in orderAdmin.statusOptions %}
+                        <option  name="" value="{{option}}"{% if option == orderAdmin.status %}selected="selected"{% endif %}>{{option}}</option>
+                    {% endfor %}
+                </select>
+                <input class= "comeBackBtn" type="submit" value="Обновить статус"><br>
+            </form>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Имя продукта</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Стоимость</th>
+
+        </tr>
+        </thead>
+        {% for product in products %}
+        <tr>
+            <th scope="col">  {{ product.name_product }} </th>
+            <th scope="col">  {{ product.price_product }}  </th>
+            <th scope="col">  {{ product.amount }}  </th>
+            <th scope="col">  {{ product.total_price }} </th>
+            {% endfor %}
+    </table>
+
+
+    <div>
+        <p>Итого: {{ orderAdmin.summary }}р.</p>
+        <a href="/orderAdmin/deleteFromDB?id={{ orderAdmin.id }}">
+            <button class="comeBackBtn">Удалить из базы</button>
+        </a>
+        <a href="/orderAdmin/update?id={{ orderAdmin.id }}">
+            <button class="comeBackBtn">Изменить заказ</button>
+        </a>
+    </div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'index.php.twig' %}
+
+
+{% block content %}
+    {% for order in orders  %}
+ <div class="card product " style="width: 18rem;" >
+     <div class="card-body">
+         <h5 class="card-title">№ {{order.id}}</h5>
+         <p class="card-text">Пользователь {{order.user_id}}</p>
+         <p class="card-text">Адресс {{order.address}}</p>
+         <p class="card-text">Телефон  {{order.phone}}</p>
+         <p class="card-text">email  {{order.email}}</p>
+         <a href="/order/deleteFromDB?id={{order.id}}"><button class="comeBackBtn">Удалить из базы</button></a>
+         <a href="/order/one?id={{order.id}}"><button class="comeBackBtn">Подробнее</button></a>
+     </div>
+ </div>
+{% endfor %}
+{% endblock %}

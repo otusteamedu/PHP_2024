@@ -1,0 +1,13 @@
+{% extends 'indexAuth.php.twig' %}
+
+{% block content %}
+    <form action="/userAuth/update?id={{userAuth.id}}" method="post">
+<label for="name">Имя</label><input class="form-control" type="text" name="name"  value="{{userAuth.name}}">
+<label for="login">login</label><input class="form-control" type="text" name="login" value="{{userAuth.login}}">
+<label for="password">Пароль</label><input class="form-control" type="text" name="password" value="">
+        <div>
+            <input class="form-control" type="submit" value="обновить">
+        </div>
+
+    </form>
+{% endblock %}

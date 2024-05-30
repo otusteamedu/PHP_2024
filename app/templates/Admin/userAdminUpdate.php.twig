@@ -1,0 +1,14 @@
+{% extends 'indexAdmin.php.twig' %}
+
+{% block content %}
+    <form action="/userAdmin/update?id={{userAdmin.id}}" method="post">
+<label for="name">Имя</label><input class="form-control" type="text" name="name"  value="{{userAdmin.name}}">
+<label for="login">login</label><input class="form-control" type="text" name="login" value="{{userAdmin.login}}">
+<label for="password">Пароль</label><input class="form-control" type="text" name="password" value="">
+        <div>
+            <input class="form-control" type="submit" value="обновить">
+
+        </div>
+
+    </form>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'index.php.twig' %}
+
+{% block content %}
+    <div class="card product " style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">№ {{ order.id }}</h5>
+            <p class="card-text">Пользователь {{ order.user_id }}</p>
+            <p class="card-text">Адресс {{ order.address }}</p>
+            <p class="card-text">Телефон {{ order.phone }}</p>
+            <p class="card-text">email {{ order.email }}</p>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Имя продукта</th>
+            <th scope="col">Цена</th>
+            <th scope="col">Количество</th>
+            <th scope="col">Стоимость</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        {% for product in products %}
+        <tr>
+            <th scope="col">  {{ product.name_product }} </th>
+            <th scope="col">  {{ product.price_product }}  </th>
+            <th scope="col">  {{ product.amount }}  </th>
+            <th scope="col">  {{ product.total_price }} </th>
+            <th scope="col">
+                <a href="/basket/add?id={{ product.id }}">
+                    <button class="comeBackBtn">+</button>
+                </a>
+                <a href="/basket/delete?id={{ product.goods_id }}">
+                    <button class="comeBackBtn">-</button>
+                </a>
+            </th>
+            {% endfor %}
+    </table>
+
+    <div>
+        <p>Итого: {{ summary }}р.</p>
+        <a href="/order/deleteFromDB?id={{ order.id }}">
+            <button class="comeBackBtn">Удалить из базы</button>
+        </a>
+        <a href="/order/update?id={{ order.id }}">
+            <button class="comeBackBtn">Изменить заказ</button>
+        </a>
+    </div>
+{% endblock %}

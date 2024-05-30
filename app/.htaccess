@@ -1,0 +1,5 @@
+#AddDefaultCharset UTF-8
+#DirectoryIndex index.php index.html
+#
+RewriteEngine on
+RewriteRule ^(.*)$ /public/index.php

@@ -1,0 +1,11 @@
+{% extends 'indexAuth.php.twig' %}
+
+{% block id_user %}id_user{% endblock %}
+{% block content %}<div>
+    <h1> {{userAuth.login}}</h1>
+    <h2> {{userAuth.name}}</h2>
+    <a href="/userAuth/update?id={{userAuth.id}}"><button class="comeBackBtn">Обновить</button></a>
+    <a href="/auth/logOut"><button class="comeBackBtn">Выйти</button></a>
+</div>
+{% endblock %}
+
