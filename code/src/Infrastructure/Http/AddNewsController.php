@@ -12,12 +12,7 @@ class AddNewsController
     private AddNewsUseCase $addNewsUseCase;
     private PostgreNewsRepository $repository;
     public function __construct(){
-        $this->repository = new PostgreNewsRepository(
-            getenv("POSTGRES_HOST"),
-            getenv("POSTGRES_DATABASE"),
-            getenv("POSTGRES_USER"),
-            getenv("POSTGRES_PASSWORD")
-        );
+        $this->repository = new PostgreNewsRepository();
         $this->addNewsUseCase = new AddNewsUseCase($this->repository);
     }
 

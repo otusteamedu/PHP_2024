@@ -9,16 +9,19 @@ use PgSql\Connection;
 class PostgreNewsRepository implements NewsRepositoryInterface
 {
     private ?Connection $init;
+    private string $host;
+    private string $dbname;
+    private string $user;
+    private string $password;
 
 
-    public function __construct(
-        string $host,
-        string $dbname,
-        string $user,
-        string $password
-    )
+    public function __construct()
     {
-        $this->init = pg_connect("host=".$host." dbname=".$dbname." user=".$user." password=".$password);
+        $this->host = getenv("POSTGRES_HOST");
+        $this->dbname = getenv("POSTGRES_DATABASE");
+        $this->user = getenv("POSTGRES_USER");
+        $this->password = getenv("POSTGRES_PASSWORD");
+        $this->init = pg_connect("host=".$this->host." dbname=".$this->dbname." user=".$this->user." password=".$this->password);
     }
 
 
@@ -42,14 +45,20 @@ class PostgreNewsRepository implements NewsRepositoryInterface
         // TODO: Implement findById() method.
     }
 
-    public function getAllNews()
+    public function getAllNews(): false|array
     {
-        // TODO: Implement getAllNews() method.
+        $query = pg_query($this->init,
+            "SELECT * FROM news;");
+
+        return pg_fetch_all($query);
     }
 
-    public function getLastFiveNews()
+    public function getLastFiveNews(): array
     {
-        // TODO: Implement getLastFiveNews() method.
+        $query = pg_query($this->init,
+            "SELECT * FROM news ORDER BY id DESC LIMIT 5;");
+
+        return pg_fetch_all($query);
     }
 
 
