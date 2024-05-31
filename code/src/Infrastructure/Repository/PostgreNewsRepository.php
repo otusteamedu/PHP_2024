@@ -40,9 +40,12 @@ class PostgreNewsRepository implements NewsRepositoryInterface
         $news->setId($id);
     }
 
-    public function findById(int $id): ?News
+    public function findById(int $id): array
     {
-        // TODO: Implement findById() method.
+        $query = pg_query($this->init,
+            "SELECT * FROM news WHERE id = $id;");
+
+        return pg_fetch_all($query);
     }
 
     public function getAllNews(): false|array
@@ -53,13 +56,7 @@ class PostgreNewsRepository implements NewsRepositoryInterface
         return pg_fetch_all($query);
     }
 
-    public function getLastFiveNews(): array
-    {
-        $query = pg_query($this->init,
-            "SELECT * FROM news ORDER BY id DESC LIMIT 5;");
 
-        return pg_fetch_all($query);
-    }
 
 
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Router;
 
 use App\Application\UseCase\AddNews\Request\AddNewsRequest;
+use App\Application\UseCase\ReportNews\Request\ReportNewsRequest;
 use App\Infrastructure\Http\AddNewsController;
 use App\Infrastructure\Http\ListNewsController;
 use App\Infrastructure\Http\ReportNewsController;
@@ -50,16 +51,18 @@ class Router
     private function addRoute(): string|int
     {
         if (array_key_exists('url', $_POST)) {
-            $post = $_POST['url'];
+            $url = $_POST['url'];
         } else {
             http_response_code(400);
             return 'Параметр url не передан';
         }
 
         # Preparing the request
-        $meta = get_meta_tags($post);
-        $title = $meta['title']?? $meta['description']?? 'Title does not found';
-        $request = new AddNewsRequest($post, $title);
+        $page_content = file_get_contents ($url);
+        preg_match_all("#.*<title>(.+)<\/title>.*#isU", $page_content, $titles);
+        $title = $titles[1][0];
+
+        $request = new AddNewsRequest($url, $title);
 
         $controller = new AddNewsController();
         http_response_code(201);
@@ -75,18 +78,19 @@ class Router
 
     private function reportRoute(): array|string
     {
-//        if (array_key_exists('url', $_POST)) {
-//            $post = $_POST['url'];
-//        } else {
-//            http_response_code(400);
-//            return 'Параметр url не передан';
-//        }
+        if (array_key_exists('report', $_POST)) {
+            $post = $_POST['report'];
+        } else {
+            http_response_code(400);
+            return 'Параметр report не передан';
+        }
 
-        return $_POST;
+        $post = explode(',', $post);
 
-//        $controller = new ReportNewsController();
-//        http_response_code(201);
-//        return $controller->handle();
+        $request = new ReportNewsRequest($post);
+        $controller = new ReportNewsController();
+        http_response_code(201);
+        return $controller->handle($request);
     }
 
 }
