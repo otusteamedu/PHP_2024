@@ -20,7 +20,7 @@ class CreateReportUseCase
 
     public function __invoke(): CreateReportResponse
     {
-        $newsList = $this->newsRepository->getNewsList();
+        $newsList = $this->newsRepository->findAll();
         $fileLink = $this->newsReportGenerator->generateReport(new ReportGeneratorInputDto($newsList));
 
         return new CreateReportResponse(new ReportDto($fileLink->reportUrl->getValue()));

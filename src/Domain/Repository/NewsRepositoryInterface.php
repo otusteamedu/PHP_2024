@@ -13,5 +13,5 @@ interface NewsRepositoryInterface
     /**
      * @return News[]
      */
-    public function getNewsList(): array;
+    public function findAll(): array;
 }

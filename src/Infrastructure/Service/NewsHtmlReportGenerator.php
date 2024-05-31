@@ -7,6 +7,7 @@ namespace App\Infrastructure\Service;
 use App\Application\Service\DTO\ReportGeneratorInputDto;
 use App\Application\Service\DTO\ReportGeneratorOutputDto;
 use App\Application\Service\ReportGeneratorInterface;
+use App\Application\Service\UuidGeneratorInterface;
 use App\Domain\Entity\News;
 use App\Domain\ValueObject\Url;
 
@@ -16,14 +17,16 @@ class NewsHtmlReportGenerator implements ReportGeneratorInterface
         private readonly string $reportFilePath,
         private readonly string $reportUrl,
         private readonly string $newsReportFilePrefix,
+        private readonly UuidGeneratorInterface $uuidGenerator,
     ) {
     }
 
     public function generateReport(ReportGeneratorInputDto $inputDto): ReportGeneratorOutputDto
     {
         $reportContent = $this->createContent($inputDto->newsList);
+        $reportDate = date('Ymd_His');
 
-        $filename = $this->newsReportFilePrefix . date('Ymd_His') . '.html';
+        $filename = $this->newsReportFilePrefix . $this->uuidGenerator->generateUuid() . $reportDate . '.html';
         $filePath = $this->reportFilePath . DIRECTORY_SEPARATOR . $filename;
 
         file_put_contents($filePath, $reportContent);

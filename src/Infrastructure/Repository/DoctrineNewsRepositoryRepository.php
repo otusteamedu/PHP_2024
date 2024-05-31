@@ -22,7 +22,7 @@ class DoctrineNewsRepositoryRepository extends ServiceEntityRepository implement
         $this->getEntityManager()->flush();
     }
 
-    public function getNewsList(): array
+    public function findAll(): array
     {
         return $this
             ->createQueryBuilder('n')

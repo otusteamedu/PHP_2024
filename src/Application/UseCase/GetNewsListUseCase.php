@@ -19,7 +19,7 @@ class GetNewsListUseCase
     {
         $newsList = [];
 
-        foreach ($this->newsRepository->getNewsList() as $news) {
+        foreach ($this->newsRepository->findAll() as $news) {
             $newsList[] = new NewsResponseDto(
                 $news->getId(),
                 $news->getCreatedAt()->format('Y-m-d'),
