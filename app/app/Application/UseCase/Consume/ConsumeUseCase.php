@@ -7,17 +7,15 @@ namespace Rmulyukov\Hw\Application\UseCase\Consume;
 use Rmulyukov\Hw\Application\Consumer\Consumer;
 use Rmulyukov\Hw\Application\Service\MessageBusServiceInterface;
 
-final class ConsumeUseCase
+final readonly class ConsumeUseCase
 {
-    private string $queue = 'hw-queue';
-
     public function __construct(
-        private readonly MessageBusServiceInterface $messageBusService
+        private MessageBusServiceInterface $messageBusService
     ) {
     }
 
     public function __invoke(): void
     {
-        $this->messageBusService->consume(new Consumer($this->queue));
+        $this->messageBusService->consume(new Consumer());
     }
 }

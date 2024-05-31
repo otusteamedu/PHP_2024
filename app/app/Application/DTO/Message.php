@@ -11,7 +11,6 @@ use function json_encode;
 readonly final class Message implements Stringable
 {
     public function __construct(
-        public string $queue,
         public string $message,
         public string $email
     ) {

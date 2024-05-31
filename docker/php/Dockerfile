@@ -10,6 +10,7 @@ RUN apk update && apk add --no-cache --virtual .build-temp-deps \
     && rm -rf /root/.composer/cache \
     # amqp install
     && pecl install amqp \
-    && docker-php-ext-enable amqp
+    && docker-php-ext-enable amqp \
+    && omposer install --no-interaction --optimize-autoloader
 
 WORKDIR /app

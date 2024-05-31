@@ -8,11 +8,6 @@ use Rmulyukov\Hw\Application\DTO\Message;
 
 final readonly class Consumer
 {
-    public function __construct(
-        public string $queue
-    ) {
-    }
-
     public function handle(Message $message): void
     {
         \var_dump($message);
