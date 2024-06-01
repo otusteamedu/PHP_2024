@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     image: php_app
     container_name: app
+    env_file:
+      - .env
     volumes:
       - ./code:/data/mysite.local
       - php_socket:/var/run/php
@@ -34,6 +36,8 @@ services:
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD:  ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./dbdata:/var/lib/mysql
     networks:
@@ -44,8 +48,8 @@ services:
     networks:
       - app-network
   memcached:
-    image: memcached
-    container_name: memcached:1.6.22
+    image: memcached:1.6.22
+    container_name: memcached
     networks:
       - app-network
 networks:
