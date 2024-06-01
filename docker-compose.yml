@@ -2,7 +2,7 @@ version: '3'
 services:
   php:
     build:
-      context: ./php
+      context: docker/php
       dockerfile: Dockerfile
     image: php_app
     container_name: app
@@ -13,7 +13,7 @@ services:
       - app-network
   webserver:
     build:
-      context: ./nginx
+      context: docker/nginx
       dockerfile: Dockerfile
     image: ws
     container_name: web
@@ -28,14 +28,24 @@ services:
       - app-network
   db:
     image: mariadb:11.2.4
+    container_name: db
     ports:
       - "3306:3306"
-    # описываем, какую БД мы создаём
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD:  ${MYSQL_ROOT_PASSWORD}
     volumes:
       - ./dbdata:/var/lib/mysql
+    networks:
+      - app-network
+  redis:
+    image: redis:7.2.3
+    container_name: redis
+    networks:
+      - app-network
+  memcached:
+    image: memcached
+    container_name: memcached:1.6.22
     networks:
       - app-network
 networks:
