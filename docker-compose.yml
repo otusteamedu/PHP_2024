@@ -26,6 +26,18 @@ services:
       - php
     networks:
       - app-network
+  db:
+    image: mariadb:11.2.4
+    ports:
+      - "3306:3306"
+    # описываем, какую БД мы создаём
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD:  ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge
