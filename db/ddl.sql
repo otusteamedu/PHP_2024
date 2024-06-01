@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS "film" CASCADE;
 DROP TABLE IF EXISTS "attribute_type" CASCADE;
 DROP TABLE IF EXISTS "attribute" CASCADE;
 DROP TABLE IF EXISTS "attribute_value" CASCADE;
+DROP VIEW IF EXISTS "actual_tasks" CASCADE;
+DROP VIEW IF EXISTS "marketing_data" CASCADE;
 
 CREATE TABLE IF NOT EXISTS "film" (
     "id" SERIAL PRIMARY KEY,
@@ -157,30 +159,22 @@ INSERT INTO "attribute_value" ("film_id", "attribute_id", "value_date") VALUES
 INSERT INTO "attribute_value" ("film_id", "attribute_id", "value_date") VALUES
 (5, 8, '1993-04-01');
 
-CREATE VIEW current_tasks AS
+CREATE VIEW actual_tasks AS
     SELECT
         f.title AS film,
         a.name AS task,
-        av.value_date AS due_date
+        av.value_date AS due_date,
+        CASE WHEN av.value_date = CURRENT_DATE THEN 'Today' ELSE 'In 20 days'
+        END AS status
     FROM
         film f
             JOIN attribute_value av ON f.id = av.film_id
             JOIN attribute a ON av.attribute_id = a.id
             JOIN attribute_type at ON a.attribute_type_id = at.id
-    WHERE at.type = 'date' AND av.value_date = CURRENT_DATE
+    WHERE at.type = 'date' AND (av.value_date = CURRENT_DATE OR av.value_date = CURRENT_DATE + INTERVAL '20 days')
+    ORDER BY av.value_date
 ;
 
-CREATE VIEW upcoming_tasks AS
-    SELECT
-        f.title AS film,
-        a.name AS task,
-        av.value_date AS due_date
-    FROM film f
-        JOIN attribute_value av ON f.id = av.film_id
-        JOIN attribute a ON av.attribute_id = a.id
-        JOIN attribute_type at ON a.attribute_type_id = at.id
-    WHERE at.type = 'date' AND av.value_date = CURRENT_DATE + INTERVAL '20 days'
-;
 
 CREATE VIEW marketing_data AS
     SELECT
