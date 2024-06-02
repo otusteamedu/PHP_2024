@@ -41,3 +41,19 @@ services:
     restart: always
     networks:
       - app_network
+
+  elasticsearch:
+    image: elasticsearch:8.13.0
+    container_name: ${APP_NAME}_elasticsearch
+    ports:
+      - "${ES_PORT}:9200"
+    volumes:
+      - ./docker/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      - ELASTIC_PASSWORD=${ES_PASSWORD}
+      - node.name=es8
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    networks:
+      - app_network
