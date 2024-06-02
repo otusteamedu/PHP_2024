@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace App;
 
-class User
+readonly class User
 {
-    private int $id;
-    private string $name;
-
-    public function __construct(int $id, string $name)
+    public function __construct(private int $id, private string $name, private string $email)
     {
-        $this->id = $id;
-        $this->name = $name;
     }
 
     public function getId(): int
@@ -23,5 +18,10 @@ class User
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 }

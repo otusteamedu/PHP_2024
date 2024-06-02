@@ -8,7 +8,7 @@ use App\DataMapper\UserDataMapper;
 use App\IdentityMap\UserIdentityMap;
 use App\User;
 
-class UserManager
+readonly class UserManager
 {
     public function __construct(private UserDataMapper $userDateMapper, private UserIdentityMap $userIdentityMap)
     {
