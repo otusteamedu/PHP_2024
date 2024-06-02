@@ -12,7 +12,7 @@ use AlexanderGladkov\Broker\RabbitMQ\QueueParams;
 use AlexanderGladkov\Broker\RabbitMQ\RabbitMQConsumer;
 use AlexanderGladkov\Broker\Service\Mail\MailService;
 use PhpAmqpLib\Message\AMQPMessage;
-use Exception;
+use Throwable;
 
 class MessageConsumeService
 {
@@ -55,7 +55,7 @@ class MessageConsumeService
             $this->mailService->sendMessageSuccessfullyProcessedLetter($email, $text);
             $message->ack();
             echo 'Сообщение успешно обработано.' . PHP_EOL . PHP_EOL;
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             (new LoggerFactory())->create()->error($e->getMessage());
             $message->nack(false);
             echo 'Ошибка при обработке сообщения!' . PHP_EOL . PHP_EOL;
