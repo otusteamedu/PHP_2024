@@ -1,3 +1,8 @@
-# PHP_2024
+# Приложение для хранения событий
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Приложение поддерживает два типа хранилища Redis и Elasticsearch.
+
+Для запуска приложения необходимо выполнить команду:
+- docker-compose up --build
+- Подключить репозиторий соответствующего хранилища используя файл конфигов config/services.yaml
+- Настроить env файл
