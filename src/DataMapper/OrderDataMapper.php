@@ -40,10 +40,10 @@ class OrderDataMapper
         return new Order((int) $row['id'], (int) $row['sum']);
     }
 
-    public function insertOrder(Order $order): int
+    public function addOrderForUser(Order $order, User $user): int
     {
         $this->db->prepare("INSERT INTO `orders` (`sum`, `user_id`) VALUES (:sum, :user_id)")
-            ->execute([':sum' => $order->getSum(), ':user_id' => $order->getUser()->getId()]);
+            ->execute([':sum' => $order->getSum(), ':user_id' => $user->getId()]);
         return (int) $this->db->lastInsertId();
     }
 
