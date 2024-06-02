@@ -116,7 +116,8 @@ class ElasticsearchEventRepository implements EventRepositoryInterface
                     $resultString .= "{$param}:{$value};";
                 }
 
-                if ((mb_strpos($resultString, $compareString) !== false)
+                if (
+                    (mb_strpos($resultString, $compareString) !== false)
                     || (mb_strpos($compareString, $resultString) !== false)
                 ) {
                     return new Event((string) $item['event'], (int) $item['priority'], (array) $item['condition']);

@@ -67,7 +67,8 @@ readonly class RedisEventRepository implements EventRepositoryInterface
                     $resultString .= "{$key}:{$value};";
                 }
 
-                if ((mb_strpos($resultString, $compareString) !== false)
+                if (
+                    (mb_strpos($resultString, $compareString) !== false)
                     || (mb_strpos($compareString, $resultString) !== false)
                 ) {
                     return new Event((string) $item['event'], (int) $score, (array) $item['condition']);
