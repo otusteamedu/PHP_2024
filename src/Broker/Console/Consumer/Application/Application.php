@@ -9,7 +9,7 @@ use AlexanderGladkov\Broker\Console\Consumer\Service\MessageConsume\MessageConsu
 
 class Application
 {
-    public function run():void
+    public function run(): void
     {
         (new MessageConsumeService(new Config()))->startConsume();
     }

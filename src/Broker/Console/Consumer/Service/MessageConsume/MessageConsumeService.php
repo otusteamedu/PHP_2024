@@ -37,7 +37,7 @@ class MessageConsumeService
     public function startConsume(): void
     {
         echo 'Ожидание сообщений...' . PHP_EOL . PHP_EOL;
-        $this->consumer->consume(function(AMQPMessage $message) {
+        $this->consumer->consume(function (AMQPMessage $message) {
             $this->processMessage($message);
         });
     }

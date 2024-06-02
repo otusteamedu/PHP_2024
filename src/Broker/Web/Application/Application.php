@@ -18,7 +18,7 @@ class Application
         $this->router->register(['get', 'post'], '/', [MessageController::class, 'form']);
     }
 
-    public function run():void
+    public function run(): void
     {
         try {
             echo $this->router->resolve($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

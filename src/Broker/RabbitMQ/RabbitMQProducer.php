@@ -27,7 +27,7 @@ class RabbitMQProducer
 
     public function publish(string $message, string $routingKey = ''): void
     {
-        $this->channel->basic_publish(new AMQPMessage($message),  $this->exchangeName, $routingKey);
+        $this->channel->basic_publish(new AMQPMessage($message), $this->exchangeName, $routingKey);
     }
 
     public function __destruct()

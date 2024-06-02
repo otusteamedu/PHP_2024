@@ -31,7 +31,7 @@ class MessageController
                 $infoMessage = 'Сообщение отправлено на обработку';
             } catch (ValidationException $e) {
                 $errors = $e->getErrors();
-            } catch(RuntimeException) {
+            } catch (RuntimeException) {
                 $errors = ['Произошла ошибка'];
             }
         }
