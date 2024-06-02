@@ -18,7 +18,6 @@ class UserIdentityMap
         $this->dataMapper = $dataMapper;
     }
 
-
     public function getUser(int $userId): User
     {
         if (empty($this->users[$userId])) {
