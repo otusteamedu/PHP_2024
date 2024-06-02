@@ -1,0 +1,59 @@
+version: '3'
+services:
+  php:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    image: php_app
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    networks:
+      - app-network
+  webserver:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    image: ws
+    container_name: web
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    depends_on:
+      - php
+    networks:
+      - app-network
+  db:
+    image: mariadb:11.2.4
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD:  ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      - app-network
+  redis:
+    image: redis:7.2.3
+    container_name: redis
+    networks:
+      - app-network
+  memcached:
+    image: memcached:1.6.22
+    container_name: memcached
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  php_socket:
