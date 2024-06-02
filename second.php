@@ -4,9 +4,9 @@
 class Solution
 {
 
-    public function letterCombinations($digits)
+    public function letterCombinations($digits): array
     {
-        if (!$digits) {
+        if (empty($digits)) {
             return [];
         }
 
@@ -21,17 +21,23 @@ class Solution
             '9' => ['w', 'x', 'y', 'z'],
         ];
 
-        $result = [''];
-        $max = strlen($digits);
-        for ($i = 0; $i < $max; $i++) {
-            $tmp = [];
-            foreach ($result as $combination) {
-                foreach ($letters[$digits[$i]] as $item) {
-                    $tmp[] = $combination . $item;
-                }
-                $result = $tmp;
-            }
-        }
+        $result = [];
+
+        $this->recursive($digits, $letters, 0, "", $result);
+
         return $result;
+    }
+
+    private function recursive($digits, $letters, $index, $current, &$result): void
+    {
+        if ($index === strlen($digits)) {
+            $result[] = $current;
+            return;
+        }
+
+        $digit = $digits[$index];
+        foreach ($letters[$digit] as $letter) {
+            $this->recursive($digits, $letters, $index + 1, $current . $letter, $result);
+        }
     }
 }
