@@ -10,17 +10,12 @@ use App\User;
 
 readonly class UserManager
 {
-    public function __construct(private UserDataMapper $userDateMapper, private UserIdentityMap $userIdentityMap)
+    public function __construct(private UserIdentityMap $userIdentityMap)
     {
     }
 
     public function getUserById(int $userId): User
     {
-        $user = $this->userIdentityMap->getUser($userId);
-        if (!$user) {
-            $user = $this->userDateMapper->getUserById($userId);
-            $this->userIdentityMap->addUser($user);
-        }
-        return $user;
+        return $this->userIdentityMap->getUser($userId);
     }
 }
