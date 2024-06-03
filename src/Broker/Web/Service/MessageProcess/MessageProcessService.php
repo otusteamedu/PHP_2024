@@ -4,26 +4,12 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\Broker\Web\Service\MessageProcess;
 
-use AlexanderGladkov\Broker\Config\Config;
-use AlexanderGladkov\Broker\RabbitMQ\ConnectionSettings;
-use AlexanderGladkov\Broker\RabbitMQ\ExchangeParams;
-use AlexanderGladkov\Broker\RabbitMQ\RabbitMQProducer;
+use AlexanderGladkov\Broker\Exchange\ProducerInterface;
 
 class MessageProcessService
 {
-    private RabbitMQProducer $producer;
-
-    public function __construct(Config $config)
+    public function __construct(private ProducerInterface $producer)
     {
-        $connectionSettings = new ConnectionSettings(
-            $config->getRabbitMQHost(),
-            $config->getRabbitMQPort(),
-            $config->getRabbitMQUser(),
-            $config->getRabbitMQPassword()
-        );
-
-        $exchangeParams = new ExchangeParams($config->getExchangeName(), $config->getExchangeType());
-        $this->producer = new RabbitMQProducer($connectionSettings, $exchangeParams);
     }
 
     /**

@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\Broker\RabbitMQ;
 
+use AlexanderGladkov\Broker\Exchange\ConsumerInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Closure;
+use PhpAmqpLib\Message\AMQPMessage;
 
-class RabbitMQConsumer
+class RabbitMQConsumer implements ConsumerInterface
 {
     private AMQPStreamConnection $connection;
     private AMQPChannel $channel;
@@ -28,7 +30,20 @@ class RabbitMQConsumer
         $this->queueName = $queueParams->getName();
     }
 
-    public function consume(Closure $callback, bool $acknowledgement = true): void
+    public function __destruct()
+    {
+        $this->channel->close();
+        $this->connection->close();
+    }
+
+    public function consume(Closure $callback): void
+    {
+        $this->consumeInternal(function (AMQPMessage $ampqMessage) use ($callback) {
+            $callback(new RabbitMqMessage($ampqMessage));
+        });
+    }
+
+    public function consumeInternal(Closure $callback, bool $acknowledgement = true): void
     {
         $this->channel->basic_consume(
             queue: $this->queueName,
@@ -42,11 +57,5 @@ class RabbitMQConsumer
     public function stopConsume(): void
     {
         $this->channel->stopConsume();
-    }
-
-    public function __destruct()
-    {
-        $this->channel->close();
-        $this->connection->close();
     }
 }

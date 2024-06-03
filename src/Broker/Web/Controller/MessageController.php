@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AlexanderGladkov\Broker\Web\Controller;
 
 use AlexanderGladkov\Broker\Config\Config;
+use AlexanderGladkov\Broker\Factory\RabbitMQProducerFactory;
 use AlexanderGladkov\Broker\Web\Service\MessageProcess\MessageProcessRequest;
 use AlexanderGladkov\Broker\Web\Component\View\View;
 use AlexanderGladkov\Broker\Web\Request\Request;
@@ -25,7 +26,7 @@ class MessageController
             $text = $request->post('text', '');
             $messageProcessRequest = new MessageProcessRequest($email, $text);
             try {
-                (new MessageProcessService(new Config()))->process($messageProcessRequest);
+                $this->getMessageProcessService()->process($messageProcessRequest);
                 $email = '';
                 $text = '';
                 $infoMessage = 'Сообщение отправлено на обработку';
@@ -38,5 +39,11 @@ class MessageController
 
         $renderParams = compact('email', 'text', 'errors', 'infoMessage');
         return View::create('message/form')->render($renderParams);
+    }
+
+    private function getMessageProcessService(): MessageProcessService
+    {
+        $producer = (new RabbitMQProducerFactory())->create(new Config());
+        return new MessageProcessService($producer);
     }
 }

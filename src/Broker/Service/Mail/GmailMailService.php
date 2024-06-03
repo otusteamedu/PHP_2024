@@ -10,7 +10,7 @@ use Symfony\Component\Mailer\Transport\Dsn;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
-class MailService
+class GmailMailService implements MailServiceInterface
 {
     private Mailer $mailer;
 
