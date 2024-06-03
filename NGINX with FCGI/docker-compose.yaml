@@ -25,6 +25,16 @@ services:
     networks:
       - app-network
 
+  redis:
+    image: redis:latest
+    restart: always
+    command: ["sh", "-c", 'exec redis-server --requirepass "${REDIS_PASSWORD}"']
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
