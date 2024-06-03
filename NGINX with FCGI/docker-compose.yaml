@@ -52,6 +52,14 @@ services:
     networks:
       - app-network
 
+  memcached:
+    image: memcached:1.4.32
+    container_name: memcached
+    ports:
+      - 11212:11211
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
