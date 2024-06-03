@@ -1,3 +1,9 @@
-# PHP_2024
+# RabbitMQ
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+## Установка
+
+1. Прописать необходимые значения в .env
+2. Инициализировать контейнеры и выполнить docker exec -it php-fpm bash
+3. Начать прослушивание очереди командой php bin/consumer 
+
+
