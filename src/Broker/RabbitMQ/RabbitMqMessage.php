@@ -18,7 +18,7 @@ class RabbitMqMessage implements MessageInterface
 
     public function ack(): void
     {
-       $this->message->ack();
+        $this->message->ack();
     }
 
     public function nack(): void
