@@ -60,6 +60,18 @@ services:
     networks:
       - app-network
 
+  composer.test:
+    image: composer/composer
+    networks:
+      - test_network
+    ports:
+      - "9001:9000"
+    volumes:
+      - "./composer:/composer"
+    container_name: composer.test
+    working_dir: /data/composer
+    command: install
+
 networks:
   app-network:
     driver: bridge
