@@ -1,0 +1,108 @@
+<?php
+declare(strict_types=1);
+namespace App\Infrastructure\Repository;
+
+use App\Domain\Entity\Product;
+use App\Domain\Repository\RepositoryInterface;
+use PgSql\Connection;
+
+class PostgreRepository implements RepositoryInterface
+{
+    private ?Connection $init;
+    private string $host;
+    private string $dbname;
+    private string $user;
+    private string $password;
+
+
+    public function __construct()
+    {
+        $this->host = getenv("POSTGRES_HOST");
+        $this->dbname = getenv("POSTGRES_DATABASE");
+        $this->user = getenv("POSTGRES_USER");
+        $this->password = getenv("POSTGRES_PASSWORD");
+        $this->init = pg_connect("host=".$this->host." dbname=".$this->dbname." user=".$this->user." password=".$this->password);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function save(Product $product): void
+    {
+        try {
+            pg_query($this->init,
+                "INSERT INTO products (type, recipe, status) 
+                VALUES (
+                        '".$product->getType()."',
+                         '".$product->getRecipe()."',
+                         '".$product->getStatus()."'
+                );");
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function setStatus(int $status, int $id): void
+    {
+        try {
+            pg_query($this->init,
+                "UPDATE products SET status=$status 
+                WHERE id=$id;");
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getStatus(int $id): int
+    {
+        try {
+            $query = pg_query($this->init,
+                "SELECT status FROM products WHERE id=$id;");
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+        $status = pg_fetch_row($query);
+        return $status[0];
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getProduct(int $id): Product
+    {
+        try {
+            $query = pg_query($this->init,
+                "SELECT * FROM products WHERE id=$id;");
+
+            $product = pg_fetch_row($query);
+            $product = $product[0];
+            return new Product(
+                $product[1],
+                $product[2],
+                $product[3]
+            );
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function delete(int $id): void
+    {
+        try {
+            pg_query($this->init,
+                "DELETE FROM products WHERE id=$id;");
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+    }
+}

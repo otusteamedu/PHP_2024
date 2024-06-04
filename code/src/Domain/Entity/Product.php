@@ -4,16 +4,20 @@ namespace App\Domain\Entity;
 
 class Product
 {
+    private int $id;
     private string $type;
-    private int $status = 1;
-    private string $receipt;
+    private string $recipe;
+    private int $status;
+
 
     public function __construct(
         string $type,
-        string $receipt
+        string $recipe,
+        int $status = 1
     ){
         $this->type = $type;
-        $this->receipt = $receipt;
+        $this->recipe = $recipe;
+        $this->status = $status;
     }
 
     public function getStatus(): int
@@ -26,16 +30,19 @@ class Product
         return $this->type;
     }
 
-    public function getReceipt(): string
+    public function getRecipe(): string
     {
-        return $this->receipt;
+        return $this->recipe;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function setStatus(int $status): void
     {
         $this->status = $status;
     }
-
-
 
 }

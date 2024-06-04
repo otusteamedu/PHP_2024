@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
-namespace App\Infrastructure\Router;
+namespace App\Infrastructure\Routes\Router;
 
 use App\Application\UseCase\AddNews\Request\AddNewsRequest;
 use App\Application\UseCase\ReportNews\Request\ReportNewsRequest;
-use App\Infrastructure\Http\AddNewsController;
 use App\Infrastructure\Http\ListNewsController;
 use App\Infrastructure\Http\ReportNewsController;
+use App\Infrastructure\Routes\Http\AddNewsController;
 
 class Router
 {

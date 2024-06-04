@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
-namespace App\Infrastructure\Http;
+namespace App\Infrastructure\Routes\Http;
 
 use App\Application\UseCase\AddNews\AddNewsUseCase;
 use App\Application\UseCase\AddNews\Request\AddNewsRequest;
-use App\Infrastructure\Repository\PostgreNewsRepository;
+use App\Infrastructure\Repository\PostgreRepository;
 
 
 class AddNewsController
 {
     private AddNewsUseCase $addNewsUseCase;
-    private PostgreNewsRepository $repository;
+    private PostgreRepository $repository;
     public function __construct(){
-        $this->repository = new PostgreNewsRepository();
+        $this->repository = new PostgreRepository();
         $this->addNewsUseCase = new AddNewsUseCase($this->repository);
     }
 
