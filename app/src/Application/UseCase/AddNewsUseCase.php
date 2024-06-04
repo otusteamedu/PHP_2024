@@ -18,7 +18,7 @@ class AddNewsUseCase implements NewsUseCase
     ) {
     }
 
-    public function run() : void
+    public function run(): void
     {
         $addNewsController = new AddNewsController($this->storage, $this->request->data);
         $addNewsController->processRequest();

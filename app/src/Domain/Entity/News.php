@@ -78,7 +78,7 @@ class News implements NewsInterface
 
     public function __construct(NewsBuilder $newsBuilder)
     {
-        if ($newsBuilder->getId() !== -1){
+        if ($newsBuilder->getId() !== -1) {
             $this->id = $newsBuilder->getId();
         }
         $this->name = $newsBuilder->getName();
