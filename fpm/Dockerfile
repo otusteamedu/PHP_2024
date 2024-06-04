@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Копируем www.conf в контейнер - указываем расположение сокета для связи
-COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Копируем конфиг для memcached
 COPY ./memcached.conf /etc/memcached.conf
