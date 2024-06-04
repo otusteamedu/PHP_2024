@@ -10,7 +10,7 @@ keys:
   - ~/.ssh/id_rsa
 
 folders:
-  - map: /PHP_2024/code #on host PC
+  - map:  C:\PHP_2024\code #on host PC
     to: /home/vagrant/code #on virtual PC
 
 sites:
