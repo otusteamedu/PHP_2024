@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: app
+    restart: always
+    depends_on:
+      - webserver
+      - memcached
+      - redis
+      - db
+    volumes:
+       - ./app:/data/otus
+    networks:
+      - app-network
+
+  webserver:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: webserver
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+       - ./docker/nginx/hosts:/etc/nginx/conf.d
+       - ./app:/data/otus
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: ${REDIS_CONTAINER_NAME}
+    restart: always
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached
+    container_name: ${MEMCACHED_CONTAINER_NAME}
+    networks:
+      - app-network
+
+  db:
+    image: mysql
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./docker/dbdata:/var/lib/mysql  
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
