@@ -11,12 +11,6 @@ RUN apt-get update && apt-get install -y \
         libonig-dev \
         libzip-dev \
         libmcrypt-dev \
-        # memcached ↓
-        libmemcached-dev \
-        zlib1g-dev \
-        && pecl install memcached \
-        && docker-php-ext-enable memcached \
-        # rest
         && pecl install mcrypt-1.0.3 \
         && docker-php-ext-enable mcrypt \
         && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip \
@@ -28,9 +22,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Копируем www.conf в контейнер - указываем расположение сокета для связи
 COPY ./zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
-
-# Копируем конфиг для memcached
-COPY ./memcached.conf /etc/memcached.conf
 
 WORKDIR /data
 
