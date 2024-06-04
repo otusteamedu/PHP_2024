@@ -5,3 +5,5 @@
 .LSOverride
 /dbdata/**
 .env
+Homestead/*
+!Homestead.yaml

@@ -1,0 +1,46 @@
+---
+ip: "192.168.56.56"
+memory: 2048
+cpus: 2
+provider: virtualbox
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+  - ~/.ssh/id_rsa
+
+folders:
+  - map: /PHP_2024/code #on host PC
+    to: /home/vagrant/code #on virtual PC
+
+sites:
+  - map: application.local #server_name for nginx on virtual PC
+    to: /home/vagrant/code/ #document_root for nginx on virtual PC
+
+databases:
+  - homestead
+
+features:
+  - mariadb: false
+  - postgresql: false
+  - ohmyzsh: false
+  - webdriver: false
+  - influxdb: false
+
+services:
+  - enabled:
+      - "mysql"
+
+# ports:
+#   - send: 33060 # MySQL/MariaDB
+#     to: 3306
+#   - send: 4040
+#     to: 4040
+#   - send: 54320 # PostgreSQL
+#     to: 5432
+#   - send: 8025 # Mailpit
+#     to: 8025
+#   - send: 9600
+#     to: 9600
+#   - send: 27017
+#     to: 27017
