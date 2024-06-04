@@ -22,4 +22,4 @@ WORKDIR /data
 
 VOLUME /data
 
-CMD [ "php-fpm" ]
+CMD ["php-fpm"]
