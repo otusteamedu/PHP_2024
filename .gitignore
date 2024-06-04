@@ -3,3 +3,8 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+app/.env
+app/redis-vol/
+app/postgres-vol/
+dump.rdb
+/logs/
