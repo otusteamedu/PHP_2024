@@ -14,6 +14,6 @@ RUN docker-php-ext-install sockets
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
-WORKDIR /data/public
+WORKDIR /data
 
 CMD ["php-fpm"]
