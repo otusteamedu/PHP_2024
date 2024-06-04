@@ -31,7 +31,6 @@ class PostgresStorage implements StorageInterface
         $row = $this->pdo->query($sql, \PDO::FETCH_ASSOC);
 
         foreach ($row as $news_row) {
-
             $categoryName = $this->getCategoryName($news_row['category_id']);
 
             $newsBuilder = (new NewsBuilder())
@@ -93,7 +92,8 @@ class PostgresStorage implements StorageInterface
         $stmt->execute();
     }
 
-    public function getCategoryId($categoryName){
+    public function getCategoryId($categoryName)
+    {
         $sql = 'SELECT id FROM category WHERE name=:name';
         $stmt = $this->pdo->prepare($sql);
 
@@ -106,7 +106,8 @@ class PostgresStorage implements StorageInterface
         return $row['id'];
     }
 
-    public function addCategory($categoryName){
+    public function addCategory($categoryName)
+    {
         $sql = 'INSERT INTO category (name)  VALUES (:name)';
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':name', $categoryName);
@@ -129,7 +130,8 @@ class PostgresStorage implements StorageInterface
         return $row['name'];
     }
 
-    public function getAllSubscription(){
+    public function getAllSubscription()
+    {
         $subscriptions = [];
         $sql = 'SELECT category_id FROM subscription';
         $row = $this->pdo->query($sql, \PDO::FETCH_ASSOC);
@@ -138,8 +140,5 @@ class PostgresStorage implements StorageInterface
             $subscriptions[] = $subscriptions_row['category_id'];
         }
         return $subscriptions;
-    }
-
-    public function deleteSubscription($categoryId){
     }
 }

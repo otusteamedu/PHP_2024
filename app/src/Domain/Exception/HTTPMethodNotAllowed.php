@@ -13,7 +13,10 @@ class HTTPMethodNotAllowed extends BaseException
 
     public function __construct(Throwable $previous = null)
     {
-        parent::__construct(HTTPMethodNotAllowed::MESSAGE,
-            HTTPMethodNotAllowed::GENERATED_STATUS, $previous);
+        parent::__construct(
+            HTTPMethodNotAllowed::MESSAGE,
+            HTTPMethodNotAllowed::GENERATED_STATUS,
+            $previous
+        );
     }
 }

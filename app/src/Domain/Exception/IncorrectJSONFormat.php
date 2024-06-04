@@ -13,7 +13,10 @@ class IncorrectJSONFormat extends BaseException
 
     public function __construct(Throwable $previous = null)
     {
-        parent::__construct(IncorrectJSONFormat::MESSAGE,
-            IncorrectJSONFormat::GENERATED_STATUS, $previous);
+        parent::__construct(
+            IncorrectJSONFormat::MESSAGE,
+            IncorrectJSONFormat::GENERATED_STATUS,
+            $previous
+        );
     }
 }

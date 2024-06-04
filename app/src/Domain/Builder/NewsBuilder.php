@@ -9,7 +9,7 @@ use Kagirova\Hw21\Domain\Entity\News;
 
 class NewsBuilder
 {
-    private int $id =-1;
+    private int $id = -1;
     private string $name;
     private string $date;
     private string $author;

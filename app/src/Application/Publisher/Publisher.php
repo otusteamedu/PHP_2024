@@ -36,11 +36,6 @@ class Publisher implements PublisherInterface
         array_push(Publisher::$subscribers, array($categoryId, $subscriber));
     }
 
-    public static function unsubscribe(SubscriberInterface $subscriber, int $categoryId): void
-    {
-        Publisher::$storage->deleteSubscription($categoryId);
-    }
-
     public static function notify(NewsIsCreatedEvent $event): void
     {
         foreach (Publisher::$subscribers as $subscriber) {

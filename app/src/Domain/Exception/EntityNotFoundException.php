@@ -13,7 +13,10 @@ class EntityNotFoundException extends BaseException
 
     public function __construct(Throwable $previous = null)
     {
-        parent::__construct(EntityNotFoundException::MESSAGE,
-            EntityNotFoundException::GENERATED_STATUS, $previous);
+        parent::__construct(
+            EntityNotFoundException::MESSAGE,
+            EntityNotFoundException::GENERATED_STATUS,
+            $previous
+        );
     }
 }

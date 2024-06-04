@@ -14,7 +14,5 @@ interface PublisherInterface
 
     public static function subscribe(SubscriberInterface $subscriber, int $categoryId): void;
 
-    public static function unsubscribe(SubscriberInterface $subscriber, int $categoryId): void;
-
     public static function notify(NewsIsCreatedEvent $event): void;
 }

@@ -25,4 +25,3 @@ class App
         $useCase->run();
     }
 }
-

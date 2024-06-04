@@ -13,7 +13,10 @@ class RouteNotFoundException extends BaseException
 
     public function __construct(Throwable $previous = null)
     {
-        parent::__construct(RouteNotFoundException::MESSAGE,
-            RouteNotFoundException::GENERATED_STATUS, $previous);
+        parent::__construct(
+            RouteNotFoundException::MESSAGE,
+            RouteNotFoundException::GENERATED_STATUS,
+            $previous
+        );
     }
 }

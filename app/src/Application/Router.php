@@ -44,7 +44,6 @@ class Router
         $method_routes = $routesMap[$this->request->method];
         if (!isset($this->request->uri[0])) {
             throw new RouteNotFoundException();
-
         }
         if (!array_key_exists($this->request->uri[0], $method_routes)) {
             throw new RouteNotFoundException();

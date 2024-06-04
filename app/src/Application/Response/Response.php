@@ -26,7 +26,7 @@ class Response
             500 => 'Unknown Error'
         };
 
-        header('HTTP/1.1 '.$code.' '.$message);
+        header('HTTP/1.1 ' . $code . ' ' . $message);
         header('Content-Type: application/json; charset=utf-8');
     }
 }

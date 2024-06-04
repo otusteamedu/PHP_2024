@@ -21,6 +21,4 @@ interface StorageInterface
     public function addCategory($categoryName);
 
     public function getCategoryName(int $categoryId);
-
-    public function deleteSubscription($categoryId);
 }
