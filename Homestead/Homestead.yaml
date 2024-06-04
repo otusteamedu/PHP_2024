@@ -10,7 +10,7 @@ keys:
   - ~/.ssh/id_rsa
 
 folders:
-  - map:  C:\PHP_2024\code #on host PC
+  - map: C:\PHP_2024\code #on host PC
     to: /home/vagrant/code #on virtual PC
 
 sites:
@@ -31,16 +31,6 @@ services:
   - enabled:
       - "mysql"
 
-# ports:
-#   - send: 33060 # MySQL/MariaDB
-#     to: 3306
-#   - send: 4040
-#     to: 4040
-#   - send: 54320 # PostgreSQL
-#     to: 5432
-#   - send: 8025 # Mailpit
-#     to: 8025
-#   - send: 9600
-#     to: 9600
-#   - send: 27017
-#     to: 27017
+ports:
+  - send: 33060 # MySQL
+    to: 3306
