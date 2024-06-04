@@ -1,0 +1,76 @@
+version: "3"
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    restart: always
+    command: ["sh", "-c", 'exec redis-server --requirepass "${REDIS_PASSWORD}"']
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  mysql:
+    image: mysql:8.4
+    container_name: mysql
+    restart: always
+    env_file:
+      - ".env"
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - "./db/mysql:/var/lib/mysql"
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:1.4.32
+    container_name: memcached
+    ports:
+      - 11212:11211
+    networks:
+      - app-network
+
+  composer.test:
+    image: composer/composer
+    networks:
+      - app-network
+    ports:
+      - "9001:9000"
+    volumes:
+      - "./composer:/composer"
+    container_name: composer.test
+    working_dir: /composer
+
+networks:
+  app-network:
+    driver: bridge
