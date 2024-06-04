@@ -5,6 +5,6 @@ namespace App\Infrastructure\Recipe\Interface;
 
 interface RecipeInterface
 {
-    public function getRecipe(): string;
+    function getRecipe(): string;
 
 }
