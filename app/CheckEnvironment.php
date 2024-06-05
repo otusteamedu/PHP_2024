@@ -6,11 +6,10 @@ use Memcached;
 use PDO;
 use PDOException;
 use Predis\Client;
-
+use Throwable;
 
 class CheckEnvironment
 {
-
     public function testEnvironment()
     {
         $this->testDbConnection();
@@ -22,7 +21,6 @@ class CheckEnvironment
     {
 
         try {
-
             $dns = sprintf(
                 '%s:host=%s;dbname=%s;charset=%s;port=%s',
                 'mysql',
@@ -61,7 +59,7 @@ class CheckEnvironment
             ]);
             echo "Redis successfully connected ping:" . $redis->ping() . "<br>";
             $redis->disconnect();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             echo "Failed to connect to Redis with message " . $e->getMessage() . "<br>";
         }
 
@@ -76,6 +74,5 @@ class CheckEnvironment
         } catch (Throwable $e) {
             echo "Failed to connect to MemCached" . $e->getMessage() . "<br>";
         }
-
     }
 }
