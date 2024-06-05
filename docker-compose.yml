@@ -1,0 +1,17 @@
+version: "3.9"
+
+services: 
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./app/:/data/app.local/
+    networks:
+      - app
+    container_name: app_nginx
+
+networks:
+  app:
+    driver: bridge
