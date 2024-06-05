@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Strategy;
+namespace App\Infrastructure\Strategy\BurgerStrategy;
 
+use App\Application\Interface\RecipeInterface;
 use App\Application\Interface\StrategyInterface;
-use App\Infrastructure\Recipe\Interface\RecipeInterface;
 
 class BurgerStrategy implements StrategyInterface
 {

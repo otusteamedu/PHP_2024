@@ -27,18 +27,21 @@ class PostgreRepository implements RepositoryInterface
     /**
      * @throws \Exception
      */
-    public function save(Product $product): void
+    public function save(Product $product): int
     {
         try {
-            pg_query($this->init,
+            $query = pg_query($this->init,
                 "INSERT INTO products (type, recipe, status) 
                 VALUES (
                         '".$product->getType()."',
                          '".$product->getRecipe()."',
                          '".$product->getStatus()."'
-                );");
+                ) RETURNING id;");
+            $id = pg_fetch_row($query);
+            $product->setId($id[0]);
+            return $product->getId();
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
     }
 
@@ -53,7 +56,7 @@ class PostgreRepository implements RepositoryInterface
                 "UPDATE products SET status=$status 
                 WHERE id=$id;");
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
     }
 
@@ -66,7 +69,7 @@ class PostgreRepository implements RepositoryInterface
             $query = pg_query($this->init,
                 "SELECT status FROM products WHERE id=$id;");
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
         $status = pg_fetch_row($query);
         return $status[0];
@@ -89,7 +92,7 @@ class PostgreRepository implements RepositoryInterface
                 $product[3]
             );
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
     }
 
@@ -102,7 +105,7 @@ class PostgreRepository implements RepositoryInterface
             pg_query($this->init,
                 "DELETE FROM products WHERE id=$id;");
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage());
+            throw new \RuntimeException($e->getMessage());
         }
     }
 }

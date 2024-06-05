@@ -6,91 +6,37 @@ use App\Application\UseCase\AddNews\Request\AddNewsRequest;
 use App\Application\UseCase\ReportNews\Request\ReportNewsRequest;
 use App\Infrastructure\Http\ListNewsController;
 use App\Infrastructure\Http\ReportNewsController;
-use App\Infrastructure\Routes\Http\AddNewsController;
+use App\Infrastructure\Routes\Http\BurgerController;
 
 class Router
 {
-    private string $path;
-    private array $routes = [];
+    private ?string $order;
+    private ?string $type;
+    private const STRATEGY_PATH = 'App\Infrastructure\Strategy';
 
     public function __construct()
     {
-        $this->routes = [
-            'add',
-            'list',
-            'report'
-        ];
-        $this->path = $this->getRequestPath();
+        $this->order = $_POST['order']?? null;
+        $this->type = $_POST['type']?? null;
     }
 
-    public function runController(): array|int|string
+    public function runController()
     {
+        # order && type
+        $this->order = ucfirst(strtolower($this->order));
+        $strategyDir = self::STRATEGY_PATH.'\\'.$this->order.'Strategy';
+        $strategyClass = $this->order.'Strategy';
 
-        if (!in_array($this->path, $this->routes)) {
+        if (!file_exists($strategyDir)) {
             http_response_code(404);
-            return 'URL не найден';
+            return 'Тип продукта не найден';
         }
 
-        return match ($this->path) {
-            'add' => $this->addRoute(),
-            'list' => $this->listRoute(),
-            'report' => $this->reportRoute(),
-            default => http_response_code(400),
-        };
-    }
+        //&& !class_exists($strategyClass
 
-    private function getRequestPath(): string
-    {
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        return rtrim(ltrim(str_replace('index.php', '', $path), '/'), '/');
-    }
-
-    /**
-     * @return int|string
-     */
-    private function addRoute(): string|int
-    {
-        if (array_key_exists('url', $_POST)) {
-            $url = $_POST['url'];
-        } else {
-            http_response_code(400);
-            return 'Параметр url не передан';
-        }
-
-        # Preparing the request
-        $page_content = file_get_contents ($url);
-        preg_match_all("#.*<title>(.+)<\/title>.*#isU", $page_content, $titles);
-        $title = $titles[1][0];
-
-        $request = new AddNewsRequest($url, $title);
-
-        $controller = new AddNewsController();
+        $recipe = ucfirst(strtolower($this->type));
         http_response_code(201);
-        return $controller->handle($request);
+        $controller = $this->order.'Controller';
+        return new $controller($recipe);
     }
-
-    private function listRoute(): array|string
-    {
-        $controller = new ListNewsController();
-        http_response_code(201);
-        return $controller->handle();
-    }
-
-    private function reportRoute(): array|string
-    {
-        if (array_key_exists('report', $_POST)) {
-            $post = $_POST['report'];
-        } else {
-            http_response_code(400);
-            return 'Параметр report не передан';
-        }
-
-        $post = explode(',', $post);
-
-        $request = new ReportNewsRequest($post);
-        $controller = new ReportNewsController();
-        http_response_code(201);
-        return $controller->handle($request);
-    }
-
 }
