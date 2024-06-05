@@ -1,9 +1,6 @@
-FROM ubuntu:latest
+FROM nginx
 
-RUN apt-get update &&\
-    apt-get install -y nginx
-
-COPY ./hosts/mysite.local.conf /etc/nginx/sites-enabled/mysite.local.conf
+COPY ./hosts/mysite.local.conf /etc/nginx/conf.d/mysite.local.conf
 
 WORKDIR /data
 
