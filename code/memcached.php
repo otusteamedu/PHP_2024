@@ -1,10 +1,10 @@
 <?php
 
-error_reporting(E_ALL|E_STRICT);
+error_reporting(E_ALL | E_STRICT);
 
 ini_set('display_errors', true);
 $mem = new memcached();
-$mem->addServer("memcached",11211);
+$mem->addServer("memcached", 11211);
 $result = $mem->get("Test");
 if ($result) {
     echo $result;
