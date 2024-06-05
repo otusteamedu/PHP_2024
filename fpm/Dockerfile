@@ -52,8 +52,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && echo "${TIMEZONE}" > /etc/timezone
 
-WORKDIR /data
+WORKDIR /var/www/html
 
-VOLUME /data
+VOLUME /var/www/html
 
 CMD ["php-fpm"]
