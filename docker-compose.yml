@@ -44,6 +44,21 @@ services:
     networks:
       - hw1-network
 
+  rabbit:
+    image: rabbitmq:3.13-management-alpine
+    container_name: hw1-rabbit
+    hostname: hw1-rabbit
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+    volumes:
+      - ./docker/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "15672:15672"
+    networks:
+      - hw1-network
+
 volumes:
   hw1-postgres-data:
 

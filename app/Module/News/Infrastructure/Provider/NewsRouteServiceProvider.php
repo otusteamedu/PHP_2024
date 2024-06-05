@@ -11,8 +11,10 @@ final class NewsRouteServiceProvider extends RouteServiceProvider
 {
     public function map(): void
     {
-        Route::namespace('Module\News\Infrastructure\Controller')
-            ->group(base_path('Module/News/Infrastructure/Route/api.php'));
+        Route::middleware('api')
+            ->namespace('Module\News\Infrastructure\Controller')
+            ->group(base_path('Module/News/Infrastructure/Route/api.php'))
+        ;
     }
 
 }
