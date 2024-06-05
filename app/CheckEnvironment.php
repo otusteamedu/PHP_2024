@@ -41,7 +41,6 @@ class CheckEnvironment
                 $opt
             );
             echo "MySql connected" . "<br>";
-
         } catch (PDOException $ex) {
             echo 'MySql connect failed with message: ';
             echo $ex->getMessage() . "<br>";
@@ -62,7 +61,6 @@ class CheckEnvironment
         } catch (Throwable $e) {
             echo "Failed to connect to Redis with message " . $e->getMessage() . "<br>";
         }
-
     }
 
     private function testMemcached()
