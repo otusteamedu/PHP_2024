@@ -5,3 +5,4 @@
 .LSOverride
 .env
 mysql/db
+sock

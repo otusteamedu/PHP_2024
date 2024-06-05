@@ -1,10 +1,10 @@
 <?php
+
 echo "Hello, Otus!!";
 
 $user = 'root';
 $pass = 'qwerty123!wq';
 
-// we connect to example.com and port 3307
 $link = mysqli_connect('mysql:3306', $user, $pass);
 
 $result = mysqli_query($link, "SELECT * FROM hw1.helloTable");
