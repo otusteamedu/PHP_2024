@@ -6,12 +6,9 @@
 
     },
     "require": {
-        "twig/twig": "^3.0",
-        "symfony/asset": "^5.0",
-      "ext-pdo": "*",
-        "phpunit/phpunit": "^8.5",
-        "symfony/cache": "*",
-        "predis/predis": "*"
+      "predis/predis": "^2.2",
+      "ext-memcached": "*",
+      "ext-pdo": "*"
     }
 
 }

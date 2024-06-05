@@ -1,5 +1,4 @@
-
-version: '1'
+version: '3'
 
 services:
   #Контейнер с php-fpm
@@ -11,6 +10,7 @@ services:
     container_name: app
     volumes:
        - ./app:/data/mysite.local
+    working_dir: /data/mysite.local
     networks:
       - app-network
 
@@ -49,6 +49,7 @@ services:
 #redis (соединяется с php по порту)
   cache:
     image: redis:latest
+    container_name: cache
     ports:
      -  "${REDIS_PORT}:6379"
     networks:
@@ -56,6 +57,7 @@ services:
 #memcached (соединяется с php по порту)
   memcached:
     image: sameersbn/memcached:1.5.6-2
+    container_name: memcached
     ports:
       - "${MEMCACHED_PORT}:11211"
     networks:
