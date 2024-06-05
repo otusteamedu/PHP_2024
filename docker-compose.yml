@@ -9,9 +9,19 @@ services:
       - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
       - ./app/:/data/app.local/
     networks:
-      - app
+      - app-network
     container_name: app_nginx
+  application:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app/php
+    container_name: app_php
+    volumes:
+      - ./app/:/data/app.local/
+    networks:
+      - app-network
 
 networks:
-  app:
+  app-network:
     driver: bridge
