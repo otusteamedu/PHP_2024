@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('id', 36)->primary();
             $table->string('url')->nullable(false);
             $table->string('title')->nullable(false);
+            $table->string('status')->nullable(false)->default('new');
             $table->dateTime('date')->nullable(false);
         });
     }

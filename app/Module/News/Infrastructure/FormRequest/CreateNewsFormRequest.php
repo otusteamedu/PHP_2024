@@ -20,4 +20,9 @@ final class CreateNewsFormRequest extends FormRequest
     {
         return new CreateRequest($this->validated('url'));
     }
+
+    protected function passesAuthorization(): true
+    {
+        return true;
+    }
 }

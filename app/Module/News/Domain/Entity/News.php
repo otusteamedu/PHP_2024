@@ -13,6 +13,7 @@ use Module\News\Domain\ValueObject\Url;
 final class News
 {
     private DateTimeInterface $date;
+    private Status $status;
 
     public function __construct(
         private readonly Uuid $id,
@@ -20,6 +21,7 @@ final class News
         private readonly Title $title,
     ) {
         $this->date = new DateTimeImmutable();
+        $this->status = Status::New;
     }
 
     public function getId(): string
@@ -40,5 +42,15 @@ final class News
     public function getTitle(): Title
     {
         return $this->title;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(Status $status): void
+    {
+        $this->status = $status;
     }
 }

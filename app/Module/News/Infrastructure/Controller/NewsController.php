@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 namespace Module\News\Infrastructure\Controller;
 
-use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use Module\News\Application\UseCase\Create\CreateNewsUseCase;
-use Module\News\Application\UseCase\CreateReport\CreateReportUseCase;
-use Module\News\Application\UseCase\GetList\GetListUseCase;
-use Module\News\Application\UseCase\GetList\ListItem;
+use Module\News\Application\UseCase\GetStatus\GetStatusRequest;
+use Module\News\Application\UseCase\GetStatus\GetStatusUseCase;
 use Module\News\Infrastructure\FormRequest\CreateNewsFormRequest;
-use Module\News\Infrastructure\FormRequest\CreateReportFormRequest;
-
-use function array_map;
 
 final class NewsController extends Controller
 {
     public function __construct(
         private readonly CreateNewsUseCase $createNews,
-        private readonly GetListUseCase $getList,
-        private readonly CreateReportUseCase $createReport,
+        private readonly GetStatusUseCase $getStatus,
     ) {
     }
 
@@ -30,26 +25,10 @@ final class NewsController extends Controller
         return ['id' => $response->id];
     }
 
-    public function getList(): array
+    public function getStatus(string $id): array
     {
-        $response = ($this->getList)();
+        $response = ($this->getStatus)(new GetStatusRequest($id));
 
-        $items = array_map(static function (ListItem $item): array {
-            return [
-                'uuid' => $item->uuid,
-                'url' => $item->url,
-                'title' => $item->title,
-                'date' => $item->date->format('Y-m-d H:i'),
-            ];
-        }, $response->items);
-
-        return ['list' => $items];
-    }
-
-    public function createReport(CreateReportFormRequest $request): array
-    {
-        $response = ($this->createReport)($request->toUseCaseRequest());
-
-        return ['link' => $response->link];
+        return ['status' => $response->status];
     }
 }

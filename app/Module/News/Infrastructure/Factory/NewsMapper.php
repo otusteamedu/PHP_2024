@@ -10,9 +10,11 @@ use DateTimeInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Module\News\Domain\Entity\News;
+use Module\News\Domain\Entity\Status;
 use Module\News\Domain\ValueObject\Title;
 use Module\News\Domain\ValueObject\Url;
 use Module\News\Infrastructure\Model\NewsModel;
+use ReflectionException;
 use ReflectionObject;
 
 final class NewsMapper
@@ -27,7 +29,9 @@ final class NewsMapper
             new Url($model->url),
             new Title($model->title)
         );
-        $this->setDate($news, new DateTimeImmutable($model->date));
+        $reflectionObject = new ReflectionObject($news);
+        $this->setDate($reflectionObject, $news, new DateTimeImmutable($model->date));
+        $this->setStatus($reflectionObject, $news, $model->status);
 
         return $news;
     }
@@ -42,10 +46,21 @@ final class NewsMapper
         }, $newsModels->all());
     }
 
-    private function setDate(News $news, DateTimeInterface $date): void
+    /**
+     * @throws ReflectionException
+     */
+    private function setDate(ReflectionObject $reflectionObject, News $news, DateTimeInterface $date): void
     {
-        $reflectionObject = new ReflectionObject($news);
         $reflectionProperty = $reflectionObject->getProperty('date');
         $reflectionProperty->setValue($news, $date);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function setStatus(ReflectionObject $reflectionObject, News $news, string $status): void
+    {
+        $reflectionProperty = $reflectionObject->getProperty('status');
+        $reflectionProperty->setValue($news, Status::from($status));
     }
 }

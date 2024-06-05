@@ -27,6 +27,13 @@ final readonly class NewsRepository implements NewsRepositoryInterface
         $this->modelMapper->fromEntity($news)->save();
     }
 
+    public function update(News $news): void
+    {
+        /** @var NewsModel $model */
+        $model = NewsModel::query()->where('id', $news->getId())->firstOrFail();
+        $this->modelMapper->fromEntity($news, $model)->save();
+    }
+
     /**
      * @throws Exception
      */
@@ -54,5 +61,19 @@ final readonly class NewsRepository implements NewsRepositoryInterface
         ;
 
         return $this->mapper->fromCollection($collection);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getById(Uuid $id): News
+    {
+        /** @var NewsModel $model */
+        $model = NewsModel::query()
+            ->where('id', $id->getValue())
+            ->firstOrFail()
+        ;
+
+        return $this->mapper->fromModel($model);
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $id
  * @property string $url
  * @property string $title
+ * @property string $status
  * @property string $date
  */
 final class NewsModel extends Model
@@ -24,5 +25,6 @@ final class NewsModel extends Model
         'url',
         'title',
         'date',
+        'status',
     ];
 }
