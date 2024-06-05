@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Memcached;
@@ -19,10 +20,10 @@ class CheckEnvironment
 
     private function testDbConnection()
     {
-    
+
         try {
-            
-            $dns =  sprintf(
+
+            $dns = sprintf(
                 '%s:host=%s;dbname=%s;charset=%s;port=%s',
                 'mysql',
                 'db',
@@ -42,9 +43,9 @@ class CheckEnvironment
                 $opt
             );
             echo "MySql connected" . "<br>";
-           
+
         } catch (PDOException $ex) {
-            echo 'MySql connect failed with message: ' ;
+            echo 'MySql connect failed with message: ';
             echo $ex->getMessage() . "<br>";
         }
     }
@@ -63,7 +64,7 @@ class CheckEnvironment
         } catch (\Throwable $e) {
             echo "Failed to connect to Redis with message " . $e->getMessage() . "<br>";
         }
-       
+
     }
 
     private function testMemcached()
@@ -75,6 +76,6 @@ class CheckEnvironment
         } catch (Throwable $e) {
             echo "Failed to connect to MemCached" . $e->getMessage() . "<br>";
         }
-        
+
     }
 }
