@@ -13,7 +13,7 @@ class UserDataMapper
     {
     }
 
-    public function getUserById(int $userId): User
+    public function findById(int $userId): User
     {
         $query = $this->db->prepare("SELECT * FROM users WHERE id = :id");
         $query->bindValue(":id", $userId);
@@ -24,9 +24,9 @@ class UserDataMapper
         return new User((int) $row['id'], $row['name'], $row['email']);
     }
 
-    public function getUsers(): array
+    public function getAll(int $offsetId, int $limit): array
     {
-        $query = $this->db->query("SELECT * FROM users");
+        $query = $this->db->query("SELECT * FROM users WHERE id > $offsetId ORDER BY id LIMIT {$limit}");
         $rows = $query->fetchAll(\PDO::FETCH_ASSOC);
         return array_map(
             static fn (array $row): User => new User((int) $row['id'], $row['name'], $row['email']),
@@ -34,7 +34,7 @@ class UserDataMapper
         );
     }
 
-    public function findUserByEmail(string $email): User
+    public function findByEmail(string $email): User
     {
         $query = $this->db->prepare("SELECT * FROM users WHERE email = :id");
         $query->bindValue(":email", $email);
@@ -45,12 +45,32 @@ class UserDataMapper
         return new User((int) $row['id'], $row['name'], $row['email']);
     }
 
-    public function createUser(CreateUserDto $createUser): int
+    public function create(CreateUserDto $createUser): int
     {
-        $query = $this->db->prepare("INSERT INTO users (name, email) VALUES (:name, :email)");
-        $query->bindValue(":name", $createUser->name);
-        $query->bindValue(":email", $createUser->email);
-        $query->execute();
+        $this->db->prepare("INSERT INTO users (name, email) VALUES (:name, :email)")
+            ->execute(
+                [
+                    ":name" => $createUser->name,
+                    ":email" => $createUser->email,
+                ]
+            );
         return (int) $this->db->lastInsertId();
+    }
+
+    public function update(User $user): void
+    {
+        $this->db->prepare("UPDATE users SET name = :name, email = :email WHERE id = :id")
+            ->execute(
+                [
+                    ":name" => $user->getName(),
+                    ":email" => $user->getEmail(),
+                    ":id" => $user->getId()
+                ]
+            );
+    }
+
+    public function delete(User $user): void
+    {
+        $this->db->prepare("DELETE FROM users WHERE id = :id")->execute([':id' => $user->getId()]);
     }
 }

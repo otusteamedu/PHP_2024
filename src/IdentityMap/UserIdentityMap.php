@@ -21,7 +21,7 @@ class UserIdentityMap
     public function getUser(int $userId): User
     {
         if (empty($this->users[$userId])) {
-            $this->users[$userId] = $this->dataMapper->getUserById($userId);
+            $this->users[$userId] = $this->dataMapper->findById($userId);
         }
         return $this->users[$userId];
     }
