@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     image: myapp/php 
     container_name: app
+    env_file:
+      - .env
     volumes:
        - ./app:/data/mysite.local
     working_dir: /data/mysite.local
@@ -36,10 +38,11 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    restart: unless-stopped
     volumes:
       - ./docker/dbdata:/var/lib/mysql  
     networks:
@@ -51,7 +54,7 @@ services:
     image: redis:latest
     container_name: cache
     ports:
-     -  "${REDIS_PORT}:6379"
+     -  "${REDIS_PORT}:${REDIS_PORT}"
     networks:
       - app-network
 #memcached (соединяется с php по порту)
