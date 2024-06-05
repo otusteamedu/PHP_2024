@@ -32,6 +32,5 @@ final class Consumer
         if ($nextStatus = $this->statusesSequence[$message->status] ?? null) {
             $this->messageBus->publish(new Message($message->newsId, $nextStatus));
         }
-
     }
 }
