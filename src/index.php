@@ -7,8 +7,8 @@ addTwoBr();
 checkMemcachedConnect();
 
 
-function checkBaseConnect(){
-
+function checkBaseConnect()
+{
     $dbname = getenv("POSTGRES_DB");
     $dbuser = getenv("POSTGRES_USER");
     $dbpassword = getenv("POSTGRES_PASSWORD");
@@ -17,7 +17,7 @@ function checkBaseConnect(){
 
     $dbconn = pg_connect("host={$dbhost} port={$dbport} dbname={$dbname} user={$dbuser} password={$dbpassword}");
 
-    if ($dbconn){
+    if ($dbconn) {
         echo "Connected to <b>{$dbhost}</b> successfully!";
         pg_close($dbconn);
     } else {
@@ -25,8 +25,8 @@ function checkBaseConnect(){
     }
 }
 
-function checkRedisConnect(){
-
+function checkRedisConnect()
+{
     $redishost = getenv("REDIS_HOST");
     $redisport = getenv("REDIS_PORT");
 
@@ -34,26 +34,29 @@ function checkRedisConnect(){
         $redis = new Redis();
         $redis->connect($redishost, $redisport);
         echo "Connected to <b>{$redishost}</b> successfully!";
-    }catch (RedisException $ex) {
+    } catch (RedisException $ex) {
         echo $ex;
         return false;
     }
 }
 
-function checkMemcachedConnect(){
+function checkMemcachedConnect()
+{
 
     $memcachedhost = getenv("MEMCACHED_HOST");
     $memcachedport = getenv("MEMCACHED_PORT");
 
-    $memcached = new Memcached; 
+    $memcached = new Memcached();
     $memcached->addServer($memcachedhost, $memcachedport);
     $stats = $memcached->getStats();
-    if(!empty($stats))
+    if (!empty($stats)) {
         echo "Connected to <b>{$memcachedhost}</b> successfully!";
-    else
+    } else {
         echo "<b>{$memcachedhost}</b> connection error";
+    }
 }
 
-function addTwoBr(){
+function addTwoBr()
+{
     echo "<br><br>";
 }
