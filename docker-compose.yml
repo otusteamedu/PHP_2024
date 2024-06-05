@@ -21,6 +21,16 @@ services:
       - ./app/:/data/app.local/
     networks:
       - app-network
+  redis:
+    image: redis
+    container_name: app_redis
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    networks:
+      - app-network
+    expose:
+      - "6379"
+    volumes:
+      - ./docker/redis/data:/data
 
 networks:
   app-network:

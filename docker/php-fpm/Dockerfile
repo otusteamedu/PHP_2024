@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
         libpq-dev \
         libmcrypt-dev \
         && pecl install mcrypt-1.0.7 \
+        && pecl install redis \
         && docker-php-ext-enable mcrypt \
         && docker-php-ext-install -j$(nproc) iconv mbstring pdo_pgsql pgsql zip \
         && docker-php-ext-configure gd --with-freetype --with-jpeg \
