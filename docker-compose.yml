@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  webserver:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: otus/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+       - ./src:/var/www/html
+    networks:
+      - app-network
+  
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+       - ./src:/var/www/html
+    networks:
+      - app-network
+
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+        - "${DB_PORT}:${DB_PORT}"
+    environment:
+        POSTGRES_DB: ${POSTGRES_DB}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} 
+    volumes:
+        - ./postgresql/data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network   
+
+
+networks:
+  app-network:
+    driver: bridge
