@@ -1,0 +1,90 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      args:
+        UID: "3000"
+    image: hw1/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./code:/app/hw1
+      - ./sock:/sock
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    working_dir: /app/hw1
+    expose:
+      - "80"
+    links:
+      - app
+    depends_on:
+      - app
+    networks:
+      - app-network
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  app:
+    build:
+      context: ./fpm
+      args:
+        UID: "3000"
+    image: hw1/php-fpm
+    volumes:
+      - ./code:/app/hw1
+      - ./fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./sock:/sock
+    working_dir: /app/hw1
+    user:
+      "3000:3000"
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+  memcached:
+    image: memcached
+    ports:
+      - "11211:11211"
+    networks:
+      - app-network
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    command: mysqld --init-file="/app/install_db.sql"
+    working_dir: /app
+    volumes:
+      - ./mysql/db:/var/lib/mysql
+      - ./mysql/init/install_db.sql:/app/install_db.sql
+    networks:
+      - app-network
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - 8000:80
+    environment:
+      - PMA_ARBITRARY=1
+      - UPLOAD_LIMIT=1024M
+      - MEMORY_LIMIT=1024M
+      - MAX_EXECUTION_TIME=300
+    depends_on:
+      - app
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  sock:
