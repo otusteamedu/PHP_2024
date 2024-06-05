@@ -6,7 +6,7 @@ namespace Module\News\Application\Service\Dto;
 
 use Stringable;
 
-readonly final class Message implements Stringable
+final readonly class Message implements Stringable
 {
     public function __construct(
         public string $newsId,
