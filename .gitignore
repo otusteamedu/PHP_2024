@@ -5,3 +5,4 @@
 .LSOverride
 .env
 /docker/dbdata
+/app/vendor
