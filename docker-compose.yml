@@ -1,5 +1,5 @@
 # версия синтаксиса
-version: '3'
+version: '3.8'
 
 # в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
@@ -11,6 +11,8 @@ services:
       dockerfile: Dockerfile
     image: myapp/php # имя будущего образа
     container_name: app # имя контейнера после запуска
+    env_file:
+      - .env
     volumes:
        - ./code:/data/mysite.local
     # мы можем создать для контейнеров внутреннюю сеть
@@ -26,7 +28,7 @@ services:
     container_name: webserver
     # проброс портов
     ports:
-      - "80:80"
+      - "81:80"
       - "443:443"
     volumes:
        - ./code:/data/mysite.local
@@ -60,19 +62,17 @@ services:
     networks:
       - app-network
 
-  # контейнер с MySQL
-  # строим на базе стандартного образа
   db:
-    image: mysql:5.7.22
+    image: postgres:latest
     container_name: db
     ports:
-      - "3306:3306"
-    # описываем, какую БД мы создаём
+      - "5455:5432"
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - ./dbdata:/var/lib/mysql  
+      - ./postgresql/data:/var/lib/postgresql/data
     networks:
       - app-network
 
