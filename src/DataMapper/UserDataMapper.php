@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataMapper;
 
 use App\Dto\CreateUserDto;
+use App\Dto\UpdateUser;
 use App\User;
 
 class UserDataMapper
@@ -57,16 +58,26 @@ class UserDataMapper
         return (int) $this->db->lastInsertId();
     }
 
-    public function update(User $user): void
+    public function update(int $userId, UpdateUser $user): void
     {
-        $this->db->prepare("UPDATE users SET name = :name, email = :email WHERE id = :id")
-            ->execute(
-                [
-                    ":name" => $user->getName(),
-                    ":email" => $user->getEmail(),
-                    ":id" => $user->getId()
-                ]
-            );
+        $updateParams = [];
+        $updateFieldConditions = [];
+
+        if ($user->name) {
+            $updateParams[':name'] = $user->name;
+            $updateFieldConditions[] = 'name = :name';
+        }
+        if ($user->email) {
+            $updateParams[':email'] = $user->email;
+            $updateFieldConditions[] = 'email = :email';
+
+        }
+
+        $updateParams[':id'] = $userId;
+
+        $this->db->prepare(
+            "UPDATE users SET " . implode(',', $updateFieldConditions) . " WHERE id = :id"
+        )->execute($updateParams);
     }
 
     public function delete(User $user): void
