@@ -1,0 +1,52 @@
+version: "3.8"
+
+services:
+  php-fpm:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: "php"
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    depends_on:
+      - elasticsearch
+    env_file:
+      - .env
+    networks:
+      - app-network
+  nginx:
+    image: nginx
+    container_name: "nginx"
+    working_dir: /app
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/app
+    networks:
+      - app-network
+  elasticsearch:
+    container_name: "elasticsearch"
+    image: "bitnami/elasticsearch:8.7.1"
+    environment:
+      - "discovery.type=single-node"
+      - "bootstrap.memory_lock=true"
+      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
+      - "xpack.security.enabled=false"
+      - "http.cors.enabled=true"
+      - "http.cors.allow-origin=*"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elastic-data:/bitnami/elasticsearch/data
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+
+
+volumes:
+  elastic-data:

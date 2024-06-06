@@ -1,0 +1,24 @@
+{
+    "name": "julia-zhigareva/elastic-project",
+    "description": "php project with elasticsearch",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "JuliaZhigareva\\ElasticProject\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "uvzhigaryova",
+            "email": "juliazhigaryova@yandex.ru"
+        }
+    ],
+    "require": {
+        "elasticsearch/elasticsearch": "^8.7"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
