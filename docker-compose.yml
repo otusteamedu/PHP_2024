@@ -1,0 +1,57 @@
+version: "3.9"
+
+services: 
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./app/:/data/app.local/
+    networks:
+      - app-network
+    container_name: app_nginx
+  application:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app/php
+    container_name: app_php
+    volumes:
+      - ./app/:/data/app.local/
+    networks:
+      - app-network
+  redis:
+    image: redis
+    container_name: app_redis
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    networks:
+      - app-network
+    expose:
+      - "6379"
+    volumes:
+      - ./docker/redis/data:/data
+  memcached:
+    image: memcached
+    container_name: app_memcached
+    networks:
+      - app-network
+    expose:
+      - "11211"
+  postgres:
+    image: postgres:16
+    container_name: app_postgres
+    environment:
+      POSTGRES_DB: '${POSTGRES_DB}'
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    networks:
+      - app-network
+    expose:
+      - "5432"
+    volumes:
+      - ./docker/postgres/pgdata:/var/lib/postgresql/data
+
+networks:
+  app-network:
+    driver: bridge
