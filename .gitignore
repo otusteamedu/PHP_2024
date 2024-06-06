@@ -5,3 +5,4 @@
 .LSOverride
 .env
 docker/redis/data/
+docker/postgres/pgdata/
