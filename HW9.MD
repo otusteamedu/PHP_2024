@@ -180,7 +180,7 @@ CREATE VIEW marketing_data_view AS
 SELECT m.title AS movie,
        at.name AS attribute_type,
        a.name  AS attribute,
-       COALESCE(v.text_value, v.boolean_value ::text, v.date_value ::text, v.float_value ::text, v.int_value) AS value
+       COALESCE(v.text_value, v.boolean_value::text, v.date_value::text, v.float_value::text, v.int_value::text) AS value
 FROM 
     movies m
 JOIN 
