@@ -1,0 +1,21 @@
+{
+    "name": "pozys/bank-statement",
+    "type": "project",
+    "require": {
+        "php-amqplib/php-amqplib": "^3.6",
+        "nyholm/psr7": "^1.8",
+        "nyholm/psr7-server": "^1.1",
+        "laminas/laminas-httphandlerrunner": "^2.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pozys\\BankStatement\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Культяпов Константин",
+            "email": "pozys@mail.ru"
+        }
+    ]
+}
