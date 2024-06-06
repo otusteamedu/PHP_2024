@@ -31,6 +31,13 @@ services:
       - "6379"
     volumes:
       - ./docker/redis/data:/data
+  memcached:
+    image: memcached
+    container_name: app_memcached
+    networks:
+      - app-network
+    expose:
+      - "11211"
 
 networks:
   app-network:
