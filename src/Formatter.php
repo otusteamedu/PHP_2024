@@ -13,7 +13,10 @@ class Formatter
             return "Ничего не найдено.\n";
         }
         foreach ($results['hits'] as $hit) {
-            $formattedResults .= "Название: {$hit['_source']['title']}, Категория: {$hit['_source']['category']}, Цена: {$hit['_source']['price']} руб.\n";
+            $title = "Название: {$hit['_source']['title']}";
+            $category = "Категория: {$hit['_source']['category']}";
+            $price = "Цена: {$hit['_source']['price']} руб.\n";
+            $formattedResults .= $title . "," . $category . ',' .  $price;
         }
         return $formattedResults;
     }

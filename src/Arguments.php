@@ -6,25 +6,19 @@ namespace JuliaZhigareva\ElasticProject;
 
 use DomainException;
 
-readonly class Arguments
+final class Arguments
 {
-    public string $index;
-    public string $searchQuery;
-    public string $category;
-    public int $maxPrice;
-    public int $minPrice;
+    public string $index = "index:";
+    public string $searchQuery = "searchQuery:";
+    public ?string $category = "category:";
+    public ?string $maxPrice = "maxPrice:";
+    public ?string $minPrice = "minPrice:";
 
     public function __construct()
     {
-        $options = getopt("", ["index:", "searchQuery:", "category:", "maxPrice:", "minPrice:"]);
-        $index = $options['index'] ?? '';
-        if (empty($index)) {
+        getopt("", [$this->index, $this->searchQuery, $this->category, $this->maxPrice, $this->minPrice]);
+        if (empty($this->index)) {
             throw new DomainException("index не был передан");
         }
-        $this->index = $index;
-        $this->searchQuery = $options['searchQuery'] ?? '';
-        $this->category = $options['category'] ?? '';
-        $this->maxPrice = isset($options['maxPrice']) ? (int)$options['maxPrice'] : 0;
-        $this->minPrice = isset($options['minPrice']) ? (int)$options['minPrice'] : 0;
     }
 }
