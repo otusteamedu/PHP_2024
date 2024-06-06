@@ -2,41 +2,32 @@
 declare(strict_types=1);
 namespace App\Infrastructure\Routes\Router;
 
-use App\Application\UseCase\AddNews\Request\AddNewsRequest;
-use App\Application\UseCase\ReportNews\Request\ReportNewsRequest;
-use App\Infrastructure\Http\ListNewsController;
-use App\Infrastructure\Http\ReportNewsController;
-use App\Infrastructure\Routes\Http\BurgerController;
-
 class Router
 {
     private ?string $order;
     private ?string $type;
-    private const STRATEGY_PATH = 'App\Infrastructure\Strategy';
+    private string $controllers_path;
 
     public function __construct()
     {
         $this->order = $_POST['order']?? null;
         $this->type = $_POST['type']?? null;
+        $this->controllers_path = getenv("INFRASTRUCTURE_PATH")."Routes\Http\\";
     }
 
     public function runController()
     {
-        # order && type
+        # order = product type && type = recipe
         $this->order = ucfirst(strtolower($this->order));
-        $strategyDir = self::STRATEGY_PATH.'\\'.$this->order.'Strategy';
-        $strategyClass = $this->order.'Strategy';
+        $controllerName = $this->order."Controller";
+        $controllerClass = $this->controllers_path.$controllerName;
 
-        if (!file_exists($strategyDir)) {
+        if (!class_exists($controllerClass)) {
             http_response_code(404);
-            return 'Тип продукта не найден';
+            return 'Продукт не найден';
         }
 
-        //&& !class_exists($strategyClass
-
-        $recipe = ucfirst(strtolower($this->type));
         http_response_code(201);
-        $controller = $this->order.'Controller';
-        return new $controller($recipe);
+        return (new $controllerClass($this->type))->run();
     }
 }
