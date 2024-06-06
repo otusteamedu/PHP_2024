@@ -50,6 +50,7 @@ CREATE TABLE values
     boolean_value BOOLEAN,
     date_value    DATE,
     float_value   FLOAT,
+    int_value     INT,
     FOREIGN KEY (attribute_id) REFERENCES attributes (id)
 );
 
@@ -67,7 +68,8 @@ INSERT INTO attribute_types (name, data_type)
 VALUES ('рецензии', 'text'),
        ('премия', 'boolean'),
        ('важные даты', 'date'),
-       ('служебные даты', 'date');
+       ('служебные даты', 'date'),
+       ('числовые значения', 'int');
 
 -- Фильмы
 INSERT INTO movies (title)
@@ -83,27 +85,27 @@ VALUES ('The Shawshank Redemption'),
 ```sql
 INSERT INTO attributes (movie_id, attribute_type_id, name)
 VALUES
-
 -- The Shawshank Redemption
 (1, (SELECT id FROM attribute_types WHERE name = 'рецензии'), 'Рецензия критиков'),
 (1, (SELECT id FROM attribute_types WHERE name = 'премия'), 'Оскар'),
 (1, (SELECT id FROM attribute_types WHERE name = 'важные даты'), 'Мировая премьера'),
 (1, (SELECT id FROM attribute_types WHERE name = 'служебные даты'), 'Дата начала продажи билетов'),
 (1, (SELECT id FROM attribute_types WHERE name = 'служебные даты'), 'Когда запускать рекламу на ТВ'),
-
+(1, (SELECT id FROM attribute_types WHERE name = 'числовые значения'), 'Количество наград'),
 -- The Godfather
 (2, (SELECT id FROM attribute_types WHERE name = 'рецензии'), 'Рецензия критиков'),
 (2, (SELECT id FROM attribute_types WHERE name = 'премия'), 'Оскар'),
 (2, (SELECT id FROM attribute_types WHERE name = 'важные даты'), 'Мировая премьера'),
 (2, (SELECT id FROM attribute_types WHERE name = 'служебные даты'), 'Дата начала продажи билетов'),
 (2, (SELECT id FROM attribute_types WHERE name = 'служебные даты'), 'Когда запускать рекламу на ТВ'),
-
+(2, (SELECT id FROM attribute_types WHERE name = 'числовые значения'), 'Количество наград'),
 -- Pulp Fiction
 (3, (SELECT id FROM attribute_types WHERE name = 'рецензии'), 'Рецензия критиков'),
 (3, (SELECT id FROM attribute_types WHERE name = 'премия'), 'Оскар'),
 (3, (SELECT id FROM attribute_types WHERE name = 'важные даты'), 'Мировая премьера'),
 (3, (SELECT id FROM attribute_types WHERE name = 'служебные даты'), 'Дата начала продажи билетов'),
-(3, (SELECT id FROM attribute_types WHERE name = 'служебные даты'), 'Когда запускать рекламу на ТВ');
+(3, (SELECT id FROM attribute_types WHERE name = 'служебные даты'), 'Когда запускать рекламу на ТВ'),
+(3, (SELECT id FROM attribute_types WHERE name = 'числовые значения'), 'Количество наград');
 ```
 
 #### Значения
@@ -118,7 +120,8 @@ VALUES ((SELECT id FROM attributes WHERE movie_id = 1 AND name = 'Оскар'), 
 INSERT INTO values (attribute_id, date_value)
 VALUES ((SELECT id FROM attributes WHERE movie_id = 1 AND name = 'Мировая премьера'), '1994-09-10'),
        ((SELECT id FROM attributes WHERE movie_id = 1 AND name = 'Дата начала продажи билетов'), '1994-08-01'),
-       ((SELECT id FROM attributes WHERE movie_id = 1 AND name = 'Когда запускать рекламу на ТВ'), '1994-07-01');
+       ((SELECT id FROM attributes WHERE movie_id = 1 AND name = 'Когда запускать рекламу на ТВ'), '1994-07-01'),
+       ((SELECT id FROM attributes WHERE movie_id = 1 AND name = 'Количество наград'), 7);
 
 -- The Godfather
 INSERT INTO values (attribute_id, text_value)
@@ -128,7 +131,8 @@ VALUES ((SELECT id FROM attributes WHERE movie_id = 2 AND name = 'Оскар'), 
 INSERT INTO values (attribute_id, date_value)
 VALUES ((SELECT id FROM attributes WHERE movie_id = 2 AND name = 'Мировая премьера'), '1972-03-15'),
        ((SELECT id FROM attributes WHERE movie_id = 2 AND name = 'Дата начала продажи билетов'), '1972-02-01'),
-       ((SELECT id FROM attributes WHERE movie_id = 2 AND name = 'Когда запускать рекламу на ТВ'), '1972-01-01');
+       ((SELECT id FROM attributes WHERE movie_id = 2 AND name = 'Когда запускать рекламу на ТВ'), '1972-01-01'),
+       ((SELECT id FROM attributes WHERE movie_id = 2 AND name = 'Количество наград'), 11);
 
 -- Pulp Fiction
 INSERT INTO values (attribute_id, text_value)
@@ -139,7 +143,8 @@ VALUES ((SELECT id FROM attributes WHERE movie_id = 3 AND name = 'Оскар'), 
 INSERT INTO values (attribute_id, date_value)
 VALUES ((SELECT id FROM attributes WHERE movie_id = 3 AND name = 'Мировая премьера'), '1994-05-21'),
        ((SELECT id FROM attributes WHERE movie_id = 3 AND name = 'Дата начала продажи билетов'), '1994-04-01'),
-       ((SELECT id FROM attributes WHERE movie_id = 3 AND name = 'Когда запускать рекламу на ТВ'), '1994-03-01');
+       ((SELECT id FROM attributes WHERE movie_id = 3 AND name = 'Когда запускать рекламу на ТВ'), '1994-03-01'),
+       ((SELECT id FROM attributes WHERE movie_id = 3 AND name = 'Количество наград'), 5);
 ```
 
 ### Создание представлений
@@ -175,7 +180,7 @@ CREATE VIEW marketing_data_view AS
 SELECT m.title AS movie,
        at.name AS attribute_type,
        a.name  AS attribute,
-       COALESCE(v.text_value, v.boolean_value ::text, v.date_value ::text, v.float_value ::text) AS value
+       COALESCE(v.text_value, v.boolean_value ::text, v.date_value ::text, v.float_value ::text, v.int_value) AS value
 FROM 
     movies m
 JOIN 
@@ -229,29 +234,32 @@ FROM marketing_data_view;
 
 | movie	                   | task                           | 	due_date   |
 |--------------------------|--------------------------------|-------------|
-| The Shawshank Redemption | 	Дата начала продажи билетов	  | 1994-08-01  
-| The Shawshank Redemption | 	Когда запускать рекламу на ТВ | 	1994-07-01 
-| The Godfather            | 	Дата начала продажи билетов   | 	1972-02-01 
-| The Godfather            | 	Когда запускать рекламу на ТВ | 	1972-01-01 
-| Pulp Fiction             | 	Дата начала продажи билетов   | 	1994-04-01 
-| Pulp Fiction             | 	Когда запускать рекламу на ТВ | 	1994-03-01 
+| The Shawshank Redemption | 	Дата начала продажи билетов	  | 1994-08-01  |
+| The Shawshank Redemption | 	Когда запускать рекламу на ТВ | 	1994-07-01 |
+| The Godfather            | 	Дата начала продажи билетов   | 	1972-02-01 |
+| The Godfather            | 	Когда запускать рекламу на ТВ | 	1972-01-01 |
+| Pulp Fiction             | 	Дата начала продажи билетов   | 	1994-04-01 |
+| Pulp Fiction             | 	Когда запускать рекламу на ТВ | 	1994-03-01 |
 
 `marketing_data_view`
 
-| movie                    | attribute_type  | attribute                      | value                                       |
-|--------------------------|-----------------|--------------------------------|---------------------------------------------|
-| The Shawshank Redemption | 	рецензии       | 	Рецензия критиков             | 	An inspiring story of hope and friendship. 
-| The Shawshank Redemption | 	премия         | 	Оскар                         | 	false                                      
-| The Shawshank Redemption | 	важные даты    | 	Мировая премьера              | 	1994-09-10                                 
-| The Shawshank Redemption | 	служебные даты | 	Дата начала продажи билетов   | 	1994-08-01                                 
-| The Shawshank Redemption | 	служебные даты | 	Когда запускать рекламу на ТВ | 	1994-07-01                                 
-| The Godfather            | 	рецензии       | 	Рецензия критиков             | 	A masterpiece of crime drama.              
-| The Godfather            | 	премия         | 	Оскар                         | 	true                                       
-| The Godfather            | 	важные даты    | 	Мировая премьера              | 	1972-03-15                                 
-| The Godfather            | 	служебные даты | 	Дата начала продажи билетов   | 	1972-02-01                                 
-| The Godfather            | 	служебные даты | 	Когда запускать рекламу на ТВ | 	1972-01-01                                 
-| Pulp Fiction             | 	рецензии       | 	Рецензия критиков             | 	A wildly original and entertaining film.   
-| Pulp Fiction             | 	премия         | 	Оскар                         | 	true                                       
-| Pulp Fiction             | 	важные даты    | 	Мировая премьера              | 	1994-05-21                                 
-| Pulp Fiction             | 	служебные даты | 	Дата начала продажи билетов   | 	1994-04-01                                 
-| Pulp Fiction             | 	служебные даты | 	Когда запускать рекламу на ТВ | 	1994-03-01                                 
+| movie                    | attribute_type     | attribute                      | value                                       |
+|--------------------------|--------------------|--------------------------------|---------------------------------------------|
+| The Shawshank Redemption | 	рецензии          | 	Рецензия критиков             | 	An inspiring story of hope and friendship. |
+| The Shawshank Redemption | 	премия            | 	Оскар                         | 	false                                      |
+| The Shawshank Redemption | 	важные даты       | 	Мировая премьера              | 	1994-09-10                                 |
+| The Shawshank Redemption | 	служебные даты    | 	Дата начала продажи билетов   | 	1994-08-01                                 |
+| The Shawshank Redemption | 	служебные даты    | 	Когда запускать рекламу на ТВ | 	1994-07-01                                 |
+| The Shawshank Redemption | 	числовые значения | 	Количество наград             | 	7                                          |
+| The Godfather            | 	рецензии          | 	Рецензия критиков             | 	A masterpiece of crime drama.              |
+| The Godfather            | 	премия            | 	Оскар                         | 	true                                       |
+| The Godfather            | 	важные даты       | 	Мировая премьера              | 	1972-03-15                                 |
+| The Godfather            | 	служебные даты    | 	Дата начала продажи билетов   | 	1972-02-01                                 |
+| The Godfather            | 	служебные даты    | 	Когда запускать рекламу на ТВ | 	1972-01-01                                 |
+| The Godfather            | 	числовые значения | 	Количество наград             | 	11                                         |
+| Pulp Fiction             | 	рецензии          | 	Рецензия критиков             | 	A wildly original and entertaining film.   |
+| Pulp Fiction             | 	премия            | 	Оскар                         | 	true                                       |
+| Pulp Fiction             | 	важные даты       | 	Мировая премьера              | 	1994-05-21                                 |
+| Pulp Fiction             | 	служебные даты    | 	Дата начала продажи билетов   | 	1994-04-01                                 |
+| Pulp Fiction             | 	служебные даты    | 	Когда запускать рекламу на ТВ | 	1994-03-01                                 |
+| Pulp Fiction             | 	числовые значения | 	Количество наград             | 	5                                          |
