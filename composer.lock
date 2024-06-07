@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "2c525146fe62adfca61de4577f52bf98",
+    "packages": [
+        {
+            "name": "ekaterina-konyaeva/otus-composer-package",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EkaterinaKonyaeva/otus-composer-package.git",
+                "reference": "f98474ab77aea8ab6ed8a69f299b85c6d26923a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EkaterinaKonyaeva/otus-composer-package/zipball/f98474ab77aea8ab6ed8a69f299b85c6d26923a5",
+                "reference": "f98474ab77aea8ab6ed8a69f299b85c6d26923a5",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EkaterinaKonyaeva\\OtusComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/EkaterinaKonyaeva/otus-composer-package/issues",
+                "source": "https://github.com/EkaterinaKonyaeva/otus-composer-package/tree/v1.0.0"
+            },
+            "time": "2024-06-06T23:32:16+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
