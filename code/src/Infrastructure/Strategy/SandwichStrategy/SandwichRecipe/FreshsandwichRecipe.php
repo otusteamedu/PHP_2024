@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Strategy\BurgerStrategy\BurgerRecipe;
+namespace App\Infrastructure\Strategy\SandwichStrategy\SandwichRecipe;
 
-class CheeseburgerRecipe extends AbstractBurger
+class FreshsandwichRecipe extends AbstractSandwich
 {
     private ?array $ingredients;
 
     public function __construct()
     {
         $this->ingredients = [
-            'маринованный огурец',
+            'листья салата',
             'сыр',
-            'бургерный соус',
-            'говяжья котлета'
+            'майонез',
+            'рубленая курица'
         ];
         $this->assign();
     }

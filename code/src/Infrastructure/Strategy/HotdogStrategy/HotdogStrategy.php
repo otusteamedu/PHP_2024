@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Strategy\BurgerStrategy;
+namespace App\Infrastructure\Strategy\HotdogStrategy;
 
 use App\Application\Interface\RecipeInterface;
 use App\Application\Interface\StrategyInterface;
 
-class BurgerStrategy implements StrategyInterface
+class HotdogStrategy implements StrategyInterface
 {
     private string $type;
     public function __construct(
-        private readonly RecipeInterface $recipeBurger
+        private readonly RecipeInterface $recipeHotdog
     ){
-        $this->type = 'burger';
+        $this->type = 'hotdog';
     }
 
     public function getType(): string
@@ -22,6 +22,6 @@ class BurgerStrategy implements StrategyInterface
 
     public function getRecipe(): string
     {
-        return $this->recipeBurger->getRecipe();
+        return $this->recipeHotdog->getRecipe();
     }
 }

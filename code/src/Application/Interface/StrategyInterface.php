@@ -8,5 +8,4 @@ interface StrategyInterface
 
     public function getType(): string;
 
-    public function getRecipe(): string;
 }

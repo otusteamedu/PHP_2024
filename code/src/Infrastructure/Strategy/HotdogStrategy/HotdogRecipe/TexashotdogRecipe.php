@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Infrastructure\Strategy\BurgerStrategy\BurgerRecipe;
+namespace App\Infrastructure\Strategy\HotdogStrategy\HotdogRecipe;
 
-class CheeseburgerRecipe extends AbstractBurger
+class TexashotdogRecipe extends AbstractHotdog
 {
     private ?array $ingredients;
 
@@ -11,9 +11,9 @@ class CheeseburgerRecipe extends AbstractBurger
     {
         $this->ingredients = [
             'маринованный огурец',
-            'сыр',
-            'бургерный соус',
-            'говяжья котлета'
+            'соус чили',
+            'кетчуп',
+            'говяжья сосиска'
         ];
         $this->assign();
     }

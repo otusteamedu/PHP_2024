@@ -38,7 +38,7 @@ class PostgreRepository implements RepositoryInterface
                          '".$product->getStatus()."'
                 ) RETURNING id;");
             $id = pg_fetch_row($query);
-            $product->setId($id[0]);
+            $product->setId((int)$id[0]);
             return $product->getId();
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());

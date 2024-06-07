@@ -5,11 +5,11 @@ namespace App\Infrastructure\Strategy\BurgerStrategy\BurgerRecipe;
 
 use App\Application\Interface\RecipeInterface;
 
-Abstract class BurgerBase implements RecipeInterface
+Abstract class AbstractBurger implements RecipeInterface
 {
-    protected ?string $recipe = 'Булочка с кунжутом';
+    protected ?string $recipe = 'Булочка с кунжутом, ';
 
-    abstract protected function assembleBurger(): string;
+    abstract protected function assembleBurger(): void;
     public function getRecipe(): string
     {
         return $this->recipe;
