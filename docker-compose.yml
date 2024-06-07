@@ -18,16 +18,14 @@ services:
 
   #контейне с Nginx
   webserver:
-    build:
-      context: ./docker/nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
+    image: nginx:latest
     container_name: webserver
     ports:
       - "80:80"
       - "443:443"
     volumes:
        - ./app:/data/mysite.local
+       - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/sites-enabled/mysite.local.conf
     networks:
       - app-network
 
