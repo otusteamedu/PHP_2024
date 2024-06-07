@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Repository\Query;
+namespace App\Application\UseCase\Request;
 
-readonly class NewsByIdsQuery
+readonly class GenerateReportRequest
 {
     public function __construct(public array $ids)
     {

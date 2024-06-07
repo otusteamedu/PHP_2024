@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Middleware;
 
-use App\Application\UseCase\Form\GenerateReportForm;
+use App\Application\UseCase\Request\GenerateReportRequest;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,8 +20,8 @@ readonly class GenerateReportRequestMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $data = json_decode($request->getBody()->getContents(), true);
-        $createNewsForm = new GenerateReportForm((array)($data['ids'] ?? []));
-        $this->container->set(GenerateReportForm::class, $createNewsForm);
+        $generateReportRequest = new GenerateReportRequest((array)($data['ids'] ?? []));
+        $this->container->set(GenerateReportRequest::class, $generateReportRequest);
 
         return $handler->handle($request);
     }

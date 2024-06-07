@@ -4,25 +4,31 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\Helper\Mapper\NewsMapper;
 use App\Application\Helper\ReportGeneratorInterface;
-use App\Application\UseCase\Form\GenerateReportForm;
+use App\Application\UseCase\Request\GenerateReportRequest;
 use App\Application\UseCase\Response\GenerateReportResponse;
+use App\Application\Validator\GenerateReportValidatorInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
-use App\Domain\Repository\Query\NewsByIdsQuery;
 
 readonly class GenerateReportUseCase
 {
     public function __construct(
         private NewsRepositoryInterface $newsRepository,
         private ReportGeneratorInterface $reportGenerator,
+        private GenerateReportValidatorInterface $generateReportValidator
     ) {
     }
 
-    public function __invoke(GenerateReportForm $form): GenerateReportResponse
+    public function __invoke(GenerateReportRequest $generateReportRequest): GenerateReportResponse
     {
-        $newsList = $this->newsRepository->findByIds(new NewsByIdsQuery($form->ids));
+        $this->generateReportValidator->validate($generateReportRequest);
 
-        $report = $this->reportGenerator->generate($newsList);
-        return new GenerateReportResponse($report);
+        $newsList = $this->newsRepository->findByIds($generateReportRequest->ids);
+
+        $report = $this->reportGenerator->generate(
+            array_map(static fn($news) => NewsMapper::toNewsReportDTO($news), $newsList)
+        );
+        return new GenerateReportResponse($report->reportUrl);
     }
 }

@@ -15,7 +15,7 @@ class News
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private int|null $id = null;
+    private ?int $id = null;
 
     #[ORM\Embedded(class: Url::class, columnPrefix: false)]
     private Url $url;
@@ -51,15 +51,5 @@ class News
     public function getDate(): \DateTime
     {
         return $this->date;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'url' => $this->getUrl()->getValue(),
-            'title' => $this->getTitle()->getValue(),
-            'date' => $this->getDate()->format('Y-m-d H:i:s'),
-        ];
     }
 }

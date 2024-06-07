@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Repository;
 
 use App\Domain\Entity\News;
-use App\Domain\Repository\Query\NewsByIdsQuery;
 
 interface NewsRepositoryInterface
 {
@@ -17,8 +16,8 @@ interface NewsRepositoryInterface
     public function findAll(): array;
 
     /**
-     * @param NewsByIdsQuery $query
+     * @param array $ids
      * @return list<News>
      */
-    public function findByIds(NewsByIdsQuery $query): array;
+    public function findByIds(array $ids): array;
 }

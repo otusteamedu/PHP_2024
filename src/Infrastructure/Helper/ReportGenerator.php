@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Helper;
 
+use App\Application\Helper\DTO\NewsReportDTO;
+use App\Application\Helper\DTO\ReportDTO;
 use App\Application\Helper\ReportGeneratorInterface;
-use App\Domain\Entity\News;
 
 readonly class ReportGenerator implements ReportGeneratorInterface
 {
@@ -14,23 +15,24 @@ readonly class ReportGenerator implements ReportGeneratorInterface
     }
 
     /**
-     * @param list<News> $newsList
-     * @return string
+     * @param list<NewsReportDTO> $newsReportDTOList
+     * @return ReportDTO
      */
-    public function generate(array $newsList): string
+    public function generate(array $newsReportDTOList): ReportDTO
     {
-        $html = $this->generateHtml($newsList);
+        $html = $this->generateHtml($newsReportDTOList);
 
         $reportPath = $this->saveReport($html);
 
-        return $this->generateReportUrl($reportPath);
+        $reportUrl = $this->generateReportUrl($reportPath);
+        return new ReportDTO($reportUrl);
     }
 
     /**
-     * @param list<News> $newsList
+     * @param list<NewsReportDTO> $newsReportDTOList
      * @return string
      */
-    private function generateHtml(array $newsList): string
+    private function generateHtml(array $newsReportDTOList): string
     {
         $html = <<<HTML
 <!DOCTYPE html>
@@ -45,8 +47,8 @@ readonly class ReportGenerator implements ReportGeneratorInterface
     <ul>
 HTML;
 
-        foreach ($newsList as $news) {
-            $html .= sprintf('<li><a href="%s">%s</a></li>', $news->getUrl()->getValue(), $news->getTitle()->getValue());
+        foreach ($newsReportDTOList as $news) {
+            $html .= sprintf('<li><a href="%s">%s</a></li>', $news->url, $news->title);
         }
 
         $html .= '</ul>

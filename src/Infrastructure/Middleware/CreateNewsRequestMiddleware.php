@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Middleware;
 
-use App\Application\UseCase\Form\CreateNewsForm;
+use App\Application\UseCase\Request\CreateNewsRequest;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,8 +20,8 @@ readonly class CreateNewsRequestMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $data = json_decode($request->getBody()->getContents(), true);
-        $createNewsForm = new CreateNewsForm((string)($data['url'] ?? ''));
-        $this->container->set(CreateNewsForm::class, $createNewsForm);
+        $createNewsRequest = new CreateNewsRequest((string)($data['url'] ?? ''));
+        $this->container->set(CreateNewsRequest::class, $createNewsRequest);
 
         return $handler->handle($request);
     }

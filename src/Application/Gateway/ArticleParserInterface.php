@@ -7,7 +7,7 @@ namespace App\Application\Gateway;
 use App\Application\Gateway\Request\NewsRequest;
 use App\Application\Gateway\Response\NewsResponse;
 
-interface ClientInterface
+interface ArticleParserInterface
 {
-    public function get(NewsRequest $request): NewsResponse;
+    public function parse(NewsRequest $request): NewsResponse;
 }

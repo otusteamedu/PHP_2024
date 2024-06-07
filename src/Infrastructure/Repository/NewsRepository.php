@@ -6,7 +6,6 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
-use App\Domain\Repository\Query\NewsByIdsQuery;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class NewsRepository implements NewsRepositoryInterface
@@ -30,11 +29,11 @@ readonly class NewsRepository implements NewsRepositoryInterface
     }
 
     /**
-     * @param NewsByIdsQuery $query
+     * @param array $ids
      * @return list<News>
      */
-    public function findByIds(NewsByIdsQuery $query): array
+    public function findByIds(array $ids): array
     {
-        return $this->entityManager->getRepository(News::class)->findBy(['id' => $query->ids]);
+        return $this->entityManager->getRepository(News::class)->findBy(['id' => $ids]);
     }
 }
