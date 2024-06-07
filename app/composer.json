@@ -1,0 +1,14 @@
+{
+    "autoload": {
+        "psr-4": {
+            "App\\": "./"
+        }
+
+    },
+    "require": {
+      "predis/predis": "^2.2",
+      "ext-memcached": "*",
+      "ext-pdo": "*"
+    }
+
+}
