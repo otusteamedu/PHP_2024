@@ -1,0 +1,10 @@
+{
+    "name": "ekaterina-konyaeva/otus-composer-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "EkaterinaKonyaeva\\OtusComposerApp\\": "src/"
+        }
+    },
+    "require": {}
+}
