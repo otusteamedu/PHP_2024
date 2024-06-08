@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\Dto\DomDto;
 use App\Application\Service\DomParserInterface;
 use App\Application\UseCase\Request\CreateNewsRequest;
 use App\Application\UseCase\Response\CreateNewsResponse;
@@ -28,7 +29,7 @@ class CreateNewsUseCase
     public function __invoke(CreateNewsRequest $request): CreateNewsResponse
     {
         try {
-            $dto = $this->parser->parseTag($request->url, 'title');
+            $dto = $this->parser->parseTag(new DomDto($request->url, 'title'));
             $news = new News(
                 new Url($request->url),
                 new Name($dto->tagText),

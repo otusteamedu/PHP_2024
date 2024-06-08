@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
+use App\Application\Dto\LinkDto;
 use App\Application\Service\LinkGeneratorInterface;
 use App\Application\Service\NewsReportGeneratorInterface;
 use App\Application\Service\NewsReportServiceInterface;
@@ -33,7 +34,7 @@ class GetNewsReportUseCase
             $news = $this->newsRepository->findAllByIds($request->ids);
             $reportDto = $this->reportGenerator->generate($news);
             $this->reportService->save($reportDto);
-            $linkDto = $this->linkGenerator->generate($reportDto->getFilename());
+            $linkDto = $this->linkGenerator->generate(new LinkDto($reportDto->getFilename()));
             $notFoundedIds = $this->getNotFoundedIds($request->ids, $news);
 
             return new GetNewsReportResponse($linkDto->url, $this->generateWarnings($notFoundedIds));
