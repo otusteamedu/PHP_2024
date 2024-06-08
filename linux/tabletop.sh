@@ -1,1 +1,1 @@
-awk '{print $3}' table.txt | sort | uniq -c | sort -r | head -3 | awk '{print $2}'
+awk 'NR>1{print $3}' table.txt | sort | uniq -c | sort -r | head -3 | awk '{print $2}'
