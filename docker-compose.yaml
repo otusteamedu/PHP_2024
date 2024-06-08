@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  linux:
+    build:
+      context: ./docker/linux
+    container_name: linux
+    volumes:
+      - ./src:/var/scripts
