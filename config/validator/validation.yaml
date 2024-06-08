@@ -62,3 +62,21 @@ App\Application\UseCase\Request\GetPlaylistsByUserRequest:
           max: 60
       - Email:
           message: Неверный формат электронной почты владельца плейлиста
+
+App\Application\UseCase\Request\SubscribeNewGenreRecordsRequest:
+  properties:
+    user:
+      - NotBlank:
+          message: Не передана электронная почта для подписки
+      - Length:
+          max: 60
+      - Email:
+          message: Неверный формат электронной почты для подписки
+    genre:
+      - NotBlank:
+          message: Не передан жанр для подписки
+      - Length:
+          max: 60
+      - Choice:
+          message: Не известный жанр {{ value }}
+          callback: [ App\Domain\Enum\AllowedGenreEnum, 'values' ]
