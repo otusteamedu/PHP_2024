@@ -55,8 +55,6 @@ services:
       context: ./memcached
       dockerfile: Dockerfile
     image: memcached:latest
-    ports:
-      - 11211:11211
     command:
       - '--memory-limit=128'
     networks:
