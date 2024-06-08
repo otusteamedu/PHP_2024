@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Kagirova\Hw21\Domain\Exception;
-
 
 use Throwable;
 

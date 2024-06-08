@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Kagirova\Hw21\Domain\Config;
-
 
 use Kagirova\Hw21\Domain\Exception\InvalidArgumentException;
 
@@ -17,7 +17,8 @@ class Config
     {
     }
 
-    public function configPostgres(){
+    public function configPostgres()
+    {
         $params = parse_ini_file($this->path);
         if ($params === false) {
             throw new \Exception("Error reading database configuration file");

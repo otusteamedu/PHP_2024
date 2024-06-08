@@ -17,12 +17,12 @@ class Publisher implements PublisherInterface
     private StorageInterface $storage;
 
     public static function getInstance()
-     {
-         if (is_null(self::$instance)) {
-             self::$instance = new Publisher();
-         }
-         return self::$instance;
-     }
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new Publisher();
+        }
+        return self::$instance;
+    }
 
     public function init(StorageInterface $storage)
     {
