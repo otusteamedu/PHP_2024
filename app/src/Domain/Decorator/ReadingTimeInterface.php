@@ -10,12 +10,12 @@ class ReadingTimeInterface implements NewsInterface
     {
     }
 
-    public function printNews()
+    public function newsToArray()
     {
-        $news = $this->newsDecorator->printNews();
+        $news = $this->newsDecorator->newsToArray();
         $readingTime = round(strlen($news['text']) / 1500);
 
         $response = array("ReadingTime" => $readingTime);
-        return array_merge($response, $this->newsDecorator->printNews());
+        return array_merge($response, $this->newsDecorator->newsToArray());
     }
 }

@@ -22,12 +22,12 @@ class GetNewsController implements NewsController
         if (isset($this->uri[1])) {
             $news = $this->storage->getNews($this->uri[1]);
             $readingTimeDecorator = new ReadingTimeInterface(new ShareLinkInterface($news));
-            $response = $readingTimeDecorator->printNews();
+            $response = $readingTimeDecorator->newsToArray();
         } else {
             $news = $this->storage->getAllNews();
             $response = [];
             foreach ($news as $newsJson) {
-                array_push($response, $newsJson->printNews());
+                array_push($response, $newsJson->newsToArray());
             }
         }
         Response::json($response, 200);

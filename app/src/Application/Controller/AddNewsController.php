@@ -19,7 +19,7 @@ class AddNewsController implements NewsController
     ) {
     }
 
-    public function processRequest(): void
+    public function processRequest(): News
     {
         $categoryId = $this->storage->getCategoryId($this->input['category']);
         if ($categoryId === -1) {
@@ -37,10 +37,6 @@ class AddNewsController implements NewsController
         $this->news->setId($newsId);
 
         Response::json(array("newsID" => $newsId), 201);
-    }
-
-    public function getNews()
-    {
         return $this->news;
     }
 }

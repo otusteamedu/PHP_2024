@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kagirova\Hw21\Infrastructure\Database;
 
 use Kagirova\Hw21\Domain\Builder\NewsBuilder;
+use Kagirova\Hw21\Domain\Config\Config;
 use Kagirova\Hw21\Domain\Entity\News;
 use Kagirova\Hw21\Domain\RepositoryInterface\StorageInterface;
 
@@ -14,12 +15,10 @@ class PostgresStorage implements StorageInterface
 
     public function connect()
     {
-        $params = parse_ini_file(dirname(__DIR__) . '/../../db/database.ini');
-        if ($params === false) {
-            throw new \Exception("Error reading database configuration file");
-        }
-        $dsn = "pgsql:host=" . $params['host'] . ";port=" . $params['port'] . ";dbname=" . $params['database'];
-        $this->pdo = new \PDO($dsn, $params['user'], $params['password']);
+        $config = new Config(dirname(__DIR__) . '/../../db/database.ini');
+        $config->configPostgres();
+        $dsn = "pgsql:host=" . $config->getHost() . ";port=" . $config->getPort() . ";dbname=" . $config->getDatabase();
+        $this->pdo = new \PDO($dsn, $config->getUser(), $config->getPassword());
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 

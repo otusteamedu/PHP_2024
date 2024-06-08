@@ -12,33 +12,42 @@ use Kagirova\Hw21\Domain\Subscriber\SubscriberInterface;
 
 class Publisher implements PublisherInterface
 {
-    private static array $subscribers;
-    private static StorageInterface $storage;
+    private static $instance;
+    private array $subscribers;
+    private StorageInterface $storage;
 
-    public static function init(StorageInterface $storage)
+    public static function getInstance()
+     {
+         if (is_null(self::$instance)) {
+             self::$instance = new Publisher();
+         }
+         return self::$instance;
+     }
+
+    public function init(StorageInterface $storage)
     {
-        Publisher::$storage = $storage;
-        if (!isset(Publisher::$subscribers)) {
-            Publisher::$subscribers = [];
+        $this->storage = $storage;
+        if (!isset($this->subscribers)) {
+            $this->subscribers = [];
             $subscriptions = $storage->getAllSubscription();
             foreach ($subscriptions as $subscription) {
-                Publisher::$subscribers[] = array($subscription, new NotificationService());
+                $this->subscribers[] = array($subscription, new NotificationService());
             }
         }
     }
 
-    public static function subscribe(SubscriberInterface $subscriber, int $categoryId): void
+    public function subscribe(SubscriberInterface $subscriber, int $categoryId): void
     {
-        if (in_array(Publisher::$subscribers, array($categoryId, $subscriber))) {
+        if (in_array($this->subscribers, array($categoryId, $subscriber))) {
             throw new DuplicatedSubscriptionError();
         }
-        Publisher::$subscribers[] = array($categoryId, $subscriber);
-        array_push(Publisher::$subscribers, array($categoryId, $subscriber));
+        $this->subscribers[] = array($categoryId, $subscriber);
+        array_push($this->subscribers, array($categoryId, $subscriber));
     }
 
-    public static function notify(NewsIsCreatedEvent $event): void
+    public function notify(NewsIsCreatedEvent $event): void
     {
-        foreach (Publisher::$subscribers as $subscriber) {
+        foreach ($this->subscribers as $subscriber) {
             if ($event->getCategoryId() == $subscriber[0]) {
                 $subscriber[1]->update($event);
             }

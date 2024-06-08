@@ -10,9 +10,9 @@ use Kagirova\Hw21\Domain\Subscriber\SubscriberInterface;
 
 interface PublisherInterface
 {
-    public static function init(StorageInterface $postgresStorage);
+    public function init(StorageInterface $postgresStorage);
 
-    public static function subscribe(SubscriberInterface $subscriber, int $categoryId): void;
+    public function subscribe(SubscriberInterface $subscriber, int $categoryId): void;
 
-    public static function notify(NewsIsCreatedEvent $event): void;
+    public function notify(NewsIsCreatedEvent $event): void;
 }

@@ -88,15 +88,15 @@ class News implements NewsInterface
         $this->text = $newsBuilder->getText();
     }
 
-    public function printNews()
+    public function newsToArray()
     {
-        return array(
+        return [
             "id" => $this->id,
             "name" => $this->name,
             "date" => $this->date,
             "author" => $this->author,
             "category" => $this->category->getName(),
             "text" => $this->text
-        );
+        ];
     }
 }

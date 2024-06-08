@@ -15,7 +15,9 @@ class App
     {
         $postgresStorage = new PostgresStorage();
         $postgresStorage->connect();
-        Publisher::init($postgresStorage);
+
+        $publisher = Publisher::getInstance();
+        $publisher->init($postgresStorage);
 
         $request = Request::capture();
 

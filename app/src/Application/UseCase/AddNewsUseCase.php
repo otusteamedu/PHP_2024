@@ -21,9 +21,10 @@ class AddNewsUseCase implements NewsUseCase
     public function run(): void
     {
         $addNewsController = new AddNewsController($this->storage, $this->request->data);
-        $addNewsController->processRequest();
-        $news = $addNewsController->getNews();
+        $news = $addNewsController->processRequest();
         $event = new NewsIsCreatedEvent($news->getId(), $news->getCategory());
-        Publisher::notify($event);
+
+        $publisher = Publisher::getInstance();
+        $publisher->notify($event);
     }
 }

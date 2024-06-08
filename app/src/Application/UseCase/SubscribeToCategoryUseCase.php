@@ -24,6 +24,7 @@ class SubscribeToCategoryUseCase implements NewsUseCase
         $subscribeToCategoryController = new SubscribeController($this->storage, $categoryId);
         $subscribeToCategoryController->processRequest();
 
-        Publisher::subscribe(new NotificationService(), $categoryId);
+        $publisher = Publisher::getInstance();
+        $publisher->subscribe(new NotificationService(), $categoryId);
     }
 }

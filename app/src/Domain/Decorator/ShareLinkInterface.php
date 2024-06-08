@@ -10,11 +10,11 @@ class ShareLinkInterface implements NewsInterface
     {
     }
 
-    public function printNews()
+    public function newsToArray()
     {
-        $news = $this->newsDecorator->printNews();
+        $news = $this->newsDecorator->newsToArray();
         $newsId = $news['id'];
         $response = array("ShareLink" => "https://news/" . $newsId);
-        return array_merge($response, $this->newsDecorator->printNews());
+        return array_merge($response, $this->newsDecorator->newsToArray());
     }
 }

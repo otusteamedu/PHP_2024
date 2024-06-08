@@ -6,5 +6,5 @@ namespace Kagirova\Hw21\Application\Controller;
 
 interface NewsController
 {
-    public function processRequest(): void;
+    public function processRequest();
 }

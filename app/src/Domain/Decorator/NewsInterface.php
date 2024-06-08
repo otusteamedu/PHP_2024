@@ -6,5 +6,5 @@ namespace Kagirova\Hw21\Domain\Decorator;
 
 interface NewsInterface
 {
-    public function printNews();
+    public function newsToArray();
 }
