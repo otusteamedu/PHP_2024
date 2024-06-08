@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: mysite-nginx
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+    volumes:
+       - ./app/:/data/mysite.local
+       - ./nginx/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: mysite/php-fpm
+    container_name: mysite-php-fpm
+    working_dir: /data/mysite.local
+    volumes:
+       - ./app/:/data/mysite.local
+       - ./fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-custom.ini
+    networks:
+      - app-network
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0.32
+    container_name: mysite-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - otus-ddd:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  otus-ddd:
