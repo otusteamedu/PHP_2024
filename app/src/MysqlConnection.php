@@ -6,9 +6,11 @@ class MysqlConnection
 {
     private static $instanse = null;
 
-    protected function __construct() { }
+    protected function __construct()
+    {}
 
-    protected function __clone() { }
+    protected function __clone()
+    {}
 
     public function __wakeup()
     {
