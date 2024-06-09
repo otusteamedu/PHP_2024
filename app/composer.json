@@ -1,0 +1,17 @@
+{
+  "name": "dsergei/hw11",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Dsergei\\Hw11\\": "src/"
+    }
+  },
+  "require": {
+    "elasticsearch/elasticsearch": "^v8.13"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
