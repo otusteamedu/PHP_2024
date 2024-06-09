@@ -21,12 +21,12 @@ class Bank
         self::$connection = MysqlConnection::getInstance();
     }
 
-    public function __get(String $prop): mixed
+    public function __get(string $prop): mixed
     {
         return $this->${$prop};
     }
 
-    public function __set(String $prop, mixed $value)
+    public function __set(string $prop, mixed $value)
     {
         $this->${$prop} = $value;
     }
@@ -55,16 +55,14 @@ class Bank
         $result = self::$connection->prepare($sql);
         $result->bindParam(':id', $id, \PDO::PARAM_INT);
 
-        if ($result->execute())
-        {
+        if ($result->execute()) {
             return $result->fetch(\PDO::FETCH_ASSOC);
         }
     }
 
     public function save()
     {
-        if (empty($this->id))
-        {
+        if (empty($this->id)) {
             $sql = "INSERT INTO bank (id, name) VALUES (:id, :name)";
         } else {
             $sql = "UPDATE bank SET name = :name WHERE id = :id";
