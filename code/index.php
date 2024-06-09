@@ -1,3 +1,3 @@
 <?php
 
-echo "Hello, new lines here";
+echo "Hello, new lines here, hope unix style";
