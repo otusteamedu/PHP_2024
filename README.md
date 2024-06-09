@@ -14,8 +14,9 @@
 2. `composer install`
 3. `docker-compose up -d`
 
-4. Запустить слушателя. Для этого необходимо перейти в docker в контейнер `consumer` -> terminal и выполнить в консоли
+4. Запустить слушателя. Для этого необходимо перейти в docker в контейнер `app-hw30` -> terminal и выполнить в консоли
 ```
+cd mysite.local
 cd public
 php index.php consumer
 ```
