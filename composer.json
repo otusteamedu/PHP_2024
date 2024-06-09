@@ -1,0 +1,18 @@
+{
+    "name": "a.kornienko/php_2024",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AKornienko\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "a.kornienko",
+            "email": "a.kornienko@xsolla.com"
+        }
+    ],
+    "require": {
+        "php-amqplib/php-amqplib": "^3.6"
+    }
+}

@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: nginx-hw30
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    container_name: app-hw30
+    env_file:
+      - .env
+    volumes:
+      - ./public:/data/mysite.local/public
+      - ./src:/data/mysite.local/src
+      - .:/data/mysite.local/
+    networks:
+      - app-network
+    depends_on:
+      - rabbit
+
+  rabbit:
+    image: rabbitmq:3.13-management-alpine
+    container_name: ${RABBIT_HOST}
+    hostname: rabbit-hw30
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+    volumes:
+      - ./docker/rabbitmq:/var/lib/rabbitmq
+    ports:
+      - "${RABBIT_UI_PORT}:${RABBIT_UI_PORT}"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
