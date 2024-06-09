@@ -1,6 +1,6 @@
 <?php
 
-echo 'php version: '.phpversion().'<br/>';
+echo 'php version: ' . phpversion() . '<br/>';
 
 $host = getenv('DB_HOST');
 $port = getenv('DB_PORT');
