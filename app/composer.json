@@ -1,0 +1,12 @@
+{
+  "name": "dsergei/hw13",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Dsergei\\Hw13\\": "src/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*"
+  }
+}
