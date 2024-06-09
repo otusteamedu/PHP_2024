@@ -6,7 +6,6 @@ use Dsergei\Hw12\event\Event;
 
 class RedisResponse
 {
-
     public function __construct(
         private ?Event $event
     ) {
