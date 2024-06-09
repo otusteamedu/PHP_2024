@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repository;
 
 use App\Application\Exception\NewsNotCreatedException;
-use App\Domain\Contract\EntityInterface;
 use App\Domain\Contract\RepositoryInterface;
 use App\Domain\Entity\News;
 use App\Infrastructure\Database\Connection;
@@ -22,7 +21,7 @@ readonly class NewsRepository implements RepositoryInterface
      * @throws NewsNotCreatedException
      * @throws ReflectionException
      */
-    public function save(News|EntityInterface $entity): int
+    public function save($entity): int
     {
         $rowCount = $this->pdo->execute('INSERT INTO news (date, url, title) VALUES (:date, :url, :title)', [
             'date' => $entity->getDate(),

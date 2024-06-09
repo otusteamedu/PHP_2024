@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
-use App\Domain\Contract\EntityInterface;
-
-class News implements EntityInterface
+class News
 {
     private readonly ?int $id;
 
