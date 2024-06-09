@@ -11,6 +11,7 @@ use App\Application\UseCase\Cooking\CookingStep\PrepareDoughBaseStep;
 use App\Application\UseCase\Cooking\CookingStep\ProductReadyStep;
 use App\Application\UseCase\Cooking\CookingUseCase;
 use App\Application\UseCase\Order\CreateOrderUseCase;
+use App\Application\UseCase\Request\Request;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
 
@@ -26,21 +27,15 @@ class Controller
     private string $recipeName;
     private string $recipePath;
 
-    public function __construct(
-        string $strategy,
-        string $recipeFromRequest
-    ){
+    public function __construct(){
         $this->repository = new PostgreRepository();
         $this->publisher = new Publisher();
-
-        $this->strategyPath = getenv("INFRASTRUCTURE_PATH")."Strategy\\".$strategy."Strategy\\";
-        $this->strategyName = $strategy."Strategy";
-        $this->recipeName = $recipeFromRequest.'Recipe';
-        $this->recipePath = $this->strategyPath.$strategy."Recipe\\";
     }
 
-    public function run(): string
+    public function run(Request $request): string
     {
+        $this->prepareParams($request);
+
         if (!$this->getStrategy()) {
             http_response_code(404);
             return "Такого продукта не существует";
@@ -51,12 +46,13 @@ class Controller
         );
 
         try {
-            $product = $CreateOrderUseCase();
-            $this->publisher->subscribe(new PrepareDoughBaseStep($product));
-            $this->publisher->subscribe(new AddIngrediancesStep($product));
-            $this->publisher->subscribe(new HeatUpStep($product));
-            $this->publisher->subscribe(new ProductReadyStep($product));
-            new CookingUseCase($this->publisher);
+            $productStatus = $CreateOrderUseCase();
+            $this->publisher->subscribe(new PrepareDoughBaseStep());
+            $this->publisher->subscribe(new AddIngrediancesStep());
+            $this->publisher->subscribe(new HeatUpStep());
+            $this->publisher->subscribe(new ProductReadyStep());
+            $cooking = new CookingUseCase($this->publisher);
+            $cooking($productStatus);
         } catch (\Exception $e) {
             http_response_code(401);
             return $e->getMessage();
@@ -88,4 +84,15 @@ class Controller
         return true;
     }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
+    private function prepareParams(Request $request): void
+    {
+        $this->strategyPath = getenv("INFRASTRUCTURE_PATH") . "Strategy\\" . $request->type . "Strategy\\";
+        $this->strategyName = $request->type . "Strategy";
+        $this->recipeName = $request->recipe . 'Recipe';
+        $this->recipePath = $this->strategyPath . $request->type . "Recipe\\";
+    }
 }

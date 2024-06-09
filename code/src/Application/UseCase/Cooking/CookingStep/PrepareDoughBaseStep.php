@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace App\Application\UseCase\Cooking\CookingStep;
 
 use App\Application\Interface\Observer\SubscriberInterface;
-use App\Domain\Entity\Product;
+use App\Domain\Entity\DTO\DTO;
 
 class PrepareDoughBaseStep implements SubscriberInterface
 {
     public function __construct(
-        Product $product,
+        DTO $product,
     ){}
 
     private function prepare(): void

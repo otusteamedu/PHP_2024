@@ -5,6 +5,7 @@ namespace App\Infrastructure\Observer;
 
 use App\Application\Interface\Observer\PublisherInterface;
 use App\Application\Interface\Observer\SubscriberInterface;
+use App\Application\UseCase\Response\Response;
 
 class Publisher implements PublisherInterface
 {
@@ -23,10 +24,10 @@ class Publisher implements PublisherInterface
         // TODO: Implement unsubscribe() method.
     }
 
-    public function notify(int $status): void
+    public function notify(Response $productStatus): void
     {
         foreach ($this->subscribers as $subscriber) {
-            $subscriber->update($status);
+            $subscriber->update($productStatus->status);
         }
     }
 }

@@ -4,22 +4,31 @@ declare(strict_types=1);
 namespace App\Application\UseCase\Cooking;
 
 use App\Application\Interface\Observer\PublisherInterface;
-use App\Domain\Entity\Product;
+use App\Application\Interface\Observer\SubscriberInterface;
+use App\Application\UseCase\Response\Response;
 
-class CookingUseCase
+class CookingUseCase implements SubscriberInterface
 {
 
-    private $product;
+
     private $publisher;
 
     public function __construct(
         PublisherInterface $publisher
     ){}
 
-    public function __invoke()
+    public function __invoke(Response $productStatus): void
     {
-        $this->product->setStatus(2);
-        $this->publisher->notify($this->product->getStatus());
+        $this->publisher->notify($productStatus->status);
     }
 
+    public function update()
+    {
+        // TODO: Implement update() method.
+    }
+
+    private function handle(ObserverUpdater $updater)
+    {
+
+    }
 }
