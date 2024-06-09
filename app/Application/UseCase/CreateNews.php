@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
-use App\Application\Contract\RepositoryInterface;
-use App\Application\Exception\NewsNotCreatedException;
 use App\Application\UseCase\Request\CreateNewsRequest;
 use App\Application\UseCase\Response\CreateNewsResponse;
+use App\Domain\Contract\RepositoryInterface;
 use App\Domain\Entity\News;
 use App\Domain\Exception\Validate\TitleValidateException;
 use App\Domain\ValueObject\Date;
@@ -22,23 +21,17 @@ final class CreateNews
     }
 
     /**
-     * @throws NewsNotCreatedException
      * @throws TitleValidateException
      * @throws Exception
      */
     public function __invoke(CreateNewsRequest $request): CreateNewsResponse
     {
-        $news = new News();
-
         $title = new Title($request->title);
         $date = new Date($request->date);
         $url = new Url($request->url);
 
-        $news->setTitle($title->getValue());
-        $news->setDate((string) $date);
-        $news->setUrl($url->getValue());
-        $this->repository->save($news);
+        $news = new News((string) $date, $url->getValue(), $title->getValue());
 
-        return new CreateNewsResponse($this->repository->getLastInsertId());
+        return new CreateNewsResponse($this->repository->save($news));
     }
 }

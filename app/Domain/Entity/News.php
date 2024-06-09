@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
-class News
+use App\Domain\Contract\EntityInterface;
+
+class News implements EntityInterface
 {
-    private int $id;
-    private string $date;
-    private string $url;
-    private string $title;
+    private readonly ?int $id;
+
+    public function __construct(
+        private string $date,
+        private string $url,
+        private string $title,
+    )
+    {
+    }
 
     /**
      * @return int
@@ -17,14 +24,6 @@ class News
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
     }
 
     /**

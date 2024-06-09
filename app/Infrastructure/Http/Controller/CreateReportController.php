@@ -28,10 +28,11 @@ class CreateReportController extends Controller
         $reportRequest = new CreateReportRequest($ids);
         $connection = Connection::getInstance();
         $repository = new NewsRepository($connection);
-        $reportContent = (new CreateReport($repository))($reportRequest);
+        $news = (new CreateReport($repository))($reportRequest);
+
 
         $fileName = time() . '.html';
-        $this->reportFileCreator->createReportFile($fileName, $reportContent);
+        $this->reportFileCreator->createReportFile($fileName, $news);
 
         return env('APP_HOST') . '/reports/' . $fileName;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\Controller;
 
-use App\Application\Exception\NewsNotCreatedException;
 use App\Domain\Exception\Validate\TitleValidateException;
 use App\Domain\Exception\Validate\UrlValidateException;
 use App\Application\UseCase\CreateNews;
@@ -22,7 +21,6 @@ class CreateNewsController extends Controller
     }
 
     /**
-     * @throws NewsNotCreatedException
      * @throws UrlValidateException
      * @throws TitleValidateException
      */

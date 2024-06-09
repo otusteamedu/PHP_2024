@@ -14,13 +14,7 @@ class GetNewsController extends Controller
     {
         $connection = Connection::getInstance();
         $repository = new NewsRepository($connection);
-        $useCase = new GetNews($repository);
 
-        return json_encode(array_map(static fn ($news) => [
-            'id' => $news->getId(),
-            'title' => $news->getTitle(),
-            'url' => $news->getUrl(),
-            'date' => $news->getDate(),
-        ], $useCase()));
+        return json_encode((new GetNews($repository))());
     }
 }

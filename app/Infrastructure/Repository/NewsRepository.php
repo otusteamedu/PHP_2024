@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repository;
 
-use App\Application\Contract\RepositoryInterface;
 use App\Application\Exception\NewsNotCreatedException;
+use App\Domain\Contract\EntityInterface;
+use App\Domain\Contract\RepositoryInterface;
 use App\Domain\Entity\News;
 use App\Infrastructure\Database\Connection;
+use ReflectionException;
 
 readonly class NewsRepository implements RepositoryInterface
 {
@@ -18,48 +20,64 @@ readonly class NewsRepository implements RepositoryInterface
 
     /**
      * @throws NewsNotCreatedException
+     * @throws ReflectionException
      */
-    public function save(News $news): void
+    public function save(News|EntityInterface $entity): int
     {
         $rowCount = $this->pdo->execute('INSERT INTO news (date, url, title) VALUES (:date, :url, :title)', [
-            'date' => $news->getDate(),
-            'url' => $news->getUrl(),
-            'title' => $news->getTitle(),
+            'date' => $entity->getDate(),
+            'url' => $entity->getUrl(),
+            'title' => $entity->getTitle(),
         ]);
 
         if (!$rowCount) {
             throw new NewsNotCreatedException('News not created');
         }
+
+        $this->setId($entity, $this->pdo->lastInsertId());
+
+        return $entity->getId();
     }
 
     public function getAll(): array
     {
         $result = $this->pdo->queryAll(sql: 'SELECT * FROM news');
 
-        return array_map(fn ($news) => $this->mapNews($news), $result);
+        return array_map(
+        /**
+         * @throws ReflectionException
+         */ fn ($news) => $this->mapNews($news), $result);
     }
 
-    public function getByIds(array $ids): array|false
+    public function getByIds(array $ids): array
     {
         $idsRaw = str_repeat('?,', count($ids) - 1) . '?';
         $result = $this->pdo->queryAll("SELECT * FROM news WHERE id IN ($idsRaw)", $ids);
 
-        return array_map(fn ($news) => $this->mapNews($news), $result);
+        return array_map(
+        /**
+         * @throws ReflectionException
+         */ fn ($news) => $this->mapNews($news), $result);
     }
 
-    public function getLastInsertId(): int
-    {
-        return $this->pdo->lastInsertId();
-    }
-
+    /**
+     * @throws ReflectionException
+     */
     private function mapNews(array $rawNews): News
     {
-        $news = new News();
-        $news->setDate($rawNews['date']);
-        $news->setUrl($rawNews['url']);
-        $news->setTitle($rawNews['title']);
-        $news->setId($rawNews['id']);
+        $news = new News($rawNews['date'], $rawNews['url'], $rawNews['title']);
+        $this->setId($news, $rawNews['id']);
 
         return $news;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function setId(News $news, int $id): void
+    {
+        (new \ReflectionClass($news))
+            ->getProperty('id')
+            ->setValue($news, $id);
     }
 }
