@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Dsergei\Hw11;
+
 class ConsoleParametersDto
 {
     public function __construct(
@@ -12,7 +13,6 @@ class ConsoleParametersDto
         private float $maxPrice,
         private string $category
     ) {
-
     }
 
     public function getIndex(): string

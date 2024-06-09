@@ -8,9 +8,7 @@ class ElasticsearchQueryResponse
 {
     public function __construct(
         private array $response
-    )
-    {
-
+    ) {
     }
 
     public function getResponse()
@@ -20,7 +18,7 @@ class ElasticsearchQueryResponse
             return "Ничего не найдено.\n";
         }
         foreach ($this->response['hits']['hits'] as $hit) {
-            if(empty($hit['_source'])) {
+            if (empty($hit['_source'])) {
                 continue;
             }
             $response[] = "Название: {$hit['_source']['title']}, Категория: {$hit['_source']['category']}, Цена: {$hit['_source']['price']} руб";

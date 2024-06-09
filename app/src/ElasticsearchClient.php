@@ -10,9 +10,7 @@ class ElasticsearchClient
 {
     public function __construct(
         private ElasticsearchConfig $config
-    )
-    {
-
+    ) {
     }
 
     public function buildClient()

@@ -9,9 +9,7 @@ class ElasticSearchQuery
     public function __construct(
         private ConsoleParameters $consoleParameters,
         private ElasticsearchClient $client
-    )
-    {
-
+    ) {
     }
 
     private function build()
