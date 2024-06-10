@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\UseCase;
 
-
 use App\Dictionary\QueueDictionary;
 use App\Entity\RequestEntity;
 use App\Producer\ProducerInterface;

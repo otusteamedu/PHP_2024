@@ -24,8 +24,10 @@ readonly class RequestRepository
 
     public function updateRequestStatus(RequestEntity $requestEntity): void
     {
-        $this->db->executeStatement('UPDATE requests SET status = ? WHERE id = ?',
-            [$requestEntity->getStatus()->value, $requestEntity->getId()->value]);
+        $this->db->executeStatement(
+            'UPDATE requests SET status = ? WHERE id = ?',
+            [$requestEntity->getStatus()->value, $requestEntity->getId()->value]
+        );
     }
 
     public function createRequest(RequestEntity $requestEntity): void

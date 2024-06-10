@@ -16,7 +16,6 @@ use Silex\Application;
 use Predis\Client as RedisClient;
 
 $app = new Application();
-$app['debug'] = true;
 
 $app['redis'] = static function () {
     return new RedisClient([
