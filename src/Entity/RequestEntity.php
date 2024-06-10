@@ -22,6 +22,16 @@ class RequestEntity
         $this->status = $status;
     }
 
+    public function setId(IdValueObject $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setData(DataValueObject $data): void
+    {
+        $this->data = $data;
+    }
+
     public function getStatus(): StatusValueObject
     {
         return $this->status;

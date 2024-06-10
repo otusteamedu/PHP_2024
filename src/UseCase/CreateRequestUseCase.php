@@ -28,7 +28,7 @@ readonly class CreateRequestUseCase
             StatusValueObject::Pending
         );
         $this->requestRepository->createRequest($request);
-        $this->producerService->publish(['id' => $request->getId()->value, 'test' => 1], QueueDictionary::RequestQueue->value);
+        $this->producerService->publish(['id' => $request->getId()->value], QueueDictionary::RequestQueue->value);
         return new CreateResponse($request->getId()->value);
     }
 }
