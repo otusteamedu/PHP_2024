@@ -7,7 +7,6 @@ namespace App\Domain\Entity;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Genre;
 
-// ToDo: Сделать через кастомные типы, потому что тут они являются id.
 class UserGenreSubscription
 {
     public function __construct(

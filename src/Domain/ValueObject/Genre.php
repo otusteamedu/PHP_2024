@@ -41,4 +41,9 @@ class Genre
             throw new InvalidArgumentException('Неизвестный жанр');
         }
     }
+
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }

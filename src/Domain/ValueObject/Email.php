@@ -40,4 +40,9 @@ class Email
             throw new InvalidArgumentException('Некорректный email');
         }
     }
+
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 }

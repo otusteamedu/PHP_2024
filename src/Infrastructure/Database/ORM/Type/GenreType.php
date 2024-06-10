@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Type;
 
 class GenreType extends Type
 {
-    public const EMAIL = 'genre';
+    public const GENRE = 'genre';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -26,11 +26,11 @@ class GenreType extends Type
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        return $value instanceof Genre ? $value->getValue() : $value;
+        return $value instanceof Genre ? $value->getValue() : null;
     }
 
     public function getName(): string
     {
-        return self::EMAIL;
+        return self::GENRE;
     }
 }
