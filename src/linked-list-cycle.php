@@ -13,18 +13,19 @@ class Solution {
      * @param ListNode $head
      * @return Boolean
      */
-    function hasCycle($head) {
-        $map = [];
-        $cur = $head;
-        while ($cur) {
-            $obj_id = spl_object_id($cur);
-            if (isset($map[$obj_id])) {
+    function hasCycle($head): bool {
+        $fastPointer = $slowPointer = $head;
+        while ($fastPointer->next !== null && $slowPointer->next !== null) {
+            $slowPointer = $slowPointer->next;
+            $fastPointer = $fastPointer->next;
+            if ($fastPointer->next === null) {
+                return false;
+            }
+            $fastPointer = $fastPointer->next;
+            if ($slowPointer === $fastPointer) {
                 return true;
             }
-            $map[$obj_id] = true;
-            $cur = $cur->next;
         }
-
         return false;
     }
 }
