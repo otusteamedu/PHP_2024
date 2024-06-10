@@ -3,6 +3,9 @@ doctrine:
         url: '%env(resolve:DATABASE_URL)%'
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+        types:
+            email: App\Infrastructure\Database\ORM\Type\EmailType
+            genre: App\Infrastructure\Database\ORM\Type\GenreType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

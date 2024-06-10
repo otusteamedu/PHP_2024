@@ -8,13 +8,7 @@
             table="user_genre_subscription"
             repository-class="App\Infrastructure\Repository\DoctrineUserGenreSubscriptionRepository"
     >
-        <id name="userEmail" type="string" column="user_email" >
-            <generator strategy="NONE" />
-        </id>
-        <id name="genre" type="string" column="genre" column-definition="App\Domain\ValueObject\Genre">
-            <generator strategy="NONE" />
-        </id>
-<!--        <embedded name="userEmail" use-column-prefix="false" class="App\Domain\ValueObject\Email" />-->
-<!--        <embedded name="genre" use-column-prefix="false" class="App\Domain\ValueObject\Genre" />-->
+        <id name="userEmail" type="email" column="user_email" />
+        <id name="genre" type="genre" column="genre" />
     </entity>
 </doctrine-mapping>
