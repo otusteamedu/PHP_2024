@@ -1,0 +1,23 @@
+framework:
+    messenger:
+        failure_transport: failed
+
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    # Количество повторных попыток - 24 часа * 60 минут
+                    max_retries: 1440
+                    # Задержка между повторными попытками в миллисекундах
+                    delay: 1000
+                    # Каждая следующая попытка происходит через удвоенный промежуток времени:
+                    # 1 секунда, 2 секунды, 4 секунды и так далее до 60 секунд
+                    multiplier: 2
+                    # Максимальная задержка в миллисекундах в случае применения мультипликатора
+                    max_delay: 60000
+            failed: 'doctrine://default?queue_name=failed'
+
+        routing:
+            # Route your messages to the transports
+            'App\Infrastructure\Queue\Messages\NewsMessage': async

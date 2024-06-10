@@ -1,5 +1,23 @@
-.idea/
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/.env
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
 /vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+# PHPStorm files
+*.iml
+.idea
+
+# Other files
 .DS_Store
-.AppleDouble
-.LSOverride
+public/.htaccess
