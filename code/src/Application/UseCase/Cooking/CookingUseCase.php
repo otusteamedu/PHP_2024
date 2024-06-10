@@ -17,9 +17,9 @@ class CookingUseCase implements SubscriberInterface
         PublisherInterface $publisher
     ){}
 
-    public function __invoke(Response $productStatus): void
+    public function __invoke(Response $response): void
     {
-        $this->publisher->notify($productStatus->status);
+        $this->publisher->notify($response->status);
     }
 
     public function update()

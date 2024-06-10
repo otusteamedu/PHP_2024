@@ -10,7 +10,7 @@ use App\Application\UseCase\Cooking\CookingStep\HeatUpStep;
 use App\Application\UseCase\Cooking\CookingStep\PrepareDoughBaseStep;
 use App\Application\UseCase\Cooking\CookingStep\ProductReadyStep;
 use App\Application\UseCase\Cooking\CookingUseCase;
-use App\Application\UseCase\Order\CreateOrderUseCase;
+use App\Application\UseCase\WorkWithWorkpiece\WorkWithWorkpieceUseCase;
 use App\Application\UseCase\Request\Request;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
@@ -40,19 +40,19 @@ class Controller
             http_response_code(404);
             return "Такого продукта не существует";
         }
-        $CreateOrderUseCase = new CreateOrderUseCase(
+        $workWithWorkpieceUseCase = new WorkWithWorkpieceUseCase(
             $this->strategy,
             $this->repository
         );
 
         try {
-            $productStatus = $CreateOrderUseCase();
-            $this->publisher->subscribe(new PrepareDoughBaseStep());
-            $this->publisher->subscribe(new AddIngrediancesStep());
-            $this->publisher->subscribe(new HeatUpStep());
-            $this->publisher->subscribe(new ProductReadyStep());
+            $workpiece = $workWithWorkpieceUseCase();
+            $this->publisher->subscribe(new PrepareDoughBaseStep($workpiece->recipe));
+            $this->publisher->subscribe(new AddIngrediancesStep($workpiece->recipe));
+            $this->publisher->subscribe(new HeatUpStep($workpiece->recipe));
+            $this->publisher->subscribe(new ProductReadyStep($workpiece->recipe));
             $cooking = new CookingUseCase($this->publisher);
-            $cooking($productStatus);
+            $cooking($workpiece);
         } catch (\Exception $e) {
             http_response_code(401);
             return $e->getMessage();

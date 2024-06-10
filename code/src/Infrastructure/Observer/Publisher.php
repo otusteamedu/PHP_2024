@@ -24,10 +24,14 @@ class Publisher implements PublisherInterface
         // TODO: Implement unsubscribe() method.
     }
 
-    public function notify(Response $productStatus): void
+    /**
+     * @param Response $response
+     * @return void
+     */
+    public function notify(Response $response): void
     {
         foreach ($this->subscribers as $subscriber) {
-            $subscriber->update($productStatus->status);
+            $subscriber->update($response->status);
         }
     }
 }

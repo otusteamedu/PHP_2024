@@ -95,6 +95,14 @@ class PostgreRepository implements RepositoryInterface
 
     public function getProduct(int $id): Product
     {
-        // TODO: Implement getProduct() method.
+        try {
+            $query = pg_query($this->init,
+                "SELECT FROM products WHERE id=$id;");
+            $product = pg_fetch_all($query);
+            $product->setId((int)$id[0]);
+            return $product->getId();
+        } catch (\Exception $e) {
+            throw new \RuntimeException($e->getMessage());
+        }
     }
 }

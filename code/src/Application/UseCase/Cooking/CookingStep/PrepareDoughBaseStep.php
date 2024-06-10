@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace App\Application\UseCase\Cooking\CookingStep;
 
 use App\Application\Interface\Observer\SubscriberInterface;
-use App\Domain\Entity\DTO\DTO;
+use App\Application\UseCase\Cooking\FeedbackHandler;
+use App\Infrastructure\Observer\Publisher;
 
 class PrepareDoughBaseStep implements SubscriberInterface
 {
     public function __construct(
-        DTO $product,
+        string $recipe
     ){}
 
     private function prepare(): void
@@ -17,10 +18,13 @@ class PrepareDoughBaseStep implements SubscriberInterface
         echo "Подготовка теста...".PHP_EOL;
         sleep(5);
         $this->repositorySetStatus(2);
+        return ;
     }
 
     public function update(int $status): void
     {
+        $publisher = new Publisher();
+        $publisher->subscribe(new FeedbackHandler());
 
     }
 }
