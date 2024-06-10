@@ -17,8 +17,7 @@ class Solution {
         $fastPointer = $slowPointer = $head;
         while (($fastPointer->next !== null && $fastPointer->next->next) && $slowPointer->next !== null) {
             $slowPointer = $slowPointer->next;
-            $fastPointer = $fastPointer->next;
-            $fastPointer = $fastPointer->next;
+            $fastPointer = $fastPointer->next->next;
             if ($slowPointer === $fastPointer) {
                 return true;
             }
