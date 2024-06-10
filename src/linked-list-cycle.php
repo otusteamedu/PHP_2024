@@ -15,12 +15,9 @@ class Solution {
      */
     function hasCycle($head): bool {
         $fastPointer = $slowPointer = $head;
-        while ($fastPointer->next !== null && $slowPointer->next !== null) {
+        while (($fastPointer->next !== null && $fastPointer->next->next) && $slowPointer->next !== null) {
             $slowPointer = $slowPointer->next;
             $fastPointer = $fastPointer->next;
-            if ($fastPointer->next === null) {
-                return false;
-            }
             $fastPointer = $fastPointer->next;
             if ($slowPointer === $fastPointer) {
                 return true;
