@@ -1,0 +1,20 @@
+{
+    "name": "afilipov/hw20",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "silex/silex": "^2.3",
+        "predis/predis": "^1.1",
+        "ramsey/uuid": "^4.7",
+        "doctrine/dbal": "^4.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    }
+}
