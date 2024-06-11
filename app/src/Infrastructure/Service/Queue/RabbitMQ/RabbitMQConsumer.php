@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Service\Queue\RabbitMQ;
 
-
 use App\Infrastructure\Service\Queue\ConsumerInterface;
 use Closure;
 use PhpAmqpLib\Connection\AMQPStreamConnection;

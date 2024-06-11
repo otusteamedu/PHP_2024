@@ -4,7 +4,7 @@ namespace App\Application\UseCase\Exception;
 
 use Exception;
 
-class RequestValidationException extends  Exception
+class RequestValidationException extends Exception
 {
     private array $errors;
 

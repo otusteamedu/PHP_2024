@@ -18,7 +18,7 @@ class JsonResponseFactory
         return $this->createResponse(['errors' => $data], $statusCode);
     }
 
-    public function createGeneralErrorsResponse(array $messages, int $statusCode = 500):JsonResponse
+    public function createGeneralErrorsResponse(array $messages, int $statusCode = 500): JsonResponse
     {
         return $this->createErrorsResponse(['general' => $messages], $statusCode);
     }

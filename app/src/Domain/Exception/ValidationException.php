@@ -6,7 +6,7 @@ namespace App\Domain\Exception;
 
 use Exception;
 
-class ValidationException extends  Exception
+class ValidationException extends Exception
 {
     private array $errors;
 
