@@ -1,0 +1,14 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd"
+>
+    <entity
+            name="App\Domain\Entity\UserGenreSubscription"
+            table="user_genre_subscription"
+            repository-class="App\Infrastructure\Repository\DoctrineUserGenreSubscriptionRepository"
+    >
+        <id name="userEmail" type="email" column="user_email" />
+        <id name="genre" type="genre" column="genre" />
+    </entity>
+</doctrine-mapping>
