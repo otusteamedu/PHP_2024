@@ -1,0 +1,2 @@
+errorResponse:
+  $ref: './errorResponse.yaml'
