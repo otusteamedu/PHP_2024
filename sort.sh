@@ -9,4 +9,4 @@ then
   exit 1
 fi
 
-awk 'NF > 0 {print $3}' $1 | sort | uniq -c | sort -r | head -3 | awk '{print $2}'
+awk 'NF > 0 && $3 != "city" {print $3}' $1 |  tail -n +1 | sort | uniq -c | sort -r | head -3 | awk '{print $2}'
