@@ -9,6 +9,6 @@ use App\Domain\Entity\UserGenreSubscription;
 
 interface IUserGenreSubscriptionRepository
 {
-    public function findUserSubscriptionByGenre(FindUserByGenreSubscriptionDto $query): ?UserGenreSubscription;
+    public function findUsersSubscribedToGenre(FindUserByGenreSubscriptionDto $query): array;
     public function save(UserGenreSubscription $subscription): void;
 }

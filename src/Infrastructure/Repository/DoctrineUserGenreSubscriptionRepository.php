@@ -17,15 +17,13 @@ class DoctrineUserGenreSubscriptionRepository extends ServiceEntityRepository  i
         parent::__construct($registry, UserGenreSubscription::class);
     }
 
-    public function findUserSubscriptionByGenre(FindUserByGenreSubscriptionDto $query): ?UserGenreSubscription
+    public function findUsersSubscribedToGenre(FindUserByGenreSubscriptionDto $query): array
     {
         return $this->createQueryBuilder('ugs')
             ->where('ugs.genre = :genre')
-            ->andWhere('ugs.userEmail = :userEmail')
             ->setParameter('genre', $query->genre)
-            ->setParameter('userEmail', $query->user)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     public function save(UserGenreSubscription $subscription): void

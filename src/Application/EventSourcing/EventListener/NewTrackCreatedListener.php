@@ -21,12 +21,14 @@ class NewTrackCreatedListener implements IEventListener
      */
     public function execute(object $event): void
     {
-        $subscription = $this->subscriptionRepository->findUserSubscriptionByGenre(
-            new FindUserByGenreSubscriptionDto($event->user, $event->genre)
+        $subscriptions = $this->subscriptionRepository->findUsersSubscribedToGenre(
+            new FindUserByGenreSubscriptionDto($event->genre)
         );
 
-        if (!is_null($subscription)) {
-            // TODO: Отправляем сообщение что вышел новый трек нужного жанра.
+        if ($subscriptions !== []) {
+            foreach ($subscriptions as $subscription) {
+                // TODO: Отправляем сообщения всем подписчикам жанра, что вышел новый трек.
+            }
         }
     }
 
