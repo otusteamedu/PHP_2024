@@ -1,7 +1,5 @@
 <?php
 
-echo "Привет, Otus!!!!<br>".date("Y-m-d H:i:s") ."<br><br>";
-
 $redis = new Redis();
 $redis->connect('redis', '6379');
 $redis->auth('qwerty');
