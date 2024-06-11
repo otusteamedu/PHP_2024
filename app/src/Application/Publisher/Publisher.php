@@ -12,19 +12,10 @@ use Kagirova\Hw21\Domain\Subscriber\SubscriberInterface;
 
 class Publisher implements PublisherInterface
 {
-    private static $instance;
     private array $subscribers;
     private StorageInterface $storage;
 
-    public static function getInstance()
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new Publisher();
-        }
-        return self::$instance;
-    }
-
-    public function init(StorageInterface $storage)
+    public function __construct(StorageInterface $storage)
     {
         $this->storage = $storage;
         if (!isset($this->subscribers)) {

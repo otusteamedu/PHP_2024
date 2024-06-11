@@ -10,8 +10,6 @@ use Kagirova\Hw21\Domain\Subscriber\SubscriberInterface;
 
 interface PublisherInterface
 {
-    public function init(StorageInterface $postgresStorage);
-
     public function subscribe(SubscriberInterface $subscriber, int $categoryId): void;
 
     public function notify(NewsIsCreatedEvent $event): void;

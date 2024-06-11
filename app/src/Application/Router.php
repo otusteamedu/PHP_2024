@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Kagirova\Hw21\Application;
 
+use Kagirova\Hw21\Application\Publisher\Publisher;
 use Kagirova\Hw21\Application\Request\Request;
 use Kagirova\Hw21\Application\UseCase\AddNewsUseCase;
 use Kagirova\Hw21\Application\UseCase\GetNewsUseCase;
@@ -17,7 +18,8 @@ class Router
 {
     public function __construct(
         private Request $request,
-        private StorageInterface $storage
+        private StorageInterface $storage,
+        private Publisher $publisher
     ) {
     }
 
@@ -25,9 +27,9 @@ class Router
     {
         $this->validateMethod();
         $useCase = match ($this->request->uri[0]) {
-            "add_news" => new AddNewsUseCase($this->storage, $this->request),
+            "add_news" => new AddNewsUseCase($this->storage, $this->request, $this->publisher),
             "get_news" => new GetNewsUseCase($this->storage, $this->request),
-            "subscribe" => new SubscribeToCategoryUseCase($this->storage, $this->request),
+            "subscribe" => new SubscribeToCategoryUseCase($this->storage, $this->request, $this->publisher),
             default => throw new RouteNotFoundException(),
         };
         return $useCase;

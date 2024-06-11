@@ -16,12 +16,11 @@ class App
         $postgresStorage = new PostgresStorage();
         $postgresStorage->connect();
 
-        $publisher = Publisher::getInstance();
-        $publisher->init($postgresStorage);
+        $publisher = new Publisher($postgresStorage);
 
         $request = Request::capture();
 
-        $router = new Router($request, $postgresStorage);
+        $router = new Router($request, $postgresStorage, $publisher);
         $useCase = $router->resolve();
 
         $useCase->run();

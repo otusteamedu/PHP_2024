@@ -14,7 +14,8 @@ class SubscribeToCategoryUseCase implements NewsUseCase
 {
     public function __construct(
         private StorageInterface $storage,
-        private Request $request
+        private Request $request,
+        private Publisher $publisher
     ) {
     }
 
@@ -24,7 +25,6 @@ class SubscribeToCategoryUseCase implements NewsUseCase
         $subscribeToCategoryController = new SubscribeController($this->storage, $categoryId);
         $subscribeToCategoryController->processRequest();
 
-        $publisher = Publisher::getInstance();
-        $publisher->subscribe(new NotificationService(), $categoryId);
+        $this->publisher->subscribe(new NotificationService(), $categoryId);
     }
 }

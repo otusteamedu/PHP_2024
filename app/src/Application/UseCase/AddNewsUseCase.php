@@ -14,7 +14,8 @@ class AddNewsUseCase implements NewsUseCase
 {
     public function __construct(
         private StorageInterface $storage,
-        private Request $request
+        private Request $request,
+        private Publisher $publisher
     ) {
     }
 
@@ -24,7 +25,6 @@ class AddNewsUseCase implements NewsUseCase
         $news = $addNewsController->processRequest();
         $event = new NewsIsCreatedEvent($news->getId(), $news->getCategory());
 
-        $publisher = Publisher::getInstance();
-        $publisher->notify($event);
+        $this->publisher->notify($event);
     }
 }
