@@ -1,3 +1,6 @@
-# PHP_2024
+# REST API
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+1. Инициализировать контейнеры и выполнить docker exec -it php-fpm bash
+2. Начать прослушивание очереди командой php bin/console task-consumer:start
+3. Документация доступна по адресу /restapi-docs
+

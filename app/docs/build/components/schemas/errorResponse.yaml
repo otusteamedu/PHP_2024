@@ -1,0 +1,10 @@
+required:
+  - errors
+type: object
+properties:
+  errors:
+    type: object
+    additionalProperties: true
+    description: >-
+      Содержит объект с информацией об ошибках для каждого поля запроса.
+      В поле general будут содержаться общие ошибки.

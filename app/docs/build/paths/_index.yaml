@@ -1,0 +1,4 @@
+/task:
+  $ref: './Task/task.yaml'
+/task/{id}/status:
+  $ref: './Task/task_{id}_status.yaml'

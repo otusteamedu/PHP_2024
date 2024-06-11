@@ -1,0 +1,23 @@
+---
+openapi: 3.0.0
+info:
+  title: Документация к API
+  contact:
+    name: Александр Гладков
+  version: '1'
+servers:
+  - url: "{schema}://{apiHost}"
+    variables:
+      schema:
+        enum:
+          - http
+        default: http
+      apiHost:
+        default: application.local
+tags:
+  $ref: './tags/_index.yaml'
+paths:
+  $ref: './paths/_index.yaml'
+components:
+  schemas:
+    $ref: './components/schemas/_index.yaml'
