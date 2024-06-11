@@ -5,6 +5,10 @@ services:
         autowire: true
         autoconfigure: true
 
+    _instanceof:
+        App\Application\EventSourcing\IEventListener:
+            tags: [ 'app.event_listener' ]
+
     App\:
         resource: '../src/'
         exclude:
@@ -12,3 +16,9 @@ services:
             - '../src/Domain/Entity/'
             - '../src/Domain/ValueObject/'
             - '../src/Kernel.php'
+
+    App\Infrastructure\Framework\EventSourcing\EventListener\KernelRequestEventListener:
+        arguments:
+            $listeners: !tagged_iterator app.event_listener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }

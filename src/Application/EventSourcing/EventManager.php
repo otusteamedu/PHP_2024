@@ -30,7 +30,7 @@ class EventManager implements IEventPublisher
         }
 
         foreach ($this->listeners[$eventType] as $listener) {
-            $listener->update($event);
+            $listener->execute($event);
         }
     }
 }
