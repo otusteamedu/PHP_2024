@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/app
+      - ./docker/nginx/hosts/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  app:
+    networks:
+      - app-network
+    build:
+      dockerfile: ./docker/php/Dockerfile
+    volumes:
+      - ./app:/app
+
+  postgres:
+    image: postgres:14.0-alpine
+    networks:
+      - app-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./app/db:/docker-entrypoint-initdb.d
+
+
+networks:
+  app-network:
+    driver: bridge

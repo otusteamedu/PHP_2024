@@ -1,0 +1,10 @@
+{
+    "name": "kagirova/hw21",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Kagirova\\Hw21\\": "src/"
+        }
+    },
+    "require": {}
+}
