@@ -27,7 +27,7 @@ class NewTrackCreatedListener implements IEventListener
 
         if ($subscriptions !== []) {
             foreach ($subscriptions as $subscription) {
-                // TODO: Отправляем сообщения всем подписчикам жанра, что вышел новый трек.
+                // Отправляем сообщения всем подписчикам жанра, что вышел новый трек.
             }
         }
     }

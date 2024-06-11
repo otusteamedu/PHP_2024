@@ -21,7 +21,7 @@ class DoctrineUserGenreSubscriptionRepository extends ServiceEntityRepository  i
     {
         return $this->createQueryBuilder('ugs')
             ->where('ugs.genre = :genre')
-            ->setParameter('genre', $query->genre)
+            ->setParameter('genre', $query->genre->getValue())
             ->getQuery()
             ->getResult();
     }
