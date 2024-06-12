@@ -6,3 +6,4 @@
 .env
 /dbdata/*
 /phpsocket/*
+.gitattributes
