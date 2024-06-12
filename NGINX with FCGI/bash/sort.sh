@@ -1,2 +1,2 @@
 #!/bin/bash
-grep . text.txt | sort -k 4n | head -3
+awk '!/id/' text.txt | grep . | sort -k 4n | head -3
