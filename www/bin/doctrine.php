@@ -11,13 +11,13 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $container = require_once __DIR__ . '/../app/container.php';
 
-$em = $container->get(EntityManager::class);
+$em = $container->get(\Doctrine\ORM\EntityManagerInterface::class);
 
 ConsoleRunner::run(
     new SingleManagerProvider($em),
     []
 );
 
-# php scripts/doctrine.php orm:schema-tool:create
-# php scripts/doctrine.php orm:schema-tool:drop --force
-# php scripts/doctrine.php orm:schema-tool:update --force
+# php bin/doctrine.php orm:schema-tool:create
+# php bin/doctrine.php orm:schema-tool:drop --force
+# php bin/doctrine.php orm:schema-tool:update --force

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Image;
 
-use App\Application\ImageGenerator\ImageGeneratorInterface;
+use App\Application\DTO\ImageDTO;
 use App\Application\Queue\MessageDTO;
 use App\Application\Queue\QueueInterface;
 use App\Domain\Image\Image;
+use App\Domain\Image\ImageStorageInterface;
 use App\Domain\Image\Status;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -16,18 +17,6 @@ use Ramsey\Uuid\Uuid;
 
 class GenerateImage extends ImageAction
 {
-    private QueueInterface $queue;
-
-    public function __construct(
-        LoggerInterface $logger,
-        EntityManagerInterface $entityManager,
-        QueueInterface $queue,
-    )
-    {
-        parent::__construct($logger, $entityManager);
-        $this->queue = $queue;
-    }
-
 
     protected function action(): Response
     {
@@ -39,22 +28,12 @@ class GenerateImage extends ImageAction
             throw new \Exception("Description required in body");
         }
 
-        $id = Uuid::uuid4()->toString();
+        $image = $this->imageStorage->generateImageByDescription($description);
 
-        $image = new Image(
-            $description,
-            Status::GENERATING->value,
-            $id
-        );
-
-        $this->entityManager->persist($image);
-        $this->entityManager->flush();
-
-        $this->queue->pushMessage(new MessageDTO(
+        return $this->respondWithData(new ImageDTO(
             $image->getId(),
             $image->getDescription(),
+            null
         ));
-
-        return $this->respondWithData();
     }
 }

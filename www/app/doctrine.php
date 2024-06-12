@@ -3,17 +3,15 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
-use App\Infrastructure\Types\StateType;
 use DI\ContainerBuilder;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 use Psr\Container\ContainerInterface;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
-        EntityManager::class => function (ContainerInterface $c) {
+        \Doctrine\ORM\EntityManagerInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
             $config = ORMSetup::createAttributeMetadataConfiguration(

@@ -6,7 +6,7 @@ namespace App\Application\Queue;
 
 interface QueueInterface
 {
-    public function pushMessage(MessageDTO $message): bool;
+    public function pushMessage(MessageDTO $message): void;
 
     public function getMessageOrNull(): ?MessageDTO;
 }

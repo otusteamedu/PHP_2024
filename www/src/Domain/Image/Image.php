@@ -14,7 +14,7 @@ class Image
     #[ORM\Column(type: 'string')]
     private ?string $id;
 
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $path;
 
     #[ORM\Column(type: 'string')]
@@ -24,9 +24,10 @@ class Image
     private string $status;
 
     /**
-     * @param string $path
      * @param string $description
      * @param string $status
+     * @param string|null $id
+     * @param string|null $path
      */
     public function __construct(string $description, string $status, string $id = null, string $path = null)
     {
@@ -36,7 +37,7 @@ class Image
         $this->id = $id;
     }
 
-    public function getPath(): string
+    public function getPath(): ?string
     {
         return $this->path;
     }
@@ -72,11 +73,5 @@ class Image
     public function getId(): string
     {
         return $this->id;
-    }
-
-    public function setId(?string $id): static
-    {
-        $this->id = $id;
-        return $this;
     }
 }

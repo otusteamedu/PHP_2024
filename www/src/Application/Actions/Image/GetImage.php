@@ -4,24 +4,32 @@ declare(strict_types=1);
 
 namespace App\Application\Actions\Image;
 
-use App\Domain\Image\Image;
+use App\Application\DTO\ImageDTO;
 use App\Domain\Image\Status;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class GetImage extends ImageAction
 {
-
     protected function action(): Response
     {
         $id = $this->resolveArg('id');
-        try {
-            $image = $this->entityManager->find(Image::class, $id);
-        } catch (ORMException $e) {
+
+        $image = $this->imageStorage->getImage($id);
+
+        if ($image === null) {
             throw new \Exception("Image not found");
         }
 
-        return $this->respondWithData($image);
+        if ($image->getStatus() !== Status::GENERATED->value) {
+            throw new \Exception("Image is not ready");
+        }
+
+        $host =  $this->request->getUri()->getScheme() . '://' . $this->request->getUri()->getHost();
+
+        return $this->respondWithData(new ImageDTO(
+            $image->getId(),
+            $image->getDescription(),
+            $host . $image->getPath(),
+        ));
     }
 }

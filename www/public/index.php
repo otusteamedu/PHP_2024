@@ -12,10 +12,8 @@ use Slim\Factory\ServerRequestCreatorFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-const PROJECT_ROOT = __DIR__ . '/../';
-
 // Build PHP-DI Container instance
-$container = require PROJECT_ROOT . '/app/container.php';
+$container = require __DIR__ . '/../app/container.php';
 
 // Instantiate the app
 AppFactory::setContainer($container);
