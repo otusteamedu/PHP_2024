@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  redis:
+    build: ./redis
+  nginx:
+    build: ./nginx
+  php-fpm:
+    build: ./php-fpm
+  memcached:
+    build: ./memcached
+
+
