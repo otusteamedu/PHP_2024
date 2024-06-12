@@ -1,0 +1,23 @@
+{
+  "name": "hukimato/image-api",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "hukimato",
+      "email": "danay2211@gmail.com"
+    }
+  ],
+  "require": {
+    "openai-php/client": "*",
+    "guzzlehttp/guzzle": "^7.8",
+    "slim/slim": "^4.13",
+    "guzzlehttp/psr7": "^2.6"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}

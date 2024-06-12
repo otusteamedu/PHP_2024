@@ -16,7 +16,9 @@ RUN apt update && apt install -y \
     && docker-php-ext-enable redis \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
-    && docker-php-ext-install -j$(nproc)  mbstring zip xml pdo_pgsql
+    && docker-php-ext-install -j$(nproc)  mbstring zip xml pdo_pgsql \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 

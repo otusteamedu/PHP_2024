@@ -22,7 +22,7 @@ services:
       context: ./docker/php-fpm
       dockerfile: Dockerfile
     image: "otus/fpm"
-    container_name: "otus-www"
+    container_name: "otus-php"
     volumes:
       - ./www:/www/mysite.local
       - ./docker/logs/php.log:/var/log/fpm-php.www.log
@@ -44,6 +44,19 @@ services:
     networks:
       - app-network
 
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    hostname: rabbitmq
+    container_name: "otus-rabbitmq"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASS}
+    ports:
+      - "15672:15672"
+    volumes:
+      - ./docker/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - app-network
 
 networks:
   app-network:
