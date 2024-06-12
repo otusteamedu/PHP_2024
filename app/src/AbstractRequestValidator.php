@@ -9,6 +9,9 @@ abstract class AbstractRequestValidator
     const INT BAD_REQUEST_CODE = 400;
     const INT OK_CODE = 200;
 
+    /** @var string */
+    protected string $requestMethod;
+
     /**
      * @var array|string[]
      */
@@ -22,6 +25,11 @@ abstract class AbstractRequestValidator
 
     /** @var array */
     protected array $errors = [];
+
+    public function __construct()
+    {
+        $this->requestMethod = $_SERVER["REQUEST_METHOD"] ?? '';
+    }
 
     /**
      * @return int

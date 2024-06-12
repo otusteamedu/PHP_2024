@@ -5,18 +5,18 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use Otus\Hw4\PostRequestValidator;
+use Otus\Hw4\ResponseHelper;
 
 echo "Запрос обработал контейнер: {$_SERVER['HOSTNAME']}" . PHP_EOL;
 
 try {
-    $validator = new PostRequestValidator(
-        $_SERVER["REQUEST_METHOD"] ?? '',
-        $_POST['string'] ?? ''
-    );
-
-    http_response_code($validator->getResponseCode());
-    echo $validator->getMessage();
+    $validator = new PostRequestValidator();
+    $responseCode = $validator->getResponseCode();
+    $message = $validator->getMessage();
 } catch (Exception $exception) {
-    http_response_code(400);
-    echo $exception->getMessage() . PHP_EOL;
+    $responseCode = 400;
+    $message = $exception->getMessage() . PHP_EOL;
 }
+
+ResponseHelper::sendResponse($responseCode);
+echo $message;

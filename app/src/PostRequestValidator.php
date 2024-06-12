@@ -6,17 +6,18 @@ namespace Otus\Hw4;
 
 class PostRequestValidator extends AbstractRequestValidator
 {
+    /** @var string */
+    private string $postString;
+
     /**
      * @var array|string[]
      */
     protected array $allowedMethods = ['POST'];
 
-    /**
-     * @param string $requestMethod
-     * @param string $postString
-     */
-    public function __construct(private string $requestMethod, private string $postString)
+    public function __construct()
     {
+        parent::__construct();
+        $this->postString = $_POST['string'] ?? '';
         $this->validate();
     }
 
@@ -67,9 +68,14 @@ class PostRequestValidator extends AbstractRequestValidator
             } elseif ($char === ')') {
                 if ($balance === 0) {
                     $this->addError("Number of opening and closing brackets doesn't match");
+                    return;
                 }
                 $balance--;
             }
+        }
+
+        if ($balance !== 0) {
+            $this->addError("Number of opening and closing brackets doesn't match");
         }
     }
 
