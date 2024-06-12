@@ -3,3 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+.env
+/dbdata/*
+/phpsocket/*
+.gitattributes
