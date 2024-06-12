@@ -1,0 +1,6 @@
+id user city phone
+1 test Moscow 12323
+2 test2 Saint-P 22323
+3 test3 Tver 3
+4 test4 Milan 42123
+5 test5 Moscow 5
