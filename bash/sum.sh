@@ -1,8 +1,6 @@
 #!/bin/bash
-status="$(dpkg-query -W --showformat='${db:Status-Status}' "bc" 2>&1)"
-if [ ! $? = 0 ] || [ ! "$status" = installed ]; then
-  echo "Please install bc utility";exit 1
-fi
+
+command -v bc >/dev/null 2>&1 || { echo "Please install bc" >&2; exit 1; }
 re='^[+-]?[0-9]+\.?[0-9]*$'
 for var in "$@"
 do
@@ -11,4 +9,4 @@ do
     fi
 done
 
-echo $1 + $2 | bc
+echo $(($1 + $2)) | bc
