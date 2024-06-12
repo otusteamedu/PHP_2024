@@ -6,7 +6,7 @@ namespace App\Domain\Image;
 
 enum Status: string
 {
-    case GENERATING = 'generating';
-    case GENERATED = 'generated';
-    case FAILED = 'failed';
-}
+case GENERATING = 'generating';
+case GENERATED = 'generated';
+case FAILED = 'failed';
+    }

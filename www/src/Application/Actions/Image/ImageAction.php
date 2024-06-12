@@ -15,14 +15,12 @@ abstract class ImageAction extends Action
     protected ImageStorageInterface $imageStorage;
 
     public function __construct(
-        LoggerInterface        $logger,
+        LoggerInterface $logger,
         EntityManagerInterface $entityManager,
         ImageStorageInterface $imageStorage,
-    )
-    {
+    ) {
         parent::__construct($logger);
         $this->entityManager = $entityManager;
         $this->imageStorage = $imageStorage;
     }
-
 }

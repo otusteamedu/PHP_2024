@@ -20,8 +20,7 @@ class ImageStorage implements ImageStorageInterface
     public function __construct(
         EntityManagerInterface $entityManager,
         QueueInterface $queue,
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->queue = $queue;
     }

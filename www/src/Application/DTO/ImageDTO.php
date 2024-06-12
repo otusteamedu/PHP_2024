@@ -10,8 +10,6 @@ readonly class ImageDTO
         public string $uuid,
         public string $description,
         public ?string $path,
-    )
-    {
-
+    ) {
     }
 }

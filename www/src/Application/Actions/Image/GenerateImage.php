@@ -17,7 +17,6 @@ use Ramsey\Uuid\Uuid;
 
 class GenerateImage extends ImageAction
 {
-
     protected function action(): Response
     {
         $data = $this->getFormData();

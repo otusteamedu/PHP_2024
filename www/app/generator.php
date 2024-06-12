@@ -23,7 +23,6 @@ return function (\DI\ContainerBuilder $containerBuilder) {
                         $yandexSettings['folder_id'],
                         $yandexSettings['yandex_oauth_token'],
                     );
-
             }
         }
     ]);

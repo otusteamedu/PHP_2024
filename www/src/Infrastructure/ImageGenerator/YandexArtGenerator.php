@@ -18,8 +18,7 @@ class YandexArtGenerator extends BaseImageGenerator
         string $imageDirPath,
         string $yandexFolderId,
         string $yandexOAuthToken,
-    )
-    {
+    ) {
         parent::__construct($publicDirPath, $imageDirPath);
         $this->yandexFolderId = $yandexFolderId;
         $this->yandexOAuthToken = $yandexOAuthToken;

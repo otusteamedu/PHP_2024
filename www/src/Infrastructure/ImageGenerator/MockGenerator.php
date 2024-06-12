@@ -11,6 +11,6 @@ class MockGenerator extends BaseImageGenerator
         $files = glob($this->publicDirPath . $this->imageDirPath . '/*.*');
         $file = array_rand($files);
         sleep(15);
-        return str_replace($this->publicDirPath, '',  $files[$file]);
+        return str_replace($this->publicDirPath, '', $files[$file]);
     }
 }

@@ -10,7 +10,6 @@ class MessageDTO
         public string $uuid,
         public string $description,
     ) {
-
     }
 
     public static function buildFromArray(array $rawData): static
