@@ -1,0 +1,139 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PHP Image Generation API",
+    "description": "PHP Image Generation API. Using YandexART, RabbitMQ, PostgreSQL and Slim:v4",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://mysite.local"
+    }
+  ],
+  "paths": {
+    "/images/generate": {
+      "post": {
+        "tags": [
+          "images"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "SendGenerationRequest",
+        "description": "Отправляет запрос для генерации изображения",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ImageFound"
+          }
+        }
+      }
+    },
+    "/images/{id}": {
+      "get": {
+        "tags": [
+          "images"
+        ],
+        "summary": "GetImage",
+        "description": "Получает изображение по id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ImageFound"
+          },
+          "404": {
+            "description": "Изображение не найдено"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ImageFound": {
+        "description": "Изображение найдено",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "enum": [200]
+                },
+                "data": {
+                  "$ref": "#/components/schemas/Image"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ImageNotFound": {
+        "description": "Изображение не найдено",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer",
+                  "enum": [404]
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Image": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}

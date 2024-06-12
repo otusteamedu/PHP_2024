@@ -5,6 +5,8 @@ LABEL authors="hukimato"
 RUN apt update && apt install -y \
     libfreetype6-dev \
     libonig-dev \
+    libpng-dev \
+    libjpeg62-turbo-dev \
     libzip-dev \
     libxml2-dev \
     libpq-dev \
@@ -16,7 +18,9 @@ RUN apt update && apt install -y \
     && docker-php-ext-enable redis \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
-    && docker-php-ext-install -j$(nproc)  mbstring zip xml pdo_pgsql
+    && docker-php-ext-install -j$(nproc)  mbstring zip xml pdo_pgsql sockets \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
