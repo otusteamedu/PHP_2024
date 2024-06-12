@@ -7,7 +7,8 @@ use DI\ContainerBuilder;
 
 $containerBuilder = new ContainerBuilder();
 
-if (false) { // Should be set to true in production
+
+if ((getenv('ENV') ?? 'production') === 'production') { // Should be set to true in production
     $containerBuilder->enableCompilation(__DIR__ . '/var/cache');
 }
 

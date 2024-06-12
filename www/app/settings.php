@@ -12,8 +12,12 @@ return function (ContainerBuilder $containerBuilder) {
     // Global Settings Object
     $containerBuilder->addDefinitions([
         SettingsInterface::class => function () {
+            $env = getenv('ENV') ?? 'production';
+
             return new Settings([
-                'displayErrorDetails' => true, // Should be set to false in production
+                'env' => $env,
+
+                'displayErrorDetails' => $env !== 'production', // Should be set to false in production
                 'logError'            => false,
                 'logErrorDetails'     => false,
                 'logger' => [

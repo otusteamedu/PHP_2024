@@ -1,15 +1,13 @@
 .idea/
-/www/vendor/
-/docker/logs
-/docker/postgresql/db-data
-/docker/redis/dаta
-/docker/rabbitmq
+docker/logs
+docker/postgresql/db-data
+docker/redis/dаta
+docker/rabbitmq
 www/vendor/
 www/logs/*
-!www/logs/README.md
+www/public/static/images/generated/*
 www/var/cache/
+!www/logs/README.md
 !www/var/cache/.gitignore
-/www/vendor
-/app/vendor
 .env
 
