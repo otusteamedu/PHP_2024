@@ -10,7 +10,7 @@ try {
     $app = new App();
     if (isset($argv)) {
         $app->run($argv[1]);
-    }
+    } 
     else {
         $app->run('sender');
     }
