@@ -5,11 +5,13 @@ namespace App\Infrastructure\Routes\Http;
 use App\Application\Interface\Observer\PublisherInterface;
 use App\Application\Interface\RecipeInterface;
 use App\Application\Interface\StrategyInterface;
+use App\Application\UseCase\CreateProductRecord\CreateProductRecordUseCase;
 use App\Application\UseCase\Cooking\CookingStep\AddIngrediancesStep;
 use App\Application\UseCase\Cooking\CookingStep\HeatUpStep;
 use App\Application\UseCase\Cooking\CookingStep\PrepareDoughBaseStep;
 use App\Application\UseCase\Cooking\CookingStep\ProductReadyStep;
 use App\Application\UseCase\Cooking\CookingUseCase;
+use App\Application\UseCase\Cooking\StatusChangeHandler;
 use App\Application\UseCase\WorkWithWorkpiece\WorkWithWorkpieceUseCase;
 use App\Application\UseCase\Request\Request;
 use App\Infrastructure\Observer\Publisher;
@@ -40,19 +42,35 @@ class Controller
             http_response_code(404);
             return "Такого продукта не существует";
         }
-        $workWithWorkpieceUseCase = new WorkWithWorkpieceUseCase(
+        $productRecord = new CreateProductRecordUseCase(
             $this->strategy,
             $this->repository
         );
 
         try {
-            $workpiece = $workWithWorkpieceUseCase();
-            $this->publisher->subscribe(new PrepareDoughBaseStep($workpiece->recipe));
-            $this->publisher->subscribe(new AddIngrediancesStep($workpiece->recipe));
-            $this->publisher->subscribe(new HeatUpStep($workpiece->recipe));
-            $this->publisher->subscribe(new ProductReadyStep($workpiece->recipe));
-            $cooking = new CookingUseCase($this->publisher);
-            $cooking($workpiece);
+            $product = $productRecord();
+            # Var 1: каждый шаг делает нотифай в StatusChangeHandler, там идет echo события.
+//            new PrepareDoughBaseStep($recipe);
+//            new AddIngrediancesStep($recipe);
+//            new HeatUpStep($recipe);
+//            new ProductReadyStep($recipe);
+
+            # Var 2: Кукинг будет подписчиком StatusChangeHandler. Когда запускается событие готовки,
+            # он ловит статус из него и в зависимости от цифры, применяет нужный шаг.
+            # Шаги, в свою очередь, изменяют статус через StatusChangeHandler напрямую.
+
+            $this->publisher->subscribe(new CookingUseCase());
+
+
+
+//            $statusHandler = new StatusChangeHandler($recipe);
+//            $this->publisher->subscribe(new PrepareDoughBaseStep($status));
+//            $this->publisher->subscribe(new AddIngrediancesStep($status));
+//            $this->publisher->subscribe(new HeatUpStep($status));
+//            $this->publisher->subscribe(new ProductReadyStep($status));
+//            $cooking = new CookingUseCase($this->publisher);
+//            $cooking($recipe);
+
         } catch (\Exception $e) {
             http_response_code(401);
             return $e->getMessage();

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Application\UseCase\WorkWithWorkpiece;
+namespace App\Application\UseCase\CreateProductRecord;
 
 use App\Application\Interface\StrategyInterface;
 use App\Application\UseCase\Response\Response;
 use App\Domain\Entity\Product;
 use App\Domain\Repository\RepositoryInterface;
 
-readonly class WorkWithWorkpieceUseCase
+readonly class CreateProductRecordUseCase
 {
 
     public function __construct(
@@ -24,11 +24,6 @@ readonly class WorkWithWorkpieceUseCase
         );
         $id = $this->repository->save($product);
         return new Response($product->getStatus(),$product->getRecipe(),$id);
-    }
-
-    public function changeStatus(Response $response): void
-    {
-        $this->repository->setStatus($response->status,$response->id);
     }
 
 }

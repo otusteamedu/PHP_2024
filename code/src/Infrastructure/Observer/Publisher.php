@@ -31,7 +31,7 @@ class Publisher implements PublisherInterface
     public function notify(Response $response): void
     {
         foreach ($this->subscribers as $subscriber) {
-            $subscriber->update($response->status);
+            $subscriber->update($response);
         }
     }
 }

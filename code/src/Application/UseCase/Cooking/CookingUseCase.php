@@ -11,24 +11,25 @@ class CookingUseCase implements SubscriberInterface
 {
 
 
-    private $publisher;
+    private PublisherInterface $publisher;
 
     public function __construct(
         PublisherInterface $publisher
-    ){}
+    ){
+        $this->publisher = $publisher;
+    }
 
     public function __invoke(Response $response): void
     {
-        $this->publisher->notify($response->status);
+        $this->publisher->notify($response);
     }
 
-    public function update()
+    public function update(Response $response): void
     {
         // TODO: Implement update() method.
     }
 
-    private function handle(ObserverUpdater $updater)
-    {
 
-    }
+
+
 }
