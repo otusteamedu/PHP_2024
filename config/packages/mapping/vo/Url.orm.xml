@@ -1,0 +1,5 @@
+<doctrine-mapping>
+  <embeddable name="App\Domain\ValueObject\Url">
+    <field name="address" type="string" nullable="false" unique="true" />
+  </embeddable>
+</doctrine-mapping>
