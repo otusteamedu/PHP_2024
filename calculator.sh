@@ -2,7 +2,7 @@
 
 first_num=$1
 second_num=$2
-re_number='^[+-]?[0-9]+([.][0-9]+)?$'
+re_number='^[-]?[0-9]+([.][0-9]+)?$'
 
 if ! [[ $first_num =~ $re_number && $second_num =~ $re_number ]];
 then
