@@ -4,7 +4,3 @@ CREATE TABLE IF NOT EXISTS products (
     recipe      text NOT NULL,
     status      int NOT NULL
 );
-
-CREATE TABLE IF NOT EXISTS ingredients (
-    name        varchar(255) NOT NULL
-);

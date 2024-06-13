@@ -5,11 +5,13 @@ namespace App\Infrastructure\Strategy\HotdogStrategy\HotdogRecipe;
 
 class TexashotdogRecipe extends AbstractHotdog
 {
-    private ?array $ingredients;
+    private ?array $ingredient;
 
-    public function __construct()
+    public function __construct(
+        readonly ?string $additional
+    )
     {
-        $this->ingredients = [
+        $this->ingredient = [
             'маринованный огурец',
             'соус чили',
             'кетчуп',
@@ -20,13 +22,6 @@ class TexashotdogRecipe extends AbstractHotdog
 
     private function assign(): void
     {
-        $this->assembleBurger();
-    }
-
-    protected function assembleBurger(): void
-    {
-        foreach ($this->ingredients as $ingredients) {
-            $this->recipe.= $ingredients.', ';
-        }
+        $this->assembleHotdog($this->ingredient,$this->additional);
     }
 }

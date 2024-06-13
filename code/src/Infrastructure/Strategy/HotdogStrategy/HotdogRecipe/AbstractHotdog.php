@@ -9,7 +9,18 @@ Abstract class AbstractHotdog implements RecipeInterface
 {
     protected ?string $recipe = 'Булочка для хотдога, ';
 
-    abstract protected function assembleBurger(): void;
+    protected function assembleHotdog
+    (
+        array $ingredients,
+        ?string $additional
+    ): void
+    {
+        foreach ($ingredients as $ingredient) {
+            $this->recipe.= $ingredient.', ';
+        }
+
+        $this->recipe.= $additional?? '';
+    }
     public function getRecipe(): string
     {
         return $this->recipe;

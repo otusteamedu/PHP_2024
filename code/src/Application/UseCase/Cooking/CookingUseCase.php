@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Cooking;
 
+
 use App\Application\Interface\Observer\PublisherInterface;
 use App\Application\Interface\Observer\SubscriberInterface;
 use App\Application\UseCase\Response\Response;
+
 
 class CookingUseCase implements SubscriberInterface
 {
@@ -21,15 +23,12 @@ class CookingUseCase implements SubscriberInterface
 
     public function __invoke(Response $response): void
     {
-        $this->publisher->notify($response);
+        $this->update($response);
     }
+
 
     public function update(Response $response): void
     {
-        // TODO: Implement update() method.
+        $this->publisher->notify($response);
     }
-
-
-
-
 }

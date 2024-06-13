@@ -2,33 +2,39 @@
 
 namespace App\Application\UseCase\Cooking;
 
+use App\Application\Interface\Observer\PublisherInterface;
 use App\Application\Interface\Observer\SubscriberInterface;
 use App\Application\UseCase\Response\Response;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
 
-class StatusChangeHandler implements SubscriberInterface
+class StatusChangeHandler
 {
     private PostgreRepository $repository;
-    private Publisher $publisher;
+    public Publisher $publisher;
+    public int $status;
+    private int $id;
+    private string $recipe;
 
-    public function __construct(){
+    public function __construct(
+        Response $response
+    ){
         $this->repository = new PostgreRepository();
         $this->publisher = new Publisher();
+        $this->status = $response->status;
+        $this->id = $response->id;
+        $this->recipe = $response->recipe;
     }
 
     /**
      * @throws \Exception
      */
-    public function update(Response $response): void
+    public function nextStep(int $status): void
     {
-        $this->repository->setStatus($response->status, $response->id);
-
+        $this->repository->setStatus($status, $this->id);
+        $this->status = $status;
+        $this->publisher->notify(new Response($status,$this->recipe,$this->id));
     }
 
-    public function publish(CookingUseCase $cookingUseCase): void
-    {
-        $this->publisher->subscribe($cookingUseCase);
-        $this->publisher->notify();
-    }
+
 }

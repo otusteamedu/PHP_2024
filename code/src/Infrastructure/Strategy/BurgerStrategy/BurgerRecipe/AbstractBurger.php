@@ -9,7 +9,18 @@ Abstract class AbstractBurger implements RecipeInterface
 {
     protected ?string $recipe = 'Булочка с кунжутом, ';
 
-    abstract protected function assembleBurger(): void;
+    protected function assembleBurger
+    (
+        array $ingredients,
+        ?string $additional
+    ): void
+    {
+        foreach ($ingredients as $ingredient) {
+            $this->recipe.= $ingredient.', ';
+        }
+
+        $this->recipe.= $additional?? '';
+    }
     public function getRecipe(): string
     {
         return $this->recipe;

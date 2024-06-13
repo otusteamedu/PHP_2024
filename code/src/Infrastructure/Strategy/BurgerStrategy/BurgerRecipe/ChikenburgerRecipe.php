@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Strategy\BurgerStrategy\BurgerRecipe;
 
-class CheeseburgerRecipe extends AbstractBurger
+class ChikenburgerRecipe extends AbstractBurger
 {
     private ?array $ingredient;
 
@@ -12,10 +12,10 @@ class CheeseburgerRecipe extends AbstractBurger
     )
     {
         $this->ingredient = [
-            'маринованный огурец',
+            'листья салата',
             'сыр',
-            'бургерный соус',
-            'говяжья котлета'
+            'рейлиш соус',
+            'гуриная грудка'
         ];
         $this->assign();
     }
@@ -24,5 +24,4 @@ class CheeseburgerRecipe extends AbstractBurger
     {
         $this->assembleBurger($this->ingredient,$this->additional);
     }
-
 }
