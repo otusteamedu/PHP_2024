@@ -47,6 +47,7 @@ class Controller
             $this->repository
         );
 
+
         try {
             $product = $productRecord();
             $statusHandler = new StatusChangeHandler($product);

@@ -18,12 +18,15 @@ class Router
         $this->ingredient = $_POST['ingredient']?? null;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function runController(): string
     {
         # order = product type && type = recipe
         $strategy = ucfirst(strtolower($this->order));
         $recipe = ucfirst(strtolower($this->type));
-        $ingredient = $this->ingredient?? ucfirst(strtolower($this->ingredient));
+        $ingredient = $this->ingredient? ucfirst(strtolower($this->ingredient)): null;
         $request = new Request($strategy, $recipe, $ingredient);
 
         return (new Controller())->run($request);
