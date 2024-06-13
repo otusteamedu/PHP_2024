@@ -11,7 +11,7 @@ class TelegramService
     const TELEGRAM_TOKEN = '5377759071:AAHaTUB2-mZ9KeDZCibmLgNSZ5MNEAeGhjc';
     const TELEGRAM_CHATID = '-4236494648';
 
-    function sendMessage($text)
+    public function sendMessage($text)
     {
         $query = http_build_query([
             'chat_id' => TelegramService::TELEGRAM_CHATID,

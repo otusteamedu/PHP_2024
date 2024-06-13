@@ -11,9 +11,8 @@ try {
     if (isset($argv)) {
         $app->run($argv[1]);
     }
-    else{
+    else {
         $app->run('sender');
-
     }
 } catch (Exception $exception) {
     echo $exception->getMessage();

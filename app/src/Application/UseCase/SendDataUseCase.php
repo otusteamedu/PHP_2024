@@ -28,5 +28,4 @@ class SendDataUseCase
             throw new \Exception();
         }
     }
-
 }
