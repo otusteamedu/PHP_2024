@@ -28,7 +28,7 @@ class GenerateNewsReportController
             $generateNewsReportResponse = ($this->useCase)(new GenerateNewsReportRequest($ids));
         } catch (RequestValidationException $e) {
             return $this->jsonResponseFactory->createErrorsResponse($response, $e->getErrors(), 400);
-        }  catch (RuntimeException) {
+        } catch (RuntimeException) {
             return $this->jsonResponseFactory->createDefaultGeneralErrorResponse($response);
         }
 
