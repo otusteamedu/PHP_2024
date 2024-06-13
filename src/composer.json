@@ -1,0 +1,28 @@
+{
+    "name": "alexander-gladkov/clean-architecture",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderGladkov\\CleanArchitecture\\": "CleanArchitecture/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Gladkov"
+        }
+    ],
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.6",
+        "php-di/php-di": "^7.0",
+        "doctrine/orm": "^3.1",
+        "doctrine/dbal": "^4.0",
+        "symfony/cache": "^7.0",
+        "doctrine/migrations": "^3.7",
+        "guzzlehttp/guzzle": "^7.8",
+        "monolog/monolog": "^3.6",
+        "symfony/validator": "^7.0",
+        "slim/twig-view": "^3.4",
+        "symfony/uid": "^7.1"
+    }
+}

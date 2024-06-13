@@ -1,0 +1,16 @@
+<html lang="en">
+<head>
+    <title>News</title>
+</head>
+<body>
+    <ul>
+        {% for item in news %}
+        <li>
+            <a href="{{ item.getUrl() }}">
+                {{ item.getTitle() }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
