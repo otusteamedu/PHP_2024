@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Service\View;
 
-use AlexanderGladkov\CleanArchitecture\Domain\Entity\News;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Dto\NewsDto;
 
 class ViewService
 {
     /**
-     * @param News[] $news
+     * @param NewsDto[] $newsDtoList
      * @return array
      */
-    public function prepareNews(array $news): array
+    public function prepareNews(array $newsDtoList): array
     {
-        return array_map(function (News $news) {
+        return array_map(function (NewsDto $news) {
             return [
                 'id' => $news->getId(),
                 'createdAt' => $news->getCreatedAt()->format('d-m-Y H:i:s'),
                 'url' => $news->getUrl(),
                 'title' => $news->getTitle(),
             ];
-        }, $news);
+        }, $newsDtoList);
     }
 }

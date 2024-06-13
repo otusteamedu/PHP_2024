@@ -9,6 +9,8 @@ use AlexanderGladkov\CleanArchitecture\Domain\Repository\NewsRepositoryInterface
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
+use AlexanderGladkov\CleanArchitecture\Domain\ValueObject\Url;
+
 class NewsRepository implements NewsRepositoryInterface
 {
     public function __construct(private EntityManager $entityManager)
@@ -27,7 +29,7 @@ class NewsRepository implements NewsRepositoryInterface
 
     public function findByUrl(string $url): ?News
     {
-        return $this->getRepository()->findOneBy(['url' => $url]);
+        return $this->getRepository()->findOneBy(['url.value' => $url]);
     }
 
     public function findByIds(array $ids): array

@@ -7,10 +7,8 @@ namespace AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl;
 interface ParseUrlServiceInterface
 {
     /**
-     * @param string $url
-     * @return string
      * @throws TitleNotFoundException
      * @throws UrlNotFoundException
      */
-    public function parse(string $url): string;
+    public function parse(ParseUrlParams $params): ParseUrlResult;
 }

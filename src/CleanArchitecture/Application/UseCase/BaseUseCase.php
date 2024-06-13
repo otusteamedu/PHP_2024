@@ -4,23 +4,32 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Application\UseCase;
 
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Exception\RequestValidationException;
 use AlexanderGladkov\CleanArchitecture\Domain\Exception\ValidationException;
-use AlexanderGladkov\CleanArchitecture\Domain\Service\ValidationServiceInterface;
 
 abstract class BaseUseCase
 {
-    public function __construct(private ValidationServiceInterface $validationService)
+    public function __construct()
     {
+    }
+
+    /**
+     * @throws RequestValidationException
+     */
+    protected function checkRequestValidationErrors(array $errors)
+    {
+        if (count($errors) > 0) {
+            throw RequestValidationException::create($errors);
+        }
     }
 
     /**
      * @throws ValidationException
      */
-    protected function validateModel(object $model): void
+    protected function checkValidationErrors(array $errors)
     {
-        $errors = $this->validationService->validate($model);
         if (count($errors) > 0) {
-            throw new ValidationException($errors);
+            throw ValidationException::create($errors);
         }
     }
 }

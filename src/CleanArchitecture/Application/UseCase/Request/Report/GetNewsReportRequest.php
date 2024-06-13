@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-namespace AlexanderGladkov\CleanArchitecture\Application\UseCase\Request;
+namespace AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\Report;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 class GetNewsReportRequest
 {
-    private mixed $filename;
+    #[Assert\NotNull]
+    #[Assert\Type('string')]
+    readonly private mixed $filename;
 
     public function __construct(mixed $filename)
     {

@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Application\Service\Report;
 
-use AlexanderGladkov\CleanArchitecture\Domain\Entity\News;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Dto\NewsDto;
 
 interface NewsReportServiceInterface
 {
     /**
-     * @param News[] $news
-     * @return string filename
+     * @param NewsDto[] $newsDtoList
      */
-    public function generateReport(array $news): string;
+    public function generateReport(array $newsDtoList): GenerateReportResult;
 
     /**
      * @throws ReportFileNotFoundException
      */
-    public function getReportFullFilename($filename): string;
+    public function getReportFullFilename(GetReportFullFilenameParams $params): GetReportFullFilenameResult;
 }

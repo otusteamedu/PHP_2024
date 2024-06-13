@@ -22,6 +22,7 @@
         "guzzlehttp/guzzle": "^7.8",
         "monolog/monolog": "^3.6",
         "symfony/validator": "^7.0",
-        "slim/twig-view": "^3.4"
+        "slim/twig-view": "^3.4",
+        "symfony/uid": "^7.1"
     }
 }

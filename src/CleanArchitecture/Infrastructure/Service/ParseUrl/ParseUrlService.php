@@ -2,6 +2,8 @@
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Service\ParseUrl;
 
+use AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl\ParseUrlParams;
+use AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl\ParseUrlResult;
 use AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl\ParseUrlServiceInterface;
 use AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl\TitleNotFoundException;
 use AlexanderGladkov\CleanArchitecture\Application\Service\ParseUrl\UrlNotFoundException;
@@ -20,10 +22,10 @@ class ParseUrlService implements ParseUrlServiceInterface
      * @throws UrlNotFoundException
      * @throws TitleNotFoundException
      */
-    public function parse(string $url): string
+    public function parse(ParseUrlParams $params): ParseUrlResult
     {
         try {
-            $httpResponse = $this->httpClient->get($url);
+            $httpResponse = $this->httpClient->get($params->getUrl());
             $html = $httpResponse->getBody()->getContents();
         } catch (ConnectException) {
             throw new UrlNotFoundException('Не удалось найти страницу по данному URL');
@@ -37,6 +39,6 @@ class ParseUrlService implements ParseUrlServiceInterface
             throw new TitleNotFoundException('Не удалось найти заголовок');
         }
 
-        return $matches[1];
+        return new ParseUrlResult($matches[1]);
     }
 }

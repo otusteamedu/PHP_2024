@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Application;
 
-use AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller\NewsController;
-use AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller\ReportController;
+use AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller\News\AddNewsController;
+use AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller\News\GetNewsController;
+use AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller\News\GenerateNewsReportController;
+use AlexanderGladkov\CleanArchitecture\Infrastructure\Web\Controller\Report\GetNewsReportController;
 use Slim\App;
 
 class RoutesInitialization
@@ -16,11 +18,11 @@ class RoutesInitialization
 
     public function perform(): void
     {
-        $this->app->post('/news', [NewsController::class, 'addNews']);
-        $this->app->get('/news', [NewsController::class, 'getNews']);
-        $this->app->post('/news/generate-report', [NewsController::class, 'generateReport']);
+        $this->app->post('/news', AddNewsController::class);
+        $this->app->get('/news', GetNewsController::class);
+        $this->app->post('/news/generate-report', GenerateNewsReportController::class);
         $this->app
-            ->get('/report/news/{filename}', [ReportController::class, 'getNewsReport'])
+            ->get('/report/news/{filename}', GetNewsReportController::class)
             ->setName('getNewsReport');
     }
 }

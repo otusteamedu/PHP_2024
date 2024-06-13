@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Infrastructure\Service\Validation;
 
-use AlexanderGladkov\CleanArchitecture\Domain\Service\ValidationServiceInterface;
+use AlexanderGladkov\CleanArchitecture\Application\Service\Validation\RequestValidationServiceInterface;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\News\AddNewsRequest;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\News\GenerateNewsReportRequest;
+use AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\Report\GetNewsReportRequest;
+use AlexanderGladkov\CleanArchitecture\Domain\Entity\News;
+use AlexanderGladkov\CleanArchitecture\Domain\Service\Validation\ValidationServiceInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ValidationService implements ValidationServiceInterface
+class ValidationService implements RequestValidationServiceInterface, ValidationServiceInterface
 {
     private ViolationHelper $violationHelper;
 
@@ -16,11 +21,27 @@ class ValidationService implements ValidationServiceInterface
         $this->violationHelper = new ViolationHelper();
     }
 
-    /**
-     * @param mixed $object
-     * @return array
-     */
-    public function validate(mixed $object): array
+    public function validateAddNewsRequestRequest(AddNewsRequest $request): array
+    {
+        return $this->validateObject($request);
+    }
+
+    public function validateGetNewsReportRequest(GetNewsReportRequest $request): array
+    {
+        return $this->validateObject($request);
+    }
+
+    public function validateGenerateNewsReportRequest(GenerateNewsReportRequest $request): array
+    {
+        return $this->validateObject($request);
+    }
+
+    public function validateNews(News $news): array
+    {
+        return $this->validateObject($news);
+    }
+
+    private function validateObject(mixed $object): array
     {
         $errors = $this->validator->validate($object);
         if (count($errors) > 0) {
@@ -30,3 +51,4 @@ class ValidationService implements ValidationServiceInterface
         }
     }
 }
+

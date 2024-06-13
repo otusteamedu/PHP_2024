@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace AlexanderGladkov\CleanArchitecture\Domain\Entity;
 
+use AlexanderGladkov\CleanArchitecture\Domain\ValueObject\Url;
+use AlexanderGladkov\CleanArchitecture\Domain\ValueObject\NewsTitle;
 use DateTimeImmutable;
 use DateTimeZone;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use LogicException;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -23,17 +24,15 @@ final class News
     #[ORM\Column(name: 'created_at', type: Types::DATETIMETZ_IMMUTABLE, nullable: false)]
     private DateTimeImmutable $createdAt;
 
-    #[ORM\Column(type: Types::TEXT, unique: true, nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Url]
-    private string $url;
+    #[Assert\Valid]
+    #[ORM\Embedded(class: Url::class, columnPrefix: false)]
+    private Url $url;
 
-    #[ORM\Column(nullable: false)]
-    #[Assert\NotBlank]
-    #[Assert\Length(max:255)]
-    private string $title;
+    #[Assert\Valid]
+    #[ORM\Embedded(class: NewsTitle::class, columnPrefix: false)]
+    private NewsTitle $title;
 
-    public function __construct(string $url, string $title)
+    public function __construct(Url $url, NewsTitle $title)
     {
         $this->url = $url;
         $this->title = $title;
@@ -45,7 +44,7 @@ final class News
         return $this->id;
     }
 
-    public function getUrl(): string
+    public function getUrl(): Url
     {
         return $this->url;
     }
@@ -55,19 +54,15 @@ final class News
         return $this->createdAt;
     }
 
-    public function getTitle(): string
+    public function getTitle(): NewsTitle
     {
         return $this->title;
     }
 
-    public function editTitle(string $title): void
+    public function changeTitle(NewsTitle $title): void
     {
-        if ($this->id === null) {
-            throw new LogicException();
-        }
-
         $this->title = $title;
-        // Можно также установить дату, если считаем, что дата это момент парсинга странцы, а не дата создания
+        // Можно также установить дату, если считаем, что дата это момент парсинга страницы, а не дата создания
         // записи в БД.
         //$this->createdAt = new DateTimeImmutable('now', new DateTimeZone('UTC'));
     }

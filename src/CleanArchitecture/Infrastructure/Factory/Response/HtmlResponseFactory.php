@@ -18,6 +18,16 @@ class HtmlResponseFactory
         return $response;
     }
 
+    public function create400BadRequestResponse(Response $response, string $html): Response
+    {
+        return $this->createResponse($response, $html, 400);
+    }
+
+    public function createDefault400BadRequestResponse(Response $response): Response
+    {
+        return $this-> create400BadRequestResponse($response, '<html><body><div>Bad Request!</div></body></html>');
+    }
+
     public function create404NotFoundResponse(Response $response, string $html): Response
     {
         return $this->createResponse($response, $html, 404);

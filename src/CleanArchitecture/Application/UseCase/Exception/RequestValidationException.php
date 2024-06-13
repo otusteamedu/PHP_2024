@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace AlexanderGladkov\CleanArchitecture\Domain\Exception;
+namespace AlexanderGladkov\CleanArchitecture\Application\UseCase\Exception;
 
 use Exception;
 
-class ValidationException extends Exception
+class RequestValidationException extends Exception
 {
     private array $errors;
 

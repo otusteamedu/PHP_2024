@@ -64,10 +64,12 @@ return [
         ]);
     },
 
-    Domain\Service\ValidationServiceInterface::class =>
+    Domain\Service\Validation\ValidationServiceInterface::class =>
         DI\autowire(Infrastructure\Service\Validation\ValidationService::class),
     Domain\Repository\NewsRepositoryInterface::class =>
         DI\autowire(Infrastructure\Repository\NewsRepository::class),
+    Application\Service\Validation\RequestValidationServiceInterface::class =>
+        DI\autowire(Infrastructure\Service\Validation\ValidationService::class),
     Application\Service\ParseUrl\ParseUrlServiceInterface::class =>
         DI\autowire(Infrastructure\Service\ParseUrl\ParseUrlService::class),
     Application\Service\Report\NewsReportServiceInterface::class =>

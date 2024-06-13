@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AlexanderGladkov\CleanArchitecture\Application\UseCase\Request;
+namespace AlexanderGladkov\CleanArchitecture\Application\UseCase\Request\News;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use AlexanderGladkov\CleanArchitecture\Infrastructure\Constraint as CustomAssert;

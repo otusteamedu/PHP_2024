@@ -6,5 +6,5 @@ namespace AlexanderGladkov\CleanArchitecture\Application\Service\GenerateLink;
 
 interface GenerateLinkServiceInterface
 {
-    public function generateNewsReportFileLink(string $filename): string;
+    public function generateLinkToNewsReportToFile(GenerateLinkParams $params): GenerateLinkResult;
 }
