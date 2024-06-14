@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Alogachev\Homework\ListNode;
+use App\FractionToRecurringDecimal;
 use App\TwoListIntersection;
 
 // First list
@@ -26,3 +27,9 @@ $node6->next = $node11;
 
 $twoListIntersection = new TwoListIntersection();
 echo $twoListIntersection->getIntersectionNode($node5, $node10) . PHP_EOL;
+
+// Fraction to recurring decimal
+$numerator = 1;
+$denominator = 2;
+$fractionToRecurringDecimal = new FractionToRecurringDecimal();
+echo $fractionToRecurringDecimal->fractionToDecimal($numerator, $denominator) . PHP_EOL;
