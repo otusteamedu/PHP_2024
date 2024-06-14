@@ -8,16 +8,13 @@ use Curl\Curl;
 
 class TelegramService
 {
-    const TELEGRAM_TOKEN = '5377759071:AAHaTUB2-mZ9KeDZCibmLgNSZ5MNEAeGhjc';
-    const TELEGRAM_CHATID = '-4236494648';
-
-    public function sendMessage($text)
+    public function sendMessage($text, $telegramChatId, $telegramToken)
     {
         $query = http_build_query([
-            'chat_id' => TelegramService::TELEGRAM_CHATID,
+            'chat_id' => $telegramChatId,
             'text' => "Новое сообщение!\nТекст: " . $text,
         ]);
-        $url = "https://api.telegram.org/bot" . TelegramService::TELEGRAM_TOKEN . "/sendMessage?" . $query;
+        $url = "https://api.telegram.org/bot" . $telegramToken . "/sendMessage?" . $query;
 
         $curl = new Curl();
         $curl->get($url);

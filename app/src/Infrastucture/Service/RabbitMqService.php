@@ -14,16 +14,20 @@ class RabbitMqService implements RabbitMqServiceInterface
 {
     private AMQPStreamConnection $connection;
     private AbstractChannel $channel;
+    private string $telegramChatId;
+    private string $telegramToken;
 
-    public function __construct(private string $queue, Config $config)
+    public function __construct(private string $queue, Config $config, private TelegramService $telegramService)
     {
-        $config->configRabbitMQ();
         $this->connection = new AMQPStreamConnection(
             host: $config->getHost(),
             port: $config->getPort(),
             user: $config->getUser(),
             password: $config->getPassword()
         );
+
+        $this->telegramChatId = $config->getTelegramChatId();
+        $this->telegramToken = $config->getTelegramToken();
 
         $this->channel = $this->connection->channel();
         $this->channel->queue_declare($this->queue, false, false, false, false);
@@ -37,11 +41,10 @@ class RabbitMqService implements RabbitMqServiceInterface
 
     public function consume()
     {
-        $telegramService = new TelegramService();
-        $callback = function ($message) use ($telegramService) {
+        $callback = function ($message) {
             $messageJson = json_decode($message->body);
             $data = $messageJson->data;
-            $telegramService->sendMessage($data);
+            $this->telegramService->sendMessage($data, $this->telegramChatId, $this->telegramToken);
         };
 
         while (true) {
