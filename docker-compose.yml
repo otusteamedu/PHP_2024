@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  redis:
+    image: 'redis'
+    ports:
+      - "${REDIS_PORT}:6379"
+    links:
+      - php-fpm
+  nginx:
+    image: 'nginx'
+    ports:
+      - "${NGINX}:80"
+    links:
+      - php-fpm
+  php-fpm:
+    image: 'bitnami/php-fpm'
+    ports:
+      - "${PHP_FPM}:9000"
+  memcached:
+    image: 'memcached'
+    ports:
+      - "${MEMCACHED}:11211"
+    links:
+      - php-fpm
+  mysql:
+    image: 'mysql'
+    ports:
+      - "${MYSQL}:3306"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
