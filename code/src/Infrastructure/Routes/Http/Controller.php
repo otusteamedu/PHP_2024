@@ -12,6 +12,8 @@ use App\Application\UseCase\Request\Request;
 use App\Infrastructure\Config\Config;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
+use Exception;
+use RuntimeException;
 
 
 class Controller
@@ -22,11 +24,7 @@ class Controller
     private PublisherInterface $publisher;
     private Config $config;
     private const COOKING_STEPS = 'Cooking_steps';
-    private string $strategyName;
     private string $strategyPath;
-    private string $recipeName;
-    private string $recipePath;
-    private ?string $ingredients = null;
 
     public function __construct(){
         $this->repository = new PostgreRepository();
@@ -36,17 +34,21 @@ class Controller
 
     public function run(Request $request): string
     {
-        $this->prepareParams($request);
+        if (!$this->getStrategy($request)) {
 
-        if (!$this->getStrategy()) {
-            http_response_code(404);
-            return "Такого продукта не существует";
+            $adapter = $this->getAdapter($request);
+            if ($adapter) {
+                $this->strategy = $adapter;
+            } else {
+                http_response_code(404);
+                return  'Такого продукта не существует';
+            }
         }
+        # Создаем запись в БД о продукте
         $productRecord = new CreateProductRecordUseCase(
             $this->strategy,
             $this->repository
         );
-
 
         try {
             $product = $productRecord();
@@ -59,52 +61,71 @@ class Controller
                 $this->publisher->subscribe(new $stepClass($statusHandler));
             }
             $cooking = new CookingUseCase($this->publisher);
+
+            # Подписываем Cooking на изменение статуса приготовления
             $statusHandler->publisher->subscribe($cooking);
 
              # Запускаем приготовление
             $cooking($product);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             http_response_code(401);
             return $e->getMessage();
         }
 
-        return "Заказ приготовлен. Ждем Вас снова!";
+        return "Ваш " . $request->recipe . " готов. Ждем Вас снова!";
     }
 
 
     /**
+     * @param Request $request
      * @return bool
      */
-    private function getStrategy(): bool
+    private function getStrategy(Request $request): bool
     {
-        if (!$this->getRecipe()) {
+        $this->strategyPath = getenv("INFRASTRUCTURE_PATH") . "Strategy\\" . $request->type . "Strategy\\";
+        if (!$this->getRecipe($request)) {
             return false;
         }
-        $this->strategy = new ($this->strategyPath.$this->strategyName)($this->recipe);
-        return true;
-    }
-
-    private function getRecipe(): bool
-    {
-        $recipeClass = $this->recipePath.$this->recipeName;
-        if (!class_exists($recipeClass)) {
-            return false;
-        }
-        $this->recipe = new $recipeClass($this->ingredients);
+        $strategyName = $request->type . "Strategy";
+        $this->strategy = new ($this->strategyPath. $strategyName)($this->recipe);
         return true;
     }
 
     /**
      * @param Request $request
-     * @return void
+     * @return bool
      */
-    private function prepareParams(Request $request): void
+    private function getRecipe(Request $request): bool
     {
-        $this->strategyPath = getenv("INFRASTRUCTURE_PATH") . "Strategy\\" . $request->type . "Strategy\\";
-        $this->strategyName = $request->type . "Strategy";
-        $this->recipeName = $request->recipe . 'Recipe';
-        $this->recipePath = $this->strategyPath . $request->type . "Recipe\\";
-        $this->ingredients = $request->ingredient;
+        $recipeName = $request->recipe . 'Recipe';
+        $recipePath = $this->strategyPath.$request->type."Recipe\\";
+        $ingredients = $request->ingredient;
+        $recipeClass = $recipePath . $recipeName;
+        if (!class_exists($recipeClass)) {
+            return false;
+        }
+        $this->recipe = new $recipeClass($ingredients);
+        return true;
+    }
+
+    /**
+     * @param Request $request
+     * @return StrategyInterface|false
+     */
+
+    private function getAdapter(Request $request): StrategyInterface|false
+    {
+        $adapterPath = getenv("INFRASTRUCTURE_PATH") . "Adapter\PizzaAdapter\\";
+        $strategyClass = $adapterPath."PizzaAdapter";
+        if (!class_exists($strategyClass)) {
+            return false;
+        }
+        $recipeClass = $adapterPath.$request->recipe."Recipe";
+        if (!class_exists($recipeClass)) {
+            return false;
+        }
+        $this->recipe = new $recipeClass();
+        return new $strategyClass($this->recipe);
     }
 }

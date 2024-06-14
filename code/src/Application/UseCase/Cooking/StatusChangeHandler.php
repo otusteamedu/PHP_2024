@@ -8,6 +8,9 @@ use App\Application\UseCase\Response\Response;
 use App\Infrastructure\Builder\EventBuilder;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
+use Exception;
+use Random\RandomException;
+use RuntimeException;
 
 class StatusChangeHandler
 {
@@ -29,17 +32,22 @@ class StatusChangeHandler
     }
 
     /**
-     * @throws \Exception
+     * @throws RuntimeException|RandomException
+     * @throws Exception
      */
     public function nextStep(int $status): void
     {
         $this->repository->setStatus($status, $this->id);
         $this->status = $status;
+
+        # Рандомное событие, при котором заказ испорчен
         $fail = random_int(0,10);
-        if ($fail < 2) {
-            throw new \Exception("Приготовление прервано");
+        if ($fail === 5) {
+            $this->repository->delete($this->id);
+            throw new RuntimeException("Приготовление прервано.");
         }
-        else $this->publisher->notify(new Response($status,$this->recipe,$this->id));
+
+        $this->publisher->notify(new Response($status, $this->recipe, $this->id));
     }
 
 

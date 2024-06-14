@@ -7,14 +7,14 @@ use App\Infrastructure\Routes\Http\Controller;
 
 class Router
 {
-    private ?string $order;
+    private ?string $recipe;
     private ?string $type;
     private ?string $ingredient;
 
     public function __construct()
     {
-        $this->order = $_POST['order']?? null;
         $this->type = $_POST['type']?? null;
+        $this->recipe = $_POST['recipe']?? null;
         $this->ingredient = $_POST['ingredient']?? null;
     }
 
@@ -24,8 +24,8 @@ class Router
     public function runController(): string
     {
         # order = product type && type = recipe
-        $strategy = ucfirst(strtolower($this->order));
-        $recipe = ucfirst(strtolower($this->type));
+        $strategy = ucfirst(strtolower($this->type));
+        $recipe = ucfirst(strtolower($this->recipe));
         $ingredient = $this->ingredient? ucfirst(strtolower($this->ingredient)): null;
         $request = new Request($strategy, $recipe, $ingredient);
 
