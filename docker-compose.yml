@@ -1,19 +1,21 @@
 version: "3.8"
 
 services:
-  php-fpm:
-    build: docker/php-fpm
-    container_name: ${PHP_FPM_CONTAINER_NAME}
+  php-cli:
+    build: docker/php-cli
+    container_name: ${PHP_CLI_CONTAINER_NAME}
     volumes:
       - ./app:/app
       - ./var/php-fpm/log:/var/logs/php
-      - ./dump/books.json:/elasticsearch/books.json
-      - ./shell/install.sh:/elasticsearch/install.sh
+      - ./dump/books.json:/app/elasticsearch/books.json
+      - ./shell/install.sh:/app/elasticsearch/install.sh
     env_file: .env
     depends_on:
       - elasticsearch
     networks:
       - otus-network
+    stdin_open: true
+    tty: true
   elasticsearch:
     image: elasticsearch:8.14.0
     container_name: ${ELASTICSEARCH_CONTAINER_NAME}
