@@ -1,0 +1,13 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Kagirova\\Hw5\\": "src/"
+        }
+    },
+    "name": "kagirova/hw5",
+    "require": {
+        "ext-sockets": "*",
+        "ext-readline": "*"
+    },
+    "type": "project"
+}
