@@ -10,3 +10,6 @@ WORKDIR /data
 EXPOSE 80
 
 CMD [ "nginx", "-g", "daemon off;" ]
+
+# docker build -t sf/nginx
+# docker run -d -p 80:80 sf/nginx
