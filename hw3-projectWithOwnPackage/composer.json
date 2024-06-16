@@ -1,0 +1,18 @@
+{
+    "name": "ulolop/hw3-project-with-own-package",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Ulolop\\Hw3ProjectWithOwnPackage\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yuri Serikov",
+            "email": "ys@inmoloko.ru"
+        }
+    ],
+    "require": {
+        "ulolop/random-package": "^1.0"
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "df3990744fb3b0d12a0cac53f7f6a07a",
+    "packages": [
+        {
+            "name": "ulolop/random-package",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ulolop/randomPackage.git",
+                "reference": "e2475d092bc8802e79e3595d501c78612278d6d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ulolop/randomPackage/zipball/e2475d092bc8802e79e3595d501c78612278d6d6",
+                "reference": "e2475d092bc8802e79e3595d501c78612278d6d6",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ulolop\\RandomPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yuri Serikov",
+                    "email": "ys@inmoloko.ru"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/ulolop/randomPackage/issues",
+                "source": "https://github.com/ulolop/randomPackage/tree/1.1.0"
+            },
+            "time": "2024-06-16T18:54:36+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
