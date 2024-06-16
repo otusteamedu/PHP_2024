@@ -6,6 +6,7 @@ namespace AlexanderGladkov\SocketChat\Client;
 
 use AlexanderGladkov\SocketChat\Config\Config;
 use AlexanderGladkov\SocketChat\Socket\ClientSocket;
+use Generator;
 
 class Client
 {
@@ -13,21 +14,24 @@ class Client
     {
     }
 
-    public function run(): void
+    /**
+     * @return Generator<string>
+     */
+    public function run(): Generator
     {
-        echo 'Client started' . PHP_EOL;
+        yield 'Client started' . PHP_EOL;
         $clientSocket = new ClientSocket($this->config->getSocketPath());
         while (true) {
             $message = readline('Сообщение: ');
             $clientSocket->write($message);
             $answer = $clientSocket->read($this->config->getMessageMaxLength());
-            echo $answer . PHP_EOL;
+            yield $answer . PHP_EOL;
             if ($message === $this->config->getStopWord()) {
                 break;
             }
         }
 
         $clientSocket->release();
-        echo 'Client stopped' . PHP_EOL;
+        yield 'Client stopped' . PHP_EOL;
     }
 }

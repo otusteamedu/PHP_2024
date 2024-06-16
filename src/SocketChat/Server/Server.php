@@ -6,6 +6,7 @@ namespace AlexanderGladkov\SocketChat\Server;
 
 use AlexanderGladkov\SocketChat\Config\Config;
 use AlexanderGladkov\SocketChat\Socket\ServerSocket;
+use Generator;
 
 class Server
 {
@@ -13,21 +14,24 @@ class Server
     {
     }
 
-    public function run(): void
+    /**
+     * @return Generator<string>
+     */
+    public function run(): Generator
     {
-        echo 'Server started' . PHP_EOL;
+        yield 'Server started' . PHP_EOL;
         $serverSocket = new ServerSocket($this->config->getSocketPath());
         while (true) {
             $message = $serverSocket->read($this->config->getMessageMaxLength());
             $messageLength = strlen($message);
             $serverSocket->write("Получено $messageLength байт от клиента");
-            echo $message . PHP_EOL;
+            yield $message . PHP_EOL;
             if ($message === $this->config->getStopWord()) {
                 break;
             }
         }
 
         $serverSocket->release();
-        echo 'Server stopped' . PHP_EOL;
+        yield 'Server stopped' . PHP_EOL;
     }
 }

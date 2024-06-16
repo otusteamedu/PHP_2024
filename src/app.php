@@ -8,7 +8,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 use AlexanderGladkov\SocketChat\Application\Application;
 
 try {
-    (new Application($argv))->run();
+    foreach ((new Application($argv))->run() as $line) {
+        echo $line;
+    }
 } catch (Throwable $e) {
     echo $e->getMessage() . PHP_EOL;
 }

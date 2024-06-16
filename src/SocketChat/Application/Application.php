@@ -7,6 +7,7 @@ namespace AlexanderGladkov\SocketChat\Application;
 use AlexanderGladkov\SocketChat\Config\Config;
 use AlexanderGladkov\SocketChat\Client\Client;
 use AlexanderGladkov\SocketChat\Server\Server;
+use Generator;
 use LogicException;
 use InvalidArgumentException;
 
@@ -30,20 +31,18 @@ class Application
     }
 
     /**
-     * @return void
+     * @return Generator<string>
      * @throws \Exception
      */
-    public function run(): void
+    public function run(): Generator
     {
         $config = new Config(__DIR__ . '/../../config/app.ini');
         if ($this->mode === Mode::Client) {
-            (new Client($config))->run();
-            return;
+            return (new Client($config))->run();
         }
 
         if ($this->mode === Mode::Server) {
-            (new Server($config))->run();
-            return;
+            return (new Server($config))->run();
         }
 
         throw new LogicException();
