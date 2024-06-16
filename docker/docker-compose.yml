@@ -1,0 +1,55 @@
+services:
+  nginx:
+    container_name: otus-nginx
+    image: nginx:stable-alpine
+    working_dir: /var/www/web
+    ports:
+      - "80:80"
+    volumes:
+      - ../web:/var/www/web
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+    networks:
+      - otus-network
+
+  fpm:
+    build: ./fpm
+    volumes:
+      - ../web:/var/www/web
+    container_name: otus-fpm
+    networks:
+      - otus-network
+
+  mysql:
+    container_name: otus-mysql
+    image: mysql:8.0
+    volumes:
+      - otus_mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=otus
+      - MYSQL_DATABASE=otus
+      - MYSQL_PASSWORD=otus
+    ports:
+      - "3306:3306"
+    networks:
+      - otus-network
+  redis:
+    container_name: otus-redis
+    image: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - otus-network
+  memcached:
+    container_name: otus-memcached
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    networks:
+      - otus-network
+
+volumes:
+  otus_mysql_data:
+
+networks:
+  otus-network:
+    driver: bridge
