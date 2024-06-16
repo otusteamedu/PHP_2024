@@ -19,7 +19,6 @@ class Solution
         while ($a->next !== null) {
             $lengthA++;
             $a = $a->next;
-
         }
 
         $lengthB = 1;
@@ -48,7 +47,7 @@ class Solution
             }
         }
 
-        while($a !== $b) {
+        while ($a !== $b) {
             $a = $a->next;
             $b = $b->next;
         }
