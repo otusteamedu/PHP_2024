@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "timirey/indicators",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/timirey/indicators.git",
-                "reference": "c9eacf5f394419c8d8de7d4fb2a1106732d859c9"
+                "reference": "3691b05df82f580a516ee50499717d79f419f9ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/timirey/indicators/zipball/c9eacf5f394419c8d8de7d4fb2a1106732d859c9",
-                "reference": "c9eacf5f394419c8d8de7d4fb2a1106732d859c9",
+                "url": "https://api.github.com/repos/timirey/indicators/zipball/3691b05df82f580a516ee50499717d79f419f9ee",
+                "reference": "3691b05df82f580a516ee50499717d79f419f9ee",
                 "shasum": ""
             },
             "require": {
@@ -42,9 +42,9 @@
             "description": "Most popular trading indicators.",
             "support": {
                 "issues": "https://github.com/timirey/indicators/issues",
-                "source": "https://github.com/timirey/indicators/tree/1.0.1"
+                "source": "https://github.com/timirey/indicators/tree/1.0.2"
             },
-            "time": "2024-06-17T07:25:21+00:00"
+            "time": "2024-06-17T07:58:18+00:00"
         }
     ],
     "packages-dev": [],
