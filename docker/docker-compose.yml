@@ -25,9 +25,9 @@ services:
     volumes:
       - otus_mysql_data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=otus
-      - MYSQL_DATABASE=otus
-      - MYSQL_PASSWORD=otus
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     ports:
       - "3306:3306"
     networks:
