@@ -14,6 +14,6 @@
     }
   ],
   "require": {
-    "yulia633/trim-string": "^1.0"
+    "yulia633/trim-string": "^v2.0.0"
   }
 }
