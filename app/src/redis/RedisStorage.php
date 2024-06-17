@@ -33,20 +33,27 @@ class RedisStorage implements EventStorage
     }
 
     /**
+     * @param int $start
+     * @param int $end
      * @return array
      * @throws RedisException
      */
-    public function getEvents(): array
+    public function getEvents(array &$result = [], int $start = 0, int $end = 10): array
     {
-        $eventData = $this->redis->zRevRange(self::KEY, 0, -1);
+        $eventData = $this->redis->zRevRange(self::KEY, $start, $end);
+
         if (empty($eventData)) {
-            return [];
+            return $result;
         }
 
-        return array_map(function ($encodedEvent) {
+        $prepare = array_map(function ($encodedEvent) {
             $event = json_decode($encodedEvent, true);
             return new Event($event['priority'], $event['conditions'], $event['event']);
         }, $eventData);
+
+        $result = array_merge($result, $prepare);
+
+        return $this->getEvents($result, $start + 10, $start + 10);
     }
 
     /**

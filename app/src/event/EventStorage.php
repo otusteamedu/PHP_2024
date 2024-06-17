@@ -12,7 +12,7 @@ interface EventStorage
      * @psalm-return list<Event>
      * @return array
      */
-    public function getEvents(): array;
+    public function getEvents(array &$result = [], int $start = 0, int $end = 10): array;
 
     public function clearEvents(): void;
 }
