@@ -1,0 +1,21 @@
+                                                 QUERY PLAN
+-------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=38.59..38.60 rows=1 width=8) (actual time=0.008..0.014 rows=1 loops=1)
+   ->  Seq Scan on tickets t  (cost=0.00..38.58 rows=6 width=0) (actual time=0.006..0.012 rows=0 loops=1)
+         Filter: ((purchase < CURRENT_TIMESTAMP) AND (purchase >= (CURRENT_TIMESTAMP - '7 days'::interval)))
+ Planning Time: 0.416 ms
+ Execution Time: 0.051 ms
+(5 rows)
+
+                                                             QUERY PLAN
+После добавление индека tickets_purchase_index для tickets.purchase значительно уменьшили стоимость запроса
+-------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=13.69..13.70 rows=1 width=8) (actual time=0.027..0.032 rows=1 loops=1)
+   ->  Bitmap Heap Scan on tickets t  (cost=4.14..13.67 rows=6 width=0) (actual time=0.024..0.030 rows=0 loops=1)
+         Recheck Cond: ((purchase >= (CURRENT_TIMESTAMP - '7 days'::interval)) AND (purchase < CURRENT_TIMESTAMP))
+         ->  Bitmap Index Scan on tickets_purchase_index  (cost=0.00..4.14 rows=6 width=0) (actual time=0.020..0.026 rows=0 loops=1)
+               Index Cond: ((purchase >= (CURRENT_TIMESTAMP - '7 days'::interval)) AND (purchase < CURRENT_TIMESTAMP))
+ Planning Time: 0.534 ms
+ Execution Time: 0.091 ms
+(7 rows)
+

@@ -1,0 +1,1 @@
+EXPLAIN ANALYZE SELECT st.row, st.number, CASE WHEN t.purchase IS NULL THEN '-' ELSE '+' END AS status FROM sessions s INNER JOIN seats st ON s.hall_id = st.hall_id AND s.id = 1 LEFT JOIN tickets t ON st.id = t.seat_id AND t.session_id = s.id ORDER BY st.row, st.number;

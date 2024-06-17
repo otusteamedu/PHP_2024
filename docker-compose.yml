@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgresql:
+    build: docker/postgres
+    container_name: ${POSTGRESQL_CONTAINER_NAME}
+    volumes:
+      - ./docker/postgres/sql:/sql
+    env_file:
+      - .env
+    networks:
+      - outus
+
+networks:
+  outus:
+    driver: bridge

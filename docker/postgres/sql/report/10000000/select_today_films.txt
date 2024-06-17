@@ -1,0 +1,23 @@
+                                                                QUERY PLAN                                                                 
+-------------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on movies m  (cost=71.84..211.42 rows=3039 width=40) (actual time=0.503..1.158 rows=3020 loops=1)
+   Recheck Cond: (release_date <= CURRENT_TIMESTAMP)
+   Heap Blocks: exact=94
+   ->  Bitmap Index Scan on index__movies__release_date  (cost=0.00..71.08 rows=3039 width=0) (actual time=0.473..0.473 rows=3020 loops=1)
+         Index Cond: (release_date <= CURRENT_TIMESTAMP)
+ Planning Time: 0.819 ms
+ Execution Time: 1.317 ms
+(7 rows)
+
+                                                               QUERY PLAN
+После добавление индека movies_release_date_index для movies.release_date уменьшили стоимость запроса
+-----------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on movies m  (cost=59.84..199.42 rows=3039 width=40) (actual time=0.407..1.138 rows=3020 loops=1)
+   Recheck Cond: (release_date <= CURRENT_TIMESTAMP)
+   Heap Blocks: exact=94
+   ->  Bitmap Index Scan on movies_release_date_index  (cost=0.00..59.08 rows=3039 width=0) (actual time=0.383..0.383 rows=3020 loops=1)
+         Index Cond: (release_date <= CURRENT_TIMESTAMP)
+ Planning Time: 0.562 ms
+ Execution Time: 1.335 ms
+(7 rows)
+

@@ -1,0 +1,1 @@
+EXPLAIN ANALYZE  SELECT m.title, s.start_time FROM movies m INNER JOIN sessions s ON m.id = s.movie_id AND s.start_time >= CURRENT_TIMESTAMP AND s.start_time < CURRENT_TIMESTAMP + '1 day'::interval ORDER BY s.start_time;

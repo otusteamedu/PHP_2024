@@ -1,0 +1,35 @@
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=250.51..250.57 rows=24 width=32) (actual time=0.188..0.190 rows=24 loops=1)
+   Sort Key: s.start_time
+   Sort Method: quicksort  Memory: 26kB
+   ->  Nested Loop  (cost=4.83..249.96 rows=24 width=32) (actual time=0.041..0.148 rows=24 loops=1)
+         ->  Bitmap Heap Scan on sessions s  (cost=4.54..82.70 rows=24 width=12) (actual time=0.028..0.031 rows=24 loops=1)
+               Recheck Cond: ((start_time >= CURRENT_TIMESTAMP) AND (start_time < (CURRENT_TIMESTAMP + '1 day'::interval)))
+               Heap Blocks: exact=1
+               ->  Bitmap Index Scan on start_hall_id  (cost=0.00..4.54 rows=24 width=0) (actual time=0.024..0.025 rows=24 loops=1)
+                     Index Cond: ((start_time >= CURRENT_TIMESTAMP) AND (start_time < (CURRENT_TIMESTAMP + '1 day'::interval)))
+         ->  Index Scan using movies_pkey on movies m  (cost=0.29..6.97 rows=1 width=28) (actual time=0.004..0.004 rows=1 loops=24)
+               Index Cond: (id = s.movie_id)
+ Planning Time: 0.917 ms
+ Execution Time: 0.249 ms
+(13 rows)
+
+                                                                   QUERY PLAN                                                                   
+С таким количеством данных данный индекс ничего не дает
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=250.51..250.57 rows=24 width=32) (actual time=0.185..0.188 rows=23 loops=1)
+   Sort Key: s.start_time
+   Sort Method: quicksort  Memory: 26kB
+   ->  Nested Loop  (cost=4.83..249.96 rows=24 width=32) (actual time=0.036..0.150 rows=23 loops=1)
+         ->  Bitmap Heap Scan on sessions s  (cost=4.54..82.70 rows=24 width=12) (actual time=0.019..0.022 rows=23 loops=1)
+               Recheck Cond: ((start_time >= CURRENT_DATE) AND (start_time < (CURRENT_DATE + '1 day'::interval)))
+               Heap Blocks: exact=1
+               ->  Bitmap Index Scan on sessions_start_time_index  (cost=0.00..4.54 rows=24 width=0) (actual time=0.014..0.015 rows=23 loops=1)
+                     Index Cond: ((start_time >= CURRENT_DATE) AND (start_time < (CURRENT_DATE + '1 day'::interval)))
+         ->  Index Scan using movies_pkey on movies m  (cost=0.29..6.97 rows=1 width=28) (actual time=0.005..0.005 rows=1 loops=23)
+               Index Cond: (id = s.movie_id)
+ Planning Time: 1.029 ms
+ Execution Time: 0.260 ms
+(13 rows)
+

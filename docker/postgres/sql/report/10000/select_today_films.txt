@@ -1,0 +1,21 @@
+                                                QUERY PLAN                                                 
+-----------------------------------------------------------------------------------------------------------
+ Seq Scan on movies m  (cost=0.00..244.00 rows=2928 width=40) (actual time=0.008..1.970 rows=2912 loops=1)
+   Filter: (release_date <= CURRENT_TIMESTAMP)
+   Rows Removed by Filter: 7088
+ Planning Time: 0.432 ms
+ Execution Time: 2.106 ms
+(5 rows)
+
+                                                               QUERY PLAN
+  После добавление индека movies_release_date_index для movies.release_date значительно уменьшили стоимость запроса
+-----------------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on movies m  (cost=54.98..192.90 rows=2928 width=40) (actual time=0.401..0.975 rows=2912 loops=1)
+   Recheck Cond: (release_date <= CURRENT_TIMESTAMP)
+   Heap Blocks: exact=94
+   ->  Bitmap Index Scan on movies_release_date_index  (cost=0.00..54.25 rows=2928 width=0) (actual time=0.381..0.382 rows=2912 loops=1)
+         Index Cond: (release_date <= CURRENT_TIMESTAMP)
+ Planning Time: 0.612 ms
+ Execution Time: 1.124 ms
+(7 rows)
+

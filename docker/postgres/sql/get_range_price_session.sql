@@ -1,0 +1,1 @@
+EXPLAIN ANALYZE SELECT MAX(t.price), MIN(t.price) FROM tickets t WHERE t.session_id = 33;
