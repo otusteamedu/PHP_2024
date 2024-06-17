@@ -16,9 +16,14 @@ class Credit
 
     public static \PDO $connection;
 
-    public function __construct()
+    private static $prepareFindById;
+
+    public function __construct(\PDO $pdo)
     {
-        self::$connection = MysqlConnection::getInstance();
+        self::$connection = $pdo;
+
+        $sql = "SELECT * FROM credit WHERE id = :id";
+        self::$prepareFindById = self::$connection->prepare($sql);
     }
 
     public function __get(string $prop): mixed
@@ -34,11 +39,9 @@ class Credit
 
     public function findById(int $id): ?self
     {
-        $sql = "SELECT * FROM credit WHERE id = :id";
-        $result = self::$connection->prepare($sql);
-        $result->bindParam(':id', $id, \PDO::PARAM_INT);
-        $result->execute();
-        return $result->fetchObject(__CLASS__);
+        self::$prepareFindById->bindParam(':id', $id, \PDO::PARAM_INT);
+        self::$prepareFindById->execute();
+        return  self::$prepareFindById->fetchObject(__CLASS__);
     }
 
     public function findByBankId(int $bankId): ?self

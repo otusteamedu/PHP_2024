@@ -14,11 +14,11 @@ class Bank
 
     public static \PDO $connection;
 
-    public static array $credits;
+    public array $credits;
 
-    public function __construct()
+    public function __construct(\PDO $pdo)
     {
-        self::$connection = MysqlConnection::getInstance();
+        self::$connection = $pdo;
     }
 
     public function __get(string $prop): mixed
@@ -74,10 +74,10 @@ class Bank
 
     public function getCredits()
     {
-        if (empty(self::$credits)) {
-            self::$credits = (new Credit())->findById($this->id);
+        if (empty($this->credits)) {
+            $this->credits = (new Credit(self::$connection))->findById($this->id);
         }
 
-        return self::$credits;
+        return $this->credits;
     }
 }
