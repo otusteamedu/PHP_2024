@@ -9,6 +9,7 @@ use App\Application\UseCase\CreateProductRecord\CreateProductRecordUseCase;
 use App\Application\UseCase\Cooking\CookingUseCase;
 use App\Application\UseCase\Cooking\StatusChangeHandler;
 use App\Application\UseCase\Request\Request;
+use App\Infrastructure\Builder\RecipeBuilder;
 use App\Infrastructure\Config\Config;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
@@ -21,6 +22,7 @@ class Controller
     private PostgreRepository $repository;
     private StrategyInterface $strategy;
     private RecipeInterface $recipe;
+    private RecipeBuilder $builder;
     private PublisherInterface $publisher;
     private Config $config;
     private const COOKING_STEPS = 'Cooking_steps';
@@ -29,6 +31,7 @@ class Controller
     public function __construct(){
         $this->repository = new PostgreRepository();
         $this->publisher = new Publisher();
+        $this->builder = new RecipeBuilder();
         $this->config = new Config();
     }
 
@@ -44,9 +47,17 @@ class Controller
                 return  'Такого продукта не существует';
             }
         }
+
+        $this->builder->setType($this->strategy->getType());
+        $this->builder->setBaseRecept($this->strategy->getRecipe());
+        $this->builder->setAdditional($request->ingredient);
+        $this->builder->setComment($request->comment);
+        $product = $this->builder->build();
+
+
         # Создаем запись в БД о продукте
         $productRecord = new CreateProductRecordUseCase(
-            $this->strategy,
+            $product,
             $this->repository
         );
 
@@ -73,7 +84,13 @@ class Controller
             return $e->getMessage();
         }
 
-        return "Ваш " . $request->recipe . " готов. Ждем Вас снова!";
+        $return = "Ваш " . $request->recipe;
+        if (!is_null($this->builder->getAdditional())) $return .= " с " . $this->builder->getAdditional();
+        $return .= " готов. ";
+        if (!is_null($this->builder->getComment())) $return .= "Ваше пожелание '" . $this->builder->getComment() ."' выполнено.";
+        $return .= "  Ждем Вас снова!";
+
+        return $return;
     }
 
 

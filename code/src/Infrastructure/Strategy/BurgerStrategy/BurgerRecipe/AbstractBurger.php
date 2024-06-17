@@ -11,15 +11,12 @@ Abstract class AbstractBurger implements RecipeInterface
 
     protected function assembleBurger
     (
-        array $ingredients,
-        ?string $additional
+        array $ingredients
     ): void
     {
         foreach ($ingredients as $ingredient) {
             $this->recipe.= $ingredient.', ';
         }
-
-        $this->recipe.= $additional?? '';
     }
     public function getRecipe(): string
     {

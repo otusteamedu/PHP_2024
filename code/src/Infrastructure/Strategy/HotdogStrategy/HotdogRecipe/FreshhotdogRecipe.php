@@ -7,9 +7,7 @@ class FreshhotdogRecipe extends AbstractHotdog
 {
     private ?array $ingredient;
 
-    public function __construct(
-        readonly ?string $additional
-    )
+    public function __construct()
     {
         $this->ingredient = [
             'маринованный огурец',
@@ -23,7 +21,7 @@ class FreshhotdogRecipe extends AbstractHotdog
 
     private function assign(): void
     {
-        $this->assembleHotdog($this->ingredient,$this->additional);
+        $this->assembleHotdog($this->ingredient);
     }
 
 }

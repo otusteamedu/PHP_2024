@@ -9,9 +9,7 @@ class CustomhotdogRecipe extends AbstractBurger
 {
     private ?array $ingredients;
 
-    public function __construct(
-        readonly ?string $additional
-    )
+    public function __construct()
     {
         $this->ingredients = [];
         $this->assign();
@@ -19,7 +17,7 @@ class CustomhotdogRecipe extends AbstractBurger
 
     private function assign(): void
     {
-        $this->assembleBurger($this->ingredients,$this->additional);
+        $this->assembleBurger($this->ingredients);
     }
 
 }

@@ -7,16 +7,19 @@ class Product
     private int $id;
     private string $type;
     private string $recipe;
+    private ?string $comment;
     private int $status;
 
 
     public function __construct(
         string $type,
         string $recipe,
+        string $comment = null,
         int $status = 1
     ){
         $this->type = $type;
         $this->recipe = $recipe;
+        $this->comment = $comment;
         $this->status = $status;
     }
 
@@ -49,5 +52,17 @@ class Product
     {
         $this->status = $status;
     }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): void
+    {
+        $this->comment = $comment;
+    }
+
+
 
 }

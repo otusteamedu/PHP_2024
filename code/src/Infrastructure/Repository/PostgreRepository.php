@@ -31,10 +31,11 @@ class PostgreRepository implements RepositoryInterface
     {
         try {
             $query = pg_query($this->init,
-                "INSERT INTO products (type, recipe, status) 
+                "INSERT INTO products (type, recipe, comment, status) 
                 VALUES (
                         '".$product->getType()."',
                          '".$product->getRecipe()."',
+                         '".$product->getComment()."',
                          '".$product->getStatus()."'
                 ) RETURNING id;");
             $id = pg_fetch_row($query);

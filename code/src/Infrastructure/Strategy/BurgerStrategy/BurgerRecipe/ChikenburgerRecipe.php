@@ -7,9 +7,7 @@ class ChikenburgerRecipe extends AbstractBurger
 {
     private ?array $ingredient;
 
-    public function __construct(
-        readonly ?string $additional
-    )
+    public function __construct()
     {
         $this->ingredient = [
             'листья салата',
@@ -22,6 +20,6 @@ class ChikenburgerRecipe extends AbstractBurger
 
     private function assign(): void
     {
-        $this->assembleBurger($this->ingredient,$this->additional);
+        $this->assembleBurger($this->ingredient);
     }
 }

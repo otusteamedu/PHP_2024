@@ -5,7 +5,7 @@ namespace App\Application\UseCase\Cooking;
 use App\Application\Interface\Observer\PublisherInterface;
 use App\Application\Interface\Observer\SubscriberInterface;
 use App\Application\UseCase\Response\Response;
-use App\Infrastructure\Builder\EventBuilder;
+use App\Infrastructure\Builder\RecipeBuilder;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
 use Exception;

@@ -10,12 +10,14 @@ class Router
     private ?string $recipe;
     private ?string $type;
     private ?string $ingredient;
+    private ?string $comment;
 
     public function __construct()
     {
         $this->type = $_POST['type']?? null;
         $this->recipe = $_POST['recipe']?? null;
         $this->ingredient = $_POST['ingredient']?? null;
+        $this->comment = $_POST['comment']?? null;
     }
 
     /**
@@ -27,7 +29,8 @@ class Router
         $strategy = ucfirst(strtolower($this->type));
         $recipe = ucfirst(strtolower($this->recipe));
         $ingredient = $this->ingredient? ucfirst(strtolower($this->ingredient)): null;
-        $request = new Request($strategy, $recipe, $ingredient);
+        $comment = $this->comment?? null;
+        $request = new Request($strategy, $recipe, $ingredient,$comment);
 
         return (new Controller())->run($request);
     }

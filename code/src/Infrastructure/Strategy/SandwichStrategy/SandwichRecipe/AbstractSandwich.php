@@ -11,15 +11,12 @@ Abstract class AbstractSandwich implements RecipeInterface
 
     protected function assembleSandwich
     (
-        array $ingredients,
-        ?string $additional
+        array $ingredients
     ): void
     {
         foreach ($ingredients as $ingredient) {
             $this->recipe.= $ingredient.', ';
         }
-
-        $this->recipe.= $additional?? '';
     }
     public function getRecipe(): string
     {
