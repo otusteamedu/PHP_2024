@@ -1,0 +1,59 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "1966e48f247a6c6208f914826fcc8929",
+    "packages": [
+        {
+            "name": "timirey/indicators",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/timirey/indicators.git",
+                "reference": "c9eacf5f394419c8d8de7d4fb2a1106732d859c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/timirey/indicators/zipball/c9eacf5f394419c8d8de7d4fb2a1106732d859c9",
+                "reference": "c9eacf5f394419c8d8de7d4fb2a1106732d859c9",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Timirey\\Indicators\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Timirey",
+                    "email": "misiru.artiom@gmail.com"
+                }
+            ],
+            "description": "Most popular trading indicators.",
+            "support": {
+                "issues": "https://github.com/timirey/indicators/issues",
+                "source": "https://github.com/timirey/indicators/tree/1.0.1"
+            },
+            "time": "2024-06-17T07:25:21+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
