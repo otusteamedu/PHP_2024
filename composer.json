@@ -1,9 +1,9 @@
 {
-    "name": "nevshin/hw3-otus-test",
-    "type": "library",
+    "name": "nsevshin/php_2024",
+    "type": "project",
     "autoload": {
         "psr-4": {
-            "Nevshin\\Hw3OtusTest\\": "src/"
+            "Nsevshin\\Php2024\\": "src/"
         }
     },
     "authors": [
@@ -12,5 +12,7 @@
             "email": "nsevshin@avito.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "nikitaevshin/test-library": "^1.0"
+    }
 }

@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "899c75ecb40dda880e186ef57e4d1d08",
+    "packages": [
+        {
+            "name": "nikitaevshin/test-library",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NikitaEvshin/otus-test-library.git",
+                "reference": "2355c1c3b6a271aa153bb6efe4caebf39856547b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NikitaEvshin/otus-test-library/zipball/2355c1c3b6a271aa153bb6efe4caebf39856547b",
+                "reference": "2355c1c3b6a271aa153bb6efe4caebf39856547b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Nikitaevshin\\TestLibrary\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Nikita Evshin",
+                    "email": "nsevshin@avito.ru"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/NikitaEvshin/otus-test-library/issues",
+                "source": "https://github.com/NikitaEvshin/otus-test-library/tree/1.0.0"
+            },
+            "time": "2024-06-17T15:40:42+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
