@@ -1,0 +1,16 @@
+{
+    "name": "nevshin/hw3-otus-test",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Nevshin\\Hw3OtusTest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nikita Evshin",
+            "email": "nsevshin@avito.ru"
+        }
+    ],
+    "require": {}
+}
