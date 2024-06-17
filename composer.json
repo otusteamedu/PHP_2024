@@ -1,0 +1,19 @@
+{
+  "name": "yulia633/project-test",
+  "description": "test example",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Yulia633\\ProjectTest\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "yulia633",
+      "email": "ignat633yulia@yandex.ru"
+    }
+  ],
+  "require": {
+    "yulia633/trim-string": "^2.0"
+  }
+}
