@@ -2,31 +2,32 @@ version: '3'
 
 services:
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
-    container_name: es01
+    build:
+      dockerfile: Docker/elasticsearch/Dockerfile
+    container_name: ${ES_HOST}
     environment:
       discovery.type: single-node
-      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
-      ES_PORT: ${ES_PORT}
-
-    volumes:
-      - ./data:/usr/share/elasticsearch/data
-      - ./certs:$CERTS_DIR
+      ELASTIC_PASSWORD: ${ES_PASSWORD}
+      node.name: es8
+      cluster.name: es-docker-cluster
+      xpack.security.enabled: false
     ports:
-      - 9200:9200
+      - "${ES_PORT}:${ES_PORT}"
     networks:
       - app-network
 
   php:
     build:
-      dockerfile: ./fpm/Dockerfile
+      dockerfile: Docker/fpm/Dockerfile
     container_name: app
     volumes:
       - ./app:/app
     depends_on:
       - es01
-    stdin_open: true # docker run -i
+    stdin_open: true
     tty: true
+    env_file:
+      - .env.example
     networks:
       - app-network
 
