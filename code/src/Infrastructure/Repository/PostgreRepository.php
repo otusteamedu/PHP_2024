@@ -8,20 +8,14 @@ use PgSql\Connection;
 
 class PostgreRepository implements RepositoryInterface
 {
-    private ?Connection $init;
-    private string $host;
-    private string $dbname;
-    private string $user;
-    private string $password;
+    private ?Connection $connection;
 
 
-    public function __construct()
+    public function __construct(
+        readonly InitDb $init
+    )
     {
-        $this->host = getenv("POSTGRES_HOST");
-        $this->dbname = getenv("POSTGRES_DATABASE");
-        $this->user = getenv("POSTGRES_USER");
-        $this->password = getenv("POSTGRES_PASSWORD");
-        $this->init = pg_connect("host=".$this->host." dbname=".$this->dbname." user=".$this->user." password=".$this->password);
+        $this->connection = pg_connect("host=".$init->host." dbname=".$init->db." user=".$init->user." password=".$init->password);
     }
 
     /**
@@ -30,7 +24,7 @@ class PostgreRepository implements RepositoryInterface
     public function save(Product $product): int
     {
         try {
-            $query = pg_query($this->init,
+            $query = pg_query($this->connection,
                 "INSERT INTO products (type, recipe, comment, status) 
                 VALUES (
                         '".$product->getType()."',
@@ -53,7 +47,7 @@ class PostgreRepository implements RepositoryInterface
     public function setStatus(int $status, int $id): void
     {
         try {
-            pg_query($this->init,
+            pg_query($this->connection,
                 "UPDATE products SET status=$status 
                 WHERE id=$id;");
         } catch (\Exception $e) {
@@ -67,7 +61,7 @@ class PostgreRepository implements RepositoryInterface
     public function getStatus(int $id): int
     {
         try {
-            $query = pg_query($this->init,
+            $query = pg_query($this->connection,
                 "SELECT status FROM products WHERE id=$id;");
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
@@ -87,7 +81,7 @@ class PostgreRepository implements RepositoryInterface
     public function delete(int $id): void
     {
         try {
-            pg_query($this->init,
+            pg_query($this->connection,
                 "DELETE FROM products WHERE id=$id;");
         } catch (\Exception $e) {
             throw new \RuntimeException($e->getMessage());
@@ -97,7 +91,7 @@ class PostgreRepository implements RepositoryInterface
     public function getProduct(int $id): Product
     {
         try {
-            $query = pg_query($this->init,
+            $query = pg_query($this->connection,
                 "SELECT FROM products WHERE id=$id;");
             $product = pg_fetch_all($query);
             $product->setId((int)$id[0]);

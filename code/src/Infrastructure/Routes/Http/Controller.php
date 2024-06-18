@@ -9,30 +9,36 @@ use App\Application\UseCase\CreateProductRecord\CreateProductRecordUseCase;
 use App\Application\UseCase\Cooking\CookingUseCase;
 use App\Application\UseCase\Cooking\StatusChangeHandler;
 use App\Application\UseCase\Request\Request;
+use App\Domain\Repository\RepositoryInterface;
+use App\Infrastructure\Adapter\PizzaAdapter\PizzaInterface;
 use App\Infrastructure\Builder\RecipeBuilder;
 use App\Infrastructure\Config\Config;
 use App\Infrastructure\Observer\Publisher;
 use App\Infrastructure\Repository\PostgreRepository;
 use Exception;
-use RuntimeException;
 
 
 class Controller
 {
     private PostgreRepository $repository;
     private StrategyInterface $strategy;
-    private RecipeInterface $recipe;
+    private RecipeInterface|PizzaInterface|null $recipe;
     private RecipeBuilder $builder;
     private PublisherInterface $publisher;
     private Config $config;
     private const COOKING_STEPS = 'Cooking_steps';
     private string $strategyPath;
 
-    public function __construct(){
-        $this->repository = new PostgreRepository();
-        $this->publisher = new Publisher();
-        $this->builder = new RecipeBuilder();
-        $this->config = new Config();
+    public function __construct(
+        RepositoryInterface $repository,
+        PublisherInterface $publisher,
+        RecipeBuilder $builder,
+        Config $config
+    ){
+        $this->repository = $repository;
+        $this->publisher = $publisher;
+        $this->builder = $builder;
+        $this->config = $config;
     }
 
     public function run(Request $request): string
@@ -63,7 +69,7 @@ class Controller
 
         try {
             $product = $productRecord();
-            $statusHandler = new StatusChangeHandler($product);
+            $statusHandler = new StatusChangeHandler($product, $this->repository, new Publisher());
             $cookingSteps = $this->config->getSection(self::COOKING_STEPS);
 
             # Подписываем шаги приготовления
@@ -101,29 +107,29 @@ class Controller
     private function getStrategy(Request $request): bool
     {
         $this->strategyPath = getenv("INFRASTRUCTURE_PATH") . "Strategy\\" . $request->type . "Strategy\\";
-        if (!$this->getRecipe($request)) {
+        $this->recipe = $this->getRecipe($request);
+        $strategyName = $request->type . "Strategy";
+        if (!class_exists($this->strategyPath. $strategyName)) {
             return false;
         }
-        $strategyName = $request->type . "Strategy";
         $this->strategy = new ($this->strategyPath. $strategyName)($this->recipe);
         return true;
     }
 
     /**
      * @param Request $request
-     * @return bool
+     * @return RecipeInterface|null
      */
-    private function getRecipe(Request $request): bool
+    private function getRecipe(Request $request): RecipeInterface|null
     {
         $recipeName = $request->recipe . 'Recipe';
         $recipePath = $this->strategyPath.$request->type."Recipe\\";
         $ingredients = $request->ingredient;
         $recipeClass = $recipePath . $recipeName;
         if (!class_exists($recipeClass)) {
-            return false;
+            return null;
         }
-        $this->recipe = new $recipeClass($ingredients);
-        return true;
+        return new $recipeClass($ingredients);
     }
 
     /**

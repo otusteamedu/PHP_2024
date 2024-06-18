@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Adapter\PizzaAdapter;
 
-use App\Application\Interface\RecipeInterface;
 use App\Application\Interface\StrategyInterface;
 
 class PizzaAdapter implements StrategyInterface
@@ -12,7 +11,7 @@ class PizzaAdapter implements StrategyInterface
 
 
     public function __construct(
-        private readonly RecipeInterface $pizza
+        private readonly PizzaInterface $pizza
     )
     {
         $this->type = 'pizza';
@@ -25,6 +24,6 @@ class PizzaAdapter implements StrategyInterface
 
     public function getRecipe(): string
     {
-        return $this->pizza->getRecipe();
+        return $this->pizza->getPizza();
     }
 }

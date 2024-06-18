@@ -3,6 +3,11 @@ declare(strict_types=1);
 namespace App\Infrastructure\Routes\Router;
 
 use App\Application\UseCase\Request\Request;
+use App\Infrastructure\Builder\RecipeBuilder;
+use App\Infrastructure\Config\Config;
+use App\Infrastructure\Observer\Publisher;
+use App\Infrastructure\Repository\InitDb;
+use App\Infrastructure\Repository\PostgreRepository;
 use App\Infrastructure\Routes\Http\Controller;
 
 class Router
@@ -32,6 +37,13 @@ class Router
         $comment = $this->comment?? null;
         $request = new Request($strategy, $recipe, $ingredient,$comment);
 
-        return (new Controller())->run($request);
+        return (new Controller(
+            new PostgreRepository(
+                new InitDb()
+            ),
+            new Publisher(),
+            new RecipeBuilder(),
+            new Config()
+        ))->run($request);
     }
 }

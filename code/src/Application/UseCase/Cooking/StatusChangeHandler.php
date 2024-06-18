@@ -22,10 +22,12 @@ class StatusChangeHandler
 
 
     public function __construct(
-        Response $response
+        Response $response,
+        PostgreRepository $repository,
+        PublisherInterface $publisher,
     ){
-        $this->repository = new PostgreRepository();
-        $this->publisher = new Publisher();
+        $this->repository = $repository;
+        $this->publisher = $publisher;
         $this->status = $response->status;
         $this->id = $response->id;
         $this->recipe = $response->recipe;
