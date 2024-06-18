@@ -1,7 +1,8 @@
-<?php declare(strict_types=1);
+<?php
+
 require __DIR__ . '/vendor/autoload.php';
 
-use \Evgenysmrnv\Security\SecurityPatch;
+use Evgenysmrnv\Security\SecurityPatch;
 
 $filename = 'filename example.txt';
 $filename = \Evgenysmrnv\Security\SecurityPatch::checkHttpHeader($filename);
