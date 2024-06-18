@@ -1,0 +1,12 @@
+{
+    "name": "evgenyart/hw3",
+    "authors": [
+        {
+            "name": "Evgenii Art",
+            "email": "evgeny.art@mail.ru"
+        }
+    ],
+    "require": {
+        "evgenyart/util-translit": "^1.0"
+    }
+}

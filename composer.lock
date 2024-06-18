@@ -1,0 +1,52 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "7510b62921bf32d3ea272efe4fb646d2",
+    "packages": [
+        {
+            "name": "evgenyart/util-translit",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/evgenyart/util-translit.git",
+                "reference": "c962a447b6453301cf44cbaa8e3ab832091fc319"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/evgenyart/util-translit/zipball/c962a447b6453301cf44cbaa8e3ab832091fc319",
+                "reference": "c962a447b6453301cf44cbaa8e3ab832091fc319",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MyProject\\TestUtil\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Evgenii Art",
+                    "email": "evgeny.art@mail.ru"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/evgenyart/util-translit/issues",
+                "source": "https://github.com/evgenyart/util-translit/tree/1.0.2"
+            },
+            "time": "2024-06-18T12:19:51+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}
