@@ -33,4 +33,3 @@ $age = 32;
 $stmt->execute(['name' => $name, 'age' => $age]);
 
 echo "Данные успешно добавлены!";
-?>
