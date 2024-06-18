@@ -8,17 +8,20 @@
     "packages": [
         {
             "name": "nikitaevshin/test-library",
-            "version": "1.0.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NikitaEvshin/otus-test-library.git",
-                "reference": "2355c1c3b6a271aa153bb6efe4caebf39856547b"
+                "reference": "44a6a98c6f5b94bdb39ce5d324aa1fbb53ca1829"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NikitaEvshin/otus-test-library/zipball/2355c1c3b6a271aa153bb6efe4caebf39856547b",
-                "reference": "2355c1c3b6a271aa153bb6efe4caebf39856547b",
+                "url": "https://api.github.com/repos/NikitaEvshin/otus-test-library/zipball/44a6a98c6f5b94bdb39ce5d324aa1fbb53ca1829",
+                "reference": "44a6a98c6f5b94bdb39ce5d324aa1fbb53ca1829",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
             },
             "type": "library",
             "autoload": {
@@ -35,9 +38,9 @@
             ],
             "support": {
                 "issues": "https://github.com/NikitaEvshin/otus-test-library/issues",
-                "source": "https://github.com/NikitaEvshin/otus-test-library/tree/1.0.0"
+                "source": "https://github.com/NikitaEvshin/otus-test-library/tree/1.2.1"
             },
-            "time": "2024-06-17T15:40:42+00:00"
+            "time": "2024-06-18T07:06:04+00:00"
         }
     ],
     "packages-dev": [],
