@@ -1,0 +1,18 @@
+{
+    "name": "nsevshin/php_2024",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Nsevshin\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nikita Evshin",
+            "email": "nsevshin@avito.ru"
+        }
+    ],
+    "require": {
+        "nikitaevshin/test-library": "^1.0"
+    }
+}
