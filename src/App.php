@@ -6,7 +6,10 @@ namespace Alogachev\Homework;
 
 use Alogachev\Homework\Application\UseCase\BankStatementFormUseCase;
 use Alogachev\Homework\Application\UseCase\GenerateBankStatementUseCase;
+use Alogachev\Homework\Infrastructure\Exception\RouteNotFoundException;
 use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
+use Alogachev\Homework\Infrastructure\Routing\Route;
+use DI\Container;
 use Dotenv\Dotenv;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +23,11 @@ final class App
     {
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
-        $request = $this->resolveRequest();
-        $useCase = $this->resolveUseCase($request);
 
-        $useCase();
+        $request = $this->resolveRequest();
+        $route = $this->resolveRoute($request);
+
+        ($route->getHandler())();
     }
 
     private function resolveDI(): ContainerInterface
@@ -39,32 +43,32 @@ final class App
         return Request::createFromGlobals();
     }
 
-    public function resolveUseCase(Request $request): object
+    public function resolveRoute(Request $request): Route
     {
         $container = $this->resolveDI();
 
-        $useCases = [
-            [
-                'GET',
+        $routes = [
+            new Route(
                 '/bank/statement',
+                'GET',
                 $container->get(BankStatementFormUseCase::class),
-            ],
-            [
-                'POST',
+            ),
+            new Route(
                 '/bank/statement/generate',
+                'POST',
                 $container->get(GenerateBankStatementUseCase::class),
-            ],
+            ),
         ];
 
-        $useCase = null;
-
-        foreach ($useCases as $case) {
-            if ($case[0] === $request->getPathInfo()) {
-                $useCase = $case[2];
-                break;
+        foreach ($routes as $route) {
+            if (
+                $route->getPath() === $request->getPathInfo()
+                && $route->getMethod() === $request->getMethod()
+            ) {
+                return $route;
             }
         }
 
-        return $useCase;
+        throw new RouteNotFoundException();
     }
 }
