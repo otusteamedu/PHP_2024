@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <title>Приложение</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" type="text/css" href="/resources/css/style.css" />
+  </head>
+
+  <body>
+    <div id="page-wrap">
+      <h2>Получить отчёт за период</h2>
+      <br /><br />
+      <div id="contact-area">
+        <form method="post" action="/">
+          <label for="date_from">С:</label>
+          <input type="date" name="date_from" id="date_from" required />
+
+          <label for="date_to">по:</label>
+          <input type="date" name="date_to" id="date_to" required />
+
+          <label for="email">email:</label>
+          <input type="email" name="email" id="email" required />
+
+          <input type="submit" value="Получить" class="submit-button" />
+        </form>
+
+        <div style="clear: both"></div>
+      </div>
+    </div>
+  </body>
+</html>
