@@ -4,7 +4,7 @@
 2) Заполнить поля в `.env` файле. Для примера можно взять данные ниже:
 
 ```dotenv
-COMPOSE_PROJECT_NAME=homework
+COMPOSE_PROJECT_NAME=homework30
 
 ###> php-fpm ###
 PUID=1001
@@ -12,9 +12,16 @@ PGID=1001
 INSTALL_XDEBUG=true
 ###< php-fpm ###
 
-###> app ###
-CONFIG_PATH=${PWD}/../config/config.ini
-###< app ###
+###> nginx ###
+PHP_UPSTREAM_CONTAINER=php-fpm
+PHP_UPSTREAM_PORT=9000
+NGINX_HOST_HTTP_PORT=8888
+###< nginx ###
+
+###> rabbit-mq ###
+RABBIT_PORT=5672
+RABBIT_MANAGEMENT_PORT=15672
+###< rabbit-mq ###
 ```
 
 3) Ввести команды (вводить `docker-compose` или `docker compose` в зависимости от версии):
@@ -26,21 +33,8 @@ docker compose up -d --build
 4) Установите зависимости после успешного запуска проекта:
 
 ```bash
-docker compose exec app composer install
+docker compose exec php-fpm composer install
 ```
 
 5) Пример запроса на поиск:
-- indexName - имя индекса, по которому будет осуществлен поиск;
-- title - наименование книги;
-- category - категория книги;
-- shopName - имя магазина;
-- gtPrice - нижняя граница цены;
-- ltePrice - верхняя граница цены.
 
-Можно передать любое количество опций в команду.
-При первом запросе результат может быть пустым, 
-т.к. сначала будет запущено создание индекса и загрузка в него дынных.
-
-```bash
-php app.php --indexName 'otus-shop' --title 'Жутки' --category 'Искусство' --gtPrice 7000 --ltePrice 9000 --shopName 'Мира'
-```

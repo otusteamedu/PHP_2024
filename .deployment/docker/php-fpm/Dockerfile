@@ -1,6 +1,9 @@
 FROM php:8.2-fpm-alpine
 
-RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash libmemcached-dev libzip-dev
+RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash rabbitmq-c-dev
+
+RUN pecl install amqp \
+    && docker-php-ext-enable amqp
 
 # Если аргумент INSTALL_XDEBUG будет равен true, то устанавливаем xdebug (теперь можно исп. этот файл и для прод. деплоя)
 ARG INSTALL_XDEBUG=false
