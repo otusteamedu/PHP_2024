@@ -8,17 +8,20 @@
     "packages": [
         {
             "name": "evgenyart/util-translit",
-            "version": "1.0.2",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/evgenyart/util-translit.git",
-                "reference": "c962a447b6453301cf44cbaa8e3ab832091fc319"
+                "reference": "2194983e790c18f06173ca57db26c93c5b961efe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/evgenyart/util-translit/zipball/c962a447b6453301cf44cbaa8e3ab832091fc319",
-                "reference": "c962a447b6453301cf44cbaa8e3ab832091fc319",
+                "url": "https://api.github.com/repos/evgenyart/util-translit/zipball/2194983e790c18f06173ca57db26c93c5b961efe",
+                "reference": "2194983e790c18f06173ca57db26c93c5b961efe",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5"
             },
             "type": "library",
             "autoload": {
@@ -35,9 +38,9 @@
             ],
             "support": {
                 "issues": "https://github.com/evgenyart/util-translit/issues",
-                "source": "https://github.com/evgenyart/util-translit/tree/1.0.2"
+                "source": "https://github.com/evgenyart/util-translit/tree/1.0.4"
             },
-            "time": "2024-06-18T12:19:51+00:00"
+            "time": "2024-06-19T08:40:28+00:00"
         }
     ],
     "packages-dev": [],

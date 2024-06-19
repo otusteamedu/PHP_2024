@@ -1,6 +1,10 @@
 {
     "name": "evgenyart/hw3",
-    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\Hw3\\": "src/"
+        }
+    },
     "authors": [
         {
             "name": "Evgenii Art",
