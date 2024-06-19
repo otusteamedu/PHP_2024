@@ -19,8 +19,11 @@ NGINX_HOST_HTTP_PORT=8888
 ###< nginx ###
 
 ###> rabbit-mq ###
+RABBIT_HOST=rabbitmq
 RABBIT_PORT=5672
 RABBIT_MANAGEMENT_PORT=15672
+RABBIT_USER=guest
+RABBIT_PASSWORD=guest
 ###< rabbit-mq ###
 
 ###> tamplates ###
