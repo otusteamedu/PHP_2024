@@ -2,8 +2,7 @@ version: '3'
 
 services:
   es01:
-    build:
-      dockerfile: Docker/elasticsearch/Dockerfile
+    image: elasticsearch:8.14.1
     container_name: ${ES_HOST}
     environment:
       discovery.type: single-node

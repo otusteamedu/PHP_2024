@@ -6,6 +6,7 @@ namespace Kagirova\Hw14;
 
 use Kagirova\Hw14\Application\SearchUseCase;
 use Kagirova\Hw14\Domain\Config;
+use Kagirova\Hw14\Infrastructure\Elastic;
 
 class App
 {
@@ -13,9 +14,9 @@ class App
     {
         $config = new Config();
         $elastic = new Elastic(
-            $config->getHost() . ':' . $config->getPort(),
-            $config->getUser(),
-            $config->getPassword()
+            $config->host . ':' . $config->port,
+            $config->user,
+            $config->password
         );
 
         $searchUseCase = new SearchUseCase($elastic);
