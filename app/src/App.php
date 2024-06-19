@@ -4,23 +4,45 @@ declare(strict_types=1);
 
 namespace App\src;
 
-use App\src\Socket\SocketProcessesResolver;
+use App\FolderItem;
+use App\Requests\PathRequest;
+use App\Template;
 use Exception;
 
-class App
+readonly class App
 {
-    private SocketProcessesResolver $socketResolver;
 
-    public function __construct()
+    public function __construct(private string $startPath, private array $dirExceptions = [])
     {
-        $this->socketResolver = new SocketProcessesResolver();
     }
 
     /**
      * @throws Exception
      */
-    public function run(): \Fiber
+    public function run(): string
     {
-        return $this->socketResolver->runProcess();
+        return $this->buildTree();
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function buildTree(): string
+    {
+        $dir = scandir($this->startPath);
+
+        if (!$dir) {
+            throw new Exception('Directory not found');
+        }
+
+        $template = new Template();
+        $startFolder = new FolderItem(
+            new PathRequest($this->startPath),
+            $this->dirExceptions
+        );
+        $startFolder->build();
+        $startFolder->render($template);
+
+        return $template() . PHP_EOL;
     }
 }

@@ -1,19 +1,14 @@
 <?php
 
 use App\src\App;
-use App\src\Enums\CommandEnum;
 
 require '../vendor/autoload.php';
+require 'Support/helpers.php';
 
 try {
-    $app = new App();
-    $fiber = $app->run();
-    $message = $fiber->start();
-
-    while (CommandEnum::tryFrom($message) !== CommandEnum::STOP) {
-        $message = $fiber->resume();
-        echo $message . PHP_EOL;
-    }
+    $startDir = readline('Dir path: ');
+    $app = new App($startDir, ['..', '.', '.github', '.git', '.idea']);
+    echo $app->run();
 } catch (Throwable $e) {
     echo $e->getMessage() . PHP_EOL;
 }

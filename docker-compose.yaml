@@ -1,17 +1,6 @@
 version: '3'
 
 services:
-  php-server:
-    build:
-      context: docker/fpm
-      dockerfile: Dockerfile
-    image: app/php
-    volumes:
-      - ./:/data/myapp
-      - ./docker/fpm/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
-      - phpsocket:/tmp/socket
-    working_dir: /data/myapp/app
-
   php-client:
     build:
       context: docker/fpm
@@ -20,11 +9,4 @@ services:
     volumes:
       - ./:/data/myapp
       - ./docker/fpm/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
-      - phpsocket:/tmp/socket
     working_dir: /data/myapp/app
-    depends_on:
-      php-server:
-        condition: service_started
-
-volumes:
-  phpsocket:
