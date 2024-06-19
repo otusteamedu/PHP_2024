@@ -1,5 +1,5 @@
 # версия синтаксиса
-version: '3'
+version: '3.9'
 
 # в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
@@ -46,6 +46,15 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_ROOT_PASSWORD}
     volumes:
       - ./postgresdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  #Memcashed
+  memcached:
+    container_name: memcached
+    image: memcached:latest
+    ports:
+      - "11211:11211"
     networks:
       - app-network
 
