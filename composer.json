@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-        "pyivanov/password-package": "^1.0"
+        "pyivanov/password-package": "^1.0",
+        "php": ">=8.2"
     },
     "repositories": [
         {
