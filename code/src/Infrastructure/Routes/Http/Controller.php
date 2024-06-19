@@ -26,7 +26,6 @@ class Controller
     private RecipeBuilder $builder;
     private PublisherInterface $publisher;
     private Config $config;
-    private const COOKING_STEPS = 'Cooking_steps';
     private string $strategyPath;
 
     public function __construct(
@@ -70,7 +69,7 @@ class Controller
         try {
             $product = $productRecord();
             $statusHandler = new StatusChangeHandler($product, $this->repository, new Publisher());
-            $cookingSteps = $this->config->getSection(self::COOKING_STEPS);
+            $cookingSteps = $this->config->cookingSteps;
 
             # Подписываем шаги приготовления
             foreach ($cookingSteps as $step => $value) {

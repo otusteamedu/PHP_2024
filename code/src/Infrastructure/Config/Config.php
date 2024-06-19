@@ -7,21 +7,13 @@ class Config
 {
     private const CONFIG_PATH = __DIR__.'/config.ini';
     private array $config;
+    private const COOKING_STEPS = 'Cooking_steps';
 
-    public readonly array $sections;
+    public readonly array $cookingSteps;
 
     public function __construct()
     {
         $this->config = parse_ini_file(self::CONFIG_PATH,true);
-        $this->sections = array_keys($this->config);
+        $this->cookingSteps = $this->config[self::COOKING_STEPS];
     }
-
-    public function getSection(string $config_section): array|string
-    {
-        if (!in_array($config_section, $this->sections, true)) {
-            return "Секция не найдена в конфиге.";
-        }
-        return $this->config[$config_section];
-    }
-
 }
