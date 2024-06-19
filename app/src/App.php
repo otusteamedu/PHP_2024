@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\src;
 
-use App\FolderItem;
-use App\Requests\PathRequest;
-use App\Template;
+use App\src\Requests\PathRequest;
 use Exception;
 
 readonly class App

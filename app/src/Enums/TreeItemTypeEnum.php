@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Enums;
+namespace App\src\Enums;
 
-use App\RendererStrategy\HtmlFileRendererStrategy;
-use App\RendererStrategy\TxtFileRendererStrategy;
+use App\src\RendererStrategy\HtmlFileRendererStrategy;
+use App\src\RendererStrategy\TxtFileRendererStrategy;
 
 enum TreeItemTypeEnum: string
 {

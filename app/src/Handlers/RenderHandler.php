@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Handlers;
+namespace App\src\Handlers;
 
-use App\Requests\RenderRequest;
-use App\Template;
+use App\src\Requests\RenderRequest;
+use App\src\Template;
 
 abstract class RenderHandler
 {

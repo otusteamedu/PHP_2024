@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\RendererStrategy;
+namespace App\src\RendererStrategy;
 
-use App\Contracts\RendererStrategyInterface;
-use App\Requests\RenderRequest;
-use App\Template;
+use App\src\Contracts\RendererStrategyInterface;
+use App\src\Requests\RenderRequest;
+use App\src\Template;
 
 final readonly class TxtFileRendererStrategy implements RendererStrategyInterface
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Handlers;
+namespace App\src\Handlers;
 
-use App\Requests\RenderRequest;
-use App\Template;
+use App\src\Requests\RenderRequest;
+use App\src\Template;
 
 class CheckSizeHandler extends RenderHandler
 {

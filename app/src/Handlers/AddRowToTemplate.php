@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Handlers;
+namespace App\src\Handlers;
 
-use App\Enums\TreeItemTypeEnum;
-use App\RendererStrategy\DirRendererStrategy;
-use App\RendererStrategy\FileRendererStrategy;
-use App\Requests\RenderRequest;
-use App\Template;
+use App\src\Enums\TreeItemTypeEnum;
+use App\src\RendererStrategy\DirRendererStrategy;
+use App\src\RendererStrategy\FileRendererStrategy;
+use App\src\Requests\RenderRequest;
+use App\src\Template;
 
 class AddRowToTemplate extends RenderHandler
 {

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\src;
 
-use App\Contracts\FolderItemInterface;
-use App\Handlers\AddRowToTemplate;
-use App\Handlers\CheckSizeHandler;
-use App\Requests\PathRequest;
-use App\Requests\RenderRequest;
+use App\src\Contracts\FolderItemInterface;
+use App\src\Handlers\AddRowToTemplate;
+use App\src\Handlers\CheckSizeHandler;
+use App\src\Requests\PathRequest;
+use App\src\Requests\RenderRequest;
 
 final class FolderItem implements FolderItemInterface
 {

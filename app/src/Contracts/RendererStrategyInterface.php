@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contracts;
+namespace App\src\Contracts;
 
-use App\Template;
+use App\src\Template;
 
 interface RendererStrategyInterface
 {
