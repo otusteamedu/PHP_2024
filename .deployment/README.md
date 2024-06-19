@@ -22,6 +22,10 @@ NGINX_HOST_HTTP_PORT=8888
 RABBIT_PORT=5672
 RABBIT_MANAGEMENT_PORT=15672
 ###< rabbit-mq ###
+
+###> tamplates ###
+HTML_TEMPLATES_PATH=${PWD}/../templates/
+###< tamplates ###
 ```
 
 3) Ввести команды (вводить `docker-compose` или `docker compose` в зависимости от версии):

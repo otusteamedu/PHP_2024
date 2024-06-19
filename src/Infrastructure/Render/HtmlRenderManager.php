@@ -8,8 +8,13 @@ use Alogachev\Homework\Application\Render\RenderInterface;
 
 class HtmlRenderManager implements RenderInterface
 {
+    public function __construct(
+        private readonly string $templatesPath,
+    ) {
+    }
+
     public function render(string $path): void
     {
-        echo dirname(__DIR__) . '/' . $path;
+        require $this->templatesPath . $path ;
     }
 }

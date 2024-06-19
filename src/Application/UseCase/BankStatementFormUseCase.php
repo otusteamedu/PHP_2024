@@ -15,6 +15,6 @@ class BankStatementFormUseCase
 
     public function __invoke(): void
     {
-        $this->render->render('templates/index.html');
+        $this->render->render('index.php');
     }
 }

@@ -11,7 +11,9 @@ use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
 use Alogachev\Homework\Infrastructure\Routing\Route;
 use DI\Container;
 use Dotenv\Dotenv;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use function DI\create;
@@ -19,6 +21,10 @@ use function DI\get;
 
 final class App
 {
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function run(): void
     {
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
@@ -32,7 +38,10 @@ final class App
 
     private function resolveDI(): ContainerInterface
     {
+        $templatesPath = $_ENV['HTML_TEMPLATES_PATH'] ?? '';
+
         return new Container([
+            HtmlRenderManager::class => create()->constructor($templatesPath),
             BankStatementFormUseCase::class => create()->constructor(get(HtmlRenderManager::class)),
             GenerateBankStatementUseCase::class => create()->constructor(get(HtmlRenderManager::class)),
         ]);
@@ -43,6 +52,10 @@ final class App
         return Request::createFromGlobals();
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     public function resolveRoute(Request $request): Route
     {
         $container = $this->resolveDI();

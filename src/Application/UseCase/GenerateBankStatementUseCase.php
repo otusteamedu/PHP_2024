@@ -15,6 +15,6 @@ class GenerateBankStatementUseCase
 
     public function __invoke(): void
     {
-        $this->render->render('templates/success-generated.html');
+        $this->render->render('success-generated.php');
     }
 }
