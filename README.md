@@ -1,3 +1,16 @@
-# PHP_2023
+## Установка
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+```sh
+make setup
+```
+
+Заполнитьзначения переменных окружения в файле .env:
+
+- обязательно: RABBITMQ_DEFAULT_USER, RABBITMQ_DEFAULT_PASS
+- остальные - по желанию
+
+```sh
+make up
+```
+
+Откройте приложение http://localhost:8080

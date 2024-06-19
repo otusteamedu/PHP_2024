@@ -11,6 +11,15 @@ class BankStatementRepository implements BankStatementRepositoryInterface
 {
     public function forPeriod(Date $from, Date $to): array
     {
-        return [];
+        return [
+            [
+                'date' => $from->getValue(),
+                'amount' => 1000
+            ],
+            [
+                'date' => $to->getValue(),
+                'amount' => 2000
+            ]
+        ];
     }
 }

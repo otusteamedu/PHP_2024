@@ -1,0 +1,41 @@
+services:
+  frontend:
+    container_name: frontend
+    build: .
+    ports:
+      - '8080:8080'
+    volumes:
+        - .:/app
+        - ./resources:/app/resources
+    working_dir: /app
+    restart: unless-stopped
+    tty: true
+    depends_on:
+      - rabbitmq
+    command: ["make", "start-frontend"]
+
+  console:
+    container_name: console
+    build: .
+    volumes:
+        - .:/app
+    working_dir: /app
+    restart: unless-stopped
+    tty: true
+    depends_on:
+      - rabbitmq
+    command: ["make", "start-console"]
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: 'rabbitmq:management'
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - 15672:15672
+      - 5672:5672
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq-data:

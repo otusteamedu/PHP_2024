@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pozys\BankStatement\Application\UseCase;
 
-use Pozys\BankStatement\Domain\ValueObject\{Date, Email};
+use Pozys\BankStatement\Application\DTO\BankStatementRequest;
 
 class GetBankStatementAsyncUseCase
 {
@@ -12,9 +12,14 @@ class GetBankStatementAsyncUseCase
     {
     }
 
-    public function __invoke(Date $from, Date $to, Email $email)
+    public function __invoke(BankStatementRequest $request): void
     {
-        $data = compact('from', 'to', 'email');
+        $data = [
+            'from' => $request->dateFrom,
+            'to' => $request->dateTo,
+            'email' => $request->email
+        ];
+
         $this->pushToQueue($data);
     }
 
