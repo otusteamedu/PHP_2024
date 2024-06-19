@@ -1,0 +1,17 @@
+{
+    "name": "evgenyart/hw3",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\Hw3\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Evgenii Art",
+            "email": "evgeny.art@mail.ru"
+        }
+    ],
+    "require": {
+        "evgenyart/util-translit": "^1.0"
+    }
+}
