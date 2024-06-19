@@ -1,0 +1,25 @@
+{
+    "name": "pyivanov/hw3",
+    "description": "Generate password using my own PasswordPackage",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Pyivanov\\hw3\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel Ivanov"
+        }
+    ],
+    "require": {
+        "pyivanov/password-package": "^1.0",
+        "php": ">=8.2"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:PYIvanov/passwordPackage.git"
+        }
+    ]
+}
