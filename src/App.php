@@ -7,6 +7,8 @@ namespace Alogachev\Homework;
 use Alogachev\Homework\Application\UseCase\BankStatementFormUseCase;
 use Alogachev\Homework\Application\UseCase\GenerateBankStatementUseCase;
 use Alogachev\Homework\Infrastructure\Exception\RouteNotFoundException;
+use Alogachev\Homework\Infrastructure\Mapper\GenerateBankStatementMapper;
+use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer\GenerateBankStatementProducer;
 use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
 use Alogachev\Homework\Infrastructure\Routing\Route;
 use DI\Container;
@@ -32,18 +34,33 @@ final class App
 
         $request = $this->resolveRequest();
         $route = $this->resolveRoute($request);
+        $mapper = $route->getParamsMapper();
 
-        ($route->getHandler())();
+        ($route->getHandler())(is_null($mapper) ? null : $mapper->map($request));
     }
 
     private function resolveDI(): ContainerInterface
     {
         $templatesPath = $_ENV['HTML_TEMPLATES_PATH'] ?? '';
+        $rabbitHost = $_ENV['RABBIT_HOST'] ?? '';
+        $rabbitPort = $_ENV['RABBIT_PORT'] ?? '';
+        $rabbitUser = $_ENV['RABBIT_USER'] ?? '';
+        $rabbitPassword = $_ENV['RABBIT_PASSWORD'] ?? '';
 
         return new Container([
+            GenerateBankStatementProducer::class => create()->constructor(
+                $rabbitHost,
+                (int)$rabbitPort,
+                $rabbitUser,
+                $rabbitPassword,
+            ),
             HtmlRenderManager::class => create()->constructor($templatesPath),
             BankStatementFormUseCase::class => create()->constructor(get(HtmlRenderManager::class)),
-            GenerateBankStatementUseCase::class => create()->constructor(get(HtmlRenderManager::class)),
+            GenerateBankStatementUseCase::class => create()->constructor(
+                get(HtmlRenderManager::class),
+                get(GenerateBankStatementProducer::class)
+            ),
+            GenerateBankStatementMapper::class => create(),
         ]);
     }
 
@@ -65,11 +82,13 @@ final class App
                 '/bank/statement',
                 'GET',
                 $container->get(BankStatementFormUseCase::class),
+                null,
             ),
             new Route(
                 '/bank/statement/generate',
                 'POST',
                 $container->get(GenerateBankStatementUseCase::class),
+                $container->get(GenerateBankStatementMapper::class),
             ),
         ];
 

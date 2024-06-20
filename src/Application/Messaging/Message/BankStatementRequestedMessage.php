@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Alogachev\Homework\Application\Messaging;
+namespace Alogachev\Homework\Application\Messaging\Message;
 
 readonly class BankStatementRequestedMessage implements QueueMessageInterface
 {
@@ -43,6 +43,4 @@ readonly class BankStatementRequestedMessage implements QueueMessageInterface
             'endDate' => $this->endDate,
         ];
     }
-
-
 }
