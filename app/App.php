@@ -35,8 +35,10 @@ class App
             }
 
             return Response::json(['message' => 'Parentheses are valid!']);
-        } catch (Exception $exception) {
+        } catch (BadRequestException $exception) {
             return Response::json(['error' => $exception->getMessage()], $exception->getCode());
+        } catch (Exception $exception) {
+            return Response::json(['error' => $exception->getMessage()], 500);
         }
     }
 }
