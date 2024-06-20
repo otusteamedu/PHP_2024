@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use App\Http\Exceptions\BadRequestException;
 use App\Http\Request;
 use App\Http\Response;
 use App\Validators\ParenthesesValidator;
-use App\Validators\StringValidator;
 use Exception;
 
 class App
