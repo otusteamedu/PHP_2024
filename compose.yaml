@@ -3,7 +3,7 @@ version: '3.8'
 services:
   balancer:
     build:
-      context: ./docker/nginx/balancer
+      context: ./docker/balancer
     ports:
       - "80:80"
     networks:
@@ -13,7 +13,7 @@ services:
     build:
       context: ./docker/nginx
     volumes:
-      - ./public:/var/www/html
+      - ./:/var/www/html
     networks:
       - app
 
@@ -21,7 +21,7 @@ services:
     build:
       context: ./docker/nginx
     volumes:
-      - ./public:/var/www/html
+      - ./:/var/www/html
     networks:
       - app
 
@@ -31,7 +31,7 @@ services:
     build:
       context: ./docker/php
     volumes:
-      - ./public:/var/www/html
+      - ./:/var/www/html
     networks:
       - app
 
@@ -41,13 +41,12 @@ services:
     build:
       context: ./docker/php
     volumes:
-      - ./public:/var/www/html
+      - ./:/var/www/html
     networks:
       - app
 
   redis:
-    build:
-      context: ./docker/redis
+    image: redis:latest
     ports:
       - "6379:6379"
     networks:
