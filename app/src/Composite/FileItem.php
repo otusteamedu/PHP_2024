@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\src;
+namespace App\src\Composite;
 
 use App\src\Contracts\FolderItemInterface;
 use App\src\Handlers\AddRowToTemplate;
 use App\src\Handlers\CheckSizeHandler;
 use App\src\Requests\RenderRequest;
+use App\src\Template;
 
 final readonly class FileItem implements FolderItemInterface
 {

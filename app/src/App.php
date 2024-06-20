@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\src;
 
-use App\src\Requests\PathRequest;
+use App\src\Composite\CompositeTree;
 use Exception;
 
 readonly class App
@@ -19,28 +19,8 @@ readonly class App
      */
     public function run(): string
     {
-        return $this->buildTree();
-    }
+        $composite = new CompositeTree();
 
-    /**
-     * @throws Exception
-     */
-    private function buildTree(): string
-    {
-        $dir = scandir($this->startPath);
-
-        if (!$dir) {
-            throw new Exception('Directory not found');
-        }
-
-        $template = new Template();
-        $startFolder = new FolderItem(
-            new PathRequest($this->startPath),
-            $this->dirExceptions
-        );
-        $startFolder->build();
-        $startFolder->render($template);
-
-        return $template() . PHP_EOL;
+        return $composite->buildTree($this->startPath, $this->dirExceptions);
     }
 }
