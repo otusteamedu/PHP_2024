@@ -2,6 +2,8 @@ FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash rabbitmq-c-dev
 
+RUN docker-php-ext-install bcmath
+
 RUN pecl install amqp \
     && docker-php-ext-enable amqp
 

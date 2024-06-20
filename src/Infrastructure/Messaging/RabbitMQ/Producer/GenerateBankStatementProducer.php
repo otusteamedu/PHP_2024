@@ -6,14 +6,13 @@ namespace Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer;
 
 use Alogachev\Homework\Application\Messaging\Message\QueueMessageInterface;
 use Alogachev\Homework\Application\Messaging\Producer\ProducerInterface;
+use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Dictionary\GenerateBankStatementDictionary;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class GenerateBankStatementProducer implements ProducerInterface
 {
-    private const QUEUE_NAME = 'GenerateBankStatement';
-
     private AMQPStreamConnection $connection;
     private AMQPChannel $channel;
 
@@ -26,7 +25,7 @@ class GenerateBankStatementProducer implements ProducerInterface
         $this->connection = new AMQPStreamConnection($rabbitHost, $rabbitPort, $rabbitUser, $rabbitPassword);
         $this->channel = $this->connection->channel();
         $this->channel->queue_declare(
-            self::QUEUE_NAME,
+            GenerateBankStatementDictionary::QUEUE_NAME,
             false,
             true,
             false,
@@ -37,7 +36,7 @@ class GenerateBankStatementProducer implements ProducerInterface
     public function sendMessage(QueueMessageInterface $message): void
     {
         $message = new AMQPMessage(json_encode($message->toArray()));
-        $this->channel->basic_publish($message, '', self::QUEUE_NAME);
+        $this->channel->basic_publish($message, '', GenerateBankStatementDictionary::QUEUE_NAME);
     }
 
     public function __destruct()

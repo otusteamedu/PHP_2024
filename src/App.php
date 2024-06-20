@@ -6,8 +6,11 @@ namespace Alogachev\Homework;
 
 use Alogachev\Homework\Application\UseCase\BankStatementFormUseCase;
 use Alogachev\Homework\Application\UseCase\GenerateBankStatementUseCase;
+use Alogachev\Homework\Infrastructure\Command\GenerateBankStatementCommend;
 use Alogachev\Homework\Infrastructure\Exception\RouteNotFoundException;
 use Alogachev\Homework\Infrastructure\Mapper\GenerateBankStatementMapper;
+use Alogachev\Homework\Infrastructure\Messaging\AsyncHandler\GenerateBankStatementHandler;
+use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Consumer\GenerateBankStatementConsumer;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer\GenerateBankStatementProducer;
 use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
 use Alogachev\Homework\Infrastructure\Routing\Route;
@@ -29,6 +32,7 @@ final class App
      */
     public function run(): void
     {
+        // ToDo: Тут добавить получение аргументов из консоли, если есть флаг consumer то запускаем консюмер.
         $dotenv = Dotenv::createImmutable(dirname(__DIR__));
         $dotenv->load();
 
@@ -37,6 +41,17 @@ final class App
         $mapper = $route->getParamsMapper();
 
         ($route->getHandler())(is_null($mapper) ? null : $mapper->map($request));
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function runConsumers(): void
+    {
+        $container = $this->resolveDI();
+        $bankStatement = $container->get(GenerateBankStatementCommend::class);
+        $bankStatement->execute();
     }
 
     private function resolveDI(): ContainerInterface
@@ -48,11 +63,22 @@ final class App
         $rabbitPassword = $_ENV['RABBIT_PASSWORD'] ?? '';
 
         return new Container([
+            GenerateBankStatementHandler::class => create(),
             GenerateBankStatementProducer::class => create()->constructor(
                 $rabbitHost,
                 (int)$rabbitPort,
                 $rabbitUser,
                 $rabbitPassword,
+            ),
+            GenerateBankStatementConsumer::class => create()->constructor(
+                $rabbitHost,
+                (int)$rabbitPort,
+                $rabbitUser,
+                $rabbitPassword,
+                get(GenerateBankStatementHandler::class),
+            ),
+            GenerateBankStatementCommend::class => create()->constructor(
+                get(GenerateBankStatementConsumer::class),
             ),
             HtmlRenderManager::class => create()->constructor($templatesPath),
             BankStatementFormUseCase::class => create()->constructor(get(HtmlRenderManager::class)),
