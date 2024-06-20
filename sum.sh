@@ -5,7 +5,7 @@ if [ "$#" -lt 2 ]; then
   exit 1
 fi
 
-number_regex='^-?[0-9]+([.][0-9]+)?$'
+number_regex='^[+-]?[0-9]+([.][0-9]+)?$'
 
 sum=0
 
