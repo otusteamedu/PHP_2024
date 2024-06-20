@@ -15,7 +15,7 @@ for term in "$@"; do
     exit 1
   fi
 
-  sum=$(echo "$sum + $term" | bc)
+  sum=$(awk "BEGIN {print $sum + $term}")
 done
 
 echo "$sum"
