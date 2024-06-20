@@ -1,0 +1,87 @@
+version: '3'
+services:
+  redis:
+    image: redis:7.2.3
+    container_name: redis
+    networks:
+      - app-network
+  db:
+    image: mariadb:11.2.4
+    container_name: db
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      - app-network
+  php-fpm1:
+    build:
+      context: ./php-fpm
+      dockerfile: Dockerfile
+    image: php-app
+    container_name: php-fpm1
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - db
+  php-fpm2:
+    build:
+      context: ./php-fpm
+      dockerfile: Dockerfile
+    image: php-app
+    container_name: php-fpm2
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - redis
+      - db
+  webserver1:
+      build:
+        context: ./webserver
+        dockerfile: Dockerfile
+      image: webserver_app
+      container_name: webserver1
+      volumes:
+        - ./code:/data/mysite.local
+      networks:
+        - app-network
+      depends_on:
+        - php-fpm1
+        - php-fpm2
+  webserver2:
+      build:
+        context: ./webserver
+        dockerfile: Dockerfile
+      image: webserver_app
+      container_name: webserver2
+      volumes:
+        - ./code:/data/mysite.local
+      networks:
+        - app-network
+      depends_on:
+        - php-fpm1
+        - php-fpm2
+  balancer:
+    build:
+      context: ./balancer
+      dockerfile: Dockerfile
+    image: nginx_balancer
+    container_name: balancer
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - webserver1
+      - webserver2
+networks:
+  app-network:
+    driver: bridge
