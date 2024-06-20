@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  php-client:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    image: app/php
+    volumes:
+      - ./:/data/myapp
+      - ./docker/fpm/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    working_dir: /data/myapp/app
