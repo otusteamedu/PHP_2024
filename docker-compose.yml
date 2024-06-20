@@ -23,6 +23,8 @@ services:
       dockerfile: Dockerfile
     image: php-app
     container_name: php-fpm1
+    env_file:
+      - .env
     volumes:
       - ./code:/data/mysite.local
     networks:
@@ -36,6 +38,8 @@ services:
       dockerfile: Dockerfile
     image: php-app
     container_name: php-fpm2
+    env_file:
+      - .env
     volumes:
       - ./code:/data/mysite.local
     networks:

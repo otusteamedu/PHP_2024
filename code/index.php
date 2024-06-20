@@ -1,3 +1,5 @@
 <?php
+require "./vendor/autoload.php";
 
-phpinfo();
+$app = new App\App();
+$app->run();
