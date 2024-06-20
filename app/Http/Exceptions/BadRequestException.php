@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Exceptions;
 
 use Exception;
-use Throwable;
 
 class BadRequestException extends Exception
 {
