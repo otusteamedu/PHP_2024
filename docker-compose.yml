@@ -1,0 +1,36 @@
+version: "3"
+services:
+    nginx:
+        container_name: nginx
+        build: ./docker/nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./www:/var/www/html
+        depends_on:
+            - php-fpm
+        networks:
+            - otus
+
+    php-fpm:
+        container_name: php-fpm
+        build: ./docker/php-fpm/
+        volumes:
+            - ./www:/var/www/html
+        depends_on:
+            - rabbitmq
+        networks:
+            - otus
+
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3.10.7-management
+        ports:
+            - 15672:15672
+            - 5672:5672
+        networks:
+            - otus
+
+networks:
+    otus:
+        driver: bridge

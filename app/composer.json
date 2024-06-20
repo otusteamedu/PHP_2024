@@ -1,0 +1,15 @@
+{
+  "name": "orlov/otus",
+  "autoload": {
+    "psr-4": {
+      "Orlov\\Otus\\": "src/"
+    }
+  },
+  "require": {
+    "php-amqplib/php-amqplib": "^3.6",
+    "symfony/console": "^7.0",
+    "symfony/mailer": "^7.0",
+    "symfony/dotenv": "^7.0",
+    "phpmailer/phpmailer": "^6.9"
+  }
+}
