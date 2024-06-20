@@ -23,10 +23,14 @@ function checkParentheses(string $string): bool
 
 header('Content-Type: application/json');
 
-$string = $_POST['string'] ?? null;
+$string = $_REQUEST['string'] ?? null;
 
 try {
-    if (empty($string) || !is_string($string)) {
+    if (empty($string)) {
+        throw new Exception('The required input is empty or not provided.', 400);
+    }
+
+    if (!is_string($string)) {
         throw new Exception('The provided input is not a valid string.', 400);
     }
 

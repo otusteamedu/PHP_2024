@@ -1,40 +1,64 @@
 version: '3.8'
 
 services:
-  nginx:
+  balancer:
+    build:
+      context: ./docker/nginx/balancer
+    ports:
+      - "80:80"
+    networks:
+      - app
+
+  nginx1:
     build:
       context: ./docker/nginx
     volumes:
       - ./public:/var/www/html
-    ports:
-      - "${APP_PORT}:80"
     networks:
-      - backend
+      - app
+
+  nginx2:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./public:/var/www/html
+    networks:
+      - app
 
   php1:
+    environment:
+      REDIS_HOST: redis
     build:
       context: ./docker/php
     volumes:
       - ./public:/var/www/html
     networks:
-      - backend
+      - app
 
   php2:
+    environment:
+      REDIS_HOST: redis
     build:
       context: ./docker/php
     volumes:
       - ./public:/var/www/html
     networks:
-      - backend
+      - app
 
-  php3:
+  redis:
     build:
-      context: ./docker/php
-    volumes:
-      - ./public:/var/www/html
+      context: ./docker/redis
+    ports:
+      - "6379:6379"
     networks:
-      - backend
+      - app
+    volumes:
+      - redis:/data
 
 networks:
-  backend:
+  app:
     driver: bridge
+
+volumes:
+  redis:
+    driver: local

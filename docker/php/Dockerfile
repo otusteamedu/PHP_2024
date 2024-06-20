@@ -1,4 +1,5 @@
 FROM php:8.3-fpm
 
-# PHP configuration
+RUN pecl install redis && docker-php-ext-enable redis
+
 COPY ./php.ini /usr/local/etc/php/php.ini
