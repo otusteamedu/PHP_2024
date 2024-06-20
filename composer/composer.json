@@ -8,6 +8,7 @@
         }
     ],
     "require": {
-        "evgenysmrnv/security": "^1.0"
+        "evgenysmrnv/security": "^1.0",
+        "php": ">=8.0"
     }
 }
