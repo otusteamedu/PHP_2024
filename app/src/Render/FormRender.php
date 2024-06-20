@@ -8,8 +8,7 @@ class FormRender implements RenderInterface
 {
     public function show(): string //phpcs:ignore
     {
-        ob_start();
-        ?>
+        ob_start();?>
           <form method="post" action="/formHandler">
             <p>Генерация банковской выписки за указанные даты:</p>
             От <input required type="date" name="date_from" value="<?php echo date('Y-m-d'); ?>">

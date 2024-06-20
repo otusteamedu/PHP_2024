@@ -8,8 +8,7 @@ class ErrorRender implements RenderInterface
 {
     public function show(): string //phpcs:ignore
     {
-        ob_start();
-        ?>
+        ob_start();?>
             <p>404 Not Found</p>
         <?
 
