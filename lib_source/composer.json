@@ -1,0 +1,16 @@
+{
+    "name": "tbublikova/otus-ch-zodiac",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Tbublikova\\OtusChZodiac\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "t.bublikova",
+            "email": "tbublikova@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -1,0 +1,16 @@
+{
+    "name": "t.bublikova/php_2024",
+    "autoload": {
+        "psr-4": {
+            "TBublikova\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Bublikova Tatiana"
+        }
+    ],
+    "require": {
+        "tbublikova/otus-ch-zodiac": "^1.1"
+    }
+}
