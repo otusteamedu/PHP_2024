@@ -6,7 +6,6 @@ namespace App\Validator;
 
 class OnlyBrackets implements ValidatorInterface
 {
-
     /** @var mixed */
     protected mixed $data;
 

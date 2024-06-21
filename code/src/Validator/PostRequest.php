@@ -8,7 +8,7 @@ use App\Request\Request;
 
 class PostRequest implements ValidatorInterface
 {
-    const string REQUEST_METHOD_POST = 'POST';
+    const REQUEST_METHOD_POST = 'POST';
 
     /** @var mixed  */
     protected mixed $data;

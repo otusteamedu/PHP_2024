@@ -34,7 +34,7 @@ class ValidationChain
      * @return void
      * @throws ValidationException
      */
-    public function validate():void
+    public function validate(): void
     {
         foreach ($this->validators as $validator) {
             $validator->setData($this->data);
