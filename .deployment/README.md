@@ -7,8 +7,8 @@
 COMPOSE_PROJECT_NAME=homework30
 
 ###> php-fpm ###
-PUID=1001
-PGID=1001
+PUID=1000
+PGID=1000
 INSTALL_XDEBUG=true
 ###< php-fpm ###
 
@@ -27,7 +27,7 @@ RABBIT_PASSWORD=guest
 ###< rabbit-mq ###
 
 ###> tamplates ###
-HTML_TEMPLATES_PATH=${PWD}/../templates/
+HTML_TEMPLATES_PATH=${PWD}/templates/
 ###< tamplates ###
 ```
 
@@ -43,5 +43,25 @@ docker compose up -d --build
 docker compose exec php-fpm composer install
 ```
 
-5) Пример запроса на поиск:
+5) Примеры запросов:
 
+- генерация банковской выгрузки:
+```shell
+curl --location --request POST 'localhost:8888/bank/statement/generate' \
+--form 'clientName="CLIENT"' \
+--form 'accountNumber="777"' \
+--form 'startDate="2021-09-07"' \
+--form 'endDate="2023-05-20"'
+```
+
+- запуск консьюмера:
+
+```shell
+php console/command.php Alogachev\\Homework\\Infrastructure\\Command\\GenerateBankStatementCommand
+```
+
+6) Как проверить:
+- деплоим приложение
+- отправляем запрос на выгрузку;
+- в контейнере запускаем команду для консьюмера;
+- смотрим вывод в консоли.
