@@ -12,11 +12,14 @@ class Request
     private ArrayObject $post;
     /** @var string */
     private string $method;
+    /** @var string  */
+    private string $uri;
 
     public function __construct()
     {
         $this->post = new ArrayObject($_POST);
         $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->uri = $_SERVER['REQUEST_METHOD'];
     }
 
     /**
@@ -33,5 +36,13 @@ class Request
     public function getMethod(): string
     {
         return $this->method;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUri(): string
+    {
+        return $this->uri;
     }
 }

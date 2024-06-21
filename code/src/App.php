@@ -4,56 +4,28 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Command\BracketCheck;
 use App\Request\Request;
-use App\Validator\BracketBalance;
-use App\Validator\NotEmpty;
-use App\Validator\OnlyBrackets;
-use App\Validator\PostRequest;
-use App\Validator\ValidationChain;
-use App\Validator\ValidationException;
+use App\Response\Response;
 
 class App
 {
     /**
-     * @return void
+     * @return Response
      */
-    public function run(): void
+    public function run(): Response
     {
         $request = new Request();
+        $response = new Response();
 
-        $requestValidationChain = new ValidationChain();
-        $requestValidationChain->addValidator(
-            new PostRequest()
-        );
-        $requestValidationChain->setData($request);
-
-        try {
-            $requestValidationChain->validate();
-
-            $stringValidationChain = new ValidationChain();
-            $stringValidationChain
-                ->addValidator(
-                    new NotEmpty()
-                )
-                ->addValidator(
-                    new OnlyBrackets()
-                )
-                ->addValidator(
-                    new BracketBalance()
-                );
-            $stringValidationChain->setData(
-                $request->getPost()->offsetGet('string')
-            );
-            $stringValidationChain->validate();
-        } catch (ValidationException $ex) {
-            header('HTTP/1.1 400 Bad request', true, 400);
-            echo $ex->getMessage();
-            return;
-        } catch (\Exception) {
-            header('HTTP/1.1 500 Internal server error', true, 500);
-            return;
+        if ($request->getUri() == '/'){
+            $cmd = new BracketCheck();
+            $cmd->run($request, $response);
+        } else {
+            $response->setResultCode(404);
+            $response->setContent("Page not found");
         }
 
-        echo "Everything is Ok";
+        return $response;
     }
 }
