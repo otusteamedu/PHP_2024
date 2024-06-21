@@ -1,0 +1,14 @@
+{
+    "name": "alexander-gladkov/db",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderGladkov\\DB\\": "DB/",
+            "AlexanderGladkov\\Demo\\": "Demo/"
+        }
+    },
+    "require": {
+        "ext-pdo": "*",
+        "monolog/monolog": "^3.6"
+    }
+}
