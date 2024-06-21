@@ -18,7 +18,7 @@ class App
         $request = new Request();
         $response = new Response();
 
-        if ($request->getUri() == '/'){
+        if ($request->getUri() == '/') {
             $cmd = new BracketCheck();
             $cmd->run($request, $response);
         } else {
