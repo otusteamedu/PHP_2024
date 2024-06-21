@@ -8,5 +8,5 @@ use AlexanderGladkov\DB\Publisher\Publisher;
 
 abstract class AbstractEvent
 {
-    abstract function send(Publisher $publisher): void;
+    abstract public function send(Publisher $publisher): void;
 }

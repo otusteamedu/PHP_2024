@@ -32,6 +32,6 @@ class LogService implements QueryResultIsCreatedSubscriberInterface, SqlIsExecut
 
     public function processSqlIsExecutedEvent(SqlIsExecutedEvent $event): void
     {
-        $this->logger->info('SQL is executed: '. $event->getSql());
+        $this->logger->info('SQL is executed: ' . $event->getSql());
     }
 }

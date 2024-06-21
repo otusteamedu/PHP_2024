@@ -75,7 +75,7 @@ abstract class AbstractSelectQuery implements SelectQueryInterface
             throw new LogicException('Таблица не указана');
         }
 
-        $sql = 'SELECT * FROM ' .$this->tableName;
+        $sql = 'SELECT * FROM ' . $this->tableName;
         if (count($this->whereClauses) > 0) {
             $whereSql = "";
             foreach ($this->whereClauses as $fieldName => $fieldValue) {
