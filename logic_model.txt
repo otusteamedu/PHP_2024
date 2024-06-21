@@ -1,0 +1,45 @@
+cinema (Кинотеатр)
+-----
+id (INT, Primary Key)
+name (VARCHAR(100))
+location (VARCHAR(255))
+====================================================
+hall (Зал)
+-----
+id (INT, Primary Key)
+cinema_id (INT, Foreign Key)
+name (VARCHAR(100))
+capacity (INT)
+====================================================
+movie (Фильм)
+-----
+id (INT, Primary Key)
+title (VARCHAR(255))
+duration (INT) - в минутах
+genre (VARCHAR(100))
+====================================================
+showtime (Сеанс)
+-----
+id (INT, Primary Key)
+hall_id (INT, Foreign Key)
+movie_id (INT, Foreign Key)
+start_time (DATETIME)
+end_time (DATETIME)
+base_price (DECIMAL(10, 2))
+====================================================
+Seat (Место)
+-----
+id (INT, Primary Key)
+hall_id (INT, Foreign Key)
+row_number (INT)
+seat_number (INT)
+seat_type (VARCHAR(50)) - например, стандартный, VIP
+====================================================
+ticket (Билет)
+-----
+id (INT, Primary Key)
+showtime_id (INT, Foreign Key)
+seat_id (INT, Foreign Key)
+price (DECIMAL(10, 2))
+purchase_date_time (DATETIME)
+customer_name (VARCHAR(255))
