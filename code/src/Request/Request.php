@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Request;
@@ -16,7 +17,6 @@ class Request
     {
         $this->post = new ArrayObject($_POST);
         $this->method = $_SERVER['REQUEST_METHOD'];
-
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Validator;
@@ -50,4 +51,3 @@ class BracketBalance implements ValidatorInterface
         return 'The balance of the brackets is off';
     }
 }
-
