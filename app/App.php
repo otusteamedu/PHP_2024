@@ -12,17 +12,12 @@ use Exception;
 
 class App
 {
-    public Request $request;
-
-    public function __construct()
-    {
-        $this->request = new Request();
-    }
-
     public function run(): string
     {
+        $request = new Request();
+
         try {
-            $string = $this->request->get('string');
+            $string = $request->get('string');
 
             if (empty($string) || !is_string($string)) {
                 throw new BadRequestException('The provided input is not a valid string!');
