@@ -69,13 +69,16 @@ class Controller
         try {
             $product = $productRecord();
             $statusHandler = new StatusChangeHandler($product, $this->repository, new Publisher());
-            $cookingSteps = $this->config->cookingSteps;
+
+            $classPath = $this->config->envCookingStepsPath;
 
             # Подписываем шаги приготовления
-            foreach ($cookingSteps as $step => $value) {
-                $stepClass = getenv("SOURCE_USECASE_COOKING_STEPS_PATH").$step;
-                $this->publisher->subscribe(new $stepClass($statusHandler));
-            }
+            $this->publisher->subscribe(new ($classPath.$this->config->prepareDoughBaseStep)($statusHandler));
+            $this->publisher->subscribe(new ($classPath.$this->config->addIngrediancesStep)($statusHandler));
+            $this->publisher->subscribe(new ($classPath.$this->config->heatUpStep)($statusHandler));
+            $this->publisher->subscribe(new ($classPath.$this->config->productReadyStep)($statusHandler));
+
+
             $cooking = new CookingUseCase($this->publisher);
 
             # Подписываем Cooking на изменение статуса приготовления
