@@ -63,10 +63,4 @@ class GenerateBankStatementConsumer implements ConsumerInterface
             $this->channel->wait();
         }
     }
-
-    public function __destruct()
-    {
-        $this->channel->close();
-        $this->connection->close();
-    }
 }

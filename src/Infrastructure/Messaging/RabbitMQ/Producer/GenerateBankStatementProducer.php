@@ -38,10 +38,4 @@ class GenerateBankStatementProducer implements ProducerInterface
         $message = new AMQPMessage(json_encode($message->toArray()));
         $this->channel->basic_publish($message, '', GenerateBankStatementDictionary::QUEUE_NAME);
     }
-
-    public function __destruct()
-    {
-        $this->channel->close();
-        $this->connection->close();
-    }
 }

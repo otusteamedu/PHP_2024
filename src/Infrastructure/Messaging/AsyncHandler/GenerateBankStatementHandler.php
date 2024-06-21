@@ -30,6 +30,6 @@ class GenerateBankStatementHandler implements AsyncHandlerInterface
             $statementFile,
         );
         // Далее здесь создаем файл выписки и отправляем на почту.
-        echo "Сохранили выписку $statementFile для клиента " . $bankStatement->getClientName();
+        echo "Сохранили выписку $statementFile для клиента " . $bankStatement->getClientName() . PHP_EOL;
     }
 }

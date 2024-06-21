@@ -2,7 +2,7 @@ FROM php:8.2-fpm-alpine
 
 RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash rabbitmq-c-dev
 
-RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install sockets bcmath
 
 RUN pecl install amqp \
     && docker-php-ext-enable amqp
@@ -39,10 +39,6 @@ USER www-data
 
 # Composer instalation
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-RUN composer install --optimize-autoloader
-
-WORKDIR /var/www/homework/public
 
 CMD php-fpm
 

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework;
 
+use Alogachev\Homework\Application\Command\CommandInterface;
 use Alogachev\Homework\Application\UseCase\BankStatementFormUseCase;
 use Alogachev\Homework\Application\UseCase\GenerateBankStatementUseCase;
-use Alogachev\Homework\Infrastructure\Command\GenerateBankStatementCommend;
+use Alogachev\Homework\Infrastructure\Command\GenerateBankStatementCommand;
+use Alogachev\Homework\Infrastructure\Exception\CommandNotFoundException;
 use Alogachev\Homework\Infrastructure\Exception\RouteNotFoundException;
 use Alogachev\Homework\Infrastructure\Mapper\GenerateBankStatementMapper;
 use Alogachev\Homework\Infrastructure\Messaging\AsyncHandler\GenerateBankStatementHandler;
@@ -32,9 +34,7 @@ final class App
      */
     public function run(): void
     {
-        // ToDo: Тут добавить получение аргументов из консоли, если есть флаг consumer то запускаем консюмер.
-        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
-        $dotenv->load();
+        $this->loadEnv();
 
         $request = $this->resolveRequest();
         $route = $this->resolveRoute($request);
@@ -47,11 +47,26 @@ final class App
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function runConsumers(): void
+    public function runConsole(): void
     {
-        $container = $this->resolveDI();
-        $bankStatement = $container->get(GenerateBankStatementCommend::class);
-        $bankStatement->execute();
+        $this->loadEnv();
+        [$commandName] = $this->resolveConsole();
+
+        try {
+            $container = $this->resolveDI();
+            $command = $container->get($commandName);
+            if ($command instanceof CommandInterface) {
+                $command->execute();
+            }
+        } catch (NotFoundExceptionInterface $exception) {
+            throw new CommandNotFoundException($commandName, $exception);
+        }
+    }
+
+    public function loadEnv(): void
+    {
+        $dotenv = Dotenv::createImmutable(dirname(__DIR__));
+        $dotenv->load();
     }
 
     private function resolveDI(): ContainerInterface
@@ -77,7 +92,7 @@ final class App
                 $rabbitPassword,
                 get(GenerateBankStatementHandler::class),
             ),
-            GenerateBankStatementCommend::class => create()->constructor(
+            GenerateBankStatementCommand::class => create()->constructor(
                 get(GenerateBankStatementConsumer::class),
             ),
             HtmlRenderManager::class => create()->constructor($templatesPath),
@@ -128,5 +143,19 @@ final class App
         }
 
         throw new RouteNotFoundException();
+    }
+
+    private function resolveConsole(): array
+    {
+        $args = $_SERVER['argv'];
+        $resolved = [];
+
+        foreach ($args as $key => $arg) {
+            if ($key > 0) {
+                $resolved[] = $arg;
+            }
+        }
+
+        return $resolved;
     }
 }
