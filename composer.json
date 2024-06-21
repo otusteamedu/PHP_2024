@@ -1,0 +1,12 @@
+{
+    "name": "crezi/hw3",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Crezi\\Hw3\\": "src/"
+        }
+    },
+    "require": {
+        "crezi/hw3-composer-packages": "^1.0"
+    }
+}
