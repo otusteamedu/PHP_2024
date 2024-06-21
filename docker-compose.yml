@@ -1,10 +1,68 @@
 version: '3'
 services:
-  redis:
-    image: redis:7.2.3
-    container_name: redis
+  redis-node-1:
+    build:
+      context: ./redis-node
+      dockerfile: Dockerfile
+    image: redis-node
+    container_name: redis-node-1
     networks:
       - app-network
+  redis-node-2:
+    build:
+      context: ./redis-node
+      dockerfile: Dockerfile
+    image: redis-node
+    container_name: redis-node-2
+    networks:
+      - app-network
+  redis-node-3:
+    build:
+      context: ./redis-node
+      dockerfile: Dockerfile
+    image: redis-node
+    container_name: redis-node-3
+    networks:
+      - app-network
+  redis-node-4:
+    build:
+      context: ./redis-node
+      dockerfile: Dockerfile
+    image: redis-node
+    container_name: redis-node-4
+    networks:
+      - app-network
+  redis-node-5:
+    build:
+      context: ./redis-node
+      dockerfile: Dockerfile
+    image: redis-node
+    container_name: redis-node-5
+    networks:
+      - app-network
+  redis-node-6:
+    build:
+      context: ./redis-node
+      dockerfile: Dockerfile
+    image: redis-node
+    container_name: redis-node-6
+    networks:
+      - app-network
+  redis-cluster:
+    build:
+      context: ./redis-cluster
+      dockerfile: Dockerfile
+    image: redis-cluster
+    container_name: redis-cluster
+    networks:
+      - app-network
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6
   db:
     image: mariadb:11.2.4
     container_name: db
@@ -30,8 +88,9 @@ services:
     networks:
       - app-network
     depends_on:
-      - redis
+#      - redis
       - db
+      - redis-cluster
   php-fpm2:
     build:
       context: ./php-fpm
@@ -45,8 +104,9 @@ services:
     networks:
       - app-network
     depends_on:
-      - redis
+#      - redis
       - db
+      - redis-cluster
   webserver1:
       build:
         context: ./webserver
