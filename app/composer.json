@@ -1,0 +1,17 @@
+{
+    "name": "kagirova/hw14",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Kagirova\\Hw14\\": "src/"
+        }
+    },
+    "require": {
+        "elasticsearch/elasticsearch": "^8.12"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
