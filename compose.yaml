@@ -1,0 +1,24 @@
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "80:80"
+    depends_on:
+      - php
+    networks:
+      - backend
+
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
