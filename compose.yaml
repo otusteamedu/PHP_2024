@@ -7,18 +7,29 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - php
+      - server
+      - client
     networks:
-      - backend
+      - app
 
-  php:
+  client:
+    build:
+      context: ./docker/php
+    depends_on:
+      - server
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app
+
+  server:
     build:
       context: ./docker/php
     volumes:
       - ./:/var/www/html
     networks:
-      - backend
+      - app
 
 networks:
-  backend:
+  app:
     driver: bridge
