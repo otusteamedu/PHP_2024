@@ -23,7 +23,24 @@ services:
     volumes:
       - ./:/var/www/homework
 
-#  app-console:
+  app-console:
+    container_name: app-console
+    networks:
+      - homework-net
+    build:
+      context: ./
+      dockerfile: ./.deployment/docker/app-console/Dockerfile
+      args:
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./:/var/www/console
+    depends_on:
+      - rabbitmq
 
   nginx:
     container_name: nginx
