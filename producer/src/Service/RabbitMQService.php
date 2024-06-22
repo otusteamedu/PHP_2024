@@ -25,7 +25,7 @@ class RabbitMQService
         private readonly string $user,
         private readonly string $password,
         LoggerInterface $logger
-    ){
+    ) {
         $this->logger = $logger;
         $this->connection = new AMQPStreamConnection($this->host, $this->port, $this->user, $this->password);
         $this->channel = $this->connection->channel();
