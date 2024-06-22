@@ -1,0 +1,75 @@
+version: "3.8"
+
+networks:
+  homework-net:
+    name: homework-net
+    driver: bridge
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    networks:
+      - homework-net
+    build:
+      context: ./
+      dockerfile: ./.deployment/docker/php-fpm/Dockerfile
+      args:
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./:/var/www/homework
+
+  app-console:
+    container_name: app-console
+    networks:
+      - homework-net
+    build:
+      context: ./
+      dockerfile: ./.deployment/docker/app-console/Dockerfile
+      args:
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./:/var/www/console
+    depends_on:
+      - rabbitmq
+
+  nginx:
+    container_name: nginx
+    networks:
+      - homework-net
+    build:
+      context: ./.deployment/docker/nginx
+      dockerfile: ./Dockerfile
+      args:
+        PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+        PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_PORT}
+    environment:
+      PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+      PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_CONTAINER}
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+    volumes:
+      - ./:/var/www/homework:rw
+    depends_on:
+      - php-fpm
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.13.3-management
+    ports:
+      - ${RABBIT_PORT}:5672
+      - ${RABBIT_MANAGEMENT_PORT}:15672
+    networks:
+      - homework-net
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
