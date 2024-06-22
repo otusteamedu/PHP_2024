@@ -14,6 +14,7 @@ use Alogachev\Homework\Infrastructure\Mapper\GenerateBankStatementMapper;
 use Alogachev\Homework\Infrastructure\Messaging\AsyncHandler\GenerateBankStatementHandler;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Consumer\GenerateBankStatementConsumer;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer\GenerateBankStatementProducer;
+use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\RabbitManager;
 use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
 use Alogachev\Homework\Infrastructure\Routing\Route;
 use DI\Container;
@@ -78,18 +79,18 @@ final class App
         $rabbitPassword = $_ENV['RABBIT_PASSWORD'] ?? '';
 
         return new Container([
-            GenerateBankStatementHandler::class => create(),
-            GenerateBankStatementProducer::class => create()->constructor(
+            RabbitManager::class => create()->constructor(
                 $rabbitHost,
                 (int)$rabbitPort,
                 $rabbitUser,
                 $rabbitPassword,
             ),
+            GenerateBankStatementHandler::class => create(),
+            GenerateBankStatementProducer::class => create()->constructor(
+                get(RabbitManager::class),
+            ),
             GenerateBankStatementConsumer::class => create()->constructor(
-                $rabbitHost,
-                (int)$rabbitPort,
-                $rabbitUser,
-                $rabbitPassword,
+                get(RabbitManager::class),
                 get(GenerateBankStatementHandler::class),
             ),
             GenerateBankStatementCommand::class => create()->constructor(

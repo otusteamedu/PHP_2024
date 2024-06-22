@@ -59,22 +59,22 @@
 
 <div class="container">
     <h2>Bank Statement Generator</h2>
-    <form action="/generate-statement" method="post">
+    <form action="/bank/statement/generate" method="POST">
         <div class="form-group">
             <label for="client-name">Client Name</label>
-            <input type="text" id="client-name" name="client-name" required>
+            <input type="text" id="client-name" name="clientName" required>
         </div>
         <div class="form-group">
             <label for="account-number">Account Number</label>
-            <input type="text" id="account-number" name="account-number" required>
+            <input type="text" id="account-number" name="accountNumber" required>
         </div>
         <div class="form-group">
             <label for="start-date">Start Date</label>
-            <input type="date" id="start-date" name="start-date" required>
+            <input type="date" id="start-date" name="startDate" required>
         </div>
         <div class="form-group">
             <label for="end-date">End Date</label>
-            <input type="date" id="end-date" name="end-date" required>
+            <input type="date" id="end-date" name="endDate" required>
         </div>
         <div class="form-group">
             <button type="submit">Generate Statement</button>

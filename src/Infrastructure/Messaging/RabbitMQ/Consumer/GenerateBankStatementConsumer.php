@@ -6,40 +6,35 @@ namespace Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Consumer;
 
 use Alogachev\Homework\Application\Messaging\AsyncHandler\AsyncHandlerInterface;
 use Alogachev\Homework\Application\Messaging\Consumer\ConsumerInterface;
+use Alogachev\Homework\Application\Messaging\DTO\AMQPQueueDto;
 use Alogachev\Homework\Application\Messaging\Message\BankStatementRequestedMessage;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Dictionary\GenerateBankStatementDictionary;
-use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\RabbitManagerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class GenerateBankStatementConsumer implements ConsumerInterface
 {
-    private AMQPStreamConnection $connection;
-    private AMQPChannel $channel;
-
     public function __construct(
-        string $rabbitHost,
-        int $rabbitPort,
-        string $rabbitUser,
-        string $rabbitPassword,
+        private readonly RabbitManagerInterface $rabbitManager,
         private readonly AsyncHandlerInterface $asyncHandler,
     ) {
-        $this->connection = new AMQPStreamConnection($rabbitHost, $rabbitPort, $rabbitUser, $rabbitPassword);
-        $this->channel = $this->connection->channel();
-        $this->channel->queue_declare(
-            GenerateBankStatementDictionary::QUEUE_NAME,
-            false,
-            true,
-            false,
-            false
-        );
     }
 
     public function consume(): void
     {
         echo "Waiting for messages. TO exist press CTRL+C" . PHP_EOL;
 
-        $this->channel->basic_consume(
+        $channel = $this->rabbitManager->getChannelWithQueueDeclared(
+            new AMQPQueueDto(
+                GenerateBankStatementDictionary::QUEUE_NAME,
+                false,
+                true,
+                false,
+                false,
+            )
+        );
+
+        $channel->basic_consume(
             GenerateBankStatementDictionary::QUEUE_NAME,
             '',
             false,
@@ -59,8 +54,8 @@ class GenerateBankStatementConsumer implements ConsumerInterface
             }
         );
 
-        while ($this->channel->is_consuming()) {
-            $this->channel->wait();
+        while ($channel->is_consuming()) {
+            $channel->wait();
         }
     }
 }

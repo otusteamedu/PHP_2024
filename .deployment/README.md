@@ -1,7 +1,6 @@
 # Деплой
 
 1) Скопировать файл `.env.dist` как `.env`.
-2) Заполнить поля в `.env` файле. Для примера можно взять данные ниже:
 
 ```dotenv
 COMPOSE_PROJECT_NAME=homework30
@@ -31,19 +30,18 @@ HTML_TEMPLATES_PATH=${PWD}/templates/
 ###< tamplates ###
 ```
 
-3) Ввести команды (вводить `docker-compose` или `docker compose` в зависимости от версии):
+2) Ввести команды (вводить `docker-compose` или `docker compose` в зависимости от версии):
 
 ```bash
 docker compose up -d --build
 ```
 
-4) Установите зависимости после успешного запуска проекта:
+3) Примеры запросов:
 
-```bash
-docker compose exec php-fpm composer install
+- получение формы для запроса банковской выгрузки:
+```shell
+curl --location 'localhost:8888/bank/statement'
 ```
-
-5) Примеры запросов:
 
 - генерация банковской выгрузки:
 ```shell
@@ -60,8 +58,8 @@ curl --location --request POST 'localhost:8888/bank/statement/generate' \
 php console/command.php Alogachev\\Homework\\Infrastructure\\Command\\GenerateBankStatementCommand
 ```
 
-6) Как проверить:
+4) Как проверить:
 - деплоим приложение
-- отправляем запрос на выгрузку;
-- в контейнере запускаем команду для консьюмера;
-- смотрим вывод в консоли.
+- переходим на страницу формы в браузере `localhost:8888/bank/statement`;
+- отправляем форму для выгрузки (все поля обязательны для заполнения);
+- в контейнера `app-console` смотрим вывоз консоли (там должна появиться информация об обработке).

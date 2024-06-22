@@ -4,38 +4,33 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer;
 
+use Alogachev\Homework\Application\Messaging\DTO\AMQPQueueDto;
 use Alogachev\Homework\Application\Messaging\Message\QueueMessageInterface;
 use Alogachev\Homework\Application\Messaging\Producer\ProducerInterface;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Dictionary\GenerateBankStatementDictionary;
-use PhpAmqpLib\Channel\AMQPChannel;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\RabbitManagerInterface;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class GenerateBankStatementProducer implements ProducerInterface
 {
-    private AMQPStreamConnection $connection;
-    private AMQPChannel $channel;
-
     public function __construct(
-        string $rabbitHost,
-        int $rabbitPort,
-        string $rabbitUser,
-        string $rabbitPassword,
+        private readonly RabbitManagerInterface $rabbitManager,
     ) {
-        $this->connection = new AMQPStreamConnection($rabbitHost, $rabbitPort, $rabbitUser, $rabbitPassword);
-        $this->channel = $this->connection->channel();
-        $this->channel->queue_declare(
-            GenerateBankStatementDictionary::QUEUE_NAME,
-            false,
-            true,
-            false,
-            false
-        );
     }
 
     public function sendMessage(QueueMessageInterface $message): void
     {
+        $channel = $this->rabbitManager->getChannelWithQueueDeclared(
+            new AMQPQueueDto(
+                GenerateBankStatementDictionary::QUEUE_NAME,
+                false,
+                true,
+                false,
+                false,
+            )
+        );
+
         $message = new AMQPMessage(json_encode($message->toArray()));
-        $this->channel->basic_publish($message, '', GenerateBankStatementDictionary::QUEUE_NAME);
+        $channel->basic_publish($message, '', GenerateBankStatementDictionary::QUEUE_NAME);
     }
 }

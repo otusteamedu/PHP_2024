@@ -21,12 +21,12 @@ class GenerateBankStatementHandler implements AsyncHandlerInterface
     public function handle(QueueMessageInterface $message): void
     {
         $currentTimestamp = time();
-        $statementFile = $message->getClientName() . '_' . $currentTimestamp . '.txt';
+        $statementFile = $message->clientName . '_' . $currentTimestamp . '.txt';
         $bankStatement = new BankStatement(
-            $message->getClientName(),
-            $message->getAccountNumber(),
-            new DateTime($message->getStartDate()),
-            new DateTime($message->getStartDate()),
+            $message->clientName,
+            $message->accountNumber,
+            new DateTime($message->startDate),
+            new DateTime($message->endDate),
             $statementFile,
         );
         // Далее здесь создаем файл выписки и отправляем на почту.

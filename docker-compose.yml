@@ -23,6 +23,8 @@ services:
     volumes:
       - ./:/var/www/homework
 
+#  app-console:
+
   nginx:
     container_name: nginx
     networks:
@@ -54,6 +56,3 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-
-volumes:
-  es_data:
