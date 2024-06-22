@@ -1,0 +1,19 @@
+{
+    "name": "evgenysmrnv/security",
+    "description": "Security patches",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Evgenysmrnv\\Security\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Evgeniy Smirnov",
+            "email": "evgenysmrnv@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2."
+    }
+}

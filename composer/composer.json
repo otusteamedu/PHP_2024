@@ -1,0 +1,14 @@
+{
+    "name": "evgeniy/composer",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Evgeniy Smirnov",
+            "email": "evgenysmrnv@gmail.com"
+        }
+    ],
+    "require": {
+        "evgenysmrnv/security": "^1.0",
+        "php": ">=7.2"
+    }
+}
