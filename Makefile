@@ -11,6 +11,3 @@ docker-up:
 
 composer-install:
 	docker-compose run --rm php-fpm composer install
-
-consumer-run:
-	docker-compose run --rm php-cli bin/console rabbitmq:consumer bank_report

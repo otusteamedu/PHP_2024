@@ -4,7 +4,6 @@
 
 - init
 - composer-install
-- consumer-run
 
 Сервер RabbitMQ:
 

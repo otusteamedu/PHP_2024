@@ -20,6 +20,10 @@ services:
       dockerfile: Dockerfile
     image: otus/php-fpm
     container_name: mysite-php-fpm
+    depends_on:
+      - rabbitmq
+      - php-cli
+    tty: true
     working_dir: /data/mysite.local
     volumes:
        - ./app/:/data/mysite.local
@@ -35,6 +39,7 @@ services:
     container_name: mysite-php-cli
     depends_on:
       - rabbitmq
+      - mailhog
     tty: true
     working_dir: /data/mysite.local
     volumes:
@@ -42,6 +47,7 @@ services:
       - ./cli/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-custom.ini
     networks:
       - app-network
+    entrypoint: ["bash", "-c", "sleep 10 && bin/console rabbitmq:consumer bank_report"]
 
   rabbitmq:
     image: rabbitmq:3.7.5-management
@@ -50,7 +56,6 @@ services:
     container_name: mysite-rabbit-mq
     ports:
       - '15672:15672'
-      - '5672:5672'
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
