@@ -20,8 +20,9 @@ function isValid($str): bool
 
     for ($i = 0; $i < $len; ++$i) {
         if ($str[$i] == ')') {
-            if (count($open) > 0) array_pop($open);
-            elseif ($star > 0) $star--;
+            if (count($open) > 0) {
+                array_pop($open);
+            } elseif ($star > 0) $star--;
             else return false;
         } elseif ($str[$i] == '(') {
             array_push($open, $i);
@@ -39,7 +40,9 @@ function isValid($str): bool
         if ($str[$i] == '*') {
             $star++;
         } else if ($i == $open[$ptr]) {
-            if ($star == 0) return false;
+            if ($star == 0) {
+                return false;
+            }
             $star--;
             $ptr++;
         }
