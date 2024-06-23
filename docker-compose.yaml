@@ -61,7 +61,12 @@ services:
     networks:
       - app-network
 
-  #Контейнер с redis
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network
+
   redis:
     image: redis:alpine
     container_name: redis
