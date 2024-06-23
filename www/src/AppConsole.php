@@ -10,7 +10,6 @@ use Ahor\Hw19\rabbit\Consumer;
 
 class AppConsole
 {
-
     public function run(string $queuesName): void
     {
         $queues = Queues::from($queuesName);

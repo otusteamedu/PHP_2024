@@ -2,7 +2,7 @@
 
 namespace Ahor\Hw19\queues;
 
-enum Queues:string
+enum Queues: string
 {
     case GenerateReport = 'generate_report';
 }

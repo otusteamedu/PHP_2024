@@ -6,7 +6,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class GenerateReport
 {
-
     public function __invoke(AMQPMessage $msg): void
     {
         /** @var $data array{id:string, start_date:string, end_date:string, email:string} */

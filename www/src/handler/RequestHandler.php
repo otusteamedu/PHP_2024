@@ -11,15 +11,13 @@ use Ahor\Hw19\response\Error;
 
 class RequestHandler
 {
-    public function __construct(
-        private readonly Producer $producer
-    )
+    public function __construct(private readonly Producer $producer)
     {
     }
 
-    public function handle(Form $form):ResponseMessage
+    public function handle(Form $form): ResponseMessage
     {
-        if(!$form->validate()) {
+        if (!$form->validate()) {
             return new Error(ResponseStatus::BAD_REQUEST, 'Ошибка данных');
         }
 
