@@ -19,5 +19,4 @@ class Form
     {
         return !(empty($this->start) || empty($this->end) || empty($this->email));
     }
-
 }

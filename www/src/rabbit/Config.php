@@ -12,5 +12,4 @@ readonly class Config
     {
         return new self((int)getenv('RABBITMQ_PORT'), getenv('RABBITMQ_PASSWORD'), getenv('RABBITMQ_USER'), getenv('RABBITMQ_HOST'));
     }
-
 }
