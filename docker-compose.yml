@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  webserver:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: otus/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+       - ./src:/var/www/html
+    networks:
+      - app-network
+  
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app
+    volumes:
+       - ./src:/var/www/html
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
