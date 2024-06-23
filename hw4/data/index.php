@@ -22,8 +22,11 @@ function isValid($str): bool
         if ($str[$i] == ')') {
             if (count($open) > 0) {
                 array_pop($open);
-            } elseif ($star > 0) $star--;
-            else return false;
+            } elseif ($star > 0) {
+                $star--;
+            } else {
+                return false;
+            }
         } elseif ($str[$i] == '(') {
             array_push($open, $i);
         } else {
@@ -31,7 +34,9 @@ function isValid($str): bool
         }
     }
 
-    if (count($open) === 0) return true;
+    if (count($open) === 0) {
+        return true;
+    }
     // check leftover open braces from the back
     $star = $ptr = 0;
     $open = array_reverse($open);
