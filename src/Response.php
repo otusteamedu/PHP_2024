@@ -4,7 +4,6 @@ namespace ValidatorBrackets;
 
 class Response
 {
-
     public static function answer($message, $error = false)
     {
         if ($error) {

@@ -35,7 +35,7 @@ class Validator
             } elseif ($chr == ')') {
                 $counter--;
             }
-            
+
             if ($counter < 0) {
                 Response::answer('Некорректная строка - скобок ) больше чем открываюших', true);
                 exit();
