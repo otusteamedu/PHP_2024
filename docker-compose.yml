@@ -1,55 +1,20 @@
-# версия синтаксиса
-version: '3'
+version: '3.8'
 
-# в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #Контейнер с PHP, назовём его app
-  app:
-    # Если нет секции build, то система будет искать образ в репозиториях
-    build:
-      context: ./fpm
-      dockerfile: Dockerfile
-    image: myapp/php # имя будущего образа
-    container_name: app # имя контейнера после запуска
+  php:
+    build: php
+    container_name: ${CONTAINER_NAME_PHP}
     volumes:
-       - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
+      - ./app:/app
+      - ./php/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./var/php-fpm/logs:/var/logs/php
+    env_file: .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
-      - app-network
+      - otus-network
+    stdin_open: true
+    tty: true
 
-  #контейне с Nginx
-  webserver:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
-    container_name: webserver
-    # проброс портов
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-       - ./code:/data/mysite.local
-    networks:
-      - app-network
-
-  # контейнер с MySQL
-  # строим на базе стандартного образа
-  db:
-    image: mysql:5.7.22
-    container_name: db
-    ports:
-      - "3306:3306"
-    # описываем, какую БД мы создаём
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - ./dbdata:/var/lib/mysql  
-    networks:
-      - app-network
-
-#Docker Networks
 networks:
-  app-network:
-    driver: bridge
+  otus-network:
