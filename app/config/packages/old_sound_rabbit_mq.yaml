@@ -1,0 +1,15 @@
+old_sound_rabbit_mq:
+    connections:
+        default:
+            url: '%env(RABBITMQ_URL)%'
+    producers:
+#        # use 'old_sound_rabbit_mq.task_producer' service to send data.
+        bank_report:
+            connection: default
+            exchange_options: { name: 'bank_report_exchange', type: direct }
+    consumers:
+        bank_report:
+            connection: default
+            exchange_options: { name: 'bank_report_exchange', type: direct }
+            queue_options: { name: 'bank_report_queue'}
+            callback: App\Rabbitmq\Consumer\BankReportConsumer
