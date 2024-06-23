@@ -1,0 +1,19 @@
+FROM php:8.3.2-fpm
+
+RUN apt-get update && apt-get install -y \
+    zlib1g-dev \
+    libmemcached-dev \
+    libssl-dev \
+    git
+
+RUN docker-php-ext-install pdo pdo_mysql sockets && docker-php-ext-enable pdo pdo_mysql sockets
+
+RUN pecl install redis-6.0.0 memcached-3.2.0 && docker-php-ext-enable redis memcached
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet --version=2.6.6
+
+WORKDIR /app
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
