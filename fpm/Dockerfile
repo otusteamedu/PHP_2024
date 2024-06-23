@@ -44,4 +44,6 @@ WORKDIR /var/www/html/
 
 VOLUME /var/www/html/
 
+COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+
 CMD ["php-fpm"]

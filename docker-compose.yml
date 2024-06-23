@@ -1,25 +1,56 @@
 version: '3'
 
 services:
-  webserver:
+  nginxbalancer:
     build:
       context: ./nginx
-      dockerfile: Dockerfile
-    image: otus/nginx
-    container_name: webserver
+      dockerfile: DockerfileBalancer
+    image: otus/nginxbalancer
+    container_name: nginxbalancer
     ports:
       - "80:80"
+    networks:
+      - app-network
+
+  nginx1:
+      build:
+          context: ./nginx
+          dockerfile: Dockerfile
+      image: otus/nginx
+      container_name: nginx1
+      volumes:
+        - ./src:/var/www/html
+      networks:
+        - app-network
+
+  nginx2:
+    build:
+        context: ./nginx
+        dockerfile: Dockerfile
+    image: otus/nginx
+    container_name: nginx2
     volumes:
-       - ./src:/var/www/html
+      - ./src:/var/www/html
     networks:
       - app-network
   
-  app:
+  app1:
     build:
       context: ./fpm
       dockerfile: Dockerfile
     image: otus/php
-    container_name: app
+    container_name: app1
+    volumes:
+       - ./src:/var/www/html
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app2
     volumes:
        - ./src:/var/www/html
     networks:
