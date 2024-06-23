@@ -2,39 +2,39 @@
 
 declare(strict_types=1);
 
-use App\Kitchen\Kitchen;
+require_once __DIR__ . '/vendor/autoload.php';
 
-spl_autoload_register(
-    function (string $class) {
-        $class = str_replace('App\\', 'src\\', $class);
-        $file = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
-        if (file_exists($file)) {
-            require $file;
-            return true;
-        }
-        return false;
-    },
-);
+use App\Dto\Order;
+use App\Dto\OrderProduct;
+use App\Enum\AdditionIngredientEnum;
+use App\Enum\ProductTypeEnum;
+use App\UseCase\ExecuteOrderUseCase;
+use Psr\Container\ContainerInterface;
 
-$kitchen = new Kitchen();
+/** @var ContainerInterface $container */
+$container = require __DIR__ . '/container.php';
 
-echo "Готовим бургер\n";
-sleep(1);
-$burger = $kitchen->makeBurger();
+$products = [
+    new OrderProduct(
+        ProductTypeEnum::BURGER,
+        2,
+        [AdditionIngredientEnum::PEPPER, AdditionIngredientEnum::SALAD]
+    ),
+    new OrderProduct(
+        ProductTypeEnum::SANDWICH,
+        1,
+        [AdditionIngredientEnum::PEPPER]
+    ),
+    new OrderProduct(
+        ProductTypeEnum::HOTDOG,
+        1,
+        []
+    ),
+];
 
-echo $burger->getComposition();
+$order = new Order($products);
 
-exit();
+$useCase = $container->get(ExecuteOrderUseCase::class);
 
-//echo "Added additional ingredients\n";
-//$burgerWithAdditionalIngredients = new ProductWithAdditionalIngredients($burger);
-//$burgerWithAdditionalIngredients->addIngredient(
-//    new Ingredient('Зеленый лук', 100, 10)
-//);
-//
-//echo "Price standard: {$burger->getPrice()}\n";
-//echo "Price additional: {$burgerWithAdditionalIngredients->getPrice()}\n";
-//
-//echo "Приготовлен продукт: {$burgerWithAdditionalIngredients->getName()}\n";
-//echo "Состав:\n";
-//foreach ($burger)
+$useCase($order);
+

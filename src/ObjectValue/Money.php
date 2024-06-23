@@ -6,7 +6,7 @@ namespace App\ObjectValue;
 
 use App\Exception\InvalidArgumentException;
 
-readonly class Money
+class Money
 {
     /**
      * @throws InvalidArgumentException
