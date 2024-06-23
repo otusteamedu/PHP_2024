@@ -61,6 +61,13 @@ services:
     networks:
       - app-network
 
+  #Контейнер с redis
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
