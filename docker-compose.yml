@@ -1,0 +1,36 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - ./www:/app
+      - ./docker/nginx/:/etc/nginx/conf.d/
+    depends_on:
+      - app
+    networks:
+      - net
+    platform: linux/x86_64
+  app:
+    build: docker/php
+    volumes:
+      - ./www:/app
+    env_file:
+      - .env
+    networks:
+      - net
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
