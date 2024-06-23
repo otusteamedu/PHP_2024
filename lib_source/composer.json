@@ -12,5 +12,7 @@
             "email": "tbublikova@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=8.2"
+    }
 }
