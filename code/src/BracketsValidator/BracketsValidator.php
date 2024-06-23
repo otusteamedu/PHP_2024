@@ -8,6 +8,7 @@ class BracketsValidator
 {
   public function validate(string $str): bool
   {
+    $str = trim($str);
     if (
       strlen($str) &&
       substr($str, 0, 1) === '(' &&
