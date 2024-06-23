@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Otus\Balancer\BracketsValidator;
+namespace Otus\Balancer\StringCheker;
 
 class BracketsValidator
 {
