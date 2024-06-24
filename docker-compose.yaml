@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  #Контейнер с PHP-FPM, app1
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: php
+    container_name: server
+    volumes:
+      - ./code:/data
+      # - ./socket:/socket
+
+  #Контейнер с PHP-FPM, app2
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: php
+    container_name: client
+    volumes:
+      - ./code:/data
+      # - ./socket:/socket
