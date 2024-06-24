@@ -25,7 +25,7 @@ class App
             $client = new ClientSocket();
             $client->listen();
         } else {
-            throw new InvalidArgumentException('Invalid mode specified. Use \'server\' or \'client\'!');
+            throw new InvalidArgumentException('Invalid context specified. Use \'server\' or \'client\'!');
         }
     }
 }
