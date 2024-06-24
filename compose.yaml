@@ -1,35 +1,21 @@
 services:
-  nginx:
-    build:
-      context: ./docker/nginx
-    volumes:
-      - ./:/var/www/html
-    ports:
-      - "80:80"
-    depends_on:
-      - server
-      - client
-    networks:
-      - app
-
   client:
     build:
       context: ./docker/php
-    depends_on:
-      - server
+#    depends_on:
+#      - server
     volumes:
       - ./:/var/www/html
-    networks:
-      - app
+      - socket:/var/run
+    entrypoint: ['php', 'index.php', 'client']
 
   server:
     build:
       context: ./docker/php
     volumes:
       - ./:/var/www/html
-    networks:
-      - app
+      - socket:/var/run
+    entrypoint: ['php', 'index.php', 'server']
 
-networks:
-  app:
-    driver: bridge
+volumes:
+  socket:
