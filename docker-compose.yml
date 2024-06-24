@@ -31,7 +31,6 @@ services:
     container_name: mysql
     volumes:
       - ./var/mysql:/var/lib/mysql
-      - ./docker/mysql/dump/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "3306:3306"
     environment:
