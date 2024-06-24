@@ -10,5 +10,5 @@ try {
     $app = new App();
     $app->run();
 } catch (Exception $e) {
-    throw new \Exception($e->getMessage(), $e->getCode());
+    echo 'Код '. $e->getCode() . ': ' . $e->getMessage() ;
 }

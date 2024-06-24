@@ -12,6 +12,9 @@ class Brackets
     public function checkBrackets(string $string): string
     {
         $strLength = strlen($string);
+        if ($strLength == 0) {
+            throw new \Exception('Передана пустая строка', 400);
+        }
         if ($string[0] === ')') {
             throw new \Exception('Ошибка первой скобки', 400);
         }
@@ -19,7 +22,7 @@ class Brackets
             throw new \Exception('Ошибка последней скобки', 400);
         }
         if ($strLength % 2 !== 0) {
-            throw new \Exception('Количество скобок не чётное', 400);
+            throw new \Exception('Количество скобок нечётное', 400);
         }
         $countBracketsInString = substr_count($string, '()');
         if ($countBracketsInString == 0) {

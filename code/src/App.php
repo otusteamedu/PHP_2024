@@ -11,10 +11,15 @@ class App
      */
     public function run(): void
     {
-        $string = '((()(((())((()))())(()))))';
-        $result['brackets'] = (new Brackets())->checkBrackets($string);
+        if (!empty($_POST) && key_exists('string', $_POST)) {
+            $string = htmlspecialchars($_POST['string']);
+            $result['brackets'] = (new Brackets())->checkBrackets($string);
+        } else {
+            throw new \Exception('Переданы пустые или неверные данные', 400);
+        }
         $result['host'] = "Запрос обработал контейнер: " . $_SERVER['HOSTNAME'];
         $result['redis'] = 'Счётчик внутри сессии ' . (new Redis())->sessionStart();
+        //Просто для проверки коннекта через Docker
         $result['mysql'] = (new Mysql())->createDataTable('SELECT * FROM hw1.helloTable');
         echo '<pre>';
         var_dump($result);
