@@ -8,17 +8,21 @@
     "packages": [
         {
             "name": "crezi/hw3-composer-packages",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/POXAH/otus-test-package.git",
-                "reference": "16452d147f4de26b99428e70ae4ef611587f52f7"
+                "reference": "0f6a645411caf39fb4e36a912fd1b934fa4e6b76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/POXAH/otus-test-package/zipball/16452d147f4de26b99428e70ae4ef611587f52f7",
-                "reference": "16452d147f4de26b99428e70ae4ef611587f52f7",
+                "url": "https://api.github.com/repos/POXAH/otus-test-package/zipball/0f6a645411caf39fb4e36a912fd1b934fa4e6b76",
+                "reference": "0f6a645411caf39fb4e36a912fd1b934fa4e6b76",
                 "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=8.0"
             },
             "type": "library",
             "autoload": {
@@ -29,9 +33,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/POXAH/otus-test-package/issues",
-                "source": "https://github.com/POXAH/otus-test-package/tree/1.0.0"
+                "source": "https://github.com/POXAH/otus-test-package/tree/1.0.1"
             },
-            "time": "2024-06-20T18:28:41+00:00"
+            "time": "2024-06-24T14:32:58+00:00"
         }
     ],
     "packages-dev": [],
