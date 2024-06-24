@@ -1,8 +1,10 @@
 <?php
 
+namespace HW4;
+
 require 'validate.php';
 
-class app
+class App
 {
     public function run(string $str): void
     {
