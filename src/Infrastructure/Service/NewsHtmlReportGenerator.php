@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Service;
 
+use App\Application\Service\DTO\ReportNewsDto;
 use App\Application\Service\DTO\ReportGeneratorInputDto;
 use App\Application\Service\DTO\ReportGeneratorOutputDto;
 use App\Application\Service\ReportGeneratorInterface;
 use App\Application\Service\UuidGeneratorInterface;
-use App\Domain\Entity\News;
 use App\Domain\ValueObject\Url;
 
 class NewsHtmlReportGenerator implements ReportGeneratorInterface
@@ -36,15 +36,15 @@ class NewsHtmlReportGenerator implements ReportGeneratorInterface
     }
 
     /**
-     * @param News[] $newsList
+     * @param ReportNewsDto[] $newsList
      */
     private function createContent(array $newsList): string
     {
         $reportContent = "<ul>" . PHP_EOL;
 
         foreach ($newsList as $news) {
-            $url = $news->getUrl()->getValue();
-            $title = $news->getTitle()->getValue();
+            $url = $news->url->getValue();
+            $title = $news->title->getValue();
             $reportContent .= "<li><a href=\"{$url}\">{$title}</a></li>" . PHP_EOL;
         }
 

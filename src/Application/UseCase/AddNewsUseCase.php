@@ -21,7 +21,7 @@ class AddNewsUseCase
 
     public function __construct(
         private readonly NewsRepositoryInterface $newsRepository,
-        private readonly ArticleParserInterface  $getPageTitle,
+        private readonly ArticleParserInterface  $articleParser,
     ) {
     }
 
@@ -29,7 +29,7 @@ class AddNewsUseCase
     {
         $url = new Url($request->url);
 
-        $article = $this->getPageTitle->parseArticle(new ParseArticleDto($url));
+        $article = $this->articleParser->parseArticle(new ParseArticleDto($url));
 
         if (is_null($article->title)) {
             throw new PageTitleNotFoundException();
@@ -43,6 +43,6 @@ class AddNewsUseCase
 
         $this->newsRepository->save($news);
 
-        return new AddNewsResponse(new AddedNewsDto($news->getId()));
+        return new AddNewsResponse($news->getId());
     }
 }
