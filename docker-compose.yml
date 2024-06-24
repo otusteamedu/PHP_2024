@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+  nginxbalancer:
+    build:
+      context: ./nginx
+      dockerfile: balancer.dockerfile
+    image: otus/nginxbalancer
+    container_name: nginxbalancer
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  nginx1:
+      build:
+          context: ./nginx
+          dockerfile: Dockerfile
+      image: otus/nginx
+      container_name: nginx1
+      volumes:
+        - ./app:/var/www/html
+      networks:
+        - app-network
+
+  nginx2:
+    build:
+        context: ./nginx
+        dockerfile: Dockerfile
+    image: otus/nginx
+    container_name: nginx2
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      - app-network
+  
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app1
+    volumes:
+       - ./app:/var/www/html
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app2
+    volumes:
+       - ./app:/var/www/html
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
