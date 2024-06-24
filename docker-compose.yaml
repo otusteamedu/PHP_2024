@@ -1,0 +1,78 @@
+version: '3'
+
+services:
+  #контейнер с балансировщиком Nginx
+  balancer:
+    build:
+      context: ./balancer
+      dockerfile: Dockerfile
+    image: balance/balancer
+    container_name: balancer
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  #контейнер с nginx1
+  nginx1:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx1
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  #контейнер с nginx2
+  nginx2:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx2
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  #Контейнер с PHP-FPM, app1
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app1
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  #Контейнер с PHP-FPM, app2
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
