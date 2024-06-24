@@ -4,7 +4,7 @@ A package to determine the Chinese zodiac sign for a given year.
 
 ## Requirements
 
-- PHP 8.2 or higher
+- PHP 7.4 or higher
 
 ## Installation
 

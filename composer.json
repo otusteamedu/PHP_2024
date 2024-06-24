@@ -11,6 +11,6 @@
         }
     ],
     "require": {
-        "tbublikova/otus-ch-zodiac": "^1.2"
+        "tbublikova/otus-ch-zodiac": "^1.5"
     }
 }
