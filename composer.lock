@@ -1,0 +1,50 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "3a5753bff59738a7e8ed84945d2d3bf5",
+    "packages": [
+        {
+            "name": "crezi/hw3-composer-packages",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/POXAH/otus-test-package.git",
+                "reference": "0f6a645411caf39fb4e36a912fd1b934fa4e6b76"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/POXAH/otus-test-package/zipball/0f6a645411caf39fb4e36a912fd1b934fa4e6b76",
+                "reference": "0f6a645411caf39fb4e36a912fd1b934fa4e6b76",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Crezi\\Hw3ComposerPackages\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/POXAH/otus-test-package/issues",
+                "source": "https://github.com/POXAH/otus-test-package/tree/1.0.1"
+            },
+            "time": "2024-06-24T14:32:58+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
