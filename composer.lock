@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "ea37cc62e85beeca47a289bd3fe7b0a1",
+    "packages": [
+        {
+            "name": "tbublikova/otus-ch-zodiac",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tbublikova/otus-ch-zodiac.git",
+                "reference": "832035021756520d3940390ac4d75dc2ec010dca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tbublikova/otus-ch-zodiac/zipball/832035021756520d3940390ac4d75dc2ec010dca",
+                "reference": "832035021756520d3940390ac4d75dc2ec010dca",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tbublikova\\OtusChZodiac\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "t.bublikova",
+                    "email": "tbublikova@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/tbublikova/otus-ch-zodiac/issues",
+                "source": "https://github.com/tbublikova/otus-ch-zodiac/tree/1.5.0"
+            },
+            "time": "2024-06-24T08:49:38+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
