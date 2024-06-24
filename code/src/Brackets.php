@@ -32,7 +32,9 @@ class Brackets
             $string = str_ireplace('()', '', $string);
             //Проверка остались ли еще закрытые пары
             $countBracketsInString = substr_count($string, '()');
-            if ($countBracketsInString == 0) break;
+            if ($countBracketsInString == 0) {
+                break;
+            }
         }
         if (strlen($string) > 0) {
             throw new \Exception('В строке не все скобки имеют пару. Те что остались ' . $string, 400);
