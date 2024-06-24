@@ -1,0 +1,17 @@
+{
+  "name": "kuz/app-scan",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Kuz\\ScanApp\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kuzmin Ivan"
+    }
+  ],
+  "require": {
+    "kuzmin/app-scan": "^1.0"
+  }
+}
