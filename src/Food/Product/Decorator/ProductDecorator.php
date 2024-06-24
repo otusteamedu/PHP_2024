@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Food\Product\Decorator;
 
-use App\Exception\InvalidArgumentException;
 use App\Food\FoodComponentInterface;
 use App\Food\Ingredient;
 use App\Food\Product\Composite\ProductInterface;
@@ -20,7 +19,7 @@ class ProductDecorator extends ProductProxy
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getPrice(): Money
     {

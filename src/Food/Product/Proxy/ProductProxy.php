@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Food\Product\Proxy;
 
-use App\Exception\InvalidArgumentException;
 use App\Food\FoodComponentInterface;
 use App\Food\Product\Composite\Product;
 use App\Food\Product\Composite\ProductInterface;
@@ -26,7 +25,7 @@ class ProductProxy implements ProductInterface
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getPrice(): Money
     {
@@ -42,6 +41,6 @@ class ProductProxy implements ProductInterface
 
     public function getIngredients(): array
     {
-       return $this->product->getIngredients();
+        return $this->product->getIngredients();
     }
 }

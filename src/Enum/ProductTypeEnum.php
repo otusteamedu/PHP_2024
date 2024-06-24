@@ -10,4 +10,3 @@ enum ProductTypeEnum
     case HOTDOG;
     case SANDWICH;
 }
-

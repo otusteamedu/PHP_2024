@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Food\Product\Decorator;
 
-use App\Exception\InvalidArgumentException;
 use App\Food\Ingredient;
 use App\Food\Product\Composite\ProductInterface;
 use App\ObjectValue\Money;
@@ -12,7 +11,7 @@ use App\ObjectValue\Money;
 class OnionDecorator extends ProductDecorator
 {
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(ProductInterface $product)
     {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Food\Product\Composite;
 
-use App\Exception\InvalidArgumentException;
 use App\Food\FoodComponentInterface;
 use App\Food\Ingredient;
 use App\ObjectValue\Money;
@@ -25,7 +24,7 @@ class Product implements ProductInterface
     }
 
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function getPrice(): Money
     {

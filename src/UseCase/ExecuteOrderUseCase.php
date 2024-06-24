@@ -14,7 +14,7 @@ class ExecuteOrderUseCase
     }
 
     /**
-     * @throws \Exception
+     * @throws \DomainException
      */
     public function __invoke(Order $order): void
     {

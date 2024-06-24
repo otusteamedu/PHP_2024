@@ -11,4 +11,3 @@ enum CookingStatusEnum: string
     case COOKING = 'Готовится';
     case COOKED = 'Приготовлено';
 }
-

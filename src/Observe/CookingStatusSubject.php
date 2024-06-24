@@ -19,7 +19,7 @@ class CookingStatusSubject implements SubjectInterface
 
     public function setCookingStatus(CookingStatusEnum $cookingStatus): void
     {
-       $this->cookingStatus = $cookingStatus;
+        $this->cookingStatus = $cookingStatus;
     }
 
     public function attach(ObserverInterface $observer): void
@@ -30,9 +30,9 @@ class CookingStatusSubject implements SubjectInterface
     public function detach(ObserverInterface $observer): void
     {
         foreach ($this->observers as $index => $obs) {
-           if ($obs === $observer) {
-               unset($this->observers[$index]);
-           }
+            if ($obs === $observer) {
+                unset($this->observers[$index]);
+            }
         }
     }
 

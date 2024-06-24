@@ -37,4 +37,3 @@ $order = new Order($products);
 $useCase = $container->get(ExecuteOrderUseCase::class);
 
 $useCase($order);
-

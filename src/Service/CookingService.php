@@ -8,7 +8,6 @@ use App\Dto\Order;
 use App\Enum\AdditionIngredientEnum;
 use App\Enum\CookingStatusEnum;
 use App\Enum\ProductTypeEnum;
-use App\Exception\DomainException;
 use App\Food\Product\Composite\Burger;
 use App\Food\Product\Composite\HotDog;
 use App\Food\Product\Composite\Product;
@@ -25,7 +24,7 @@ class CookingService
     }
 
     /** @return Product[]
-     * @throws \Exception
+     * @throws \DomainException
      */
     public function cook(Order $order): array
     {
@@ -49,7 +48,7 @@ class CookingService
                 } elseif ($item->productType === ProductTypeEnum::SANDWICH) {
                     $product = new Sandwich();
                 } else {
-                    throw new DomainException('Unknown product type');
+                    throw new \DomainException('Unknown product type');
                 }
 
                 foreach ($item->additionalIngredients as $ingredient) {
@@ -60,7 +59,7 @@ class CookingService
                     } elseif ($ingredient === AdditionIngredientEnum::PEPPER) {
                         $product = new PepperDecorator($product);
                     } else {
-                        throw new DomainException('Unknown ingredient');
+                        throw new \DomainException('Unknown ingredient');
                     }
                 }
 

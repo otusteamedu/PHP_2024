@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Food\Product\Composite;
 
-use App\Exception\InvalidArgumentException;
 use App\Food\Ingredient;
 use App\Food\Product\Proxy\ProductProxy;
 use App\ObjectValue\Money;
@@ -12,7 +11,7 @@ use App\ObjectValue\Money;
 class Sandwich extends ProductProxy
 {
     /**
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct()
     {

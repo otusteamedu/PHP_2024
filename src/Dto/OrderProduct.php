@@ -6,12 +6,11 @@ namespace App\Dto;
 
 use App\Enum\AdditionIngredientEnum;
 use App\Enum\ProductTypeEnum;
-use App\Exception\InvalidArgumentException;
 
 class OrderProduct
 {
     /** @param AdditionIngredientEnum[] $additionalIngredients
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(
         public ProductTypeEnum $productType,
@@ -19,12 +18,12 @@ class OrderProduct
         public array $additionalIngredients
     ) {
         if ($this->quantity < 1) {
-            throw new InvalidArgumentException('Quantity must be greater than 0');
+            throw new \InvalidArgumentException('Quantity must be greater than 0');
         }
 
         foreach ($this->additionalIngredients as $ingredient) {
             if (!$ingredient instanceof AdditionIngredientEnum) {
-                throw new InvalidArgumentException("AdditionIngredient must be additional ingredients enum");
+                throw new \InvalidArgumentException("AdditionIngredient must be additional ingredients enum");
             }
         }
     }
