@@ -18,15 +18,14 @@ class App
 
         $context = $argv[1];
 
-        switch ($context) {
-            case 'server':
-                $server = new ServerSocket();
-                $server->listen();
-            case 'client':
-                $client = new ClientSocket();
-                $client->listen();
-            default:
-                throw new InvalidArgumentException('Invalid mode specified. Use \'server\' or \'client\'!');
+        if ($context === 'server') {
+            $server = new ServerSocket();
+            $server->listen();
+        } else if ($context === 'client') {
+            $client = new ClientSocket();
+            $client->listen();
+        } else {
+            throw new InvalidArgumentException('Invalid mode specified. Use \'server\' or \'client\'!');
         }
     }
 }
