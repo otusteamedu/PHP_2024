@@ -4,7 +4,7 @@ services:
   nginxbalancer:
     build:
       context: ./nginx
-      dockerfile: DockerfileBalancer
+      dockerfile: balancer.dockerfile
     image: otus/nginxbalancer
     container_name: nginxbalancer
     ports:
@@ -19,7 +19,7 @@ services:
       image: otus/nginx
       container_name: nginx1
       volumes:
-        - ./src:/var/www/html
+        - ./app:/var/www/html
       networks:
         - app-network
 
@@ -30,7 +30,7 @@ services:
     image: otus/nginx
     container_name: nginx2
     volumes:
-      - ./src:/var/www/html
+      - ./app:/var/www/html
     networks:
       - app-network
   
@@ -41,7 +41,7 @@ services:
     image: otus/php
     container_name: app1
     volumes:
-       - ./src:/var/www/html
+       - ./app:/var/www/html
     networks:
       - app-network
 
@@ -52,7 +52,7 @@ services:
     image: otus/php
     container_name: app2
     volumes:
-       - ./src:/var/www/html
+       - ./app:/var/www/html
     networks:
       - app-network
 

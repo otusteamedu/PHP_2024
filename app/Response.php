@@ -2,12 +2,14 @@
 
 namespace ValidatorBrackets;
 
+use Exception;
+
 class Response
 {
     public static function answer($message, $error = false)
     {
         if ($error) {
-            http_response_code(400);
+            throw new Exception($message, 400);
         }
         return print_r($message);
     }
