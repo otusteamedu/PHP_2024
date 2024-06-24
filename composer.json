@@ -1,0 +1,12 @@
+{
+    "name": "shtorm/otus",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "php-di/php-di": "^7.0"
+    }
+}
