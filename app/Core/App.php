@@ -4,11 +4,12 @@ namespace App\Core;
 
 use App\Sockets\ClientSocket;
 use App\Sockets\ServerSocket;
+use Generator;
 use InvalidArgumentException;
 
 class App
 {
-    public function run(): void
+    public function run(): Generator
     {
         global $argv;
 
@@ -20,10 +21,10 @@ class App
 
         if ($context === 'server') {
             $server = new ServerSocket();
-            $server->listen();
+            yield from $server->listen();
         } else if ($context === 'client') {
             $client = new ClientSocket();
-            $client->listen();
+            yield from $client->listen();
         } else {
             throw new InvalidArgumentException('Invalid context specified. Use \'server\' or \'client\'!');
         }

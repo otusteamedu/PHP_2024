@@ -6,7 +6,10 @@ require_once(__DIR__ . '/../vendor/autoload.php');
 
 try {
     $app = new App();
-    $app->run();
+
+    foreach ($app->run() as $output) {
+        echo $output;
+    }
 } catch (Exception $e) {
-    fwrite(STDOUT, $e->getMessage());
+    echo $e->getMessage() . PHP_EOL;
 }

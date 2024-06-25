@@ -2,6 +2,7 @@
 
 namespace App\Sockets;
 
+use Generator;
 use RuntimeException;
 use App\Config\SocketConfig;
 
@@ -58,5 +59,5 @@ abstract class Socket
         return $response;
     }
 
-    abstract public function listen(): void;
+    abstract public function listen(): Generator;
 }

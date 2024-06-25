@@ -2,6 +2,7 @@
 
 namespace App\Sockets;
 
+use Generator;
 use RuntimeException;
 
 class ServerSocket extends Socket
@@ -10,13 +11,11 @@ class ServerSocket extends Socket
     {
         parent::__construct();
 
-        $this->bind($this->config->get('server'));
+        $this->bind($this->config->get('sockets', 'server'));
     }
 
-    public function listen(): void
+    public function listen(): Generator
     {
-        fwrite(STDOUT, 'Server is ready to receive messages...' . PHP_EOL);
-
         while (true) {
             $buffer = '';
             $from = '';
@@ -26,9 +25,9 @@ class ServerSocket extends Socket
                 throw new RuntimeException('Unable to receive data: ' . socket_strerror(socket_last_error()));
             }
 
-            fwrite(STDOUT, "Received message: $buffer" . PHP_EOL);
+            yield "Received message: $buffer.\n";
 
-            $this->message("Received $bytesReceived bytes", $from);
+            $this->message("Received $bytesReceived bytes.", $from);
         }
     }
 }
