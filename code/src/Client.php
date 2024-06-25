@@ -11,9 +11,15 @@ class Client
         $socket = new Socket();
         $socket->init();
 
-        $msg = "Message";
-        $socket->send($msg);
-        $socket->receive();
+        while (1) {
+            $msg = readline('Your message: ');
+            $socket->send($msg);
+            $socket->receive();
+
+            if ($msg === '/exit') {
+                break;
+            }
+        }
 
         $socket->close();
     }

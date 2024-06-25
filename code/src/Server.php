@@ -11,11 +11,15 @@ class Server
         $socket = new Socket();
         $socket->init();
 
-        while (1) // server never exits
-        {
+        while (1) {
             $data = $socket->receive();
-            // $data .= "->Response";  // process client query here
             $socket->send($data);
+
+            if ($data === '/exit') {
+                break;
+            }
         }
+
+        $socket->close();
     }
 }
