@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app
+    volumes:
+       - ./app:/var/www/html
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
