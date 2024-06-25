@@ -15,9 +15,5 @@ function isValid($str): bool
             }
         }
     }
-    if ($count > 0) {
-        return false;
-    } else {
-        return true;
-    }
+    return $count === 0;
 }
