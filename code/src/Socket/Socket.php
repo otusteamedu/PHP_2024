@@ -53,8 +53,7 @@ class Socket
 
         if (socket_bind($this->socket, $this->socketPath) === false) {
             throw new SocketException('socket_bind() failed: '
-                . socket_strerror(socket_last_error($this->socket))
-            );
+                . socket_strerror(socket_last_error($this->socket)));
         }
 
         return $this;
