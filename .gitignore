@@ -3,9 +3,5 @@
 .AppleDouble
 .LSOverride
 
-# hw1 folders
-docker-fpm
-docker-sockets
-
-
-.vendor/
+/docker/.env
+/vendor/

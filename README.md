@@ -1,3 +1,6 @@
 # PHP_2024
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+docker with php-fpm in docker-fpm </br>
+docker with php-socket in docker-sockets </br>
+
+each folder has readme.md
