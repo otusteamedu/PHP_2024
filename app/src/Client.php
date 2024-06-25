@@ -13,7 +13,7 @@ class Client
 
     public function start()
     {
-        $this->socket->connect();       
+        $this->socket->connect();
         while (1) {
             #$this->socket->setBlock();
             $message = readline('Enter a message (or `stop` for exit): ');
