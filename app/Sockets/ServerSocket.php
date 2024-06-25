@@ -11,7 +11,7 @@ class ServerSocket extends Socket
     {
         parent::__construct();
 
-        $this->bind($this->config->get('sockets', 'server'));
+        $this->bind($this->config->get('server'));
     }
 
     public function listen(): Generator

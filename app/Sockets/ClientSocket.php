@@ -21,7 +21,7 @@ class ClientSocket extends Socket
             $message = trim(fgets(STDIN));
 
             if ($message) {
-                $serverSocket = $this->config->get('sockets', 'server');
+                $serverSocket = $this->config->get('server');
                 $this->message($message, $serverSocket);
 
                 $buffer = '';
