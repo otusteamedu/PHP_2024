@@ -1,0 +1,18 @@
+{
+  "name": "kuz/app-scan",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Kuz\\ScanApp\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kuzmin Ivan"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "ext-mbstring": "*"
+  }
+}
