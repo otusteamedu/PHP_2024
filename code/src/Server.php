@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Otus\Chat;
 
-class Server
+class Server extends Controller
 {
     public function run()
     {
         $socket = new Socket();
-        $socket->init($socket->serverPath);
+        $socket->init($this->serverPath);
         echo "Server is ready\n";
 
         while (1) {
@@ -18,13 +18,13 @@ class Server
                 echo 'Recieved message: ' . $data . "\n";
             }
 
-            $socket->send(mb_strlen($data, '8bit') . ' bytes recieved.', $socket->clientPath);
+            $socket->send(mb_strlen($data, '8bit') . ' bytes recieved.', $this->clientPath);
 
             if ($data === '/exit') {
                 break;
             }
         }
 
-        $socket->close($socket->serverPath);
+        $socket->close($this->serverPath);
     }
 }

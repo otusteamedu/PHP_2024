@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Otus\Chat;
 
-class Client
+class Client extends Controller
 {
     public function run()
     {
         $socket = new Socket();
-        $socket->init($socket->clientPath);
+        $socket->init($this->clientPath);
 
         while (1) {
             $msg = readline('> You: ');
-            $socket->send($msg, $socket->serverPath);
+            $socket->send($msg, $this->serverPath);
 
             $data = $socket->receive();
             if ($data) {
@@ -25,6 +25,6 @@ class Client
             }
         }
 
-        $socket->close($socket->clientPath);
+        $socket->close($this->clientPath);
     }
 }

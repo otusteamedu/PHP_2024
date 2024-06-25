@@ -7,14 +7,6 @@ namespace Otus\Chat;
 class Socket
 {
     private $socket;
-    public $serverPath;
-    public $clientPath;
-
-    public function __construct()
-    {
-        $this->serverPath = dirname(__FILE__) . '/server.sock';
-        $this->clientPath = dirname(__FILE__) . '/client.sock';
-    }
 
     public function init($path)
     {
