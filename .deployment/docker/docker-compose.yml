@@ -1,0 +1,121 @@
+version: "3.8"
+
+networks:
+  homework-net:
+    name: homework-net
+    driver: bridge
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    networks:
+      - homework-net
+    build:
+      context: ../../
+      dockerfile: ./.deployment/docker/php-fpm/Dockerfile
+      args:
+        PUID: ${PUID}
+        PGID: ${PGID}
+        INSTALL_XDEBUG: ${INSTALL_XDEBUG}
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ./../../:/var/www/homework
+
+  nginx:
+    container_name: nginx
+    networks:
+      - homework-net
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+      args:
+        PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+        PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_PORT}
+    environment:
+      PHP_UPSTREAM_CONTAINER: ${PHP_UPSTREAM_CONTAINER}
+      PHP_UPSTREAM_PORT: ${PHP_UPSTREAM_CONTAINER}
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+    volumes:
+      - ./../../:/var/www/homework:rw
+    depends_on:
+      - php-fpm
+
+  postgres:
+    container_name: postgres
+    networks:
+      - homework-net
+    build:
+      context: ./postgres
+      dockerfile: ./Dockerfile
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      POSTGRES_HOST: ${POSTGRES_DB_HOST}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+
+  chrome:
+    image: selenium/node-chrome:4.2.2-20220609
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    networks:
+      - homework-net
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - "6900:5900"
+
+  edge:
+    image: selenium/node-edge:4.2.2-20220609
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    networks:
+      - homework-net
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - "6901:5900"
+
+  firefox:
+    image: selenium/node-firefox:4.2.2-20220609
+    shm_size: 2gb
+    depends_on:
+      - selenium-hub
+    networks:
+      - homework-net
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=1
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+    ports:
+      - "6902:5900"
+
+  selenium-hub:
+    image: selenium/hub:4.2.2-20220609
+    container_name: selenium-hub
+    networks:
+      - homework-net
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+volumes:
+  db_data:

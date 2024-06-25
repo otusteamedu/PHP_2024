@@ -1,0 +1,7 @@
+App\Application\UseCase\Request\AddNewsRequest:
+  properties:
+    url:
+      - NotBlank:
+          message: Не передано значение url
+      - Url:
+          message: Значение Url {{ value }} не является валидным

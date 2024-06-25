@@ -1,0 +1,3 @@
+testing_sys:
+    resource: ../src/Infrastructure/Http/Controller/
+    type: attribute
