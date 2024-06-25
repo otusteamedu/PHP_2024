@@ -10,7 +10,7 @@ class ClientSocket extends Socket
     public function __construct()
     {
         parent::__construct();
-        $this->bind($this->config->get('sockets', 'client'));
+        $this->bind($this->config->get('client'));
     }
 
     public function listen(): Generator
