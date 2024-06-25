@@ -5,3 +5,4 @@ vendor
 .LSOverride
 /dbdata/**
 .env
+*.sock

@@ -9,18 +9,19 @@ class Client
     public function run()
     {
         $socket = new Socket();
-        $socket->init();
+        $socket->init($socket->clientPath);
 
         while (1) {
-            $msg = readline('Your message: ');
-            $socket->send($msg);
-            $socket->receive();
+            $msg = readline('> You: ');
+            $socket->send($msg, $socket->serverPath);
+            $data = $socket->receive();
+            if ($data) echo '> Responce: ' . $data . "\n";
 
             if ($msg === '/exit') {
                 break;
             }
         }
 
-        $socket->close();
+        $socket->close($socket->clientPath);
     }
 }

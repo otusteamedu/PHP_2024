@@ -9,17 +9,19 @@ class Server
     public function run()
     {
         $socket = new Socket();
-        $socket->init();
+        $socket->init($socket->serverPath);
+        echo "Server is ready\n";
 
         while (1) {
             $data = $socket->receive();
-            $socket->send($data);
+            if ($data) echo 'Recieved message: ' . $data . "\n";
+            $socket->send(mb_strlen($data, '8bit') . ' bytes recieved.', $socket->clientPath);
 
             if ($data === '/exit') {
                 break;
             }
         }
 
-        $socket->close();
+        $socket->close($socket->serverPath);
     }
 }
