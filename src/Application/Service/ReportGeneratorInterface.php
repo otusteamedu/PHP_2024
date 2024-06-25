@@ -9,5 +9,5 @@ use App\Application\Service\DTO\ReportGeneratorOutputDto;
 
 interface ReportGeneratorInterface
 {
-    public function generateReport(ReportGeneratorInputDto $inputDto): ReportGeneratorOutputDto;
+    public function generateReport(array $inputNews): ReportGeneratorOutputDto;
 }

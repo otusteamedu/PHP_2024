@@ -21,9 +21,9 @@ class NewsHtmlReportGenerator implements ReportGeneratorInterface
     ) {
     }
 
-    public function generateReport(ReportGeneratorInputDto $inputDto): ReportGeneratorOutputDto
+    public function generateReport(array $inputNews): ReportGeneratorOutputDto
     {
-        $reportContent = $this->createContent($inputDto->newsList);
+        $reportContent = $this->createContent($inputNews);
         $reportDate = date('Ymd_His');
 
         $filename = $this->newsReportFilePrefix . $this->uuidGenerator->generateUuid() . $reportDate . '.html';
