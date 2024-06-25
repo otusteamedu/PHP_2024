@@ -11,6 +11,7 @@
 
     <embedded name="url" class="App\Domain\ValueObject\Url" />
     <embedded name="title" class="App\Domain\ValueObject\Title" />
+    <embedded name="uuid" class="App\Domain\ValueObject\Uuid" />
     <field name="date" type="datetime" nullable="false" />
   </entity>
 

@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace App\Application\Handler\Query;
 
-use App\Domain\Entity\News;
-use App\Domain\Repository\NewsInterface;
+use App\Domain\Database\QueryInterface;
 use Ecotone\Modelling\Attribute\QueryHandler;
 use App\Application\Query\GetNewsQuery;
 
-class GetNewsQueryHandler
+readonly class GetNewsQueryHandler
 {
     public function __construct(
-        private NewsInterface $newsRepository
+        private QueryInterface $databaseQuery
     ) {}
 
     /**
-     * @return News[]
+     * @param GetNewsQuery $query
+     * @return array
      */
     #[QueryHandler]
     public function __invoke(GetNewsQuery $query): array
     {
-        return $this->newsRepository->findByParams([]);
+        return $this->databaseQuery->getNewsByUuid($query->getUuid()->getValue());
     }
 }

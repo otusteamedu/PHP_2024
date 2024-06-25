@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Query;
+namespace App\Application\Command;
 
-class GenerateReportQuery
+readonly class GenerateReportCommand
 {
     public function __construct(
-        private readonly array $ids
+        private array $ids
     ) {}
 
     public function getIds(): array

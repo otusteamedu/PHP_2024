@@ -6,6 +6,9 @@ namespace App\Domain\Repository;
 
 use App\Domain\Entity\News;
 
+/**
+ * getById метод
+ */
 interface NewsInterface
 {
     /**
@@ -15,8 +18,8 @@ interface NewsInterface
     public function save(News $news): void;
 
     /**
-     * @param array $params
-     * @return News[]
+     * @param array $identifier
+     * @return News[]|null
      */
-    public function findByParams(array $params): array;
+    public function getById(array $identifier);
 }

@@ -1,0 +1,5 @@
+<doctrine-mapping>
+  <embeddable name="App\Domain\ValueObject\Uuid">
+    <field name="value" type="string" nullable="false" unique="true" />
+  </embeddable>
+</doctrine-mapping>

@@ -20,10 +20,10 @@ class NewsRepository implements NewsInterface
         $this->em->flush();
     }
 
-    public function findByParams(array $params): array
+    public function getById(array $identifier)
     {
         $persister = $this->em->getUnitOfWork()->getEntityPersister(News::class);
 
-        return $persister->loadAll($params);
+        return $persister->loadById($identifier);
     }
 }

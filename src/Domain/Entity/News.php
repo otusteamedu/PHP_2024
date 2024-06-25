@@ -6,6 +6,7 @@ namespace App\Domain\Entity;
 
 use App\Domain\ValueObject\Url;
 use App\Domain\ValueObject\Title;
+use App\Domain\ValueObject\Uuid;
 
 class News
 {
@@ -14,6 +15,7 @@ class News
     public function __construct(
         private Url $url,
         private Title $title,
+        private Uuid $uuid,
         private \DateTime $date = new \DateTime()
     ) {}
 
@@ -22,36 +24,8 @@ class News
         return $this->id;
     }
 
-    public function getUrl(): Url
-    {
-        return $this->url;
-    }
-
-    public function setUrl(Url $url): self
-    {
-        $this->url = $url;
-        return $this;
-    }
-
-    public function getDate(): \DateTime
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTime $date): self
-    {
-        $this->date = $date;
-        return $this;
-    }
-
     public function getTitle(): Title
     {
         return $this->title;
-    }
-
-    public function setTitle(Title $title): self
-    {
-        $this->title = $title;
-        return $this;
     }
 }

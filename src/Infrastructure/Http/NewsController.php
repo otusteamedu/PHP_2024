@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Ecotone\Modelling\CommandBus;
 use App\Application\Command\CreateNewsCommand;
+use App\Domain\ValueObject\Uuid;
 
 class NewsController extends AbstractFOSRestController
 {
@@ -26,7 +27,7 @@ class NewsController extends AbstractFOSRestController
     public function createAction(array $request): Response
     {
         try {
-            $response = $this->commandBus->send(new CreateNewsCommand($request['url']));
+            $response = $this->commandBus->send(new CreateNewsCommand(new Uuid($request['uuid']), $request['url']));
             $view = $this->view($response, 201);
         } catch (\Throwable $e) {
             $errorResponse = [
