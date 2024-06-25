@@ -16,7 +16,8 @@ class Socket
     /**
      * @param string $socketPath
      */
-    public function __construct(string $socketPath) {
+    public function __construct(string $socketPath)
+    {
         $this->socketPath = $socketPath;
     }
 
@@ -70,7 +71,6 @@ class Socket
                 'socket_connect() failed: '
                 . socket_strerror(socket_last_error())
             );
-
         }
 
         return $this;

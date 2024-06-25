@@ -32,8 +32,7 @@ class ChatClient implements CommandInterface
 
         while (true) {
             $input = readline('Enter your message: ');
-            if (strtolower($input) == 'exit' )
-            {
+            if (strtolower($input) == 'exit') {
                 break;
             }
             $this->socket->write($input);

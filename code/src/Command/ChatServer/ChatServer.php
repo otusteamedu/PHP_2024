@@ -26,7 +26,7 @@ class ChatServer implements CommandInterface
         $this->socket->create()
             ->bind(true)
             ->listen();
-        fwrite(STDOUT,  "Server started" . PHP_EOL);
+        fwrite(STDOUT, "Server started" . PHP_EOL);
         $this->socket->accept();
         while (true) {
             $message = $this->socket->read();

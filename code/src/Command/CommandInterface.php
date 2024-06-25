@@ -6,6 +6,5 @@ namespace Viking311\Chat\Command;
 
 interface CommandInterface
 {
-
     public function execute(): void;
 }
