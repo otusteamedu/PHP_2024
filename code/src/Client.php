@@ -16,9 +16,13 @@ class Client
             $socket->send($msg, $socket->serverPath);
 
             $data = $socket->receive();
-            if ($data) echo '> Responce: ' . $data . "\n";
+            if ($data) {
+                echo '> Responce: ' . $data . "\n";
+            }
 
-            if ($msg === '/exit') break;
+            if ($msg === '/exit') {
+                break;
+            }
         }
 
         $socket->close($socket->clientPath);

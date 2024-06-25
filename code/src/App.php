@@ -10,8 +10,9 @@ class App
 
     public function __construct()
     {
-        if ($_SERVER['argc'] !== 2)
+        if ($_SERVER['argc'] !== 2) {
             new Error('invalid arguments');
+        }
 
         $this->mode = $_SERVER['argv'][1];
     }

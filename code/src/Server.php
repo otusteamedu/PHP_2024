@@ -14,11 +14,15 @@ class Server
 
         while (1) {
             $data = $socket->receive();
-            if ($data) echo 'Recieved message: ' . $data . "\n";
+            if ($data) {
+                echo 'Recieved message: ' . $data . "\n";
+            }
 
             $socket->send(mb_strlen($data, '8bit') . ' bytes recieved.', $socket->clientPath);
 
-            if ($data === '/exit') break;
+            if ($data === '/exit') {
+                break;
+            }
         }
 
         $socket->close($socket->serverPath);
