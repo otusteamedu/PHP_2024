@@ -12,6 +12,7 @@
     }
   ],
   "require": {
-    "kuzmin/app-scan": "^1.0"
+    "php": ">=7.4",
+    "ext-mbstring": "*"
   }
 }
