@@ -4,26 +4,18 @@ services:
 
   server:
     build:
-      context: ./fpm
+      context: ./php
       dockerfile: Dockerfile
     image: php
     container_name: server
-    networks:
-      - app-network
     volumes:
       - ./code:/data
 
   client:
     build:
-      context: ./fpm
+      context: ./php
       dockerfile: Dockerfile
     image: php
     container_name: client
-    networks:
-      - app-network
     volumes:
       - ./code:/data
-
-networks:
-  app-network:
-    driver: bridge
