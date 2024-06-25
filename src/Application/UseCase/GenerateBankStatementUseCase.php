@@ -19,6 +19,8 @@ class GenerateBankStatementUseCase
 
     public function __invoke(GenerateBankStatementRequest $request): void
     {
+
+
         $message = new BankStatementRequestedMessage(
             $request->clientName,
             $request->accountNumber,

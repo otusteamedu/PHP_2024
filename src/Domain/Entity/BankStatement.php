@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework\Domain\Entity;
 
+use Alogachev\Homework\Domain\ValueObject\BankStatementStatus;
 use DateTime;
 
 class BankStatement
@@ -15,6 +16,7 @@ class BankStatement
         private DateTime $startDate,
         private DateTime $endDate,
         private string $statementFileName,
+        private BankStatementStatus $status,
     ) {
     }
 
@@ -47,24 +49,24 @@ class BankStatement
         return $this;
     }
 
-    public function getStartDate(): string
+    public function getStartDate(): DateTime
     {
         return $this->startDate;
     }
 
-    public function setStartDate(string $startDate): self
+    public function setStartDate(DateTime $startDate): self
     {
         $this->startDate = $startDate;
 
         return $this;
     }
 
-    public function getEndDate(): string
+    public function getEndDate(): DateTime
     {
         return $this->endDate;
     }
 
-    public function setEndDate(string $endDate): self
+    public function setEndDate(DateTime $endDate): self
     {
         $this->endDate = $endDate;
 
@@ -79,6 +81,18 @@ class BankStatement
     public function setStatementFileName(string $statementFileName): self
     {
         $this->statementFileName = $statementFileName;
+
+        return $this;
+    }
+
+    public function getStatus(): BankStatementStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(BankStatementStatus $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

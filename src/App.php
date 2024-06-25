@@ -16,9 +16,11 @@ use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Consumer\GenerateBankSt
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer\GenerateBankStatementProducer;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\RabbitManager;
 use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
+use Alogachev\Homework\Infrastructure\Repository\PDOBankStatementRepository;
 use Alogachev\Homework\Infrastructure\Routing\Route;
 use DI\Container;
 use Dotenv\Dotenv;
+use PDO;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -78,12 +80,31 @@ final class App
         $rabbitUser = $_ENV['RABBIT_USER'] ?? '';
         $rabbitPassword = $_ENV['RABBIT_PASSWORD'] ?? '';
 
+        // postgres data
+        $host = $_ENV['POSTGRES_DB_HOST'] ?? null;
+        $db   = $_ENV['POSTGRES_DB_NAME'] ?? null;
+        $dbPort = $_ENV['POSTGRES_PORT'] ?? null;
+        $user = $_ENV['POSTGRES_USER'] ?? null;
+        $pass = $_ENV['POSTGRES_PASSWORD'] ?? null;
+        $dsn = "pgsql:host=$host;port=$dbPort;dbname=$db;user=$user;password=$pass";
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+
+        $pdo = new PDO($dsn, $user, $pass, $options);
+
         return new Container([
+            PDO::class => $pdo,
             RabbitManager::class => create()->constructor(
                 $rabbitHost,
                 (int)$rabbitPort,
                 $rabbitUser,
                 $rabbitPassword,
+            ),
+            PDOBankStatementRepository::class => create()->constructor(
+                get(PDO::class)
             ),
             GenerateBankStatementHandler::class => create(),
             GenerateBankStatementProducer::class => create()->constructor(
@@ -134,6 +155,7 @@ final class App
             ),
         ];
 
+        /** @var Route $route */
         foreach ($routes as $route) {
             if (
                 $route->getPath() === $request->getPathInfo()

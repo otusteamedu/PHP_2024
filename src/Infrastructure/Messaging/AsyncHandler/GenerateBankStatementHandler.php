@@ -8,6 +8,8 @@ use Alogachev\Homework\Application\Messaging\AsyncHandler\AsyncHandlerInterface;
 use Alogachev\Homework\Application\Messaging\Message\BankStatementRequestedMessage;
 use Alogachev\Homework\Application\Messaging\Message\QueueMessageInterface;
 use Alogachev\Homework\Domain\Entity\BankStatement;
+use Alogachev\Homework\Domain\Enum\BankStatementStatusEnum;
+use Alogachev\Homework\Domain\ValueObject\BankStatementStatus;
 use DateTime;
 use Exception;
 
@@ -28,6 +30,7 @@ class GenerateBankStatementHandler implements AsyncHandlerInterface
             new DateTime($message->startDate),
             new DateTime($message->endDate),
             $statementFile,
+            new BankStatementStatus(BankStatementStatusEnum::Preparing->value),
         );
         // Далее здесь создаем файл выписки и отправляем на почту.
         echo "Сохранили выписку $statementFile для клиента " . $bankStatement->getClientName() . PHP_EOL;

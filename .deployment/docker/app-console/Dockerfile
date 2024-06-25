@@ -43,5 +43,3 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --optimize-autoloader
 
 CMD php console/command.php Alogachev\\Homework\\Infrastructure\\Command\\GenerateBankStatementCommand
-
-EXPOSE 9000
