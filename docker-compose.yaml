@@ -1,24 +1,29 @@
 version: '3'
 
 services:
-  #Контейнер с PHP-FPM, app1
-  app1:
+
+  server:
     build:
       context: ./fpm
       dockerfile: Dockerfile
     image: php
     container_name: server
+    networks:
+      - app-network
     volumes:
       - ./code:/data
-      # - ./socket:/socket
 
-  #Контейнер с PHP-FPM, app2
-  app2:
+  client:
     build:
       context: ./fpm
       dockerfile: Dockerfile
     image: php
     container_name: client
+    networks:
+      - app-network
     volumes:
       - ./code:/data
-      # - ./socket:/socket
+
+networks:
+  app-network:
+    driver: bridge
