@@ -8,61 +8,83 @@ class Socket
 {
     private $socket;
 
-    public function init($path)
+    public function __construct(private string $path)
     {
         if (!extension_loaded('sockets')) {
-            new Error('The sockets extension is not loaded.');
+            throw new \Exception('The sockets extension is not loaded.');
         }
 
-        if (file_exists($path)) {
-            unlink($path);
-        }
-
-        $this->socket = socket_create(AF_UNIX, SOCK_DGRAM, 0);
+        $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
         if (!$this->socket) {
-            new Error('Unable to create AF_UNIX socket');
+            throw new \Exception('Unable to create AF_UNIX socket');
         }
-
-        socket_bind($this->socket, $path) ||
-            new Error("Unable to bind to " . $path);
-
-        return $this->socket;
     }
 
-    public function receive(): string
+    public function bind()
     {
-        socket_set_block($this->socket) ||
-            new Error('Unable to set blocking mode for socket');
-
-        $buf = '';
-        $from = '';
-        $bytes_received = socket_recvfrom($this->socket, $buf, 65536, 0, $from);
-        if ($bytes_received == -1) {
-            new Error('An error occured while receiving from the socket');
+        if (file_exists($this->path)) {
+            unlink($this->path);
         }
 
-        return $buf;
+        if (!socket_bind($this->socket, $this->path)) {
+            throw new \Exception("Unable to bind to " . $this->path);
+        }
     }
 
-    public function send(string $data, $path)
+    public function connect()
     {
-        socket_set_nonblock($this->socket) ||
-            new Error('Unable to set nonblocking mode for socket');
+        if (!socket_connect($this->socket, $this->path)) {
+            throw new \Exception("Unable to connect to " . $this->path);
+        }
+    }
 
-        $len = strlen($data);
-        $bytes_sent = socket_sendto($this->socket, $data, $len, 0, $path);
+    public function accept()
+    {
+        $accept = socket_accept($this->socket);
+
+        if (!$accept) {
+            throw new \Exception('Unable to accept socket');
+        }
+
+        return $accept;
+    }
+
+    public function listen()
+    {
+        if (!socket_listen($this->socket)) {
+            throw new \Exception('Socket can not be listened');
+        }
+    }
+
+    public function send(string $data, $to = false)
+    {
+        $len = mb_strlen($data, '8bit');
+        $target = $to ? $to : $this->socket;
+        $bytes_sent = socket_write($target, $data, $len);
         if ($bytes_sent == -1) {
-            new Error('An error occured while sending to the socket');
+            throw new \Exception('An error occured while sending to the socket');
         }
         if ($bytes_sent != $len) {
-            new Error($bytes_sent . ' bytes have been sent instead of the ' . $len . ' bytes expected');
+            throw new \Exception(+$bytes_sent . ' bytes have been sent instead of the ' . $len . ' bytes expected');
         }
     }
 
-    public function close($path)
+    public function read($from = false): string
+    {
+        $source = $from ? $from : $this->socket;
+        $data = socket_read($source, 65536);
+        if (!$data) {
+            throw new \Exception('An error occured while receiving from the socket');
+        }
+        return trim($data);
+    }
+
+    public function close()
     {
         socket_close($this->socket);
-        unlink($path);
-        echo 'Socket ' . $path . " closed\n";
+        if (file_exists($this->path)) {
+            unlink($this->path);
+        }
+        echo 'Socket ' . $this->path . " closed\n";
     }
 }

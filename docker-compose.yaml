@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     image: php
     container_name: server
+    tty: true
     volumes:
       - ./code:/data
 
@@ -17,5 +18,8 @@ services:
       dockerfile: Dockerfile
     image: php
     container_name: client
+    depends_on:
+      - server
+    tty: true
     volumes:
       - ./code:/data

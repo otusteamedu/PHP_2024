@@ -4,18 +4,28 @@ declare(strict_types=1);
 
 namespace Otus\Chat;
 
-class Client extends Controller
+class Client
 {
+    private Socket $socket;
+    public function __construct(string $socketPath)
+    {
+        $this->socket = new Socket($socketPath);
+    }
+
     public function run()
     {
-        $socket = new Socket();
-        $socket->init($this->clientPath);
+        $this->socket->connect();
 
         while (1) {
             $msg = readline('> You: ');
-            $socket->send($msg, $this->serverPath);
+            if (!$msg) {
+                sleep(1);
+                continue;
+            }
 
-            $data = $socket->receive();
+            $this->socket->send($msg);
+
+            $data = $this->socket->read();
             if ($data) {
                 echo '> Responce: ' . $data . "\n";
             }
@@ -25,6 +35,6 @@ class Client extends Controller
             }
         }
 
-        $socket->close($this->clientPath);
+        $this->socket->close();
     }
 }

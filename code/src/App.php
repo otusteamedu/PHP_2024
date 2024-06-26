@@ -7,28 +7,29 @@ namespace Otus\Chat;
 class App
 {
     public $mode;
+    public $socket;
 
     public function __construct()
     {
         if ($_SERVER['argc'] !== 2) {
-            new Error('invalid arguments');
+            throw new \Exception('invalid arguments');
         }
 
         $this->mode = $_SERVER['argv'][1];
+        $this->socket = (new Config())->socketPath;
     }
 
     public function run()
     {
         switch ($this->mode) {
             case 'server':
-                $app = new Server();
+                $app = new Server($this->socket);
                 break;
             case 'client':
-                $app = new Client();
+                $app = new Client($this->socket);
                 break;
             default:
-                new Error('invalid app mode');
-                break;
+                throw new \Exception('invalid app mode');
         }
         $app->run();
     }

@@ -4,27 +4,36 @@ declare(strict_types=1);
 
 namespace Otus\Chat;
 
-class Server extends Controller
+class Server
 {
+    private Socket $socket;
+    public function __construct(string $socketPath)
+    {
+        $this->socket = new Socket($socketPath);
+    }
+
     public function run()
     {
-        $socket = new Socket();
-        $socket->init($this->serverPath);
+        $this->socket->bind();
+        $this->socket->listen();
         echo "Server is ready\n";
+        $accept = $this->socket->accept();
 
         while (1) {
-            $data = $socket->receive();
-            if ($data) {
-                echo 'Recieved message: ' . $data . "\n";
+            $data = $this->socket->read($accept);
+            if (!$data) {
+                continue;
             }
 
-            $socket->send(mb_strlen($data, '8bit') . ' bytes recieved.', $this->clientPath);
+            echo 'Recieved message: \'' . $data . "'\n";
+            $this->socket->send(mb_strlen($data, '8bit') . ' bytes recieved.', $accept);
 
             if ($data === '/exit') {
+                echo "Server is aborting\n";
                 break;
             }
         }
 
-        $socket->close($this->serverPath);
+        $this->socket->close();
     }
 }
