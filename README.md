@@ -11,3 +11,7 @@ docker run -v ./code:/var/www/html -ti php-socket composer dump-autoload
 ```
 docker run -v ./code:/var/www/html -v ./socket:/run/chat -ti php-socket php ./app.php server
 ```
+## Запуск сервера
+```
+docker run -v ./code:/var/www/html -v ./socket:/run/chat -ti php-socket php ./app.php client
+```

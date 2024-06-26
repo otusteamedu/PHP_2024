@@ -6,7 +6,8 @@ namespace Viking311\Chat\Config;
 
 class Config
 {
-    private array $cfg;
+    private string $socketPath;
+
 
     /**
      * @throws ConfigException
@@ -17,16 +18,18 @@ class Config
         if ($cfg === false) {
             throw new ConfigException('Cannot parse app ini file');
         }
-        $this->cfg = $cfg;
+
+        if (!array_key_exists('socket_path', $cfg) || empty($cfg['socket_path'])) {
+            throw new ConfigException('Socket path is not set');
+        }
+        $this->socketPath = $cfg['socket_path'];
     }
 
     /**
-     * @param string $key
-     *
-     * @return string|null
+     * @return string
      */
-    public function get(string $key): ?string
+    public function getSocketPath(): string
     {
-        return $this->cfg[$key] ?? null;
+        return $this->socketPath;
     }
 }

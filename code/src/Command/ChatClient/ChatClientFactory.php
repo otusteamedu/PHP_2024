@@ -12,16 +12,12 @@ class ChatClientFactory
 {
     /**
      * @return ChatClient
-     * @throws SocketException
      */
     public static function createInstance(): ChatClient
     {
         $config = new Config();
 
-        $socketPath = $config->get('socket_path');
-        if (is_null($socketPath)) {
-            throw new SocketException('Socket path is not set');
-        }
+        $socketPath = $config->getSocketPath();
 
         $socket = new Socket($socketPath);
 
