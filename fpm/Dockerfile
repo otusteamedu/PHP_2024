@@ -24,6 +24,16 @@ RUN pecl install memcached && docker-php-ext-enable memcached
 # Установка расширения redis
 RUN pecl install redis && docker-php-ext-enable redis
 
+# Настроить php-fpm для использования Unix-сокета
+RUN sed -i "s|listen = 127.0.0.1:9000|listen = /var/run/php/php-fpm.sock|" /usr/local/etc/php-fpm.d/www.conf
+
+# Установить правильные права на сокет
+RUN sed -i "s|;listen.owner = www-data|listen.owner = www-data|" /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i "s|;listen.group = www-data|listen.group = www-data|" /usr/local/etc/php-fpm.d/www.conf \
+    && sed -i "s|;listen.mode = 0660|listen.mode = 0660|" /usr/local/etc/php-fpm.d/www.conf
+
+RUN mkdir -p /var/run/php && chown www-data:www-data /var/run/php
+
 # Устанавливаем Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

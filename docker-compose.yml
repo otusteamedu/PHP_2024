@@ -13,6 +13,7 @@ services:
     container_name: app # имя контейнера после запуска
     volumes:
        - ./code:/data/mysite.local
+       - ./php-socket:/var/run/php
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
@@ -30,10 +31,12 @@ services:
       - "443:443"
     volumes:
        - ./code:/data/mysite.local
+       - ./php-socket:/var/run/php
+       - ./nginx/hosts/mysite.local.conf:/etc/nginx/nginx.conf
     networks:
       - app-network
 
-  # контейнер с MySQL
+  # контейнер с PostgreSQL
   # строим на базе стандартного образа
   db:
     image: postgres:13
@@ -75,3 +78,4 @@ networks:
 #Определение тома
 volumes:
   postgresdata:
+  php-socket:
