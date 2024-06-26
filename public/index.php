@@ -1,15 +1,16 @@
 <?php
 
-use App\Core\App;
+use App\Services\EmailValidatorService;
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-try {
-    $app = new App();
+$service = new EmailValidatorService();
 
-    foreach ($app->run() as $output) {
-        echo $output;
-    }
-} catch (Exception $e) {
-    echo $e->getMessage() . PHP_EOL;
+$result = $service->validate([
+    'valid@gmail.com',
+    'invalid@lalala.com'
+]);
+
+foreach ($result as $email => $status) {
+    echo $email . ' is ' . ($status ? 'valid' : 'invalid') . PHP_EOL;
 }

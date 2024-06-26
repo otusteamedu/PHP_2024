@@ -1,6 +1,6 @@
 {
-  "name": "timirey/homework6",
-  "description": "Unix Socket Chat System",
+  "name": "amisiru/hw7",
+  "description": "Homework 7",
   "type": "project",
   "require": {
     "php": "^8.3",
