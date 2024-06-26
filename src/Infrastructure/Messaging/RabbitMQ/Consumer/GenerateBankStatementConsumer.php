@@ -22,7 +22,7 @@ class GenerateBankStatementConsumer implements ConsumerInterface
 
     public function consume(): void
     {
-        echo "Waiting for messages. TO exist press CTRL+C" . PHP_EOL;
+        echo "Waiting for messages. To exist press CTRL+C" . PHP_EOL;
 
         $channel = $this->rabbitManager->getChannelWithQueueDeclared(
             new AMQPQueueDto(
@@ -44,12 +44,7 @@ class GenerateBankStatementConsumer implements ConsumerInterface
             function (AMQPMessage $AMQPMessage) {
                 echo "Got the message " . $AMQPMessage->body . PHP_EOL;
                 $data = json_decode($AMQPMessage->body, true);
-                $message = new BankStatementRequestedMessage(
-                    $data['clientName'],
-                    $data['accountNumber'],
-                    $data['startDate'],
-                    $data['endDate'],
-                );
+                $message = new BankStatementRequestedMessage($data['id']);
                 $this->asyncHandler->handle($message);
             }
         );

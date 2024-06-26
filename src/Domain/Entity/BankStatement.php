@@ -15,7 +15,7 @@ class BankStatement
         private string $accountNumber,
         private DateTime $startDate,
         private DateTime $endDate,
-        private string $statementFileName,
+        private ?string $statementFileName,
         private BankStatementStatus $status,
     ) {
     }
@@ -23,6 +23,13 @@ class BankStatement
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getClientName(): string
@@ -73,12 +80,12 @@ class BankStatement
         return $this;
     }
 
-    public function getStatementFileName(): string
+    public function getStatementFileName(): ?string
     {
         return $this->statementFileName;
     }
 
-    public function setStatementFileName(string $statementFileName): self
+    public function setStatementFileName(?string $statementFileName): self
     {
         $this->statementFileName = $statementFileName;
 

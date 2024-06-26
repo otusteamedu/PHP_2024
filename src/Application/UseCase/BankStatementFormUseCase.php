@@ -13,6 +13,9 @@ class BankStatementFormUseCase
     ) {
     }
 
+    /**
+     * ToDo: Добавить дто ответа.
+     */
     public function __invoke(): void
     {
         $this->render->render('index.php');

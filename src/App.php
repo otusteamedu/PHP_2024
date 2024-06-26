@@ -106,7 +106,9 @@ final class App
             PDOBankStatementRepository::class => create()->constructor(
                 get(PDO::class)
             ),
-            GenerateBankStatementHandler::class => create(),
+            GenerateBankStatementHandler::class => create()->constructor(
+                get(PDOBankStatementRepository::class),
+            ),
             GenerateBankStatementProducer::class => create()->constructor(
                 get(RabbitManager::class),
             ),
@@ -118,10 +120,13 @@ final class App
                 get(GenerateBankStatementConsumer::class),
             ),
             HtmlRenderManager::class => create()->constructor($templatesPath),
-            BankStatementFormUseCase::class => create()->constructor(get(HtmlRenderManager::class)),
+            BankStatementFormUseCase::class => create()->constructor(
+                get(HtmlRenderManager::class)
+            ),
             GenerateBankStatementUseCase::class => create()->constructor(
                 get(HtmlRenderManager::class),
-                get(GenerateBankStatementProducer::class)
+                get(GenerateBankStatementProducer::class),
+                get(PDOBankStatementRepository::class),
             ),
             GenerateBankStatementMapper::class => create(),
         ]);

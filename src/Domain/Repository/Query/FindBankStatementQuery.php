@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework\Domain\Repository\Query;
 
-readonly class UpdateStatusToReadyQuery
+readonly class FindBankStatementQuery
 {
     public function __construct(
-        public int $statementId,
-        public string $statementFileName,
+        public int $id,
     ) {
     }
 }

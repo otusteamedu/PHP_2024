@@ -7,20 +7,14 @@ namespace Alogachev\Homework\Application\Messaging\Message;
 readonly class BankStatementRequestedMessage implements QueueMessageInterface
 {
     public function __construct(
-        public string $clientName,
-        public string $accountNumber,
-        public string $startDate,
-        public string $endDate,
+        public int $id,
     ) {
     }
 
     public function toArray(): array
     {
         return [
-            'clientName' => $this->clientName,
-            'accountNumber' => $this->accountNumber,
-            'startDate' => $this->startDate,
-            'endDate' => $this->endDate,
+            'id' => $this->id,
         ];
     }
 }
