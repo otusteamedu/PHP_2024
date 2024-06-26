@@ -6,7 +6,7 @@ namespace Alogachev\Homework\Application\UseCase;
 
 use Alogachev\Homework\Application\Render\RenderInterface;
 
-class BankStatementFormUseCase
+class GetBankStatementUseCase
 {
     public function __construct(
         private readonly RenderInterface $render,

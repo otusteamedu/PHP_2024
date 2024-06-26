@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alogachev\Homework;
 
 use Alogachev\Homework\Application\Command\CommandInterface;
-use Alogachev\Homework\Application\UseCase\BankStatementFormUseCase;
+use Alogachev\Homework\Application\UseCase\GetBankStatementUseCase;
 use Alogachev\Homework\Application\UseCase\GenerateBankStatementUseCase;
 use Alogachev\Homework\Infrastructure\Command\GenerateBankStatementCommand;
 use Alogachev\Homework\Infrastructure\Exception\CommandNotFoundException;
@@ -120,7 +120,7 @@ final class App
                 get(GenerateBankStatementConsumer::class),
             ),
             HtmlRenderManager::class => create()->constructor($templatesPath),
-            BankStatementFormUseCase::class => create()->constructor(
+            GetBankStatementUseCase::class => create()->constructor(
                 get(HtmlRenderManager::class)
             ),
             GenerateBankStatementUseCase::class => create()->constructor(
@@ -147,13 +147,13 @@ final class App
 
         $routes = [
             new Route(
-                '/bank/statement',
+                '/bank/statement/{statementId}',
                 'GET',
-                $container->get(BankStatementFormUseCase::class),
+                $container->get(GetBankStatementUseCase::class),
                 null,
             ),
             new Route(
-                '/bank/statement/generate',
+                '/bank/statement',
                 'POST',
                 $container->get(GenerateBankStatementUseCase::class),
                 $container->get(GenerateBankStatementMapper::class),
