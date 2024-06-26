@@ -19,7 +19,6 @@ class Client
         while (1) {
             $msg = readline('> You: ');
             if (!$msg) {
-                sleep(1);
                 continue;
             }
 
