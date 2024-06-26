@@ -60,36 +60,40 @@ class Solution {
  */
 function fractionToDecimal(int $n, int $d): string {
 
-    $div = $n/$d;
-
-    if (!is_float($div)) {
-        return (string)$div;
+    if ($n === 0) {
+        return '0';
     }
+
+    $div = bcdiv((string)$n,(string)$d, 512);
 
     $divToArr = explode(".", (string)$div);
     $divAfterDot = $divToArr[1];
     $result = $divToArr[0];
-    //$length = strlen($divAfterDot);
-    $a = '';
     $match = '';
+    $notMatch = '';
+
     $arr = str_split($divAfterDot);
 
-    for ($i = 0; $i < count($arr); $i++) {
+    $str = $divAfterDot;
+    for ($i = 0; $i < count($arr);$i++) {
+        $str = substr($str,1);
+        if (!str_contains($str, $arr[$i])) {
+            $notMatch .= $arr[$i];
+            continue;
+        }
+        $match .= $arr[$i];
         if ($arr[$i] === $arr[$i+1]) {
-            $match = $arr[$i];
-            return $result.'.'.$a.'('.$match.')';
-        } else {
-            $a.= $arr[$i];
-            if ($a[0] === $arr[$i]) {
-                for ($j = 0; $j < strlen($a); $j++) {
-                    if ($a[$j] === $arr[$i+$j]) {
-                        $match .= $a[$j];
-                        return $result.'.('.$match.')';
-                    }
-                }
+            if ($arr[$i] === $arr[$i+2] && $arr[$i] !== '0') {
+                return $result.'.'.$notMatch.'('.$arr[$i].')';
             }
+            continue;
+        }
+
+        if ($match === substr($str,0, strlen($match)) && $arr[$i] !== '0') {
+            return $result.'.'.$notMatch.'('.$match.')';
         }
     }
+    return ($notMatch? $result.'.'.$notMatch : $result) ;
 }
 
-echo fractionToDecimal(1,6);
+echo fractionToDecimal(1,214748364);
