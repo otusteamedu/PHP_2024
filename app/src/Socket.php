@@ -24,7 +24,7 @@ class Socket
         if (!strlen($socketPath)) {
             throw new Exception('Error socket path');
         }
-            
+
         $this->socketPath = $socketPath;
     }
 
