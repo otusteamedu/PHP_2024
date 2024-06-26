@@ -1,38 +1,19 @@
-FROM php:8.1-fpm
+FROM php:8.2-cli
 
 ENV TIMEZONE Europe/Moscow
 
 RUN apt-get update && apt-get install -y \
-        git \
         curl \
-        libpng-dev \
-        libonig-dev \
-        libxml2-dev \
-        libjpeg-dev \
-        libxpm-dev \
-        libwebp-dev \
-        libmcrypt-dev \
-        zlib1g-dev \
         zip \
-        unzip \
-        libpq-dev \
         libzip-dev \
-        libsodium-dev \
-        libmagickwand-dev --no-install-recommends \
-        libmemcached-dev
+        libonig-dev \
+        unzip
 
 # Install PHP extensions
-RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 RUN docker-php-ext-install sockets
 
-RUN pecl install redis \
-    && docker-php-ext-enable redis
-
-RUN pecl install memcached
-RUN echo extension=memcached.so >> /usr/local/etc/php/conf.d/memcached.ini
-
-RUN docker-php-ext-install zip pdo pdo_mysql mbstring sodium exif pcntl bcmath gd pgsql pdo_pgsql gettext
-RUN docker-php-ext-enable pdo pdo_mysql mbstring sodium exif pcntl bcmath gd pgsql pdo_pgsql gettext sockets
+RUN docker-php-ext-install zip mbstring
+RUN docker-php-ext-enable mbstring sockets
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -45,4 +26,4 @@ WORKDIR /var/www/html/
 
 VOLUME /var/www/html/
 
-CMD ["php-fpm"]
+CMD ["php", "-a"]

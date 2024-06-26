@@ -23,9 +23,9 @@ class Socket
 
         if (!strlen($socketPath)) {
             throw new Exception('Error socket path');
-        } else {
-            $this->socketPath = $socketPath;
         }
+            
+        $this->socketPath = $socketPath;
     }
 
     public function bind()

@@ -20,20 +20,20 @@ class App
 
         if (!isset($args[1])) {
             throw new Exception($ExceptionError);
-        } else {
-            switch ($args[1]) {
-                case 'start-server':
-                    $server = new Server($this->socketPath);
-                    $server->start();
-                    break;
-                case 'start-client':
-                    $client = new Client($this->socketPath);
-                    $client->start();
-                    break;
-                default:
-                    throw new Exception($ExceptionError);
-                    break;
-            }
+        }
+
+        switch ($args[1]) {
+            case 'start-server':
+                $server = new Server($this->socketPath);
+                $server->start();
+                break;
+            case 'start-client':
+                $client = new Client($this->socketPath);
+                $client->start();
+                break;
+            default:
+                throw new Exception($ExceptionError);
+                break;
         }
     }
 }

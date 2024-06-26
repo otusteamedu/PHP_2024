@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     image: otus/php
     container_name: app
+    tty: true
     volumes:
        - ./app:/var/www/html
     networks:

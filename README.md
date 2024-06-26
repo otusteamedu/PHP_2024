@@ -13,11 +13,11 @@ composer install
 ## Запуск сервера
 
 ```sh
-php app.php start-server
+docker exec -it app php app.php start-server
 ```
 
 ## Запуск клиента
 
 ```sh
-php app.php start-client
+docker exec -it app php app.php start-client
 ```
