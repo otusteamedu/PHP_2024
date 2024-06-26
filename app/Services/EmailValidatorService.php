@@ -33,5 +33,4 @@ class EmailValidatorService
 
         return checkdnsrr($domain);
     }
-
 }
