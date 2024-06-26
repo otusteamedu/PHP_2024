@@ -1,0 +1,16 @@
+{
+    "name": "otus/chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Otus\\Chat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yuri Serikov",
+            "email": "yu.serikov@myspaceport.ru"
+        }
+    ],
+    "require": {}
+}
