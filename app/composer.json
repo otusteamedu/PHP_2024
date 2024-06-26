@@ -1,0 +1,11 @@
+{
+    "name": "evgenyart/unix-socket-chat",
+    "description": "homework5",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\UnixSocketChat\\": "src/"
+        }
+    },
+    "require": {}
+}
