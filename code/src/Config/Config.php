@@ -6,7 +6,7 @@ namespace Viking311\Chat\Config;
 
 class Config
 {
-    private string $socketPath;
+    public readonly string $socketPath;
 
 
     /**
@@ -23,13 +23,5 @@ class Config
             throw new ConfigException('Socket path is not set');
         }
         $this->socketPath = $cfg['socket_path'];
-    }
-
-    /**
-     * @return string
-     */
-    public function getSocketPath(): string
-    {
-        return $this->socketPath;
     }
 }

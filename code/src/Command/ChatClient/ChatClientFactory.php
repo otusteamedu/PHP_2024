@@ -17,9 +17,7 @@ class ChatClientFactory
     {
         $config = new Config();
 
-        $socketPath = $config->getSocketPath();
-
-        $socket = new Socket($socketPath);
+        $socket = new Socket($config->socketPath);
 
         return new ChatClient($socket);
     }
