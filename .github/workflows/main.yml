@@ -6,7 +6,7 @@ on:
       - "**.php"
       - "phpcs.xml"
       - ".github/workflows/phpcs.yml"
-      
+
 jobs:
   phpcs:
     runs-on: ubuntu-latest
