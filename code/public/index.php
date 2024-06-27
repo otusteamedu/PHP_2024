@@ -149,14 +149,16 @@ function TESTfractionToDecimal(int $n, int $d): string
                 break;
             }
         }
-//        if (($i + 3 <= $len) && $strAfterDot[$i] === $strAfterDot[$i + 1] &&
-//            $strAfterDot[$i] === $strAfterDot[$i + 2]) {
-//                return $divToArr[0].'.'.$notMatch.'('.$strAfterDot[$i].')';
-//            }
+
         $matchStr.= $char;
         $matchCount = substr_count($strAfterDot,$matchStr);
 
         if ($matchCount > 1) {
+
+            if (str_replace($matchStr,'',$strAfterDot) === $notMatch) {
+                return $divToArr[0].'.'.$notMatch.'('.$matchStr.')';
+            }
+
             $result[$i] = [
                 'key' => $matchCount,
                 'value' => $matchStr
@@ -172,8 +174,14 @@ function TESTfractionToDecimal(int $n, int $d): string
         $notMatch .= $char;
         $matchStr = substr($matchStr, 1);
     }
+    if (empty($result)) {
+        return $divToArr[0].'.'.$strAfterDot;
+    }
     return $divToArr[0].'.'.$notMatch.$matchStr;
 }
 
-//echo TESTfractionToDecimal(2,1);
-echo TESTfractionToDecimal(1,214748364);
+//echo TESTfractionToDecimal(1,6);
+//echo TESTfractionToDecimal(1,214748364);
+//echo TESTfractionToDecimal(1,99);
+//echo TESTfractionToDecimal(-1,-2147483648);
+echo TESTfractionToDecimal(2147483647,370000);
