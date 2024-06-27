@@ -35,7 +35,6 @@ if isEmpty "$2" ; then
     exit 1;
 fi
 
-
 function isNumber() {
   echo 'function isNumber checking value "'"$1"'"';
 
@@ -58,10 +57,16 @@ if ! isNumber "$2"; then
   exit 1;
 fi
 
-
-function echoSum() {
-  local num=$(($1 + $2))
-  echo 'Sum of these numbers is' $num;
+function echoSumAWK() {
+  local num=$(awk "BEGIN{ print $1 + $2 }")
+  echo 'Sum using awk is' $num;
 }
 
-echoSum $1 $2;
+echoSumAWK $1 $2
+
+function echoSumBC() {
+  local num=$(echo $1+$2|bc)
+  echo 'Sum using BC is ' $num;
+}
+
+echoSumBC $1 $2;
