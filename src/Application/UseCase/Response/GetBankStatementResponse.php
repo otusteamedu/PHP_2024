@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Alogachev\Homework\Application\UseCase\Response;
 
-use Alogachev\Homework\Domain\ValueObject\BankStatementStatus;
-
-readonly class GetBankStatementResponse
+readonly class GetBankStatementResponse implements JsonResponseInterface
 {
     public function __construct(
         public int $id,
@@ -16,5 +14,17 @@ readonly class GetBankStatementResponse
         public string $endDate,
         public string $status,
     ) {
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'clientName' => $this->clientName,
+            'accountNumber' => $this->accountNumber,
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+            'status' => $this->status,
+        ];
     }
 }

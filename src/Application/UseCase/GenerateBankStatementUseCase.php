@@ -8,6 +8,7 @@ use Alogachev\Homework\Application\Messaging\Message\BankStatementRequestedMessa
 use Alogachev\Homework\Application\Messaging\Producer\ProducerInterface;
 use Alogachev\Homework\Application\Render\RenderInterface;
 use Alogachev\Homework\Application\UseCase\Request\GenerateBankStatementRequest;
+use Alogachev\Homework\Application\UseCase\Response\GenerateBankStatementResponse;
 use Alogachev\Homework\Domain\Entity\BankStatement;
 use Alogachev\Homework\Domain\Enum\BankStatementStatusEnum;
 use Alogachev\Homework\Domain\Repository\BankStatementRepositoryInterface;
@@ -18,18 +19,15 @@ use Exception;
 class GenerateBankStatementUseCase
 {
     public function __construct(
-        private readonly RenderInterface $render,
         private readonly ProducerInterface $producer,
         private readonly BankStatementRepositoryInterface $statementRepository,
     ) {
     }
 
     /**
-     * ToDo: Добавить дто ответа.
-     *
      * @throws Exception
      */
-    public function __invoke(GenerateBankStatementRequest $request): void
+    public function __invoke(GenerateBankStatementRequest $request): GenerateBankStatementResponse
     {
         $bankStatement = new BankStatement(
             $request->clientName,
@@ -44,6 +42,6 @@ class GenerateBankStatementUseCase
         $message = new BankStatementRequestedMessage($id);
         $this->producer->sendMessage($message);
 
-        $this->render->render('success-generated.php');
+        return new GenerateBankStatementResponse($id);
     }
 }

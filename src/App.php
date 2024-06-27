@@ -7,10 +7,13 @@ namespace Alogachev\Homework;
 use Alogachev\Homework\Application\Command\CommandInterface;
 use Alogachev\Homework\Application\UseCase\GetBankStatementUseCase;
 use Alogachev\Homework\Application\UseCase\GenerateBankStatementUseCase;
+use Alogachev\Homework\Application\UseCase\Response\JsonResponseInterface;
 use Alogachev\Homework\Infrastructure\Command\GenerateBankStatementCommand;
 use Alogachev\Homework\Infrastructure\Exception\CommandNotFoundException;
 use Alogachev\Homework\Infrastructure\Exception\RouteNotFoundException;
+use Alogachev\Homework\Infrastructure\Http\Response\ErrorResponse;
 use Alogachev\Homework\Infrastructure\Mapper\GenerateBankStatementMapper;
+use Alogachev\Homework\Infrastructure\Mapper\GetBankStatementMapper;
 use Alogachev\Homework\Infrastructure\Messaging\AsyncHandler\GenerateBankStatementHandler;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Consumer\GenerateBankStatementConsumer;
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer\GenerateBankStatementProducer;
@@ -20,11 +23,13 @@ use Alogachev\Homework\Infrastructure\Repository\PDOBankStatementRepository;
 use Alogachev\Homework\Infrastructure\Routing\Route;
 use DI\Container;
 use Dotenv\Dotenv;
+use Exception;
 use PDO;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use function DI\create;
 use function DI\get;
@@ -43,7 +48,12 @@ final class App
         $route = $this->resolveRoute($request);
         $mapper = $route->getParamsMapper();
 
-        ($route->getHandler())(is_null($mapper) ? null : $mapper->map($request));
+        try {
+            $response = ($route->getHandler())(is_null($mapper) ? null : $mapper->map($request));
+            $this->resolveResponse($response, Response::HTTP_OK);
+        } catch (Exception $exception) {
+            $this->resolveResponse(new ErrorResponse($exception->getMessage()), Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -121,14 +131,14 @@ final class App
             ),
             HtmlRenderManager::class => create()->constructor($templatesPath),
             GetBankStatementUseCase::class => create()->constructor(
-                get(HtmlRenderManager::class)
+                get(PDOBankStatementRepository::class)
             ),
             GenerateBankStatementUseCase::class => create()->constructor(
-                get(HtmlRenderManager::class),
                 get(GenerateBankStatementProducer::class),
                 get(PDOBankStatementRepository::class),
             ),
             GenerateBankStatementMapper::class => create(),
+            GetBankStatementMapper::class => create(),
         ]);
     }
 
@@ -150,7 +160,7 @@ final class App
                 '/bank/statement/{statementId}',
                 'GET',
                 $container->get(GetBankStatementUseCase::class),
-                null,
+                $container->get(GetBankStatementMapper::class),
             ),
             new Route(
                 '/bank/statement',
@@ -160,7 +170,6 @@ final class App
             ),
         ];
 
-        /** @var Route $route */
         foreach ($routes as $route) {
             if (
                 $route->getPath() === $request->getPathInfo()
@@ -185,5 +194,17 @@ final class App
         }
 
         return $resolved;
+    }
+
+    private function resolveResponse(JsonResponseInterface $content, int $statusCode): void
+    {
+        $response = new Response();
+        $response
+            ->setStatusCode($statusCode)
+            ->setContent(json_encode($content->toArray()))
+            ->headers->set('Content-Type', 'application/json')
+        ;
+
+        $response->send();
     }
 }

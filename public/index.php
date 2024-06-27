@@ -7,6 +7,6 @@ use Alogachev\Homework\App;
 try {
     $app = new App();
     $app->run();
-} catch (Exception $exception) {
+} catch (Throwable $exception) {
     echo $exception->getMessage() . '<br>';
 }
