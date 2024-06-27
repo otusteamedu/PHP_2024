@@ -21,6 +21,7 @@ use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\RabbitManager;
 use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
 use Alogachev\Homework\Infrastructure\Repository\PDOBankStatementRepository;
 use Alogachev\Homework\Infrastructure\Routing\Route;
+use Alogachev\Homework\Infrastructure\Routing\Router;
 use DI\Container;
 use Dotenv\Dotenv;
 use Exception;
@@ -155,31 +156,7 @@ final class App
     {
         $container = $this->resolveDI();
 
-        $routes = [
-            new Route(
-                '/bank/statement/{statementId}',
-                'GET',
-                $container->get(GetBankStatementUseCase::class),
-                $container->get(GetBankStatementMapper::class),
-            ),
-            new Route(
-                '/bank/statement',
-                'POST',
-                $container->get(GenerateBankStatementUseCase::class),
-                $container->get(GenerateBankStatementMapper::class),
-            ),
-        ];
-
-        foreach ($routes as $route) {
-            if (
-                $route->getPath() === $request->getPathInfo()
-                && $route->getMethod() === $request->getMethod()
-            ) {
-                return $route;
-            }
-        }
-
-        throw new RouteNotFoundException();
+        return (new Router($container))->getRouteByRequest($request);
     }
 
     private function resolveConsole(): array

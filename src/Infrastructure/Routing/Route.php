@@ -11,6 +11,7 @@ final class Route
         private readonly string $method,
         private readonly object $handler,
         private readonly ?object $paramsMapper = null,
+        private readonly array $requirements = [],
     ) {
     }
 
@@ -32,5 +33,10 @@ final class Route
     public function getParamsMapper(): ?object
     {
         return $this->paramsMapper;
+    }
+
+    public function getRequirements(): array
+    {
+        return $this->requirements;
     }
 }

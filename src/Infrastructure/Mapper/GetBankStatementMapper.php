@@ -11,6 +11,7 @@ class GetBankStatementMapper
 {
     public function map(Request $request): GetBankStatementRequest
     {
+        preg_match($pattern, $request->getPathInfo(), $matches);
         $id = $request->query->get('statementId');
 
         return new GetBankStatementRequest(
