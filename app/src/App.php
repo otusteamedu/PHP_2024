@@ -31,7 +31,7 @@ class App
             $email = trim($email);
             $result = Validator::validate($email);
             $this->composeResult($email, $result);
-            
+
             print_r($this->composeResult($email, $result) . PHP_EOL);
         }
     }
