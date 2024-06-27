@@ -14,7 +14,7 @@ class App
             $message = trim(readline('Введите список email для валидации (разделитель `;`), `demo` для проверки списка по-умолчанию, `exit` для выхода: '));
             if (strlen($message)) {
                 if ($message == 'exit') {
-                    exit();
+                    break;
                 } elseif ($message == 'demo') {
                     $message = self::DEFAULTLIST;
                 }
@@ -30,7 +30,17 @@ class App
         foreach ($arEmails as $email) {
             $email = trim($email);
             $result = Validator::validate($email);
-            print_r($email . " - " . ($result ? "\033[32m valid \033[0m" : "\033[31m not valid \033[0m") . PHP_EOL);
+            $this->composeResult($email, $result);
+            
+            print_r($this->composeResult($email, $result) . PHP_EOL);
         }
+    }
+
+    private function composeResult($email, $result)
+    {
+        $validMessage = "\033[32m valid \033[0m";
+        $noValidMessage = "\033[31m not valid \033[0m";
+
+        return $email . " - " . ($result ? $validMessage : $noValidMessage);
     }
 }
