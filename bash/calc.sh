@@ -38,7 +38,7 @@ fi
 function isNumber() {
   echo 'function isNumber checking value "'"$1"'"';
 
-  if  [[ $1 =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]]; then
+  if  [[ $1 =~ ^[+-]?[0-9]+([.,][0-9]+)?$ ]]; then
     echo "yes it's a number";
     return 0;
   fi
@@ -57,16 +57,19 @@ if ! isNumber "$2"; then
   exit 1;
 fi
 
+N1=${1/,/.};
+N2=${2/,/.};
+
 function echoSumAWK() {
-  local num=$(awk "BEGIN{ print $1 + $2 }")
-  echo 'Sum using awk is' $num;
+  local SUM=$(awk "BEGIN{ print $1 + $2 }")
+  echo 'Sum using awk is' $SUM;
 }
 
-echoSumAWK $1 $2
+echoSumAWK $N1 $N2
 
 function echoSumBC() {
-  local num=$(echo $1+$2|bc)
-  echo 'Sum using BC is ' $num;
+  local SUM=$(echo $1 + $2|bc)
+  echo 'Sum using BC is' $SUM;
 }
 
-echoSumBC $1 $2;
+echoSumBC $N1 $N2
