@@ -19,9 +19,6 @@ class PDOBankStatementRepository implements BankStatementRepositoryInterface
     ) {
     }
 
-    /**
-     * ToDo: Реализовать сохранение в БД.
-     */
     public function save(BankStatement $bankStatement): int
     {
         $insertStatement = $this->pdo->prepare(
