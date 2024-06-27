@@ -63,37 +63,117 @@ function fractionToDecimal(int $n, int $d): string {
     if ($n === 0) {
         return '0';
     }
+    $div = [];
+    $result = [];
+    $div[] = $n/$d;
+    $div[] = bcdiv((string)$n,(string)$d, 512);
+    foreach ($div as $division) {
+        $divToArr = explode(".", (string)$division);
+        $divAfterDot = $divToArr[1];
+        $match = '';
+        $notMatch = '';
 
-    $div = bcdiv((string)$n,(string)$d, 512);
+        $arr = str_split($divAfterDot);
 
+        $str = $divAfterDot;
+        $iMax = count($arr);
+        $answer = 0;
+        for ($i = 0; $i < $iMax; $i++) {
+
+            $str = substr($str,1);
+            if (!str_contains($str, $arr[$i])) {
+                $notMatch .= $arr[$i];
+                continue;
+            }
+            $match .= $arr[$i];
+
+            if ($arr[$i] === $arr[$i+1] && $i+1 !== $iMax) {
+
+                if ($arr[$i] === $arr[$i+2] && $arr[$i] !== '0' && $i+2 !== $iMax) {
+                    $answer = 1;
+                    $result[] = $divToArr[0].'.'.$notMatch.'('.$arr[$i].')';
+                    break;
+                }
+                continue;
+            }
+
+            if (str_starts_with($str, $match) && $arr[$i] !== '0') {
+                $answer = 1;
+                $result[] = $divToArr[0].'.'.$notMatch.'('.$match.')';
+                break;
+            }
+        }
+        if ($answer === 0) {
+            $result[] = $notMatch? $divToArr[0].'.'.$notMatch : $divToArr[0];
+        }
+
+    }
+
+    return (rtrim($result[1],'0') === $result[0])? $result[0] : $result[1];
+}
+
+//echo fractionToDecimal(1,214748364);
+
+function TESTfractionToDecimal(int $n, int $d): string
+{
+    if ($n === 0) {
+        return '0';
+    }
+    $result = [];
+    $div = bcdiv((string)$n, (string)$d, 8192);
     $divToArr = explode(".", (string)$div);
-    $divAfterDot = $divToArr[1];
-    $result = $divToArr[0];
-    $match = '';
+    $strAfterDot = rtrim($divToArr[1],'0');
+    $len = strlen($strAfterDot);
+    $matchStr = '';
     $notMatch = '';
-
-    $arr = str_split($divAfterDot);
-
-    $str = $divAfterDot;
-    for ($i = 0; $i < count($arr);$i++) {
-        $str = substr($str,1);
-        if (!str_contains($str, $arr[$i])) {
-            $notMatch .= $arr[$i];
+    if (!$strAfterDot) {
+        return $divToArr[0];
+    }
+    $offset = 0;
+    for ($i = 0; $i < $len; $i++) {
+        $char = $strAfterDot[$i];
+        if ($matchStr === '' && $char === '0') {
+            $offset++;
             continue;
         }
-        $match .= $arr[$i];
-        if ($arr[$i] === $arr[$i+1]) {
-            if ($arr[$i] === $arr[$i+2] && $arr[$i] !== '0') {
-                return $result.'.'.$notMatch.'('.$arr[$i].')';
+
+        if ($offset) {
+            for ($j = 0; $j < $offset; $offset--) {
+                $matchStr = '0'.$matchStr;
+                if (substr_count($strAfterDot,$matchStr) > 1) {
+                    continue;
+                }
+                $notMatch = str_repeat('0',$offset);
+                $offset = 0;
+                $matchStr = substr($matchStr,1);
+                break;
+            }
+        }
+//        if (($i + 3 <= $len) && $strAfterDot[$i] === $strAfterDot[$i + 1] &&
+//            $strAfterDot[$i] === $strAfterDot[$i + 2]) {
+//                return $divToArr[0].'.'.$notMatch.'('.$strAfterDot[$i].')';
+//            }
+        $matchStr.= $char;
+        $matchCount = substr_count($strAfterDot,$matchStr);
+
+        if ($matchCount > 1) {
+            $result[$i] = [
+                'key' => $matchCount,
+                'value' => $matchStr
+            ];
+            if ((
+                $result[$i-1]['key'] === ($result[$i]['key'] * 2) ||
+                ($result[$i-1]['key'] + 1) === ($result[$i]['key'] * 2)
+            )) {
+                return $divToArr[0].'.'.$notMatch.'('.$result[$i-1]['value'].')';
             }
             continue;
         }
-
-        if ($match === substr($str,0, strlen($match)) && $arr[$i] !== '0') {
-            return $result.'.'.$notMatch.'('.$match.')';
-        }
+        $notMatch .= $char;
+        $matchStr = substr($matchStr, 1);
     }
-    return ($notMatch? $result.'.'.$notMatch : $result) ;
+    return $divToArr[0].'.'.$notMatch.$matchStr;
 }
 
-echo fractionToDecimal(1,214748364);
+//echo TESTfractionToDecimal(2,1);
+echo TESTfractionToDecimal(1,214748364);
