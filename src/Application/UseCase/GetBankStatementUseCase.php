@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Alogachev\Homework\Application\UseCase;
 
 use Alogachev\Homework\Application\Exception\BankStatementNotFound;
-use Alogachev\Homework\Application\Render\RenderInterface;
 use Alogachev\Homework\Application\UseCase\Request\GetBankStatementRequest;
 use Alogachev\Homework\Application\UseCase\Response\GetBankStatementResponse;
 use Alogachev\Homework\Domain\Repository\BankStatementRepositoryInterface;
@@ -18,9 +17,6 @@ class GetBankStatementUseCase
     ) {
     }
 
-    /**
-     * ToDo: Добавить дто ответа.
-     */
     public function __invoke(GetBankStatementRequest $request): GetBankStatementResponse
     {
         $bankStatement = $this->statementRepository->findById(
