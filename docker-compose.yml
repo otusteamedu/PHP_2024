@@ -1,0 +1,90 @@
+version: '3.7'
+
+volumes:
+    logs:
+        driver: local
+
+services:
+    nginx:
+        build:
+            context: ./docker/nginx
+            dockerfile: Dockerfile
+        image: myapp/nginx
+        container_name: nginx-hw31
+        ports:
+            - "8080:80"
+        volumes:
+            - ./public:/data/mysite.local/public
+        networks:
+            - app-network
+        depends_on:
+            - app
+            - mysql_db
+            - rabbit
+
+    app:
+        build:
+            context: docker/php
+            dockerfile: Dockerfile
+        working_dir: /var/www
+        container_name: app-hw31
+        command: php -S 0.0.0.0:9000 -t public
+        env_file:
+            - .env
+        environment:
+            docker: "true"
+        volumes:
+            - .:/var/www
+            - logs:/var/www/logs
+        networks:
+            - app-network
+
+    mysql_db:
+        image: mysql:8.3
+        container_name: ${MYSQL_HOST}
+        restart: always
+        ports:
+            - "${MYSQL_PORT}:${MYSQL_PORT}"
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        volumes:
+            - ./dbdata/init:/docker-entrypoint-initdb.d
+        networks:
+            - app-network
+
+    rabbit:
+        image: rabbitmq:3.13-management-alpine
+        container_name: ${RABBIT_HOST}
+        hostname: rabbit-hw31
+        restart: always
+        environment:
+            - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+            - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+        volumes:
+            - ./docker/rabbitmq:/var/lib/rabbitmq
+        ports:
+            - "${RABBIT_UI_PORT}:${RABBIT_UI_PORT}"
+        networks:
+            - app-network
+
+    consumer:
+        build:
+            context: docker/php
+            dockerfile: Dockerfile
+        working_dir: /var/www
+        container_name: consumer-hw31
+        command: php ./consumer/public/index.php
+        env_file:
+            - .env
+        environment:
+            docker: "true"
+        volumes:
+            - .:/var/www
+        networks:
+            - app-network
+networks:
+    app-network:
+        driver: bridge
