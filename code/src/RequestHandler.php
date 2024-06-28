@@ -11,18 +11,18 @@ class RequestHandler
         $this->validator = new Validator();
     }
 
-    public function handle(array $postData): string
+    public function handle(array $postData): array
     {
         if (!isset($postData['string'])) {
-            return '400 Bad Request: Missing string parameter';
+            return ['code' => 400, 'msg' => 'Bad Request: Missing string parameter'];
         }
 
         $string = $postData['string'];
 
         if ($this->validator->validate($string)) {
-            return '200 OK: Everything is fine';
+            return ['code' => 200, 'msg'=>'OK: Everything is fine'];
         }
 
-        return '400 Bad Request: Invalid string';
+        return ['code' => 400, 'msg' => 'Bad Request: Invalid string'];
     }
 }

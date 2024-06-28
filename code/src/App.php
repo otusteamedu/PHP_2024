@@ -9,12 +9,8 @@ class App
         $requestHandler = new RequestHandler();
         $response = $requestHandler->handle($_POST);
 
-        if (strpos($response, '200 OK') !== false) {
-            http_response_code(200);
-        } else {
-            http_response_code(400);
-        }
+        http_response_code($response['code']);
 
-        echo $response;
+        print_r($response['msg'] . "\n");
     }
 }
