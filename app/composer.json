@@ -1,0 +1,11 @@
+{
+    "name": "evgenyart/emailvalidator",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\EmailValidator\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
