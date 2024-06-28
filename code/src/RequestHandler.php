@@ -20,7 +20,7 @@ class RequestHandler
         $string = $postData['string'];
 
         if ($this->validator->validate($string)) {
-            return ['code' => 200, 'msg'=>'OK: Everything is fine'];
+            return ['code' => 200, 'msg' => 'OK: Everything is fine'];
         }
 
         return ['code' => 400, 'msg' => 'Bad Request: Invalid string'];
