@@ -47,6 +47,18 @@ docker compose up -d --build
 curl --location --request GET 'localhost:8888/bank/statement/1'
 ```
 
+ответ:
+```shell
+{
+    "id": 1,
+    "clientName": "CLIENT",
+    "accountNumber": "777",
+    "startDate": "2021-09-07",
+    "endDate": "2023-05-20",
+    "status": "ready"
+}
+```
+
 - генерация банковской выгрузки:
 ```shell
 curl --location --request POST 'localhost:8888/bank/statement' \
@@ -55,6 +67,13 @@ curl --location --request POST 'localhost:8888/bank/statement' \
 --form 'startDate="2021-09-07"' \
 --form 'endDate="2023-05-20"'
 ```
+ ответ:
+```shell
+{
+  "statementId": 1
+}
+```
+
 
 - запуск консьюмера:
 
