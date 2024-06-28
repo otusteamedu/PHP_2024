@@ -58,7 +58,10 @@ if ! isNumber "$2"; then
 fi
 
 N1=${1/,/.};
+N1=${N1/+/};
+
 N2=${2/,/.};
+N2=${N2/+/};
 
 function echoSumAWK() {
   local SUM=$(awk "BEGIN{ print $1 + $2 }")
