@@ -6,10 +6,10 @@ namespace Alogachev\Homework\Infrastructure\Routing;
 
 class RouteMatcher
 {
-    public function matchRoute(string $url, string $method, Route $route): bool
+    public function matchRoute(string $url, string $method, Route $route, array &$match = []): bool
     {
         return $this->matchMethod($method, $route->getMethod())
-            && $this->matchUrl($url, $route->getPath(), $route->getRequirements());
+            && $this->matchUrl($url, $route->getPath(), $route->getRequirements(), $match);
     }
 
     private function matchMethod(string $targetMethod, string $routeMethod): bool
@@ -17,9 +17,8 @@ class RouteMatcher
         return $targetMethod === $routeMethod;
     }
 
-    private function matchUrl(string $targetUrl, string $routeUrl, array $requirements): bool
+    private function matchUrl(string $targetUrl, string $routeUrl, array $requirements, array &$match = []): bool
     {
-        // Экранируем символы, которые могут быть в шаблоне
         $template = preg_quote($routeUrl, '#');
 
         if ($requirements !== []) {
@@ -37,6 +36,6 @@ class RouteMatcher
 
         $pattern = '#^' . $template . '$#';
 
-        return preg_match($pattern, $targetUrl) === 1;
+        return preg_match($pattern, $targetUrl, $match) === 1;
     }
 }

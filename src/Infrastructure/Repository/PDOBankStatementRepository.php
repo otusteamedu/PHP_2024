@@ -10,6 +10,8 @@ use Alogachev\Homework\Domain\Repository\BankStatementRepositoryInterface;
 use Alogachev\Homework\Domain\Repository\Query\FindBankStatementQuery;
 use Alogachev\Homework\Domain\Repository\Query\UpdateStatusToReadyQuery;
 use Alogachev\Homework\Domain\ValueObject\BankStatementStatus;
+use DateTime;
+use Exception;
 use PDO;
 
 class PDOBankStatementRepository implements BankStatementRepositoryInterface
@@ -73,30 +75,34 @@ class PDOBankStatementRepository implements BankStatementRepositoryInterface
         $updateStatement->execute();
     }
 
+    /**
+     * @throws Exception
+     */
     public function findById(FindBankStatementQuery $query): ?BankStatement
     {
         $selectStatement = $this->pdo->prepare(
             'SELECT 
                             bs.id AS id,
-                            bs.client_name AS clientName,
-                            bs.account_number AS accountNumber,
-                            bs.start_date AS startDate,
-                            bs.end_date AS endDate,
-                            bs.file_name AS fileName,
+                            bs.client_name AS client_name,
+                            bs.account_number AS account_number,
+                            bs.start_date AS start_date,
+                            bs.end_date AS end_date,
+                            bs.file_name AS file_name,
                             bs.status AS status FROM bank_statement bs WHERE bs.id = :id'
         );
 
         $selectStatement->bindValue(':id', $query->id, PDO::PARAM_INT);
         $selectStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $selectStatement->execute();
         $result = $selectStatement->fetch();
 
         return $result
             ? (new BankStatement(
-                $result['clientName'],
-                $result['accountNumber'],
-                $result['startDate'],
-                $result['endDate'],
-                $result['fileName'],
+                $result['client_name'],
+                $result['account_number'],
+                new DateTime($result['start_date']),
+                new DateTime($result['end_date']),
+                $result['file_name'],
                 new BankStatementStatus($result['status'])
             ))
                 ->setId($result['id'])

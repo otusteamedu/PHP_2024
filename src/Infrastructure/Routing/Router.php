@@ -48,14 +48,16 @@ class Router
         ];
         $this->matcher = new RouteMatcher();
     }
-    /** ToDo: Должен возвращать не только роут но и массив параметров из url. */
-    public function getRouteByRequest(Request $request): Route
+
+    public function getRouteAndParams(Request $request): array
     {
+        $match = [];
+
         foreach ($this->routes as $route) {
             if (
-                $this->matcher->matchRoute($request->getPathInfo(), $request->getMethod(), $route)
+                $this->matcher->matchRoute($request->getPathInfo(), $request->getMethod(), $route, $match)
             ) {
-                return $route;
+                return [$route, $match];
             }
         }
 

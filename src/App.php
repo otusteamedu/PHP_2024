@@ -10,7 +10,6 @@ use Alogachev\Homework\Application\UseCase\GenerateBankStatementUseCase;
 use Alogachev\Homework\Application\UseCase\Response\JsonResponseInterface;
 use Alogachev\Homework\Infrastructure\Command\GenerateBankStatementCommand;
 use Alogachev\Homework\Infrastructure\Exception\CommandNotFoundException;
-use Alogachev\Homework\Infrastructure\Exception\RouteNotFoundException;
 use Alogachev\Homework\Infrastructure\Http\Response\ErrorResponse;
 use Alogachev\Homework\Infrastructure\Mapper\GenerateBankStatementMapper;
 use Alogachev\Homework\Infrastructure\Mapper\GetBankStatementMapper;
@@ -20,7 +19,6 @@ use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\Producer\GenerateBankSt
 use Alogachev\Homework\Infrastructure\Messaging\RabbitMQ\RabbitManager;
 use Alogachev\Homework\Infrastructure\Render\HtmlRenderManager;
 use Alogachev\Homework\Infrastructure\Repository\PDOBankStatementRepository;
-use Alogachev\Homework\Infrastructure\Routing\Route;
 use Alogachev\Homework\Infrastructure\Routing\Router;
 use DI\Container;
 use Dotenv\Dotenv;
@@ -46,11 +44,11 @@ final class App
         $this->loadEnv();
 
         $request = $this->resolveRequest();
-        $route = $this->resolveRoute($request);
+        [$route, $urlParams] = $this->resolveRoute($request);
         $mapper = $route->getParamsMapper();
 
         try {
-            $response = ($route->getHandler())(is_null($mapper) ? null : $mapper->map($request));
+            $response = ($route->getHandler())(is_null($mapper) ? null : $mapper->map($request, $urlParams));
             $this->resolveResponse($response, Response::HTTP_OK);
         } catch (Exception $exception) {
             $this->resolveResponse(new ErrorResponse($exception->getMessage()), Response::HTTP_BAD_REQUEST);
@@ -152,11 +150,11 @@ final class App
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function resolveRoute(Request $request): Route
+    public function resolveRoute(Request $request): array
     {
         $container = $this->resolveDI();
 
-        return (new Router($container))->getRouteByRequest($request);
+        return (new Router($container))->getRouteAndParams($request);
     }
 
     private function resolveConsole(): array

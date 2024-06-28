@@ -1,8 +1,8 @@
 FROM php:8.2-alpine
 
-RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash rabbitmq-c-dev
+RUN apk add --no-cache --update curl git build-base zlib-dev oniguruma-dev autoconf linux-headers bash rabbitmq-c-dev libpq-dev
 
-RUN docker-php-ext-install sockets bcmath
+RUN docker-php-ext-install sockets bcmath pdo_pgsql
 
 RUN pecl install amqp \
     && docker-php-ext-enable amqp
@@ -42,4 +42,4 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN composer install --optimize-autoloader
 
-CMD ["php", "console/command.php Alogachev\\Homework\\Infrastructure\\Command\\GenerateBankStatementCommand"]
+CMD php console/command.php Alogachev\\Homework\\Infrastructure\\Command\\GenerateBankStatementCommand
