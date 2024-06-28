@@ -1,0 +1,33 @@
+version: '3'
+services:
+  php:
+    build:
+      context: php
+      dockerfile: Dockerfile
+    image: php_app
+    container_name: app
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    networks:
+      - app-network
+  webserver:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    image: ws
+    container_name: web
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    depends_on:
+      - php
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  php_socket:

@@ -1,0 +1,10 @@
+{
+    "name": "viking311/email_checker",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Viking311\\EmailChecker\\": "src/"
+        }
+    },
+    "require": {}
+}
