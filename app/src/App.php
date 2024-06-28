@@ -18,29 +18,37 @@ class App
                 } elseif ($message == 'demo') {
                     $message = self::DEFAULTLIST;
                 }
-                $this->process($message);
+                $result = $this->process($message);
+                $this->showResult($result);
             }
         }
     }
 
     public function process($message)
     {
+        $message = trim($message);
+        if (!strlen($message)) {
+            throw new Exception('Empty email list.');
+        }
+
+        $result = [];
         $arEmails = explode(";", $message);
 
         foreach ($arEmails as $email) {
             $email = trim($email);
-            $result = Validator::validate($email);
-            $this->composeResult($email, $result);
-
-            print_r($this->composeResult($email, $result) . PHP_EOL);
+            $result[$email] = Validator::validate($email);
         }
+
+        return $result;
     }
 
-    private function composeResult($email, $result)
+    private function showResult($resultCheck)
     {
         $validMessage = "\033[32m valid \033[0m";
         $noValidMessage = "\033[31m not valid \033[0m";
 
-        return $email . " - " . ($result ? $validMessage : $noValidMessage);
+        foreach ($resultCheck as $email => $result) {
+            print_r($email . " - " . ($result ? $validMessage : $noValidMessage) . PHP_EOL);
+        }
     }
 }

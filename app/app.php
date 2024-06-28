@@ -6,7 +6,8 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 try {
     $app = new App();
-    $app->run();
+    $app->run();    //интерактивный режим
+    #$app->process($list);  //проверить список
 } catch (Exception $e) {
     echo "Ошибка: ";
     echo $e->getMessage();
