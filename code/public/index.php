@@ -31,25 +31,26 @@ class Solution {
         $a = $headA;
         $b = $headB;
         $count = 0;
-        while ($a !== $b) {
-
+        while (true) {
+            if ($a === $b && $count !== 1) {
+                return $a;
+            }
             if ($a === null) {
                 $a = $headB;
                 $count++;
-            }
+            } else $a = $a->next;
+
             if ($b === null) {
                 $b = $headA;
                 $count++;
-            }
-            $a = $a->next;
-            $b = $b->next;
+            } else $b = $b->next;
             if ($count > 2) {
                 return null;
             }
         }
-        return $a;
     }
 }
+
 
 # Task 2 (https://leetcode.com/problems/fraction-to-recurring-decimal/description/)
 
@@ -58,69 +59,14 @@ class Solution {
  * @param Integer $d
  * @return String
  */
-function fractionToDecimal(int $n, int $d): string {
 
-    if ($n === 0) {
-        return '0';
-    }
-    $div = [];
-    $result = [];
-    $div[] = $n/$d;
-    $div[] = bcdiv((string)$n,(string)$d, 512);
-    foreach ($div as $division) {
-        $divToArr = explode(".", (string)$division);
-        $divAfterDot = $divToArr[1];
-        $match = '';
-        $notMatch = '';
-
-        $arr = str_split($divAfterDot);
-
-        $str = $divAfterDot;
-        $iMax = count($arr);
-        $answer = 0;
-        for ($i = 0; $i < $iMax; $i++) {
-
-            $str = substr($str,1);
-            if (!str_contains($str, $arr[$i])) {
-                $notMatch .= $arr[$i];
-                continue;
-            }
-            $match .= $arr[$i];
-
-            if ($arr[$i] === $arr[$i+1] && $i+1 !== $iMax) {
-
-                if ($arr[$i] === $arr[$i+2] && $arr[$i] !== '0' && $i+2 !== $iMax) {
-                    $answer = 1;
-                    $result[] = $divToArr[0].'.'.$notMatch.'('.$arr[$i].')';
-                    break;
-                }
-                continue;
-            }
-
-            if (str_starts_with($str, $match) && $arr[$i] !== '0') {
-                $answer = 1;
-                $result[] = $divToArr[0].'.'.$notMatch.'('.$match.')';
-                break;
-            }
-        }
-        if ($answer === 0) {
-            $result[] = $notMatch? $divToArr[0].'.'.$notMatch : $divToArr[0];
-        }
-
-    }
-
-    return (rtrim($result[1],'0') === $result[0])? $result[0] : $result[1];
-}
-
-//echo fractionToDecimal(1,214748364);
-
-function TESTfractionToDecimal(int $n, int $d): string
+function fractionToDecimal(int $n, int $d): string
 {
     if ($n === 0) {
         return '0';
     }
     $result = [];
-    $div = bcdiv((string)$n, (string)$d, 8192);
+    $div = bcdiv((string)$n, (string)$d, 100000);
     $divToArr = explode(".", (string)$div);
     $strAfterDot = rtrim($divToArr[1],'0');
     $len = strlen($strAfterDot);
@@ -136,7 +82,7 @@ function TESTfractionToDecimal(int $n, int $d): string
             $offset++;
             continue;
         }
-
+        $matchStr.= $char;
         if ($offset) {
             for ($j = 0; $j < $offset; $offset--) {
                 $matchStr = '0'.$matchStr;
@@ -150,10 +96,9 @@ function TESTfractionToDecimal(int $n, int $d): string
             }
         }
 
-        $matchStr.= $char;
         $matchCount = substr_count($strAfterDot,$matchStr);
 
-        if ($matchCount > 1) {
+        if ($matchCount > 10) {
 
             if (str_replace($matchStr,'',$strAfterDot) === $notMatch) {
                 return $divToArr[0].'.'.$notMatch.'('.$matchStr.')';
@@ -179,9 +124,3 @@ function TESTfractionToDecimal(int $n, int $d): string
     }
     return $divToArr[0].'.'.$notMatch.$matchStr;
 }
-
-//echo TESTfractionToDecimal(1,6);
-//echo TESTfractionToDecimal(1,214748364);
-//echo TESTfractionToDecimal(1,99);
-//echo TESTfractionToDecimal(-1,-2147483648);
-echo TESTfractionToDecimal(2147483647,370000);
