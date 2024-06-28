@@ -6,7 +6,6 @@ namespace Viking311\EmailChecker\Validator;
 
 class EmailFormat implements ValidatorInterface
 {
-
     private string $data;
 
     /**

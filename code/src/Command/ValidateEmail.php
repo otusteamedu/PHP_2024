@@ -35,7 +35,6 @@ class ValidateEmail
             } catch (Exception $ex) {
                 $result .= $email . ' - ' . $ex->getMessage() . '<br />';
             }
-
         }
 
         $response->setContent($result);
