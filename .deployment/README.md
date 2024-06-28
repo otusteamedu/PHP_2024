@@ -3,7 +3,7 @@
 1) Скопировать файл `.env.dist` как `.env`.
 
 ```dotenv
-COMPOSE_PROJECT_NAME=homework30
+COMPOSE_PROJECT_NAME=homework31
 
 ###> php-fpm ###
 PUID=1000
@@ -17,6 +17,14 @@ PHP_UPSTREAM_PORT=9000
 NGINX_HOST_HTTP_PORT=8888
 ###< nginx ###
 
+###> postgres ###
+POSTGRES_DB_HOST=postgres
+POSTGRES_DB_NAME=homework
+POSTGRES_PORT=5432
+POSTGRES_USER=apps
+POSTGRES_PASSWORD=apps
+###< postgres ###
+
 ###> rabbit-mq ###
 RABBIT_HOST=rabbitmq
 RABBIT_PORT=5672
@@ -24,10 +32,6 @@ RABBIT_MANAGEMENT_PORT=15672
 RABBIT_USER=guest
 RABBIT_PASSWORD=guest
 ###< rabbit-mq ###
-
-###> tamplates ###
-HTML_TEMPLATES_PATH=${PWD}/templates/
-###< tamplates ###
 ```
 
 2) Ввести команды (вводить `docker-compose` или `docker compose` в зависимости от версии):
@@ -38,14 +42,14 @@ docker compose up -d --build
 
 3) Примеры запросов:
 
-- получение формы для запроса банковской выгрузки:
+- запрос проверки состояния банковской выгрузки:
 ```shell
-curl --location 'localhost:8888/bank/statement'
+curl --location --request GET 'localhost:8888/bank/statement/1'
 ```
 
 - генерация банковской выгрузки:
 ```shell
-curl --location --request POST 'localhost:8888/bank/statement/generate' \
+curl --location --request POST 'localhost:8888/bank/statement' \
 --form 'clientName="CLIENT"' \
 --form 'accountNumber="777"' \
 --form 'startDate="2021-09-07"' \
@@ -60,6 +64,6 @@ php console/command.php Alogachev\\Homework\\Infrastructure\\Command\\GenerateBa
 
 4) Как проверить:
 - деплоим приложение
-- переходим на страницу формы в браузере `localhost:8888/bank/statement`;
-- отправляем форму для выгрузки (все поля обязательны для заполнения);
-- в контейнера `app-console` смотрим вывоз консоли (там должна появиться информация об обработке).
+- отправить запрос на генерацию выгрузки;
+- отправить запрос на проверку состояния выгрузки;
+- в контейнера `app-console` смотрим вывод консоли (там должна появиться информация об обработке).
