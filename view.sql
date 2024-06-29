@@ -19,6 +19,7 @@ AS
         f.title AS film_name,
         fa.name AS attribut_name,
         fat.type AS attribut_type
+        COALESCE(fv.value_varchar, fv.value_text, fv.value_date, fv.value_int, fv.value_bool, fv.value_numeric) AS attribut_value
     FROM films f
     LEFT JOIN films_values fv ON fv.film_id = f.id
     LEFT JOIN films_attributes fa ON fa.id = fv.attribute_id
