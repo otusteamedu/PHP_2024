@@ -10,7 +10,6 @@ use Kagirova\Hw31\Domain\Response;
 
 class GetMessageUseCase
 {
-
     public function __construct(
         private StorageInterface $storage,
         private Request $request
