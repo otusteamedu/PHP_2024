@@ -1,64 +1,76 @@
--- movies.films определение
-
--- Drop table
-
-DROP TABLE IF EXISTS films;
-
-CREATE TABLE movies.films (
-	id serial4 NOT NULL,
-	title varchar(255) NOT NULL,
-	CONSTRAINT films_pkey PRIMARY KEY (id)
-);
+    DROP TABLE IF EXISTS tbl_film CASCADE;
+    DROP TABLE IF EXISTS tbl_hall CASCADE;
+    DROP TABLE IF EXISTS tbl_place CASCADE;
+    DROP TABLE IF EXISTS tbl_show CASCADE;
+    DROP TABLE IF EXISTS tbl_price CASCADE;
+    DROP TABLE IF EXISTS tbl_ticket CASCADE;
 
 
--- movies.films_attribute_types определение
 
--- Drop table
+    CREATE TABLE tbl_film (
+        id serial4 NOT NULL,
+        title varchar(255) NOT NULL,
+        CONSTRAINT films_pkey PRIMARY KEY (id)
+    );
 
-DROP TABLE IF EXISTS films_attribute_types;
+    CREATE TABLE tbl_hall (
+        "id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+        "name" VARCHAR(255) NOT NULL,
+        "rows" INT NOT NULL,
+        "cols" INT NOT NULL,
+        PRIMARY KEY ("id")
+    );
 
-CREATE TABLE movies.films_attribute_types (
-	id serial4 NOT NULL,
-	"type" varchar(255) NOT NULL,
-	CONSTRAINT films_attribute_types_pkey PRIMARY KEY (id)
-);
+    CREATE TABLE tbl_place (
+        "id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+        "hall_id" INT NOT NULL,
+        "row" INT NOT NULL,
+        "col" INT NOT NULL,
+        PRIMARY KEY ("id")
+    );
 
+    CREATE TABLE tbl_show (
+        "id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+        "film_id" INT NOT NULL,
+        "hall_id" INT NOT NULL,
+        "date" DATE NOT NULL,
+        "time_start" TIMESTAMP NOT NULL,
+        "time_end" TIMESTAMP NOT NULL,
+        PRIMARY KEY ("id")
+    );
 
--- movies.films_attributes определение
+    CREATE TABLE tbl_price (
+        "id" INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+        "show_id" INT NOT NULL,
+        "place_id" INT NOT NULL,
+        "price" MONEY NOT NULL,
+        PRIMARY KEY ("id")
+    );
 
--- Drop table
+    CREATE TABLE tbl_ticket (
+        id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+        paid BOOLEAN NOT NULL DEFAULT FALSE,
+        show_id INT NOT NULL,
+        place_id INT NOT NULL,
+        price_id INT NOT NULL,
+        time_create TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        time_paid TIMESTAMP,
+        PRIMARY KEY (id)
+    );
 
-DROP TABLE IF EXISTS films_attributes;
+    ALTER TABLE tbl_place
+        ADD FOREIGN KEY ("hall_id") REFERENCES tbl_hall("id");
 
-CREATE TABLE movies.films_attributes (
-	id serial4 NOT NULL,
-	"name" varchar(255) NOT NULL,
-	type_id int4 NOT NULL,
-	code varchar NULL,
-	CONSTRAINT films_attributes_pkey PRIMARY KEY (id),
-	CONSTRAINT films_attributes_unique UNIQUE (code),
-	CONSTRAINT films_attributes_films_attribute_types_fk FOREIGN KEY (type_id) REFERENCES movies.films_attribute_types(id)
-);
+    ALTER TABLE tbl_show
+        ADD FOREIGN KEY ("film_id") REFERENCES tbl_film("id"),
+        ADD FOREIGN KEY ("hall_id") REFERENCES tbl_hall("id");
 
+    ALTER TABLE tbl_price
+        ADD FOREIGN KEY ("place_id") REFERENCES tbl_place("id"),
+        ADD FOREIGN KEY ("show_id") REFERENCES tbl_show("id");
 
--- movies.films_values определение
-
--- Drop table
-
-DROP TABLE IF EXISTS films_values;
-
-CREATE TABLE movies.films_values (
-	id serial4 NOT NULL,
-	film_id int4 NOT NULL,
-	attribute_id int4 NOT NULL,
-	value_varchar varchar(255) NULL,
-	value_text text NULL,
-	value_date date NULL,
-	value_int int4 NULL,
-	value_bool bool NULL,
-	value_numeric numeric(10, 4) NULL,
-	CONSTRAINT films_values_pkey PRIMARY KEY (id),
-	CONSTRAINT films_values_attribute_id_fkey FOREIGN KEY (attribute_id) REFERENCES movies.films_attributes(id),
-	CONSTRAINT films_values_film_id_fkey FOREIGN KEY (film_id) REFERENCES movies.films(id)
-);
+    ALTER TABLE tbl_ticket
+        ADD FOREIGN KEY ("price_id") REFERENCES tbl_price("id"),
+        ADD FOREIGN KEY ("place_id") REFERENCES tbl_place("id"),
+        ADD FOREIGN KEY ("show_id") REFERENCES tbl_show("id");
 
