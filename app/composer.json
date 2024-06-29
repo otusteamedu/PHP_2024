@@ -1,0 +1,13 @@
+{
+    "name": "kagirova/hw31",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Kagirova\\Hw31\\": "src/"
+        }
+    },
+    "require": {
+        "php-amqplib/php-amqplib": "^3.2",
+        "curl/curl": "2.5.0"
+    }
+}

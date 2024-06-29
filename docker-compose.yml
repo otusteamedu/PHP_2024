@@ -1,55 +1,72 @@
-# версия синтаксиса
 version: '3'
 
-# в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #Контейнер с PHP, назовём его app
-  app:
-    # Если нет секции build, то система будет искать образ в репозиториях
-    build:
-      context: ./fpm
-      dockerfile: Dockerfile
-    image: myapp/php # имя будущего образа
-    container_name: app # имя контейнера после запуска
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    container_name: 'nginx'
+    working_dir: /app
     volumes:
-       - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
+      - ./app:/app
+      - ./docker/nginx/hosts/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - app-network
 
-  #контейне с Nginx
-  webserver:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
-    container_name: webserver
-    # проброс портов
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    working_dir: /app
+    container_name: ${RABBIT_MQ_HOST}
     ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-       - ./code:/data/mysite.local
-    networks:
-      - app-network
-
-  # контейнер с MySQL
-  # строим на базе стандартного образа
-  db:
-    image: mysql:5.7.22
-    container_name: db
-    ports:
-      - "3306:3306"
-    # описываем, какую БД мы создаём
+      - "${RABBIT_MQ_UI_PORT}:${RABBIT_MQ_UI_PORT}"
+      - "${RABBIT_MQ_PORT}:${RABBIT_MQ_PORT}"
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - ./dbdata:/var/lib/mysql  
+      RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASSWORD}
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit disk_free_limit 2147483648
     networks:
       - app-network
 
-#Docker Networks
+  php-sender:
+    build:
+      dockerfile: ./Docker/Sender/Dockerfile
+    container_name: 'php-sender'
+    ports:
+      - 9000:9000
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    working_dir: /app/public
+    env_file:
+      - .env.example
+
+  php-receiver:
+    build:
+      dockerfile: ./Docker/Receiver/Dockerfile
+    container_name: 'php-receiver'
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    restart: always
+    working_dir: /app/public
+    env_file:
+      - .env.example
+
+  postgres:
+    image: postgres:14.0-alpine
+    container_name: ${POSTGRES_HOST}
+    networks:
+      - app-network
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_USER}
+      POSTGRES_USER: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./app/db:/docker-entrypoint-initdb.d
+
 networks:
   app-network:
     driver: bridge
