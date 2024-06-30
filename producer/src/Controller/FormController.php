@@ -3,6 +3,7 @@
 namespace Producer\Controller;
 
 use Exception;
+use Producer\Exception\ApplicationException;
 use Producer\Exception\InvalidInputException;
 use Producer\Exception\RabbitMQException;
 use Producer\Service\RabbitMQService;
@@ -31,13 +32,20 @@ class FormController
     public function handleRequest(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->handlePostRequest();
+            try {
+                $this->handlePostRequest();
+            } catch (ApplicationException $e) {
+                $this->render('form', ['error' => $e->getMessage()]);
+            }
             $this->render('form', ['success' => 'Message sent to queue']);
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $this->render('form');
         }
     }
 
+    /**
+     * @throws ApplicationException
+     */
     private function handlePostRequest(): void
     {
         $startDate = $_POST['start_date'] ?? null;
@@ -46,11 +54,9 @@ class FormController
 
         try {
             $this->validateInput($startDate, $endDate, $email);
-        }
-        catch (InvalidInputException $e) {
+        } catch (InvalidInputException $e) {
             $this->logger->error('Invalid input', ['error' => $e->getMessage()]);
-            $this->render('form', ['error' => $e->getMessage()]);
-            return;
+            throw new $e;
         }
 
         try {
@@ -59,20 +65,16 @@ class FormController
                 'end_date' => $endDate,
                 'email' => $email,
             ], JSON_THROW_ON_ERROR);
-        }
-        catch (\JsonException $exception) {
+        } catch (\JsonException $exception) {
             $this->logger->error('Failed to encode data', ['error' => $exception->getMessage()]);
-            $this->render('form', ['error' => $exception->getMessage()]);
-            return;
+            throw new $e;
         }
 
         try {
             $this->rabbitMQService->sendMessage($data);
-        }
-        catch (RabbitMQException $e) {
+        } catch (RabbitMQException $e) {
             $this->logger->error('Failed to send message', ['error' => $e->getMessage()]);
-            $this->render('form', ['error' => $e->getMessage()]);
-            return;
+            throw new $e;
         }
     }
 
