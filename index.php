@@ -13,6 +13,7 @@ function hasCycle($head)
         {
             return true;
         }
+
     }
 
     return false;
