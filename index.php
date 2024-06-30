@@ -1,11 +1,11 @@
 <?php
 
-function hasCycle($head) {
+function hasCycle($head)
+{
     $slow = $head;
     $fast = $head;
 
-    while($fast && $fast->next)
-    {
+    while ($fast && $fast->next) {
         $slow = $slow->next;
         $fast = $fast->next->next;
 
@@ -18,7 +18,8 @@ function hasCycle($head) {
     return false;
 }
 
-function letterCombinations($digits) {
+function letterCombinations($digits)
+{
     if (empty($digits)) {
         return [];
     }
@@ -36,7 +37,7 @@ function letterCombinations($digits) {
 
     $digits = str_split($digits);
 
-    $func = static function($combination, $nextDigits, &$result) use (&$func, $phoneMap) {
+    $func = static function ($combination, $nextDigits, &$result) use (&$func, $phoneMap) {
         if (empty($nextDigits)) {
             $result[] = $combination;
         } else {
