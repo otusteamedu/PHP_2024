@@ -15,10 +15,10 @@
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required>
     <br>
-    <?php if (isset($data['error'])): ?>
+    <?php if (isset($data['error'])) : ?>
         <p style="color: red"><?= $data['error'] ?></p>
     <?php endif; ?>
-    <?php if (isset($data['success'])): ?>
+    <?php if (isset($data['success'])) : ?>
         <p style="color: green"><?= $data['success'] ?></p>
     <?php endif; ?>
     <button type="submit">Submit</button>

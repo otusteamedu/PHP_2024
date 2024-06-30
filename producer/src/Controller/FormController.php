@@ -56,7 +56,7 @@ class FormController
             $this->validateInput($startDate, $endDate, $email);
         } catch (InvalidInputException $e) {
             $this->logger->error('Invalid input', ['error' => $e->getMessage()]);
-            throw new $e;
+            throw $e;
         }
 
         try {
@@ -67,14 +67,14 @@ class FormController
             ], JSON_THROW_ON_ERROR);
         } catch (\JsonException $exception) {
             $this->logger->error('Failed to encode data', ['error' => $exception->getMessage()]);
-            throw new $e;
+            throw $e;
         }
 
         try {
             $this->rabbitMQService->sendMessage($data);
         } catch (RabbitMQException $e) {
             $this->logger->error('Failed to send message', ['error' => $e->getMessage()]);
-            throw new $e;
+            throw $e;
         }
     }
 
