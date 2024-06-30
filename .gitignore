@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/producer/vendor/
+/consumer/vendor/
+.env

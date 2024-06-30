@@ -1,0 +1,11 @@
+{
+  "require": {
+    "php-amqplib/php-amqplib": "^3.6.2",
+    "psr/log": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Producer\\": "src/"
+    }
+  }
+}

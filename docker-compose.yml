@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  php-fpm:
+    build: ./docker/producer/
+    volumes:
+      - ./producer:${ROOT_DIR}
+    env_file:
+      - .env
+    ports:
+      - ${PHP_PORT}:${PHP_PORT}
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+  nginx:
+    image: nginx:latest
+    ports:
+      - ${NGINX_PORT}:${NGINX_PORT}
+    volumes:
+      - ./producer:${ROOT_DIR}
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+  rabbitmq:
+    container_name: ${RABBITMQ_HOST}
+    image: "rabbitmq:3-management"
+    environment:
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER_NAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    ports:
+      - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+      - ${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}
+    networks:
+      - app-network
+  worker:
+    env_file:
+      - .env
+    build: ./docker/consumer/
+    volumes:
+      - ./consumer:${ROOT_DIR}
+    depends_on:
+      - rabbitmq
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
