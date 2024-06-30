@@ -24,25 +24,26 @@ class Brackets
         if ($strLength % 2 !== 0) {
             throw new \Exception('Количество скобок нечётное', 400);
         }
-        $countBracketsInString = substr_count($string, '()');
-        if ($countBracketsInString == 0) {
-            throw new \Exception('В строке нет первой закрытой пары', 400);
-        }
-        //Предельно возможное количество проходов цикла
-        $counter = $strLength / 2;
-        while ($counter > 0) {
-            $counter--;
-            $string = str_ireplace('()', '', $string);
-            //Проверка остались ли еще закрытые пары
-            $countBracketsInString = substr_count($string, '()');
-            if ($countBracketsInString == 0) {
-                break;
+        $counterBrackets = 0;
+        for ($i = 0; $i < $strLength; $i++) {
+            switch ($string[$i]) {
+                case '(':
+                    $counterBrackets++;
+                    break;
+                case ')':
+                    $counterBrackets--;
+                    break;
+                default:
+                    break;
+            }
+            if ($counterBrackets < 0) {
+                throw new \Exception('В строке не все скобки имеют пару.' . $string, 400);
             }
         }
-        if (strlen($string) > 0) {
-            throw new \Exception('В строке не все скобки имеют пару. Те что остались ' . $string, 400);
+        if ($counterBrackets === 0) {
+            return 'Строка состоит из полностью закрытых скобок.';
         } else {
-            return 'Строка состоит из полностью закрытых скобок. ' . $counter;
+            throw new \Exception('В строке не все скобки имеют пару.' . $string, 400);
         }
     }
 }

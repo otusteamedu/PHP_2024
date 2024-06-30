@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Rrazanov\Hw4\App;
 
-include __DIR__ . '/vendor/autoload.php';
+include __DIR__ . '/../code/vendor/autoload.php';
 
 try {
     $app = new App();

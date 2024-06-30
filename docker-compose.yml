@@ -25,7 +25,8 @@ services:
     image: hw4/nginx
     container_name: nginx1
     volumes:
-      - ./code:/data/mysite.local
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
     networks:
       - app-network
 
@@ -36,7 +37,8 @@ services:
     image: hw4/nginx
     container_name: nginx2
     volumes:
-      - ./code:/data/mysite.local
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
     networks:
       - app-network
 
@@ -47,7 +49,8 @@ services:
     image: hw4/php-fpm
     container_name: app1
     volumes:
-      - ./code:/data/mysite.local
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_DATABASE: ${MYSQL_DB}
@@ -63,7 +66,8 @@ services:
     image: hw4/php-fpm
     container_name: app2
     volumes:
-      - ./code:/data/mysite.local
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
     environment:
       MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_DATABASE: ${MYSQL_DB}
