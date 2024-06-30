@@ -1,0 +1,93 @@
+version: '3'
+
+services:
+  balancer:
+    build:
+      context: ./balancer
+      dockerfile: Dockerfile
+    image: hw4/nginx-balancer
+    container_name: nginx-balancer
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - app-network
+
+  nginx1:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: hw4/nginx
+    container_name: nginx1
+    volumes:
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+
+  nginx2:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: hw4/nginx
+    container_name: nginx2
+    volumes:
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw4/php-fpm
+    container_name: app1
+    volumes:
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw4/php-fpm
+    container_name: app2
+    volumes:
+      - ./code:/data/mysite.local/code
+      - ./public:/data/mysite.local/public
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    command: mysqld --init-file="/app/install_db.sql"
+    working_dir: /app
+    volumes:
+      - ./mysql/db:/var/lib/mysql
+      - ./mysql/init/install_db.sql:/app/install_db.sql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

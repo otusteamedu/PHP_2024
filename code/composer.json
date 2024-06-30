@@ -1,0 +1,12 @@
+{
+    "name": "rrazanov/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rrazanov\\Hw4\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0"
+    }
+}
