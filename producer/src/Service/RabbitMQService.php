@@ -6,6 +6,9 @@ use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use Producer\Exception\RabbitMQCloseConnectionException;
+use Producer\Exception\RabbitMQException;
+use Producer\Exception\RabbitMQSendException;
 use Psr\Log\LoggerInterface;
 
 class RabbitMQService
@@ -32,7 +35,7 @@ class RabbitMQService
     }
 
     /**
-     * @throws Exception
+     * @throws RabbitMQException
      */
     public function sendMessage(string $data): void
     {
@@ -45,18 +48,23 @@ class RabbitMQService
             $this->logger->info('Message sent to queue', ['queue' => self::QUEUE_NAME, 'message' => $data]);
         } catch (\Exception $e) {
             $this->logger->error('Failed to send message', ['error' => $e->getMessage()]);
-            throw $e;
+            throw new RabbitMQSendException($e->getMessage());
         } finally {
             $this->closeConnection();
         }
     }
 
     /**
-     * @throws Exception
+     * @throws RabbitMQCloseConnectionException
      */
     private function closeConnection(): void
     {
-        $this->channel?->close();
-        $this->connection?->close();
+        try {
+            $this->channel->close();
+            $this->connection->close();
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to close connection', ['error' => $e->getMessage()]);
+            throw new RabbitMQCloseConnectionException($e->getMessage());
+        }
     }
 }

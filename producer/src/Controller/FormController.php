@@ -3,6 +3,8 @@
 namespace Producer\Controller;
 
 use Exception;
+use Producer\Exception\InvalidInputException;
+use Producer\Exception\RabbitMQException;
 use Producer\Service\RabbitMQService;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -26,48 +28,74 @@ class FormController
         $this->rabbitMQService = new RabbitMQService($host, $port, $user, $password, $this->logger);
     }
 
-    public function handleSubmit(): void
+    public function handleRequest(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $startDate = $_POST['start_date'] ?? null;
-            $endDate = $_POST['end_date'] ?? null;
-            $email = $_POST['email'] ?? null;
-
-            if (!$this->validateInput($startDate, $endDate, $email)) {
-                $this->logger->error('Invalid input data', ['start_date' => $startDate, 'end_date' => $endDate, 'email' => $email]);
-                exit('Невалидные данные');
-            }
-
-            try {
-                $data = json_encode([
-                    'start_date' => $startDate,
-                    'end_date' => $endDate,
-                    'email' => $email,
-                ], JSON_THROW_ON_ERROR);
-            } catch (\JsonException $e) {
-                $this->logger->error('JSON encoding error', ['error' => $e->getMessage()]);
-                exit('Ошибка при кодировании данных в JSON');
-            }
-
-            try {
-                $this->rabbitMQService->sendMessage($data);
-            } catch (Exception $e) {
-                $this->logger->error('Failed to send message', ['error' => $e->getMessage()]);
-                exit('Ошибка при отправке сообщения');
-            }
+            $this->handlePostRequest();
+            $this->render('form', ['success' => 'Message sent to queue']);
+        } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $this->render('form');
         }
     }
 
-    private function validateInput(?string $startDate, ?string $endDate, ?string $email): bool
+    private function handlePostRequest(): void
     {
-        if (empty($startDate) || empty($endDate) || empty($email)) {
-            return false;
+        $startDate = $_POST['start_date'] ?? null;
+        $endDate = $_POST['end_date'] ?? null;
+        $email = $_POST['email'] ?? null;
+
+        try {
+            $this->validateInput($startDate, $endDate, $email);
+        }
+        catch (InvalidInputException $e) {
+            $this->logger->error('Invalid input', ['error' => $e->getMessage()]);
+            $this->render('form', ['error' => $e->getMessage()]);
+            return;
         }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return false;
+        try {
+            $data = json_encode([
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'email' => $email,
+            ], JSON_THROW_ON_ERROR);
+        }
+        catch (\JsonException $exception) {
+            $this->logger->error('Failed to encode data', ['error' => $exception->getMessage()]);
+            $this->render('form', ['error' => $exception->getMessage()]);
+            return;
         }
 
-        return true;
+        try {
+            $this->rabbitMQService->sendMessage($data);
+        }
+        catch (RabbitMQException $e) {
+            $this->logger->error('Failed to send message', ['error' => $e->getMessage()]);
+            $this->render('form', ['error' => $e->getMessage()]);
+            return;
+        }
+    }
+
+    /**
+     * @throws InvalidInputException
+     */
+    private function validateInput(?string $startDate, ?string $endDate, ?string $email): void
+    {
+        if (empty($startDate)) {
+            throw new InvalidInputException('start_date');
+        }
+
+        if (empty($endDate)) {
+            throw new InvalidInputException('end_date');
+        }
+
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidInputException('email');
+        }
+    }
+
+    private function render(string $view, array $data = []): void
+    {
+        require "../src/View/{$view}.php";
     }
 }
