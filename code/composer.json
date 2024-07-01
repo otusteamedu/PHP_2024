@@ -1,0 +1,14 @@
+{
+    "name": "rrazanov/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Rrazanov\\Hw5\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "ext-sockets": "*",
+        "ext-readline": "*"
+    }
+}

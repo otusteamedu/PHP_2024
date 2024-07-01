@@ -1,4 +1,6 @@
 .idea/
+code/vendor/
+socket
 /vendor/
 .DS_Store
 .AppleDouble

@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw5/php-fpm
+    container_name: server
+    volumes:
+      - ./code:/data/code
+      - ./public:/data/public
+      - ./socket:/data/socket
+    networks:
+      - app-network
+  client:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw5/php-fpm
+    container_name: client
+    volumes:
+      - ./code:/data/code
+      - ./public:/data/public
+      - ./socket:/data/socket
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
