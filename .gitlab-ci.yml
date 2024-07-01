@@ -1,0 +1,33 @@
+stages:
+  - deploy
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - export DIR=$(date +%Y%m%d_%H%M%S)
+
+test:
+  stage: deploy
+  environment:
+    name: server
+    url: $SERVER
+  script:
+    - ssh $SSH_USER@$SERVER "cd /var/www/demo &&
+      git clone https://gitlab+deploy-token-4484491:gldt-XzLQKAVdECBFZamngYbk@gitlab.com/pycmuk07/outus.git $DIR &&
+      sudo chown www-data:www-data $DIR -R &&
+      cd $DIR/app &&
+      echo $ENV | base64 -d > .env &&
+      sudo -u www-data composer install --no-dev -q &&
+      php artisan migrate --force &&
+      rm -rf ./storage/logs &&
+      ln -s /var/www/demo/shared/log /var/www/demo/$DIR/app/storage/logs &&
+      ( [ ! -d /var/www/demo/current ] || mv -Tf /var/www/demo/current /var/www/demo/previous ) &&
+      ln -s /var/www/demo/$DIR /var/www/demo/current"
+
+  only:
+    - main
