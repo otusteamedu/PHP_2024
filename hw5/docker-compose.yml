@@ -1,0 +1,18 @@
+version: '3'
+services:
+  server:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: phpServer
+    volumes:
+      - ./script:/home/script
+    tty: true
+  client:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: phpClient
+    volumes:
+      - ./script:/home/script
+    tty: true
