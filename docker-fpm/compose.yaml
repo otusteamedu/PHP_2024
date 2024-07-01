@@ -1,0 +1,68 @@
+services:
+  nginx:
+    container_name: hw1_nginx
+    image: nginx:latest
+    ports:
+      - "${NGINX_PORT_OUT}:${NGINX_PORT_IN}"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/logs:/var/log/nginx
+      - ./../www:/www/public_html
+    networks:
+      - backend
+    depends_on:
+      - php-fpm
+
+  mysql:
+    image: mysql:latest
+    container_name: hw1_mysql
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    ports:
+      - "${MYSQL_PORT_OUT}:${MYSQL_PORT_IN}"
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+    networks:
+      - backend
+
+  php-fpm:
+    container_name: hw1_php-fpm
+    build:
+      context: ./php
+      dockerfile: ./php.dockerfile
+    volumes:
+      - ./../www:/www/public_html
+    env_file:
+      - .env
+    networks:
+      - backend
+    depends_on:
+      - mysql
+      - memcached
+      - redis
+
+  redis:
+    container_name: hw1_redis
+    image: redis:latest
+    ports:
+      - "${REDIS_PORT_OUT}:${REDIS_PORT_IN}"
+    volumes:
+      - ./redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - backend
+
+  memcached:
+    container_name: hw1_memcached
+    image: memcached:latest
+    ports:
+      - "${MEMCACHED_PORT_OUT}:${MEMCACHED_PORT_IN}"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
