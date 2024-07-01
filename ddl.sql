@@ -53,7 +53,6 @@ CREATE TABLE tickets
     customer_id INT            NOT NULL,
     session_id  INT            NOT NULL,
     seat        VARCHAR(10)    NOT NULL,
-    price       DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES customers (id),
     FOREIGN KEY (session_id) REFERENCES sessions (id)
 );
