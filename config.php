@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'elasticsearchHost' => [getenv('ELASTICSEARCH_HOST').':'.getenv('ELASTICSEARCH_EXTERNAL_PORT')],
+    'elasticsearchHost' => [getenv('ELASTICSEARCH_HOST') . ':' . getenv('ELASTICSEARCH_EXTERNAL_PORT')],
     'elasticsearchIndex' => 'otus-shop',
     'elasticsearchIndexBody' => [
         'settings' => [
@@ -54,5 +54,5 @@ return [
             ]
         ]
     ],
-    'book-data-file-path' => __DIR__.'/storage/books.json'
+    'book-data-file-path' => __DIR__ . '/storage/books.json'
 ];
