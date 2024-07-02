@@ -1,6 +1,6 @@
 <?php
 
-namespace script\class;
+namespace HW5;
 
 class App
 {

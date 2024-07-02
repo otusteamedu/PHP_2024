@@ -1,23 +1,14 @@
 <?php
 
-namespace script\class;
+namespace HW5;
 
 class Server
 {
     public static function startServer()
     {
-        if (!extension_loaded('sockets')) {
-            die('The sockets extension is not loaded.');
-        }
-        $socket = socket_create(AF_UNIX, SOCK_DGRAM, 0);
-        if (!$socket) {
-            die('Unable to create AF_UNIX socket');
-        }
-        $server_side_sock = dirname(__FILE__) . "/server.sock";
-        if (!socket_bind($socket, $server_side_sock)) {
-            die("Unable to bind to $server_side_sock");
-        }
-        while (1) {
+        $socketObject = new Socket();
+        $socket = $socketObject->getSocket();
+        while (true) {
             if (!socket_set_block($socket)) {
                 die('Unable to set blocking mode for socket');
             }
