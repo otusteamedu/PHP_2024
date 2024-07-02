@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Action;
-
 
 use App\Application\UseCase\Request\SearchBookRequest;
 use App\Application\UseCase\SearchBookUseCase;
@@ -14,7 +12,6 @@ use App\Infrastructure\View\Table;
 
 class BookSearchAction
 {
-
     public function getAvailableOptions() :array
     {
         return [

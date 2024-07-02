@@ -32,6 +32,6 @@ class Stock
 
     public function __toString()
     {
-        return $this->shop.': '.$this->stock;
+        return $this->shop . ': ' . $this->stock;
     }
 }
