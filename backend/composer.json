@@ -1,0 +1,13 @@
+{
+  "name": "tbublikova/php2024-project",
+  "require": {
+    "php": "^8.3",
+    "ext-readline": "*",
+    "ext-sockets": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "TBublikova\\Php2024\\": "src/"
+    }
+  }
+}
