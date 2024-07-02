@@ -1,0 +1,12 @@
+{
+  "name": "pyivanov/hw4",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "PYIvanov\\Hw4\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=8.0"
+  }
+}
