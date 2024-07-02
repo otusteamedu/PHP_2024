@@ -2,20 +2,10 @@
 
 declare(strict_types=1);
 
-
 require_once __DIR__ . "/../vendor/autoload.php";
 
 try {
 
-    $options = getopt('', [
-    'title:',
-    'category:',
-    'minPrice:',
-    'maxPrice:',
-    'shopName:',
-    'minStock:'
-]);
-       var_dump($options);
     $dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . "/..");
     $dotenv->load();
 
@@ -23,12 +13,21 @@ try {
         $config = include __DIR__ . "/../config.php";
     }
 
-    $app = Main\Application\BookSearchConsoleApp::getInstance($config);
-
-    $app->initAction($argv);
+    $app = \App\Infrastructure\Main\Console\Application::getInstance($config);
+    $options = getopt('', [
+        'action::'
+    ]);
+    $app->initAction($options);
     $availableOptions = $app->getActionAvailableOptions();
 
-// Получаем параметры командной строки и передаем их в приложение
+    $options = getopt('', [
+        'title:',
+        'category:',
+        'minPrice:',
+        'maxPrice:',
+        'shopName:',
+        'minStock:'
+    ]);
 
     $app->runAction($options);
 

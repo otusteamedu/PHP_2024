@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 return [
     'elasticsearchHost' => ['elasticsearch:9200'],
-    'book-index' => 'otus-shop',
-    'book-index-body' => [
+    'elasticsearchIndex' => 'otus-shop',
+    'elasticsearchIndexBody' => [
         'settings' => [
             'analysis' => [
                 'filter' => [
