@@ -31,4 +31,9 @@ class Stock
     {
         return $this->shop === $other->shop && $this->stock === $other->stock;
     }
+
+    public function __toString()
+    {
+        return $this->shop.': '.$this->stock;
+    }
 }

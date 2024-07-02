@@ -20,8 +20,6 @@ class Table
 
     public function render(): void
     {
-
-
         if ($this->rows->count() == 0) {
             echo "Книги не найдены.\n";
             return;
@@ -33,10 +31,9 @@ class Table
                 $book->title,
                 $book->category,
                 $book->price,
-                $book->stock->count() ? 'В наличии' : 'Нет в наличии'
+                $book->stock
             ]);
         }
-
     }
 
     private function renderLine(array $line): void

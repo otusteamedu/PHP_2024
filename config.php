@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'elasticsearchHost' => ['elasticsearch:9200'],
+    'elasticsearchHost' => [getenv('ELASTICSEARCH_HOST').':'.getenv('ELASTICSEARCH_EXTERNAL_PORT')],
     'elasticsearchIndex' => 'otus-shop',
     'elasticsearchIndexBody' => [
         'settings' => [

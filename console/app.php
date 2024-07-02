@@ -8,7 +8,7 @@ try {
 
     $dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . "/..");
     $dotenv->load();
-
+    $config = [];
     if (file_exists(__DIR__ . "/../config.php")) {
         $config = include __DIR__ . "/../config.php";
     }
@@ -20,14 +20,7 @@ try {
     $app->initAction($options);
     $availableOptions = $app->getActionAvailableOptions();
 
-    $options = getopt('', [
-        'title:',
-        'category:',
-        'minPrice:',
-        'maxPrice:',
-        'shopName:',
-        'minStock:'
-    ]);
+    $options = getopt('', $availableOptions);
 
     $app->runAction($options);
 

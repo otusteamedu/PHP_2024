@@ -31,7 +31,7 @@ class ElasticsearchBookQueryBuilder
     public function build():self
     {
         if (isset($this->title)) {
-            $this->bodyParams['query']['bool']['must'][] = ['match' => ['title' => $this->title]];
+            $this->bodyParams['query']['bool']['must'][] = ['match' => ['title' => ["query" => $this->title, "fuzziness" => "auto"]]];
         }
 
         if (isset($this->category)) {
@@ -46,13 +46,36 @@ class ElasticsearchBookQueryBuilder
             $this->bodyParams['query']['bool']['must'][] = ['range' => ['price' => ['lte' => $this->maxPrice]]];
         }
 
-        if (isset($this->shopName)) {
-            $this->bodyParams['query']['bool']['must'][] = ['match' => ['shop_name' => $this->shopName]];
+        if (isset($this->shopName) && isset($this->minStock)) {
+            $this->bodyParams['query']['bool']['must'][] = [
+                'nested' => [
+                    'path' => 'stock',
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                ['match' => ['stock.shop' => $this->shopName]],
+                                ['range' => ['stock.stock' => ['gte' => $this->minStock]]]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+        } elseif (isset($this->shopName)) {
+            $this->bodyParams['query']['bool']['must'][] = [
+                'nested' => [
+                    'path' => 'stock',
+                    'query' => ['match' => ['stock.shop' => $this->shopName]]
+                ]
+            ];
+        } elseif (isset($this->minStock)) {
+            $this->bodyParams['query']['bool']['must'][] = [
+                'nested' => [
+                    'path' => 'stock',
+                    'query' => ['range' => ['stock.stock' => ['gte' => $this->minStock]]]
+                ]
+            ];
         }
 
-        if (isset($this->minStock)) {
-            $this->bodyParams['query']['bool']['must'][] = ['range' => ['stock_quantity' => ['gte' => $this->minStock]]];
-        }
 
         return $this;
     }

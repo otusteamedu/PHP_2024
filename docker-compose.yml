@@ -10,8 +10,8 @@ services:
     networks:
       - app-network
     environment:
-      ELASTICSEARCH_HOST: elasticsearch
-      ELASTICSEARCH_PORT: 9200
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST}
+      ELASTICSEARCH_PORT: ${ELASTICSEARCH_EXTERNAL_PORT}
     depends_on:
       - elasticsearch
 
@@ -22,8 +22,8 @@ services:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - ${ELASTICSEARCH_EXTERNAL_PORT}:${ELASTICSEARCH_EXTERNAL_PORT}
+      - ${ELASTICSEARCH_INTERNAL_PORT}:${ELASTICSEARCH_INTERNAL_PORT}
     volumes:
       - /d/docker_volumes/elasticsearch:/usr/share/elasticsearch/data
     networks:

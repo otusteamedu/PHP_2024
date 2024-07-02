@@ -46,4 +46,9 @@ class StockCollection implements IteratorAggregate, Countable
     {
         return count($this->stocks);
     }
+
+    public function __toString()
+    {
+        return implode(', ', $this->stocks);
+    }
 }
