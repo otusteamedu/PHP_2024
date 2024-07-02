@@ -29,7 +29,6 @@ class BookSearchAction
 
     public function exec($options)
     {
-
         $searchBookRequest = new SearchBookRequest(
         $options['title'] ?? null,
         $options['category'] ?? null,
@@ -51,6 +50,4 @@ class BookSearchAction
         $view = new Table($response->bookCollection);
         return $view->render();
     }
-
-
 }

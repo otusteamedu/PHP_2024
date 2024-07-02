@@ -8,8 +8,8 @@ namespace App\Infrastructure\Main;
 
 abstract class AbstractApplication
 {
-    protected static $instance;
 
+    protected static $instance;
     protected $config;
 
     /**

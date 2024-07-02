@@ -76,7 +76,6 @@ class ElasticsearchBookQueryBuilder
             ];
         }
 
-
         return $this;
     }
 
@@ -94,54 +93,42 @@ class ElasticsearchBookQueryBuilder
     }
 
 
-     /**
-     * @param string $title
-     */
+
     public function setTitle(?string $title): self
     {
         $this->title = $title;
         return $this;
     }
 
-    /**
-     * @param string $category
-     */
+
     public function setCategory(?string $category): self
     {
         $this->category = $category;
         return $this;
     }
 
-    /**
-     * @param int $minPrice
-     */
+
     public function setMinPrice(?int $minPrice): self
     {
         $this->minPrice = $minPrice;
         return $this;
     }
 
-    /**
-     * @param int $maxPrice
-     */
+
     public function setMaxPrice(?int $maxPrice): self
     {
         $this->maxPrice = $maxPrice;
         return $this;
     }
 
-    /**
-     * @param string $shopName
-     */
+
     public function setShopName(?string $shopName): self
     {
         $this->shopName = $shopName;
         return $this;
     }
 
-    /**
-     * @param int $minStock
-     */
+
     public function setMinStock(?int $minStock): self
     {
         $this->minStock = $minStock;
