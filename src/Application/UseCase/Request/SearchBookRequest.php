@@ -13,7 +13,8 @@ class SearchBookRequest
     public ?string $shopName;
     public ?int $minStock;
 
-    public function __construct(
+    public function __construct
+    (
         ?string $title,
         ?string $category,
         ?int $minPrice,

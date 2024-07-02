@@ -10,7 +10,7 @@ use App\Domain\Repository\BookRepositoryInterface;
 
 class SearchBookUseCase
 {
-    private  $bookRepository;
+    private $bookRepository;
 
     public function __construct(BookRepositoryInterface $bookRepository)
     {

@@ -15,5 +15,5 @@ interface BookRepositoryInterface
         ?int $maxPrice,
         ?string $shopName,
         ?int $minStock
-    ):BookCollection;
+    ): BookCollection;
 }
