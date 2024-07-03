@@ -12,7 +12,7 @@ use App\Infrastructure\View\Table;
 
 class BookSearchAction
 {
-    public function getAvailableOptions() :array
+    public function getAvailableOptions(): array
     {
         return [
             'title:',
@@ -27,12 +27,12 @@ class BookSearchAction
     public function exec($options)
     {
         $searchBookRequest = new SearchBookRequest(
-        $options['title'] ?? null,
-        $options['category'] ?? null,
-        isset($options['minPrice']) ? (int)$options['minPrice'] : null,
-        isset($options['maxPrice']) ? (int)$options['maxPrice'] : null,
-        $options['shopName'] ?? null,
-        isset($options['minStock']) ? (int)$options['minStock'] : null
+            $options['title'] ?? null,
+            $options['category'] ?? null,
+            isset($options['minPrice']) ? (int)$options['minPrice'] : null,
+            isset($options['maxPrice']) ? (int)$options['maxPrice'] : null,
+            $options['shopName'] ?? null,
+            isset($options['minStock']) ? (int)$options['minStock'] : null
         );
 
         $elasticsearchHost = Application::getInstance()->getParam('elasticsearchHost');
