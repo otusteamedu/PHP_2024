@@ -8,4 +8,4 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $app = new App();
 
-echo $app->run()->getContent();
+echo $app->run()->content;

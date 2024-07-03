@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\App;
 
-use App\Exception\DomainException;
 use App\Exception\ErrorRequestException;
 use App\Request\Request;
 use App\Response\Response;
 use App\Validation\Validator;
+use DomainException;
 use Exception;
 
 final class App

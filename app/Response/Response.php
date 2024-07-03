@@ -6,12 +6,8 @@ namespace App\Response;
 
 class Response
 {
-    public function __construct(readonly string $content)
-    {
-    }
-
-    public function getContent(): string
-    {
-        return $this->content;
+    public function __construct(
+        public readonly string $content,
+    ) {
     }
 }

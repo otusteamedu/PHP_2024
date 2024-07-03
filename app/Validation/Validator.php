@@ -8,24 +8,27 @@ final class Validator
 {
     public function isValid(string $value): bool
     {
-        $stack = [];
-        $open = ['('];
-        $pairs = ['()'];
+        if (empty($value)) {
+            return false;
+        }
+
+        $cnt = 0;
+        $open = '(';
+        $close = ')';
         $length = strlen($value);
 
         for ($i = 0; $i < $length; $i++) {
-            $current = $value[$i];
-            if (in_array($current, $open)) {
-                $stack[] = $current;
-            } else {
-                $previous = array_pop($stack);
-                $pair = "{$previous}{$current}";
-                if (!in_array($pair, $pairs)) {
-                    return false;
-                }
+            if ($value[$i] === $open) {
+                $cnt++;
+            } elseif ($value[$i] === $close) {
+                $cnt--;
+            }
+
+            if ($cnt < 0) {
+                return false;
             }
         }
 
-        return count($stack) === 0;
+        return $cnt === 0;
     }
 }
