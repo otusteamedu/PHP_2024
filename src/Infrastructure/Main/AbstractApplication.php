@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Main;
 
-use \App\Infrastructure\Main\ApplicationInterface;
+use App\Infrastructure\Main\ApplicationInterface;
 
 abstract class AbstractApplication implements ApplicationInterface
 {
