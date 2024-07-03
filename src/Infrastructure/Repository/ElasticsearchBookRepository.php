@@ -25,13 +25,7 @@ class ElasticsearchBookRepository implements BookRepositoryInterface
             ->build();
     }
 
-    public function search(
-        ?string $title,
-        ?string $category,
-        ?int $minPrice,
-        ?int $maxPrice,
-        ?string $shopName,
-        ?int $minStock): BookCollection
+    public function search(?string $title, ?string $category, ?int $minPrice, ?int $maxPrice, ?string $shopName, ?int $minStock): BookCollection
     {
         $queryParams = $this->queryBuilder
             ->setTitle($title)

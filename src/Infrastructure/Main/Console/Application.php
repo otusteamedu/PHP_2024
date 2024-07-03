@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Main\Console;
-
 
 use App\Infrastructure\Action\BookSearchAction;
 
@@ -20,7 +18,7 @@ class Application extends \App\Infrastructure\Main\AbstractApplication
 
         if ($option['action'] == 'search') {
             $this->action = new BookSearchAction();
-        }else {
+        } else {
             throw new \Exception('Передано не существующие действие');
         }
     }

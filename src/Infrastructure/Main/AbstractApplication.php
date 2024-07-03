@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-
 namespace App\Infrastructure\Main;
-
 
 abstract class AbstractApplication
 {
-
     protected static $instance;
     protected $config;
 

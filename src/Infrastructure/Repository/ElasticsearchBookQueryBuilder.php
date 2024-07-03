@@ -28,7 +28,7 @@ class ElasticsearchBookQueryBuilder
         ];
     }
 
-    public function build():self
+    public function build(): self
     {
         if (isset($this->title)) {
             $this->bodyParams['query']['bool']['must'][] = ['match' => ['title' => ["query" => $this->title, "fuzziness" => "auto"]]];
@@ -79,7 +79,7 @@ class ElasticsearchBookQueryBuilder
         return $this;
     }
 
-    public function getBodyParams() :array
+    public function getBodyParams(): array
     {
         return $this->bodyParams ?? $this->toAllBodyParams;
     }
@@ -134,5 +134,4 @@ class ElasticsearchBookQueryBuilder
         $this->minStock = $minStock;
         return $this;
     }
-
 }
