@@ -1,0 +1,16 @@
+{
+    "name": "kyberlox/composer-test",
+    "description": "Test composer pakage by Kyberlox!",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Kyberlox\\ComposerTest\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kyberlox"
+        }
+    ],
+    "require": {}
+}
