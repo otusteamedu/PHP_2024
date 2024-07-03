@@ -4,11 +4,10 @@ namespace TBublikova\Php2024;
 
 class App
 {
-    /**
-     * @return array<int, int|string>
-     */
-    public function run(): array
+    public function run(): string
     {
-        return (new RequestHandler())->handle($_POST);
+        $response = (new RequestHandler())->handle($_POST);
+        http_response_code($response['code']);
+        return $response['msg'];
     }
 }

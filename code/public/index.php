@@ -10,8 +10,7 @@ try {
     $app = new App();
     $response = $app->run();
 
-    http_response_code($response['code']);
-    echo $response['msg'] . "\n";
+    echo $response . "\n";
 } catch (Exception $e) {
     echo "ERROR: " . $e->getMessage() . "\n";
 }
