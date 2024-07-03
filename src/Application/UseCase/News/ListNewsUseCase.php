@@ -5,23 +5,23 @@ declare(strict_types=1);
 namespace App\Application\UseCase\News;
 
 use App\Application\UseCase\News\DTO\ListNewsResponse;
-use App\Domain\Entity\News\{News, NewsRepositoryInterface};
+use App\Domain\Entity\News\{News, NewsMapper};
 
 class ListNewsUseCase
 {
-    public function __construct(private NewsRepositoryInterface $newsRepository)
+    public function __construct(private NewsMapper $newsMapper)
     {
     }
 
     public function __invoke(): array
     {
-        return $this->newsRepository->all()
+        return $this->newsMapper->all()
             ->map(function (News $news) {
-                new ListNewsResponse(
+                return new ListNewsResponse(
                     $news->getId(),
                     $news->getDate(),
-                    $news->getTitle(),
-                    $news->getUrl(),
+                    $news->getTitle()->getValue(),
+                    $news->getUrl()->getValue(),
                 );
             })->all();
     }

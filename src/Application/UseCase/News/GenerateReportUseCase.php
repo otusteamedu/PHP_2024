@@ -6,24 +6,28 @@ namespace App\Application\UseCase\News;
 
 use App\Application\UseCase\News\Converter\ReportConverterInterface;
 use App\Application\Gateway\ReportExporterInterface;
-use App\Domain\Entity\News\{News, NewsRepositoryInterface};
-use App\Domain\ValueObject\ReportLine;
+use App\Application\UseCase\News\DTO\ExportedReport;
+use App\Domain\Entity\News\{News, NewsMapper};
+use App\Application\UseCase\News\DTO\ReportResponse;
 
 class GenerateReportUseCase
 {
     public function __construct(
         private ReportConverterInterface $reportConverter,
         private ReportExporterInterface $reportExporter,
-        private NewsRepositoryInterface $newsRepository
+        private NewsMapper $newsMapper
     ) {
     }
 
-    public function __invoke(int ...$ids): mixed
+    public function __invoke(int ...$ids): ExportedReport
     {
-        $news = $this->newsRepository->findByIds($ids);
+        $news = $this->newsMapper->findByIds($ids);
 
         $reportLines = array_map(
-            static fn (News $news) => new ReportLine($news->getUrl(), $news->getTitle()),
+            static fn (News $news) => new ReportResponse(
+                $news->getUrl()->getValue(),
+                $news->getTitle()->getValue()
+            ),
             $news->all()
         );
 

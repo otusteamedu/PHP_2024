@@ -40,7 +40,7 @@ return function (App $app) {
                 $body['title']
             );
 
-            $id = (new AddNewsUseCase($this->get(DatabaseNewsRepository::class)))($newsRequest);
+            $id = ($this->get(AddNewsUseCase::class))($newsRequest);
 
             $payload = compact('id');
             $actionResponse = new Action($response, 201);
@@ -57,7 +57,7 @@ return function (App $app) {
             ]);
 
             $ids = array_map('intval', explode('/', $args['ids']));
-            $file = $action(...$ids);
+            $file = ($action(...$ids))->path;
 
             $payload = compact('file');
             $actionResponse = new Action($response);

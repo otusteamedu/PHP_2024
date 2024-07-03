@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Domain\Entity\News;
 
 use App\Domain\ValueObject\{NewsTitle, Url};
-use Illuminate\Contracts\Support\Arrayable;
 
-class News implements Arrayable
+class News
 {
     private int $id;
     private string $date;
@@ -42,16 +41,5 @@ class News implements Arrayable
         $this->date = $source->date;
 
         return $this;
-    }
-
-    #TODO: next step refactor
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'date' => $this->getDate(),
-            'url' => $this->getUrl()->getValue(),
-            'title' => $this->getTitle()->getValue(),
-        ];
     }
 }

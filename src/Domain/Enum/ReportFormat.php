@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Enum;
 
-enum ReportFormat
+enum ReportFormat: string
 {
-    case HTML;
-    case PlainText;
-    case JSON;
-    case CSV;
+    case HTML = 'html';
+    case PlainText = 'text';
+    case JSON = 'json';
+    case CSV = 'csv';
 }
