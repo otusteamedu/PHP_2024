@@ -12,11 +12,14 @@ try {
         $config = include __DIR__ . "/../config.php";
     }
 
-    $app = \App\Infrastructure\Main\Console\Application::getInstance($config);
+    $app = \App\Infrastructure\Main\Console\Application::initApplication($config);
+
     $options = getopt('', [
         'action::'
     ]);
+
     $app->initAction($options);
+
     $availableOptions = $app->getActionAvailableOptions();
 
     $options = getopt('', $availableOptions);

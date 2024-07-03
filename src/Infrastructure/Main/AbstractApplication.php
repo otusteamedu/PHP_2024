@@ -4,41 +4,34 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Main;
 
-abstract class AbstractApplication
+use \App\Infrastructure\Main\ApplicationInterface;
+
+abstract class AbstractApplication implements ApplicationInterface
 {
     protected static $instance;
     protected $config;
 
-    /**
-     * App constructor.
-     */
-    protected function __construct(array $config = [])
+    public function __construct(array $config = [])
     {
         $this->config = $config;
     }
 
-    protected function __clone()
+    public static function setInstance(ApplicationInterface $application): void
     {
+        self::$instance = $application;
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function __wakeup()
-    {
-        throw new \Exception("Может существовать только 1 экземпляр приложения");
-    }
-
-    /**
-     * @param array $config
-     * @return static
-     */
-    public static function getInstance(array $config = []): self
+    public static function getInstance(): self
     {
         if (empty(self::$instance)) {
-            self::$instance = new static($config);
+            throw new \Exception("Application instance not set");
         }
 
         return self::$instance;
+    }
+
+    public function getParam(string $paramName)
+    {
+        return $this->config[$paramName] ?? null;
     }
 }

@@ -7,8 +7,11 @@ namespace App\Infrastructure\Action;
 use App\Application\UseCase\Request\SearchBookRequest;
 use App\Application\UseCase\SearchBookUseCase;
 use App\Infrastructure\Main\Console\Application;
+use App\Infrastructure\Repository\BookDataMapper;
+use App\Infrastructure\Repository\ElasticsearchBookQueryBuilder;
 use App\Infrastructure\Repository\ElasticsearchBookRepository;
 use App\Infrastructure\View\Table;
+use Elastic\Elasticsearch\ClientBuilder;
 
 class BookSearchAction
 {
@@ -35,13 +38,19 @@ class BookSearchAction
             isset($options['minStock']) ? (int)$options['minStock'] : null
         );
 
-        $elasticsearchHost = Application::getInstance()->getParam('elasticsearchHost');
-        $elasticsearchIndex = Application::getInstance()->getParam('elasticsearchIndex');
+        $client = ClientBuilder::create()
+            ->setHosts(Application::getInstance()->getParam('elasticsearchHost'))
+            ->build();
+        $queryBuilder = new ElasticsearchBookQueryBuilder(Application::getInstance()->getParam('elasticsearchIndex'));
+        $bookDataMapper = new BookDataMapper();
+
 
         $bookRepository = new ElasticsearchBookRepository(
-            $elasticsearchHost,
-            $elasticsearchIndex
+            $client,
+            $queryBuilder,
+            $bookDataMapper
         );
+
         $useCase = new SearchBookUseCase($bookRepository);
         $response = $useCase->execute($searchBookRequest);
         $view = new Table($response->bookCollection);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Main\Console;
 
 use App\Infrastructure\Action\BookSearchAction;
+use App\Infrastructure\Main\ApplicationInterface;
 
 class Application extends \App\Infrastructure\Main\AbstractApplication
 {
@@ -28,13 +29,15 @@ class Application extends \App\Infrastructure\Main\AbstractApplication
         return $this->action->getAvailableOptions();
     }
 
+    public static function initApplication(array $config = []): self
+    {
+        $application = new self($config);
+        self::setInstance($application);
+        return $application;
+    }
+
     public function runAction(array $options = [])
     {
         $this->action->exec($options);
-    }
-
-    public function getParam(string $paramName)
-    {
-        return $this->config[$paramName] ?? null;
     }
 }

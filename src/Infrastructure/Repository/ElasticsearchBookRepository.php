@@ -16,13 +16,11 @@ class ElasticsearchBookRepository implements BookRepositoryInterface
     private BookDataMapper $bookDataMapper;
     private Client $client;
 
-    public function __construct(array $host, string $index)
+    public function __construct(Client $client, ElasticsearchBookQueryBuilder $queryBuilder, BookDataMapper $bookDataMapper)
     {
-        $this->bookDataMapper = new BookDataMapper();
-        $this->queryBuilder = new ElasticsearchBookQueryBuilder($index);
-        $this->client = ClientBuilder::create()
-            ->setHosts($host)
-            ->build();
+        $this->client = $client;
+        $this->queryBuilder = $queryBuilder;
+        $this->bookDataMapper = $bookDataMapper;
     }
 
     public function search(?string $title, ?string $category, ?int $minPrice, ?int $maxPrice, ?string $shopName, ?int $minStock): BookCollection
