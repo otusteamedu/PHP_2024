@@ -34,7 +34,8 @@ class Controller
             getenv('RABBITMQ_HOST'),
             getenv('RABBITMQ_PORT'),
             getenv('RABBITMQ_USER'),
-            getenv('RABBITMQ_PASSWORD')
+            getenv('RABBITMQ_PASSWORD'),
+            getenv('RABBITMQ_QUEUE_NAME')
         );
         $addStReqToQueueUseCase = new AddStReqToQueueUseCase($statementRequest, $queueBroker);
         return $addStReqToQueueUseCase();

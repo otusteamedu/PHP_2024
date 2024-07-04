@@ -11,7 +11,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 class RabbitMQ implements QueueAddMsgInterface
 {
     private AMQPStreamConnection $connection;
-    private const QUEUE_NAME = 'statement_request_queue';
+    private string $queueName;
 
     /**
      * @throws Exception
@@ -20,8 +20,10 @@ class RabbitMQ implements QueueAddMsgInterface
         string $host,
         string $port,
         string $user,
-        string $password
+        string $password,
+        string $queueName
     ){
+        $this->queueName = $queueName;
         $this->connection = new AMQPStreamConnection($host, $port, $user, $password);
     }
 
@@ -31,9 +33,9 @@ class RabbitMQ implements QueueAddMsgInterface
     public function add(DTO $request): void
     {
         $channel = $this->connection->channel();
-        $channel->queue_declare(self::QUEUE_NAME, false, false, false, null);
+        $channel->queue_declare($this->queueName, false, false, false, null);
         $messageBody = new AMQPMessage($request->request);
-        $channel->basic_publish($messageBody, '', self::QUEUE_NAME);
+        $channel->basic_publish($messageBody, '', $this->queueName);
         $channel->close();
         $this->connection->close();
     }

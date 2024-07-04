@@ -1,11 +1,12 @@
 # PHP_2024
 
-Для проверки работоспособности необходимо отправить POST-запрос на test.local с полями:
+*1. Запуск nginx, php-fpm, rabbitmq*
 
-type = burger (доступные значения: burger, hotdog, sandwich, pizza)
+ - Запускаем `docker-compose up -d --build`
 
-recipe = cheeseburger (доступные значения: cheeseburger, chikenburger, fishburger, customburger(!), frenchhotdog и т.д.)
 
-ingredient = лук, лопасть пропеллера, кетчуп.... (необязательный параметр, только для customburger, customhotdog, customsandwich)
+*2. Запуск Consumer*
 
-comment = Убрать лук, не класть холопеньо (необязательный параметр)
+ - Запускаем Consumer в командной строке `docker exec -it consumer php app/index.php`
+
+*3. Отправляем POST-запрос с полями "date_from" и "date_to" в формате DD-MM-YYYY*

@@ -20,6 +20,4 @@ class StatementRequest
     {
         return $this->statementRequest;
     }
-
-
 }
