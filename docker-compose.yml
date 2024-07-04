@@ -1,0 +1,62 @@
+version: "3.1"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - ${NGINX_PORT_EXTERNAL}:${NGINX_PORT}
+    volumes:
+      - ./:/var/www/mysite.local
+      - ./docker/nginx/server:/etc/nginx/conf.d
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  app:
+    build: docker/php
+    container_name: app
+    volumes:
+      - ./:/var/www/mysite.local
+    environment:
+      - REDIS_HOST:redis
+      - REDIS_PORT:${REDIS_PORT_EXTERNAL}
+    networks:
+      - app-network
+    depends_on:
+      - redis
+    ports:
+      - ${PHP_FPM_PORT}:${PHP_FPM_PORT}
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - ${REDIS_PORT_EXTERNAL}:${REDIS_PORT}
+    networks:
+      - app-network
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    restart: always
+    ports:
+      - ${REDISINSIGHT_PORT_EXTERNAL}:${REDISINSIGHT_PORT}
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /d/docker_volumes
