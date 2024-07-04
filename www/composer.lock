@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1e513350c598b4d8550196d87a52294",
+    "content-hash": "e6355c9a8786451f8fc6276c07eb0907",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -81,17 +81,17 @@
             "time": "2023-09-17T07:26:20+00:00"
         },
         {
-            "name": "sergey-program/otus-vasilkov",
-            "version": "v1.0.2",
+            "name": "sergey-program/otus-composer-package-slugify",
+            "version": "1.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/sergey-program/otus-vasilkov.git",
-                "reference": "08b76213d9c2fdd6db1e9c0ef83376e998565560"
+                "url": "https://github.com/sergey-program/composer-package-slugify.git",
+                "reference": "da3139c817fd8440e6415bcd1822413d1ba51fdc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sergey-program/otus-vasilkov/zipball/08b76213d9c2fdd6db1e9c0ef83376e998565560",
-                "reference": "08b76213d9c2fdd6db1e9c0ef83376e998565560",
+                "url": "https://api.github.com/repos/sergey-program/composer-package-slugify/zipball/da3139c817fd8440e6415bcd1822413d1ba51fdc",
+                "reference": "da3139c817fd8440e6415bcd1822413d1ba51fdc",
                 "shasum": ""
             },
             "require": {
@@ -100,20 +100,21 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Sergey\\OtusVasilkov\\": "src/"
+                    "SergeyProgram\\OtusComposerPackageSlugify\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
-                    "name": "sergey"
+                    "name": "sergey-program"
                 }
             ],
+            "description": "simply extended slugify library",
             "support": {
-                "issues": "https://github.com/sergey-program/otus-vasilkov/issues",
-                "source": "https://github.com/sergey-program/otus-vasilkov/tree/v1.0.2"
+                "issues": "https://github.com/sergey-program/composer-package-slugify/issues",
+                "source": "https://github.com/sergey-program/composer-package-slugify/tree/1.1"
             },
-            "time": "2024-03-04T13:51:50+00:00"
+            "time": "2024-07-04T00:55:15+00:00"
         }
     ],
     "packages-dev": [],

@@ -1,5 +1,5 @@
 {
     "require": {
-        "sergey-program/otus-vasilkov": "^1.0"
+        "sergey-program/otus-composer-package-slugify": "^1.0"
     }
 }
