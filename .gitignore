@@ -6,4 +6,4 @@
 # hw1 folders
 docker-sockets
 
-.vendor/
+/www/vendor/
