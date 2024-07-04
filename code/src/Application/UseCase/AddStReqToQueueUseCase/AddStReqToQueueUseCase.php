@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Application\UseCase\AddStatementRequestToQueueUseCase;
+namespace App\Application\UseCase\AddStReqToQueueUseCase;
 
+use App\Application\DTO\DTO;
 use App\Application\Interface\QueueAddMsgInterface;
 use App\Domain\Entity\StatementRequest;
 
-class AddStatementRequestToQueueUseCase
+class AddStReqToQueueUseCase
 {
 
     private StatementRequest $statementRequest;
@@ -21,8 +22,9 @@ class AddStatementRequestToQueueUseCase
 
     public function __invoke(): string
     {
+        $dto = new DTO($this->statementRequest->get());
         try {
-            $this->queue->add($this->statementRequest->getStatementRequest());
+            $this->queue->add($dto);
         } catch (\InvalidArgumentException) {
             throw new \InvalidArgumentException("Adding statement request failed");
         }

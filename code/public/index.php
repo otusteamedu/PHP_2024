@@ -2,10 +2,12 @@
 declare(strict_types=1);
 
 
+use App\Infrastructure\Http\Controller;
+
 require_once dirname(__DIR__, 2) .'/vendor/autoload.php';
 
 
-$routes = new Router();
-$res = $routes->runController();
+$controller = new Controller();
+$res = $controller->run();
 
 print_r($res);

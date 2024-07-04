@@ -2,10 +2,9 @@
 
 namespace App\Application\Interface;
 
-use App\Domain\Entity\StatementRequest;
+use App\Application\DTO\DTO;
 
 interface QueueAddMsgInterface
 {
-    public function add(StatementRequest $request): void;
-    public function closeConnection(): void;
+    public function add(DTO $request): void;
 }

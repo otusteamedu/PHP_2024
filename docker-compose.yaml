@@ -38,13 +38,29 @@ services:
     networks:
       - app-network
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}"
     environment:
-      RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
-      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
-#    volumes:
-#      - ./docker/rabbitmq:/etc/rabbitmq
+      RABBITMQ_USER: "${RABBITMQ_USER}"
+      RABBITMQ_PASSWORD: "${RABBITMQ_PASSWORD}"
+
+  php-fpm-consumer:
+    build:
+      context: ./docker/fpm-consumer
+      dockerfile: Dockerfile
+    env_file: .env
+    container_name: consumer
+    volumes:
+      - ./consumer:/data/app
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      PHP_IDE_CONFIG: serverName=Docker
+      INFRASTRUCTURE_PATH: "${SOURCE_INFRASTRUCTURE_PATH}"
+    depends_on:
+      - rabbitmq
 
 networks:
   app-network:

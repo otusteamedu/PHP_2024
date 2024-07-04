@@ -2,35 +2,39 @@
 
 namespace App\Infrastructure\Queue;
 
+use App\Application\DTO\DTO;
 use App\Application\Interface\QueueAddMsgInterface;
-use App\Domain\Entity\StatementRequest;
+use Exception;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 class RabbitMQ implements QueueAddMsgInterface
 {
     private AMQPStreamConnection $connection;
+    private const QUEUE_NAME = 'statement_request_queue';
 
+    /**
+     * @throws Exception
+     */
     public function __construct(
         string $host,
-        int $port,
+        string $port,
         string $user,
         string $password
     ){
         $this->connection = new AMQPStreamConnection($host, $port, $user, $password);
     }
 
-    public function add(StatementRequest $request): void
+    /**
+     * @throws Exception
+     */
+    public function add(DTO $request): void
     {
         $channel = $this->connection->channel();
-        $channel->queue_declare('statement_request_queue', false, false, false, null);
-        $messageBody = new AMQPMessage($request);
-        $channel->basic_publish($messageBody, '', 'statement_request_queue');
+        $channel->queue_declare(self::QUEUE_NAME, false, false, false, null);
+        $messageBody = new AMQPMessage($request->request);
+        $channel->basic_publish($messageBody, '', self::QUEUE_NAME);
         $channel->close();
-    }
-
-    public function closeConnection(): void
-    {
         $this->connection->close();
     }
 }
