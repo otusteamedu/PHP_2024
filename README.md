@@ -20,3 +20,6 @@ http files in `/www` folder
 >package repository: https://github.com/sergey-program/composer-package-slugify 
 
 >public packagist page: https://packagist.org/packages/sergey-program/otus-composer-package-slugify
+
+
+there are `compose.yaml` and `docker-compose.yaml` for docker 2.x and docker 1.x version
