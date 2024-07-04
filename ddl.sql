@@ -21,6 +21,74 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: countries; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.countries (
+                                  id bigint NOT NULL,
+                                  name character varying(255) NOT NULL,
+                                  deleted_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.countries OWNER TO postgres;
+
+--
+-- Name: countries_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.countries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.countries_id_seq OWNER TO postgres;
+
+--
+-- Name: countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.countries_id_seq OWNED BY public.countries.id;
+
+
+--
+-- Name: genres; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.genres (
+                               id bigint NOT NULL,
+                               name character varying(255) NOT NULL,
+                               deleted_at timestamp(0) without time zone
+);
+
+
+ALTER TABLE public.genres OWNER TO postgres;
+
+--
+-- Name: genres_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.genres_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.genres_id_seq OWNER TO postgres;
+
+--
+-- Name: genres_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.genres_id_seq OWNED BY public.genres.id;
+
+
+--
 -- Name: halls; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -55,6 +123,30 @@ ALTER SEQUENCE public.halls_id_seq OWNED BY public.halls.id;
 
 
 --
+-- Name: movie_country; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.movie_country (
+                                      movie_id bigint NOT NULL,
+                                      country_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.movie_country OWNER TO postgres;
+
+--
+-- Name: movie_genre; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.movie_genre (
+                                    movie_id bigint NOT NULL,
+                                    genre_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.movie_genre OWNER TO postgres;
+
+--
 -- Name: movies; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -62,6 +154,7 @@ CREATE TABLE public.movies (
                                id bigint NOT NULL,
                                title character varying(255) NOT NULL,
                                description text NOT NULL,
+                               publish_year integer NOT NULL,
                                duration bigint NOT NULL,
                                deleted_at timestamp(0) without time zone
 );
@@ -125,13 +218,24 @@ ALTER SEQUENCE public.order_statuses_id_seq OWNED BY public.order_statuses.id;
 
 
 --
+-- Name: order_ticket; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.order_ticket (
+                                     order_id bigint NOT NULL,
+                                     ticket_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.order_ticket OWNER TO postgres;
+
+--
 -- Name: orders; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.orders (
                                id bigint NOT NULL,
                                user_id bigint NOT NULL,
-                               ticket_id bigint NOT NULL,
                                status_id bigint NOT NULL,
                                created_at timestamp(0) without time zone NOT NULL,
                                deleted_at timestamp(0) without time zone
@@ -201,7 +305,8 @@ ALTER SEQUENCE public.roles_id_seq OWNED BY public.roles.id;
 
 CREATE TABLE public.seats (
                               id bigint NOT NULL,
-                              name character varying(255) NOT NULL,
+                              "row" integer NOT NULL,
+                              place integer NOT NULL,
                               hall_id bigint NOT NULL,
                               deleted_at timestamp(0) without time zone
 );
@@ -237,6 +342,7 @@ ALTER SEQUENCE public.seats_id_seq OWNED BY public.seats.id;
 CREATE TABLE public.sessions (
                                  id bigint NOT NULL,
                                  start_at timestamp(0) without time zone NOT NULL,
+                                 finish_at timestamp(0) without time zone NOT NULL,
                                  movie_id bigint NOT NULL,
                                  deleted_at timestamp(0) without time zone
 );
@@ -339,6 +445,20 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
+-- Name: countries id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.countries ALTER COLUMN id SET DEFAULT nextval('public.countries_id_seq'::regclass);
+
+
+--
+-- Name: genres id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.genres ALTER COLUMN id SET DEFAULT nextval('public.genres_id_seq'::regclass);
+
+
+--
 -- Name: halls id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -402,11 +522,43 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Name: countries countries_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.countries
+    ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: genres genres_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.genres
+    ADD CONSTRAINT genres_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: halls halls_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.halls
     ADD CONSTRAINT halls_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: movie_country movie_country_movie_id_country_id_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.movie_country
+    ADD CONSTRAINT movie_country_movie_id_country_id_unique UNIQUE (movie_id, country_id);
+
+
+--
+-- Name: movie_genre movie_genre_movie_id_genre_id_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.movie_genre
+    ADD CONSTRAINT movie_genre_movie_id_genre_id_unique UNIQUE (movie_id, genre_id);
 
 
 --
@@ -423,6 +575,14 @@ ALTER TABLE ONLY public.movies
 
 ALTER TABLE ONLY public.order_statuses
     ADD CONSTRAINT order_statuses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_ticket order_ticket_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_ticket
+    ADD CONSTRAINT order_ticket_unique UNIQUE (ticket_id);
 
 
 --
@@ -447,6 +607,14 @@ ALTER TABLE ONLY public.roles
 
 ALTER TABLE ONLY public.seats
     ADD CONSTRAINT seats_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: seats seats_row_place_hall_id_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.seats
+    ADD CONSTRAINT seats_row_place_hall_id_unique UNIQUE ("row", place, hall_id);
 
 
 --
@@ -490,10 +658,51 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: orders_ticket_id_uindex; Type: INDEX; Schema: public; Owner: postgres
+-- Name: movie_country movie_country_country_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX orders_ticket_id_uindex ON public.orders USING btree (ticket_id);
+ALTER TABLE ONLY public.movie_country
+    ADD CONSTRAINT movie_country_country_id_foreign FOREIGN KEY (country_id) REFERENCES public.countries(id);
+
+
+--
+-- Name: movie_country movie_country_movie_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.movie_country
+    ADD CONSTRAINT movie_country_movie_id_foreign FOREIGN KEY (movie_id) REFERENCES public.movies(id);
+
+
+--
+-- Name: movie_genre movie_genre_genre_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.movie_genre
+    ADD CONSTRAINT movie_genre_genre_id_foreign FOREIGN KEY (genre_id) REFERENCES public.genres(id);
+
+
+--
+-- Name: movie_genre movie_genre_movie_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.movie_genre
+    ADD CONSTRAINT movie_genre_movie_id_foreign FOREIGN KEY (movie_id) REFERENCES public.movies(id);
+
+
+--
+-- Name: order_ticket order_ticket_orders_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_ticket
+    ADD CONSTRAINT order_ticket_orders_id_fk FOREIGN KEY (order_id) REFERENCES public.orders(id);
+
+
+--
+-- Name: order_ticket order_ticket_tickets_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_ticket
+    ADD CONSTRAINT order_ticket_tickets_id_fk FOREIGN KEY (ticket_id) REFERENCES public.tickets(id);
 
 
 --
@@ -502,14 +711,6 @@ CREATE UNIQUE INDEX orders_ticket_id_uindex ON public.orders USING btree (ticket
 
 ALTER TABLE ONLY public.orders
     ADD CONSTRAINT orders_status_id_foreign FOREIGN KEY (status_id) REFERENCES public.order_statuses(id);
-
-
---
--- Name: orders orders_ticket_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.orders
-    ADD CONSTRAINT orders_ticket_id_foreign FOREIGN KEY (ticket_id) REFERENCES public.tickets(id);
 
 
 --
