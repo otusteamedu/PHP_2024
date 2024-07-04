@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+
+  #контейнер с Nginx
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+      - ./code/public:/data/app/public
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    env_file: .env
+    container_name: php
+    volumes:
+      - ./code:/data/app
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      PHP_IDE_CONFIG: serverName=Docker
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    networks:
+      - app-network
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}"
+
+  php-fpm-consumer:
+    build:
+      context: ./docker/fpm-consumer
+      dockerfile: Dockerfile
+    env_file: .env
+    container_name: consumer
+    volumes:
+      - ./consumer:/data/app
+    networks:
+      - app-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+#    command: php app/index.php
+    environment:
+      PHP_IDE_CONFIG: serverName=Docker
+    depends_on:
+      - rabbitmq
+
+networks:
+  app-network:
+    driver: bridge
