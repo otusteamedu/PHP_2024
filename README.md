@@ -15,4 +15,8 @@ if you want you can add any package you want using `composer require package/nam
 
 if you want to remove vendor folder, you should do it from container
 
-http files in www folder
+http files in `/www` folder
+
+>package repository: https://github.com/sergey-program/composer-package-slugify 
+
+>public packagist page: https://packagist.org/packages/sergey-program/otus-composer-package-slugify
