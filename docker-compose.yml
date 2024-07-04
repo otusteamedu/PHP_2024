@@ -1,0 +1,42 @@
+version: "3.1"
+
+services:
+
+  app:
+    build: docker/php
+    container_name: app
+    volumes:
+      - ./:/var/www/mysite.local
+    networks:
+      - app-network
+    environment:
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_HOST}
+      ELASTICSEARCH_PORT: ${ELASTICSEARCH_EXTERNAL_PORT}
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - ${ELASTICSEARCH_EXTERNAL_PORT}:${ELASTICSEARCH_EXTERNAL_PORT}
+      - ${ELASTICSEARCH_INTERNAL_PORT}:${ELASTICSEARCH_INTERNAL_PORT}
+    volumes:
+      - /d/docker_volumes/elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /d/docker_volumes
