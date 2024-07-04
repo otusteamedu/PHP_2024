@@ -9,8 +9,10 @@ services:
     environment:
         MYSQL_DATABASE: ${MYSQL_DATABASE}
         MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+        MYSQL_USER: '${MYSQL_USER}'
+        MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
     volumes:
-        - ./mysql/data:/var/lib/mysql
+        - ./docker_data/:/var/lib/mysql
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     networks:
       - app-network
@@ -23,6 +25,8 @@ services:
           - db
       ports:
           - 8083:8080
+      networks:
+          - app-network
 
 networks:
   app-network:
