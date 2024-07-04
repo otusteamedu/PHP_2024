@@ -41,27 +41,6 @@ services:
       - backend
     depends_on:
       - mysql
-      - memcached
-      - redis
-
-  redis:
-    container_name: hw1_redis
-    image: redis:latest
-    ports:
-      - "${REDIS_PORT_OUT}:${REDIS_PORT_IN}"
-    volumes:
-      - ./redis/data:/data
-      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    networks:
-      - backend
-
-  memcached:
-    container_name: hw1_memcached
-    image: memcached:latest
-    ports:
-      - "${MEMCACHED_PORT_OUT}:${MEMCACHED_PORT_IN}"
-    networks:
-      - backend
 
 networks:
   backend:
