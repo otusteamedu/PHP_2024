@@ -8,11 +8,14 @@ try {
     $dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . "/..");
     $dotenv->load();
     $config = [];
+
     if (file_exists(__DIR__ . "/../config.php")) {
         $config = include __DIR__ . "/../config.php";
     }
 
-    $app = \App\Infrastructure\Main\Console\Application::initApplication($config);
+    $elasticsearchBookBookRepositoryCreator = new \App\Infrastructure\Repository\ElasticsearchBookBookRepositoryCreator();
+
+    $app =  \App\Infrastructure\Main\Console\Application::initApplication($config, $elasticsearchBookBookRepositoryCreator);
 
     $options = getopt('', [
         'action::'

@@ -15,6 +15,13 @@ use Elastic\Elasticsearch\ClientBuilder;
 
 class BookSearchAction
 {
+    protected searchBookUseCase $useCase;
+
+    public function __construct(searchBookUseCase $searchBookUseCase)
+    {
+        $this->useCase = $searchBookUseCase;
+    }
+
     public function getAvailableOptions(): array
     {
         return [
@@ -38,21 +45,7 @@ class BookSearchAction
             isset($options['minStock']) ? (int)$options['minStock'] : null
         );
 
-        $client = ClientBuilder::create()
-            ->setHosts(Application::getInstance()->getParam('elasticsearchHost'))
-            ->build();
-        $queryBuilder = new ElasticsearchBookQueryBuilder(Application::getInstance()->getParam('elasticsearchIndex'));
-        $bookDataMapper = new BookDataMapper();
-
-
-        $bookRepository = new ElasticsearchBookRepository(
-            $client,
-            $queryBuilder,
-            $bookDataMapper
-        );
-
-        $useCase = new SearchBookUseCase($bookRepository);
-        $response = $useCase->execute($searchBookRequest);
+        $response = $this->useCase->execute($searchBookRequest);
         $view = new Table($response->bookCollection);
         return $view->render();
     }

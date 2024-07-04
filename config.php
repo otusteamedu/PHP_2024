@@ -54,5 +54,5 @@ return [
             ]
         ]
     ],
-    'book-data-file-path' => __DIR__ . '/storage/books.json'
+    'bookDataFilePath' => __DIR__ . '/storage/books.json'
 ];

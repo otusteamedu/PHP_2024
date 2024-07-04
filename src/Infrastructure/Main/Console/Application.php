@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Main\Console;
 
+use App\Application\UseCase\SearchBookUseCase;
 use App\Infrastructure\Action\BookSearchAction;
-use App\Infrastructure\Main\ApplicationInterface;
+use App\Infrastructure\Repository\BookRepositoryCreatorInterface;
 
 class Application extends \App\Infrastructure\Main\AbstractApplication
 {
@@ -18,7 +19,7 @@ class Application extends \App\Infrastructure\Main\AbstractApplication
         }
 
         if ($option['action'] == 'search') {
-            $this->action = new BookSearchAction();
+            $this->action = new BookSearchAction($this->getSearchBookUseCase());
         } else {
             throw new \Exception('Передано не существующие действие');
         }
@@ -29,9 +30,9 @@ class Application extends \App\Infrastructure\Main\AbstractApplication
         return $this->action->getAvailableOptions();
     }
 
-    public static function initApplication(array $config = []): self
+    public static function initApplication(array $config, BookRepositoryCreatorInterface $bookRepositoryCreator): self
     {
-        $application = new self($config);
+        $application = new self($config, $bookRepositoryCreator);
         self::setInstance($application);
         return $application;
     }
