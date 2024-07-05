@@ -3,7 +3,7 @@
 .AppleDouble
 .LSOverride
 
-# hw1 folders
 docker-sockets
 
-/www/vendor/
+www
+vendor
