@@ -1,0 +1,5 @@
+{
+    "require": {
+        "kyberlox/composer-test": "^1.1"
+    }
+}
