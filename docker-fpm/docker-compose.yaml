@@ -3,7 +3,7 @@ version: "3.3"
 
 services:
   nginx:
-    container_name: hw1_nginx
+    container_name: hw4_nginx
     image: nginx:latest
     ports:
       - "${NGINX_PORT_OUT}:${NGINX_PORT_IN}"
@@ -18,7 +18,7 @@ services:
 
   mysql:
     image: mysql:latest
-    container_name: hw1_mysql
+    container_name: hw4_mysql
     volumes:
       - ./mysql/data:/var/lib/mysql
     ports:
@@ -32,7 +32,7 @@ services:
       - backend
 
   php-fpm:
-    container_name: hw1_php-fpm
+    container_name: hw4_php-fpm
     build:
       context: ./php
       dockerfile: ./php.dockerfile
