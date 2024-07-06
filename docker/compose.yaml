@@ -1,21 +1,61 @@
 services:
-  nginx:
-    container_name: hw5_nginx
+  nginx_balancer:
+    container_name: hw5_nginx_balancer
     image: nginx:latest
     ports:
       - "${NGINX_PORT_OUT}:${NGINX_PORT_IN}"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./nginx/logs:/var/log/nginx
+      - ./nginx_balancer/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx_balancer/logs:/var/log/nginx
+    networks:
+      - backend
+    depends_on:
+      - nginx_instance1
+      - nginx_instance2
+      - nginx_instance3
+
+  nginx_instance1:
+    container_name: hw5_nginx_instance1
+    image: nginx:latest
+    volumes:
+      - ./nginx_instance/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx_instance/logs:/var/log/nginx
       - ./../www:/www/public_html
     networks:
       - backend
     depends_on:
       - php-fpm
+      - mysql
+
+  nginx_instance2:
+    container_name: hw5_nginx_instance2
+    image: nginx:latest
+    volumes:
+      - ./nginx_instance/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx_instance/logs:/var/log/nginx
+      - ./../www:/www/public_html
+    networks:
+      - backend
+    depends_on:
+      - php-fpm
+      - mysql
+
+  nginx_instance3:
+    container_name: hw5_nginx_instance3
+    image: nginx:latest
+    volumes:
+      - ./nginx_instance/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx_instance/logs:/var/log/nginx
+      - ./../www:/www/public_html
+    networks:
+      - backend
+    depends_on:
+      - php-fpm
+      - mysql
 
   mysql:
-    image: mysql:latest
     container_name: hw5_mysql
+    image: mysql:latest
     volumes:
       - ./mysql/data:/var/lib/mysql
     ports:
