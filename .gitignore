@@ -3,8 +3,6 @@
 .AppleDouble
 .LSOverride
 
-# hw1 folders
-docker-fpm
 docker-sockets
 
 www
