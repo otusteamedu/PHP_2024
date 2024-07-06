@@ -8,7 +8,7 @@
 
 4. `docker exec -it hw1_php-fpm bash` (if you changed container name, use it)
 
-5. execute `composer update`
+5. execute `composer install` or `composer update`
 
 
 if you want you can add any package you want using `composer require package/name` in container
