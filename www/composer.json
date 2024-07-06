@@ -1,4 +1,9 @@
 {
+    "config": {
+        "platform": {
+            "php":"8.1"
+        }
+    },
     "require": {
         "sergey-program/otus-composer-package-slugify": "^1.0"
     }
