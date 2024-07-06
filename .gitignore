@@ -5,3 +5,6 @@
 
 /docker/.env
 /vendor/
+
+/docker/nginx_balancer/logs
+/docker/nginx_instance/logs
