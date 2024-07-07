@@ -1,55 +1,53 @@
-# версия синтаксиса
-version: '3'
-
-# в этом блоке мы описываем контейнеры, которые будут запускаться
-services:
-  #Контейнер с PHP, назовём его app
-  app:
-    # Если нет секции build, то система будет искать образ в репозиториях
-    build:
-      context: ./fpm
-      dockerfile: Dockerfile
-    image: myapp/php # имя будущего образа
-    container_name: app # имя контейнера после запуска
-    volumes:
-       - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
-    networks:
-      - app-network
-
-  #контейне с Nginx
-  webserver:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
-    container_name: webserver
-    # проброс портов
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-       - ./code:/data/mysite.local
-    networks:
-      - app-network
-
-  # контейнер с MySQL
-  # строим на базе стандартного образа
-  db:
-    image: mysql:5.7.22
-    container_name: db
-    ports:
-      - "3306:3306"
-    # описываем, какую БД мы создаём
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    volumes:
-      - ./dbdata:/var/lib/mysql  
-    networks:
-      - app-network
-
-#Docker Networks
 networks:
-  app-network:
+  app-otus-study:
     driver: bridge
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    container_name: app
+    networks:
+      - app-otus-study
+    ports:
+      - 9002:9000
+    volumes:
+      - ./code/:/srv/code
+    depends_on:
+      - db
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - app-otus-study
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    networks:
+      - app-otus-study
+  nginx:
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+    container_name: webserver
+    ports:
+      - 8080:80
+    volumes_from:
+      - app
+    restart: always
+    networks:
+      - app-otus-study
+  db:
+    build:
+      context: .
+      dockerfile: .docker/mysql/Dockerfile
+    container_name: db
+    restart: always
+    volumes:
+      - "./data:/var/lib/mysql"
+    ports:
+      - 15306:3306
+    networks:
+      - app-otus-study

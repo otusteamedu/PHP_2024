@@ -1,0 +1,20 @@
+{
+    "name": "dmigrishin/hw1",
+    "description": "homework 1 php professional 2024",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Dmigrishin\\FirstHomework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitrii Grishin"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "vlucas/phpdotenv": "^5.6@dev"
+    }
+}
