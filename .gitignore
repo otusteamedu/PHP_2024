@@ -1,5 +1,9 @@
 .idea/
+.vscode/
+/coverage/
 /vendor/
-.DS_Store
-.AppleDouble
-.LSOverride
+/logs/*
+!/logs/README.md
+.phpunit.result.cache
+/tmp/*
+!/tmp/.gitkeep
