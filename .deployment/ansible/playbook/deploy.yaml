@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   vars_files:
-    - /home/alogachev/projects/my_personal/PHP_2024/.deployment/ansible/.env
+    - /home/apps/application/tmp/.deployment/ansible/.env
   tasks:
     - name: Ensure deploy directory exists
       file:
