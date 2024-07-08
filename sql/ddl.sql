@@ -2,9 +2,9 @@ CREATE TABLE `countries`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL
 );
-CREATE TABLE `order_tickets`(
+CREATE TABLE `tickets`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `ticket_id` BIGINT UNSIGNED NOT NULL,
+    `cinema_show_seat_id` BIGINT UNSIGNED NOT NULL,
     `order_id` BIGINT UNSIGNED NOT NULL,
     `price` DECIMAL(8, 2) NOT NULL,
     `discount` DECIMAL(8, 2) NOT NULL DEFAULT '0'
@@ -21,7 +21,7 @@ CREATE TABLE `age_limits`(
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `name` VARCHAR(255) NOT NULL
 );
-CREATE TABLE `tickets`(
+CREATE TABLE `cinema_show_seat`(
     `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `seat_id` BIGINT UNSIGNED NOT NULL,
     `price` DECIMAL(8, 2) NOT NULL,
@@ -85,11 +85,11 @@ ALTER TABLE
 ALTER TABLE
     `seats` ADD CONSTRAINT `seats_hall_id_foreign` FOREIGN KEY(`hall_id`) REFERENCES `halls`(`id`);
 ALTER TABLE
-    `order_tickets` ADD CONSTRAINT `order_tickets_order_id_foreign` FOREIGN KEY(`order_id`) REFERENCES `orders`(`id`);
+    `tickets` ADD CONSTRAINT `tickets_order_id_foreign` FOREIGN KEY(`order_id`) REFERENCES `orders`(`id`);
 ALTER TABLE
-    `tickets` ADD CONSTRAINT `tickets_seat_id_foreign` FOREIGN KEY(`seat_id`) REFERENCES `seats`(`id`);
+    `cinema_show_seat` ADD CONSTRAINT `cinema_show_seat_seat_id_foreign` FOREIGN KEY(`seat_id`) REFERENCES `seats`(`id`);
 ALTER TABLE
-    `order_tickets` ADD CONSTRAINT `order_tickets_ticket_id_foreign` FOREIGN KEY(`ticket_id`) REFERENCES `tickets`(`id`);
+    `tickets` ADD CONSTRAINT `tickets_cinema_show_seat_id_foreign` FOREIGN KEY(`cinema_show_seat_id`) REFERENCES `cinema_show_seat`(`id`);
 ALTER TABLE
     `films_contries` ADD CONSTRAINT `films_contries_country_id_foreign` FOREIGN KEY(`country_id`) REFERENCES `countries`(`id`);
 ALTER TABLE
@@ -103,7 +103,7 @@ ALTER TABLE
 ALTER TABLE
     `films_contries` ADD CONSTRAINT `films_contries_film_id_foreign` FOREIGN KEY(`film_id`) REFERENCES `films`(`id`);
 ALTER TABLE
-    `tickets` ADD CONSTRAINT `tickets_cinema_show_id_foreign` FOREIGN KEY(`cinema_show_id`) REFERENCES `cinema_shows`(`id`);
+    `cinema_show_seat` ADD CONSTRAINT `cinema_show_seat_cinema_show_id_foreign` FOREIGN KEY(`cinema_show_id`) REFERENCES `cinema_shows`(`id`);
 ALTER TABLE
     `orders` ADD CONSTRAINT `orders_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `users`(`id`);
 ALTER TABLE
