@@ -2,6 +2,9 @@
 
 ini_set('display_errors', 'on');
 
+include './common/Parser.php';
+include './common/BaseException.php';
+
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 if ($requestMethod == 'GET') {
@@ -26,45 +29,28 @@ if ($requestMethod == 'GET') {
     phpinfo();
 }
 
-$variableName = 'string';
+$variable = 'string'; // variable name
 
 if ($requestMethod == 'POST') {
-    if (key_exists($variableName, $_POST)) {
-        $string = $_POST[$variableName];
+    try {
+        if (key_exists($variable, $_POST)) {
+            $string = $_POST[$variable];
 
-        if (empty($string)) {
-            http_response_code(400);
-            $message = 'Empty variable';
-            throw new Exception($message, 400);
-        } else {
-            $result = cutOne($string);
+            if (empty($string)) {
+                throw BaseException::error('Empty variable');
+            } else {
+                $result = (new Parser())->setString($string)->process();
 
-            if (strlen($result) > 0) {
-                http_response_code(400);
-                $message = 'Parse error with ending string "' . var_export($result, true) . '"';
-                throw new Exception($message, 400);
+                if (strlen($result) > 0) {
+                    throw BaseException::error('Invalid string value');
+                } else {
+                    echo 'Variable parsed well';
+                }
             }
         }
+    } catch (BaseException $e) {
+        echo $e->getMessage();
+    } catch (Exception $e) {
+        throw $e;
     }
-}
-
-function cutOne($string): string
-{
-    $stringTemp = $string;
-
-    do {
-        $stringTemp = removeTag($stringTemp);
-    } while (hasTag($stringTemp));
-
-    return $stringTemp;
-}
-
-function hasTag($string): bool
-{
-    return is_int(mb_strpos($string, '()'));
-}
-
-function removeTag($string): string
-{
-    return str_replace('()', '', $string);
 }
