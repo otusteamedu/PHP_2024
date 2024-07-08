@@ -1,0 +1,39 @@
+---
+- name: Deploy application
+  hosts: all
+  become: yes
+  vars_files:
+    - /home/alogachev/projects/my_personal/PHP_2024/.deployment/ansible/.env
+  tasks:
+    - name: Ensure deploy directory exists
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+
+    - name: Move current to previous if it exists
+      command: mv -T current previous
+      args:
+        chdir: "{{ deploy_dir }}"
+      when: ansible_stat.stat.exists
+
+    - name: Clone project repository
+      git:
+        repo: "{{ ssh_project }}"
+        dest: "{{ deploy_dir }}/{{ dir }}"
+
+    - name: Run deploy script
+      shell: |
+        sh ./.deployment/cicd/deploy.sh {{ compose_project_name }} {{ puid }} {{ pgid }} {{ install_xdebug }} {{ php_upstream_container }} {{ php_upstream_port }} {{ nginx_host_http_port }} {{ postgres_db_host }} {{ postgres_db_name }} {{ postgres_port }} {{ postgres_user }} {{ postgres_password }} {{ rabbit_host }} {{ rabbit_port }} {{ rabbit_management_port }} {{ rabbit_user }} {{ rabbit_password }}
+      args:
+        chdir: "{{ deploy_dir }}/{{ dir }}"
+
+    - name: Create symlink to current deployment
+      file:
+        src: "{{ deploy_dir }}/{{ dir }}"
+        dest: "{{ deploy_dir }}/current"
+        state: link
+
+    - name: Bring up the application with Docker Compose
+      shell: docker-compose up -d
+      args:
+        chdir: "{{ deploy_dir }}/current"
