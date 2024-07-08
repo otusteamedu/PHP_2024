@@ -39,7 +39,6 @@ function mergeTwoLists($list1, $list2)
             $c->next = $tmp;
             $c = $tmp;
         }
-
     }
 
     return $dh;
