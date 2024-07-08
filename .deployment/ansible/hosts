@@ -1,0 +1,2 @@
+[prod_server]
+prod ansible_host=45.130.147.17
