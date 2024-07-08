@@ -29,9 +29,9 @@ return function (App $app) {
         $group->get('', function (Request $request, Response $response, array $args) {
             $news = ($this->get(ListNewsUseCase::class))();
             $payload = compact('news');
-            $actionResponse = new Action($response, 201);
+            $actionResponse = new Action($response);
 
-            return $actionResponse->respondWithData($payload);
+            return $actionResponse->respondWithData($payload, 201);
         });
         $group->post('', function (Request $request, Response $response, array $args) {
             $body = $request->getParsedBody();
