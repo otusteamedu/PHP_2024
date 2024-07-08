@@ -1,0 +1,85 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: mysite-nginx
+    depends_on:
+      - php-fpm
+    ports:
+      - "80:80"
+    volumes:
+       - ./app/:/data/mysite.local
+       - ./nginx/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: otus/php-fpm
+    container_name: mysite-php-fpm
+    working_dir: /data/mysite.local
+    depends_on:
+      - mysql
+      - rabbitmq
+      - php-cli
+    volumes:
+       - ./app/:/data/mysite.local
+       - ./fpm/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-custom.ini
+    networks:
+      - app-network
+
+  php-cli:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    image: otus/php-cli
+    container_name: mysite-php-cli
+    depends_on:
+      - mysql
+      - rabbitmq
+    tty: true
+    working_dir: /data/mysite.local
+    volumes:
+      - ./app/:/data/mysite.local
+      - ./cli/xdebug.ini:/usr/local/etc/php/conf.d/xdebug-custom.ini
+    networks:
+      - app-network
+    entrypoint: ["bash", "-c", "sleep 10 && bin/console rabbitmq:consumer task"]
+
+  mysql:
+    image: mysql:8.0.32
+    container_name: mysite-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - otus-api:/var/lib/mysql
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3.7.5-management
+    working_dir: /app
+    hostname: rabbit-mq
+    container_name: mysite-rabbit-mq
+    ports:
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  otus-api:
