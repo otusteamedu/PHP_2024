@@ -1,0 +1,116 @@
+openapi: 3.0.3
+info:
+  title: Request Processor API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+tags:
+  - name: api_request
+    description: Manage Api Requests
+paths:
+  /api_requests:
+    post:
+      tags:
+        - api_request
+      summary: Sends your request.
+      operationId: postApiRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 201
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                        example: 10
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+  /api_requests/{id}:status:
+    get:
+      tags:
+        - api_request
+      summary: Get request's status.
+      operationId: getApiRequestStatus
+      parameters:
+        - name: id
+          in: path
+          description: ID of ApiRequest
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/StatusResponse'
+
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        body:
+          type: string
+
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - in progress
+            - processed
+            - failed
+            - cancelled
+
+    NotFound:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          example: 404
+        error:
+          type: object
+          properties:
+            type:
+              type: string
+              example: RESOURCE_NOT_FOUND
+            description:
+              type: string
+              example: The ApiRequest with id 2 not found.
