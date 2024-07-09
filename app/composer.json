@@ -1,0 +1,9 @@
+{
+    "name": "evgenyart/leetcode",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\Leetcode\\": "src/"
+        }
+    },
+    "require": {}
+}
