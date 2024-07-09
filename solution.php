@@ -1,15 +1,8 @@
 <?php
 
-class ListNode
-{
-    public $val = 0;
-    public $next = null;
-    function __construct($val = 0, $next = null)
-    {
-        $this->val = $val;
-        $this->next = $next;
-    }
-}
+declare(strict_types=1);
+
+namespace Otus\MergeTwoLists;
 
 class Solution
 {
@@ -18,7 +11,7 @@ class Solution
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists($list1, $list2)
     {
         $res = new ListNode();
         $head = $res;
