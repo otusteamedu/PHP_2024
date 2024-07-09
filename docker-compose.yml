@@ -4,7 +4,7 @@ services:
   #контейнер с балансировщиком Nginx
   balancer:
     build:
-      context: ./balancer
+      context: ./balancer/nginx
       dockerfile: Dockerfile
     image: balance/balancer
     container_name: balancer
@@ -48,6 +48,9 @@ services:
       - ./code:/data/mysite.local
     networks:
       - app-network
+    environment:
+      XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
 
   #Контейнер с PHP-FPM, app2
   app2:
@@ -58,8 +61,14 @@ services:
     container_name: app2
     volumes:
       - ./code:/data/mysite.local
+      - ./fpm/php.ini:/usr/local/etc/php/conf.d/my.php.ini
     networks:
       - app-network
+    env_file:
+      - .env
+    environment:
+      XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
 
   memcached:
     image: memcached:latest
