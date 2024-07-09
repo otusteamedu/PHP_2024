@@ -4,7 +4,6 @@ namespace Evgenyart\Leetcode;
 
 class Solution
 {
-
     /**
      * @param ListNode $list1
      * @param ListNode $list2
@@ -15,7 +14,7 @@ class Solution
         if ($list1 === null) {
             return $list2;
         }
-            
+
         if ($list2 === null) {
             return $list1;
         }
@@ -32,7 +31,7 @@ class Solution
             }
             $current = $current->next;
         }
-        
+
         if ($list1 && !$list2) {
             $current->next = $list1;
         } elseif (!$list1 && $list2) {
