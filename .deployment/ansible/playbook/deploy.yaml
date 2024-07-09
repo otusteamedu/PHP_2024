@@ -1,39 +1,54 @@
 ---
 - name: Deploy application
   hosts: all
-  become: yes
-  vars_files:
-    - /home/apps/application/tmp/.deployment/ansible/.env
+  become: no
+  vars:
+    deploy_dir: "/home/apps/application/deploy"
+    current_dir: "/home/apps/application/current"
+    previous_dir: "/home/apps/application/previous"
+    deploy_var_project_name: "deploy-vars"
   tasks:
     - name: Ensure deploy directory exists
       file:
         path: "{{ deploy_dir }}"
         state: directory
 
-    - name: Move current to previous if it exists
-      command: mv -T current previous
+    - name: Start ssh-agent and add SSH key
+      shell: |
+        eval $(ssh-agent -s) && ssh-add ~/.ssh/prod_srv_id && git clone git@gitlab.com:aelog16/deploy-vars.git /home/apps/application/deploy
       args:
-        chdir: "{{ deploy_dir }}"
+        executable: /bin/bash
+
+    - name: Load environment variables from .env file
+      set_fact:
+        env_vars: "{{ lookup('file', deploy_dir + '/.env') | from_yaml }}"
+
+    - name: Move current to previous if it exists
+      command: mv -T {{ current_dir }} {{ previous_dir }}
+      args:
+        chdir: "{{ current_dir }}"
       when: ansible_stat.stat.exists
 
+#    - name: Clone project repository
+#      git:
+#        repo: "{{ env_vars.SSH_PROJECT }}"
+#        dest: "{{ current_dir }}"
+
     - name: Clone project repository
-      git:
-        repo: "{{ ssh_project }}"
-        dest: "{{ deploy_dir }}/{{ dir }}"
+      shell: git clone {{ env_vars.SSH_PROJECT }} /home/apps/application/current
+      args:
+        creates: /home/apps/application/current/.git
 
     - name: Run deploy script
       shell: |
-        sh ./.deployment/cicd/deploy.sh {{ compose_project_name }} {{ puid }} {{ pgid }} {{ install_xdebug }} {{ php_upstream_container }} {{ php_upstream_port }} {{ nginx_host_http_port }} {{ postgres_db_host }} {{ postgres_db_name }} {{ postgres_port }} {{ postgres_user }} {{ postgres_password }} {{ rabbit_host }} {{ rabbit_port }} {{ rabbit_management_port }} {{ rabbit_user }} {{ rabbit_password }}
+        sh ./.deployment/cicd/deploy.sh {{ env_vars.COMPOSE_PROJECT_NAME }} {{ env_vars.PUID }} {{ env_vars.PGID }} {{ env_vars.INSTALL_XDEBUG }} {{ env_vars.PHP_UPSTREAM_CONTAINER }} {{ env_vars.PHP_UPSTREAM_PORT }} {{ env_vars.NGINX_HOST_HTTP_PORT }} {{ env_vars.POSTGRES_DB_HOST }} {{ env_vars.POSTGRES_DB_NAME }} {{ env_vars.POSTGRES_PORT }} {{ env_vars.POSTGRES_USER }} {{ env_vars.POSTGRES_PASSWORD }} {{ env_vars.RABBIT_HOST }} {{ env_vars.RABBIT_PORT }} {{ env_vars.RABBIT_MANAGEMENT_PORT }} {{ env_vars.RABBIT_USER }} {{ env_vars.RABBIT_PASSWORD }}
       args:
-        chdir: "{{ deploy_dir }}/{{ dir }}"
-
-    - name: Create symlink to current deployment
-      file:
-        src: "{{ deploy_dir }}/{{ dir }}"
-        dest: "{{ deploy_dir }}/current"
-        state: link
+        chdir: "{{ current_dir }}"
 
     - name: Bring up the application with Docker Compose
       shell: docker-compose up -d
       args:
-        chdir: "{{ deploy_dir }}/current"
+        chdir: "{{ current_dir }}"
+
+    - name: Remove deloy vars
+      shell: rm -rf "{{ deploy_dir }}"
