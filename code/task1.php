@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -8,13 +9,15 @@
  * }
  */
 
+namespace sd;
+
 class Solution
 {
     /**
      * @param ListNode $head
      * @return Boolean
      */
-    function hasCycle($head)
+    public function hasCycle($head)
     {
         if (empty($head) || empty($head->next)) {
             return false;

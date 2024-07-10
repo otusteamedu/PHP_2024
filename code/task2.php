@@ -1,5 +1,7 @@
 <?php
 
+namespace sd;
+
 class Solution
 {
 
@@ -8,7 +10,7 @@ class Solution
      * @param Integer $denominator
      * @return String
      */
-    function fractionToDecimal($numerator, $denominator)
+    public function fractionToDecimal($numerator, $denominator)
     {
         if (empty($numerator)) {
             return '0';
