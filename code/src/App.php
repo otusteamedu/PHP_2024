@@ -38,5 +38,4 @@ class App
         }
         throw new Exception('Method not allowed');
     }
-
 }
