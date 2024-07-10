@@ -4,7 +4,6 @@ namespace Naimushina\Webservers;
 
 class Request
 {
-
     /**
      * @var mixed
      */

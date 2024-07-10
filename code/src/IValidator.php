@@ -4,7 +4,6 @@ namespace Naimushina\Webservers;
 
 interface IValidator
 {
-
     /**
      * Валидация параметров запроса
      * @param Request $request

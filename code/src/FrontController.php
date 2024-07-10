@@ -6,7 +6,6 @@ use Exception;
 
 class FrontController
 {
-
     /**
      * @var Request
      */
@@ -45,10 +44,8 @@ class FrontController
         try {
             $validator->validate($this->request);
             $this->response->send(200, 'всё хорошо');
-
         } catch (Exception $e) {
             $this->response->send(400, $e->getMessage());
         }
-
     }
 }

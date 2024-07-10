@@ -7,7 +7,6 @@ use Exception;
 
 class StringValidator implements IValidator
 {
-
     /**
      * Проверяем параметр string
      * На не пустоту
@@ -17,10 +16,10 @@ class StringValidator implements IValidator
     public function validate(Request $request)
     {
         $string = $request->params['post']['string'];
-        if(!$string) {
+        if (!$string) {
             throw new Exception('Строка не может быть пустой');
         }
-        if(!$this->checkParenthesis($string)){
+        if (!$this->checkParenthesis($string)) {
             throw new Exception('Некорректно кол-во открытых и закрытых скобок');
         }
     }
@@ -34,7 +33,7 @@ class StringValidator implements IValidator
     {
         $string = str_split($string);
         $stack = [];
-        foreach($string as $key => $value){
+        foreach ($string as $key => $value) {
             switch ($value) {
                 case '(':
                     $stack[] = 0;
