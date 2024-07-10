@@ -8,22 +8,22 @@ services:
       context: ./docker/nginx
       dockerfile: Dockerfile
     image: myapp/nginx
-    container_name: webserver
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
-      - ./code/public:/data/app/public
+      - ./code/public:/var/www/test.local/public
     networks:
       - app-network
 
   php-fpm:
     build:
-      context: ./docker/fpm
+      context: ./docker/php-fpm
       dockerfile: Dockerfile
     env_file: .env
-    container_name: php
+    container_name: php-fpm
     volumes:
-      - ./code:/data/app
+      - ./code:/var/www/test.local
     networks:
       - app-network
     extra_hosts:
@@ -31,32 +31,49 @@ services:
     environment:
       PHP_IDE_CONFIG: serverName=Docker
 
-  rabbitmq:
-    image: rabbitmq:3.9-management
-    container_name: rabbitmq
-    networks:
-      - app-network
+  postgres:
+    image: postgres:13.3
+    container_name: postgres
+    environment:
+      POSTGRES_HOST: "${POSTGRES_HOST}"
+      POSTGRES_ROOT_PASSWORD: "${POSTGRES_ROOT_PASSWORD}"
+      POSTGRES_DATABASE: "${POSTGRES_DATABASE}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     ports:
-      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
-      - "${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}"
-
-  php-fpm-consumer:
-    build:
-      context: ./docker/fpm-consumer
-      dockerfile: Dockerfile
-    env_file: .env
-    container_name: consumer
-    volumes:
-      - ./consumer:/data/app
+      - "5432:5432"
+#    volumes:
+#      - ./docker/DDL:/docker-entrypoint-initdb.d
     networks:
       - app-network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-#    command: php app/index.php
-    environment:
-      PHP_IDE_CONFIG: serverName=Docker
-    depends_on:
-      - rabbitmq
+
+
+#  rabbitmq:
+#    image: rabbitmq:3.9-management
+#    container_name: rabbitmq
+#    networks:
+#      - app-network
+#    ports:
+#      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+#      - "${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}"
+
+#  php-fpm-consumer:
+#    build:
+#      context: ./docker/fpm-consumer
+#      dockerfile: Dockerfile
+#    env_file: .env
+#    container_name: consumer
+#    volumes:
+#      - ./consumer:/data/app
+#    networks:
+#      - app-network
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+#    #    command: php app/index.php
+#    environment:
+#      PHP_IDE_CONFIG: serverName=Docker
+#    depends_on:
+#      - rabbitmq
 
 networks:
   app-network:

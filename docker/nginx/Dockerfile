@@ -1,10 +1,10 @@
-FROM nginx:latest
+FROM nginx:1.27
 
 COPY ./test.local.conf /etc/nginx/conf.d/test.local.conf
 
-WORKDIR /data/app/public
+WORKDIR /var/www/test.local/public
 
-VOLUME /data/app/public
+VOLUME /var/www/test.local/public
 
 EXPOSE 80
 
