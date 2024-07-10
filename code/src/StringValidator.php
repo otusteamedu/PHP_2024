@@ -39,7 +39,7 @@ class StringValidator implements IValidator
                     $stack[] = 0;
                     break;
                 case ')':
-                    if (array_pop($stack) !== 0){
+                    if (array_pop($stack) !== 0) {
                         return false;
                     }
                     break;
