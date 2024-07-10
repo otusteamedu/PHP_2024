@@ -6,8 +6,8 @@ services:
   #контейнер с Nginx
   nginx:
     build:
-      context: nginx
-      dockerfile: nginx/Dockerfile
+      context: docker/nginx
+      dockerfile: Dockerfile
     image: balance/nginx
     container_name: nginx
     # проброс портов
@@ -22,8 +22,8 @@ services:
   app1:
     # Если нет секции build, то система будет искать образ в репозиториях
     build:
-      context: fpm
-      dockerfile: fpm/Dockerfile
+      context: docker/fpm
+      dockerfile: Dockerfile
     image: balance/php # имя будущего образа
     container_name: app1 # имя контейнера после запуска
     volumes:
@@ -36,8 +36,8 @@ services:
   app2:
     # Если нет секции build, то система будет искать образ в репозиториях
     build:
-      context: fpm
-      dockerfile: fpm/Dockerfile
+      context: docker/fpm
+      dockerfile: Dockerfile
     image: balance/php # имя будущего образа
     container_name: app2 # имя контейнера после запуска
     volumes:
@@ -50,8 +50,8 @@ services:
   app3:
     # Если нет секции build, то система будет искать образ в репозиториях
     build:
-      context: fpm
-      dockerfile: fpm/Dockerfile
+      context: docker/fpm
+      dockerfile: Dockerfile
     image: balance/php # имя будущего образа
     container_name: app3 # имя контейнера после запуска
     volumes:
