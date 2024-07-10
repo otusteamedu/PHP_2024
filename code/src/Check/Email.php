@@ -4,19 +4,12 @@ namespace src\Check;
 
 class Email
 {
-    protected array $arrayOfEmails = [
-        'some@mail.ru',
-        '@email.ru',
-        'some@email',
-        'som--asd---a_asde@mail.ru',
-    ];
+    protected array $arrayOfEmails;
     protected string $lineSeparator = '<br>';
 
-    public function __construct(array $emails = [])
+    public function __construct(array $emails)
     {
-        if (!empty($emails)) {
-            $this->arrayOfEmails = $emails;
-        }
+        $this->arrayOfEmails = $emails;
     }
 
     public function getEmailCheckResult()

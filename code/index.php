@@ -3,23 +3,15 @@
 use src\Check\Email;
 
 require './vendor/autoload.php';
-?>
 
-<!doctype html>
-<html lang="en">
+$arrayOfEmails = [
+    'some@mail.ru',
+    '@email.ru',
+    'some@email',
+    'som--asd---a_asde@mail.ru',
+];
+$emailChecker = new Email($arrayOfEmails);
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<?php
-$emailChecker = new Email();
+require 'template-parts/global/header.php';
 echo $emailChecker->getEmailCheckResult();
-?>
-</body>
-</html>
-
+require 'template-parts/global/footer.php';
