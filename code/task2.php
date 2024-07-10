@@ -54,7 +54,7 @@ class Solution
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits)
+    public function letterCombinations($digits)
     {
         $digitsArray = str_split($digits);
         $symbolsArray = [];
