@@ -4,7 +4,6 @@ namespace sd;
 
 class Solution
 {
-
     /**
      * @param Integer $numerator
      * @param Integer $denominator
