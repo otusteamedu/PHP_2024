@@ -38,7 +38,6 @@ class FrontController
         echo '<p>Сессия</p>' . session_id();
         echo 'Загрузки страницы ' . $count;
         $_SESSION['count'] = ++$count;
-
     }
 
     /**
