@@ -21,6 +21,22 @@ class App
     {
         $this->request = new Request();
         $this->response = new Response();
+        $app_ip = '127.0.0.1';
+        session_start([
+            'save_path' => http_build_query([
+                'seed' => [
+                    $app_ip . ':6381',
+                    $app_ip . ':6382',
+                    $app_ip . ':6383',
+                    $app_ip . ':6384',
+                    $app_ip . ':6385',
+                    $app_ip . ':6386',
+                ],
+                'timeout' => 2,
+                'read_timeout' => 10,
+                'failover' => 'error',
+            ]),
+        ]);
     }
 
     /**
