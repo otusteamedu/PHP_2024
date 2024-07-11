@@ -1,0 +1,103 @@
+html,body {
+    font-family: "PTRootUIWebRegular", sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    font-style: normal;
+    line-height: 18px;
+    color: #000000;
+    background: #FFFFFF;
+}
+
+#root div.App {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer.container {
+    margin-top: auto;
+}
+/* Utility */
+
+.none {
+    display: none !important;
+}
+
+.scr_none {
+    overflow: hidden;
+}
+
+.visually-hidden {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    display: block;
+    margin-left: -10000px;
+    background: transparent;
+    font-size: 0;
+}
+
+/* Grid */
+
+.container {
+    width: 100%;
+    max-width: 1440px;
+    padding: 8px;
+    height: 100%;
+    margin: 0 auto;
+}
+
+/* desktop/h1 */
+h1 {
+    font-family: 'PTRootUIWebBold', sans-serif;;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 96px;
+    line-height: 90%;
+    letter-spacing: -0.03em;
+}
+
+svg {
+    height: 16px;
+    width: 16px;
+    left: 0;
+    top: 0;
+    border-radius: 0;
+}
+
+.active {
+    display: block !important;
+}
+
+.opacity50 {
+    opacity: .5;
+}
+
+.bottom0 {
+    bottom: 0;
+}
+
+.active_level {
+    color: #0030BF;
+}
+
+.grow {
+    flex-grow: 1;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column !important;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row !important;
+}
+
+.red {
+    color: red;
+}

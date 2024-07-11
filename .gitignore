@@ -4,3 +4,4 @@ composer.json
 composer.lock
 vendor
 .env
+frontend/node_modules
