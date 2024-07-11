@@ -12,3 +12,5 @@ ansible-playbook .deployment/ansible/playbook/deploy.yaml
 ```shell
 ansible-playbook .deployment/ansible/playbook/rollback.yaml
 ```
+
+Скриншоты результатов в директории screenshots.
