@@ -1,0 +1,91 @@
+---
+- name: Rollback application
+  hosts: all
+  become: no
+  vars:
+    deploy_dir: "/home/apps/application/deploy"
+    current_dir: "/home/apps/application/current"
+    previous_dir: "/home/apps/application/previous"
+  tasks:
+    - name: Ensure deploy directory exists
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+
+    - name: Start ssh-agent, add SSH key and clone Deploy vars repository
+      shell: |
+        eval $(ssh-agent -s) && ssh-add ~/.ssh/prod_srv_id && git clone git@gitlab.com:aelog16/deploy-vars.git {{ deploy_dir }}
+      args:
+        executable: /bin/bash
+
+    - name: Verify .env file exists
+      stat:
+        path: "{{ deploy_dir }}/.env"
+      register: env_file
+
+    - name: Fail if .env file is not found
+      fail:
+        msg: ".env file not found!"
+      when: not env_file.stat.exists
+
+    - name: Read environment variables from .env file
+      slurp:
+        src: "{{ deploy_dir }}/.env"
+      register: env_file_content
+      when: env_file.stat.exists
+
+    - name: Set environment variables
+      set_fact:
+        env_vars: |
+          {%- set lines = env_file_content.content | b64decode | split('\n') -%}
+          {%- set env_dict = {} -%}
+          {%- for line in lines if '=' in line -%}
+          {%- set key, value = line.split('=', 1) -%}
+          {%- set _ = env_dict.update({key.strip(): value.strip()}) -%}
+          {%- endfor -%}
+          {{ env_dict }}
+      when: env_file.stat.exists
+
+    - name: Check if previous directory exists
+      stat:
+        path: "{{ previous_dir }}"
+      register: previous_dir_stat
+
+    - name: Fail if previous directory does not exist
+      fail:
+        msg: "No previous version found to rollback."
+      when: not previous_dir_stat.stat.exists
+
+    - name: Bring down the current application with Docker Compose
+      shell: |
+        docker-compose down --remove-orphans
+      args:
+        chdir: "{{ current_dir }}"
+        executable: /bin/bash
+      when: previous_dir_stat.stat.exists
+
+    - name: Clean current directory
+      file:
+        path: "{{ current_dir }}"
+        state: absent
+      when: previous_dir_stat.stat.exists
+
+    - name: Move previous to current
+      command: mv -T {{ previous_dir }} {{ current_dir }}
+      when: previous_dir_stat.stat.exists
+
+    - name: Bring up the application with Docker Compose
+      shell: |
+        docker-compose up -d --build
+      args:
+        chdir: "{{ current_dir }}"
+        executable: /bin/bash
+      when: previous_dir_stat.stat.exists
+
+    - name: Clean up deploy directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: absent
+
+    - name: Create deploy dir
+      shell: mkdir "{{ deploy_dir }}"

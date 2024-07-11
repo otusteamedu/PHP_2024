@@ -1,0 +1,93 @@
+---
+- name: Deploy application
+  hosts: all
+  become: no
+  vars:
+    deploy_dir: "/home/apps/application/deploy"
+    current_dir: "/home/apps/application/current"
+    previous_dir: "/home/apps/application/previous"
+    deploy_var_project_name: "deploy-vars"
+  tasks:
+    - name: Ensure deploy directory exists
+      file:
+        path: "{{ deploy_dir }}"
+        state: directory
+
+    - name: Start ssh-agent, add SSH key and clone Deploy vars repository
+      shell: |
+        eval $(ssh-agent -s) && ssh-add ~/.ssh/prod_srv_id && git clone git@gitlab.com:aelog16/deploy-vars.git "{{ deploy_dir }}"
+      args:
+        executable: /bin/bash
+
+    - name: Read environment variables from .env file
+      slurp:
+        src: "{{ deploy_dir }}/.env"
+      register: env_file_content
+
+    - name: Set environment variables
+      set_fact:
+        env_vars: |
+          {%- set lines = env_file_content.content | b64decode | split('\n') -%}
+          {%- set env_dict = {} -%}
+          {%- for line in lines if '=' in line -%}
+          {%- set key, value = line.split('=', 1) -%}
+          {%- set _ = env_dict.update({key.strip(): value.strip()}) -%}
+          {%- endfor -%}
+          {{ env_dict }}
+
+    - name: Check if current directory exists
+      stat:
+        path: "{{ current_dir }}"
+      register: current_dir_stat
+
+    - name: Ensure previous directory exists
+      file:
+        path: "{{ previous_dir }}"
+        state: directory
+
+    - name: Clean up previous directory if it exists
+      file:
+        path: "{{ previous_dir }}"
+        state: absent
+      when: current_dir_stat.stat.exists
+
+    - name: Move current to previous if it exists
+      command: mv -T {{ current_dir }} {{ previous_dir }}
+      args:
+        chdir: "{{ current_dir }}"
+      when: current_dir_stat.stat.exists
+
+    - name: Clone project repository
+      shell: |
+        eval $(ssh-agent -s) && ssh-add ~/.ssh/prod_srv_id && git clone {{ env_vars.SSH_PROJECT }} {{ current_dir }}
+      args:
+        creates: "{{ current_dir }}/.git"
+        executable: /bin/bash
+
+    - name: Run deploy script
+      shell: |
+        sh ./.deployment/cicd/deploy.sh {{ env_vars.COMPOSE_PROJECT_NAME }} {{ env_vars.PUID }} {{ env_vars.PGID }} {{ env_vars.INSTALL_XDEBUG }} {{ env_vars.PHP_UPSTREAM_CONTAINER }} {{ env_vars.PHP_UPSTREAM_PORT }} {{ env_vars.NGINX_HOST_HTTP_PORT }} {{ env_vars.POSTGRES_DB_HOST }} {{ env_vars.POSTGRES_DB_NAME }} {{ env_vars.POSTGRES_PORT }} {{ env_vars.POSTGRES_USER }} {{ env_vars.POSTGRES_PASSWORD }} {{ env_vars.RABBIT_HOST }} {{ env_vars.RABBIT_PORT }} {{ env_vars.RABBIT_MANAGEMENT_PORT }} {{ env_vars.RABBIT_USER }} {{ env_vars.RABBIT_PASSWORD }}
+      args:
+        chdir: "{{ current_dir }}"
+        executable: /bin/bash
+
+    - name: Bring down the application with Docker Compose
+      shell: |
+        docker-compose down --remove-orphans
+      args:
+        chdir: "{{ current_dir }}"
+        executable: /bin/bash
+
+    - name: Bring up the application with Docker Compose
+      shell: docker-compose up -d --build
+      args:
+        chdir: "{{ current_dir }}"
+        executable: /bin/bash
+
+    - name: Clean up deploy directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: absent
+
+    - name: Create deploy dir
+      shell: mkdir "{{ deploy_dir }}"
