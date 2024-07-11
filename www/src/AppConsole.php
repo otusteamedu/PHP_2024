@@ -15,6 +15,7 @@ class AppConsole
         $queues = Queues::from($queuesName);
         $handler = match ($queues) {
             Queues::GenerateReport => new GenerateReport(),
+            default => new \Exception('Undefined queues')
         };
         $connection = ConnectFactory::create(Config::build());
         $consumer = new Consumer($connection);
