@@ -13,9 +13,9 @@
         path: "{{ deploy_dir }}"
         state: directory
 
-    - name: Start ssh-agent and add SSH key
+    - name: Start ssh-agent, add SSH key and clone Deploy vars repository
       shell: |
-        eval $(ssh-agent -s) && ssh-add ~/.ssh/prod_srv_id && git clone git@gitlab.com:aelog16/deploy-vars.git /home/apps/application/deploy
+        eval $(ssh-agent -s) && ssh-add ~/.ssh/prod_srv_id && git clone git@gitlab.com:aelog16/deploy-vars.git "{{ deploy_dir }}"
       args:
         executable: /bin/bash
 
@@ -84,8 +84,10 @@
         chdir: "{{ current_dir }}"
         executable: /bin/bash
 
-    - name: Remove deloy vars
-      shell: rm -rf "{{ deploy_dir }}"
+    - name: Clean up deploy directory
+      file:
+        path: "{{ deploy_dir }}"
+        state: absent
 
     - name: Create deploy dir
       shell: mkdir "{{ deploy_dir }}"
