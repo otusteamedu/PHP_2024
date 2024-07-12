@@ -23,7 +23,6 @@ class App
         $this->request = new Request();
         $this->response = new Response();
         $this->startSession();
-
     }
 
     /**
@@ -50,16 +49,16 @@ class App
     {
         $host = getenv('SESSION_HOST');
         $port = getenv('SESSION_PORT');
-        $scheme= getenv('SESSION_SCHEME');
+        $scheme = getenv('SESSION_SCHEME');
 
-         $db = new Client(
-             [
-                 'scheme' => $scheme,
-                 'host' => $host,
-                 'port' => $port,
-                 'password' => ''
-             ]
-         );
+        $db = new Client(
+            [
+                'scheme' => $scheme,
+                'host' => $host,
+                'port' => $port,
+                'password' => ''
+            ]
+        );
         $path = "$scheme://$host:$port";
 
         $handler = new RedisSessionHandler($db);
