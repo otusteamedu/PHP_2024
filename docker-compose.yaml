@@ -21,78 +21,93 @@ services:
     networks:
       - app-network
   
-  nginx:
+  nginx-frontend:
     build:
-      context: ./docker/nginx
+      context: docker/nginx-frontend
       dockerfile: Dockerfile
     restart: always
-    container_name: nginx
+    container_name: nginx-frontend
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - './frontend/public:/usr/share/nginx/html'
     links:
-#      - "backend"
-#      - "db"
       - "frontend"
     networks:
       - app-network
+#    networks:
+#      app-network:
+#        - ipv4_address: 172.16.31.4
 
-        
-        
-#  nodejs:
-#    build:
-#      context: ./docker/nodejs
-#      dockerfile: Dockerfile
-#    env_file: .env
-#    container_name: nodejs
+  backend:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    env_file: .env
+    container_name: backend
+    volumes:
+      - ./backend:/app
+    networks:
+      - app-network
+#    networks:
+#      app-network:
+#        - ipv4_address: 172.16.31.3
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      PHP_IDE_CONFIG: serverName=Docker
+
+  nginx-backend:
+    build:
+      context: docker/nginx-backend
+      dockerfile: Dockerfile
+    restart: always
+    container_name: nginx-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - './backend/public:/app'
+#      - './frontend/public:/usr/share/nginx/html'
+    links:
+      - "backend"
+    networks:
+      - app-network
+  #    networks:
+  #      app-network:
+  #        - ipv4_address: 172.16.31.4
+
+
+  postgres:
+    image: postgres:13.3
+    container_name: postgres
+    environment:
+      POSTGRES_HOST: "${POSTGRES_HOST}"
+      POSTGRES_ROOT_PASSWORD: "${POSTGRES_ROOT_PASSWORD}"
+      POSTGRES_DATABASE: "${POSTGRES_DATABASE}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    ports:
+      - "5432:5432"
 #    volumes:
-#      - ./code:/var/www/test.local
+#      - ./docker/DDL:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
 #    networks:
-#      - app-network
+#      app-network:
+#        - ipv4_address: 172.16.31.3
 
-
-#  php-fpm:
-#    build:
-#      context: ./docker/php-fpm
-#      dockerfile: Dockerfile
-#    env_file: .env
-#    container_name: php-fpm
-#    volumes:
-#      - ./code:/var/www/test.local
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    networks:
+      - app-network
 #    networks:
-#      - app-network
-#    extra_hosts:
-#      - "host.docker.internal:host-gateway"
-#    environment:
-#      PHP_IDE_CONFIG: serverName=Docker
-#
-#  postgres:
-#    image: postgres:13.3
-#    container_name: postgres
-#    environment:
-#      POSTGRES_HOST: "${POSTGRES_HOST}"
-#      POSTGRES_ROOT_PASSWORD: "${POSTGRES_ROOT_PASSWORD}"
-#      POSTGRES_DATABASE: "${POSTGRES_DATABASE}"
-#      POSTGRES_USER: "${POSTGRES_USER}"
-#      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-#    ports:
-#      - "5432:5432"
-##    volumes:
-##      - ./docker/DDL:/docker-entrypoint-initdb.d
-#    networks:
-#      - app-network
-
-
-#  rabbitmq:
-#    image: rabbitmq:3.9-management
-#    container_name: rabbitmq
-#    networks:
-#      - app-network
-#    ports:
-#      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
-#      - "${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}"
+#      app-network:
+#        - ipv4_address: 172.16.31.2
+    ports:
+      - "${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - "${RABBITMQ_ADMIN_PORT}:${RABBITMQ_ADMIN_PORT}"
 
 #  php-fpm-consumer:
 #    build:
@@ -115,3 +130,6 @@ services:
 networks:
   app-network:
     driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 172.16.31.0/24

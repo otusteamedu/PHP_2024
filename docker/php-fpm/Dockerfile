@@ -34,6 +34,7 @@ WORKDIR /app
 #USER $user
 
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY ./php.ini /usr/local/etc/php/conf.d/php.ini
 #COPY ./composer.json /data/composer.json
 #
 #RUN composer install && composer dump-autoload
