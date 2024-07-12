@@ -1,0 +1,12 @@
+{
+    "name": "naimushina/webservers",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Naimushina\\Webservers\\": "src/"
+        }
+    },
+    "require": {
+        "predis/predis": "^2.2"
+    }
+}
