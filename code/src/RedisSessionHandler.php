@@ -27,7 +27,8 @@ class RedisSessionHandler implements SessionHandlerInterface
      * @param $db
      * @param string $prefix
      */
-    public function __construct($db, string $prefix = 'PHPSESSID:') {
+    public function __construct($db, string $prefix = 'PHPSESSID:')
+    {
         $this->db = $db;
         $this->prefix = $prefix;
     }
@@ -46,7 +47,8 @@ class RedisSessionHandler implements SessionHandlerInterface
     /**
      * @return void
      */
-    public function close() {
+    public function close()
+    {
         $this->db = null;
         unset($this->db);
     }
@@ -55,7 +57,8 @@ class RedisSessionHandler implements SessionHandlerInterface
      * @param $id
      * @return false|string
      */
-    public function read($id) {
+    public function read($id)
+    {
         $id = $this->prefix . $id;
         $sessData = $this->db->get($id);
         $this->db->expire($id, $this->ttl);
@@ -67,7 +70,8 @@ class RedisSessionHandler implements SessionHandlerInterface
      * @param $data
      * @return void
      */
-    public function write($id, $data) {
+    public function write($id, $data)
+    {
         $id = $this->prefix . $id;
         $this->db->set($id, $data);
         $this->db->expire($id, $this->ttl);
@@ -77,7 +81,8 @@ class RedisSessionHandler implements SessionHandlerInterface
      * @param $id
      * @return void
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $this->db->del($this->prefix . $id);
     }
 
