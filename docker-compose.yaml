@@ -1,12 +1,21 @@
 # версия синтаксиса
 version: '3'
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+# Для данных редиса
 volumes:
-  redis_1_data: {}
-  redis_2_data: {}
-  redis_3_data: {}
-  redis_4_data: {}
-  redis_5_data: {}
-  redis_6_data: {}
+  redis_1_volume: {}
+  redis_2_volume: {}
+  redis_3_volume: {}
+  redis_4_volume: {}
+  redis_5_volume: {}
+  redis_6_volume: {}
+  redis_7_volume: {}
+
 # в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
   #контейнер  nginx-upstream
@@ -35,7 +44,7 @@ services:
       - ./code:/data/mysite.local
     networks:
       - app-network
-  #контейнер с Nginx
+  #второй контейнер с Nginx
   nginx2:
     build:
       context: docker/nginx
@@ -52,7 +61,6 @@ services:
 
   #Контейнер с PHP-FPM, назовём его app
   app1:
-    # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: docker/fpm
       dockerfile: Dockerfile
@@ -60,6 +68,11 @@ services:
     container_name: app1 # имя контейнера после запуска
     volumes:
        - ./code:/data/mysite.local
+    environment:
+      SESSION_DRIVER: ${SESSION_DRIVER}
+      SESSION_HOST: ${SESSION_HOST}
+      SESSION_PORT: ${SESSION_PORT}
+      SESSION_SCHEME: ${SESSION_SCHEME}
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
@@ -74,7 +87,20 @@ services:
     container_name: app2 # имя контейнера после запуска
     volumes:
       - ./code:/data/mysite.local
+    environment:
+      SESSION_DRIVER: ${SESSION_DRIVER}
+      SESSION_HOST: ${SESSION_HOST}
+      SESSION_PORT: ${SESSION_PORT}
+      SESSION_SCHEME: ${SESSION_SCHEME}
     # мы можем создать для контейнеров внутреннюю сеть
+    networks:
+      - app-network
+#regular redis
+  cache:
+    image: redis:latest
+    container_name: cache
+    ports:
+      - "6379:6379"
     networks:
       - app-network
 
@@ -92,7 +118,7 @@ services:
       - app-network
     command: "redis-server /usr/local/etc/redis/redis.conf"
     volumes:
-      - redis_1_data:/data
+      - redis_1_volume:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_2:
@@ -108,7 +134,7 @@ services:
       - app-network
     command: "redis-server /usr/local/etc/redis/redis.conf"
     volumes:
-      - redis_2_data:/data
+      - redis_2_volume:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_3:
@@ -124,7 +150,7 @@ services:
       - app-network
     command: "redis-server /usr/local/etc/redis/redis.conf"
     volumes:
-      - redis_3_data:/data
+      - redis_3_volume:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_4:
@@ -140,7 +166,7 @@ services:
       - app-network
     command: "redis-server /usr/local/etc/redis/redis.conf"
     volumes:
-      - redis_4_data:/data
+      - redis_4_volume:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_5:
@@ -156,7 +182,7 @@ services:
       - app-network
     command: "redis-server /usr/local/etc/redis/redis.conf"
     volumes:
-      - redis_5_data:/data
+      - redis_5_volume:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_6:
@@ -172,7 +198,23 @@ services:
       - app-network
     command: "redis-server /usr/local/etc/redis/redis.conf"
     volumes:
-      - redis_6_data:/data
+      - redis_6_volume:/data
+      - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+  redis_7:
+    image: redis:latest
+    restart: always
+    container_name: redis_7
+    hostname: redis_7
+    sysctls:
+      - net.core.somaxconn=65536
+    ports:
+      - "6387:6380"
+    networks:
+      - app-network
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+    volumes:
+      - redis_7_volume:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
 
   redis_cluster:
@@ -184,7 +226,7 @@ services:
     networks:
       - app-network
     tty: true
-    command: "redis-cli --cluster create redis_1:6380 redis_2:6380 redis_3:6380 redis_4:6380 redis_5:6380 redis_6:6380  --cluster-replicas 1 --cluster-yes"
+    command: "redis-cli --cluster create redis_1:6380 redis_2:6380 redis_3:6380 redis_4:6380 redis_5:6380 redis_7:6380  --cluster-replicas 1 --cluster-yes"
     depends_on:
       - redis_1
       - redis_2
@@ -192,11 +234,9 @@ services:
       - redis_4
       - redis_5
       - redis_6
+      - redis_7
 
 
 
-#Docker Networks
-networks:
-  app-network:
-    driver: bridge
+
 

@@ -35,8 +35,8 @@ class FrontController
         echo '<p>Запрос обработал контейнер</p>' . $_SERVER['HOSTNAME'];
         echo '<p>Запрос обработал сервер</p>' . $_SERVER['SERVER_ADDR'];
         $count = $_SESSION['count'] ?? 1;
-        echo '<p>Сессия</p>' . session_id();
-        echo 'Загрузки страницы ' . $count;
+        echo '<p>Сессия ' . session_id() . '</p>';
+        echo ' Загрузки страницы ' . $count;
         $_SESSION['count'] = ++$count;
     }
 

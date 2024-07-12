@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Naimushina\Webservers;
 
 use Exception;
+use Predis\Client;
 
 class App
 {
@@ -21,22 +22,8 @@ class App
     {
         $this->request = new Request();
         $this->response = new Response();
-        $app_ip = '127.0.0.1';
-        session_start([
-            'save_path' => http_build_query([
-                'seed' => [
-                    $app_ip . ':6381',
-                    $app_ip . ':6382',
-                    $app_ip . ':6383',
-                    $app_ip . ':6384',
-                    $app_ip . ':6385',
-                    $app_ip . ':6386',
-                ],
-                'timeout' => 2,
-                'read_timeout' => 10,
-                'failover' => 'error',
-            ]),
-        ]);
+        $this->startSession();
+
     }
 
     /**
@@ -53,5 +40,33 @@ class App
             return $controller->index($validator);
         }
         throw new Exception('Method not allowed');
+    }
+
+    /**
+     * Устанавливаем Redis для обработки сессий
+     * @return void
+     */
+    private function startSession()
+    {
+        $host = getenv('SESSION_HOST');
+        $port = getenv('SESSION_PORT');
+        $scheme= getenv('SESSION_SCHEME');
+
+         $db = new Client(
+             [
+                 'scheme' => $scheme,
+                 'host' => $host,
+                 'port' => $port,
+                 'password' => ''
+             ]
+         );
+        $path = "$scheme://$host:$port";
+
+        $handler = new RedisSessionHandler($db);
+        session_set_save_handler($handler);
+        session_start([
+            'save_handler' => getenv('SESSION_DRIVER'),
+            'save_path' => $path
+        ]);
     }
 }

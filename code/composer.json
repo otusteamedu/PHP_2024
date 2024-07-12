@@ -6,5 +6,7 @@
             "Naimushina\\Webservers\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "predis/predis": "^2.2"
+    }
 }
