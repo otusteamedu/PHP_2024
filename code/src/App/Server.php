@@ -44,4 +44,3 @@ class Server
         $this->socket->close();
     }
 }
-

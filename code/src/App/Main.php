@@ -6,7 +6,6 @@ use Exception;
 use src\Socket\Settings;
 use src\Socket\Main as SocketMain;
 
-
 class Main
 {
     /**
