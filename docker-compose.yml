@@ -1,0 +1,44 @@
+# версия синтаксиса
+version: '3'
+
+# в этом блоке мы описываем контейнеры, которые будут запускаться
+services:
+  #Контейнер с PHP, назовём его app
+  socket-server:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: socket-server # имя будущего образа
+    container_name: socket-server # имя контейнера после запуска
+    depends_on:
+      - redis
+    volumes:
+      - ./code:/data/mysite.local
+    env_file:
+      - .env
+    # мы можем создать для контейнеров внутреннюю сеть
+    networks:
+      - app-network
+
+  socket-client:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: socket-client # имя будущего образа
+    container_name: socket-client # имя контейнера после запуска
+    depends_on:
+      - redis
+    volumes:
+      - ./code:/data/mysite.local
+    env_file:
+      - .env
+    # мы можем создать для контейнеров внутреннюю сеть
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
