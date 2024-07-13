@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Pyivanov\hw4;
 
 use Exception;
-use http\Exception\InvalidArgumentException;
+use \InvalidArgumentException;
 
 /**
  * @param ?string $str Проверяемая строка

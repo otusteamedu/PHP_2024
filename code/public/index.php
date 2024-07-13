@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-use PYIvanov\hw4\App;
+use Pyivanov\hw4\App;
 
-include __DIR__ . '/../code/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 try {
-    $app = new App();
-    $app->run();
+    (new App())->run();
 } catch (Exception $e) {
     echo 'Код ' . $e->getCode() . ': ' . $e->getMessage();
 }

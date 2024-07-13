@@ -1,5 +1,7 @@
 FROM php:8.3-fpm
 
+COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+
 ENV TIMEZONE Europe/Moscow
 
 RUN apt-get update
@@ -10,6 +12,7 @@ RUN apt-get install -y \
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install -j$(nproc) gd
+
 
 RUN apt-get update && apt-get install -y \
         curl \
@@ -37,11 +40,11 @@ RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 # xdebug
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
-RUN echo "xdebug.mode=client_port = 9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo echo "xdebug.start_with_request = yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-RUN echo echo "xdebug.output_dir = /tmp/grinds" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.client_port = 9000" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.start_with_request = yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.output_dir = /tmp/grinds" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN pecl install redis \
     && docker-php-ext-enable redis

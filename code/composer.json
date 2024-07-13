@@ -3,10 +3,12 @@
   "type": "project",
   "autoload": {
     "psr-4": {
-      "PYIvanov\\Hw4\\": "src/"
+      "Pyivanov\\hw4\\": "src/"
     }
   },
   "require": {
-    "php": ">=8.0"
+    "php": ">=8.0",
+    "ext-http": "*",
+    "ext-redis": "*"
   }
 }
