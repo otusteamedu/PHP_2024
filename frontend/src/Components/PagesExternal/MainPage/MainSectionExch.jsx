@@ -51,6 +51,11 @@ const MainSectionExch = () => {
         setData({data:{},param:{}});
     }
 
+    const getBackend = async (postUrl) => {
+        await PostServices.getPageData(postUrl)
+            .then(res => setData(res))
+    }
+
     const currency = data.data;
     const dataParam = data.param;
 
@@ -289,7 +294,7 @@ const MainSectionExch = () => {
                     </div>
 
                     <div className=" i_ex_btn">
-                        <button className="yellow_btn" type="button" onClick={()=>console.log(data)}>Обменять</button>
+                        <button className="yellow_btn" type="button" onClick={()=>getBackend('index')}>Обменять</button>
                     </div>
                 </form>
 
