@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  nginx_balancer:
+    build:
+      context: ./nginx-balancer
+      dockerfile: Dockerfile
+    image: hw4_balancer/nginx_balancer
+    container_name: nginx_balancer
+    depends_on:
+      - nginx_1
+      - nginx_2
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  nginx_1:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: hw4_balancer/nginx
+    container_name: nginx_1
+    volumes:
+      - ./code:/var/www/mysite.local
+    networks:
+      - app-network
+
+  nginx_2:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: hw4_balancer/nginx
+    container_name: nginx_2
+    volumes:
+      - ./code:/var/www/mysite.local
+    networks:
+      - app-network
+
+  app_fpm_1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw4_balancer/php
+    container_name: app_fpm_1
+    volumes:
+       - ./code:/var/www/mysite.local
+    networks:
+      - app-network
+
+  app_fpm_2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw4_balancer/php
+    container_name: app_fpm_2
+    volumes:
+      - ./code:/var/www/mysite.local
+    networks:
+      - app-network
+
+  app_repcached:
+    build:
+      context: ./repcached
+      dockerfile: Dockerfile
+    image: hw4_balancer/repcached
+    container_name: app_repcached
+    ports:
+        - "11211:11211"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
