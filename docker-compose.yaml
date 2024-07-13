@@ -2,7 +2,6 @@ version: '3.9'
 
 services:
 
-  #контейнер с Nginx
   frontend:
     build:
       context: ./frontend
