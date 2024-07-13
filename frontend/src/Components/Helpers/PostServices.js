@@ -3,7 +3,7 @@ import axios from "axios";
 export default class PostServices {
 
     // process.env.REACT_APP_API_URL
-    static API_URL = '/public/index.php';
+    static API_URL = '/api';
 
     static async getPageData(page = '') {
 

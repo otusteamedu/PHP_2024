@@ -1,8 +1,8 @@
 FROM nginx:1.27
 
-COPY ./test.local.conf /etc/nginx/conf.d/test.local.conf
+COPY ./api.test.local.conf /etc/nginx/conf.d/api.test.local.conf
 
-EXPOSE 8000
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
 

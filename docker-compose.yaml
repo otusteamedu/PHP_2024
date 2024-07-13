@@ -46,11 +46,9 @@ services:
     env_file: .env
     container_name: backend
     volumes:
-      - ./backend:/app
+      - './backend:/app'
     networks:
       - app-network
-    ports:
-      - "8000:8000"
 #    networks:
 #      app-network:
 #        - ipv4_address: 172.16.31.3
@@ -59,21 +57,21 @@ services:
     environment:
       PHP_IDE_CONFIG: serverName=Docker
 
-#  nginx-backend:
-#    build:
-#      context: docker/nginx-backend
-#      dockerfile: Dockerfile
-#    restart: always
-#    container_name: nginx-backend
-#    ports:
-#      - "8000:8000"
-#    volumes:
-#      - './backend/public:/app'
-##      - './frontend/public:/usr/share/nginx/html'
-#    links:
-#      - "backend"
-#    networks:
-#      - app-network
+  nginx-backend:
+    build:
+      context: docker/nginx-backend
+      dockerfile: Dockerfile
+    restart: always
+    container_name: nginx-backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - './backend:/app'
+#      - './frontend/public:/usr/share/nginx/html'
+    links:
+      - "backend"
+    networks:
+      - app-network
   #    networks:
   #      app-network:
   #        - ipv4_address: 172.16.31.4
