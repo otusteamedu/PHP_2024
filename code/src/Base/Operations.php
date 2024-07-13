@@ -8,7 +8,6 @@ use PDOException;
 
 class Operations
 {
-
     private PDO $pdo;
 
     public function __construct()
