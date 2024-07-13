@@ -14,15 +14,14 @@ class App
      */
     public function run(): void
     {
-//        var_dump($_GET);die;
-        if (!key_exists('string', $_GET) || empty($_GET['string'])) {
+        if (!key_exists('string', $_POST) || empty($_POST['string'])) {
             throw new InvalidArgumentException(
                 "Параметр 'string' не передан или имеет пустое значение!",
                 400
             );
         }
 
-        $result['stringValidationResult'] = (new StringValidator(str: $_GET['string']))->validate();
+        $result['stringValidationResult'] = (new StringValidator(str: $_POST['string']))->validate();
 
         $result['host'] = "Запрос обработал контейнер: " . $_SERVER['HOSTNAME'];
         $result['redis'] = 'Счётчик внутри сессии ' . (new RedisCheck())->sessionStart();
