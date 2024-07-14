@@ -19,10 +19,29 @@ CREATE TABLE IF NOT EXISTS hall
 -- Таблица фильмов
 CREATE TABLE IF NOT EXISTS movie
 (
-    id       INT PRIMARY KEY AUTO_INCREMENT,
-    title    VARCHAR(255) NOT NULL,
-    duration INT          NOT NULL, -- продолжительность в минутах
-    genre    VARCHAR(100)
+    id                  INT PRIMARY KEY AUTO_INCREMENT,
+    title               VARCHAR(255) NOT NULL,
+    duration            INT NOT NULL, -- продолжительность в минутах
+    description         VARCHAR(255)
+    production_country  VARCHAR(100)
+    director            VARCHAR(100)
+    release_date        INT
+);
+
+-- Таблица жанров фильма
+CREATE TABLE IF NOT EXISTS genre
+(
+    id      INT PRIMARY KEY AUTO_INCREMENT,
+    name    VARCHAR(255) NOT NULL
+);
+
+-- Связующая таблица, которая связывает фильмы с жанрами
+CREATE TABLE movie_genre (
+    movie_id INT,
+    genre_id INT,
+    PRIMARY KEY (movie_id, genre_id),
+    FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE,
+    FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE
 );
 
 -- Таблица сеансов
@@ -41,12 +60,20 @@ CREATE TABLE IF NOT EXISTS showtime
 -- Таблица мест
 CREATE TABLE IF NOT EXISTS seat
 (
-    id          INT PRIMARY KEY AUTO_INCREMENT,
-    hall_id     INT,
-    row_number  INT NOT NULL,
-    seat_number INT NOT NULL,
-    seat_type   VARCHAR(50),
+    id              INT PRIMARY KEY AUTO_INCREMENT,
+    hall_id         INT,
+    seat_type_id    INT,
+    row_number      INT NOT NULL,
+    seat_number     INT NOT NULL,
     FOREIGN KEY (hall_id) REFERENCES hall (id)
+    FOREIGN KEY (seat_type_id) REFERENCES seat_type (id)
+);
+
+-- Таблица типов мест
+CREATE TABLE IF NOT EXISTS seat_type
+(
+    id   INT PRIMARY KEY AUTO_INCREMENT,
+    type VARCHAR(50) NOT NULL
 );
 
 -- Таблица билетов

@@ -16,7 +16,20 @@ movie (Фильм)
 id (INT, Primary Key)
 title (VARCHAR(255))
 duration (INT) - в минутах
-genre (VARCHAR(100))
+description (VARCHAR(255))
+production_country (VARCHAR(100))
+director (VARCHAR(100))
+release_date (INT)
+====================================================
+genre (Жанр фильма)
+-----
+id (INT, Primary Key)
+name (VARCHAR(255))
+====================================================
+movie_genre (Связующая таблица, которая связывает фильмы с жанрами)
+-----
+movie_id (INT, Foreign Key)
+genre_id (INT, Foreign Key)
 ====================================================
 showtime (Сеанс)
 -----
@@ -27,13 +40,18 @@ start_time (DATETIME)
 end_time (DATETIME)
 base_price (DECIMAL(10, 2))
 ====================================================
-Seat (Место)
+seat (Место)
 -----
 id (INT, Primary Key)
 hall_id (INT, Foreign Key)
+seat_type_id (INT, Foreign Key)
 row_number (INT)
 seat_number (INT)
-seat_type (VARCHAR(50)) - например, стандартный, VIP
+====================================================
+seat_type (Тип места)
+-----
+id (INT, Primary Key)
+type (VARCHAR(50))
 ====================================================
 ticket (Билет)
 -----
