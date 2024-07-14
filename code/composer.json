@@ -10,5 +10,8 @@
     "php": ">=8.0",
     "ext-http": "*",
     "ext-redis": "*"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.10"
   }
 }

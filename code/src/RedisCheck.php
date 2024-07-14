@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Pyivanov\hw4;
 
-use RedisException;
-
 class RedisCheck
 {
     private const SESSION_ID = 'test';
