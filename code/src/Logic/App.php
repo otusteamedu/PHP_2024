@@ -8,10 +8,12 @@ class App
 {
   function run()
   {
+    $settings = parse_ini_file('/data/config/config.ini');
     $serverName = $_SERVER['argv'][1];
+
     try {
-      $server_side_sock = "/data/sockets/server.sock";
-      $client_side_sock =  "/data/sockets/client.sock";
+      $server_side_sock = $settings["serverSocket"];
+      $client_side_sock =   $settings["clientSocket"];
 
       $socket = self::createSocket($serverName);
 
