@@ -1,19 +1,21 @@
 version: '3.8'
 
 services:
-  php-fpm:
-    build: php-fpm
-    container_name: ${CONTAINER_NAME_PHP_FPM}
+  php:
+    build: php
+    container_name: ${CONTAINER_NAME_PHP}
     volumes:
       - ./app:/app
-      - ./php-fpm/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
-      - ./var/php-fpm/logs:/var/logs/php
+      - ./php/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+      - ./var/php/logs:/var/logs/php
     env_file: .env
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
       - otus-network
+    stdin_open: true
+    tty: true
 
 networks:
   otus-network:
