@@ -30,7 +30,17 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     networks:
       - net
-
+  consumer:
+    build: docker/php
+    command: sh -c "sleep 15 && php console/index.php generate_report"
+    volumes:
+      - ./www:/app
+    env_file:
+      - .env
+    networks:
+      - net
+    depends_on:
+      - rabbitmq
 networks:
   net:
     driver: bridge
