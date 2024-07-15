@@ -9,7 +9,6 @@ use Lrazumov\Hw29\IntersectionTwoLInkedList;
 use Lrazumov\Hw29\FractionRecurringDecimal;
 
 try {
-
     $intersection_part = new ListNode(
         8,
         new ListNode(
@@ -55,7 +54,6 @@ try {
     echo $solution;
 
     echo PHP_EOL;
-
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

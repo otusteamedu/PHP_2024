@@ -14,18 +14,17 @@ class IntersectionTwoLInkedList
      * @return ListNode
      */
     public function solution(
-      ListNode $headA,
-      ListNode $headB
-    ): ?ListNode
-    {
+        ListNode $headA,
+        ListNode $headB
+    ): ?ListNode {
         $index = [];
-        while($headA) {
+        while ($headA) {
             $index[$headA->val][] = $headA;
             $headA = $headA->next;
         }
-        while($headB) {
+        while ($headB) {
             if (isset($index[$headB->val])) {
-                foreach($index[$headB->val] as $node) {
+                foreach ($index[$headB->val] as $node) {
                     if ($node === $headB) {
                         return $headB;
                     }

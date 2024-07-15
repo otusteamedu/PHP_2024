@@ -12,10 +12,9 @@ class FractionRecurringDecimal
      * @return string
      */
     public function solution(
-      int $numerator,
-      int $denominator
-    ): string
-    {
+        int $numerator,
+        int $denominator
+    ): string {
         if (!$numerator) {
             return 0;
         }
@@ -39,8 +38,8 @@ class FractionRecurringDecimal
         $numerators = [];
         $right_part = '';
         $index = 0;
-        while($numerator) {
-            $position = $numerators[$numerator] ?? FALSE;
+        while ($numerator) {
+            $position = $numerators[$numerator] ?? false;
             $numerators[$numerator] = $index++;
             $numerator *= 10;
             if ($numerator < $denominator) {
@@ -51,8 +50,7 @@ class FractionRecurringDecimal
 
             if ($position === 0) {
                 return $sign . $left_part . '.(' . $right_part . ')';
-            }
-            elseif ($position) {
+            } elseif ($position) {
                 return $sign . $left_part . '.' . substr($right_part, 0, $position) . '(' . substr($right_part, $position) . ')';
             }
             $numerator = $numerator % $denominator;
