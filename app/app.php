@@ -51,8 +51,7 @@ try {
     echo PHP_EOL;
 
     $solution = (new FractionRecurringDecimal())
-        ->solution(4, 333);
-
+        ->solution(1, 17);
     echo $solution;
 
     echo PHP_EOL;
