@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-bullseye
+FROM php:8.2-fpm
 
 RUN apt update && apt install -y \
     libfreetype6-dev \
@@ -14,7 +14,7 @@ RUN apt update && apt install -y \
     && pecl install mcrypt-1.0.6 \
     && docker-php-ext-enable mcrypt \
     && pecl install redis \
-    && docker-php-ext-enable redis \
+    && docker-php-ext-enable redis.so \
     && pecl install memcached \
     && docker-php-ext-enable memcached \
     && docker-php-ext-install -j$(nproc) iconv mbstring pdo_pgsql zip xml \
@@ -25,8 +25,6 @@ RUN apt update && apt install -y \
 # Устанавливаем Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 COPY --from=composer:2.7.6 /usr/bin/composer /usr/local/bin/composer
-
-RUN composer require vlucas/phpdotenv
 
 WORKDIR /data
 

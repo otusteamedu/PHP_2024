@@ -1,3 +1,4 @@
-# PHP_2024
+# Балансировщик
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Схема подключений:
+![Схема подключений:](http://url/to/img.png)
