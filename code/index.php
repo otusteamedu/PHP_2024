@@ -1,7 +1,8 @@
 <?php
+
 session_start();
 
-//вмсето логина и пароля сессия будет сопоставляться по ip, но будет слать warning на первом вхождении
+//вмсето логина и пароля сессия будет сопоставляться по ip
 function get_ip()
 {
 	$value = '';
@@ -80,25 +81,24 @@ echo "<form action=\"index.php\" method=\"POST\">
 
 
 echo "</br><h3>Сиссия Redis</h3>";
-$_SESSION["this_try"] = ["txt" => $string, "code" => "$code", "loggs" => $logg, "server" => $_SERVER['HOSTNAME']];
-$user = get_ip();
-
-
-
 $redis = new Redis();
 $redis->connect('redis', '6379');
 $redis->auth('qwerty');
 
-$response = $redis->get("$user");
-$_SESSION["previous_try"] = json_decode($response, true);
+$_SESSION["this_try"] = ["txt" => $string, "code" => "$code", "loggs" => $logg, "server" => $_SERVER['HOSTNAME']];
+$user = get_ip();
+$redis->set("$user", json_encode($_SESSION["this_try"]));
 
 
-if ($redis->ping()) {
-    $redis->set("$user", json_encode($_SESSION["this_try"]));
-}
+try {
 
-echo "Текст Вашего предыдущего запроса: " . $_SESSION["previous_try"]["txt"] . "</br> Код запроса и логги: "  . $_SESSION["previous_try"]["code"] . $_SESSION["previous_try"]["loggs"] . "</br> Сервер, который его обработал: ". $_SESSION["previous_try"]["server"];
+    $response = $redis->get("$user");
+    $_SESSION["previous_try"] = json_decode($response, true);
 
+    echo "Текст Вашего предыдущего запроса: " . $_SESSION["previous_try"]["txt"] . "</br> Код запроса и логги: "  . $_SESSION["previous_try"]["code"] . $_SESSION["previous_try"]["loggs"] . "</br> Сервер, который его обработал: ". $_SESSION["previous_try"]["server"];
+} catch (\Exception $e) {
+    echo "Доброго времени суток Вам!";
+};
 
 
 echo "</br></br></br> Запрос обратотал контейнер: " . $_SESSION["this_try"]["server"] ;
