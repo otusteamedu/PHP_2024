@@ -90,6 +90,7 @@ $user = get_ip();
 $redis->set("$user", json_encode($_SESSION["this_try"]));
 
 
+
 try {
 
     $response = $redis->get("$user");
@@ -101,4 +102,4 @@ try {
 };
 
 
-echo "</br></br></br> Запрос обратотал контейнер: " . $_SESSION["this_try"]["server"] ;
+echo "</br></br></br> Запрос обратотал контейнер: " . $_SESSION["this_try"]["server"];
