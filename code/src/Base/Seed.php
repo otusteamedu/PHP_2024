@@ -8,6 +8,9 @@ class Seed
 {
     protected array $genres;
     protected array $titles;
+    protected array $descriptions;
+    protected array $years;
+    protected array $countries;
     protected array $halls;
     protected array $movies;
     protected Operations $operations;
@@ -27,6 +30,9 @@ class Seed
     {
         $this->setTitles();
         $this->setGenres();
+        $this->setDescriptions();
+        $this->setCountries();
+        $this->setYears();
         $this->setMovies();
         $this->setHalls();
     }
@@ -53,6 +59,38 @@ class Seed
         ];
     }
 
+    protected function setDescriptions(): void
+    {
+        $this->descriptions = [
+            'Молодая пара в компании других богатеев отправляется на эксклюзивный ужин в знаменитый ресторан, который находится на небольшом острове.',
+            'Одно изысканное блюдо сменяет другое, когда выясняется, что шеф-повар и его команда неплохо изучили сегодняшних гостей и прекрасно осведомлены не только об их вкусовых предпочтениях.',
+            'И кроме того, меню содержит неприятные сюрпризы.',
+            '20-летняя Аой в поте лица трудится в семейной лапшичной на задворках Бангкока, чтобы обеспечивать пожилого отца и сестру-старшеклассницу.',
+            'От матери ей достался талант управляться с воком, и девушка достигла в этом определённого мастерства.',
+        ];
+    }
+
+    protected function setYears(): void
+    {
+        $this->years = [
+            2000,
+            2010,
+            2015,
+            2020,
+            2024,
+        ];
+    }
+
+    protected function setCountries(): void
+    {
+        $this->countries = [
+            'USSR',
+            'China',
+            'USA',
+            'Russia',
+        ];
+    }
+
     protected function setMovies(): void
     {
         $this->movies = [];
@@ -60,6 +98,9 @@ class Seed
             $this->movies[] = [
                 'title' => $title,
                 'genre' => $this->genres[array_rand($this->genres)],
+                'country' => $this->countries[array_rand($this->countries)],
+                'year' => $this->years[array_rand($this->years)],
+                'description' => $this->descriptions[array_rand($this->descriptions)],
                 'duration' => rand(5000, 8000),
             ];
         }
@@ -105,7 +146,13 @@ class Seed
     protected function seedMovies(): void
     {
         foreach ($this->movies as $movie) {
-            $this->operations->insertMovie($movie['title'], $movie['duration']);
+            $this->operations->insertMovie(
+                $movie['title'],
+                $movie['duration'],
+                $movie['description'],
+                $movie['country'],
+                $movie['year'],
+            );
         }
     }
 

@@ -1,5 +1,5 @@
 select movie.title, sum(movie.most_expansive)
-from (select m.title, s.basePrice, count(t.session_id) * s.basePrice as most_expansive
+from (select m.title, s.basePrice, sum(t.price) as most_expansive
       from ticket t
                join session s on t.session_id = s.id
                join movie m on s.movie = m.id

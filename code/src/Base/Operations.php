@@ -34,13 +34,16 @@ class Operations
         }
     }
 
-    public function insertMovie($title, $duration): void
+    public function insertMovie($title, $duration, $description, $country, $year): void
     {
-        $sql = 'INSERT INTO movie (title, duration) VALUES(:title, :duration)';
+        $sql = 'INSERT INTO movie (title, duration, description, country, year) VALUES(:title, :duration, :description, :country, :year)';
         $stmt = $this->pdo->prepare($sql);
 
         $stmt->bindValue(':title', $title);
         $stmt->bindValue(':duration', $duration);
+        $stmt->bindValue(':description', $description);
+        $stmt->bindValue(':country', $country);
+        $stmt->bindValue(':year', $year);
 
         try {
             $stmt->execute();

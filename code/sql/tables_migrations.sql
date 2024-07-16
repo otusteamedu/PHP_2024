@@ -6,9 +6,12 @@ CREATE TABLE genre
 
 CREATE TABLE movie
 (
-    id       SERIAL PRIMARY KEY,
-    title    varchar(255) UNIQUE,
-    duration smallint NOT NULL CHECK ( duration > 0 )
+    id          SERIAL PRIMARY KEY,
+    title       varchar(255) UNIQUE NOT NULL,
+    description text                NOT NULL,
+    country     varchar(255)        NOT NULL,
+    year        smallint            NOT NULL,
+    duration    smallint            NOT NULL CHECK ( duration > 0 )
 );
 
 CREATE TABLE genre_movie
