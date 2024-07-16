@@ -15,8 +15,6 @@ RUN apt update && apt install -y \
     && docker-php-ext-enable mcrypt \
     && pecl install redis \
     && docker-php-ext-enable redis.so \
-    && pecl install memcached \
-    && docker-php-ext-enable memcached \
     && docker-php-ext-install -j$(nproc) iconv mbstring pdo_pgsql zip xml \
     && docker-php-ext-install zip\
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
