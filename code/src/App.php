@@ -9,16 +9,22 @@ include_once __DIR__ . "/Checker.php";
 include_once __DIR__ . "/Session.php";
 
 class App
-{
+{ 
+    public $app_string;
+    public $app_code;
+    public $app_logg;
+    public $checker;
+    public $session;
 
-    public $app_string, $app_code, $app_logg, $checker, $session;
-
-    function __construct(){
-        if (isset($_POST["string"])){
+    public function __construct(){
+        if (isset($_POST["string"])) {
             $this->app_string = $_POST["string"];
+
         }
+
         else{
             $this->app_string = "";
+            
         };
 
         //Результат вычислений (код и логги)
@@ -32,7 +38,7 @@ class App
         header($protocol . ' ' . $this->app_code . ' ' . $this->app_logg);
     }
 
-    function run(){
+    public function run(){
 
         echo "</br> <h3>Форма ввода данных</h3>";
         echo "<form action=\"index.php\" method=\"POST\">

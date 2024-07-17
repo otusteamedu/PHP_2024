@@ -5,12 +5,15 @@ session_start();
 
 class Chacker
 {
-    public $string, $code, $logg;
-    function __construct($string){
+    public $string;
+    public $code;
+    public $logg;
+
+    public function __construct($string){
         $this -> string = $string;
     }
 
-    function calculate(){
+    public function calculate(){
         //проверить непустоту
         if ((empty($this->string) && $this->string != '0')) {
 
@@ -59,11 +62,11 @@ class Chacker
         return "<h3 style=\"color:blue\"> Результат: </h3> Код ответа: $this->code </br> $this->logg  </br>";
     }
 
-    function get_code(){
+    public function get_code(){
         return $this->code;
     }
 
-    function get_logg(){
+    public function get_logg(){
         return $this->logg;
     }
 };

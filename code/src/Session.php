@@ -7,9 +7,14 @@ use Exception;
 
 class Session
 {
-    public $string, $code, $logg;
-    private $server_hostname, $redis;
-    function __construct($string, $code, $logg){
+    public $string;
+    public $code;
+    public $logg;
+
+    private $server_hostname;
+    private $redis;
+
+    public function __construct($string, $code, $logg){
         $this -> string = $string;
         $this -> code = $code;
         $this -> logg = $logg;
