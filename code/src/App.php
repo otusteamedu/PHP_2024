@@ -18,11 +18,11 @@ class App
 
     public function __construct()
     {
-        if (isset($_POST["string"]))
+        if (isset($_POST["string"])) 
         {
             $this->app_string = $_POST["string"];
         }
-        else
+        else 
         {
             $this->app_string = "";
         };
