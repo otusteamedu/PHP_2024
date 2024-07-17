@@ -1,4 +1,5 @@
 <?php
+
 namespace Balance\app;
 
 use Balance\chacker\Chacker as Chacker;
@@ -18,8 +19,7 @@ class App
 
     public function __construct()
     {
-        if (isset($_POST["string"])) 
-        {
+        if (isset($_POST["string"])) {
             $this->app_string = $_POST["string"];
         }
         else 
@@ -46,7 +46,6 @@ class App
             <p>Строка: <input type=\"text\" name=\"string\" /></p>
             <input type=\"submit\" value=\"Отправить\">
             </form>";
-        
             echo "<h3 style=\"color:blue\"> Результат: </h3> Код ответа: $this->app_code </br> $this->app_logg  </br> </br>";
 
         //Работа сесси (код, логги, текст и имя сервера)
@@ -55,12 +54,11 @@ class App
 
         try{
             echo $this->session->get_last_session();
-        } catch (Exception $e){
+        } catch (Exception $e) {
             echo "Рад знакомству!";
         }
 
         $this->session->set_current_session();
         echo "</br></br></br> Запрос обратотал контейнер: " . $_SESSION["this_try"]["server"];
-        
     }
 }
