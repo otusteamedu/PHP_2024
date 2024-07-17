@@ -3,9 +3,9 @@ namespace Balance\chacker;
 
 session_start();
 
-class Chacker{
+class Chacker
+{
     public $string, $code, $logg;
-
     function __construct($string){
         $this -> string = $string;
     }

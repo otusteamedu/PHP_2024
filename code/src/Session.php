@@ -5,10 +5,10 @@ use Exception;
 
 //session_start();
 
-class Session{
+class Session
+{
     public $string, $code, $logg;
     private $server_hostname, $redis;
-
     function __construct($string, $code, $logg){
         $this -> string = $string;
         $this -> code = $code;

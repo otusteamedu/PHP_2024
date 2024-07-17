@@ -1,21 +1,20 @@
 <?php
 namespace Balance\app;
 
-include_once __DIR__ . "/Checker.php";
-include_once __DIR__ . "/Session.php";
-
 use Balance\chacker\Chacker as Chacker;
 use Balance\session\Session as Session;
 use Exception;
 
+include_once __DIR__ . "/Checker.php";
+include_once __DIR__ . "/Session.php";
 
+class App
+{
 
-class App{
     public $app_string, $app_code, $app_logg, $checker, $session;
 
-    
-    function createApp(){
-        if(isset($_POST["string"])){
+    function __construct(){
+        if (isset($_POST["string"])){
             $this->app_string = $_POST["string"];
         }
         else{
@@ -34,7 +33,6 @@ class App{
     }
 
     function run(){
-        $this->createApp();
 
         echo "</br> <h3>Форма ввода данных</h3>";
         echo "<form action=\"index.php\" method=\"POST\">

@@ -24,8 +24,6 @@ RUN apt update && apt install -y \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 COPY --from=composer:2.7.6 /usr/bin/composer /usr/local/bin/composer
 
-WORKDIR /data
-
-VOLUME /data
+#WORKDIR /data/mysite.local/
 
 CMD ["php-fpm"]
