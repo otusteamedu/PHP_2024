@@ -1,12 +1,13 @@
 {
-    "name": "naimushina/webservers",
+    "name": "naimushina/chat",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Naimushina\\Webservers\\": "src/"
+            "Naimushina\\Chat\\": "src/"
         }
     },
     "require": {
-        "predis/predis": "^2.2"
+        "php": ">=8.0",
+        "ext-sockets": "*"
     }
 }

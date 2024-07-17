@@ -2,27 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Naimushina\Webservers;
+namespace Naimushina\Chat;
 
 use Exception;
-use Predis\Client;
 
 class App
 {
-    /**
-     * @var Request
-     */
-    public $request;
-    /**
-     * @var Response
-     */
-    public $response;
-
     public function __construct()
     {
-        $this->request = new Request();
-        $this->response = new Response();
-        $this->startSession();
     }
 
     /**
@@ -30,42 +17,19 @@ class App
      */
     public function run()
     {
-        $controller = new FrontController($this->request, $this->response);
-        if ($this->request->method === 'GET') {
-            return $controller->show();
+        if (!extension_loaded('sockets')) {
+            throw new Exception('Установите sockets ext.');
         }
-        if ($this->request->method === 'POST') {
-            $validator = new StringValidator();
-            return $controller->index($validator);
-        }
-        throw new Exception('Method not allowed');
-    }
+        $type = $_SERVER['argv'][1] ?? null;
+        $socket = new Socket();
 
-    /**
-     * Устанавливаем Redis для обработки сессий
-     * @return void
-     */
-    private function startSession()
-    {
-        $host = getenv('SESSION_HOST');
-        $port = getenv('SESSION_PORT');
-        $scheme = getenv('SESSION_SCHEME');
+        $app = match ($type) {
+            'client' => new Client($socket),
+            'server' => new Server($socket),
+            'default' => throw new Exception('Укажите тип приложения - client или server')
 
-        $db = new Client(
-            [
-                'scheme' => $scheme,
-                'host' => $host,
-                'port' => $port,
-                'password' => ''
-            ]
-        );
-        $path = "$scheme://$host:$port";
+        };
+        $app->run();
 
-        $handler = new RedisSessionHandler($db);
-        session_set_save_handler($handler);
-        session_start([
-            'save_handler' => getenv('SESSION_DRIVER'),
-            'save_path' => $path
-        ]);
     }
 }
