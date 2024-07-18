@@ -17,7 +17,10 @@ class Solution
         $slow = $head;
         $fast = $head->next;
 
-        while ($slow != $fast) {
+        while (true) {
+            if ($slow === $fast) {
+                return true;
+            }
             if ($fast == null || $fast->next == null) {
                 return false;
             }
