@@ -28,3 +28,9 @@ CREATE TABLE movie_attribute_value
     timestamp          TIMESTAMP                            NULL,
     numeric            NUMERIC(3, 2)                        NULL
 );
+
+CREATE UNIQUE INDEX unique_movie_attribute ON movie_attribute_value (movie_id, movie_attribute_id);
+
+CREATE INDEX idx_movie_id ON movie_attribute_value (movie_id);
+CREATE INDEX idx_movie_attribute_id ON movie_attribute_value (movie_attribute_id);
+CREATE INDEX idx_movie_attribute_type_id ON movie_attributes (movie_attribute_type_id);
