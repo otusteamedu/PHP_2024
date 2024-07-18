@@ -32,7 +32,8 @@ create table if not exists seats
     hall_id     integer
     references halls,
     row_number  integer,
-    seat_number integer
+    seat_number integer,
+    price      numeric(10, 2)
 );
 
 
@@ -56,7 +57,6 @@ create table if not exists tickets
     references sessions,
     seat_id    integer
     references seats,
-    price      numeric(10, 2),
     status     varchar(10),
     client_id  integer
     references clients
