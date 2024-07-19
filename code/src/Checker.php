@@ -18,16 +18,14 @@ class Chacker
     public function calculate()
     {
         //проверить непустоту
-        if ((empty($this->string) && $this->string != '0')) 
-        {
+        if ((empty($this->string) && $this->string != '0')) {
             $this->logg = "<a style=\"color:red\">  Значение не корректно: </a>  пустая строка";
             $this->code = 400;
-        }
-        else{
+        } else {
             $char_arr = str_split($this->string);
             $slashs=0;
             $counter = 0;
-            foreach($char_arr as $simbol){
+            foreach ($char_arr as $simbol) {
                 if ($simbol == '(') {
                     $counter ++;
                     $slashs ++;

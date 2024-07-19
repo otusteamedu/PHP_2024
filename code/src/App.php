@@ -21,8 +21,7 @@ class App
     {
         if (isset($_POST["string"])) {
             $this->app_string = $_POST["string"];
-        }
-        else {
+        } else {
             $this->app_string = "";
         };
 
