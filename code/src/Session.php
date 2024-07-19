@@ -15,7 +15,8 @@ class Session
     private $server_hostname;
     private $redis;
 
-    public function __construct($string, $code, $logg) {
+    public function __construct($string, $code, $logg)
+    {
         $this -> string = $string;
         $this -> code = $code;
         $this -> logg = $logg;
@@ -37,11 +38,10 @@ class Session
         } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
             $value = $_SERVER['REMOTE_ADDR'];
         }
-    
         return $value;
     }
 
-    public function set_current_session()
+    public function set_currentSession()
     {
         $_SESSION["this_try"] = ["txt" => $this->string, "code" => "$this->code", "loggs" => $this->logg, "server" => $this->server_hostname];
         $user = $this->get_ip();
@@ -50,16 +50,16 @@ class Session
         return true;
     }
 
-    public function get_last_session()
+    public function get_lastSession()
     {
-        try{
+        try {
             $user = $this->get_ip();
             $response = $this->redis->get("$user");
             $_SESSION["previous_try"] = json_decode($response, true);
 
-            return "Текст Вашего предыдущего запроса: " . $_SESSION["previous_try"]["txt"] . "</br> Код запроса и логги: "  . $_SESSION["previous_try"]["code"] . $_SESSION["previous_try"]["loggs"] . "</br> Сервер, который его обработал: ". $_SESSION["previous_try"]["server"];
+            return "Текст Вашего предыдущего запроса: " . $_SESSION["previous_try"]["txt"] . "</br> Код запроса и логги: " . $_SESSION["previous_try"]["code"] . $_SESSION["previous_try"]["loggs"] . "</br> Сервер, который его обработал: " . $_SESSION["previous_try"]["server"];
         } catch (Exception $e) {
             return "Рад познакомиться!";
         }
     }
-};
+}

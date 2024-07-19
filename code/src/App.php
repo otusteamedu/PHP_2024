@@ -51,12 +51,12 @@ class App
         $this->session = new Session($this->app_string, $this->app_code, $this->app_logg);
 
         try {
-            echo $this->session->get_last_session();
+            echo $this->session->get_lastSession();
         } catch (Exception $e) {
             echo "Рад знакомству!";
         }
 
-        $this->session->set_current_session();
+        $this->session->set_currentSession();
         echo "</br></br></br> Запрос обратотал контейнер: " . $_SESSION["this_try"]["server"];
     }
 }
