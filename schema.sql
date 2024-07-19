@@ -22,11 +22,11 @@ CREATE TABLE movie_attribute_value
     id                 SERIAL PRIMARY KEY,
     movie_id           INT REFERENCES movies (id)           NOT NULL,
     movie_attribute_id INT REFERENCES movie_attributes (id) NOT NULL,
-    text               TEXT                                 NULL,
-    boolean            BOOLEAN                              NULL,
-    date               DATE                                 NULL,
-    timestamp          TIMESTAMP                            NULL,
-    numeric            NUMERIC(3, 2)                        NULL
+    value_text         TEXT NULL,
+    value_boolean      BOOLEAN NULL,
+    value_date         DATE NULL,
+    value_timestamp    TIMESTAMP NULL,
+    value_float        FLOAT NULL
 );
 
 CREATE UNIQUE INDEX unique_movie_attribute ON movie_attribute_value (movie_id, movie_attribute_id);
