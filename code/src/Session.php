@@ -1,4 +1,5 @@
 <?php
+
 namespace Balance\session;
 
 use Exception;
@@ -14,7 +15,7 @@ class Session
     private $server_hostname;
     private $redis;
 
-    public function __construct($string, $code, $logg){
+    public function __construct($string, $code, $logg) {
         $this -> string = $string;
         $this -> code = $code;
         $this -> logg = $logg;
@@ -26,7 +27,8 @@ class Session
         $this -> redis->auth('qwerty');
     }
 
-    private function get_ip(){
+    private function get_ip()
+    {
         $value = '';
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $value = $_SERVER['HTTP_CLIENT_IP'];
@@ -39,7 +41,8 @@ class Session
         return $value;
     }
 
-    public function set_current_session(){
+    public function set_current_session()
+    {
         $_SESSION["this_try"] = ["txt" => $this->string, "code" => "$this->code", "loggs" => $this->logg, "server" => $this->server_hostname];
         $user = $this->get_ip();
         $this->redis->set("$user", json_encode($_SESSION["this_try"]));
@@ -47,7 +50,8 @@ class Session
         return true;
     }
 
-    public function get_last_session(){
+    public function get_last_session()
+    {
         try{
             $user = $this->get_ip();
             $response = $this->redis->get("$user");

@@ -23,16 +23,16 @@ class Chacker
             $this->code = 400;
         } else {
             $char_arr = str_split($this->string);
-            $slashs=0;
+            $slashs = 0;
             $counter = 0;
             foreach ($char_arr as $simbol) {
                 if ($simbol == '(') {
-                    $counter ++;
-                    $slashs ++;
+                    $counter++;
+                    $slashs++;
                 };
                 if ($simbol == ')') {
-                    $counter --;
-                    $slashs ++;
+                    $counter--;
+                    $slashs++;
                 };
     
                 if ($counter < 0) {
