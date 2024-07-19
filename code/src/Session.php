@@ -28,7 +28,7 @@ class Session
         $this -> redis->auth('qwerty');
     }
 
-    private function get_ip()
+    private function getIp()
     {
         $value = '';
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -41,19 +41,19 @@ class Session
         return $value;
     }
 
-    public function set_currentSession()
+    public function setCurrentSession()
     {
         $_SESSION["this_try"] = ["txt" => $this->string, "code" => "$this->code", "loggs" => $this->logg, "server" => $this->server_hostname];
-        $user = $this->get_ip();
+        $user = $this->getIp();
         $this->redis->set("$user", json_encode($_SESSION["this_try"]));
 
         return true;
     }
 
-    public function get_lastSession()
+    public function getLastSession()
     {
         try {
-            $user = $this->get_ip();
+            $user = $this->getIp();
             $response = $this->redis->get("$user");
             $_SESSION["previous_try"] = json_decode($response, true);
 

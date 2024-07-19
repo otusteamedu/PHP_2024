@@ -58,12 +58,12 @@ class Chacker
         return "<h3 style=\"color:blue\"> Результат: </h3> Код ответа: $this->code </br> $this->logg  </br>";
     }
 
-    public function get_code()
+    public function getCode()
     {
         return $this->code;
     }
 
-    public function get_logg()
+    public function getLogg()
     {
         return $this->logg;
     }

@@ -29,8 +29,8 @@ class App
         $this->checker = new Chacker($this->app_string);
         $this->checker->calculate();
 
-        $this->app_code = $this->checker->get_code();
-        $this->app_logg = $this->checker->get_logg();
+        $this->app_code = $this->checker->getCode();
+        $this->app_logg = $this->checker->getLogg();
 
         $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
         header($protocol . ' ' . $this->app_code . ' ' . $this->app_logg);
@@ -51,12 +51,12 @@ class App
         $this->session = new Session($this->app_string, $this->app_code, $this->app_logg);
 
         try {
-            echo $this->session->get_lastSession();
+            echo $this->session->getLastSession();
         } catch (Exception $e) {
             echo "Рад знакомству!";
         }
 
-        $this->session->set_currentSession();
+        $this->session->setCurrentSession();
         echo "</br></br></br> Запрос обратотал контейнер: " . $_SESSION["this_try"]["server"];
     }
 }
