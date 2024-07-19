@@ -22,8 +22,7 @@ class App
         if (isset($_POST["string"])) {
             $this->app_string = $_POST["string"];
         }
-        else 
-        {
+        else {
             $this->app_string = "";
         };
 
@@ -52,7 +51,7 @@ class App
         echo "</br><h3>Сиссия Redis</h3>";
         $this->session = new Session($this->app_string, $this->app_code, $this->app_logg);
 
-        try{
+        try {
             echo $this->session->get_last_session();
         } catch (Exception $e) {
             echo "Рад знакомству!";
