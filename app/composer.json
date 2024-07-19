@@ -1,13 +1,17 @@
 {
-    "name": "kagirova/hw31",
-    "type": "project",
+    "name": "hinoho/battleship",
     "autoload": {
         "psr-4": {
-            "Kagirova\\Hw31\\": "src/"
+            "Hinoho\\Battleship\\": "src/"
         }
     },
+    "authors": [
+        {
+            "name": "hinoho",
+            "email": "hinoho27@gmail.com"
+        }
+    ],
     "require": {
-        "php-amqplib/php-amqplib": "^3.2",
-        "curl/curl": "2.5.0"
+        "longman/telegram-bot": "*"
     }
 }

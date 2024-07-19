@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Kagirova\Hw31\Infrastucture\Database;
+namespace Hinoho\Battleship\Infrastucture\Database;
 
-use Kagirova\Hw31\Domain\Config\Config;
-use Kagirova\Hw31\Domain\RepositoryInterface\StorageInterface;
+use Hinoho\Battleship\Domain\Config\Config;
+use Hinoho\Battleship\Domain\RepositoryInterface\StorageInterface;
 
 class PostgresStorage implements StorageInterface
 {

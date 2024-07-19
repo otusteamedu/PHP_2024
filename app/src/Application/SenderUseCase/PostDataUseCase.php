@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Kagirova\Hw31\Application\SenderUseCase;
+namespace Hinoho\Battleship\Application\SenderUseCase;
 
-use Kagirova\Hw31\Domain\RepositoryInterface\StorageInterface;
-use Kagirova\Hw31\Domain\Request;
-use Kagirova\Hw31\Domain\Response;
-use Kagirova\Hw31\Infrastucture\Service\RabbitMqService;
+use Hinoho\Battleship\Domain\RepositoryInterface\StorageInterface;
+use Hinoho\Battleship\Domain\Request;
+use Hinoho\Battleship\Domain\Response;
+use Hinoho\Battleship\Infrastucture\Service\RabbitMqService;
 
 class PostDataUseCase
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kagirova\Hw31\Domain\RepositoryInterface;
+namespace Hinoho\Battleship\Domain\RepositoryInterface;
 
 interface StorageInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Kagirova\Hw31\Domain\Config;
+namespace Hinoho\Battleship\Domain\Config;
 
 class Config
 {

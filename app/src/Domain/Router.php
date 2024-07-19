@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Kagirova\Hw31\Domain;
+namespace Hinoho\Battleship\Domain;
 
 use _PHPStan_582a9cb8b\Nette\Neon\Exception;
-use Kagirova\Hw31\Application\SenderUseCase\GetMessageUseCase;
-use Kagirova\Hw31\Application\SenderUseCase\PostDataUseCase;
-use Kagirova\Hw31\Domain\RepositoryInterface\StorageInterface;
-use Kagirova\Hw31\Domain\Service\RabbitMqServiceInterface;
+use Hinoho\Battleship\Application\SenderUseCase\GetMessageUseCase;
+use Hinoho\Battleship\Application\SenderUseCase\PostDataUseCase;
+use Hinoho\Battleship\Domain\RepositoryInterface\StorageInterface;
+use Hinoho\Battleship\Domain\Service\RabbitMqServiceInterface;
 
 class Router
 {
