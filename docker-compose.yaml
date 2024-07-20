@@ -1,0 +1,36 @@
+# версия синтаксиса
+version: '3'
+
+networks:
+  app-network:
+    driver: bridge
+services:
+  server:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    image: chat/php
+    container_name: server
+    volumes:
+      - ./code:/data/mysite.local
+    env_file: .env
+    networks:
+      - app-network
+
+  client:
+    build:
+      context: docker/php
+      dockerfile: Dockerfile
+    image: chat/php
+    container_name: client
+    volumes:
+      - ./code:/data/mysite.local
+    env_file: .env
+    networks:
+      - app-network
+    depends_on:
+      - server
+
+
+
+

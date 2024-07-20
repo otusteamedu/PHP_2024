@@ -1,0 +1,13 @@
+{
+    "name": "naimushina/chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Naimushina\\Chat\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "ext-sockets": "*"
+    }
+}
