@@ -35,7 +35,6 @@ class Socket
         if (!socket_bind($this->unixSocket, $address)) {
             $this->error("Не удалось выполнить socket_bind $address");
         }
-
     }
 
     /**
@@ -148,11 +147,9 @@ class Socket
      */
     public function connect(string $address): void
     {
-
         if (!socket_connect($this->unixSocket, $address)) {
             $this->error("Не удалось подсоединится к сокету $address");
         }
-
     }
 
     /**
