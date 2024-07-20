@@ -33,6 +33,7 @@ CREATE TABLE seats
     hall_id INT REFERENCES halls (id) NOT NULL,
     row     INT                       NOT NULL,
     number  INT                       NOT NULL,
+    markup  INT                       NOT NULL DEFAULT 0,
     UNIQUE (hall_id, row, number)
 );
 
@@ -79,7 +80,6 @@ CREATE TABLE tickets
     UNIQUE (session_id, seat_id)
 );
 
-
 /* 1. Выбор всех фильмов на сегодня */
 CREATE OR REPLACE VIEW movies_today AS
 SELECT m.id    AS movie_id,
@@ -87,7 +87,6 @@ SELECT m.id    AS movie_id,
 FROM movies m
          JOIN sessions s ON m.id = s.movie_id
 WHERE DATE(s.start_time) = CURRENT_DATE;
-
 
 /* 2. Подсчёт проданных билетов за неделю */
 CREATE OR REPLACE VIEW tickets_sold_last_week AS
@@ -113,11 +112,12 @@ WHERE DATE(s.start_time) = CURRENT_DATE;
 /* 4. Поиск 3 самых прибыльных фильмов за неделю */
 CREATE OR REPLACE VIEW most_profitable_movies_last_week AS
 WITH weekly_revenue AS (SELECT m.id,
-                               m.title      AS movie_title,
-                               SUM(s.price) AS session_revenue
+                               m.title                          AS movie_title,
+                               SUM(s.price + se.markup) AS session_revenue
                         FROM tickets t
                                  JOIN sessions s ON t.session_id = s.id
                                  JOIN movies m ON s.movie_id = m.id
+                                 JOIN seats se ON t.seat_id = se.id
                         WHERE t.purchased_at >= CURRENT_DATE - INTERVAL '1 week'
                         GROUP BY m.id)
 SELECT wr.id,
@@ -129,18 +129,19 @@ LIMIT 3;
 
 /* 5. Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс */
 CREATE OR REPLACE VIEW hall_seating_schema AS
-SELECT h.name    as hall_name,
-       s.id      as session,
-       s2.number as seat_number,
-       s2.row    as seat_row,
+SELECT h.name            as hall_name,
+       s.id              as session,
+       se.number         as seat_number,
+       se.row            as seat_row,
+       se.markup as seat_markup,
        CASE
            WHEN t.id IS NULL THEN true
            ELSE false
-           END   AS is_available
+           END           AS is_available
 FROM halls h
          JOIN sessions s ON h.id = s.hall_id
-         JOIN seats s2 ON h.id = s2.hall_id
-         LEFT JOIN tickets t ON s.id = t.session_id AND s2.id = t.seat_id;
+         JOIN seats se ON h.id = se.hall_id
+         LEFT JOIN tickets t ON s.id = t.session_id AND se.id = t.seat_id;
 
 /* Функция добавления записей */
 CREATE OR REPLACE FUNCTION populate_data(num_records INT) RETURNS INT AS
@@ -174,8 +175,8 @@ BEGIN
 
             LOOP
                 BEGIN
-                    INSERT INTO seats (hall_id, row, number)
-                    VALUES (hall_id, row_num, seat_num);
+                    INSERT INTO seats (hall_id, row, number, markup)
+                    VALUES (hall_id, row_num, seat_num, (ARRAY [10, 20, 30, 50])[floor(random() * 4 + 1)]);
                     EXIT;
                 EXCEPTION
                     WHEN unique_violation THEN
@@ -255,4 +256,3 @@ END
 $$ LANGUAGE plpgsql;
 
 SELECT populate_data(1000);
-
