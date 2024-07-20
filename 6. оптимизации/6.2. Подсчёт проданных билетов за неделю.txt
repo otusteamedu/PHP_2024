@@ -1,0 +1,12 @@
++----------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                          |
++----------------------------------------------------------------------------------------------------------------------------------------------------+
+|Aggregate  (cost=1765.62..1765.63 rows=1 width=8) (actual time=9.293..9.296 rows=1 loops=1)                                                         |
+|  ->  Bitmap Heap Scan on tickets t  (cost=378.63..1682.29 rows=33333 width=0) (actual time=2.142..6.707 rows=26656 loops=1)                        |
+|        Recheck Cond: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                                   |
+|        Heap Blocks: exact=637                                                                                                                      |
+|        ->  Bitmap Index Scan on idx_tickets_purchased_at_date  (cost=0.00..370.30 rows=33333 width=0) (actual time=1.967..1.967 rows=26656 loops=1)|
+|              Index Cond: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                               |
+|Planning Time: 1.306 ms                                                                                                                             |
+|Execution Time: 9.364 ms                                                                                                                            |
++----------------------------------------------------------------------------------------------------------------------------------------------------+

@@ -1,0 +1,25 @@
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                               |
++---------------------------------------------------------------------------------------------------------------------------------------------------------+
+|GroupAggregate  (cost=0.89..37630.84 rows=100000 width=68) (actual time=0.798..393.730 rows=99434 loops=1)                                               |
+|  Group Key: s.id                                                                                                                                        |
+|  ->  Nested Loop  (cost=0.89..27880.84 rows=500000 width=14) (actual time=0.416..270.933 rows=500356 loops=1)                                           |
+|        Join Filter: (h.id = s2.hall_id)                                                                                                                 |
+|        ->  Nested Loop  (cost=0.59..11522.59 rows=100000 width=18) (actual time=0.304..89.284 rows=100000 loops=1)                                      |
+|              ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..3343.29 rows=100000 width=14) (actual time=0.178..22.755 rows=100000 loops=1)|
+|              ->  Memoize  (cost=0.30..0.32 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=100000)                                               |
+|                    Cache Key: s.hall_id                                                                                                                 |
+|                    Cache Mode: logical                                                                                                                  |
+|                    Hits: 80133  Misses: 19867  Evictions: 0  Overflows: 0  Memory Usage: 2018kB                                                         |
+|                    ->  Index Only Scan using halls_pkey on halls h  (cost=0.29..0.31 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=19867)      |
+|                          Index Cond: (id = s.hall_id)                                                                                                   |
+|                          Heap Fetches: 0                                                                                                                |
+|        ->  Memoize  (cost=0.30..0.42 rows=5 width=8) (actual time=0.001..0.001 rows=5 loops=100000)                                                     |
+|              Cache Key: s.hall_id                                                                                                                       |
+|              Cache Mode: logical                                                                                                                        |
+|              Hits: 80133  Misses: 19867  Evictions: 0  Overflows: 0  Memory Usage: 5199kB                                                               |
+|              ->  Index Scan using idx_seats_hall_id on seats s2  (cost=0.29..0.41 rows=5 width=8) (actual time=0.001..0.003 rows=5 loops=19867)         |
+|                    Index Cond: (hall_id = s.hall_id)                                                                                                    |
+|Planning Time: 2.853 ms                                                                                                                                  |
+|Execution Time: 401.096 ms                                                                                                                               |
++---------------------------------------------------------------------------------------------------------------------------------------------------------+

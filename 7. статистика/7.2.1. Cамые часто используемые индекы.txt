@@ -1,0 +1,9 @@
++--------------+----------+-----------+
+|index_name    |table_name|usage_count|
++--------------+----------+-----------+
+|halls_pkey    |halls     |260173     |
+|movies_pkey   |movies    |100044     |
+|sessions_pkey |sessions  |100040     |
+|seats_pkey    |seats     |100036     |
+|customers_pkey|customers |100000     |
++--------------+----------+-----------+

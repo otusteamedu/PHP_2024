@@ -1,0 +1,29 @@
++--------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                            |
++--------------------------------------------------------------------------------------------------------------------------------------+
+|Nested Loop  (cost=93.93..361.19 rows=50 width=249) (actual time=1.766..6.135 rows=237 loops=1)                                       |
+|  ->  Nested Loop  (cost=93.78..358.69 rows=50 width=35) (actual time=1.634..5.786 rows=237 loops=1)                                  |
+|        ->  Hash Join  (cost=93.50..342.76 rows=50 width=29) (actual time=1.578..4.879 rows=237 loops=1)                              |
+|              Hash Cond: (s.hall_id = h.id)                                                                                           |
+|              ->  Hash Join  (cost=35.50..284.63 rows=50 width=29) (actual time=0.495..3.592 rows=237 loops=1)                        |
+|                    Hash Cond: (s.movie_id = m.id)                                                                                    |
+|                    ->  Seq Scan on sessions s  (cost=0.00..249.00 rows=50 width=16) (actual time=0.020..2.948 rows=237 loops=1)      |
+|                          Filter: (date(start_time) = CURRENT_DATE)                                                                   |
+|                          Rows Removed by Filter: 9763                                                                                |
+|                    ->  Hash  (cost=23.00..23.00 rows=1000 width=17) (actual time=0.416..0.416 rows=1000 loops=1)                     |
+|                          Buckets: 1024  Batches: 1  Memory Usage: 59kB                                                               |
+|                          ->  Seq Scan on movies m  (cost=0.00..23.00 rows=1000 width=17) (actual time=0.008..0.221 rows=1000 loops=1)|
+|              ->  Hash  (cost=33.00..33.00 rows=2000 width=8) (actual time=1.034..1.035 rows=2000 loops=1)                            |
+|                    Buckets: 2048  Batches: 1  Memory Usage: 95kB                                                                     |
+|                    ->  Seq Scan on halls h  (cost=0.00..33.00 rows=2000 width=8) (actual time=0.025..0.517 rows=2000 loops=1)        |
+|        ->  Index Scan using cinemas_pkey on cinemas c  (cost=0.28..0.32 rows=1 width=14) (actual time=0.003..0.003 rows=1 loops=237) |
+|              Index Cond: (id = h.cinema_id)                                                                                          |
+|  ->  Memoize  (cost=0.16..0.22 rows=1 width=222) (actual time=0.001..0.001 rows=1 loops=237)                                         |
+|        Cache Key: m.genre_id                                                                                                         |
+|        Cache Mode: logical                                                                                                           |
+|        Hits: 232  Misses: 5  Evictions: 0  Overflows: 0  Memory Usage: 1kB                                                           |
+|        ->  Index Scan using genres_pkey on genres g  (cost=0.15..0.21 rows=1 width=222) (actual time=0.026..0.026 rows=1 loops=5)    |
+|              Index Cond: (id = m.genre_id)                                                                                           |
+|Planning Time: 1.891 ms                                                                                                               |
+|Execution Time: 6.364 ms                                                                                                              |
++--------------------------------------------------------------------------------------------------------------------------------------+

@@ -1,0 +1,14 @@
++-----------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                             |
++-----------------------------------------------------------------------------------------------------------------------+
+|Hash Join  (cost=349.00..2836.31 rows=500 width=14) (actual time=9.360..30.086 rows=2353 loops=1)                      |
+|  Hash Cond: (s.movie_id = m.id)                                                                                       |
+|  ->  Seq Scan on sessions s  (cost=0.00..2486.00 rows=500 width=4) (actual time=0.030..19.720 rows=2353 loops=1)      |
+|        Filter: (date(start_time) = CURRENT_DATE)                                                                      |
+|        Rows Removed by Filter: 97647                                                                                  |
+|  ->  Hash  (cost=224.00..224.00 rows=10000 width=14) (actual time=9.255..9.256 rows=10000 loops=1)                    |
+|        Buckets: 16384  Batches: 1  Memory Usage: 586kB                                                                |
+|        ->  Seq Scan on movies m  (cost=0.00..224.00 rows=10000 width=14) (actual time=0.014..5.460 rows=10000 loops=1)|
+|Planning Time: 1.259 ms                                                                                                |
+|Execution Time: 30.300 ms                                                                                              |
++-----------------------------------------------------------------------------------------------------------------------+

@@ -1,0 +1,20 @@
++------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                          |
++------------------------------------------------------------------------------------------------------------------------------------+
+|HashAggregate  (cost=2010.81..2110.81 rows=10000 width=68) (actual time=35.965..37.038 rows=9925 loops=1)                           |
+|  Group Key: s.id                                                                                                                   |
+|  Batches: 1  Memory Usage: 1681kB                                                                                                  |
+|  ->  Hash Join  (cost=374.31..1135.81 rows=50000 width=14) (actual time=8.308..16.046 rows=49962 loops=1)                          |
+|        Hash Cond: (s.hall_id = h.id)                                                                                               |
+|        ->  Seq Scan on sessions s  (cost=0.00..174.00 rows=10000 width=14) (actual time=0.011..0.691 rows=10000 loops=1)           |
+|        ->  Hash  (cost=249.31..249.31 rows=10000 width=12) (actual time=8.280..8.282 rows=10000 loops=1)                           |
+|              Buckets: 16384  Batches: 1  Memory Usage: 558kB                                                                       |
+|              ->  Hash Join  (cost=58.00..249.31 rows=10000 width=12) (actual time=1.134..6.029 rows=10000 loops=1)                 |
+|                    Hash Cond: (s2.hall_id = h.id)                                                                                  |
+|                    ->  Seq Scan on seats s2  (cost=0.00..165.00 rows=10000 width=8) (actual time=0.005..1.178 rows=10000 loops=1)  |
+|                    ->  Hash  (cost=33.00..33.00 rows=2000 width=4) (actual time=1.118..1.119 rows=2000 loops=1)                    |
+|                          Buckets: 2048  Batches: 1  Memory Usage: 87kB                                                             |
+|                          ->  Seq Scan on halls h  (cost=0.00..33.00 rows=2000 width=4) (actual time=0.006..0.559 rows=2000 loops=1)|
+|Planning Time: 0.749 ms                                                                                                             |
+|Execution Time: 37.445 ms                                                                                                           |
++------------------------------------------------------------------------------------------------------------------------------------+

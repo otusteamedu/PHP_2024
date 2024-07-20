@@ -1,0 +1,16 @@
++----------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                    |
++----------------------------------------------------------------------------------------------------------------------------------------------+
+|Hash Join  (cost=357.17..1063.42 rows=500 width=14) (actual time=6.314..14.975 rows=2353 loops=1)                                             |
+|  Hash Cond: (s.movie_id = m.id)                                                                                                              |
+|  ->  Bitmap Heap Scan on sessions s  (cost=8.17..713.10 rows=500 width=4) (actual time=0.811..8.423 rows=2353 loops=1)                       |
+|        Recheck Cond: (date(start_time) = CURRENT_DATE)                                                                                       |
+|        Heap Blocks: exact=710                                                                                                                |
+|        ->  Bitmap Index Scan on idx_sessions_start_time_date  (cost=0.00..8.05 rows=500 width=0) (actual time=0.568..0.568 rows=2353 loops=1)|
+|              Index Cond: (date(start_time) = CURRENT_DATE)                                                                                   |
+|  ->  Hash  (cost=224.00..224.00 rows=10000 width=14) (actual time=5.353..5.354 rows=10000 loops=1)                                           |
+|        Buckets: 16384  Batches: 1  Memory Usage: 586kB                                                                                       |
+|        ->  Seq Scan on movies m  (cost=0.00..224.00 rows=10000 width=14) (actual time=0.025..3.077 rows=10000 loops=1)                       |
+|Planning Time: 5.128 ms                                                                                                                       |
+|Execution Time: 15.336 ms                                                                                                                     |
++----------------------------------------------------------------------------------------------------------------------------------------------+

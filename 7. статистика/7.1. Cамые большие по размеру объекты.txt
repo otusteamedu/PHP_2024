@@ -1,0 +1,12 @@
++-----------+----------+----------+------------+
+|object_name|total_size|table_size|indexes_size|
++-----------+----------+----------+------------+
+|customers  |18 MB     |7480 kB   |11 MB       |
+|tickets    |17 MB     |5096 kB   |12 MB       |
+|seats      |12 MB     |5160 kB   |7568 kB     |
+|sessions   |11 MB     |5888 kB   |5040 kB     |
+|halls      |1856 kB   |1024 kB   |832 kB      |
+|movies     |1360 kB   |992 kB    |368 kB      |
+|cinemas    |872 kB    |592 kB    |280 kB      |
+|genres     |56 kB     |8192 bytes|48 kB       |
++-----------+----------+----------+------------+

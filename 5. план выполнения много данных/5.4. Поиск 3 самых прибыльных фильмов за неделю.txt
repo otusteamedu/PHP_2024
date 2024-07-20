@@ -1,0 +1,31 @@
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                                |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+|Limit  (cost=9349.49..9349.50 rows=3 width=46) (actual time=103.369..103.376 rows=3 loops=1)                                                              |
+|  ->  Sort  (cost=9349.49..9374.49 rows=10000 width=46) (actual time=103.366..103.372 rows=3 loops=1)                                                     |
+|        Sort Key: (sum((s.price + (se.markup)::numeric))) DESC                                                                                            |
+|        Sort Method: top-N heapsort  Memory: 25kB                                                                                                         |
+|        ->  HashAggregate  (cost=9095.24..9220.24 rows=10000 width=46) (actual time=100.043..102.387 rows=9109 loops=1)                                   |
+|              Group Key: m.id                                                                                                                             |
+|              Batches: 1  Memory Usage: 3985kB                                                                                                            |
+|              ->  Hash Join  (cost=6230.00..8827.71 rows=26753 width=24) (actual time=55.105..89.334 rows=26656 loops=1)                                  |
+|                    Hash Cond: (t.seat_id = se.id)                                                                                                        |
+|                    ->  Hash Join  (cost=3335.00..5862.49 rows=26753 width=24) (actual time=19.700..44.931 rows=26656 loops=1)                            |
+|                          Hash Cond: (s.movie_id = m.id)                                                                                                  |
+|                          ->  Hash Join  (cost=2986.00..5443.23 rows=26753 width=14) (actual time=17.872..38.536 rows=26656 loops=1)                      |
+|                                Hash Cond: (t.session_id = s.id)                                                                                          |
+|                                ->  Seq Scan on tickets t  (cost=0.00..2387.00 rows=26753 width=8) (actual time=0.009..11.390 rows=26656 loops=1)         |
+|                                      Filter: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                       |
+|                                      Rows Removed by Filter: 73344                                                                                       |
+|                                ->  Hash  (cost=1736.00..1736.00 rows=100000 width=14) (actual time=17.583..17.585 rows=100000 loops=1)                   |
+|                                      Buckets: 131072  Batches: 1  Memory Usage: 5712kB                                                                   |
+|                                      ->  Seq Scan on sessions s  (cost=0.00..1736.00 rows=100000 width=14) (actual time=0.004..7.469 rows=100000 loops=1)|
+|                          ->  Hash  (cost=224.00..224.00 rows=10000 width=14) (actual time=1.775..1.776 rows=10000 loops=1)                               |
+|                                Buckets: 16384  Batches: 1  Memory Usage: 586kB                                                                           |
+|                                ->  Seq Scan on movies m  (cost=0.00..224.00 rows=10000 width=14) (actual time=0.010..0.817 rows=10000 loops=1)           |
+|                    ->  Hash  (cost=1645.00..1645.00 rows=100000 width=8) (actual time=35.365..35.366 rows=100000 loops=1)                                |
+|                          Buckets: 131072  Batches: 1  Memory Usage: 4931kB                                                                               |
+|                          ->  Seq Scan on seats se  (cost=0.00..1645.00 rows=100000 width=8) (actual time=0.034..17.288 rows=100000 loops=1)              |
+|Planning Time: 1.149 ms                                                                                                                                   |
+|Execution Time: 103.551 ms                                                                                                                                |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+

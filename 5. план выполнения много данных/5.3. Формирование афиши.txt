@@ -1,0 +1,29 @@
++-----------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                               |
++-----------------------------------------------------------------------------------------------------------------------------------------+
+|Nested Loop  (cost=927.44..3590.76 rows=500 width=251) (actual time=14.737..30.520 rows=2353 loops=1)                                    |
+|  ->  Nested Loop  (cost=927.28..3577.28 rows=500 width=37) (actual time=14.648..29.717 rows=2353 loops=1)                               |
+|        ->  Hash Join  (cost=927.00..3415.62 rows=500 width=30) (actual time=14.568..25.329 rows=2353 loops=1)                           |
+|              Hash Cond: (s.hall_id = h.id)                                                                                              |
+|              ->  Hash Join  (cost=349.00..2836.31 rows=500 width=30) (actual time=3.332..13.028 rows=2353 loops=1)                      |
+|                    Hash Cond: (s.movie_id = m.id)                                                                                       |
+|                    ->  Seq Scan on sessions s  (cost=0.00..2486.00 rows=500 width=16) (actual time=0.025..8.658 rows=2353 loops=1)      |
+|                          Filter: (date(start_time) = CURRENT_DATE)                                                                      |
+|                          Rows Removed by Filter: 97647                                                                                  |
+|                    ->  Hash  (cost=224.00..224.00 rows=10000 width=18) (actual time=3.194..3.195 rows=10000 loops=1)                    |
+|                          Buckets: 16384  Batches: 1  Memory Usage: 636kB                                                                |
+|                          ->  Seq Scan on movies m  (cost=0.00..224.00 rows=10000 width=18) (actual time=0.009..1.475 rows=10000 loops=1)|
+|              ->  Hash  (cost=328.00..328.00 rows=20000 width=8) (actual time=11.205..11.206 rows=20000 loops=1)                         |
+|                    Buckets: 32768  Batches: 1  Memory Usage: 1038kB                                                                     |
+|                    ->  Seq Scan on halls h  (cost=0.00..328.00 rows=20000 width=8) (actual time=0.034..6.002 rows=20000 loops=1)        |
+|        ->  Index Scan using cinemas_pkey on cinemas c  (cost=0.29..0.32 rows=1 width=15) (actual time=0.002..0.002 rows=1 loops=2353)   |
+|              Index Cond: (id = h.cinema_id)                                                                                             |
+|  ->  Memoize  (cost=0.16..0.18 rows=1 width=222) (actual time=0.000..0.000 rows=1 loops=2353)                                           |
+|        Cache Key: m.genre_id                                                                                                            |
+|        Cache Mode: logical                                                                                                              |
+|        Hits: 2348  Misses: 5  Evictions: 0  Overflows: 0  Memory Usage: 1kB                                                             |
+|        ->  Index Scan using genres_pkey on genres g  (cost=0.15..0.17 rows=1 width=222) (actual time=0.018..0.018 rows=1 loops=5)       |
+|              Index Cond: (id = m.genre_id)                                                                                              |
+|Planning Time: 2.313 ms                                                                                                                  |
+|Execution Time: 30.777 ms                                                                                                                |
++-----------------------------------------------------------------------------------------------------------------------------------------+
