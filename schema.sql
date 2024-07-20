@@ -112,7 +112,7 @@ WHERE DATE(s.start_time) = CURRENT_DATE;
 /* 4. Поиск 3 самых прибыльных фильмов за неделю */
 CREATE OR REPLACE VIEW most_profitable_movies_last_week AS
 WITH weekly_revenue AS (SELECT m.id,
-                               m.title                          AS movie_title,
+                               m.title                  AS movie_title,
                                SUM(s.price + se.markup) AS session_revenue
                         FROM tickets t
                                  JOIN sessions s ON t.session_id = s.id
@@ -129,19 +129,29 @@ LIMIT 3;
 
 /* 5. Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс */
 CREATE OR REPLACE VIEW hall_seating_schema AS
-SELECT h.name            as hall_name,
-       s.id              as session,
-       se.number         as seat_number,
-       se.row            as seat_row,
+SELECT h.name    as hall_name,
+       s.id      as session,
+       se.number as seat_number,
+       se.row    as seat_row,
        se.markup as seat_markup,
        CASE
            WHEN t.id IS NULL THEN true
            ELSE false
-           END           AS is_available
+           END   AS is_available
 FROM halls h
          JOIN sessions s ON h.id = s.hall_id
          JOIN seats se ON h.id = se.hall_id
          LEFT JOIN tickets t ON s.id = t.session_id AND se.id = t.seat_id;
+
+/* 6. Вывести диапазон миниальной и максимальной цены за билет на конкретный сеанс */
+CREATE OR REPLACE VIEW min_max_final_session_price AS
+SELECT s.id                     as session_id,
+       MIN(s2.markup + s.price) as min_final_price,
+       MAX(s2.markup + s.price) as max_final_price
+FROM sessions s
+         JOIN halls h on h.id = s.hall_id
+         JOIN seats s2 on h.id = s2.hall_id
+GROUP BY s.id;
 
 /* Функция добавления записей */
 CREATE OR REPLACE FUNCTION populate_data(num_records INT) RETURNS INT AS
