@@ -164,18 +164,6 @@ CREATE TABLE public.v_text (
 ALTER TABLE public.v_text OWNER TO postgres;
 
 --
--- Name: v_varchar; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.v_varchar (
-                                  value_id bigint NOT NULL,
-                                  value character varying(255) NOT NULL
-);
-
-
-ALTER TABLE public.v_varchar OWNER TO postgres;
-
---
 -- Name: values; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -196,8 +184,8 @@ CREATE VIEW public.marketing AS
 SELECT m.title,
        a.name AS attribute_name,
        t.name AS attribute_type_name,
-       COALESCE((vb.value)::text, (vd.value)::text, (d.value)::text, (vi.value)::text, vt.value, (vv.value)::text) AS value
-FROM (((((((((public."values" v
+       COALESCE((vb.value)::text, (vd.value)::text, (d.value)::text, (vi.value)::text, vt.value) AS value
+FROM ((((((((public."values" v
     LEFT JOIN public.movies m ON ((v.movie_id = m.id)))
     LEFT JOIN public.attributes a ON ((v.attr_id = a.id)))
     LEFT JOIN public.attributes_types t ON ((a.attr_type_id = t.id)))
@@ -206,7 +194,6 @@ FROM (((((((((public."values" v
     LEFT JOIN public.v_decimal d ON ((v.id = d.value_id)))
     LEFT JOIN public.v_integer vi ON ((v.id = vi.value_id)))
     LEFT JOIN public.v_text vt ON ((v.id = vt.value_id)))
-    LEFT JOIN public.v_varchar vv ON ((v.id = vv.value_id)))
 WHERE ((m.deleted_at IS NULL) AND (a.deleted_at IS NULL) AND (t.deleted_at IS NULL));
 
 
@@ -420,14 +407,6 @@ ALTER TABLE ONLY public.v_text
 
 
 --
--- Name: v_varchar v_varchar_value_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.v_varchar
-    ADD CONSTRAINT v_varchar_value_id_foreign FOREIGN KEY (value_id) REFERENCES public."values"(id);
-
-
---
 -- Name: values values_attr_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -446,3 +425,4 @@ ALTER TABLE ONLY public."values"
 --
 -- PostgreSQL database dump complete
 --
+

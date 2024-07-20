@@ -96,12 +96,6 @@ INSERT INTO public.v_integer VALUES (3, 1965);
 
 
 --
--- Data for Name: v_varchar; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
-
---
 -- Name: attributes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
