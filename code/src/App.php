@@ -8,7 +8,6 @@ use Exception;
 
 class App
 {
-
     /**
      * Запуск приложения
      * @throws Exception
@@ -26,10 +25,8 @@ class App
             'client' => new Client($socket, $configManager),
             'server' => new Server($socket, $configManager),
             default => throw new Exception('Укажите тип приложения - client или server')
-
         };
 
         $app->run();
-
     }
 }

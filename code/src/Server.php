@@ -46,11 +46,8 @@ class Server
                     break;
                 }
                 $this->socket->write($connectionSocket, "Received $length bytes");
-
             }
-
         } while (true);
         $this->socket->close($this->socket->unixSocket);
     }
-
 }

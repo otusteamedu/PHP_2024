@@ -1,4 +1,5 @@
 <?php
+
 return [
     'socket_file' => [
         getenv('SOCKET_FILE'),

@@ -6,7 +6,10 @@ use Exception;
 
 class ConfigManager
 {
-    private mixed $configs;
+    /**
+     * @var array
+     */
+    private array $configs;
 
     /**
      * @throws Exception
@@ -24,10 +27,9 @@ class ConfigManager
     public function get(string $key): mixed
     {
         $value = $this->configs[$key][0] ?: $this->configs[$key][1] ?: null;
-        if(!$value){
-            throw new Exception('ConfigManager Error: config not set for key '. $key );
+        if (!$value) {
+            throw new Exception('ConfigManager Error: config not set for key ' . $key);
         }
-        return  $value;
+        return $value;
     }
-
 }

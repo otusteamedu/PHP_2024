@@ -21,7 +21,6 @@ class Client
     {
         $this->socket = $socket;
         $this->configManager = $configManager;
-
     }
 
     /**
@@ -51,5 +50,4 @@ class Client
         }
         $this->socket->close($this->socket->unixSocket);
     }
-
 }
