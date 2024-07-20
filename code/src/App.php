@@ -8,27 +8,27 @@ use Exception;
 
 class App
 {
-    public function __construct()
-    {
-    }
 
     /**
+     * Запуск приложения
      * @throws Exception
      */
-    public function run()
+    public function run(): void
     {
         if (!extension_loaded('sockets')) {
             throw new Exception('Установите sockets ext.');
         }
         $type = $_SERVER['argv'][1] ?? null;
         $socket = new Socket();
+        $configManager = new ConfigManager();
 
         $app = match ($type) {
-            'client' => new Client($socket),
-            'server' => new Server($socket),
-            'default' => throw new Exception('Укажите тип приложения - client или server')
+            'client' => new Client($socket, $configManager),
+            'server' => new Server($socket, $configManager),
+            default => throw new Exception('Укажите тип приложения - client или server')
 
         };
+
         $app->run();
 
     }

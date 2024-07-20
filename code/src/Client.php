@@ -8,28 +8,45 @@ class Client
      * @var Socket
      */
     private Socket $socket;
+    /**
+     * @var ConfigManager
+     */
+    private mixed $configManager;
 
-    public function __construct(Socket $socket)
+    /**
+     * @param Socket $socket
+     * @param ConfigManager $configManager
+     */
+    public function __construct(Socket $socket, ConfigManager $configManager)
     {
         $this->socket = $socket;
+        $this->configManager = $configManager;
 
     }
 
     /**
      * @throws \Exception
      */
-    public function run(){
-
+    public function run(): void
+    {
         $this->socket->create();
-        //TODO to config
-        $server_side_sock = '/code/src/socket/socket.sock';
-        $this->socket->connect($server_side_sock);
+        $this->socket->connect($this->configManager->get('socket_file'));
+
         while (true) {
+            echo 'Input message' . PHP_EOL;
+
             $message = fgets(STDIN);
             $this->socket->write($this->socket->unixSocket, $message);
 
-            if ($message === 'exit') {
+            $confirmation = $this->socket->read(
+                $this->socket->unixSocket,
+                $this->configManager->get('socket_length')
+            );
+
+            if (trim($message) === 'exit') {
                 break;
+            } else {
+                echo 'Server confirmed: ' . $confirmation . PHP_EOL;
             }
         }
         $this->socket->close($this->socket->unixSocket);

@@ -2,6 +2,8 @@
 
 namespace Naimushina\Chat;
 
+use Exception;
+
 class Server
 {
     /**
@@ -9,29 +11,46 @@ class Server
      */
     private Socket $socket;
 
-    public function __construct(Socket $socket)
+    /**
+     * @var ConfigManager
+     */
+    private mixed $configManager;
+
+    public function __construct(Socket $socket, $configManager)
     {
         $this->socket = $socket;
-
+        $this->configManager = $configManager;
     }
 
-    public function run()
+    /**
+     * @throws Exception
+     */
+    public function run(): void
     {
+        $file = $this->configManager->get('socket_file');
+
+        $this->socket->clear($file);
         $this->socket->create();
-        //TODO to config
-        $server_side_sock = '/code/src/socket/socket.sock';
-        $this->socket->bind($server_side_sock);
-        $this->socket->listen();
-        echo 'created connection';
+        $this->socket->bind($file);
+        $this->socket->listen($this->configManager->get('socket_max_connection'));
+        $connectionSocket = $this->socket->accept();
+
+        echo 'ready to receive' . PHP_EOL;
+
         do {
-            $connectionSocket = $this->socket->accept();
-            //todo length to config
-            $message = $this->socket->read($connectionSocket, 2048);
-            echo $message;
-           $this->socket->write($connectionSocket, 'received');
+            [$message, $length] = $this->socket->receive($connectionSocket);
+            $message = trim($message);
+            if ($message) {
+                echo 'Received message: ' . $message . PHP_EOL;
+                if ($message == 'exit') {
+                    break;
+                }
+                $this->socket->write($connectionSocket, "Received $length bytes");
+
+            }
 
         } while (true);
-
+        $this->socket->close($this->socket->unixSocket);
     }
 
 }

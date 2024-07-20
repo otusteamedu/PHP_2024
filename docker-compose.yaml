@@ -11,9 +11,8 @@ services:
       dockerfile: Dockerfile
     image: chat/php
     container_name: server
-    command: ["php", "./app.php", "server"]
     volumes:
-       - ./code:/data/mysite.local
+      - ./code:/data/mysite.local
     env_file: .env
     networks:
       - app-network
@@ -24,7 +23,6 @@ services:
       dockerfile: Dockerfile
     image: chat/php
     container_name: client
-    command: ["php", "src/app.php", "client"]
     volumes:
       - ./code:/data/mysite.local
     env_file: .env
