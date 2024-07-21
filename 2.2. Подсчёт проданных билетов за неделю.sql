@@ -23,7 +23,7 @@ WHERE DATE(t.purchased_at) >= CURRENT_DATE - INTERVAL '1 week';
     +---------------------------------------------------------------------------------------------------------------+
     |Aggregate  (cost=272.33..272.34 rows=1 width=8) (actual time=2.669..2.670 rows=1 loops=1)                      |
     |  ->  Seq Scan on tickets t  (cost=0.00..264.00 rows=3333 width=0) (actual time=0.012..2.517 rows=2703 loops=1)|
-    |        Filter: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                    |
+    |        Filter: (DATE(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                    |
     |        Rows Removed by Filter: 7297                                                                           |
     |Planning Time: 0.072 ms                                                                                        |
     |Execution Time: 2.689 ms                                                                                       |
@@ -38,9 +38,34 @@ WHERE DATE(t.purchased_at) >= CURRENT_DATE - INTERVAL '1 week';
     +-------------------------------------------------------------------------------------------------------------------+
     |Aggregate  (cost=2720.33..2720.34 rows=1 width=8) (actual time=30.548..30.549 rows=1 loops=1)                      |
     |  ->  Seq Scan on tickets t  (cost=0.00..2637.00 rows=33333 width=0) (actual time=0.080..28.957 rows=26646 loops=1)|
-    |        Filter: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                        |
+    |        Filter: (DATE(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                        |
     |        Rows Removed by Filter: 73354                                                                              |
     |Planning Time: 0.375 ms                                                                                            |
     |Execution Time: 30.637 ms                                                                                          |
     +-------------------------------------------------------------------------------------------------------------------+
+ */
+
+/**
+    Оптимизация засчет создания функцонального индекса:
+
+    - Стоимость уменьшилась с 2720п до 1766п.
+    - Время с 31мс до 10мс.
+ */
+CREATE INDEX idx_tickets_purchased_date ON tickets((DATE(purchased_at)));
+
+/**
+    План выполнения ~ 100.000 данных (после оптимизации)
+
+    +-------------------------------------------------------------------------------------------------------------------------------------------------+
+    |QUERY PLAN                                                                                                                                       |
+    +-------------------------------------------------------------------------------------------------------------------------------------------------+
+    |Aggregate  (cost=1765.62..1765.63 rows=1 width=8) (actual time=9.837..9.839 rows=1 loops=1)                                                      |
+    |  ->  Bitmap Heap Scan on tickets t  (cost=378.63..1682.29 rows=33333 width=0) (actual time=3.105..7.505 rows=26646 loops=1)                     |
+    |        Recheck Cond: (DATE(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                                |
+    |        Heap Blocks: exact=637                                                                                                                   |
+    |        ->  Bitmap Index Scan on idx_tickets_purchased_date  (cost=0.00..370.30 rows=33333 width=0) (actual time=3.000..3.000 rows=26646 loops=1)|
+    |              Index Cond: (DATE(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                            |
+    |Planning Time: 1.591 ms                                                                                                                          |
+    |Execution Time: 9.946 ms                                                                                                                         |
+    +-------------------------------------------------------------------------------------------------------------------------------------------------+
  */

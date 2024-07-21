@@ -49,7 +49,7 @@ LIMIT 3;
     |                          ->  Hash Join  (cost=299.00..571.75 rows=3333 width=14) (actual time=3.525..7.914 rows=2703 loops=1)                         |
     |                                Hash Cond: (t.session_id = s.id)                                                                                       |
     |                                ->  Seq Scan on tickets t  (cost=0.00..264.00 rows=3333 width=8) (actual time=0.013..3.062 rows=2703 loops=1)          |
-    |                                      Filter: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                              |
+    |                                      Filter: (DATE(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                              |
     |                                      Rows Removed by Filter: 7297                                                                                     |
     |                                ->  Hash  (cost=174.00..174.00 rows=10000 width=14) (actual time=3.496..3.497 rows=10000 loops=1)                      |
     |                                      Buckets: 16384  Batches: 1  Memory Usage: 597kB                                                                  |
@@ -85,7 +85,7 @@ LIMIT 3;
     |                          ->  Hash Join  (cost=2986.00..5710.50 rows=33333 width=14) (actual time=18.639..47.609 rows=26646 loops=1)                      |
     |                                Hash Cond: (t.session_id = s.id)                                                                                          |
     |                                ->  Seq Scan on tickets t  (cost=0.00..2637.00 rows=33333 width=8) (actual time=0.019..17.550 rows=26646 loops=1)         |
-    |                                      Filter: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                 |
+    |                                      Filter: (DATE(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                 |
     |                                      Rows Removed by Filter: 73354                                                                                       |
     |                                ->  Hash  (cost=1736.00..1736.00 rows=100000 width=14) (actual time=18.363..18.363 rows=100000 loops=1)                   |
     |                                      Buckets: 131072  Batches: 1  Memory Usage: 5712kB                                                                   |
@@ -99,4 +99,50 @@ LIMIT 3;
     |Planning Time: 1.443 ms                                                                                                                                   |
     |Execution Time: 110.851 ms                                                                                                                                |
     +----------------------------------------------------------------------------------------------------------------------------------------------------------+
+ */
+
+/**
+    Оптимизация засчет создания функцонального индекса:
+
+    - Стоимость уменьшилась с 9900п до 8945п.
+    - Время не изменилось.
+ */
+CREATE INDEX idx_tickets_purchased_date ON tickets ((DATE(purchased_at)));
+
+/**
+    План выполнения ~ 100.000 данных (после оптимизации)
+
+    +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    |QUERY PLAN                                                                                                                                                                     |
+    +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+    |Limit  (cost=8945.40..8945.40 rows=3 width=46) (actual time=112.144..112.148 rows=3 loops=1)                                                                                   |
+    |  ->  Sort  (cost=8945.40..8970.40 rows=10000 width=46) (actual time=112.143..112.146 rows=3 loops=1)                                                                          |
+    |        Sort Key: (sum((s.price + (se.markup)::numeric))) DESC                                                                                                                 |
+    |        Sort Method: top-N heapsort  Memory: 25kB                                                                                                                              |
+    |        ->  HashAggregate  (cost=8691.15..8816.15 rows=10000 width=46) (actual time=109.580..111.299 rows=8664 loops=1)                                                        |
+    |              Group Key: m.id                                                                                                                                                  |
+    |              Batches: 1  Memory Usage: 3729kB                                                                                                                                 |
+    |              ->  Hash Join  (cost=6791.63..8357.82 rows=33333 width=24) (actual time=74.849..100.054 rows=26646 loops=1)                                                      |
+    |                    Hash Cond: (t.seat_id = se.id)                                                                                                                             |
+    |                    ->  Hash Join  (cost=3713.63..5192.32 rows=33333 width=24) (actual time=34.827..52.702 rows=26646 loops=1)                                                 |
+    |                          Hash Cond: (s.movie_id = m.id)                                                                                                                       |
+    |                          ->  Hash Join  (cost=3364.63..4755.79 rows=33333 width=14) (actual time=31.497..44.605 rows=26646 loops=1)                                           |
+    |                                Hash Cond: (t.session_id = s.id)                                                                                                               |
+    |                                ->  Bitmap Heap Scan on tickets t  (cost=378.63..1682.29 rows=33333 width=8) (actual time=0.741..5.738 rows=26646 loops=1)                     |
+    |                                      Recheck Cond: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                                |
+    |                                      Heap Blocks: exact=637                                                                                                                   |
+    |                                      ->  Bitmap Index Scan on idx_tickets_purchased_date  (cost=0.00..370.30 rows=33333 width=0) (actual time=0.663..0.663 rows=26646 loops=1)|
+    |                                            Index Cond: (date(purchased_at) >= (CURRENT_DATE - '7 days'::interval))                                                            |
+    |                                ->  Hash  (cost=1736.00..1736.00 rows=100000 width=14) (actual time=29.973..29.973 rows=100000 loops=1)                                        |
+    |                                      Buckets: 131072  Batches: 1  Memory Usage: 5712kB                                                                                        |
+    |                                      ->  Seq Scan on sessions s  (cost=0.00..1736.00 rows=100000 width=14) (actual time=0.014..12.980 rows=100000 loops=1)                    |
+    |                          ->  Hash  (cost=224.00..224.00 rows=10000 width=14) (actual time=3.243..3.244 rows=10000 loops=1)                                                    |
+    |                                Buckets: 16384  Batches: 1  Memory Usage: 585kB                                                                                                |
+    |                                ->  Seq Scan on movies m  (cost=0.00..224.00 rows=10000 width=14) (actual time=0.018..1.746 rows=10000 loops=1)                                |
+    |                    ->  Hash  (cost=1828.00..1828.00 rows=100000 width=8) (actual time=39.852..39.852 rows=100000 loops=1)                                                     |
+    |                          Buckets: 131072  Batches: 1  Memory Usage: 4931kB                                                                                                    |
+    |                          ->  Seq Scan on seats se  (cost=0.00..1828.00 rows=100000 width=8) (actual time=0.049..18.391 rows=100000 loops=1)                                   |
+    |Planning Time: 0.957 ms                                                                                                                                                        |
+    |Execution Time: 112.349 ms                                                                                                                                                     |
+    +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
  */

@@ -1,16 +1,12 @@
 /**
     Первоначальный запрос
  */
-SELECT h.name    as hall_name,
-       s.id      as session,
-       se.number as seat_number,
-       se.row    as seat_row,
-       se.markup as seat_markup,
-       CASE
-           WHEN t.id IS NULL THEN true
-           ELSE false
-           END
-                 AS is_available
+SELECT h.name         as hall_name,
+       s.id           as session,
+       se.number      as seat_number,
+       se.row         as seat_row,
+       se.markup      as seat_markup,
+       (t.id IS NULL) AS is_available
 FROM halls h
          JOIN sessions s ON h.id = s.hall_id
          JOIN seats se ON h.id = se.hall_id
@@ -88,4 +84,8 @@ FROM halls h
     |Planning Time: 0.955 ms                                                                                                                 |
     |Execution Time: 199.713 ms                                                                                                              |
     +----------------------------------------------------------------------------------------------------------------------------------------+
+ */
+
+/**
+    Не смог найти оптмимальную оптмизацию.
  */
