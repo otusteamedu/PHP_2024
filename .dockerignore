@@ -1,0 +1,24 @@
+# PHPStorm
+.idea
+
+# Git
+.git
+
+# composer
+vendor
+
+# Runtime
+backend/runtime
+common/runtime
+frontend/runtime
+console/runtime
+
+# Assets
+backend/web/assets
+frontend/web/assets
+
+# Minify
+frontend/web/minify
+
+# Sitemap
+/frontend/web/sitemap*
