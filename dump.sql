@@ -19,7 +19,8 @@ VALUES ('Critic Review', 1),
        ('Ticket Sales Start Date', 4),
        ('TV Ad Launch Date', 4),
        ('IMDB Rating', 5),
-       ('Critic Rating', 5);
+       ('Critic Rating', 5),
+       ('View Count', 1);
 
 INSERT INTO movie_attribute_value (movie_id, movie_attribute_id, value_text)
 VALUES (1, 1, 'An iconic sci-fi film.'),
@@ -55,6 +56,10 @@ VALUES (1, 9, 8.1),
        (1, 10, 7.9),
        (2, 10, 8.4);
 
+INSERT INTO movie_attribute_value (movie_id, movie_attribute_id, value_int)
+VALUES (1, 11, 100000),
+       (2, 11, 50000);
+
 CREATE VIEW service_data AS
 SELECT m.name AS movie,
        a.name AS task,
@@ -83,7 +88,8 @@ SELECT m.name  AS movie,
                v.value_boolean::TEXT,
                v.value_date::TEXT,
                v.value_timestamp::TEXT,
-               v.value_float::TEXT
+               v.value_float::TEXT,
+               v.value_int::TEXT
        )       AS value
 FROM movies m
          JOIN movie_attribute_value v ON m.id = v.movie_id
