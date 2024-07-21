@@ -21,5 +21,4 @@ class ValidateFormAttribute
     {
         return $this->formNumArgs;
     }
-
 }

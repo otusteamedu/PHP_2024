@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'homeUrl'=>'/',
+    'homeUrl' => '/',
     'controllerNamespace' => 'api\controllers',
-    'defaultRoute'=>'site/index',
+    'defaultRoute' => 'site/index',
 ];

@@ -10,8 +10,8 @@ use JetBrains\PhpStorm\Pure;
 class ErrorResultEntity extends ResultEntity
 {
     #[Pure]
- public function __construct(ErrorFormResponseInterface $errorFormResponse)
- {
-     parent::__construct([], $errorFormResponse);
- }
+    public function __construct(ErrorFormResponseInterface $errorFormResponse)
+    {
+        parent::__construct([], $errorFormResponse);
+    }
 }
