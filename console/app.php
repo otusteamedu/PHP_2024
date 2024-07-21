@@ -12,7 +12,7 @@ try {
         $config = include __DIR__ . "/../config.php";
     }
 
-    $app = \App\Infrastructure\Main\Console\Application::initApplication($config);
+    $app = \App\old\Infrastructure\Main\Console\Application::initApplication($config);
 
     $options = getopt('', [
         'action::'

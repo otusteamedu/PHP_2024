@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y \
     libmemcached-dev \
     libssl-dev \
     && pecl install memcached \
+    && pecl install redis \
+    && docker-php-ext-enable redis\
     && docker-php-ext-enable memcached
 
 # Настройка локали
@@ -21,7 +23,6 @@ ENV LANG ru_RU.UTF-8
 ENV LC_ALL ru_RU.UTF-8
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/bin --filename=composer --quiet
-
 
 COPY general.ini /usr/local/etc/php/conf.d/general.ini
 
