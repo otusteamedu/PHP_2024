@@ -1,6 +1,5 @@
 <?php
 
-
 use Naimushina\Verificator\App;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -9,7 +8,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 $app = new App();
 
 try {
-    foreach ($app->run() as $message){
+    foreach ($app->run() as $message) {
         echo $message;
     };
 } catch (Exception $e) {

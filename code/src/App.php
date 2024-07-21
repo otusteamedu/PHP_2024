@@ -50,5 +50,4 @@ class App
             return $checkType . ' не пройдена' . PHP_EOL;
         }
     }
-
 }

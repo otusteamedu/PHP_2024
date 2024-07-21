@@ -27,8 +27,8 @@ class EmailVerificator
      */
     public function checkByDns(string $email): bool
     {
-        $emailBreakDown = explode("@",$email);
+        $emailBreakDown = explode("@", $email);
         $domain = array_pop($emailBreakDown);
-        return  $domain && checkdnsrr($domain);
+        return $domain && checkdnsrr($domain);
     }
 }
