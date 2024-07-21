@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Naimushina\Chat;
+namespace Naimushina\Verificator;
 
 use Exception;
 
@@ -12,21 +12,43 @@ class App
      * Запуск приложения
      * @throws Exception
      */
-    public function run(): void
+    public function run(): \Generator
     {
-        if (!extension_loaded('sockets')) {
-            throw new Exception('Установите sockets ext.');
+        yield 'Приложение проверки email адресов.' . PHP_EOL;
+        yield 'Введите email адреса через запятую' . PHP_EOL;
+
+        $input = trim(fgets(STDIN));
+        $verificator = new EmailVerificator();
+        $emails = explode(',', $input);
+
+        foreach ($emails as $email) {
+            if (!$email) {
+                break;
+            }
+
+            $correctFormat = $verificator->checkByRegEx($email);
+            $dnsCorrect = $verificator->checkByDns($email);
+
+            yield "адрес $email" . PHP_EOL;
+            yield $this->showResult($correctFormat, 'Валидация по регулярным выражениям');
+            yield $this->showResult($dnsCorrect, 'Проверка DNS mx записи');
         }
-        $type = $_SERVER['argv'][1] ?? null;
-        $socket = new Socket();
-        $configManager = new ConfigManager();
-
-        $app = match ($type) {
-            'client' => new Client($socket, $configManager),
-            'server' => new Server($socket, $configManager),
-            default => throw new Exception('Укажите тип приложения - client или server')
-        };
-
-        $app->run();
     }
+
+
+    /**
+     * Вывод информации о результатах проверки
+     * @param bool $result
+     * @param string $checkType
+     * @return string
+     */
+    private function showResult(bool $result, string $checkType): string
+    {
+        if ($result) {
+            return $checkType . ' пройдена успешно' . PHP_EOL;
+        } else {
+            return $checkType . ' не пройдена' . PHP_EOL;
+        }
+    }
+
 }

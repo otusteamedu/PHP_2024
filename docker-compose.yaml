@@ -5,31 +5,18 @@ networks:
   app-network:
     driver: bridge
 services:
-  server:
+  verification:
     build:
       context: docker/php
       dockerfile: Dockerfile
-    image: chat/php
-    container_name: server
+    image: verification/php
+    container_name: verification
     volumes:
       - ./code:/data/mysite.local
     env_file: .env
     networks:
       - app-network
 
-  client:
-    build:
-      context: docker/php
-      dockerfile: Dockerfile
-    image: chat/php
-    container_name: client
-    volumes:
-      - ./code:/data/mysite.local
-    env_file: .env
-    networks:
-      - app-network
-    depends_on:
-      - server
 
 
 
