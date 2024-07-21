@@ -10,6 +10,16 @@ LIMIT 5;
 
 /**
     Таблица с результатами ~ 100.000 данных (до оптимизации)
+
+    +------------------------------+----------+-----------+
+    |index_name                    |table_name|usage_count|
+    +------------------------------+----------+-----------+
+    |tickets_pkey                  |tickets   |0          |
+    |customers_email_key           |customers |0          |
+    |tickets_session_id_seat_id_key|tickets   |18         |
+    |genres_pkey                   |genres    |1036       |
+    |cinemas_pkey                  |cinemas   |41033      |
+    +------------------------------+----------+-----------+
  */
 
 /**
