@@ -1,5 +1,54 @@
-.idea/
-/vendor/
-.DS_Store
-.AppleDouble
-.LSOverride
+# Env
+.env
+
+# composer
+/vendor
+composer.phar
+
+# IDE
+.idea
+
+# windows thumbnail cache
+Thumbs.db
+
+# images
+/frontend/web/source/
+
+# minify
+/frontend/web/minify
+
+#sitemaps
+/backend/web/assets*
+/frontend/web/assets*
+
+# OpenServer
+frontend/web/Nginx-*vhost.conf
+backend/web/Nginx-*vhost.conf
+
+#click-house backups
+frontend/web/ch-backup
+
+/data
+/frontend/web/sitemaps/*
+/var/
+/next/.next/
+/next/node_modules/
+
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+/psalm-report.html
+
+*LocalTest.php

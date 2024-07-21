@@ -1,0 +1,124 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api",
+        "version": "0.1"
+    },
+    "paths": {
+        "/v1/send/tasks": {
+            "get": {
+                "tags": [
+                    "send"
+                ],
+                "summary": "Add tasks",
+                "operationId": "df6990d940ad7c229f876f81a3e75d77",
+                "parameters": [
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "73453322222"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success result"
+                    },
+                    "422": {
+                        "description": "Error: Data Validation Failed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ErrorModel"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/send/check-tasks": {
+            "get": {
+                "tags": [
+                    "send"
+                ],
+                "summary": "Add tasks",
+                "operationId": "03e4e6bae52c2ac92750c811457d64e6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success result"
+                    },
+                    "422": {
+                        "description": "Error: Data Validation Failed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ErrorModel"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ErrorModel": {
+                "required": [
+                    "field",
+                    "message"
+                ],
+                "properties": {
+                    "field": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "AddTasksForm": {
+                "title": "AddTasksForm",
+                "properties": {
+                    "phone": {
+                        "title": "Мобильный номер телефона",
+                        "type": "string",
+                        "default": "73453322222"
+                    }
+                },
+                "type": "object"
+            },
+            "CheckStatusForm": {
+                "title": "AddTasksForm",
+                "properties": {
+                    "id": {
+                        "title": "Id",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}
