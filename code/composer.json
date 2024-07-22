@@ -1,0 +1,16 @@
+{
+  "name": "kuz/chat-socket",
+  "description": "Chats use sockets",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Kuz\\ChatSocket\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Kuzmin Ivan"
+    }
+  ],
+  "require": {}
+}
