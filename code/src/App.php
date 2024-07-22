@@ -27,11 +27,15 @@ class App
             }
 
             $correctFormat = $verificator->checkByRegEx($email);
-            $dnsCorrect = $verificator->checkByDns($email);
+
 
             yield "адрес $email" . PHP_EOL;
             yield $this->showResult($correctFormat, 'Валидация по регулярным выражениям');
-            yield $this->showResult($dnsCorrect, 'Проверка DNS mx записи');
+            if($correctFormat){
+                $dnsCorrect = $verificator->checkByDns($email);
+                yield $this->showResult($dnsCorrect, 'Проверка DNS mx записи');
+            }
+
         }
     }
 
@@ -44,10 +48,7 @@ class App
      */
     private function showResult(bool $result, string $checkType): string
     {
-        if ($result) {
-            return $checkType . ' пройдена успешно' . PHP_EOL;
-        } else {
-            return $checkType . ' не пройдена' . PHP_EOL;
-        }
+        $message = $result ? ' пройдена успешно' :  ' не пройдена';
+        return $checkType . $message . PHP_EOL;
     }
 }
