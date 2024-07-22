@@ -10,40 +10,25 @@ class App
   {
     $settings = parse_ini_file('/data/config/config.ini');
     $serverName = $_SERVER['argv'][1];
+    $serverSideSock = "/data/sockets/server.sock";
+    $clientSideSock = "/data/sockets/client.sock";
 
     try {
-      $server_side_sock = $settings["serverSocket"];
-      $client_side_sock =   $settings["clientSocket"];
-
-      $socket = self::createSocket($serverName);
-
       if ($serverName == "server") {
-        Server::sendRequest($socket, $server_side_sock, $client_side_sock);
+        $socket = new Server($serverSideSock);
+        $serverFrom = $clientSideSock;
       } else if ($serverName == "client") {
-        Client::acceptQuery($socket, $server_side_sock, $client_side_sock);
+        $socket = new Client($clientSideSock);
+        $serverFrom = $serverSideSock;
       } else {
         new Exception("No found name");
       }
+
+      $socket->createSocket();
+      $socket->socketBind();
+      $socket->startSocket($serverFrom);
     } catch (Exception $error) {
       echo $error;
     }
-  }
-
-  private static function createSocket($serverName)
-  {
-    if ($serverName != "server"  && $serverName != "client") {
-      throw new Exception("Incorrectly specified name server");
-    }
-    if (!extension_loaded('sockets')) {
-      throw new Exception("The sockets extension is not loaded");
-    }
-
-    $socket = socket_create(AF_UNIX, SOCK_DGRAM, 0);
-
-    if (!$socket) {
-      throw new Exception('Unable to create AF_UNIX socket');
-    }
-
-    return $socket;
   }
 }

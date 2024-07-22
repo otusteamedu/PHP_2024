@@ -2,24 +2,17 @@
 
 namespace Kuz\ChatSocket\Logic;
 
-use Exception;
-
-class Server
+class Server extends Socket
 {
-  static function sendRequest($socket, $server_side_sock, $client_side_sock)
+  function startSocket($serverFrom)
   {
-    SocketService::socketBind($socket, $server_side_sock);
-
-    while (1) // server never exits
-    {
+    while (1) {
       echo "Ready to receive...\n";
-      $buf = SocketService::receiveQuery($socket);
+      $buf = parent::receiveQuery();
       fwrite(STDOUT, $buf);
       $len = strlen($buf);  // process client query here
       $answer = "Received " . $len . " bytes\n";
-      SocketService::sendMessage($socket, $answer, $client_side_sock);
-
-      echo "Request processed\n";
+      parent::sendMessage($answer, $serverFrom);
     }
   }
 }
