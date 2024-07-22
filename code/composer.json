@@ -1,0 +1,12 @@
+{
+    "name": "naimushina/verificator",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Naimushina\\Verificator\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0"
+    }
+}
