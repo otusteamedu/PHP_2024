@@ -1,20 +1,53 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http;
 
+use App\Http\Exceptions\BadRequestHttpException;
+
+/**
+ * Handle requests.
+ */
 class Request
 {
-    protected array $request;
+    /**
+     * @var string The request path
+     */
+    public string $path;
 
+    /**
+     * @var string The request method
+     */
+    public string $method;
+
+    /**
+     * @var array The query parameters
+     */
+    public array $queryParams = [];
+
+    /**
+     * @var array The body parameters
+     */
+    public array $bodyParams = [];
+
+    /**
+     * Initializes a new Request instance.
+     * @throws BadRequestHttpException
+     */
     public function __construct()
     {
-        $this->request = $_REQUEST;
-    }
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-    public function get(string $key, $default = null)
-    {
-        return $this->request[$key] ?? $default;
+        if ($queryParams = $_GET) {
+            $this->queryParams = $queryParams;
+        }
+
+        if ($bodyParams = file_get_contents('php://input')) {
+            if (!json_validate($bodyParams)) {
+                throw new BadRequestHttpException('Invalid json provided.');
+            }
+
+            $this->bodyParams = json_decode($bodyParams, true);
+        }
     }
 }

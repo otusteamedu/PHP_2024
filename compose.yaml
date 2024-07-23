@@ -1,15 +1,9 @@
 version: '3.8'
 
 services:
-  balancer:
-    build:
-      context: ./docker/balancer
+  nginx:
     ports:
       - "80:80"
-    networks:
-      - app
-
-  nginx1:
     build:
       context: ./docker/nginx
     volumes:
@@ -17,27 +11,7 @@ services:
     networks:
       - app
 
-  nginx2:
-    build:
-      context: ./docker/nginx
-    volumes:
-      - ./:/var/www/html
-    networks:
-      - app
-
-  php1:
-    environment:
-      REDIS_HOST: redis
-    build:
-      context: ./docker/php
-    volumes:
-      - ./:/var/www/html
-    networks:
-      - app
-
-  php2:
-    environment:
-      REDIS_HOST: redis
+  php:
     build:
       context: ./docker/php
     volumes:

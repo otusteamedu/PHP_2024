@@ -1,17 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http;
 
 class Response
 {
-    public static function json(array $data, int $statusCode = 200): string
+    public function __construct(public array $data = [], public int $statusCode = 200)
+    {
+    }
+
+    public function send(): void
     {
         header('Content-Type: application/json');
 
-        http_response_code($statusCode);
+        http_response_code($this->statusCode);
 
-        return json_encode($data);
+        echo json_encode($this->data);
     }
 }
