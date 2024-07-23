@@ -8,17 +8,21 @@ use App\Domain\Contract\ConsumerCallbackInterface;
 use App\Domain\Contract\ConsumerInterface;
 use App\Infrastructure\Console\QueueConnection;
 use ErrorException;
+use PhpAmqpLib\Channel\AMQPChannel;
 
 class TransactionConsumer implements ConsumerInterface
 {
     private string $queue = 'transaction';
+    private ?AMQPChannel $channel = null;
     public function __construct(
         private readonly QueueConnection $connection,
         private readonly ConsumerCallbackInterface $callback
     )
     {
+        $this->channel = $this->connection->channel();
         $this->queueDeclare();
         $this->setBasic();
+
     }
 
     /**
@@ -26,13 +30,12 @@ class TransactionConsumer implements ConsumerInterface
      */
     public function consume(): void
     {
-        $this->connection->channel()->consume();
+        $this->channel->consume();
     }
 
     private function queueDeclare(): void
     {
-        $this->connection
-            ->channel()
+        $this->channel
             ->queue_declare(
                 $this->queue,
                 false,
@@ -44,7 +47,7 @@ class TransactionConsumer implements ConsumerInterface
 
     private function setBasic(): void
     {
-        $this->connection->channel()->basic_consume(
+        $this->channel->basic_consume(
             $this->queue,
                 '',
                 false,

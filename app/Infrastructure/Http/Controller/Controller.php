@@ -21,9 +21,20 @@ abstract class Controller
      */
     public function runAction(?string $action = null, ?array $params = []): mixed
     {
-        $method = dashesToCamelCase($action ?? self::DEFAULT_ACTION);
-        method_exists($this, $method) or throw new \Exception('Method not found');
+        $method = dashesToCamelCase($action);
 
-        return $this->$method(...$params);
+        if (strlen($method) && method_exists($this, $method)) {
+            return $this->$method(...$params);
+        }
+
+        if (method_exists($this, self::DEFAULT_ACTION)) {
+            return $this->execute(...$params);
+        }
+
+        throw new \Exception('Method not found');
+    }
+
+    protected function execute()
+    {
     }
 }

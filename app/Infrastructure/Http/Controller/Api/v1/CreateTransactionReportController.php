@@ -35,8 +35,6 @@ class CreateTransactionReportController extends Controller
             new QueueMessage()
         );
 
-        header('Content-Type: application/json');
-
         return json_encode(['uid' => $report($request)->uid]);
     }
 }
