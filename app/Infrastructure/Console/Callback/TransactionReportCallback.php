@@ -53,6 +53,6 @@ class TransactionReportCallback implements ConsumerCallbackInterface
             $generateReportResponse->transactions
         );
 
-        echo ' [x] Received ', $message['status'], "\n";
+        echo "[x] Received \n uid: {$message['uid']} \n status: {$message['status']} \n Уведомление отправлено на E-mail \n\n";
     }
 }
