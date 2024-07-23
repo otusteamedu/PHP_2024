@@ -1,22 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\UseCase\Console;
 
 use App\Application\UseCase\Console\Request\GenerateTransactionReportRequest;
 use App\Application\UseCase\Console\Response\GenerateTransactionReportResponse;
 use App\Domain\Contract\RepositoryInterface;
+use App\Domain\Exception\QueueNotFoundException;
 use App\Domain\Exception\Validate\TransactionAccountNumberException;
 use App\Domain\Exception\Validate\TransactionStatusException;
 use App\Domain\Exception\Validate\TransactionTypeException;
-use App\Domain\ValueObject\BankTransaction\BankAccount;
-use App\Domain\ValueObject\BankTransaction\TransactionStatus;
-use App\Domain\ValueObject\BankTransaction\TransactionType;
-use App\Domain\ValueObject\Datetime;
 use Exception;
 
-class GenerateTransactionReport
+readonly class GenerateTransactionReport
 {
-    public function __construct(private readonly RepositoryInterface $repository)
+    public function __construct(
+        private RepositoryInterface $queueRepository,
+        private RepositoryInterface $transactionRepository,
+    )
     {
     }
 
@@ -28,13 +30,23 @@ class GenerateTransactionReport
      */
     public function __invoke(GenerateTransactionReportRequest $request): GenerateTransactionReportResponse
     {
-        $dateFrom = new Datetime($request->dateFrom);
-        $dateTo = new Datetime($request->dateFrom);
-        $accountFrom = new BankAccount($request->accountFrom);
-        $accountTo = new BankAccount($request->accountTo);
-        $status = new TransactionStatus($request->transactionStatus);
-        $type = new TransactionType($request->transactionType);
+        $uid = $request->message['uid'];
 
-        return new GenerateTransactionReportResponse();
+        $queueReport = $this->queueRepository->findBy('uid', $uid)[0];
+
+        if (!$queueReport) {
+            throw new QueueNotFoundException();
+        }
+
+        $queueReport->setStatus($request->transactionStatus->value);
+        $queueReport->setUpdatedAt($request->updatedAt);
+        $queueReport->setFilePath($request->filePath);
+
+        $this->queueRepository->update($queueReport);
+
+        $accountFrom = $request->message['accountFrom'];
+        $transactions = $this->transactionRepository->findBy('account_from', $accountFrom);
+
+        return new GenerateTransactionReportResponse($transactions);
     }
 }

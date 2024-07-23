@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Console\Request;
 
-class GenerateTransactionReportRequest
+use App\Domain\Enum\QueueReport\QueueReportStatusEnum;
+
+final readonly class GenerateTransactionReportRequest
 {
     public function __construct(
-        public string $dateFrom,
-        public string $dateTo,
-        public string $accountFrom,
-        public string $accountTo,
-        public string $transactionType,
-        public string $transactionStatus
+        public QueueReportStatusEnum $transactionStatus,
+        public string $updatedAt,
+        public string $filePath,
+        public array $message,
     )
     {
     }

@@ -6,6 +6,8 @@ namespace App\Application\UseCase\Api\v1;
 
 use App\Application\UseCase\Api\v1\Request\CreateTransactionReportRequest;
 use App\Application\UseCase\Api\v1\Response\CreateTransactionReportResponse;
+use App\Domain\Contract\QueueConnectionInterface;
+use App\Domain\Contract\QueueMessageInterface;
 use App\Domain\Contract\RepositoryInterface;
 use App\Domain\Entity\QueueReport;
 use App\Domain\Enum\QueueReport\QueueReportStatusEnum;
@@ -14,15 +16,16 @@ use App\Domain\ValueObject\BankTransaction\TransactionStatus;
 use App\Domain\ValueObject\BankTransaction\TransactionType;
 use App\Domain\ValueObject\Datetime;
 use Exception;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
 
 use function Symfony\Component\Clock\now;
 
 final readonly class CreateTransactionReport
 {
-    public function __construct(private RepositoryInterface $queueReportRepository)
-    {
+    public function __construct(
+        private RepositoryInterface $queueReportRepository,
+        private QueueConnectionInterface $connection,
+        private QueueMessageInterface $queueMessage
+    ) {
     }
 
     /**
@@ -37,20 +40,22 @@ final readonly class CreateTransactionReport
         $status = new TransactionStatus($request->transactionStatus);
         $type = new TransactionType($request->transactionType);
 
-        $connection = new AMQPStreamConnection('rabbitmq', 5672, 'user', 'password');
-        $channel = $connection->channel();
+        $channel = $this->connection->channel();
 
         $uid = uniqid('queue.transaction-');
 
-        $this->queueReportRepository->save(new QueueReport(
-            $uid,
-            QueueReportStatusEnum::AWAIT->value,
-            null,
-            now()->format('Y-m-d H:m'),
-            now()->format('Y-m-d H:m')
-        ));
+        $this->queueReportRepository->save(
+            new QueueReport(
+                $uid,
+                QueueReportStatusEnum::AWAIT->value,
+                null,
+                now()->format('Y-m-d H:m'),
+                now()->format('Y-m-d H:m')
+            )
+        );
 
-        $msg = new AMQPMessage(json_encode([
+
+        $channel->basic_publish($this->queueMessage->setBody(json_encode([
             'uid' => $uid,
             'dateFrom' => $dateFrom->getValue()->format('Y-m-d H:i:s'),
             'dateTo' => $dateTo->getValue()->format('Y-m-d H:i:s'),
@@ -58,9 +63,7 @@ final readonly class CreateTransactionReport
             'accountTo' => $accountTo->getValue(),
             'status' => $status->getValue()->value,
             'type' => $type->getValue()->value,
-        ]));
-
-        $channel->basic_publish($msg, '', 'transaction');
+        ])), '', 'transaction');
 
         return new CreateTransactionReportResponse($uid);
     }
