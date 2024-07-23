@@ -9,9 +9,10 @@ use Exception;
 
 abstract class Controller
 {
-    protected ?Request $request = null;
-
-    public function __construct()
+    protected const DEFAULT_ACTION = 'execute';
+    public function __construct(
+        protected ?Request $request = null
+    )
     {
     }
 
@@ -20,7 +21,7 @@ abstract class Controller
      */
     public function runAction(?string $action = null, ?array $params = []): mixed
     {
-        $method = dashesToCamelCase($action);
+        $method = dashesToCamelCase($action ?? self::DEFAULT_ACTION);
         method_exists($this, $method) or throw new \Exception('Method not found');
 
         return $this->$method(...$params);

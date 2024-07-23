@@ -111,15 +111,12 @@ final readonly class QueueReportRepository implements RepositoryInterface
 
         $modifiedList = $entity->getModifiedFields();
 
-
         if (!count($modifiedList)) {
             return 0;
         }
 
         $paramsList = [];
         $columns = [];
-
-
 
         foreach ($modifiedList as $key => $value) {
             $paramsList[":{$key}"] = $value;

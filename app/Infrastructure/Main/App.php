@@ -21,7 +21,7 @@ final class App
         $params = $request->getAll();
         $actionName = $request->getAction();
 
-        $controllerClass = 'App\\Infrastructure\\Http\\Controller\\'
+        $controllerClass = 'App\\Infrastructure\\Http\\Controller\\Api\\v1\\'
             . ucfirst(dashesToCamelCase($controllerName))
             . "Controller";
 

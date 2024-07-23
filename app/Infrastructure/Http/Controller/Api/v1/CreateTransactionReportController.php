@@ -4,7 +4,11 @@ namespace App\Infrastructure\Http\Controller\Api\v1;
 
 use App\Application\UseCase\Api\v1\CreateTransactionReport;
 use App\Application\UseCase\Api\v1\Request\CreateTransactionReportRequest;
+use App\Infrastructure\Console\QueueConnection;
+use App\Infrastructure\Console\QueueMessage;
+use App\Infrastructure\Database\DatabaseConnection;
 use App\Infrastructure\Http\Controller\Controller;
+use App\Infrastructure\Repository\QueueReportRepository;
 use Exception;
 
 class CreateTransactionReportController extends Controller
@@ -12,7 +16,7 @@ class CreateTransactionReportController extends Controller
     /**
      * @throws Exception
      */
-    public function createTransactionReport(...$request): string
+    public function execute(...$request): string
     {
         $request = new CreateTransactionReportRequest(
             $request['dateFrom'],
@@ -21,13 +25,18 @@ class CreateTransactionReportController extends Controller
             $request['accountTo'],
             $request['transactionType'],
             $request['transactionStatus']
-
         );
 
-        $report = (new CreateTransactionReport())($request);
+        $repository = new QueueReportRepository(DatabaseConnection::getInstance());
+
+        $report = new CreateTransactionReport(
+            $repository,
+            new QueueConnection(),
+            new QueueMessage()
+        );
 
         header('Content-Type: application/json');
 
-        return json_encode(['uid' => $report->uid]);
+        return json_encode(['uid' => $report($request)->uid]);
     }
 }

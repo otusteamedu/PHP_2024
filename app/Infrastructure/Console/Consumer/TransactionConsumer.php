@@ -1,19 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Console\Consumer;
 
 use App\Domain\Contract\ConsumerCallbackInterface;
 use App\Domain\Contract\ConsumerInterface;
-use App\Infrastructure\Console\RabbitConnection;
+use App\Infrastructure\Console\QueueConnection;
+use ErrorException;
 
 class TransactionConsumer implements ConsumerInterface
 {
     private string $queue = 'transaction';
     public function __construct(
-        private readonly RabbitConnection $connection,
+        private readonly QueueConnection $connection,
         private readonly ConsumerCallbackInterface $callback
     )
     {
+        $this->queueDeclare();
+        $this->setBasic();
+    }
+
+    /**
+     * @throws ErrorException
+     */
+    public function consume(): void
+    {
+        $this->connection->channel()->consume();
     }
 
     private function queueDeclare(): void
