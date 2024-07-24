@@ -1,0 +1,19 @@
+{
+    "name": "kyberlox/composer_chat",
+    "description": "Easy chat on unix-socket by Kyberlox!",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Kyberlox\\ComposerChat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kyberlox"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.0"
+    }
+}
