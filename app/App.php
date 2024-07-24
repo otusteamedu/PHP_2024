@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use App\Http\Exceptions\HttpException;
-use App\Http\Exceptions\NotFoundHttpException;
 use App\Http\Request;
 use App\Http\Response;
 use App\Http\Router;
@@ -13,12 +12,15 @@ use App\Interfaces\EventHandlerInterface;
 use RuntimeException;
 use Throwable;
 
+/**
+ * Main app instance.
+ */
 class App
 {
     /**
      * @var EventHandlerInterface The event handler instance
      */
-    public EventHandlerInterface $eventHandler;
+    public EventHandlerInterface $event;
 
     /**
      * @var Request The request instance
@@ -27,15 +29,13 @@ class App
 
     /**
      * Runs the application by dispatching the current request.
-     *
-     * @throws NotFoundHttpException If the route is not found.
      */
     public function run(): void
     {
         try {
-            $this->registerRequest();
-            $this->registerRoutes();
             $this->registerEventHandler();
+            $this->registerRoutes();
+            $this->registerRequest();
 
             Router::dispatch(
                 $this->request->method,
@@ -97,6 +97,6 @@ class App
         /** @var class-string<EventHandlerInterface> $service */
         $service = $config['handlers'][$handler];
 
-        $this->eventHandler = new $service();
+        $this->event = new $service();
     }
 }

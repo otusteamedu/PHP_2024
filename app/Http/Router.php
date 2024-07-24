@@ -64,8 +64,6 @@ class Router
             throw new NotFoundHttpException("Url $path does not exist.");
         }
 
-        $response = call_user_func(static::$routes[$method][$path], $queryParams, $bodyParams);
-
-        $response->send();
+        call_user_func(static::$routes[$method][$path], $queryParams, $bodyParams);
     }
 }
