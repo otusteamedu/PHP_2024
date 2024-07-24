@@ -1,0 +1,71 @@
+version: '3.9'
+
+services:
+  nginx-balancer:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/balancer:/etc/nginx/conf.d/
+      - ./:/data/app.local/
+    networks:
+      - app-network
+    container_name: app_nginx-balancer
+    depends_on:
+      - nginx1
+      - nginx2
+  nginx1:
+    image: nginx
+    volumes:
+      - ./docker/nginx/app:/etc/nginx/conf.d/
+      - ./:/data/app.local/
+    networks:
+      - app-network
+    container_name: app_nginx1
+    depends_on:
+      - app1
+      - app2
+  nginx2:
+    image: nginx
+    volumes:
+      - ./docker/nginx/app:/etc/nginx/conf.d/
+      - ./:/data/app.local/
+    networks:
+      - app-network
+    container_name: app_nginx2
+    depends_on:
+      - app1
+      - app2
+  app1:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app/php
+    container_name: app_php1
+    volumes:
+      - ./:/data/app.local/
+    networks:
+      - app-network
+  app2:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app/php
+    container_name: app_php2
+    volumes:
+      - ./:/data/app.local/
+    networks:
+      - app-network
+  redis:
+    image: redis
+    container_name: app_redis
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    networks:
+      - app-network
+    expose:
+      - "6379"
+    volumes:
+      - ./docker/redis/data:/data
+networks:
+  app-network:
+    driver: bridge
