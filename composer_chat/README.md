@@ -29,6 +29,6 @@ php app.php [server | client]
 
 ```console
 composer create-project kyberlox/composer_chat:dev-master
-cd  composer_chat
+cd  composer-test
 php app.php [server | client]
 ```

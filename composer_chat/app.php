@@ -1,5 +1,6 @@
 <?php
-declare(strict_types = 1);
+
+declare(strict_types=1);
 
 foreach (glob("src/*.php") as $filename)
 {
@@ -12,6 +13,6 @@ try {
     $app = new App();
     $app->run($argv[1] ?? null);
 }
-catch(Exception $e){
+catch (Exception $e) {
     echo "Error: " . $e->getMessage() . PHP_EOL;
 }
