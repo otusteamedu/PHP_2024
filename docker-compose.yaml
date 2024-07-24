@@ -7,7 +7,7 @@ services:
       - "80:80"
     volumes:
       - ./docker/nginx/balancer:/etc/nginx/conf.d/
-      - ./app/:/data/app.local/
+      - ./:/data/app.local/
     networks:
       - app-network
     container_name: app_nginx-balancer
@@ -18,7 +18,7 @@ services:
     image: nginx
     volumes:
       - ./docker/nginx/app:/etc/nginx/conf.d/
-      - ./app/:/data/app.local/
+      - ./:/data/app.local/
     networks:
       - app-network
     container_name: app_nginx1
@@ -29,7 +29,7 @@ services:
     image: nginx
     volumes:
       - ./docker/nginx/app:/etc/nginx/conf.d/
-      - ./app/:/data/app.local/
+      - ./:/data/app.local/
     networks:
       - app-network
     container_name: app_nginx2
@@ -43,7 +43,7 @@ services:
     image: app/php
     container_name: app_php1
     volumes:
-      - ./app/:/data/app.local/
+      - ./:/data/app.local/
     networks:
       - app-network
   app2:
@@ -53,7 +53,7 @@ services:
     image: app/php
     container_name: app_php2
     volumes:
-      - ./app/:/data/app.local/
+      - ./:/data/app.local/
     networks:
       - app-network
   redis:
