@@ -6,11 +6,13 @@ namespace Udavikhin\OtusHw4;
 
 class App
 {
-    public function run() {
+    public function run()
+    {
         echo $this->handleRequest();
     }
 
-    private function handleRequest(): string {
+    private function handleRequest(): string
+    {
         header('Content-Type: application/json; charset=utf-8');
 
         try {
