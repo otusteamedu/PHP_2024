@@ -1,22 +1,24 @@
 <?php
 
 namespace Chat\app;
+
 use Chat\server\Server;
 use Chat\client\Client;
 use Exception;
 
 class App
 {
+    public $config;
     public $host;
     public $port;
     public $maxlen;
 
-    function __construct()
+    public function __construct()
     {
-        $config = parse_ini_file(__DIR__ . "/conf.ini");
-        $this->host = $config["host"];
-        $this->port = intval($config["port"]);
-        $this->maxlen = intval($config["len"]);
+        $this->config = parse_ini_file(__DIR__ . "/conf.ini");
+        $this->host = $this->config["host"];
+        $this->port = intval($this->config["port"]);
+        $this->maxlen = intval($this->config["len"]);
     }
 
     public function run($mode)

@@ -1,6 +1,7 @@
 <?php
 
 namespace Chat\socket;
+
 use Exception;
 
 class UnixSocket
@@ -11,7 +12,7 @@ class UnixSocket
     public $socket;
     public $client;
 
-    function __construct($host, $port, $maxlen)
+    public function __construct($host, $port, $maxlen)
     {
         $this->host = $host;
         $this->port = $port;
@@ -38,7 +39,7 @@ class UnixSocket
             $msg = readline("Введите сообщение: ") . "\n";
             socket_write($this->socket, $msg);
 
-            if (strpos($msg, "STOP") === true){
+            if (strpos($msg, "STOP") === true) {
                 break;
             };
         };
@@ -49,8 +50,8 @@ class UnixSocket
         while (true) {
             $msg = socket_read($this->client, $this->maxlen, PHP_NORMAL_READ);
 
-            if ($msg){
-                if (strpos($msg, "STOP") === true){
+            if ($msg) {
+                if (strpos($msg, "STOP") === true) {
                     echo "Клиент звкончил сеанс \n";
                     break;
                 }
@@ -58,7 +59,7 @@ class UnixSocket
                     echo "Новое сообщение: $msg";
                 };
             }
-            else{
+            else {
                 throw new Exception("Не удалось прочитать соообщение");
             };
         }
