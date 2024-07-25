@@ -17,10 +17,10 @@ class Event
      * @throws JsonException If json fails.
      */
     public function __construct(
-        public int          $id,
-        public int          $priority,
+        public int $id,
+        public int $priority,
         public array|string $conditions,
-        public string       $event
+        public string $event
     )
     {
         if (is_string($this->conditions)) {
