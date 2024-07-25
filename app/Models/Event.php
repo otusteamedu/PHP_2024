@@ -21,8 +21,7 @@ class Event
         public int $priority,
         public array|string $conditions,
         public string $event
-    )
-    {
+    ) {
         if (is_string($this->conditions)) {
             $this->conditions = json_decode($this->conditions, true, flags: JSON_THROW_ON_ERROR);
         }
