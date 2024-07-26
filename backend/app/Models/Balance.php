@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rate extends Model
+class Balance extends Model
 {
     use HasFactory;
 
-    protected $table = 'rates';
+    protected $table = 'balances';
 
     protected $fillable = [
-        'cur_from',
-        'cur_to',
-        'rate_from_to',
-        'rate_to_from'
+        'cur_code',
+        'balance'
     ];
 }

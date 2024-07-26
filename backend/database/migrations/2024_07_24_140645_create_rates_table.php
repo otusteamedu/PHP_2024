@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreign('cur_from')->references('code')->on('currencies');
             $table->string('cur_to')->unsigned();
             $table->foreign('cur_to')->references('code')->on('currencies');
-            $table->string('rate');
+            $table->string('rate_from_to');
+            $table->string('rate_to_from');
             $table->timestamps();
         });
     }
