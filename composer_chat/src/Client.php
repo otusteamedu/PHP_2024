@@ -15,8 +15,14 @@ class Client
 
     public function app()
     {
-        $this->client->appClient();
-        $this->client->sendingMessages();
+        $this->client->SocketConnect();
+        while (true) {
+            $msg = readline("Введите сообщение: ") . "\n";
+            $this->client->sendMessage($msg);
+            if (strpos($msg, "STOP") === true) {
+                break;
+            };
+        };
         $this->client->closeSession();
     }
 }

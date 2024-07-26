@@ -18,8 +18,24 @@ class Server
 
     public function app()
     {
-        $this->server->appServer();
-        $this->server->readingMessages();
+        $this->server->SocketBind();
+        $this->server->SocketListen();
+        $this->server->SocketAccept();
+        while (true) {
+            $msg = $this->server->readMessage();
+            if ($msg) {
+                if (strpos($msg, "STOP") === true) {
+                    echo "Клиент звкончил сеанс \n";
+                    break;
+                }
+                else {
+                    echo "Новое сообщение: $msg";
+                };
+            }
+            else {
+                throw new Exception("Не удалось прочитать соообщение");
+            };
+        };
         $this->server->closeSession();
     }
 }

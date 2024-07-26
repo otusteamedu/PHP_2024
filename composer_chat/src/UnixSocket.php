@@ -21,48 +21,36 @@ class UnixSocket
         $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
     }
 
-    public function appServer()
+    public function SocketBind()
     {
         socket_bind($this->socket, $this->host, $this->port);
+    }
+
+    public function SocketListen()
+    {
         socket_listen($this->socket, 1);
+    }
+
+    public function SocketAccept()
+    {
         $this->client = socket_accept($this->socket);
     }
 
-    public function appClient()
+    public function SocketConnect()
     {
         socket_connect($this->socket, $this->host, $this->port);
     }
 
-    public function sendingMessages()
+    public function sendMessage($msg)
     {
-        while (true) {
-            $msg = readline("Введите сообщение: ") . "\n";
-            socket_write($this->socket, $msg);
-
-            if (strpos($msg, "STOP") === true) {
-                break;
-            };
-        };
+        socket_write($this->socket, $msg);
     }
 
-    public function readingMessages()
+    public function readMessage()
     {
-        while (true) {
-            $msg = socket_read($this->client, $this->maxlen, PHP_NORMAL_READ);
+        $msg = socket_read($this->client, $this->maxlen, PHP_NORMAL_READ);
 
-            if ($msg) {
-                if (strpos($msg, "STOP") === true) {
-                    echo "Клиент звкончил сеанс \n";
-                    break;
-                }
-                else {
-                    echo "Новое сообщение: $msg";
-                };
-            }
-            else {
-                throw new Exception("Не удалось прочитать соообщение");
-            };
-        }
+        return $msg;
     }
 
     public function closeSession()
