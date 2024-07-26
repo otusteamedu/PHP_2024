@@ -18,14 +18,15 @@ services:
   
   nginx-frontend:
     build:
-      context: docker/nginx-frontend
+      context: ./docker/nginx-frontend
       dockerfile: Dockerfile
     container_name: nginx-frontend
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - "frontend"
+    depends_on:
+      - frontend
+      - nginx-backend
     networks:
       - app-network
 
@@ -46,22 +47,22 @@ services:
 
   nginx-backend:
     build:
-      context: docker/nginx-backend
+      context: ./docker/nginx-backend
       dockerfile: Dockerfile
     container_name: nginx-backend
     ports:
       - "8080:8080"
     volumes:
       - './backend:/app'
-    links:
-      - "backend"
+    depends_on:
+      - backend
     networks:
       - app-network
 
   postgres:
     image: postgres:13.3
     container_name: postgres
-    env_file: backend/.env
+    env_file: ./backend/.env
     environment:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
@@ -76,8 +77,6 @@ services:
     depends_on:
       - backend
       - nginx-backend
-    links:
-      - "backend"
     networks:
       - app-network
 
