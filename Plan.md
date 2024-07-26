@@ -5,4 +5,4 @@
     balances (cur_code, balance),
     settings (cur_from_code, cur_to_code, profit)
 2. Создание чистой архитектуры (создание сущностей, Use Case-ов)
-3. 
+3. Заполнить базу тестовыми данным, ивлекать курсы обмена при получении GET на /api и отдавать json 
