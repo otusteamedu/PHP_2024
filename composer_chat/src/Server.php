@@ -27,12 +27,10 @@ class Server
                 if (strpos($msg, "STOP") === true) {
                     echo "Клиент звкончил сеанс \n";
                     break;
-                }
-                else {
+                } else {
                     echo "Новое сообщение: $msg";
                 };
-            }
-            else {
+            } else {
                 throw new Exception("Не удалось прочитать соообщение");
             };
         };
