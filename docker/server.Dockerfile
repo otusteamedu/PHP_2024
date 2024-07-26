@@ -9,5 +9,5 @@ RUN apt-get update && apt-get -y install --fix-missing git \
 
 WORKDIR /data/composer_chat
 
-CMD ["php-fpm"]
-#нужно зайтив конетейнер и запустить php app.php server
+CMD ["php app.php server"]
+#нужно зайтив конетейнер и запустить php app

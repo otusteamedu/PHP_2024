@@ -15,7 +15,7 @@ class Client
 
     public function app()
     {
-        $this->client->SocketConnect();
+        $this->client->socketConnect();
         while (true) {
             $msg = readline("Введите сообщение: ") . "\n";
             $this->client->sendMessage($msg);

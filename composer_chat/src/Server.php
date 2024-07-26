@@ -18,9 +18,9 @@ class Server
 
     public function app()
     {
-        $this->server->SocketBind();
-        $this->server->SocketListen();
-        $this->server->SocketAccept();
+        $this->server->socketBind();
+        $this->server->socketListen();
+        $this->server->socketAccept();
         while (true) {
             $msg = $this->server->readMessage();
             if ($msg) {

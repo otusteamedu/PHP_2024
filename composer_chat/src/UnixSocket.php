@@ -21,22 +21,22 @@ class UnixSocket
         $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
     }
 
-    public function SocketBind()
+    public function socketBind()
     {
         socket_bind($this->socket, $this->host, $this->port);
     }
 
-    public function SocketListen()
+    public function socketListen()
     {
         socket_listen($this->socket, 1);
     }
 
-    public function SocketAccept()
+    public function socketAccept()
     {
         $this->client = socket_accept($this->socket);
     }
 
-    public function SocketConnect()
+    public function socketConnect()
     {
         socket_connect($this->socket, $this->host, $this->port);
     }
