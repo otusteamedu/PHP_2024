@@ -1,0 +1,15 @@
+{
+    "name": "alexander-gladkov/email-validation",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AlexanderGladkov\\EmailValidation\\": "EmailValidation/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Gladkov"
+        }
+    ],
+    "require": {}
+}

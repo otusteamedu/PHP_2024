@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:1.25.3
+    container_name: nginx
+    ports:
+      - "${NGINX_PORT:-8000}:80"
+    volumes:
+      - ./docker/nginx/config/hosts/:/etc/nginx/conf.d/:ro
+      - ./src:/var/www/application.local
+    networks:
+      - net
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+    container_name: php-fpm
+    volumes:
+      - ./src:/var/www/application.local
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
+
