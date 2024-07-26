@@ -19,9 +19,11 @@ services:
       context: docker/fpm
       dockerfile: Dockerfile
     image: app/php
+    command: /usr/bin/supervisord
     volumes:
       - ./:/var/www
       - ./docker/fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./docker/fpm/supervisor:/etc/supervisor
       - phpsocket:/var/run
     networks:
       - otus-app-network
@@ -48,27 +50,6 @@ services:
     restart: unless-stopped
     tty: true
 
-#  mysql:
-#    image: 'mysql/mysql-server:8.0'
-#    environment:
-#      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-#      MYSQL_ROOT_HOST: "%"
-#      MYSQL_DATABASE: '${DB_DATABASE}'
-#      MYSQL_USER: '${DB_USERNAME}'
-#      MYSQL_PASSWORD: '${DB_PASSWORD}'
-#      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-#    volumes:
-#      - 'app-mysql:/var/lib/mysql'
-#      - './docker/db/init.sql:/docker-entrypoint-initdb.d/init.sql'
-#    networks:
-#      - otus-app-network
-#    ports:
-#      - '3306:3306'
-#    healthcheck:
-#      test: [ "CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}" ]
-#      retries: 3
-#      timeout: 5s
-
   rabbitmq:
     image: rabbitmq:3.7.5-management
     working_dir: /app
@@ -80,6 +61,34 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: user
       RABBITMQ_DEFAULT_PASS: password
+
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    container_name: "swagger-editor"
+    ports:
+      - "8081:8080"
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: "swagger-ui"
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./swagger/openapi.json:/openapi.json
+    environment:
+      SWAGGER_JSON: /openapi.json
+      # API_URL: ""
+
+  swagger-api:
+    image: danielgtaylor/apisprout
+    container_name: "swagger-api"
+    ports:
+      - "8083:8000"
+    volumes:
+      - ./swagger/openapi.json:/openapi.json
+    command: /openapi.json
+    networks:
+      - otus-app-network
 
 networks:
   otus-app-network:

@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     zlib1g-dev \
     libzip-dev \
+    supervisor \
     libssl-dev \
     unzip \
     && docker-php-ext-install -j$(nproc) \
@@ -14,6 +15,8 @@ RUN apt-get update && apt-get install -y \
     sockets \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug sockets
+
+COPY ./supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 #Installing composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php

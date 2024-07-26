@@ -34,7 +34,7 @@ abstract class Controller
         throw new \Exception('Method not found');
     }
 
-    protected function execute()
+    protected function execute(...$args)
     {
     }
 }
