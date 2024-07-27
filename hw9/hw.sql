@@ -5,7 +5,7 @@
 -- Dumped from database version 16.3 (Debian 16.3-1.pgdg120+1)
 -- Dumped by pg_dump version 16.3
 
--- Started on 2024-07-26 21:29:06 UTC
+-- Started on 2024-07-27 17:50:54 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -158,14 +158,12 @@ SELECT eav_value.text_value AS value,
 ALTER VIEW public.view1 OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 16504)
+-- TOC entry 224 (class 1259 OID 16516)
 -- Name: view2; Type: VIEW; Schema: public; Owner: postgres
 --
 
 CREATE VIEW public.view2 AS
-SELECT eav_value.text_value AS value,
-    eav_value.bool_value,
-    eav_value.date_value,
+SELECT concat_ws(''::text, (eav_value.text_value)::text, eav_value.bool_value, eav_value.date_value) AS value,
     movie.name,
     eav_entity.name AS option_name
    FROM ((public.eav_value
@@ -325,7 +323,7 @@ ALTER TABLE ONLY public.eav_value
     ADD CONSTRAINT eav_value_movie_id_fkey FOREIGN KEY (movie_id) REFERENCES public.movie(id);
 
 
--- Completed on 2024-07-26 21:29:07 UTC
+-- Completed on 2024-07-27 17:50:55 UTC
 
 --
 -- PostgreSQL database dump complete
