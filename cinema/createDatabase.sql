@@ -3,7 +3,8 @@ create table tickets(
   showId integer not null,
   seatId integer not null,
   soldPrice integer not null,
-  soldAt timestamp not null
+  soldAt timestamp not null,
+  userId integer
 );
 
 create table shows(
@@ -18,6 +19,7 @@ create table shows(
 create table movies(
   id serial primary key,
   name varchar not null,
+  description varchar,
   duration integer default 0 not null,
   category varchar,
   origin varchar,
@@ -41,4 +43,12 @@ create table halls(
   id serial primary key,
   name varchar,
   basePrice integer default 0 not null
+);
+
+create table users(
+  id serial primary key,
+  name varchar,
+  lastName varchar,
+  phone varchar,
+  email varchar
 );
