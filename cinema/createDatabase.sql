@@ -1,19 +1,28 @@
-create table tickets(
+create table users(
   id serial primary key,
-  showId integer not null,
-  seatId integer not null,
-  soldPrice integer not null,
-  soldAt timestamp not null,
-  userId integer
+  name varchar,
+  lastName varchar,
+  phone varchar,
+  email varchar
 );
 
-create table shows(
+create table halls(
   id serial primary key,
-  movieId integer not null,
-  hallId integer not null,
-  startAt timestamp not null,
-  extraPrice integer default 0 not null,
-  maxDiscount integer default 0 not null
+  name varchar,
+  basePrice integer default 0 not null
+);
+
+create table rows(
+  id serial primary key,
+  hallId integer not null references halls,
+  row integer not null
+);
+
+create table seats(
+  id serial primary key,
+  rowId integer not null references rows,
+  seat integer not null,
+  extraPrice integer default 0 not null
 );
 
 create table movies(
@@ -26,29 +35,20 @@ create table movies(
   releaseDate date
 );
 
-create table seats(
+create table shows(
   id serial primary key,
-  rowId integer not null,
-  seat integer not null,
-  extraPrice integer default 0 not null
+  movieId integer not null references movies,
+  hallId integer not null references halls,
+  startAt timestamp not null,
+  extraPrice integer default 0 not null,
+  maxDiscount integer default 0 not null
 );
 
-create table rows(
+create table tickets(
   id serial primary key,
-  hallId integer not null,
-  row integer not null
-);
-
-create table halls(
-  id serial primary key,
-  name varchar,
-  basePrice integer default 0 not null
-);
-
-create table users(
-  id serial primary key,
-  name varchar,
-  lastName varchar,
-  phone varchar,
-  email varchar
+  showId integer not null references shows,
+  seatId integer not null references seats,
+  soldPrice integer not null,
+  soldAt timestamp not null,
+  userId integer references users
 );
