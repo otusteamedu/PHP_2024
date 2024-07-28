@@ -51,8 +51,8 @@ class Queue implements QueueInterface
             false,
             false,
             false,
-            $callback)
-        ;
+            $callback
+        );
 
         try {
             $channel->consume();

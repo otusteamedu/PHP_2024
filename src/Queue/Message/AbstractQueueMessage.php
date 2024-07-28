@@ -15,8 +15,8 @@ class AbstractQueueMessage implements \JsonSerializable
         }
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
-       return get_object_vars($this);
+        return get_object_vars($this);
     }
 }
