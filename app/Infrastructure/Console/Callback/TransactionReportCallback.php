@@ -7,7 +7,6 @@ namespace App\Infrastructure\Console\Callback;
 use App\Application\Exception\ReportNotCreatedException;
 use App\Application\UseCase\Console\GenerateTransactionReport;
 use App\Application\UseCase\Console\Request\GenerateTransactionReportRequest;
-use App\Domain\Contract\ConsumerCallbackInterface;
 use App\Domain\Enum\QueueReport\QueueReportStatusEnum;
 use App\Infrastructure\Database\DatabaseConnection;
 use App\Infrastructure\Repository\QueueReportRepository;
@@ -15,7 +14,7 @@ use App\Infrastructure\Repository\TransactionRepository;
 use App\Infrastructure\Service\ReportFileCreator;
 use Exception;
 
-class TransactionReportCallback implements ConsumerCallbackInterface
+class TransactionReportCallback
 {
     private function getMessage($msg): array
     {

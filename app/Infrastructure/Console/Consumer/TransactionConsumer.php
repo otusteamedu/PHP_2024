@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Console\Consumer;
 
-use App\Domain\Contract\ConsumerCallbackInterface;
 use App\Domain\Contract\ConsumerInterface;
+use App\Infrastructure\Console\Callback\TransactionReportCallback;
 use App\Infrastructure\Console\QueueConnection;
 use ErrorException;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -16,7 +16,7 @@ class TransactionConsumer implements ConsumerInterface
     private ?AMQPChannel $channel = null;
     public function __construct(
         private readonly QueueConnection $connection,
-        private readonly ConsumerCallbackInterface $callback
+        private readonly TransactionReportCallback $callback
     )
     {
         $this->channel = $this->connection->channel();
