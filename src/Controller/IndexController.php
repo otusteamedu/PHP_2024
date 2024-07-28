@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Message\MakeFinanceReportMessage;
-use App\Message\SendFinanceReportMessage;
+use App\Queue\Message\MakeFinanceReportQueueMessage;
+use App\Queue\QueueInterface;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class IndexController extends AbstractController
@@ -21,8 +21,11 @@ class IndexController extends AbstractController
         return $this->render('index/index.html.twig');
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/', name: 'generate', methods: ['POST'])]
-    public function generate(Request $request, MessageBusInterface $bus): Response
+    public function generate(Request $request, QueueInterface $queue): Response
     {
         $email = $request->request->get('email');
         $dateFrom = $request->request->get('from');
@@ -31,7 +34,7 @@ class IndexController extends AbstractController
             throw new BadRequestHttpException('Invalid params');
         }
 
-        $bus->dispatch(new MakeFinanceReportMessage($email, new \DateTime($dateFrom), new \DateTime($dateTo)));
+        $queue->push(new MakeFinanceReportQueueMessage($email, new DateTime($dateFrom), new DateTime($dateTo)));
 
         $this->addFlash('notice', 'после генерации отчет будет оправлен вам на почту!');
 

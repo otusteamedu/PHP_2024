@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Notification;
 
-use App\Message\SendFinanceReportMessage;
+use App\Queue\Message\SendFinanceReportQueueMessage;
 
 interface NotificationProviderInterface
 {
-    public function sendFinanceReport(SendFinanceReportMessage $message);
+    public function sendFinanceReport(SendFinanceReportQueueMessage $message);
 }

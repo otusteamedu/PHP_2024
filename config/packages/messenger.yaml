@@ -11,8 +11,7 @@ framework:
 
         routing:
             # Route your messages to the transports
-             'App\Message\SendFinanceReportMessage': async
-             'App\Message\MakeFinanceReportMessage': async
+            # 'App\Message\SendFinanceReportMessage': async
 
 # when@test:
 #    framework:

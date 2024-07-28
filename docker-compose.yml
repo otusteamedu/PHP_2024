@@ -4,6 +4,19 @@ networks:
   app_network:
     name: ${APP_NAME}_network
 
+x-common: &app
+  build:
+    context: .
+    dockerfile: ./docker/php/Dockerfile
+  env_file: .env
+  volumes:
+    - .:/var/www/app
+  depends_on:
+    rabbitmq:
+      condition: service_healthy
+  networks:
+    - app_network
+
 services:
 
   nginx:
@@ -14,21 +27,31 @@ services:
     volumes:
       - .:/var/www/app
       - ./docker/nginx/app.conf:/etc/nginx/conf.d/app.conf
+    depends_on:
+      - php
     networks:
       - app_network
 
   php:
-    build:
-      context: .
-      dockerfile: ./docker/php/Dockerfile
+    <<: *app
     container_name: ${APP_NAME}_php
-    env_file: .env
     ports:
       - "9000:9000"
-    volumes:
-      - .:/var/www/app
-    networks:
-      - app_network
+
+  report_finance_make_worker:
+    <<: *app
+    container_name: ${APP_NAME}_report_finance_make_worker
+    command: ["sh", "-c", "php bin/console app:report:finance:make"]
+
+  report_finance_send_worker:
+    <<: *app
+    container_name: ${APP_NAME}_report_finance_send_worker
+    command: ["sh", "-c", "php bin/console app:report:finance:send"]
+
+  composer:
+    <<: *app
+    container_name: ${APP_NAME}_composer
+    command: [ "sh", "-c", "composer install" ]
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -41,18 +64,8 @@ services:
       - ./docker/rabbitmq/log/:/var/log/rabbitmq
     networks:
       - app_network
-
-#  postgres:
-#    image: postgres:latest
-#    container_name: ${APP_NAME}_postgres
-#    ports:
-#      - "${DB_PORT}:5432"
-#    restart: on-failure
-#    environment:
-#      POSTGRES_USER: ${DB_USER}
-#      POSTGRES_PASSWORD: ${DB_PASSWORD}
-#      POSTGRES_DB: ${DB_NAME}
-#    volumes:
-#      - ./postgres/data:/var/lib/postgresql/data:rw
-#    networks:
-#      - app_network
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
