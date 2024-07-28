@@ -38,21 +38,24 @@ services:
     ports:
       - "9000:9000"
     depends_on:
-      - composer
+      composer:
+        condition: service_completed_successfully
 
   report_finance_make_worker:
     <<: *app
     container_name: ${APP_NAME}_report_finance_make_worker
     command: ["sh", "-c", "php bin/console app:report:finance:make"]
     depends_on:
-      - composer
+      composer:
+        condition: service_completed_successfully
 
   report_finance_send_worker:
     <<: *app
     container_name: ${APP_NAME}_report_finance_send_worker
     command: ["sh", "-c", "php bin/console app:report:finance:send"]
     depends_on:
-      - composer
+      composer:
+        condition: service_completed_successfully
 
   composer:
     <<: *app
