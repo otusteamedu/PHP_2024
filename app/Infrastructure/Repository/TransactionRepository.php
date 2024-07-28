@@ -12,7 +12,6 @@ use ReflectionException;
 
 final readonly class TransactionRepository implements RepositoryInterface
 {
-
     public function __construct(private DatabaseConnection $pdo)
     {
     }

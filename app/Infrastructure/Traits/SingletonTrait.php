@@ -6,7 +6,7 @@ namespace App\Infrastructure\Traits;
 
 trait SingletonTrait
 {
-    static ?self $instance = null;
+    private static ?self $instance = null;
 
     public static function getInstance(): ?self
     {
