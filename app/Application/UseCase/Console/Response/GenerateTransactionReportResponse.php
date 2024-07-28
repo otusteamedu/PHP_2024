@@ -8,7 +8,6 @@ final readonly class GenerateTransactionReportResponse
 {
     public function __construct(
         public array $transactions,
-    )
-    {
+    ) {
     }
 }

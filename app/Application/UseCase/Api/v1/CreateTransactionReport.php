@@ -54,7 +54,6 @@ final readonly class CreateTransactionReport
             )
         );
 
-
         $channel->basic_publish($this->queueMessage->setBody(json_encode([
             'uid' => $uid,
             'dateFrom' => $dateFrom->getValue()->format('Y-m-d H:i:s'),

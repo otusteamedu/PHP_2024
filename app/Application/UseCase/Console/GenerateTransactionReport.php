@@ -18,8 +18,7 @@ readonly class GenerateTransactionReport
     public function __construct(
         private RepositoryInterface $queueRepository,
         private RepositoryInterface $transactionRepository,
-    )
-    {
+    ) {
     }
 
     /**

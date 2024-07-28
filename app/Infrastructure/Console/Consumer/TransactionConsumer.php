@@ -13,16 +13,15 @@ use PhpAmqpLib\Channel\AMQPChannel;
 class TransactionConsumer implements ConsumerInterface
 {
     private string $queue = 'transaction';
-    private ?AMQPChannel $channel = null;
+    private ?AMQPChannel $channel;
+
     public function __construct(
         private readonly QueueConnection $connection,
         private readonly TransactionReportCallback $callback
-    )
-    {
+    ) {
         $this->channel = $this->connection->channel();
         $this->queueDeclare();
         $this->setBasic();
-
     }
 
     /**
@@ -49,12 +48,12 @@ class TransactionConsumer implements ConsumerInterface
     {
         $this->channel->basic_consume(
             $this->queue,
-                '',
-                false,
-                true,
-                false,
-                false,
+            '',
+            false,
+            true,
+            false,
+            false,
             $this->callback
-            );
+        );
     }
 }

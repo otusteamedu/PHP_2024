@@ -10,7 +10,6 @@ final readonly class ReportStatusResponse
 {
     public function __construct(
         public QueueReportStatusEnum $status,
-    )
-    {
+    ) {
     }
 }

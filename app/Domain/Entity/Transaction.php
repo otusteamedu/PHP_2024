@@ -5,6 +5,7 @@ namespace App\Domain\Entity;
 class Transaction
 {
     private readonly ?int $id;
+
     public function __construct(
         private int $sum,
         private string $account_from,
@@ -13,8 +14,7 @@ class Transaction
         private string $type,
         private string $status,
         private ?string $description,
-    )
-    {
+    ) {
     }
 
     public function getId(): ?int

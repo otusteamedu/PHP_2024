@@ -9,9 +9,7 @@ use PDO;
 
 final class DatabaseConnection
 {
-
     use SingletonTrait;
-
     private ?PDO $connection = null;
 
     protected function getConnection(): ?PDO

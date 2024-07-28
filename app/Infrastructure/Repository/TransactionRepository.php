@@ -18,7 +18,6 @@ final readonly class TransactionRepository implements RepositoryInterface
     }
 
     /**
-     * @throws ReflectionException
      * @throws Exception
      * @var Transaction $entity
      */
@@ -52,7 +51,6 @@ final readonly class TransactionRepository implements RepositoryInterface
      */
     public function findBy(string $column, mixed $value): array
     {
-
         $result = $this->pdo->queryAll("SELECT * FROM transactions WHERE {$column} = :value", [
             'value' => $value
         ]);
@@ -62,35 +60,34 @@ final readonly class TransactionRepository implements RepositoryInterface
         }
 
         return array_map(
-        /**
-         * @throws ReflectionException
-         */ fn($transaction) => $this->mapTransaction($transaction),
+            fn($transaction) => $this->mapTransaction($transaction),
             $result
         );
-
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function getAll(): array
     {
         $result = $this->pdo->queryAll(sql: 'SELECT * FROM transactions');
 
         return array_map(
-        /**
-         * @throws ReflectionException
-         */ fn($transaction) => $this->mapTransaction($transaction),
+            fn($transaction) => $this->mapTransaction($transaction),
             $result
         );
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function getByIds(array $ids): array
     {
         $idsRaw = str_repeat('?,', count($ids) - 1) . '?';
         $result = $this->pdo->queryAll("SELECT * FROM transactions WHERE id IN ($idsRaw)", $ids);
 
         return array_map(
-        /**
-         * @throws ReflectionException
-         */ fn($transaction) => $this->mapTransaction($transaction),
+            fn($transaction) => $this->mapTransaction($transaction),
             $result
         );
     }

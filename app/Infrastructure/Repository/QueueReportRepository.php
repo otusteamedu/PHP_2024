@@ -12,32 +12,33 @@ use ReflectionException;
 
 final readonly class QueueReportRepository implements RepositoryInterface
 {
-
     public function __construct(private DatabaseConnection $pdo)
     {
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function getAll(): array
     {
         $result = $this->pdo->queryAll(sql: 'SELECT * FROM queue_reports');
 
         return array_map(
-        /**
-         * @throws ReflectionException
-         */ fn($queueReport) => $this->mapQueueReports($queueReport),
+            fn($queueReport) => $this->mapQueueReports($queueReport),
             $result
         );
     }
 
+    /**
+     * @throws ReflectionException
+     */
     public function getByIds(array $ids): array
     {
         $idsRaw = str_repeat('?,', count($ids) - 1) . '?';
         $result = $this->pdo->queryAll("SELECT * FROM queue_reports WHERE id IN ($idsRaw)", $ids);
 
         return array_map(
-        /**
-         * @throws ReflectionException
-         */ fn($queueReport) => $this->mapQueueReports($queueReport),
+            fn($queueReport) => $this->mapQueueReports($queueReport),
             $result
         );
     }
@@ -47,7 +48,6 @@ final readonly class QueueReportRepository implements RepositoryInterface
      */
     public function findBy(string $column, mixed $value): array
     {
-
         $result = $this->pdo->queryAll("SELECT * FROM queue_reports WHERE {$column} = :value", [
             'value' => $value
         ]);
@@ -57,16 +57,12 @@ final readonly class QueueReportRepository implements RepositoryInterface
         }
 
         return array_map(
-        /**
-         * @throws ReflectionException
-         */ fn($queueReport) => $this->mapQueueReports($queueReport),
+            fn($queueReport) => $this->mapQueueReports($queueReport),
             $result
         );
-
     }
 
     /**
-     * @throws ReflectionException
      * @throws Exception
      */
     public function save($entity): int
@@ -100,7 +96,6 @@ final readonly class QueueReportRepository implements RepositoryInterface
      */
     public function update($entity): int
     {
-
         /**
          * @var QueueReport $entity
          */

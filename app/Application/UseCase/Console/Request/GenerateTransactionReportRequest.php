@@ -13,7 +13,6 @@ final readonly class GenerateTransactionReportRequest
         public string $updatedAt,
         public string $filePath,
         public array $message,
-    )
-    {
+    ) {
     }
 }

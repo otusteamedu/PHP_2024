@@ -30,7 +30,7 @@ final class App
 
         $services = [];
 
-        $classConstruct = new \ReflectionMethod($controllerClass,'__construct');
+        $classConstruct = new \ReflectionMethod($controllerClass, '__construct');
 
         if (count($classConstruct->getParameters())) {
             $servicesPath = config('service_namespace');

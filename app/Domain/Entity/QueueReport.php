@@ -9,14 +9,14 @@ class QueueReport
     private readonly ?int $id;
 
     private array $modifiedFields = [];
+
     public function __construct(
         private string $uid,
         private string $status,
         private ?string $file_path,
         private string $created_at,
         private string $updated_at,
-    )
-    {
+    ) {
     }
 
     /**

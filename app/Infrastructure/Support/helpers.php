@@ -27,7 +27,6 @@ function env(string $key, $default = null): mixed
     $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
     foreach ($lines as $line) {
-
         if (str_starts_with(trim($line), '#')) {
             continue;
         }
@@ -49,7 +48,6 @@ function env(string $key, $default = null): mixed
 
 function dashesToCamelCase($string, $capitalizeFirstCharacter = false): string
 {
-
     $str = str_replace('-', '', ucwords($string, '-'));
 
     if (!$capitalizeFirstCharacter) {

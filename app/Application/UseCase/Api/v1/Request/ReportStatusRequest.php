@@ -6,7 +6,6 @@ final readonly class ReportStatusRequest
 {
     public function __construct(
         public ?string $uid
-    )
-    {
+    ) {
     }
 }

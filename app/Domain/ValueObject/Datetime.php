@@ -34,6 +34,6 @@ class Datetime
      */
     private function dateParse(string $value): DateTimeImmutable
     {
-        return DateTimeImmutable::createFromFormat('Y-m-d H:m',$value);
+        return DateTimeImmutable::createFromFormat('Y-m-d H:m', $value);
     }
 }

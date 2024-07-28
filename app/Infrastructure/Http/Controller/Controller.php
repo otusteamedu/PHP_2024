@@ -10,10 +10,10 @@ use Exception;
 abstract class Controller
 {
     protected const DEFAULT_ACTION = 'execute';
+
     public function __construct(
         protected ?Request $request = null
-    )
-    {
+    ) {
     }
 
     /**

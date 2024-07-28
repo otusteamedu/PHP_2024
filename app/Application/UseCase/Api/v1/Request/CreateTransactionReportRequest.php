@@ -13,7 +13,6 @@ final readonly class CreateTransactionReportRequest
         public string $accountTo,
         public string $transactionType,
         public string $transactionStatus
-    )
-    {
+    ) {
     }
 }

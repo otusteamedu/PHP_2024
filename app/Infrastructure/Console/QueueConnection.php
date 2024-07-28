@@ -11,7 +11,6 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 final class QueueConnection implements QueueConnectionInterface
 {
-
     /**
      * @throws Exception
      */

@@ -11,9 +11,9 @@ enum RequestMethodEnum: string
 
     public function getData(): array
     {
-        return match($this) {
+        return match ($this) {
             self::GET => $_GET,
-            self::POST => !empty($_POST) ? $_POST : (array) json_decode(file_get_contents("php://input")),
+            self::POST => !empty($_POST) ? $_POST : (array)json_decode(file_get_contents("php://input")),
         };
     }
 }
