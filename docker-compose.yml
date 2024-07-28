@@ -14,6 +14,8 @@ x-common: &app
   depends_on:
     rabbitmq:
       condition: service_healthy
+    composer:
+      condition: service_started
   networks:
     - app_network
 
