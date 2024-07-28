@@ -14,8 +14,6 @@ x-common: &app
   depends_on:
     rabbitmq:
       condition: service_healthy
-    composer:
-      condition: service_started
   networks:
     - app_network
 
@@ -39,16 +37,22 @@ services:
     container_name: ${APP_NAME}_php
     ports:
       - "9000:9000"
+    depends_on:
+      - composer
 
   report_finance_make_worker:
     <<: *app
     container_name: ${APP_NAME}_report_finance_make_worker
     command: ["sh", "-c", "php bin/console app:report:finance:make"]
+    depends_on:
+      - composer
 
   report_finance_send_worker:
     <<: *app
     container_name: ${APP_NAME}_report_finance_send_worker
     command: ["sh", "-c", "php bin/console app:report:finance:send"]
+    depends_on:
+      - composer
 
   composer:
     <<: *app
