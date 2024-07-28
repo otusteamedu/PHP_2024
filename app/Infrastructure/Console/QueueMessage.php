@@ -7,5 +7,4 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 class QueueMessage extends AMQPMessage implements QueueMessageInterface
 {
-
 }
