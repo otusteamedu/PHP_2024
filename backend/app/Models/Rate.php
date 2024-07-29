@@ -12,9 +12,7 @@ class Rate extends Model
     protected $table = 'rates';
 
     protected $fillable = [
-        'cur_from',
-        'cur_to',
-        'rate_from_to',
-        'rate_to_from'
+        'currency_code',
+        'rate'
     ];
 }
