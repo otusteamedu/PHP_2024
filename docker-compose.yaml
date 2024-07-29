@@ -79,6 +79,8 @@ services:
       - nginx-backend
     networks:
       - app-network
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data'
 
 #  rabbitmq:
 #    image: rabbitmq:3.9-management
@@ -106,6 +108,9 @@ services:
 #      PHP_IDE_CONFIG: serverName=Docker
 #    depends_on:
 #      - rabbitmq
+
+volumes:
+  pgdata:
 
 networks:
   app-network:
