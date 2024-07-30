@@ -3,6 +3,7 @@
 namespace Chat\server;
 
 use Chat\socket\UnixSocket as Socket;
+use Exception;
 
 class Server
 {
