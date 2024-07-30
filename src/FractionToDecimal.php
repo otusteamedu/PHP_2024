@@ -18,42 +18,42 @@ class FractionToDecimal
      * @param Integer $denominator
      * @return String
      */
-    function fractionToDecimal($numerator, $denominator) {
+    public function fractionToDecimal($numerator, $denominator)
+    {
         $period = "";
         $answer = "";
 
-        if ($numerator == 0) return "0";
-        if (($numerator < 0 xor $denominator < 0)){
+        if ($numerator == 0) {
+            return "0";
+        }
+        if (($numerator < 0 xor $denominator < 0)) {
             $answer .= "-";
             $numerator = abs($numerator);
             $denominator = abs($denominator);
         }
         $answer .= (int)($numerator / $denominator);
         $numerator = $numerator % $denominator * 10;
-        if ($numerator == 0){
+        if ($numerator == 0) {
             return $answer;
         }
         $answer .= '.';
         $haspMap = [];
-        while ($numerator != 0){
-            if (isset($haspMap[$numerator])){
-                if ($haspMap[$numerator] == 1){
+        while ($numerator != 0) {
+            if (isset($haspMap[$numerator])) {
+                if ($haspMap[$numerator] == 1) {
                     break;
                 }
                 $period .= (int)($numerator / $denominator);
                 $haspMap[$numerator] = 1;
-            }
-            else{
+            } else {
                 $answer .= (int)($numerator / $denominator);
                 $haspMap[$numerator] = 0;
             }
             $numerator = $numerator % $denominator * 10;
-
         }
-        if (!empty($period)){
+        if (!empty($period)) {
             $answer = str_replace($period, '', $answer);
-            return $answer . '('. $period . ')';
-
+            return $answer . '(' . $period . ')';
         }
         return $answer;
     }
