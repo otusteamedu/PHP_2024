@@ -6,13 +6,14 @@ namespace Udavikhin\OtusHw5;
 
 class Socket
 {
-    public static function create(?string $name = 'default'): \Socket {
+    public static function create(?string $name = 'default'): \Socket
+    {
         $socket = socket_create(AF_UNIX, SOCK_DGRAM, 0);
         if (!$socket) {
             throw new \Exception('Could not create socket');
         }
 
-        $socketFilePath = dirname(__FILE__)."/" . $name . ".sock";
+        $socketFilePath = dirname(__FILE__) . "/" . $name . ".sock";
         if (!socket_bind($socket, $socketFilePath)) {
             throw new \Exception('Could not bind socket');
         }

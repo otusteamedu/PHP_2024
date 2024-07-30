@@ -17,7 +17,7 @@ class Client extends Socket
                 throw new \Exception('Could not set nonblocking mode for socket');
             }
 
-            $serverSocket = dirname(__FILE__)."/server.sock";
+            $serverSocket = dirname(__FILE__) . "/server.sock";
 
             $handle = fopen("php://stdin", "r");
 
@@ -37,6 +37,5 @@ class Client extends Socket
         } catch (\Exception $e) {
             echo $e->getMessage() . PHP_EOL;
         }
-
     }
 }

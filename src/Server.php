@@ -13,8 +13,7 @@ class Server extends Socket
         try {
             $socket = self::create(SERVER_SOCKET_FILE_NAME);
 
-            while(true)
-            {
+            while (true) {
                 if (!socket_set_block($socket)) {
                     throw new \Exception('Could not set blocking mode for socket');
                 }
