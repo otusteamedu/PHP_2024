@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  server:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app/php
+    container_name: app_server
+    volumes:
+      - ./:/data/
+    networks:
+      - app-network
+  client:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app/php
+    container_name: app_client
+    volumes:
+      - ./:/data/
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
