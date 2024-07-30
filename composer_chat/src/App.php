@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chat\app;
 
 use Chat\server\Server;

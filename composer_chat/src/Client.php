@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chat\client;
 
 use Chat\socket\UnixSocket as Socket;
