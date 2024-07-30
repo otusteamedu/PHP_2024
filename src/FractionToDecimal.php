@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace JuliaZhigareva\ElasticProject;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -58,4 +60,3 @@ class FractionToDecimal
         return $answer;
     }
 }
-

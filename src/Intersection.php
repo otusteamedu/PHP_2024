@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
+namespace JuliaZhigareva\ElasticProject;
+
 class Solution
 {
-
     //Time complexity = O(N)
     /**
      * @param ListNode $headA
      * @param ListNode $headB
      * @return ListNode
      */
-    function getIntersectionNode($headA, $headB)
+    public function getIntersectionNode($headA, $headB)
     {
         $a1 = $headA;
         $b1 = $headB;
@@ -56,5 +57,4 @@ class Solution
         return null;
     }
 }
-
 
