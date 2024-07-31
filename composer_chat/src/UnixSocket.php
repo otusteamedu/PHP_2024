@@ -60,4 +60,3 @@ class UnixSocket
         socket_close($this->socket);
     }
 }
-?>

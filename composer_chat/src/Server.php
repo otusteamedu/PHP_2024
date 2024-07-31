@@ -40,4 +40,3 @@ class Server
         $this->server->closeSession();
     }
 }
-?>
