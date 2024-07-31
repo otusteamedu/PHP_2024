@@ -1,0 +1,21 @@
+SELECT
+    i.relname AS имя_индекса,
+    s.idx_scan
+FROM
+    pg_stat_user_indexes s
+        JOIN
+    pg_index x ON s.indexrelid = x.indexrelid
+    JOIN
+    pg_class i ON s.indexrelid = i.oid
+order by idx_scan  desc
+limit 5;
+
++---------------------------------+--------+
+|имя_индекса                      |idx_scan|
++---------------------------------+--------+
+|sessions_pkey                    |554262  |
+|order_ticket_unique              |300662  |
+|orders_pkey                      |232048  |
+|tickets_pkey                     |232034  |
+|tickets_session_id_seat_id_unique|50007   |
++---------------------------------+--------+
