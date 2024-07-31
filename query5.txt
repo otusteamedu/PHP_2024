@@ -1,0 +1,156 @@
+Cхемазала и свободные и занятые места на конкретный сеанс
+SELECT
+    s.row,
+    s.place,
+    CASE  WHEN o.status_id = 1 OR o.status_id = 2 THEN FALSE
+          ELSE TRUE
+        END  AS is_free
+FROM tickets AS t
+         LEFT JOIN seats s ON t.seat_id = s.id
+         LEFT JOIN order_ticket ot ON t.id = ot.ticket_id
+         LEFT JOIN  orders AS o ON ot.order_id = o.id
+WHERE t.session_id =2294
+order by row, place;
+
++---+-----+-------+
+|row|place|is_free|
++---+-----+-------+
+|1  |1    |true   |
+|1  |2    |true   |
+|1  |3    |true   |
+|1  |4    |true   |
+|1  |5    |true   |
+|1  |6    |true   |
+|1  |7    |true   |
+|1  |8    |false  |
+|1  |9    |true   |
+|1  |10   |true   |
+|2  |1    |true   |
+|2  |2    |true   |
+|2  |3    |true   |
+|2  |4    |true   |
+|2  |5    |true   |
+|2  |6    |true   |
+|2  |7    |true   |
+|2  |8    |true   |
+|2  |9    |true   |
+|2  |10   |false  |
+|3  |1    |false  |
+|3  |2    |true   |
+|3  |3    |true   |
+|3  |4    |true   |
+|3  |5    |false  |
+|3  |6    |false  |
+|3  |7    |false  |
+|3  |8    |true   |
+|3  |9    |true   |
+|3  |10   |false  |
+|4  |1    |false  |
+|4  |2    |true   |
+|4  |3    |true   |
+|4  |4    |true   |
+|4  |5    |false  |
+|4  |6    |true   |
+|4  |7    |true   |
+|4  |8    |true   |
+|4  |9    |true   |
+|4  |10   |false  |
+|5  |1    |true   |
+|5  |2    |true   |
+|5  |3    |true   |
+|5  |4    |true   |
+|5  |5    |false  |
+|5  |6    |true   |
+|5  |7    |false  |
+|5  |8    |true   |
+|5  |9    |true   |
+|5  |10   |true   |
++---+-----+-------+
+
+План для числа записей менее 10000 записей
++----------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                              |
++----------------------------------------------------------------------------------------------------------------------------------------+
+|Sort  (cost=118.09..118.22 rows=50 width=9)                                                                                             |
+|  Sort Key: s."row", s.place                                                                                                            |
+|  ->  Hash Left Join  (cost=104.08..116.68 rows=50 width=9)                                                                             |
+|        Hash Cond: (ot.order_id = o.id)                                                                                                 |
+|        ->  Hash Right Join  (cost=100.83..113.05 rows=50 width=16)                                                                     |
+|              Hash Cond: (ot.ticket_id = t.id)                                                                                          |
+|              ->  Seq Scan on order_ticket ot  (cost=0.00..9.97 rows=597 width=16)                                                      |
+|              ->  Hash  (cost=100.21..100.21 rows=50 width=16)                                                                          |
+|                    ->  Hash Right Join  (cost=95.67..100.21 rows=50 width=16)                                                          |
+|                          Hash Cond: (s.id = t.seat_id)                                                                                 |
+|                          ->  Seq Scan on seats s  (cost=0.00..4.00 rows=200 width=16)                                                  |
+|                          ->  Hash  (cost=95.05..95.05 rows=50 width=16)                                                                |
+|                                ->  Index Scan using tickets_session_id_seat_id_unique on tickets t  (cost=0.42..95.05 rows=50 width=16)|
+|                                      Index Cond: (session_id = 2294)                                                                   |
+|        ->  Hash  (cost=2.00..2.00 rows=100 width=16)                                                                                   |
+|              ->  Seq Scan on orders o  (cost=0.00..2.00 rows=100 width=16)                                                             |
++----------------------------------------------------------------------------------------------------------------------------------------+
+
+План для числа записей для ~10000 записей
++----------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                  |
++----------------------------------------------------------------------------------------------------------------------------+
+|Sort  (cost=473.97..474.10 rows=50 width=9)                                                                                 |
+|  Sort Key: s."row", s.place                                                                                                |
+|  ->  Nested Loop Left Join  (cost=7.49..472.56 rows=50 width=9)                                                            |
+|        ->  Hash Left Join  (cost=7.21..456.93 rows=50 width=16)                                                            |
+|              Hash Cond: (t.seat_id = s.id)                                                                                 |
+|              ->  Nested Loop Left Join  (cost=0.71..450.30 rows=50 width=16)                                               |
+|                    ->  Index Scan using tickets_session_id_seat_id_unique on tickets t  (cost=0.42..95.05 rows=50 width=16)|
+|                          Index Cond: (session_id = 2294)                                                                   |
+|                    ->  Index Scan using order_ticket_unique on order_ticket ot  (cost=0.29..7.10 rows=1 width=16)          |
+|                          Index Cond: (ticket_id = t.id)                                                                    |
+|              ->  Hash  (cost=4.00..4.00 rows=200 width=16)                                                                 |
+|                    ->  Seq Scan on seats s  (cost=0.00..4.00 rows=200 width=16)                                            |
+|        ->  Index Scan using orders_pkey on orders o  (cost=0.28..0.31 rows=1 width=16)                                     |
+|              Index Cond: (id = ot.order_id)                                                                                |
++----------------------------------------------------------------------------------------------------------------------------+
+
+План для числа записей для ~10000000 записей
++----------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                  |
++----------------------------------------------------------------------------------------------------------------------------+
+|Sort  (cost=538.17..538.29 rows=50 width=9)                                                                                 |
+|  Sort Key: s."row", s.place                                                                                                |
+|  ->  Nested Loop Left Join  (cost=8.76..536.76 rows=50 width=9)                                                            |
+|        ->  Hash Left Join  (cost=8.47..520.68 rows=50 width=16)                                                            |
+|              Hash Cond: (t.seat_id = s.id)                                                                                 |
+|              ->  Nested Loop Left Join  (cost=0.84..512.93 rows=50 width=16)                                               |
+|                    ->  Index Scan using tickets_session_id_seat_id_unique on tickets t  (cost=0.42..95.05 rows=50 width=16)|
+|                          Index Cond: (session_id = 2294)                                                                   |
+|                    ->  Index Scan using order_ticket_unique on order_ticket ot  (cost=0.42..8.36 rows=1 width=16)          |
+|                          Index Cond: (ticket_id = t.id)                                                                    |
+|              ->  Hash  (cost=4.50..4.50 rows=250 width=16)                                                                 |
+|                    ->  Seq Scan on seats s  (cost=0.00..4.50 rows=250 width=16)                                            |
+|        ->  Index Scan using orders_pkey on orders o  (cost=0.29..0.32 rows=1 width=16)                                     |
+|              Index Cond: (id = ot.order_id)                                                                                |
++----------------------------------------------------------------------------------------------------------------------------+
+
+Оптимизация
+Добавить частичный индекс по полю session_id
+create index tickets_session_id_index
+    on tickets (session_id)
+    where tickets.deleted_at is null ;
+
+План запроса
+ +------------------------------------------------------------------------------------------------------------------+
+ |QUERY PLAN                                                                                                        |
+ +------------------------------------------------------------------------------------------------------------------+
+ |Sort  (cost=324.22..324.30 rows=35 width=9)                                                                       |
+ |  Sort Key: s."row", s.place                                                                                      |
+ |  ->  Nested Loop Left Join  (cost=8.76..323.32 rows=35 width=9)                                                  |
+ |        ->  Hash Left Join  (cost=8.47..312.06 rows=35 width=16)                                                  |
+ |              Hash Cond: (t.seat_id = s.id)                                                                       |
+ |              ->  Nested Loop Left Join  (cost=0.84..304.35 rows=35 width=16)                                     |
+ |                    ->  Index Scan using tickets_session_id_index on tickets t  (cost=0.42..9.03 rows=35 width=16)|
+ |                          Index Cond: (session_id = 2294)                                                         |
+ |                    ->  Index Scan using order_ticket_unique on order_ticket ot  (cost=0.42..8.44 rows=1 width=16)|
+ |                          Index Cond: (ticket_id = t.id)                                                          |
+ |              ->  Hash  (cost=4.50..4.50 rows=250 width=16)                                                       |
+ |                    ->  Seq Scan on seats s  (cost=0.00..4.50 rows=250 width=16)                                  |
+ |        ->  Index Scan using orders_pkey on orders o  (cost=0.29..0.32 rows=1 width=16)                           |
+ |              Index Cond: (id = ot.order_id)                                                                      |
+ +------------------------------------------------------------------------------------------------------------------+
