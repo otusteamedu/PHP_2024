@@ -12,10 +12,7 @@ class RateManager
     {
         $rates = $this->getRates();
 
-        return [
-            'base_currency' => 'USD',
-            'rates' => $rates,
-        ];
+        return $rates;
     }
 
     private function getRates(): array
@@ -28,7 +25,8 @@ class RateManager
         $balances = $this->getBalances();
 
         foreach ($currencies as $code => $value) {
-            $rates['currencies'][$code] = [
+            $rates['currencies'][] = [
+                'code' => $code,
                 'title' => $value['title'],
                 'type' => $value['type'],
                 'rate_to_usd' => $value['rate_to_usd'],
@@ -38,7 +36,15 @@ class RateManager
 
         $profitPairs = $this->getRatesProfitPair();
         foreach ($profitPairs as $pair) {
-            $rates['exchange_pairs'][$pair['cur_from']][$pair['cur_to']] = $pair['profit'];
+            $rates['exchange_pairs'][][$pair['cur_from']][] = [
+                'cur_to' => $pair['cur_to'],
+                'profit' => $pair['profit']
+            ];
+
+//            [$pair['cur_from']][] = [
+//                'cur_to' => $pair['cur_to'],
+//                'profit' => $pair['profit'],
+//            ]];
         }
 
         return $rates;

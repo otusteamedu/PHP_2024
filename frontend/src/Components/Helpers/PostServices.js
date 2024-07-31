@@ -2,15 +2,13 @@ import axios from "axios";
 
 export default class PostServices {
 
-    // process.env.REACT_APP_API_RATES_URL
-    //static API_URL = 'http://test.local:8080/api/rates';
-    static API_URL = process.env.REACT_APP_API_RATES_URL;
+    static API_RATES_URL = process.env.REACT_APP_API_URL + 'rates';
 
     static async getPageData() {
 
         try {
             const res = await axios({
-                url: this.API_URL,
+                url: this.API_RATES_URL,
                 credentials: true,
                 method: 'get',
                 httpOnly: true,

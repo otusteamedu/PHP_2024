@@ -12,13 +12,6 @@ class RateController extends Controller
     {
         $rateManagerResponse = new RateManager();
         return response()->json($rateManagerResponse());
-        // Implement rate logic here
-//        return response()->json([
-//            'rates' => [
-//                'USD' => 1.1,
-//                'EUR' => 0.9,
-//            ]
-//        ]);
     }
 
 }
