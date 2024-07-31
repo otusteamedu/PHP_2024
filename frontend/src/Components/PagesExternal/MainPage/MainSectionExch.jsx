@@ -48,12 +48,14 @@ const MainSectionExch = () => {
     // }
 
     const getPost = async (postUrl) => {
-        setData({data:{},param:{}});
+        //setData({data:{},param:{}});
     }
 
-    const getBackend = async (postUrl) => {
-        await PostServices.getPageData(postUrl)
-            .then(res => setData(res))
+    const getBackend = async () => {
+        await PostServices.getPageData()
+            .then(res => setData(res));
+            //.then(res => console.log(res));
+        console.log(data);
     }
 
     const currency = data.data;
@@ -112,7 +114,6 @@ const MainSectionExch = () => {
             toValue: '',
             toCur: '',
             exch: '',
-            isFiat: ''
         }
 
         for (let prop in dataParam) {
@@ -293,8 +294,8 @@ const MainSectionExch = () => {
                         </div>
                     </div>
 
-                    <div className=" i_ex_btn">
-                        <button className="yellow_btn" type="button" onClick={()=>getBackend('index')}>Обменять</button>
+                    <div className="i_ex_btn">
+                        <button className="yellow_btn" type="button" onClick={()=>getBackend()}>Обменять</button>
                     </div>
                 </form>
 

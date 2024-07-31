@@ -7,6 +7,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: frontend
+    env_file:
+      - ./frontend/.env
     volumes:
       - './frontend:/app'
     ports:

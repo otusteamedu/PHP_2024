@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\RateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::prefix('api')->group(function () {
-    Route::get('/rates', RateController::class);
-
-    //Route::post('/create_order', [OrderCreateController::class, 'createOrder']);
 });
 
 Route::prefix('admin')->group(function () {

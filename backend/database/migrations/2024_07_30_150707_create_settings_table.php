@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('cur_to_code')->unsigned();
             $table->foreign('cur_to_code')->references('code')->on('currencies');
             $table->string('profit');
+            $table->integer('status')->default(1);
         });
     }
 

@@ -2,7 +2,8 @@
 
 namespace App\Infrastructure\RateManager;
 
-use App\Models\Rate;
+use App\Models\Balance;
+use App\Models\Currency;
 use App\Models\Setting;
 
 class RateManager
@@ -12,16 +13,41 @@ class RateManager
         $rates = $this->getRates();
 
         return [
+            'base_currency' => 'USD',
             'rates' => $rates,
-            'base_currency' => 'USD'
         ];
     }
 
     private function getRates(): array
     {
-        $ratesToUsd = [];
+        $rates = [
+            'currencies' => [],
+            'exchange_pairs' => [],
+        ];
+        $currencies = $this->getAllCurrencies();
+        $balances = $this->getBalances();
+
+        foreach ($currencies as $code => $value) {
+            $rates['currencies'][$code] = [
+                'title' => $value['title'],
+                'type' => $value['type'],
+                'rate_to_usd' => $value['rate_to_usd'],
+                'balance' => $balances[$code],
+            ];
+        }
+
+        $profitPairs = $this->getRatesProfitPair();
+        foreach ($profitPairs as $pair) {
+            $rates['exchange_pairs'][$pair['cur_from']][$pair['cur_to']] = $pair['profit'];
+        }
+
+        return $rates;
+    }
+
+    private function getRatesProfitPair(): array
+    {
         $profitPairs = [];
-        foreach (Setting::all() as $setting) {
+        foreach (Setting::where('status',1)->get() as $setting) {
             $profitPairs[] = [
                 'cur_from' => $setting->cur_from_code,
                 'cur_to' => $setting->cur_to_code,
@@ -31,17 +57,25 @@ class RateManager
         return $profitPairs;
     }
 
-    private function getRatesProfitPair($cur_from, $cur_to): array
+    private function getAllCurrencies(): array
     {
-        $profit = Setting::where('cur_from_code', '=', $cur_from)
-            ->where('cur_to_code', '=', $cur_to)
-            ->column('profit')
-            ->get();
-        return [
-            'cur_from' => $cur_from,
-            'cur_to' => $cur_to,
-            'profit' => $profit[0]?? 0,
-        ];
+        $currencies = [];
+        foreach (Currency::all() as $currency) {
+            $currencies[$currency->code] = [
+                'title' => $currency->title,
+                'type' => $currency->type,
+                'rate_to_usd' => $currency->rate_to_usd,
+            ];
+        }
+        return $currencies;
     }
 
+    private function getBalances(): array
+    {
+        $balances = [];
+        foreach (Balance::all() as $balance) {
+            $balances[$balance->cur_code] = $balance->balance;
+        }
+        return $balances;
+    }
 }

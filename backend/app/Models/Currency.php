@@ -14,8 +14,10 @@ class Currency extends Model
     protected $fillable = [
         'code',
         'title',
-        'type'
+        'type',
+        'rate_to_usd'
     ];
+
 
     /**
      * Следует ли обрабатывать временные метки модели.

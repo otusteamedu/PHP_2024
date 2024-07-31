@@ -14,6 +14,8 @@ class Setting extends Model
     protected $fillable = [
         'cur_from_code',
         'cur_to_code',
-        'profit'
+        'profit',
+        'status'
     ];
+
 }

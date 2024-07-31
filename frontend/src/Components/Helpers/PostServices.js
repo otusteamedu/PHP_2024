@@ -2,20 +2,21 @@ import axios from "axios";
 
 export default class PostServices {
 
-    // process.env.REACT_APP_API_URL
-    static API_URL = '/api';
+    // process.env.REACT_APP_API_RATES_URL
+    //static API_URL = 'http://test.local:8080/api/rates';
+    static API_URL = process.env.REACT_APP_API_RATES_URL;
 
-    static async getPageData(page = '') {
+    static async getPageData() {
 
         try {
             const res = await axios({
                 url: this.API_URL,
                 credentials: true,
-                method: 'post',
+                method: 'get',
                 httpOnly: true,
-                data: {
-                    page: page
-                },
+                // data: {
+                //     page: page
+                // },
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-Requested-With' : 'XMLHttpRequest',
