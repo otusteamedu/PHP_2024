@@ -1,3 +1,5 @@
+<?php
+
 namespace Chat\app;
 
 use Chat\server\Server;
@@ -35,3 +37,4 @@ class App
         }
     }
 }
+?>

@@ -1,3 +1,5 @@
+<?php
+
 declare(strict_types=1);
 
 namespace Chat\server;
@@ -38,3 +40,4 @@ class Server
         $this->server->closeSession();
     }
 }
+?>

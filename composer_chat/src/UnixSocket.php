@@ -1,3 +1,5 @@
+<?php
+
 declare(strict_types=1);
 
 namespace Chat\socket;
@@ -58,3 +60,4 @@ class UnixSocket
         socket_close($this->socket);
     }
 }
+?>
