@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+
+  php-server:
+    build:
+      context: ./docker
+      dockerfile: server.Dockerfile
+    container_name: php-server
+    volumes:
+      - ./composer_chat:/data/composer_chat
+    networks:
+      - app-network
+
+  php-client:
+    build:
+      context: ./docker
+      dockerfile: client.Dockerfile
+    container_name: php-client
+    volumes:
+      - ./composer_chat:/data/composer_chat
+    depends_on:
+      - php-server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
