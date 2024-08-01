@@ -1,0 +1,21 @@
+SELECT
+    i.relname AS имя_индекса,
+    s.idx_scan
+FROM
+    pg_stat_user_indexes s
+        JOIN
+    pg_index x ON s.indexrelid = x.indexrelid
+    JOIN
+    pg_class i ON s.indexrelid = i.oid
+order by idx_scan  asc
+limit 5;
+
++----------------------------------------+--------+
+|имя_индекса                             |idx_scan|
++----------------------------------------+--------+
+|genres_pkey                             |0       |
+|countries_pkey                          |0       |
+|movie_country_movie_id_country_id_unique|0       |
+|movie_genre_movie_id_genre_id_unique    |0       |
+|seats_row_place_hall_id_unique          |0       |
++----------------------------------------+--------+

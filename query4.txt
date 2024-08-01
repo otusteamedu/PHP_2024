@@ -1,0 +1,161 @@
+3 самых прибыльных фильма за неделю
+select m.id, m.title, sum(t.price) as total
+from order_ticket as ot
+         left join orders as o on ot.order_id = o.id
+         left join tickets as t on t.id = ot.ticket_id
+         left join sessions as s on s.id = t.session_id
+         left join movies as m on m.id = s.movie_id
+where
+    status_id = 2
+    and extract(week from o.created_at) = extract(week from now())
+    and o.deleted_at is null
+group by m.id
+order by total desc
+limit 3;
+
+Результат:
++--+--------+-----+
+|id|title   |total|
++--+--------+-----+
+|2 |Movie #2|75.65|
+|1 |Movie #1|69.5 |
+|8 |Movie #8|41.23|
++--+--------+-----+
+
+План для числа записей менее 10000 записей
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                                               |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|Limit  (cost=46.78..46.78 rows=3 width=556)                                                                                                                              |
+|  ->  Sort  (cost=46.78..46.79 rows=6 width=556)                                                                                                                         |
+|        Sort Key: (sum(t.price)) DESC                                                                                                                                    |
+|        ->  GroupAggregate  (cost=46.58..46.70 rows=6 width=556)                                                                                                         |
+|              Group Key: m.id                                                                                                                                            |
+|              ->  Sort  (cost=46.58..46.59 rows=6 width=530)                                                                                                             |
+|                    Sort Key: m.id                                                                                                                                       |
+|                    ->  Nested Loop Left Join  (cost=3.98..46.50 rows=6 width=530)                                                                                       |
+|                          ->  Nested Loop Left Join  (cost=3.83..45.37 rows=6 width=14)                                                                                  |
+|                                ->  Nested Loop Left Join  (cost=3.56..43.59 rows=6 width=14)                                                                            |
+|                                      ->  Hash Join  (cost=3.26..14.82 rows=6 width=8)                                                                                   |
+|                                            Hash Cond: (ot.order_id = o.id)                                                                                              |
+|                                            ->  Seq Scan on order_ticket ot  (cost=0.00..9.93 rows=593 width=16)                                                         |
+|                                            ->  Hash  (cost=3.25..3.25 rows=1 width=8)                                                                                   |
+|                                                  ->  Seq Scan on orders o  (cost=0.00..3.25 rows=1 width=8)                                                             |
+|                                                        Filter: ((deleted_at IS NULL) AND (status_id = 2) AND (EXTRACT(week FROM created_at) = EXTRACT(week FROM now())))|
+|                                      ->  Index Scan using tickets_pkey on tickets t  (cost=0.29..4.80 rows=1 width=22)                                                  |
+|                                            Index Cond: (id = ot.ticket_id)                                                                                              |
+|                                ->  Index Scan using sessions_pkey on sessions s  (cost=0.28..0.30 rows=1 width=16)                                                      |
+|                                      Index Cond: (id = t.session_id)                                                                                                    |
+|                          ->  Index Scan using movies_pkey on movies m  (cost=0.14..0.19 rows=1 width=524)                                                               |
+|                                Index Cond: (id = s.movie_id)                                                                                                            |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+План для числа записей для ~10000 записей
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                                               |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|Limit  (cost=764.16..764.16 rows=3 width=50)                                                                                                                             |
+|  ->  Sort  (cost=764.16..764.29 rows=52 width=50)                                                                                                                       |
+|        Sort Key: (sum(t.price)) DESC                                                                                                                                    |
+|        ->  GroupAggregate  (cost=762.44..763.48 rows=52 width=50)                                                                                                       |
+|              Group Key: m.id                                                                                                                                            |
+|              ->  Sort  (cost=762.44..762.57 rows=52 width=24)                                                                                                           |
+|                    Sort Key: m.id                                                                                                                                       |
+|                    ->  Nested Loop Left Join  (cost=152.60..760.96 rows=52 width=24)                                                                                    |
+|                          ->  Nested Loop Left Join  (cost=152.32..745.40 rows=52 width=14)                                                                              |
+|                                ->  Nested Loop Left Join  (cost=152.04..729.62 rows=52 width=14)                                                                        |
+|                                      ->  Hash Join  (cost=151.61..673.82 rows=52 width=8)                                                                               |
+|                                            Hash Cond: (ot.order_id = o.id)                                                                                              |
+|                                            ->  Seq Scan on order_ticket ot  (cost=0.00..446.22 rows=28922 width=16)                                                     |
+|                                            ->  Hash  (cost=151.50..151.50 rows=9 width=8)                                                                               |
+|                                                  ->  Seq Scan on orders o  (cost=0.00..151.50 rows=9 width=8)                                                           |
+|                                                        Filter: ((deleted_at IS NULL) AND (status_id = 2) AND (EXTRACT(week FROM created_at) = EXTRACT(week FROM now())))|
+|                                      ->  Index Scan using tickets_pkey on tickets t  (cost=0.42..1.07 rows=1 width=22)                                                  |
+|                                            Index Cond: (id = ot.ticket_id)                                                                                              |
+|                                ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..0.30 rows=1 width=16)                                                      |
+|                                      Index Cond: (id = t.session_id)                                                                                                    |
+|                          ->  Index Scan using movies_pkey on movies m  (cost=0.28..0.30 rows=1 width=18)                                                                |
+|                                Index Cond: (id = s.movie_id)                                                                                                            |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+План для числа записей для ~10000000 записей
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                                                           |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|Limit  (cost=6709.24..6709.25 rows=3 width=53)                                                                                                                                       |
+|  ->  Sort  (cost=6709.24..6710.25 rows=404 width=53)                                                                                                                                |
+|        Sort Key: (sum(t.price)) DESC                                                                                                                                                |
+|        ->  Finalize GroupAggregate  (cost=6665.65..6704.02 rows=404 width=53)                                                                                                       |
+|              Group Key: m.id                                                                                                                                                        |
+|              ->  Gather Merge  (cost=6665.65..6697.19 rows=238 width=53)                                                                                                            |
+|                    Workers Planned: 1                                                                                                                                               |
+|                    ->  Partial GroupAggregate  (cost=5665.64..5670.40 rows=238 width=53)                                                                                            |
+|                          Group Key: m.id                                                                                                                                            |
+|                          ->  Sort  (cost=5665.64..5666.24 rows=238 width=27)                                                                                                        |
+|                                Sort Key: m.id                                                                                                                                       |
+|                                ->  Nested Loop Left Join  (cost=1511.22..5656.25 rows=238 width=27)                                                                                 |
+|                                      ->  Nested Loop Left Join  (cost=1510.80..4689.36 rows=238 width=14)                                                                           |
+|                                            ->  Nested Loop Left Join  (cost=1510.51..4617.17 rows=238 width=14)                                                                     |
+|                                                  ->  Hash Join  (cost=1510.09..4488.17 rows=238 width=8)                                                                            |
+|                                                        Hash Cond: (ot.order_id = o.id)                                                                                              |
+|                                                        ->  Parallel Seq Scan on order_ticket ot  (cost=0.00..2619.79 rows=136479 width=16)                                          |
+|                                                        ->  Hash  (cost=1509.00..1509.00 rows=87 width=8)                                                                            |
+|                                                              ->  Seq Scan on orders o  (cost=0.00..1509.00 rows=87 width=8)                                                         |
+|                                                                    Filter: ((deleted_at IS NULL) AND (status_id = 2) AND (EXTRACT(week FROM created_at) = EXTRACT(week FROM now())))|
+|                                                  ->  Index Scan using tickets_pkey on tickets t  (cost=0.42..0.54 rows=1 width=22)                                                  |
+|                                                        Index Cond: (id = ot.ticket_id)                                                                                              |
+|                                            ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..0.30 rows=1 width=16)                                                      |
+|                                                  Index Cond: (id = t.session_id)                                                                                                    |
+|                                      ->  Index Scan using movies_pkey on movies m  (cost=0.42..4.06 rows=1 width=21)                                                                |
+|                                            Index Cond: (id = s.movie_id)                                                                                                            |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+Оптимизация
+Добавить частичный индекс по полям id, status_id, created_at для не удаленных записей
+create index orders_status_id_index
+    on orders (id, status_id, created_at)
+    where (deleted_at IS NULL);
+
+Время выполнения до оптимизации: 231.400 ms
+Время выполнения после оптимизации: 156.879 ms
+
+План запроса
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                                                                                             |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|Limit  (cost=6364.05..6364.05 rows=3 width=53) (actual time=149.054..156.748 rows=3 loops=1)                                                                                                                           |
+|  ->  Sort  (cost=6364.05..6365.06 rows=407 width=53) (actual time=149.052..156.745 rows=3 loops=1)                                                                                                                    |
+|        Sort Key: (sum(t.price)) DESC                                                                                                                                                                                  |
+|        Sort Method: top-N heapsort  Memory: 25kB                                                                                                                                                                      |
+|        ->  Finalize GroupAggregate  (cost=6320.24..6358.79 rows=407 width=53) (actual time=140.940..156.098 rows=2860 loops=1)                                                                                        |
+|              Group Key: m.id                                                                                                                                                                                          |
+|              ->  Gather Merge  (cost=6320.24..6351.91 rows=239 width=53) (actual time=140.927..153.207 rows=3137 loops=1)                                                                                             |
+|                    Workers Planned: 1                                                                                                                                                                                 |
+|                    Workers Launched: 1                                                                                                                                                                                |
+|                    ->  Partial GroupAggregate  (cost=5320.23..5325.01 rows=239 width=53) (actual time=136.555..140.363 rows=1568 loops=2)                                                                             |
+|                          Group Key: m.id                                                                                                                                                                              |
+|                          ->  Sort  (cost=5320.23..5320.83 rows=239 width=27) (actual time=136.533..137.468 rows=8004 loops=2)                                                                                         |
+|                                Sort Key: m.id                                                                                                                                                                         |
+|                                Sort Method: quicksort  Memory: 639kB                                                                                                                                                  |
+|                                Worker 0:  Sort Method: quicksort  Memory: 621kB                                                                                                                                       |
+|                                ->  Nested Loop Left Join  (cost=1169.85..5310.79 rows=239 width=27) (actual time=21.948..133.627 rows=8004 loops=2)                                                                   |
+|                                      ->  Nested Loop Left Join  (cost=1169.43..4339.84 rows=239 width=14) (actual time=21.907..102.515 rows=8004 loops=2)                                                             |
+|                                            ->  Nested Loop Left Join  (cost=1169.14..4267.34 rows=239 width=14) (actual time=21.872..84.965 rows=8004 loops=2)                                                        |
+|                                                  ->  Parallel Hash Join  (cost=1168.72..4137.73 rows=239 width=8) (actual time=21.826..53.676 rows=8004 loops=2)                                                      |
+|                                                        Hash Cond: (ot.order_id = o.id)                                                                                                                                |
+|                                                        ->  Parallel Seq Scan on order_ticket ot  (cost=0.00..2611.78 rows=136078 width=16) (actual time=0.016..11.625 rows=115666 loops=2)                            |
+|                                                        ->  Parallel Hash  (cost=1168.07..1168.07 rows=52 width=8) (actual time=21.491..21.492 rows=1715 loops=2)                                                      |
+|                                                              Buckets: 4096 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 248kB                                                                          |
+|                                                              ->  Parallel Index Only Scan using orders_status_id_index on orders o  (cost=0.29..1168.07 rows=52 width=8) (actual time=0.086..17.150 rows=1715 loops=2)|
+|                                                                    Index Cond: (status_id = 2)                                                                                                                        |
+|                                                                    Filter: (EXTRACT(week FROM created_at) = EXTRACT(week FROM now()))                                                                                 |
+|                                                                    Rows Removed by Filter: 7012                                                                                                                       |
+|                                                                    Heap Fetches: 0                                                                                                                                    |
+|                                                  ->  Index Scan using tickets_pkey on tickets t  (cost=0.42..0.54 rows=1 width=22) (actual time=0.003..0.003 rows=1 loops=16008)                                      |
+|                                                        Index Cond: (id = ot.ticket_id)                                                                                                                                |
+|                                            ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..0.30 rows=1 width=16) (actual time=0.002..0.002 rows=1 loops=16008)                                          |
+|                                                  Index Cond: (id = t.session_id)                                                                                                                                      |
+|                                      ->  Index Scan using movies_pkey on movies m  (cost=0.42..4.06 rows=1 width=21) (actual time=0.003..0.003 rows=1 loops=16008)                                                    |
+|                                            Index Cond: (id = s.movie_id)                                                                                                                                              |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+

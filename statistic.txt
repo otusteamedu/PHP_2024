@@ -1,0 +1,19 @@
++----------------------------------------+---------+----------+
+|name                                    |totalsize|relsize   |
++----------------------------------------+---------+----------+
+|public.movies                           |105 MB   |83 MB     |
+|public.tickets                          |63 MB    |33 MB     |
+|public.movies_pkey                      |21 MB    |21 MB     |
+|public.tickets_session_id_seat_id_unique|17 MB    |17 MB     |
+|public.order_ticket                     |16 MB    |10040 kB  |
+|public.tickets_pkey                     |12 MB    |12 MB     |
+|public.order_ticket_unique              |6728 kB  |6728 kB   |
+|public.orders                           |4216 kB  |3072 kB   |
+|public.orders_pkey                      |1112 kB  |1112 kB   |
+|public.sessions                         |984 kB   |688 kB    |
+|pg_toast.pg_toast_2618                  |560 kB   |512 kB    |
+|public.sessions_pkey                    |264 kB   |264 kB    |
+|pg_toast.pg_toast_2619                  |96 kB    |48 kB     |
+|public.seats                            |88 kB    |16 kB     |
+|pg_toast.pg_toast_1255                  |56 kB    |8192 bytes|
++----------------------------------------+---------+----------+
