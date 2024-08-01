@@ -80,14 +80,18 @@ create index sessions_start_at_index
     on sessions (start_at)
     where sessions.deleted_at is null ;
 
+Время выполнения до оптимизации: 29.359 ms
+Время выполнения после оптимизации: 4.105 ms
+
 План запроса после оптимитизации
-+--------------------------------------------------------------------------------------------------+
-|QUERY PLAN                                                                                        |
-+--------------------------------------------------------------------------------------------------+
-|Nested Loop Left Join  (cost=0.71..447.67 rows=26 width=21)                                       |
-|  ->  Index Scan using sessions_start_at_index on sessions s  (cost=0.29..228.17 rows=26 width=16)|
-|        Index Cond: (start_at > now())                                                            |
-|        Filter: (date_trunc('day'::text, start_at) = date_trunc('day'::text, now()))              |
-|  ->  Index Scan using movies_pkey on movies m  (cost=0.42..8.44 rows=1 width=21)                 |
-|        Index Cond: (id = s.movie_id)                                                             |
-+--------------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------------------------+
+|Nested Loop Left Join  (cost=0.71..447.34 rows=26 width=21) (actual time=0.055..4.057 rows=25 loops=1)                                       |
+|  ->  Index Scan using sessions_start_at_index on sessions s  (cost=0.29..227.84 rows=26 width=16) (actual time=0.038..3.812 rows=25 loops=1)|
+|        Index Cond: (start_at > now())                                                                                                       |
+|        Filter: (date_trunc('day'::text, start_at) = date_trunc('day'::text, now()))                                                         |
+|        Rows Removed by Filter: 5088                                                                                                         |
+|  ->  Index Scan using movies_pkey on movies m  (cost=0.42..8.44 rows=1 width=21) (actual time=0.009..0.009 rows=1 loops=25)                 |
+|        Index Cond: (id = s.movie_id)                                                                                                        |
++---------------------------------------------------------------------------------------------------------------------------------------------+

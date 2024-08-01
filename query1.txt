@@ -47,12 +47,18 @@ create index orders_status_id_index
     on orders (status_id)
     where orders.deleted_at is null ;
 
+Время выполнения до оптимизации: 7.046 ms
+Время выполнения после оптимизации: 4.499 ms
+
  План запроса после оптимитизации
- +---------------------------------------------------------------------------------------+
- |QUERY PLAN                                                                             |
- +---------------------------------------------------------------------------------------+
- |Bitmap Heap Scan on orders  (cost=99.46..591.80 rows=8667 width=40)                    |
- |  Recheck Cond: ((status_id = 1) AND (deleted_at IS NULL))                             |
- |  ->  Bitmap Index Scan on orders_status_id_index  (cost=0.00..97.29 rows=8667 width=0)|
- |        Index Cond: (status_id = 1)                                                    |
- +---------------------------------------------------------------------------------------+
+ +------------------------------------------------------------------------------------------------------------------------------------+
+ |QUERY PLAN                                                                                                                          |
+ +------------------------------------------------------------------------------------------------------------------------------------+
+ |Bitmap Heap Scan on orders  (cost=99.44..591.74 rows=8664 width=40) (actual time=0.532..4.023 rows=8736 loops=1)                    |
+ |  Recheck Cond: ((status_id = 1) AND (deleted_at IS NULL))                                                                          |
+ |  Heap Blocks: exact=384                                                                                                            |
+ |  ->  Bitmap Index Scan on orders_status_id_index  (cost=0.00..97.27 rows=8664 width=0) (actual time=0.463..0.465 rows=8736 loops=1)|
+ |        Index Cond: (status_id = 1)                                                                                                 |
+ |Planning Time: 0.519 ms                                                                                                             |
+ |Execution Time: 4.499 ms                                                                                                            |
+ +------------------------------------------------------------------------------------------------------------------------------------+
