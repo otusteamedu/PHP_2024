@@ -16,12 +16,20 @@ return new class extends Migration
             $table->tinyInteger('status');
             $table->string("cur_from")->unsigned();
             $table->string("cur_to")->unsigned();
-            $table->foreign('cur_from')->references('code')->on('currencies');
-            $table->foreign('cur_to')->references('code')->on('currencies');
             $table->string("amount_from");
             $table->string("amount_to");
             $table->string("rate");
             $table->timestamps();
+
+            $table->foreign('cur_from')
+                ->references('code')
+                ->on('currencies')
+                ->onDelete('cascade');
+
+            $table->foreign('cur_to')
+                ->references('code')
+                ->on('currencies')
+                ->onDelete('cascade');
         });
     }
 

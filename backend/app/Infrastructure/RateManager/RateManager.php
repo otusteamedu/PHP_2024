@@ -4,7 +4,7 @@ namespace App\Infrastructure\RateManager;
 
 use App\Models\Balance;
 use App\Models\Currency;
-use App\Models\Setting;
+use App\Models\Exchange;
 
 class RateManager
 {
@@ -25,26 +25,22 @@ class RateManager
         $balances = $this->getBalances();
 
         foreach ($currencies as $code => $value) {
-            $rates['currencies'][] = [
-                'code' => $code,
+            $rates['currencies'][$code] = [
                 'title' => $value['title'],
                 'type' => $value['type'],
                 'rate_to_usd' => $value['rate_to_usd'],
                 'balance' => $balances[$code],
+                'inc_min_amount' => $value['inc_min_amount'],
+                'inc_max_amount' => $value['inc_max_amount'],
+                'outc_min_amount' => $value['outc_min_amount'],
+                'outc_max_amount' => $value['outc_max_amount'],
             ];
         }
 
         $profitPairs = $this->getRatesProfitPair();
-        foreach ($profitPairs as $pair) {
-            $rates['exchange_pairs'][][$pair['cur_from']][] = [
-                'cur_to' => $pair['cur_to'],
-                'profit' => $pair['profit']
-            ];
 
-//            [$pair['cur_from']][] = [
-//                'cur_to' => $pair['cur_to'],
-//                'profit' => $pair['profit'],
-//            ]];
+        foreach ($profitPairs as $key => $value) {
+            $rates['exchange_pairs'][$key] = $value;
         }
 
         return $rates;
@@ -53,11 +49,10 @@ class RateManager
     private function getRatesProfitPair(): array
     {
         $profitPairs = [];
-        foreach (Setting::where('status',1)->get() as $setting) {
-            $profitPairs[] = [
-                'cur_from' => $setting->cur_from_code,
-                'cur_to' => $setting->cur_to_code,
-                'profit' => $setting->profit,
+        foreach (Exchange::where('status',1)->get() as $record) {
+            $profitPairs[$record->cur_from_code][] = [
+                'cur_to' => $record->cur_to_code,
+                'profit' => $record->profit,
             ];
         }
         return $profitPairs;
@@ -71,6 +66,10 @@ class RateManager
                 'title' => $currency->title,
                 'type' => $currency->type,
                 'rate_to_usd' => $currency->rate_to_usd,
+                'inc_min_amount' => $currency->inc_min_amount,
+                'inc_max_amount' => $currency->inc_max_amount,
+                'outc_min_amount' => $currency->outc_min_amount,
+                'outc_max_amount' => $currency->outc_max_amount,
             ];
         }
         return $currencies;

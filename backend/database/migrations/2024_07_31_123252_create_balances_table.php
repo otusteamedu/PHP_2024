@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->string('cur_code')->unsigned();
-            $table->foreign('cur_code')->references('code')->on('currencies');
+            $table->foreign('cur_code')
+                ->references('code')
+                ->on('currencies')
+                ->onDelete('cascade');
             $table->string('balance');
             $table->timestamps();
         });

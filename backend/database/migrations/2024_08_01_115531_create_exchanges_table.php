@@ -11,13 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('exchanges', function (Blueprint $table) {
             $table->string('cur_from_code')->unsigned();
-            $table->foreign('cur_from_code')->references('code')->on('currencies');
             $table->string('cur_to_code')->unsigned();
-            $table->foreign('cur_to_code')->references('code')->on('currencies');
             $table->string('profit');
             $table->integer('status')->default(1);
+
+            $table->foreign('cur_from_code')
+                ->references('code')
+                ->on('currencies')
+                ->onDelete('cascade');
+
+            $table->foreign('cur_to_code')
+                ->references('code')
+                ->on('currencies')
+                ->onDelete('cascade');
         });
     }
 
@@ -26,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('exchanges');
     }
 };

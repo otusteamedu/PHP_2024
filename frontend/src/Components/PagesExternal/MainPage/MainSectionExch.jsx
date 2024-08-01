@@ -1,6 +1,7 @@
 import React from 'react';
 import Input from "./UIElements/Input";
 import PostServices from "../../Helpers/PostServices";
+import {number, string} from "yup";
 
 
 const MainSectionExch = () => {
@@ -13,13 +14,28 @@ const MainSectionExch = () => {
     const [toCurrency,setToCurrency] = React.useState('');
 
     // Курс обмена
-    const [fromPriceCurrent,setFromPriceCurrent] = React.useState('');
-    const [fromPrice,setFromPrice] = React.useState('');
-    const [fromPriceCur,setFromPriceCur] = React.useState('');
-    const [toPriceCurrent,setToPriceCurrent] = React.useState('');
-    const [toPrice,setToPrice] = React.useState('');
-    const [toPriceCur,setToPriceCur] = React.useState('');
+    const [fromPrice,setFromPrice] = React.useState(0);
+    const [toPrice,setToPrice] = React.useState(0);
 
+    // Установка допустимых валют для обмена
+    const [fromCurs,setFromCurs] = React.useState([]);
+    const [toCurs,setToCurs] = React.useState([]);
+
+    // Названия валют
+    const [getTitles, setGetTitles] = React.useState([]);
+
+    // Курс обмена
+    const [rateExch,setRateExch] = React.useState('');
+
+    // Мин. и макс. сумма
+    const [minFromSum,setMinFromSum] = React.useState(null);
+    const [maxFromSum,setMaxFromSum] = React.useState(null);
+    const [maxToSum,setMaxToSum] = React.useState(null);
+
+    // Проверка на фиат для округления
+    const [isFiat, setIsFiat] = React.useState(false);
+
+    const [curInfo, setCurInfo] = React.useState();
     const time = 30;
 
     const getBackend = async () => {
@@ -27,58 +43,160 @@ const MainSectionExch = () => {
             .then(res => setData(res))
     }
 
-    const dataCurs = data.currencies || [];
-    const dataPairs = data.exchange_pairs || [];
+    const dataCurs = data.currencies;
+    const dataPairs = data.exchange_pairs;
 
-    const rateRow = () => {
+    const curInfoPrepare = () => {
+        let curInfoPrepare = {};
+        for (let key1 in dataCurs) {
+            if (dataCurs.hasOwnProperty(key1)) {
+                curInfoPrepare[key1] = {};
+                curInfoPrepare[key1].title = dataCurs[key1].title;
+                curInfoPrepare[key1].type = dataCurs[key1].type;
+                curInfoPrepare[key1].rate_to_usd = dataCurs[key1].rate_to_usd;
+                curInfoPrepare[key1].balance = dataCurs[key1].balance;
+                curInfoPrepare[key1].inc_min_amount = dataCurs[key1].inc_min_amount;
+                curInfoPrepare[key1].inc_max_amount = dataCurs[key1].inc_max_amount;
+                curInfoPrepare[key1].outc_min_amount = dataCurs[key1].outc_min_amount;
+                curInfoPrepare[key1].outc_max_amount = dataCurs[key1].outc_max_amount;
+            }
+        }
+        return curInfoPrepare;
+    }
+
+    const curNames = () => {
+        let titles = [];
+        for (const [coin,values] of Object.entries(curInfoPrepare())) {
+            titles[coin] = values.title;
+        }
+        return titles;
+    }
+
+    const getRateExch = () => {
+
+        if (!fromCurrency || !toCurrency) return;
+
+        for (const [keyRE, valueRE] of Object.entries(dataPairs)) {
+            if (keyRE !== fromCurrency) continue;
+            for (const [keyTRE, valueTRE] of Object.entries(valueRE)) {
+                if (valueTRE.cur_to && valueTRE.profit && valueTRE.cur_to === toCurrency) {
+                    setRateExch(valueTRE.profit);
+                    break;
+                }
+            }
+        }
+    }
+
+    const defaultExchange = () => {
+        // Выбираем первую пару валют для обмена
         if (!fromCurrency && !toCurrency && dataPairs) {
 
-            console.log(dataPairs);
-            for (let from of dataPairs) {
-                console.log(from);
-                for (let to of from) {
-                    if (to.cur_to && to.profit) {
-                        setFromCurrency(Object.keys(from)[0]);
-                        setToCurrency(to.cur_to);
+            for (const [keyFE, valueFE] of Object.entries(dataPairs)) {
+                for (const [keyTE, valueTE] of Object.entries(valueFE)) {
+                    if (valueTE.cur_to && valueTE.profit) {
+                        setFromCurrency(keyFE);
+                        setToCurrency(valueTE.cur_to);
                         break;
                     }
                 }
             }
-
-                //console.log(dataPairs);
-                //setToCurrency(dataPairs[Object.keys(dataPairs)[0]][0].cur_to);
-
-
-            // for (let prop of dataPairs) {
-            //     setFromCurrency(prop);
-            //     for (let k of dataPairs.prop) {
-            //         if (k.cur_to && k.profit) {
-            //             setToCurrency(k.cur_to);
-            //             break;
-            //         }
-            //     }
-            // }
         }
     }
 
-    React.useEffect(() => {
-        if (!Object.keys(data).length) {
+    // Доступные валюты для обмена
+    const availableCurs = () => {
 
+        if (!dataPairs) return;
+
+        let availableCurs = {
+            from: [],
+            to: []
+        };
+        for (const [keyF,value] of Object.entries(dataPairs)) {
+
+            if (keyF === fromCurrency) continue;
+
+            (availableCurs.from).push(keyF);
+
+            for (const [keyT,valueT] of Object.entries(value)) {
+
+                if (valueT.cur_to === toCurrency || (availableCurs.to).includes(valueT.cur_to)) continue;
+                (availableCurs.to).push(valueT.cur_to);
+            }
+
+        }
+
+        return availableCurs;
+    }
+
+    const changeCurFrom = () => {
+        for (const [k,arr] of Object.entries(dataPairs)) {
+
+            if (k !== fromCurrency) continue;
+
+            for (const [t,arrT] of Object.entries(arr)) {
+
+                if (arrT.cur_to) {
+                    setToCurrency(arrT.cur_to);
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    const changeCurTo = () => {
+        if (!fromCurrency || !toCurrency) return;
+        let toCurArr = [];
+        for (const [o,l] of Object.entries(dataPairs)) {
+            if (o !== fromCurrency) continue;
+            for (const [n,m] of Object.entries(l)) {
+                if (m.cur_to !== toCurrency) {
+                    toCurArr.push(m.cur_to);
+                }
+            }
+        }
+        return toCurArr;
+    }
+
+    const rateRow = () => {
+        if (!fromCurrency ||!toCurrency) return;
+        if (curInfo[fromCurrency].rate_to_usd === curInfo[toCurrency].rate_to_usd) {
+            setFromPrice(Number(curInfo[fromCurrency].rate_to_usd) * Number(rateExch));
+            setToPrice(Number(curInfo[toCurrency].rate_to_usd));
+        }
+    }
+
+    const setMinMax = () => {
+
+        if (!fromCurrency || !toCurrency || !curInfoPrepare()) return;
+
+        setMinFromSum(curInfoPrepare()[fromCurrency].inc_min_amount);
+        setMaxFromSum(curInfoPrepare()[fromCurrency].inc_max_amount);
+        setMaxToSum(curInfoPrepare()[toCurrency].outc_max_amount);
+
+    }
+
+    React.useEffect(() => {
+
+        if (!Object.keys(data).length) {
             try {
                 getBackend().then(r => {});
             } catch (e) {
                 console.warn(e.message());
             }
         }
-    });
 
-    React.useEffect(() => {
+        if (!getTitles) setGetTitles(curNames());
+
         if (!fromCurrency && !toCurrency) {
-            rateRow();
+            defaultExchange();
         }
-        //console.log(fromCurrency);
-    },[data]);
-
+        rateRow();
+        getRateExch();
+        if (!curInfo) setCurInfo(curInfoPrepare());
+        setMinMax();
+    });
 
     React.useEffect(() => {
         const interval = setInterval(() => {
@@ -87,239 +205,49 @@ const MainSectionExch = () => {
                 .catch((err) => console.warn(err))
         }, time * 1000);
         return () => clearInterval(interval);
+
     });
 
-    // URL запроса
-    const [postUrl,setPostUrl] = React.useState('');
+    React.useEffect(() => {
+        if (!fromCurrency && !toCurrency) {
+            defaultExchange();
+        }
+        setCurInfo(curInfoPrepare());
+        setGetTitles(curNames());
+        setMinMax();
+        getRateExch();
+    },[data]);
 
+//console.log(curInfoPrepare());
 
+    React.useEffect(() => {
+        if (fromCurrency) changeCurFrom();
+        setFromCurs(availableCurs()?.from);
+    },[fromCurrency]);
 
-    // Установка допустимых валют для обмена
-    const [fromCurs,setFromCurs] = React.useState([]);
-    const [toCurs,setToCurs] = React.useState([]);
-
-
-
-    // Мин. и макс. сумма
-    const [minFromSum,setMinFromSum] = React.useState(null);
-    const [maxFromSum,setMaxFromSum] = React.useState(null);
-    const [maxToSum,setMaxToSum] = React.useState(null);
-
-    const [getTitles, setGetTitles] = React.useState();
-
-    // Проверка на фиат для округления
-    const [isFiat, setIsFiat] = React.useState(false);
-
-    // Курс обмена
-    const [rateExch,setRateExch] = React.useState('');
-    //const [rateToFrom,setRateToFrom] = React.useState(0);
-
-    // Время обновления данных
-
-    // const [rateTime,setRateTime] = React.useState(0);
-    //
-    // const counter = () => {
-    //     setRateTime(time - 1);
-    // }
-
-    const getPost = async (postUrl) => {
-        //setData({data:{},param:{}});
-    }
-
-
-
-
-
-
-    const dataParam = null;
-    const currency = null;
-
-    let titles = {};
-    let curProp = {};
-    // for (let key1 in data.op) {
-    //     if (data.op.hasOwnProperty(key1)) {
-    //         titles[key1] = data.op[key1].t;
-    //         curProp[key1] = data.op[key1].r;
-    //     }
-    // }
-
-    // Сортируем доступные валюты
-    // const currencyAll = () => {
-    //     let curArray = {
-    //         from: {curs: [], defaultCode:''},
-    //         to: {curs: [], defaultCode:''}
-    //     };
-    //
-    //     for (let key in currency) {
-    //
-    //         if (currency.hasOwnProperty(key)) {
-    //
-    //             if (currency[key] instanceof Object) {
-    //                 curArray.from.defaultCode = key;
-    //
-    //                 for (let cur in currency[key]) {
-    //
-    //                     if (currency[key].hasOwnProperty(cur)) {
-    //
-    //                         if (currency[key][cur] === 3) {
-    //                             curArray.to.defaultCode = cur;
-    //                         }
-    //                         else if (currency[key][cur] === 1) {
-    //                             curArray.to.curs.push(cur);
-    //                         }
-    //                         else console.warn('Проблема....')
-    //                     }
-    //                 }
-    //             } else {
-    //                 curArray.from.curs.push(key);
-    //             }
-    //         }
-    //     }
-    //     //console.log(curArray);
-    //     return curArray;
-    // }
-
-    // const rate = () => {
-    //     //console.log(Object.getOwnPropertyNames(data.param));
-    //     let rate = {
-    //         fromValue: '',
-    //         fromCur: '',
-    //         toValue: '',
-    //         toCur: '',
-    //         exch: '',
-    //     }
-    //
-    //     for (let prop in dataParam) {
-    //         if (dataParam.hasOwnProperty(prop)) {
-    //             let reverse = false;
-    //             if (prop === 'rt') {
-    //                 //console.log((dataParam[prop].b).toLowerCase());
-    //                 if ((dataParam[prop].b).toLowerCase() === fromCurrency) {
-    //                     rate.fromValue = dataParam[prop].a;
-    //                     rate.fromCur = dataParam[prop].b;
-    //                     rate.toValue = dataParam[prop].c;
-    //                     rate.toCur = dataParam[prop].d;
-    //                 } else {
-    //                     reverse = true;
-    //                     rate.fromValue = dataParam[prop].c;
-    //                     rate.fromCur = dataParam[prop].d;
-    //                     rate.toValue = dataParam[prop].a;
-    //                     rate.toCur = dataParam[prop].b;
-    //                 }
-    //                 //console.log(fromPrice + ' ' + fromPriceCur + ' = ' + toPrice + ' ' + toPriceCur);
-    //             }
-    //
-    //             if (prop === 'op') {
-    //                 if (dataParam[prop].hasOwnProperty('isFromCrypto')) {
-    //                     if (!reverse) rate.exch = rate.toValue;
-    //                     else rate.exch = rate.fromValue;
-    //                 }
-    //                 if (dataParam[prop].hasOwnProperty('isFromFiat')) {
-    //                     if (reverse) rate.exch = 1 / rate.toValue;
-    //                     else rate.exch = 1 / rate.fromValue;
-    //                     rate.isFiat = 'fs';
-    //                 }
-    //                 if (dataParam[prop].hasOwnProperty('isToFiat')) rate.isFiat = 'ts';
-    //             }
-    //         }
-    //
-    //     }
-    //     return rate;
-    //
-    // }
-
-    // const setMinMax = () => {
-    //
-    //     let minMax = {
-    //         minFrom: 0,
-    //         maxFrom: 0,
-    //         maxTo: 0,
-    //     }
-    //
-    //     for (let prop in dataParam) {
-    //         if (dataParam.hasOwnProperty(prop)) {
-    //             if (prop === 'ri') {
-    //                 minMax.minFrom = dataParam[prop];
-    //                 minMax.minFrom = Number(minMax.minFrom).toFixed(curProp[fromCurrency]);
-    //             }
-    //
-    //             if (prop === 'ss') {
-    //                 minMax.maxTo = dataParam[prop];
-    //                 minMax.maxTo = Number(minMax.maxTo).toFixed(curProp[toCurrency]);
-    //             }
-    //
-    //             if (prop === 'ra') {
-    //                 minMax.maxFrom = dataParam[prop];
-    //                 minMax.maxFrom = Number(minMax.maxFrom).toFixed(curProp[fromCurrency]);
-    //             }
-    //         }
-    //
-    //     }
-    //     return minMax;
-    // }
-
-
-
-    // React.useEffect(() => {
-    //
-    //     if (!getTitles) setGetTitles(titles);
-    //     // if (getCookie('fc') && getCookie('tc')) {
-    //     //     setPostUrl('/exchanger/' + getCookie('fc') + '-' + getCookie('tc') + '/');
-    //     // }
-    //     if (!postUrl) setPostUrl('index');
-    //
-    //     if (!Object.keys(data).length) {
-    //
-    //         try {
-    //             getPost(postUrl).then(r => {});
-    //         } catch (e) {
-    //             console.warn(e.message());
-    //         }
-    //     }
-    //
-    //     if (!rateExch) setRateExch(rate().exch);
-    // });
+    React.useEffect(() => {
+        setToCurs(changeCurTo());
+    },[toCurrency]);
 
     const chooseFromCurrency = (e) => {
-        // setFromCurrency(e.target.id);
-        // //setCookie('fc',e.target.id);
+        setFromCurrency(e.target.id);
+
+        //setCookie('fc',e.target.id);
         // let url = '/exchanger/' + e.target.id + '-' + toCurrency + '/';
         // setPostUrl(url);
         // getPost(url).then(r => {});
     }
 
     const chooseToCurrency = (e) => {
-        // setToCurrency(e.target.id);
+        setToCurrency(e.target.id);
+
         // //setCookie('tc',e.target.id);
         // let url = '/exchanger/' + fromCurrency + '-' + e.target.id + '/';
         // setPostUrl(url);
         // getPost(url).then(r => {});
     }
 
-    // React.useEffect(() => {
-    //     if (!fromCurrency && !toCurrency) {
-    //         setFromCurrency(currencyAll().from.defaultCode);
-    //         setToCurrency(currencyAll().to.defaultCode);
-    //         //setCookie('fc',currencyAll().from.defaultCode);
-    //         //setCookie('tc',currencyAll().to.defaultCode);
-    //         //setCookie('titles',JSON.stringify(titles));
-    //     }
-    //     setFromCurs(currencyAll().from.curs);
-    //     setToCurs(currencyAll().to.curs);
-    //     setToCurrency(currencyAll().to.defaultCode);
-    //     setGetTitles(titles);
-    //     //setCookie('tc', currencyAll().to.defaultCode);
-    //     setFromPrice(rate().fromValue);
-    //     setFromPriceCur(rate().fromCur);
-    //     setToPrice(rate().toValue);
-    //     setToPriceCur(rate().toCur);
-    //     setRateExch(rate().exch);
-    //     setMinFromSum(setMinMax().minFrom);
-    //     setMaxFromSum(setMinMax().maxFrom);
-    //     setMaxToSum(setMinMax().maxTo);
-    //     setIsFiat(rate().isFiat);
-    // },[data]);
-
+    console.log(dataPairs);
 
 
     return (
@@ -331,7 +259,7 @@ const MainSectionExch = () => {
 
                 <div className="i_ex_rate">
                     <p>
-                        <img src = {fromPriceCur ? `images/logo_${fromPriceCur}.svg` : ''} alt = {fromPriceCur}/> {Number(fromPrice).toFixed(curProp[fromCurrency])} = {Number(toPrice).toFixed(curProp[toCurrency])} <img src = {toPriceCur ? `images/logo_${toPriceCur}.svg` : ''} alt = {toPriceCur}/>
+                        <img src = {fromCurrency ? `images/logo_${fromCurrency}.svg` : ''} alt = {fromCurrency}/> {fromPrice} = {Number(toPrice)} <img src = {toCurrency ? `images/logo_${toCurrency}.svg` : ''} alt = {toCurrency}/>
                     </p>
                     {/*<span className="timer">{rateTime}</span>*/}
                 </div>
@@ -344,10 +272,10 @@ const MainSectionExch = () => {
                                 selectFrom = {fromCurs}
                                 selectTo = {toCurs}
                                 currencyFrom = {fromCurrency}
-                                factorFrom = {curProp[fromCurrency]}
                                 currencyTo = {toCurrency}
-                                factorTo = {curProp[toCurrency]}
                                 titles = {getTitles}
+                                factorFrom={2}
+                                factorTo={2}
                                 chooseFrom = {chooseFromCurrency}
                                 chooseTo = {chooseToCurrency}
                                 sumFromMin = {minFromSum}

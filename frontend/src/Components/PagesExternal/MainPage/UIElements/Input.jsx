@@ -55,12 +55,12 @@ const Input = ({
     const changeInputSum = (value, target) => {
         if (target === 'fs') {
             setInputValueFrom(value);
-            setInputValueTo(Number(value * rate).toFixed(factorTo));
+            setInputValueTo(Number(value * (1 / rate)).toFixed(factorTo));
             //console.log('Показываем TO : ' + value + ' * ' + rate);
         }
         if (target === 'ts') {
             setInputValueTo(value);
-            setInputValueFrom(Number(value * (1 / rate)).toFixed(factorFrom));
+            setInputValueFrom(Number(value * (rate)).toFixed(factorFrom));
         }
     }
 
@@ -105,7 +105,7 @@ const Input = ({
                             onFocus={() => setFocusInputFrom(true)}
                         />
                     </div>
-                    <div className="i_ex_f_els_b_inp_crypto">RUB</div>
+                    <div className="i_ex_f_els_b_inp_crypto"></div>
                 </div>
 
                 <div className="i_ex_f_els_b_under">
@@ -183,7 +183,7 @@ const Input = ({
                             onFocus={() => setFocusInputTo(true)}
                         />
                     </div>
-                    <div className="i_ex_f_els_b_inp_crypto">RUB</div>
+                    <div className="i_ex_f_els_b_inp_crypto"></div>
                 </div>
 
                 <div className="i_ex_f_els_b_under">
