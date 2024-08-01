@@ -1,0 +1,17 @@
+{
+    "name": "viking311/books",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Viking311\\Books\\": "src/"
+        }
+    },
+    "require": {
+        "elasticsearch/elasticsearch": "^8.14"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
