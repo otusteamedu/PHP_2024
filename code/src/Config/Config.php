@@ -6,7 +6,6 @@ namespace Viking311\Books\Config;
 
 class Config
 {
-
     public readonly string $host;
     public readonly string $user;
     public readonly string $password;
