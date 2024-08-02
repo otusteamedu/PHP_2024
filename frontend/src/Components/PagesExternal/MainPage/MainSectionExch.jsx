@@ -2,6 +2,9 @@ import React from 'react';
 import Input from "./UIElements/Input";
 import PostServices from "../../Helpers/PostServices";
 import {number, string} from "yup";
+import {signValidation} from "../../Helpers/validation/signValidation";
+import {Field, Form, Formik} from "formik";
+import {recepientValidation} from "../../Helpers/validation/recepientValidation";
 
 
 const MainSectionExch = () => {
@@ -38,9 +41,33 @@ const MainSectionExch = () => {
     const [curInfo, setCurInfo] = React.useState();
     const time = 30;
 
+    // Formik errors
+    const [error, setError] = React.useState('');
+    const [errorCode, setErrorCode] = React.useState('');
+
     const getBackend = async () => {
         await PostServices.getPageData()
             .then(res => setData(res))
+    }
+
+    async function sendForm(values) {
+
+        let fData = new FormData();
+        // fData.append('page', SIGN_PAGE);
+        //fData.append('curTo', toCurrency);
+        fData.append('email', values.email);
+        fData.append('account', values.account);
+
+        await PostServices.sendForm(fData)
+            .then(res => {
+                if (res.status === 3) {
+                    localStorage.setItem("userEmail", values.email);
+                    //setRedirect(res.redirect);
+                    console.log(res);
+                }
+                if (res.error) setErrorCode(res.error);
+            })
+            .catch(error => console.log(error))
     }
 
     const dataCurs = data.currencies;
@@ -247,7 +274,8 @@ const MainSectionExch = () => {
         // getPost(url).then(r => {});
     }
 
-    console.log(dataPairs);
+    //console.log(dataPairs);
+
 
 
     return (
@@ -264,34 +292,118 @@ const MainSectionExch = () => {
                     {/*<span className="timer">{rateTime}</span>*/}
                 </div>
 
-                <form action="" id="form_ex">
-                    <div className="i_ex_fields">
-                        <div className="i_ex_f_elems">
+                <Formik
+                    validationSchema={recepientValidation}
+                    initialValues={{email: '', account: ''}}
+                    onSubmit={values => {
+                        sendForm(values)
+                    }}
+                >
+                    {
+                        ({ errors, touched }) => (
 
-                            <Input
-                                selectFrom = {fromCurs}
-                                selectTo = {toCurs}
-                                currencyFrom = {fromCurrency}
-                                currencyTo = {toCurrency}
-                                titles = {getTitles}
-                                factorFrom={2}
-                                factorTo={2}
-                                chooseFrom = {chooseFromCurrency}
-                                chooseTo = {chooseToCurrency}
-                                sumFromMin = {minFromSum}
-                                sumFromMax = {maxFromSum}
-                                sumToMax = {maxToSum}
-                                rate = {rateExch}
-                                isFiat = {isFiat}
-                            />
+                            <Form>
+                                <div className="i_ex_fields">
+                                    <div className="i_ex_f_elems">
 
-                        </div>
-                    </div>
+                                        <Input
+                                            selectFrom={fromCurs}
+                                            selectTo={toCurs}
+                                            currencyFrom={fromCurrency}
+                                            currencyTo={toCurrency}
+                                            titles={getTitles}
+                                            factorFrom={2}
+                                            factorTo={2}
+                                            chooseFrom={chooseFromCurrency}
+                                            chooseTo={chooseToCurrency}
+                                            sumFromMin={minFromSum}
+                                            sumFromMax={maxFromSum}
+                                            sumToMax={maxToSum}
+                                            rate={rateExch}
+                                            isFiat={isFiat}
+                                        />
 
-                    <div className="i_ex_btn">
-                        <button className="yellow_btn" type="button" onClick={()=>getBackend()}>Обменять</button>
-                    </div>
-                </form>
+                                    </div>
+                                </div>
+
+                                {
+                                    error && (
+                                        <span className="red">{error}</span>
+                                    )
+                                }
+
+                                <div className="i_ex_recdata">
+                                    {
+                                        errors.email && touched.email && (
+                                            <span className="red">{errors.email}</span>
+                                        )
+                                    }
+
+                                    <Field
+                                        autoComplete = "off"
+                                        placeholder="E-mail"
+                                        name = "email"
+                                    />
+
+                                    {
+                                        errors.account && touched.account && (
+                                            <span className="red">{errors.account}</span>
+                                        )
+                                    }
+
+                                    <Field
+                                        autoComplete = "off"
+                                        placeholder="Счет получателя"
+                                        name = "account"
+                                    />
+
+                                </div>
+
+                                <div className="i_ex_btn">
+                                    <button className="yellow_btn" type="submit">Обменять</button>
+                                </div>
+                            </Form>
+
+                        )
+
+                    }
+
+                </Formik>
+
+
+                {/*<form action="" id="form_ex">*/}
+                {/*    <div className="i_ex_fields">*/}
+                {/*        <div className="i_ex_f_elems">*/}
+
+                {/*            <Input*/}
+                {/*                selectFrom={fromCurs}*/}
+                {/*                selectTo={toCurs}*/}
+                {/*                currencyFrom={fromCurrency}*/}
+                {/*                currencyTo={toCurrency}*/}
+                {/*                titles={getTitles}*/}
+                {/*                factorFrom={2}*/}
+                {/*                factorTo={2}*/}
+                {/*                chooseFrom={chooseFromCurrency}*/}
+                {/*                chooseTo={chooseToCurrency}*/}
+                {/*                sumFromMin={minFromSum}*/}
+                {/*                sumFromMax={maxFromSum}*/}
+                {/*                sumToMax={maxToSum}*/}
+                {/*                rate={rateExch}*/}
+                {/*                isFiat={isFiat}*/}
+                {/*            />*/}
+
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+                {/*    <div className="i_ex_recdata">*/}
+                {/*        <input className="i_ex_recd_input" type="text" name="email" placeholder="Email"/>*/}
+                {/*        <input className="i_ex_recd_input" type="text" name="account" placeholder="Счет получателя"/>*/}
+                {/*    </div>*/}
+
+                {/*    <div className="i_ex_btn">*/}
+                {/*        <button className="yellow_btn" type="button" onClick={() => getBackend()}>Обменять</button>*/}
+                {/*    </div>*/}
+                {/*</form>*/}
 
             </div>
         </section>

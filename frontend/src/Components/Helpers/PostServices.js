@@ -3,6 +3,7 @@ import axios from "axios";
 export default class PostServices {
 
     static API_RATES_URL = process.env.REACT_APP_API_URL + 'rates';
+    static API_CREATE_ORDER_URL = process.env.REACT_APP_API_URL + 'createOrder';
 
     static async getPageData() {
 
@@ -33,9 +34,9 @@ export default class PostServices {
     static async sendForm(form) {
         try {
             const res = await axios({
-                url: this.API_URL,
+                url: this.API_CREATE_ORDER_URL,
                 method: 'post',
-                httpOnly: true, // Cors error...
+                //httpOnly: true, // Cors error...
                 data: form,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

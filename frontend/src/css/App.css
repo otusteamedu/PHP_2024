@@ -591,6 +591,25 @@ div.nav-client-div {
   background: #F0F3F3;
 }
 
+.i_ex_recdata {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: inherit;
+  padding: 0 0 40px 0;
+  gap: 16px;
+}
+
+.i_ex_recdata input {
+  width: 330px;
+  height: 40px;
+  padding: 11px 8px 11px 8px;
+  gap: 10px;
+  border-radius: 4px 4px 0 0;
+  background: #F3F6F6;
+
+}
+
 .i_ex_btn {
   padding: 0;
   gap: 32px;

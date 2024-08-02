@@ -2,12 +2,13 @@
 
 namespace App\Infrastructure\OrderManager;
 
+use Illuminate\Http\Request;
+
 class OrderManager
 {
-    public function CreateOrder()
+    public function CreateOrder(): array|string|null
     {
-        // Implementation to create an order
-        // ...
+        return ['sdsd' =>'sdsd', 'order' => 'order'];
     }
 
     public function UpdateOrderStatus($orderId, $newStatus)
