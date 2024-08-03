@@ -1,0 +1,48 @@
+stages:
+  - deploy
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  - mkdir -p ~/.ssh
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
+  - chmod 600 ~/.ssh/id_rsa
+  - eval "$(ssh-agent -s)"
+  - ssh-add ~/.ssh/id_rsa
+  - ssh-keyscan -H $SERVER >> ~/.ssh/known_hosts
+  - export DIR=$(date +%Y%m%d_%H%M%S)
+
+deploy:
+  stage: deploy
+  environment:
+    name: server
+    url: $SERVER
+  script:
+    - ssh $SSH_USER@$SERVER "cd /var/www/battleship &&
+      git clone https://hinoho_token:glpat-z9fSj1RG8Cij4qscAdaP@gitlab.com/hinoho/battleship.git $DIR &&
+      sudo chown www-data:www-data /var/www/battleship/$DIR -R &&
+      sudo chmod 777 $DIR &&
+      cd $DIR/app &&
+      sudo composer install &&
+      cd .. &&
+      sudo chmod +x ./deploy.sh &&
+      sh ./deploy.sh &&
+      echo MYSQL_HOST=$MYSQL_HOST >> .env &&
+      echo MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD >> .env &&
+      echo MSQL_PORT=$MSQL_PORT >> .env &&
+      echo MYSQL_GAME_DATABASE=$MYSQL_GAME_DATABASE >> .env &&
+      echo MYSQL_TELEGRAM_DATABASE=$MYSQL_TELEGRAM_DATABASE >> .env &&
+      echo MYSQL_USER=$MYSQL_USER >> .env &&
+      echo MYSQL_PASSWORD=$MYSQL_PASSWORD >> .env &&
+      echo TELEGRAM_BOT_TOKEN=$TELEGRAM_BOT_TOKEN >> .env &&
+      echo TELEGRAM_BOT_NAME=$TELEGRAM_BOT_NAME >> .env &&
+      echo WEBHOOK=$WEBHOOK >> .env &&
+      echo TELEGRAM_ADMIN=$TELEGRAM_ADMIN >> .env &&
+      cd .. &&
+      sudo rm -rf /var/www/battleship/$DIR/log &&
+      ln -s /var/www/battleship/shared/log /var/www/battleship/$DIR/log &&
+      ( [ ! -d /var/www/battleship/current ] || mv -Tf /var/www/battleship/current /var/www/battleship/previous ) &&
+      ln -s /var/www/battleship/$DIR /var/www/battleship/current"
+  only:
+    - main
+
