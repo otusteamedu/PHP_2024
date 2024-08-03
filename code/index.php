@@ -1,6 +1,6 @@
 <?php
 
-echo "Привет, Otus!<br>".date("Y-m-d H:i:s") ."<br><br>";
+echo "Привет, Otus!<br>" . date("Y-m-d H:i:s") . "<br><br>";
 
 echo "Проверяем Redis: ";
 
@@ -25,9 +25,8 @@ echo "Проверяем MySQL: ";
 
 $link = mysqli_connect("mysql", "root", "Qwerty12@@");
 
-if ($link === false){
+if ($link === false) {
     print("Ошибка: Невозможно подключиться к MySQL " . mysqli_connect_error());
-}
-else {
+} else {
     print("Соединение установлено успешно");
 }
