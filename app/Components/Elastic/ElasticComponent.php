@@ -19,6 +19,7 @@ readonly class ElasticComponent
 
         $this->client = ClientBuilder::create()
             ->setBasicAuthentication($config['username'], $config['password'])
+            ->setSSLVerification()
             ->build();
     }
 }
