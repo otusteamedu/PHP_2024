@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - 80:8080
+    volumes:
+      - ./data/www:/var/www/html
+  php:
+    container_name: php
+    build: ./php
+    volumes:
+      - ./data/www:/var/www/html
+    environment:
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_DB: ${MYSQL_DB}
+  mysql:
+    container_name: mysql
+    image: mysql
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+  memcached:
+    container_name: memcached
+    image: memcached
+  redis:
+    container_name: redis
+    image: redis
