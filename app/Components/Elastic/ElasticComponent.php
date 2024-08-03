@@ -18,8 +18,9 @@ readonly class ElasticComponent
         $config = require_once 'config.php';
 
         $this->client = ClientBuilder::create()
+            ->setHosts(['http://elasticsearch:9200'])
             ->setBasicAuthentication($config['username'], $config['password'])
-            ->setSSLVerification()
+            ->setSSLVerification(false)
             ->build();
     }
 }
