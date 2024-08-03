@@ -1,0 +1,17 @@
+{
+    "name": "hinoho/battleship",
+    "autoload": {
+        "psr-4": {
+            "Hinoho\\Battleship\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "hinoho",
+            "email": "hinoho27@gmail.com"
+        }
+    ],
+    "require": {
+        "longman/telegram-bot": "*"
+    }
+}
