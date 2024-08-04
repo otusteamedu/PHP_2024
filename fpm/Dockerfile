@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
         libmemcached-dev \
         zlib1g-dev \
         libssl-dev \
+        curl \
         && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
         && docker-php-ext-install -j$(nproc) gd \
@@ -18,6 +19,8 @@ RUN apt-get update && apt-get install -y \
         && pecl install --force redis \
         && rm -rf /tmp/pear \
         && docker-php-ext-enable redis
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
