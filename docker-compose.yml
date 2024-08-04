@@ -1,0 +1,58 @@
+services:
+  app:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    container_name: app
+    volumes:
+       - ./src:/data/mysite.local
+       - phpsocket:/var/run
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  webserver:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+       - ./src:/data/mysite.local
+       - phpsocket:/var/run
+    networks:
+      - app-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
+    volumes:
+      - ./docker/data/postgres/postgres_data:/var/lib/postgres/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:5.0-alpine
+    container_name: redis
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:1-alpine
+    container_name: memcached
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  phpsocket:
