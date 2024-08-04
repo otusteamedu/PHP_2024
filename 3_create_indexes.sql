@@ -1,2 +1,0 @@
-CREATE INDEX idx_movie_values_movie_id ON movie_values(movie_id);
-CREATE INDEX idx_movie_values_movies_attribute_id ON movie_values(movie_attribute_id);
