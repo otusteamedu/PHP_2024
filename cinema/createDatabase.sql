@@ -52,3 +52,29 @@ create table tickets(
   soldAt timestamp not null,
   userId integer references users
 );
+
+create table attribute_types(
+  id serial primary key,
+  type varchar not null
+);
+
+create table attributes(
+  id serial primary key,
+  name varchar not null,
+  typeId integer not null references attribute_types
+);
+
+create table movie_attributes(
+  id serial primary key,
+  movieId integer not null references movies,
+  attributeId integer not null references attributes,
+  boolean boolean,
+  integer integer,
+  float float,
+  date date,
+  varchar varchar,
+  text text
+);
+
+create index on movie_attributes(movieId);
+create index on movie_attributes(attributeId);
