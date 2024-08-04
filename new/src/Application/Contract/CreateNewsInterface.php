@@ -1,9 +1,9 @@
 <?php
 
-namespace Ahar\hw15\src\Application\Contract;
+namespace Ahar\Hw15\src\Application\Contract;
 
-use Ahar\hw15\src\Application\Dto\CreateNewsRequest;
-use Ahar\hw15\src\Application\Dto\CreateResponse;
+use Ahar\Hw15\src\Application\Dto\CreateNewsRequest;
+use Ahar\Hw15\src\Application\Dto\CreateResponse;
 
 interface CreateNewsInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ahar\hw15\src\Application\Dto;
+namespace Ahar\Hw15\src\Application\Dto;
 
 readonly class UpdateNewsRequest
 {

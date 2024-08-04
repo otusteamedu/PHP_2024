@@ -1,6 +1,6 @@
 <?php
 
-namespace Ahar\hw15\src\Domain\Model;
+namespace Ahar\Hw15\src\Domain\Model;
 
 class News
 {

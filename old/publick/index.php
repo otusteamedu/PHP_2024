@@ -1,6 +1,6 @@
 <?php
 
-use Ahar\hw15\Application;
+use Ahar\Hw15\Application;
 
 require '../vendor/autoload.php';
 

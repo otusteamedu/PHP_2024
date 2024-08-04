@@ -1,12 +1,12 @@
 <?php
 
-namespace Ahar\hw15\src\Infrasrtructure\Http;
+namespace Ahar\Hw15\src\Infrasrtructure\Http;
 
-use Ahar\hw15\src\Application\Contract\CreateNewsInterface;
-use Ahar\hw15\src\Application\Contract\UpdateNewsInterface;
-use Ahar\hw15\src\Application\Dto\CreateNewsRequest;
-use Ahar\hw15\src\Application\Dto\UpdateNewsRequest;
-use Ahar\hw15\src\Domain\Repository\NewsRepository;
+use Ahar\Hw15\src\Application\Contract\CreateNewsInterface;
+use Ahar\Hw15\src\Application\Contract\UpdateNewsInterface;
+use Ahar\Hw15\src\Application\Dto\CreateNewsRequest;
+use Ahar\Hw15\src\Application\Dto\UpdateNewsRequest;
+use Ahar\Hw15\src\Domain\Repository\NewsRepository;
 
 readonly class NewsController
 {

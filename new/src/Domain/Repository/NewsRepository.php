@@ -1,8 +1,8 @@
 <?php
 
-namespace Ahar\hw15\src\Domain\Repository;
+namespace Ahar\Hw15\src\Domain\Repository;
 
-use Ahar\hw15\src\Domain\Model\News;
+use Ahar\Hw15\src\Domain\Model\News;
 
 class NewsRepository
 {

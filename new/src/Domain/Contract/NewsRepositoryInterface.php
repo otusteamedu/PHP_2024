@@ -1,6 +1,6 @@
 <?php
 
-namespace Ahar\hw15\src\Domain\Contract;
+namespace Ahar\Hw15\src\Domain\Contract;
 
 interface NewsRepositoryInterface
 {

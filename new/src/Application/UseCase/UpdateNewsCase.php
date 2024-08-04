@@ -1,11 +1,11 @@
 <?php
 
-namespace Ahar\hw15\src\Application\UseCase;
+namespace Ahar\Hw15\src\Application\UseCase;
 
-use Ahar\hw15\src\Application\Dto\UpdateNewsRequest;
-use Ahar\hw15\src\Application\Dto\UpdateResponse;
-use Ahar\hw15\src\Domain\Contract\NewsRepositoryInterface;
-use Ahar\hw15\src\Domain\Model\News;
+use Ahar\Hw15\src\Application\Dto\UpdateNewsRequest;
+use Ahar\Hw15\src\Application\Dto\UpdateResponse;
+use Ahar\Hw15\src\Domain\Contract\NewsRepositoryInterface;
+use Ahar\Hw15\src\Domain\Model\News;
 use Throwable;
 
 readonly class UpdateNewsCase
