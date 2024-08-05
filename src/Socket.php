@@ -27,7 +27,7 @@ class Socket
 
         if ($bytesSent == -1) {
             throw new \Exception('Could not send message');
-        } else if ($bytesSent != strlen($message)) {
+        } elseif ($bytesSent != strlen($message)) {
             throw new \Exception('An error occurred during sending message');
         }
 

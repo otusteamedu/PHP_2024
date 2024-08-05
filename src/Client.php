@@ -6,7 +6,6 @@ namespace Udavikhin\OtusHw5;
 
 class Client extends Socket
 {
-
     public function process()
     {
         try {
