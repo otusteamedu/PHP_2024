@@ -68,12 +68,11 @@ create table movie_attributes(
   id serial primary key,
   movieId integer not null references movies,
   attributeId integer not null references attributes,
-  boolean boolean,
-  integer integer,
-  float float,
-  date date,
-  varchar varchar,
-  text text
+  value_boolean boolean,
+  value_integer integer,
+  value_float float,
+  value_date date,
+  value_varchar varchar
 );
 
 create index on movie_attributes(movieId);
