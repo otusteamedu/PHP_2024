@@ -12,11 +12,21 @@ class App
 
         switch ($command) {
             case 'client':
-                Client::init();
+                echo "Client started. You can send your messages below" . PHP_EOL;
+                $client = new Client(CLIENT_SOCKET_FILE_NAME);
+                $output = $client->process();
                 break;
             case 'server':
-                Server::init();
+                echo "Server started. Listening for client messages..." . PHP_EOL;
+                $server = new Server(SERVER_SOCKET_FILE_NAME);
+                $output = $server->process();
                 break;
+        }
+
+        if (!empty($output)) {
+            foreach ($output as $entry) {
+                echo $entry;
+            }
         }
     }
 }
