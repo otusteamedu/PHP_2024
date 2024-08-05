@@ -34,10 +34,8 @@ try {
     echo '<pre>';
     var_dump($users);
     echo '</pre>';
-}
-catch( PDOException $e ) {
+} catch (PDOException $e) {
     echo 'Ошибка подключения к PostgreSQL - ' . $e->getMessage() . '<br/>';
 }
 
 phpinfo();
-
