@@ -29,8 +29,6 @@ services:
     postgres:
         image: postgres:16
         container_name: otus.postgres
-        ports:
-            - "5432:5432"
         environment:
             POSTGRES_DB: postgres
             POSTGRES_USER: postgres_user
@@ -43,8 +41,12 @@ services:
     redis:
         image: redis:5.0-alpine
         container_name: otus.redis
-        ports:
-            - "6379:6379"
+        networks:
+            - app-network
+
+    memcached:
+        image: memcached:1-alpine
+        container_name: memcached
         networks:
             - app-network
 
