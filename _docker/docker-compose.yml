@@ -9,6 +9,7 @@ services:
         - PGID=${PGID}
     volumes:
       - ./../:/var/www/
+      - php_socket:/var/run
     depends_on:
       - redis
       - memcached
@@ -25,6 +26,7 @@ services:
       - "80:80"
     volumes:
       - ./../:/var/www:rw
+      - php_socket:/var/run
     depends_on:
       - php
       - postgres
@@ -64,3 +66,4 @@ networks:
 
 volumes:
   db_data:
+  php_socket:

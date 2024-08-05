@@ -12,6 +12,7 @@ RUN apk --no-cache add shadow postgresql-dev libmemcached-dev autoconf make zlib
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+COPY ./zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
 WORKDIR /var/www
