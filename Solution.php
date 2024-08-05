@@ -9,9 +9,9 @@ class ListNode
     $this->next = $next;
   }
 }
+
 class Solution
 {
-
   /**
    * @param ListNode $list1
    * @param ListNode $list2
@@ -19,8 +19,10 @@ class Solution
    */
   function mergeTwoLists($list1, $list2)
   {
-    if (empty($list1)) return $list2;
-    if (empty($list2)) return $list1;
+    if (empty($list1))
+      return $list2;
+    if (empty($list2))
+      return $list1;
     if ($list1->val < $list2->val) {
       $mergeList = new ListNode($list1->val);
       $list1 = $list1->next;
