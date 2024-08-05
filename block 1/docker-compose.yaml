@@ -54,8 +54,6 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./local_pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:80"
     networks:
       - app-network
 
@@ -63,16 +61,12 @@ services:
   redis:
     image: redis
     container_name: redis
-    ports:
-      - "6379:80"
     networks:
       - app-network
 
   memcached:
     image: memcached
     container_name: mymemcached
-    ports:
-      - "11211:80"
     networks:
       - app-network
 
