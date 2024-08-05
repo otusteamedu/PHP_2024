@@ -2,13 +2,19 @@
 
 namespace App;
 
-use App\Components\Elastic\ElasticComponent;
+use App\Actions\SearchAction;
+use App\Actions\SeedAction;
+use App\Components\ElasticComponent;
+use App\Console\Input;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Exception\MissingParameterException;
+use Elastic\Elasticsearch\Exception\ServerResponseException;
 
 class App
 {
     public static self $instance;
 
-    readonly public ElasticComponent $elasticComponent;
+    readonly public ElasticComponent $elastic;
 
     public function __construct()
     {
@@ -17,13 +23,20 @@ class App
         static::$instance = $this;
     }
 
-    public function run(...$params): void
+    /**
+     * @throws ClientResponseException
+     * @throws ServerResponseException
+     * @throws MissingParameterException
+     */
+    public function run(Input $input): void
     {
-//        var_dump($this->elasticComponent->client->ping());
+        if ($input->action === 'seed') {
+            (new SeedAction())->run();
+        }
     }
 
     protected function registerComponents(): void
     {
-        $this->elasticComponent = new ElasticComponent();
+        $this->elastic = new ElasticComponent();
     }
 }
