@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php.ini
+COPY ./zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN curl -sS https://getcomposer.org/installer | php -- \

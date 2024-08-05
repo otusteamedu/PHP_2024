@@ -15,6 +15,7 @@ services:
     volumes:
       - ./src:/${APP_NAME}
       - ./Docker/nginx/conf.d:/etc/nginx/conf.d
+      - sock:/sock/
 
   #Контейнер с PHP-FPM, назовём его app
   app:
@@ -25,6 +26,7 @@ services:
     container_name: "${APP_NAME}_app" # имя контейнера после запуска
     volumes:
       - ./src:/${APP_NAME}
+      - sock:/sock/
     depends_on:
       - db
   #контейнер с Mysql
@@ -44,11 +46,12 @@ services:
   redis:
     image: redis:7.4
     container_name: "${APP_NAME}_redis"
-    ports:
-      - "63791:6379"
-
+  #контейнер с Memcache
   memcached:
     image: memcached:latest
     container_name: "${APP_NAME}_memcached"
-    ports:
-        - "11212:11211"
+
+#общие volume
+volumes:
+  sock:
+    driver: local
