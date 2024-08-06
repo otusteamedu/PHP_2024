@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\DTO;
+namespace App\Domain\DTO;
 
 readonly class DTO
 {
@@ -11,7 +11,9 @@ readonly class DTO
         string $curTo,
         string $amountFrom,
         string $amountTo,
-        string $rate
+        string $rate,
+        string $email,
+        string $recipientAccount
     ){}
 
 }

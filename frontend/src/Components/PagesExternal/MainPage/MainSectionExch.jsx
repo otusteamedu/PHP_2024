@@ -1,13 +1,15 @@
 import React from 'react';
 import Input from "./UIElements/Input";
 import PostServices from "../../Helpers/PostServices";
-import {number, string} from "yup";
+import { Navigate , useNavigate } from 'react-router-dom';
 import {signValidation} from "../../Helpers/validation/signValidation";
 import {Field, Form, Formik} from "formik";
 import {recepientValidation} from "../../Helpers/validation/recepientValidation";
 
 
 const MainSectionExch = () => {
+
+    const navigate = useNavigate();
 
     // Данные для обмена
     const [data, setData] = React.useState({});
@@ -53,17 +55,23 @@ const MainSectionExch = () => {
     async function sendForm(values) {
 
         let fData = new FormData();
-        // fData.append('page', SIGN_PAGE);
-        //fData.append('curTo', toCurrency);
+
         fData.append('email', values.email);
         fData.append('account', values.account);
+        fData.append('curFrom', values.curFrom);
+        fData.append('curTo', values.curTo);
+        fData.append('amountFrom', values.amountFrom);
+        fData.append('amountTo', values.amountTo);
+        fData.append('rateFrom', values.rateFrom);
+        fData.append('rateTo', values.rateTo);
 
         await PostServices.sendForm(fData)
             .then(res => {
-                if (res.status === 3) {
-                    localStorage.setItem("userEmail", values.email);
+                localStorage.setItem("userEmail", values.email);
                     //setRedirect(res.redirect);
-                    console.log(res);
+                console.log(res);
+                if (res.id && res.status === 1) {
+                    navigate("/order/" + res.id , res.status);
                 }
                 if (res.error) setErrorCode(res.error);
             })
@@ -294,8 +302,18 @@ const MainSectionExch = () => {
 
                 <Formik
                     validationSchema={recepientValidation}
-                    initialValues={{email: '', account: ''}}
+                    initialValues={{
+                        email: '',
+                        account: '',
+                }}
                     onSubmit={values => {
+                        values.curFrom = fromCurrency;
+                        values.curTo = toCurrency;
+                        values.amountFrom = document.getElementById('fs').value;
+                        values.amountTo = document.getElementById('ts').value;
+                        values.rateFrom = fromPrice;
+                        values.rateTo = toPrice;
+                        console.log(values);
                         sendForm(values)
                     }}
                 >
@@ -369,41 +387,6 @@ const MainSectionExch = () => {
                     }
 
                 </Formik>
-
-
-                {/*<form action="" id="form_ex">*/}
-                {/*    <div className="i_ex_fields">*/}
-                {/*        <div className="i_ex_f_elems">*/}
-
-                {/*            <Input*/}
-                {/*                selectFrom={fromCurs}*/}
-                {/*                selectTo={toCurs}*/}
-                {/*                currencyFrom={fromCurrency}*/}
-                {/*                currencyTo={toCurrency}*/}
-                {/*                titles={getTitles}*/}
-                {/*                factorFrom={2}*/}
-                {/*                factorTo={2}*/}
-                {/*                chooseFrom={chooseFromCurrency}*/}
-                {/*                chooseTo={chooseToCurrency}*/}
-                {/*                sumFromMin={minFromSum}*/}
-                {/*                sumFromMax={maxFromSum}*/}
-                {/*                sumToMax={maxToSum}*/}
-                {/*                rate={rateExch}*/}
-                {/*                isFiat={isFiat}*/}
-                {/*            />*/}
-
-                {/*        </div>*/}
-                {/*    </div>*/}
-
-                {/*    <div className="i_ex_recdata">*/}
-                {/*        <input className="i_ex_recd_input" type="text" name="email" placeholder="Email"/>*/}
-                {/*        <input className="i_ex_recd_input" type="text" name="account" placeholder="Счет получателя"/>*/}
-                {/*    </div>*/}
-
-                {/*    <div className="i_ex_btn">*/}
-                {/*        <button className="yellow_btn" type="button" onClick={() => getBackend()}>Обменять</button>*/}
-                {/*    </div>*/}
-                {/*</form>*/}
 
             </div>
         </section>

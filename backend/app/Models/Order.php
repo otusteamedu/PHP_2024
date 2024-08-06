@@ -12,12 +12,14 @@ class Order extends Model
     protected $table = 'orders';
 
     protected $fillable = [
-        'order_id',
         'status',
         'cur_from',
         'cur_to',
         'amount_from',
         'amount_to',
-        'rate'
+        'rateFrom',
+        'rateTo',
+        'email',
+        'recipient_account'
     ];
 }

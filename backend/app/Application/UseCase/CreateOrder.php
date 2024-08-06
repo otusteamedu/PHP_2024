@@ -2,28 +2,19 @@
 
 namespace App\Application\UseCase;
 
-use App\Application\DTO\DTO;
-use App\Domain\Entity\Order;
+use App\Application\Interface\Repository;
+use App\Domain\Entity\OrderEntity;
 
-class CreateOrder
+readonly class CreateOrder
 {
-
-    private int $status = 1;
     public function __construct(
-        private readonly Order $order
+        private OrderEntity $order,
+        private Repository  $repository,
     ){}
 
-    public function __invoke(): DTO
+    public function __invoke()
     {
-        return new DTO(
-            $this->status,
-            $this->order->getCurFrom(),
-            $this->order->getCurTo(),
-            $this->order->getAmountFrom(),
-            $this->order->getAmountTo(),
-            $this->order->getRate()
-        );
-
+        return $this->repository->save($this->order);
     }
 
 }

@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string("cur_to")->unsigned();
             $table->string("amount_from");
             $table->string("amount_to");
-            $table->string("rate");
+            $table->string("rateFrom");
+            $table->string("rateTo");
+            $table->string("email");
+            $table->string("recipient_account");
             $table->timestamps();
 
             $table->foreign('cur_from')

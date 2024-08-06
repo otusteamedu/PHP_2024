@@ -8,4 +8,5 @@ export const recepientValidation = yup.object().shape({
         .required('Обязательно для заполнения')
         .min(6, 'Минимальное кол-во символов - 6')
         .max(20,'Максимальное кол-во символов - 20'),
+    fs: yup.string(),
 });

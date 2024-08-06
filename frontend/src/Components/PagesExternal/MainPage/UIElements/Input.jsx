@@ -4,6 +4,7 @@ import React from 'react';
 
 import SelectArrowSvg from 'images/select_arrow.svg';
 import RevertSvg from 'images/revert.svg';
+import {Field} from "formik";
 
 
 const Input = ({
@@ -91,7 +92,7 @@ const Input = ({
                 <div className="i_ex_f_els_b_input">
                     <div className="i_ex_f_els_b_inp_input">
                         <label hidden htmlFor='fs'>Получаете</label>
-                        <input
+                        <Field
                             type='text'
                             autoComplete="off"
                             onKeyPress={(e) => !/[0-9.]/.test(e.key) && e.preventDefault()}

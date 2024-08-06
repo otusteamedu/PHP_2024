@@ -36,13 +36,13 @@ export default class PostServices {
             const res = await axios({
                 url: this.API_CREATE_ORDER_URL,
                 method: 'post',
-                //httpOnly: true, // Cors error...
+                httpOnly: true, // Cors error...
                 data: form,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-Requested-With' : 'XMLHttpRequest',
-                    // 'xsrfCookieName': 'XSRF-TOKEN',
-                    // 'xsrfHeaderName': 'X-XSRF-TOKEN',
+                    'xsrfCookieName': 'XSRF-TOKEN',
+                    'xsrfHeaderName': 'X-XSRF-TOKEN',
                 }
             });
             return res.data;

@@ -14,7 +14,7 @@ class AmountValueObject
 
     private function validate(string $amount): void
     {
-        if (!preg_match('/^\d+(\.\d{1,2})?$/', $amount)) {
+        if (!preg_match('/^\d+(\.\d{2,6})?$/', $amount)) {
             throw new \InvalidArgumentException('Amount must be a valid decimal number');
         }
     }
