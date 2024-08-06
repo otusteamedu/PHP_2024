@@ -1,0 +1,59 @@
+version: "3"
+
+services:
+  nginx:
+    build:
+      context: ./Docker/Nginx
+      dockerfile: Dockerfile
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/otusphp.local
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  php-fpm:
+    build:
+      context: ./Docker/Php-fpm
+      dockerfile: Dockerfile
+    image: php-fpm
+    volumes:
+      - ./code:/data/otusphp.local
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_USER: otus
+      MYSQL_PASSWORD: 123
+      MYSQL_DATABASE: otus_db
+      MYSQL_ROOT_PASSWORD: 123
+    ports:
+      - "33060:3306"
+    volumes:
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app_otus_php
+  memcached:
+    image: memcached
+    ports:
+      - "11211:11211"
+    networks:
+      - app_otus_php
+
+networks:
+  app_otus_php:
+    driver: bridge
+
+volumes:
+  phpsocket:
+
+
