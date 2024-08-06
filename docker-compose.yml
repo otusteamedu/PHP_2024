@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 
 services:
   app:
@@ -11,6 +11,11 @@ services:
         TIME_ZONE: ${TIME_ZONE:-Europe/Moscow}
         USER_ID: ${USER_ID:-1239}
         GROUP_ID: ${GROUP_ID:-1239}
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST:-mysql}
+      MYSQL_DATABASE: ${DATABASE_NAME:-app}
+      MYSQL_USER: ${DATABASE_USER:-app}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-secret}
     volumes:
       - ./app:/app
 
@@ -37,6 +42,30 @@ services:
       - app
     volumes:
       - ./app:/app
+
+  mysql:
+    image: mysql:${MYSQL_VERSION:-8.0.21}
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=\"$${MYSQL_PASSWORD}\" $${DATABASE_NAME} --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:-secret}
+      MYSQL_DATABASE: ${DATABASE_NAME:-app}
+      MYSQL_USER: ${DATABASE_USER:-app}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-secret}
+    command: [
+      '--sql-mode=',
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci',
+      '--default-time-zone=+03:00'
+    ]
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
 
   redis:
     image: redis:7.4.0

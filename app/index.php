@@ -25,5 +25,21 @@ try{
     echo "Error: ".$err->getMessage();
 }
 
+$host = getenv('MYSQL_HOST');
+$database = getenv('MYSQL_DATABASE');
+$username = getenv('MYSQL_USER');
+$password = getenv('MYSQL_PASSWORD');
 
+$dsn = "mysql:host=$host;dbname=$database;charset=utf8mb4";
+try {
+
+    $pdo = new PDO($dsn, $username, $password);
+
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    echo "Подключение к MySQL успешно.";
+} catch (PDOException $e) {
+
+    die("Ошибка подключения: " . $e->getMessage());
+}
 ?>
