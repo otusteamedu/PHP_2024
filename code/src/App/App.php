@@ -10,16 +10,19 @@ class App
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $string = $_POST['string'] ?? '';
-            return $this->handleRequest($string);
+            $response = $this->handleRequest($string);
+        } else {
+            $response = [
+                'status' => 405,
+                'message' => '405 Method Not Allowed: метод не поддерживается'
+            ];
         }
 
-        return [
-            'status' => 405,
-            'message' => '405 Method Not Allowed: метод не поддерживается'
-        ];
+        http_response_code($response['status']);
+        echo $response['message'];
     }
 
-    private function handleRequest($string): array
+    private function handleRequest($string)
     {
         $validator = new Validator();
         return $validator->validate($string);

@@ -28,16 +28,16 @@ class Validator
             }
         }
 
-        if (!empty($stack)) {
+        if (empty($stack)) {
+            return [
+                'status' => 200,
+                'message' => '200 OK: строка корректна'
+            ];
+        } else {
             return [
                 'status' => 400,
-                'message' => '400 Bad Request: некорректное количество скобок'
+                'message' => '400 Bad Request: некорректная строка'
             ];
         }
-
-        return [
-            'status' => 200,
-            'message' => '200 OK: строка корректна'
-        ];
     }
 }
