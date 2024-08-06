@@ -1,4 +1,5 @@
 <?php
+
 $memcached = new Memcached();
 $memcached->addServer("memcached", 11211);
 $memcached->add("mc_state", "OK");
@@ -22,7 +23,3 @@ if ($mysql->connect_error) {
     echo "mysql подключен";
     echo "<br>";
 }
-
-
-
-

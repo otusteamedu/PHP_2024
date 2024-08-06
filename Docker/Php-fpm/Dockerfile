@@ -19,6 +19,9 @@ RUN apt-get update --fix-missing && apt-get install -y \
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN composer self-update
+
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 COPY ./zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 
