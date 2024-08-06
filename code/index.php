@@ -6,15 +6,14 @@ $memcached->add("mc_state", "OK");
 echo "memcached: " . ($memcached->get("mc_state") ?? "ошибка подключения");
 echo "<br>";
 
-try {
-    $redis = new Redis();
-    $redis->connect('redis');
-    echo "redis, подключились и пинг: " . $redis->ping();
-    echo "<br>";
-} catch(Exception $e) {
+$redis = new Redis();
+$redis->connect('redis');
+if ($redis->ping()) {
+    echo "redis, подключились и пинг есть";
+} else {
     echo "redis: не удалось подключиться";
-    echo "<br>";
 }
+echo "<br>";
 
 $mysql = new mysqli('mysql', 'otus', '123', null, null, "/usr/local/var/run/php-fpm.sock");
 if ($mysql->connect_error) {
