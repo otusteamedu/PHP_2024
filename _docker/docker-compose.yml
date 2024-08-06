@@ -1,0 +1,67 @@
+services:
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+    volumes:
+      - ./../:/var/www/
+      - php_socket:/var/run
+    depends_on:
+      - redis
+      - memcached
+      - postgres
+    networks:
+      - app-network
+
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./../:/var/www:rw
+      - php_socket:/var/run
+    depends_on:
+      - php
+      - postgres
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:16
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:5.0-alpine
+    container_name: ${COMPOSE_PROJECT_NAME}_redis
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:1-alpine
+    container_name: ${COMPOSE_PROJECT_NAME}_memcached
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
+  php_socket:
