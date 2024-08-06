@@ -4,7 +4,6 @@ services:
   nginx:
     build:
       context: ./Docker/Nginx
-      dockerfile: Dockerfile
     image: nginx
     ports:
       - "80:80"
@@ -16,7 +15,6 @@ services:
   php-fpm:
     build:
       context: ./Docker/Php-fpm
-      dockerfile: Dockerfile
     image: php-fpm
     volumes:
       - ./code:/data/otusphp.local
