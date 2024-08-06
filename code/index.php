@@ -20,5 +20,5 @@ if ($mysql->connect_error) {
     echo "mysql: ошибка подключения : " . $mysql->connect_error;
 } else {
     echo "mysql подключен";
-    echo "<br>";
 }
+echo "<br>";
