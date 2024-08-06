@@ -17,11 +17,10 @@ readonly class ElasticComponent
         protected string $username = 'elastic',
         protected string $password = 'password',
         protected array $hosts = [
-            'http://localhost:9200' // or http://elasticsearch:9200 within containers
+            'http://localhost:9200'
         ],
         protected bool $ssl = false
-    )
-    {
+    ) {
         $this->client = ClientBuilder::create()
             ->setHosts($this->hosts)
             ->setBasicAuthentication($this->username, $this->password)

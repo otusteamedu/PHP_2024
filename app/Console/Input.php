@@ -2,13 +2,17 @@
 
 namespace App\Console;
 
-readonly class Input
+class Input
 {
     public ?string $file;
 
     public ?string $action;
 
-    public ?array $arguments;
+    public ?string $template;
+
+    public ?string $title;
+
+    public ?int $price;
 
     public function __construct(array $argv)
     {
@@ -16,6 +20,10 @@ readonly class Input
 
         $this->action = array_shift($argv);
 
-        $this->arguments = $argv;
+        $this->template = array_shift($argv);
+
+        $this->title = array_shift($argv);
+
+        $this->price = array_shift($argv);
     }
 }

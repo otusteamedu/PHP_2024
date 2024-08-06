@@ -9,6 +9,7 @@ use App\Console\Input;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\MissingParameterException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
+use InvalidArgumentException;
 
 class App
 {
@@ -30,9 +31,11 @@ class App
      */
     public function run(Input $input): void
     {
-        if ($input->action === 'seed') {
-            (new SeedAction())->run();
-        }
+        match ($input->action) {
+            'seed' => (new SeedAction())->run(),
+            'search' => (new SearchAction())->run($input->template, $input->title, $input->price),
+            default => throw new InvalidArgumentException('Command does not exist.')
+        };
     }
 
     protected function registerComponents(): void
