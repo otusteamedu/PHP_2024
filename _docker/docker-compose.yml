@@ -36,8 +36,6 @@ services:
   postgres:
     image: postgres:16
     container_name: ${COMPOSE_PROJECT_NAME}_postgres
-    ports:
-      - "5416:5432"
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
