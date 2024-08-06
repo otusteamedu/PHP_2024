@@ -1,0 +1,74 @@
+version: "3.5"
+
+services:
+  app:
+    build:
+      target: develop
+      context: docker
+      dockerfile: php-fpm/Dockerfile
+      args:
+        PHP_BASEIMAGE_VERSION: ${PHP_BASEIMAGE_VERSION:-8.1}
+        TIME_ZONE: ${TIME_ZONE:-Europe/Moscow}
+        USER_ID: ${USER_ID:-1239}
+        GROUP_ID: ${GROUP_ID:-1239}
+    environment:
+      MYSQL_HOST: ${MYSQL_HOST:-mysql}
+      MYSQL_DATABASE: ${DATABASE_NAME:-app}
+      MYSQL_USER: ${DATABASE_USER:-app}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-secret}
+    volumes:
+      - ./app:/app
+
+  nginx:
+    build:
+      context: docker
+      dockerfile: nginx/Dockerfile
+      args:
+        NGINX_BASEIMAGE_VERSION: ${NGINX_BASEIMAGE_VERSION:-1.26.1}
+        TIME_ZONE: ${TIME_ZONE:-Europe/Moscow}
+        USER_ID: ${USER_ID:-1239}
+        GROUP_ID: ${GROUP_ID:-1239}
+    healthcheck:
+      test: "wget --spider 127.0.0.1:80"
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    ports:
+      - "80:80"
+    environment:
+      - NGINX_HOST=${NGINX_HOST:-_}
+      - NGINX_PORT=${NGINX_PORT:-80}
+    depends_on:
+      - app
+    volumes:
+      - ./app:/app
+
+  mysql:
+    image: mysql:${MYSQL_VERSION:-8.0.21}
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=\"$${MYSQL_PASSWORD}\" $${DATABASE_NAME} --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 20s
+      retries: 5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD:-secret}
+      MYSQL_DATABASE: ${DATABASE_NAME:-app}
+      MYSQL_USER: ${DATABASE_USER:-app}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD:-secret}
+    command: [
+      '--sql-mode=',
+      '--character-set-server=utf8mb4',
+      '--collation-server=utf8mb4_unicode_ci',
+      '--default-time-zone=+03:00'
+    ]
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+
+  redis:
+    image: redis:7.4.0
+
+  memcached:
+    image: memcached:1.6.29
