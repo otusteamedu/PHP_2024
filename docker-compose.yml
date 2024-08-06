@@ -1,0 +1,67 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus2024/php
+    container_name: otus2024-app
+    restart: unless-stopped
+    volumes:
+      - ./code:/var/www/otus2024
+    networks:
+      - otus2024-network
+
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: otus2024/nginx
+    container_name: otus2024-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/var/www/otus2024
+    networks:
+      - otus2024-network
+
+  db:
+    image: postgres:16
+    container_name: otus2024-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - otus2024-network
+
+  redis:
+    image: redis:alpine
+    container_name: otus2024-redis
+    ports:
+      - "6382:6379"
+    networks:
+      - otus2024-network
+
+  memcached:
+    image: memcached:alpine
+    container_name: otus2024-memcached
+    ports:
+      - "11211:11211"
+    networks:
+      - otus2024-network
+
+volumes:
+  pg-data:
+    external: false
+
+networks:
+  otus2024-network:
+    driver: bridge
