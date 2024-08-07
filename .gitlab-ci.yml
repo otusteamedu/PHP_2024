@@ -1,0 +1,58 @@
+stages:
+  - deploy
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - export DIR=$(date +%Y%m%d_%H%M%S)
+  - export DEPLOY_DIR="/home/deploy/app"
+
+deploy:
+  stage: deploy
+  script:
+    - ssh $SSH_USER@$SERVER1 "set -e;
+      cd $DEPLOY_DIR;
+      if [ -L current ]; then
+      cd current;
+      sudo docker-compose down --remove-orphans;
+      cd ..;
+      mv -T current previous;
+      fi;
+      git clone http://deploy:gldt-jSDzy9c7tZnxj5WF92Su@gitlab.example.com/otus/hw22.git $DEPLOY_DIR/$DIR;
+      cd $DEPLOY_DIR/$DIR;
+      sh ./deploy.sh $MYSQL_DATABASE $MYSQL_USER $MYSQL_PASSWORD $MYSQL_CONTAINER_NAME $MYSQL_ROOT_PASSWORD $SERVER_NAME;
+      ln -sfn $DEPLOY_DIR/$DIR $DEPLOY_DIR/current;
+      cd $DEPLOY_DIR/current;
+      sudo docker-compose up -d;
+      "
+  when: manual
+  only:
+    - main
+
+rollback:
+  stage: deploy
+  script:
+    - ssh $SSH_USER@$SERVER1 "set -e;
+      cd $DEPLOY_DIR;
+      if [ -L previous ]; then
+      cd current;
+      sudo docker-compose down --remove-orphans;
+      cd ..;
+      mv -T previous current;
+      cd current;
+      sudo docker-compose up -d;
+      else
+      echo 'No previous version found to rollback.';
+      exit 1;
+      fi;
+      "
+  when: manual
+  only:
+    - main
+
+image: ubuntu:latest
