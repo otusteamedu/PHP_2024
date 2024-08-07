@@ -1,83 +1,37 @@
 # версия синтаксиса
 version: '3'
 
-
 services:
   #контейнер с Nginx
   nginx:
+    image: nginx
     build:
-      context: docker/nginx
-      dockerfile: Dockerfile
-    image: myserver/nginx
-    container_name: '${CONTAINER_NAME_NGINX}'
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    container_name: nginx-api
     # проброс портов
     ports:
-      - "80:80"
-    volumes:
-      - ./src:/data/mysite.local
-      - ./docker/php/sock:/sock
-    networks:
-      - app-network
+      - "8098:80"
     links:
-      - php-fpm
+      - fpm
     depends_on:
-        - php-fpm
-
-  #Контейнер с PHP-FPM
-  php-fpm:
+      - fpm
+    volumes:
+      - ./src:/var/www/laravel-docker
+  fpm:
     build:
-      context: docker/php
-    image: myserver/nginx
-    networks:
-      - app-network
-    container_name: '${CONTAINER_NAME_PHP_FPM}'
+      context: .
+      dockerfile: docker/fpm/Dockerfile
+    container_name: fpm-php
     volumes:
-      - ./src:/data/mysite.local
-      - ./docker/php/sock:/sock
-
-  redis:
-    image: 'redis:alpine'
-    ports:
-      - '6379:6379'
-    volumes:
-      - 'volume-redis:/data'
-    networks:
-      - app-network
-  memcached:
-    image: sameersbn/memcached:1.5.6-2
-    ports:
-      - "11211:11211"
-    restart: always
-    volumes:
-      - 'volume-memcached:/data'
-    networks:
-      - app-network
+      - ./src:/var/www/laravel-docker
+    links:
+      - mysql
   mysql:
-    image: 'mysql/mysql-server:8.0'
-    container_name: '${CONTAINER_NAME_MYSQL}'
+    image: mysql:5.7
+    container_name: mysql
     ports:
-      - '3906:3306'
+      - 33061:3306
     environment:
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
-    volumes:
-      - 'volume-mysql:/var/lib/mysql'
-    networks:
-    - app-network
-
-
-#Docker Networks
-networks:
-  app-network:
-    driver: bridge
-
-volumes:
-  volume-redis:
-    driver: local
-  volume-memcached:
-    driver: local
-  volume-mysql:
-    driver: local
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=laravel
