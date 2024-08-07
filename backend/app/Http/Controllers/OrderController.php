@@ -15,4 +15,16 @@ class OrderController extends Controller
         return response()->json($orderManagerResponse);
     }
 
+    public function getOrderById(int $id): JsonResponse
+    {
+        $orderManagerResponse = (new OrderManager)->getOrderById($id);
+        return response()->json($orderManagerResponse);
+    }
+
+    public function cancelOrderById(int $id): JsonResponse
+    {
+        $orderManagerResponse = (new OrderManager)->cancelOrderById($id);
+        return response()->json($orderManagerResponse);
+    }
+
 }

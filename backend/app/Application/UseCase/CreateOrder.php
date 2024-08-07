@@ -5,11 +5,11 @@ namespace App\Application\UseCase;
 use App\Application\Interface\Repository;
 use App\Domain\Entity\OrderEntity;
 
-readonly class CreateOrder
+class CreateOrder
 {
     public function __construct(
-        private OrderEntity $order,
-        private Repository  $repository,
+        public OrderEntity $order,
+        public Repository  $repository,
     ){}
 
     public function __invoke()

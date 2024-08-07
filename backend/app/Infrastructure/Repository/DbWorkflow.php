@@ -5,13 +5,14 @@ namespace App\Infrastructure\Repository;
 use App\Application\Interface\Repository;
 use App\Domain\Entity\OrderEntity;
 use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 
 class DbWorkflow implements Repository
 {
 
-    public function save(OrderEntity $order)
+    public function save(OrderEntity $order): int
     {
-        return Order::create([
+        return DB::table('orders')->insertGetId([
             'status' => $order->getStatus(),
             'cur_from' => $order->getCurFrom(),
             'cur_to' => $order->getCurTo(),
@@ -22,32 +23,23 @@ class DbWorkflow implements Repository
             'email' => $order->getEmail(),
             'recipient_account' => $order->getRecipientAccount(),
         ]);
-
-//        $orderModel = new Order;
-//
-//        $orderModel->status = $order->getStatus();
-//        $orderModel->cur_from = $order->getCurFrom();
-//        $orderModel->cur_to = $order->getCurTo();
-//        $orderModel->amount_from = $order->getAmountFrom();
-//        $orderModel->amount_to = $order->getAmountTo();
-//        $orderModel->rate = $order->getRate();
-//        $orderModel->save();
-
-//        return new DTO(
-//            $this->order->getStatus(),
-//            $this->order->getCurFrom(),
-//            $this->order->getCurTo(),
-//            $this->order->getAmountFrom(),
-//            $this->order->getAmountTo(),
-//            $this->order->getRate()
-//        );
-
     }
 
-
-    public function updateOrderStatus($orderId, $status)
+    public function getRowById($id)
     {
-        // TODO: Implement updateOrderStatus() method.
+        return Order::find($id);
+    }
+
+    public function updateOrderStatus($orderId, $status): void
+    {
+        try {
+            DB::table('orders')
+                ->where('id', $orderId)
+                ->update(['status' => $status]);
+        } catch (\PDOException $e) {
+            // Handle exception
+            throw new \Exception('Error updating order status');
+        }
     }
 
 

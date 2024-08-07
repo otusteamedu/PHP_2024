@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 
 class OrderManager
 {
+
+    const STATUS_CANCEL = 0;
+
     public function createOrder(Request $request)
     {
         $orderEntity = new OrderEntity(
@@ -34,25 +37,27 @@ class OrderManager
         return $createOrderUseCase();
     }
 
-    public function PaidOrder($orderId, $newStatus)
+    public function paidOrder($orderId, $newStatus)
     {
         // Implementation to update the order status
         // ...
     }
 
-    public function CancelOrder($orderId)
+    /**
+     * @throws \Exception
+     */
+    public function cancelOrderById($orderId): int
     {
-        // Implementation to cancel the order
-        // ...
+        (new DbWorkflow)->updateOrderStatus($orderId,self::STATUS_CANCEL);
+        return self::STATUS_CANCEL;
     }
 
-    public function GetOrderDetails($orderId)
+    public function getOrderById(int $orderId)
     {
-        // Implementation to retrieve order details
-        // ...
+        return (new DbWorkflow)->getRowById($orderId);
     }
 
-    public function CompleteOrder($orderId)
+    public function completeOrder($orderId)
     {
         // Implementation to retrieve order details
         // ...

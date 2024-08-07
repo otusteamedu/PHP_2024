@@ -15,17 +15,17 @@ function App() {
 
   return (
     <div className="App">
-            <BrowserRouter>
-                <Header />
+        <BrowserRouter>
+            <Header />
                 <main>
-                        <Routes>
-                            <Route path="*" element={<NotFound />} />
-                            <Route path="/" element={<Main />} />
-                            <Route path="/order/:id" element={<Order props={route.params}/>} />
-                        </Routes>
+                    <Routes>
+                        <Route path="*" element={<NotFound />} />
+                        <Route path="/" element={<Main />} />
+                        <Route path="/order/:id" element={<Order />} />
+                    </Routes>
                 </main>
-                <Footer />
-            </BrowserRouter>
+            <Footer />
+        </BrowserRouter>
     </div>
   );
 }

@@ -1,29 +1,100 @@
 import React from "react";
+import {useParams} from "react-router-dom";
+import GetServices from "../../Helpers/GetServices";
 
-const OrderBody = () => {
+const OrderBody = ({ data }) => {
 
 
+    const param = useParams();
+
+    const [status, setStatus] = React.useState("");
+
+    const orderStatus = {
+        0: "Отменен",
+        1: "В ожидании оплаты",
+        2: "Оплачено",
+        3: "Отправлен в обработку",
+        4: "Выполнен"
+    };
+
+    const timer = (time) => {
+        return time;
+    }
+
+
+    React.useEffect(() => {
+        setStatus(orderStatus[data.status]);
+    }, [data.status]);
+
+    const cancelOrder = async () => {
+        await GetServices.cancelOrder(param.id)
+            .then(res => {
+                setStatus(orderStatus[res]);
+            })
+            .catch(error => console.log(error));
+    }
 
     return (
 
-        <div>
-            <h1>Заказ на обмен №....</h1>
-            <p>Контактные данные получателя:</p>
-            <ul>
-                <li>Имя:....</li>
-                <li>Телефон:....</li>
-                <li>E-mail:....</li>
-            </ul>
-            <p>Данные о заказе:</p>
-            <ul>
-                <li>Обменяемая валюта:....</li>
-                <li>Сумма обмена:....</li>
-                <li>Курс обмена:....</li>
-            </ul>
-            <p>Статус заказа:....</p>
-            <p>Дата создания заказа:....</p>
-            <p>Дата изменения статуса заказ</p>
+        <div className="ob_div">
+            <div className="ob_d_nonce">
+                <h3>Переведите ...... ....... на данный адрес ............ для оплаты заказа</h3>
+            </div>
+
+            <div className="ob_d_info">
+
+                <div className="ob_d_i">
+                    <div className="ob_d_i_left"><p>Отдаете:</p></div>
+                    <div className="ob_d_i_right"><p>{data.amount_from} {data.cur_from}</p></div>
+                </div>
+
+                <div className="ob_d_i">
+                    <div className="ob_d_i_left"><p>Получаете:</p></div>
+                    <div className="ob_d_i_right"><p>{data.amount_to} {data.cur_to}</p></div>
+                </div>
+
+                <div className="ob_d_i">
+                    <div className="ob_d_i_left"><p>Курс обмена:</p></div>
+                    <div className="ob_d_i_right"><p>{data.rateFrom} {data.cur_from} = {data.rateTo} {data.cur_to}</p>
+                    </div>
+                </div>
+
+                <div className="ob_d_i">
+                    <div className="ob_d_i_left"><p>Email:</p></div>
+                    <div className="ob_d_i_right"><p>{data.email}</p>
+                    </div>
+                </div>
+
+                <div className="ob_d_i">
+                    <div className="ob_d_i_left"><p>Статус заказа:</p></div>
+                    <div className="ob_d_i_right"><p>{status}</p>
+                    </div>
+                </div>
+
+                {
+                    status !== orderStatus[0] && (
+                        <div className="ob_d_i">
+                            <div className="ob_d_i_left"><p>Время действия заказа:</p></div>
+                            <div className="ob_d_i_right"><p>{timer(30)}</p>
+                            </div>
+                        </div>
+                    )
+                }
+
+
+            </div>
+
+            {
+                status !== orderStatus[0] && (
+                    <div className="ob_d_btn">
+                        <button className="red_btn" onClick={() => cancelOrder()}><span>Отменить</span></button>
+                    </div>
+                )
+            }
+
+
         </div>
+
 
     );
 };

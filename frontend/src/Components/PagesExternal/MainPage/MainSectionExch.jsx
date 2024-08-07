@@ -5,6 +5,7 @@ import { Navigate , useNavigate } from 'react-router-dom';
 import {signValidation} from "../../Helpers/validation/signValidation";
 import {Field, Form, Formik} from "formik";
 import {recepientValidation} from "../../Helpers/validation/recepientValidation";
+import GetServices from "../../Helpers/GetServices";
 
 
 const MainSectionExch = () => {
@@ -47,8 +48,8 @@ const MainSectionExch = () => {
     const [error, setError] = React.useState('');
     const [errorCode, setErrorCode] = React.useState('');
 
-    const getBackend = async () => {
-        await PostServices.getPageData()
+    const getBackendRates = async () => {
+        await GetServices.getRatesData()
             .then(res => setData(res))
     }
 
@@ -70,8 +71,8 @@ const MainSectionExch = () => {
                 localStorage.setItem("userEmail", values.email);
                     //setRedirect(res.redirect);
                 console.log(res);
-                if (res.id && res.status === 1) {
-                    navigate("/order/" + res.id , res.status);
+                if (res) {
+                    navigate("/order/" + res);
                 }
                 if (res.error) setErrorCode(res.error);
             })
@@ -216,7 +217,7 @@ const MainSectionExch = () => {
 
         if (!Object.keys(data).length) {
             try {
-                getBackend().then(r => {});
+                getBackendRates().then(r => {});
             } catch (e) {
                 console.warn(e.message());
             }
@@ -235,7 +236,7 @@ const MainSectionExch = () => {
 
     React.useEffect(() => {
         const interval = setInterval(() => {
-            getBackend()
+            getBackendRates()
                 .then(() => {})
                 .catch((err) => console.warn(err))
         }, time * 1000);

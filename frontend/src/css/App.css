@@ -283,6 +283,23 @@ div.nav-client-div {
 
 /*********************** Common styles ***************************/
 
+.red_btn {
+  background: #f99704;
+  border-radius: 100px;
+  min-width: 200px;
+  height: 40px;
+}
+
+.red_btn span {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 120%;
+  /* identical to box height, or 24px */
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
 .yellow_btn {
   background: #F2FF66;
   border-radius: 100px;
@@ -3522,4 +3539,74 @@ div.nav-client-div {
 
 .e_p_b_o2_bottom button:hover {
   background: #F4F7F7;
+}
+
+/**------------ Order --------------------**/
+
+.ob_div {
+  text-align: center;
+  /*width: 1440px;*/
+  padding: 32px;
+  gap: 40px;
+}
+
+.ob_d_nonce {
+  /*width: 1376px;*/
+  height: 66px;
+  gap: 16px;
+}
+
+.ob_d_nonce h3 {
+  font-family: "PTRootUIWebLight", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 30px;
+/* identical to box height */
+  text-align: center;
+  line-height: normal;
+}
+
+.ob_d_info {
+  height: 284px;
+}
+
+.ob_d_info p {
+  font-family: "PTRootUIWebLight", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 18px;
+  /* identical to box height */
+  line-height: normal;
+
+}
+
+.ob_d_i {
+  margin: 0 auto;
+  width: 684px;
+  padding: 8px 0 8px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+  display: flex;
+}
+
+.ob_d_i_left {
+  width: 342px;
+  gap: 10px;
+  padding-right: 50px;
+  text-align: end;
+}
+
+.ob_d_i_right {
+  width: 342px;
+  gap: 10px;
+  text-align: left;
+}
+
+.ob_d_btn {
+  padding: 40px;
+  gap: 32px;
+  width: inherit;
+  min-height: 61px;
 }
