@@ -7,6 +7,7 @@
 <file>FOLDER NAME</file>
 -->
 <file>app</file>
+<file>code</file>
 
 <!-- exclude our migrations directory from the violation check-->
 <exclude-pattern>*/migrations/*</exclude-pattern>
@@ -15,7 +16,7 @@
 <arg  value="np"/>
 
 <rule  ref="PSR1"/>
-  
+
 <rule  ref="PSR12"/>
 
 </ruleset>

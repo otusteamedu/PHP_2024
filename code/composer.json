@@ -1,0 +1,17 @@
+{
+    "name": "irayu/hw8",
+    "description": "Algo tasks",
+    "type": "project",
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Irayu\\Hw8\\": "src/"
+        }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7"
+    },
+    "minimum-stability": "stable"
+}
