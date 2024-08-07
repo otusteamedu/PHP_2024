@@ -1,0 +1,37 @@
+# версия синтаксиса
+version: '3'
+
+services:
+  #контейнер с Nginx
+  nginx:
+    image: nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    container_name: nginx-rest-api
+    # проброс портов
+    ports:
+      - "8098:80"
+    links:
+      - fpm
+    depends_on:
+      - fpm
+    volumes:
+      - ./src:/var/www/laravel-docker
+  fpm:
+    build:
+      context: .
+      dockerfile: docker/fpm/Dockerfile
+    container_name: fpm-php-api
+    volumes:
+      - ./src:/var/www/laravel-docker
+    links:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-api
+    ports:
+      - 33061:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=laravel
