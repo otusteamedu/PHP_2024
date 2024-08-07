@@ -24,10 +24,10 @@ services:
   mysql:
     image: mysql
     environment:
-      MYSQL_USER: otus
-      MYSQL_PASSWORD: 123
-      MYSQL_DATABASE: otus_db
-      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_USER_PWD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
     ports:
       - "33060:3306"
     volumes:
