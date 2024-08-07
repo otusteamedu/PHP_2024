@@ -8,5 +8,5 @@
     },
     "require": {
         "ext-redis": "*"
-    }
+    },
 }

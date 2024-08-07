@@ -5,5 +5,5 @@ namespace Viking311\Analytics\Registry\Adapter;
 
 interface AdapterInterface
 {
-
+    public function flush() : void;
 }

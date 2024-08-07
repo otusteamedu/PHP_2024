@@ -11,4 +11,9 @@ class Registry
     public function __construct(private AdapterInterface $adapter)
     {
     }
+
+    public function flush(): void
+    {
+        $this->adapter->flush();
+    }
 }
