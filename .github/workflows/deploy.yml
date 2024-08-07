@@ -1,0 +1,52 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  DEPLOY_DIR: /home/deploy/app
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -qq git
+          which ssh-agent || ( sudo apt-get install -qq openssh-client )
+          eval $(ssh-agent -s)
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+          echo "DIR=$(date +%Y%m%d_%H%M%S)" >> $GITHUB_ENV
+      - name: Test SSH connection
+        run: |
+          ssh -i ~/.ssh/id_rsa -o "StrictHostKeyChecking=no" ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "echo 'SSH connection successful'"
+      - name: Deploy to Server
+        run: |
+          ssh -i ~/.ssh/id_rsa -o "StrictHostKeyChecking=no" ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}  "set -e;
+          cd $DEPLOY_DIR;
+          if [ -L current ]; then
+          cd current;
+          sudo docker compose down --remove-orphans;
+          cd ..;
+          mv -T current previous;
+          fi;
+          git clone https://github.com/AliaksandrHarshkou/hw21.git $DEPLOY_DIR/$DIR;
+          cd $DEPLOY_DIR/$DIR;
+          sh ./deploy.sh ${{ secrets.DB_USERNAME }} ${{ secrets.DB_PASSWORD }} ;
+          ln -sfn $DEPLOY_DIR/$DIR $DEPLOY_DIR/current;
+          cd $DEPLOY_DIR/current;
+          sudo docker compose up -d;
+          "
