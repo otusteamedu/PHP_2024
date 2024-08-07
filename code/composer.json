@@ -1,0 +1,17 @@
+{
+    "name": "irayu/hw0",
+    "description": "Template for HW",
+    "type": "project",
+    "require": {
+        "php": ">=8.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Irayu\\Hw0\\": "src/"
+        }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7"
+    },
+    "minimum-stability": "stable"
+}
