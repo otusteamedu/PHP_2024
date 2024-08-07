@@ -1,0 +1,6 @@
+*.txt           text
+*.sh            eol=lf
+*.cron          eol=lf
+*.jpg           -text
+
+*       text=auto
