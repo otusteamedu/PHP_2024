@@ -28,6 +28,7 @@ class App
                 'result' => [1, 2, 4, 5]
             ],
         ];
+        echo '<pre>';
         foreach ($data as $j => $dataset) {
             echo 'Dataset' . ($j + 1) . PHP_EOL;
             foreach (
@@ -37,6 +38,7 @@ class App
                     null
                 ] as $strategy
             ) {
+                echo 'Strategy: ' . ($strategy ?? 'default') . PHP_EOL;
                 foreach (['list1', 'list2'] as $name) {
                     for ($i = count($dataset[$name]) - 1; $i >= 0; $i--) {
                         ${$name} = new ListNode($dataset[$name][$i], ${$name} ?? null, $name);
@@ -52,8 +54,10 @@ class App
                     $merged = $merged->next;
                 }
                 unset($list1, $list2);
+                echo PHP_EOL;
             }
             echo PHP_EOL;
         }
+        echo '</pre>';
     }
 }
