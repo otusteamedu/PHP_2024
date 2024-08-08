@@ -8,21 +8,22 @@ use Redis;
 use Viking311\Analytics\Config\Config;
 use Viking311\Analytics\Registry\Adapter\RedisAdapter;
 
-class RedisAdapterFactory 
+class RedisAdapterFactory
 {
     /**
      * @return RedisAdapter
      */
-    public static function getInstance() : RedisAdapter {
+    public static function getInstance(): RedisAdapter
+    {
         $config  = new Config();
 
         $redisClient = new Redis([
             'host' => $config->redisHost,
             'port' => $config->redisPort
         ]);
-        
+
         $redisClient->select(0);
 
         return new RedisAdapter($redisClient);
-    }                
+    }
 }

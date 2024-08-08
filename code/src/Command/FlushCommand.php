@@ -10,7 +10,6 @@ use Viking311\Analytics\Registry\RegistryFactory;
 
 class FlushCommand implements CommandInterface
 {
-    
     /**
      * @param Request $request
      * @param Response $response
@@ -27,8 +26,8 @@ class FlushCommand implements CommandInterface
         try {
             $registry = RegistryFactory::createInstance();
             $registry->flush();
-            
-            $response->setResultCode(200);            
+
+            $response->setResultCode(200);
             $response->setContent('Ok');
         } catch (\Exception) {
             $response->setResultCode(500);

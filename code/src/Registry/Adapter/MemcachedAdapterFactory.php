@@ -15,7 +15,7 @@ class MemcachedAdapterFactory
     public static function createInstance(): MemcachedAdapter
     {
         $config  = new Config();
-        
+
         $memcached = new Memcached();
         $memcached->addServer(
             $config->memcachedHost,
@@ -25,4 +25,3 @@ class MemcachedAdapterFactory
         return new MemcachedAdapter($memcached);
     }
 }
-

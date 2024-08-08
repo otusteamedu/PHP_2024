@@ -15,7 +15,7 @@ class SearchCommand implements CommandInterface
      * @param Response $response
      * @return void
      */
-    public function run(Request $request, Response $response) :void
+    public function run(Request $request, Response $response): void
     {
         if ($request->getMethod() !== 'GET') {
             $response->setResultCode(400);
@@ -38,7 +38,7 @@ class SearchCommand implements CommandInterface
         }
 
         $data = json_decode($body);
-        
+
         if (!is_object($data)) {
             $response->setResultCode(400);
             $response->setContent('Invalid JSON');
@@ -52,7 +52,7 @@ class SearchCommand implements CommandInterface
         }
 
         try {
-            $registry = RegistryFactory::createInstance();   
+            $registry = RegistryFactory::createInstance();
             $result = $registry->search(
                 (array) $data->params
             );
@@ -60,7 +60,7 @@ class SearchCommand implements CommandInterface
                 $response->setResultCode(200);
                 $response->setContent(
                     json_encode($result)
-                );    
+                );
             } else {
                 $response->setResultCode(404);
             }

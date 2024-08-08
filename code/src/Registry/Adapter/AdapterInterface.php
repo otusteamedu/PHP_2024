@@ -11,7 +11,7 @@ interface AdapterInterface
     /**
      * @return void
      */
-    public function flush() : void;
+    public function flush(): void;
 
     /**
      * @param string $key
@@ -20,7 +20,7 @@ interface AdapterInterface
      * @return boolean
      */
     public function add(string $key, mixed $value, $priority = 0): bool;
-    
+
     /**
      * @param string $key
      * @return Generator

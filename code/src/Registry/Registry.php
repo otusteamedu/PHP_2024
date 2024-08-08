@@ -58,17 +58,18 @@ class Registry
         foreach ($res as $event) {
             $found = true;
             foreach ($conditions as $paramName => $value) {
-                if (!array_key_exists($paramName, $event->conditions) 
+                if (
+                    !array_key_exists($paramName, $event->conditions)
                     || $event->conditions[$paramName] !== $value
                 ) {
                     $found = false;
-                }        
+                }
             }
 
             if ($found) {
                 return $event;
             }
-        }  
+        }
 
         return null;
     }

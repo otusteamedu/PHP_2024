@@ -10,13 +10,12 @@ use Viking311\Analytics\Registry\Adapter\AdapterInterface;
 use Viking311\Analytics\Registry\EventEntity;
 
 class RedisAdapter implements AdapterInterface
-{   
+{
     /**
     * @param Redis $redisClient
      */
     public function __construct(private Redis $redisClient)
     {
-        
     }
 
     /**
@@ -44,16 +43,16 @@ class RedisAdapter implements AdapterInterface
      */
     public function getByKey(string $key): Generator
     {
-        $rawSet = $this->redisClient->zRevRangeByScore($key, '+inf', '-inf', ['withscores' => TRUE]);
+        $rawSet = $this->redisClient->zRevRangeByScore($key, '+inf', '-inf', ['withscores' => true]);
         if (!is_array($rawSet)) {
             return;
         }
-        
+
         foreach ($rawSet as $value => $score) {
             $data = json_decode($value);
             $data->priority = $score;
             $event = new EventEntity($data);
             yield $event;
-        }   
+        }
     }
 }

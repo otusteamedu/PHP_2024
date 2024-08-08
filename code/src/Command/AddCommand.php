@@ -17,7 +17,7 @@ class AddCommand implements CommandInterface
      * @param Response $response
      * @return void
      */
-    public function run(Request $request, Response $response) :void
+    public function run(Request $request, Response $response): void
     {
         if ($request->getMethod() !== 'POST') {
             $response->setResultCode(400);
@@ -40,7 +40,7 @@ class AddCommand implements CommandInterface
         }
 
         $data = json_decode($body);
-        
+
         if (!is_object($data)) {
             $response->setResultCode(400);
             $response->setContent('Invalid JSON');
@@ -52,8 +52,8 @@ class AddCommand implements CommandInterface
 
             $registry = RegistryFactory::createInstance();
             $registry->addEvent($event);
-            
-            $response->setResultCode(200);            
+
+            $response->setResultCode(200);
             $response->setContent('Ok');
         } catch (InvalidArgumentException $ex) {
             $response->setResultCode(400);

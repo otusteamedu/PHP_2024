@@ -10,17 +10,15 @@ use Viking311\Analytics\Registry\EventEntity;
 
 class MemcachedAdapter implements AdapterInterface
 {
-
     public function __construct(private Memcached $memcached)
     {
-        
     }
 
-    public function flush() : void
+    public function flush(): void
     {
         $this->memcached->flush();
-    }  
-    
+    }
+
     public function add(string $key, mixed $value, $priority = 0): bool
     {
         $storedData = $this->memcached->get($key);

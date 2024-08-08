@@ -9,7 +9,8 @@ use Viking311\Analytics\Config\Config;
 use Viking311\Analytics\Registry\Adapter\MemcachedAdapterFactory;
 use Viking311\Analytics\Registry\Adapter\RedisAdapterFactory;
 
-class RegistryFactory {
+class RegistryFactory
+{
     /**
      *
      * @return Registry
@@ -19,13 +20,13 @@ class RegistryFactory {
     {
         $config = new Config();
         if ($config->registryAdapter == 'redis') {
-           $adapter = RedisAdapterFactory::getInstance();
+            $adapter = RedisAdapterFactory::getInstance();
         } elseif ($config->registryAdapter == 'memcached') {
             $adapter = MemcachedAdapterFactory::createInstance();
         } else {
-            throw new InvalidArgumentException('Unknown adapter: ' . $config->registryAdapter);            
+            throw new InvalidArgumentException('Unknown adapter: ' . $config->registryAdapter);
         }
-        
+
         return new Registry($adapter);
     }
 }
