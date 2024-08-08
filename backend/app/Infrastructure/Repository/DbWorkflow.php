@@ -31,6 +31,9 @@ class DbWorkflow implements Repository
         return Order::find($id);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function updateOrderStatus($orderId, $status): void
     {
         try {

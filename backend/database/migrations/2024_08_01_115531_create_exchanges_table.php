@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('cur_to_code')->unsigned();
             $table->string('profit');
             $table->integer('status')->default(1);
+            $table->integer('expire_time')->default(1800);
 
             $table->foreign('cur_from_code')
                 ->references('code')

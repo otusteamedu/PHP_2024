@@ -15,6 +15,7 @@ class Exchange extends Model
         'cur_from_code',
         'cur_to_code',
         'profit',
-        'status'
+        'status',
+        'expire_time'
     ];
 }

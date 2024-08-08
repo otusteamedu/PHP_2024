@@ -3,6 +3,7 @@ FROM php:8.2-fpm
 EXPOSE 9000
 
 RUN apt-get update && apt-get install -y \
+    supervisor \
     curl \
     wget \
     git \
@@ -35,8 +36,9 @@ WORKDIR /app
 
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY ./php.ini /usr/local/etc/php/conf.d/php.ini
+COPY ./laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf
 #COPY ./composer.json /data/composer.json
 #
 #RUN composer install && composer dump-autoload
-
+#RUN supervisorctl start "laravel-worker:*"
 CMD ["php-fpm"]

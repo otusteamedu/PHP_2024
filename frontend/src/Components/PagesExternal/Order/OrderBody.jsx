@@ -38,8 +38,8 @@ const OrderBody = ({ data }) => {
 
         <div className="ob_div">
             <div className="ob_d_nonce">
-                <h3>Для оплаты заказа переведите точную сумму {data.amount_from} {data.cur_from} на данный адрес</h3>
-                <h3><span className="text-danger">{data.incoming_asset}</span></h3>
+                <h3>Для оплаты заказа переведите точную сумму <span>{data.amount_from} {data.cur_from}</span> на данный адрес</h3>
+                <h3><span>{data.incoming_asset}</span></h3>
             </div>
 
             <div className="ob_d_info">
@@ -76,7 +76,7 @@ const OrderBody = ({ data }) => {
                     status !== orderStatus[0] && (
                         <div className="ob_d_i">
                             <div className="ob_d_i_left"><p>Время действия заказа:</p></div>
-                            <div className="ob_d_i_right"><p>{timer(30)}</p>
+                            <div className="ob_d_i_right"><p>{timer(30)} мин</p>
                             </div>
                         </div>
                     )
