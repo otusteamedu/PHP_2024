@@ -28,22 +28,16 @@ services:
       MYSQL_PASSWORD: ${MYSQL_USER_PWD}
       MYSQL_DATABASE: ${MYSQL_DB}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
-    ports:
-      - "33060:3306"
     volumes:
       - phpsocket:/usr/local/var/run/
     networks:
       - app_otus_php
   redis:
     image: redis
-    ports:
-      - "6379:6379"
     networks:
       - app_otus_php
   memcached:
     image: memcached
-    ports:
-      - "11211:11211"
     networks:
       - app_otus_php
 
