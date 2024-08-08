@@ -13,8 +13,6 @@ class App
 
     private function handleRequest(): string
     {
-        header('Content-Type: application/json; charset=utf-8');
-
         try {
             if (!is_array($_POST['emails'])) {
                 throw new \InvalidArgumentException('Emails parameter should be an array');
