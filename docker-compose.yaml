@@ -1,5 +1,5 @@
 # версия синтаксиса
-version: '3'
+version: '3.3'
 
 services:
   #контейнер с Nginx
@@ -17,14 +17,14 @@ services:
     depends_on:
       - fpm
     volumes:
-      - ./src:/var/www/laravel-docker
+      - ./src:/data/laravel-docker
   fpm:
     build:
       context: .
       dockerfile: docker/fpm/Dockerfile
     container_name: fpm-php-api
     volumes:
-      - ./src:/var/www/laravel-docker
+      - ./src:/data/laravel-docker
     links:
       - mysql
   mysql:
