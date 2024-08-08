@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/:/etc/nginx/conf.d/
+      - ./:/data/app.local/
+    networks:
+      - app-network
+    container_name: email_validator_nginx
+  app:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    image: app/php
+    container_name: email_validator_app
+    volumes:
+      - ./:/data/app.local/
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
