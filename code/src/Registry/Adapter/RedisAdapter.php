@@ -45,6 +45,10 @@ class RedisAdapter implements AdapterInterface
     public function getByKey(string $key): Generator
     {
         $rawSet = $this->redisClient->zRevRangeByScore($key, '+inf', '-inf', ['withscores' => TRUE]);
+        if (!is_array($rawSet)) {
+            return;
+        }
+        
         foreach ($rawSet as $value => $score) {
             $data = json_decode($value);
             $data->priority = $score;
