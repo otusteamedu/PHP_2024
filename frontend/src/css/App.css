@@ -3551,7 +3551,7 @@ div.nav-client-div {
 }
 
 .ob_d_nonce {
-  /*width: 1376px;*/
+  display: grid;
   height: 66px;
   gap: 16px;
 }
@@ -3567,8 +3567,13 @@ div.nav-client-div {
   line-height: normal;
 }
 
+.ob_d_nonce h3 span {
+  color: cornflowerblue;
+}
+
 .ob_d_info {
   height: 284px;
+  padding: 20px;
 }
 
 .ob_d_info p {

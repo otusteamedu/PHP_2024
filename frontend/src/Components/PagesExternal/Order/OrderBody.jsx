@@ -33,12 +33,13 @@ const OrderBody = ({ data }) => {
             })
             .catch(error => console.log(error));
     }
-
+    console.log(data);
     return (
 
         <div className="ob_div">
             <div className="ob_d_nonce">
-                <h3>Переведите ...... ....... на данный адрес ............ для оплаты заказа</h3>
+                <h3>Для оплаты заказа переведите точную сумму {data.amount_from} {data.cur_from} на данный адрес</h3>
+                <h3><span className="text-danger">{data.incoming_asset}</span></h3>
             </div>
 
             <div className="ob_d_info">

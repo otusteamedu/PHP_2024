@@ -22,6 +22,7 @@ class DbWorkflow implements Repository
             'rateTo' => $order->getRateTo(),
             'email' => $order->getEmail(),
             'recipient_account' => $order->getRecipientAccount(),
+            'incoming_asset' => $order->getIncomingAsset(),
         ]);
     }
 
@@ -43,4 +44,10 @@ class DbWorkflow implements Repository
     }
 
 
+    public function getCurType(string $cur)
+    {
+        return DB::table('currencies')
+            ->where('code', $cur)
+            ->value('type');
+    }
 }

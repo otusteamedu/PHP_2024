@@ -69,8 +69,6 @@ const MainSectionExch = () => {
         await PostServices.sendForm(fData)
             .then(res => {
                 localStorage.setItem("userEmail", values.email);
-                    //setRedirect(res.redirect);
-                console.log(res);
                 if (res) {
                     navigate("/order/" + res);
                 }
@@ -314,8 +312,7 @@ const MainSectionExch = () => {
                         values.amountTo = document.getElementById('ts').value;
                         values.rateFrom = fromPrice;
                         values.rateTo = toPrice;
-                        console.log(values);
-                        sendForm(values)
+                        sendForm(values).then(r => {})
                     }}
                 >
                     {

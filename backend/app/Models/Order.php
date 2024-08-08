@@ -20,6 +20,7 @@ class Order extends Model
         'rateFrom',
         'rateTo',
         'email',
-        'recipient_account'
+        'recipient_account',
+        'incoming_asset'
     ];
 }

@@ -26,4 +26,9 @@ Route::get('/order/{id}', [OrderController::class, 'getOrderById']);
 
 Route::get('/cancelOrder/{id}', [OrderController::class, 'cancelOrderById']);
 
+# Testing
+Route::get('/test', [OrderController::class, 'testing']);
+
+
+
 Route::post('/createOrder', [OrderController::class, 'createOrder']);

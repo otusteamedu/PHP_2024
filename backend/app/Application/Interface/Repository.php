@@ -10,4 +10,6 @@ interface Repository
 
     public function updateOrderStatus($orderId, $status);
 
+    public function getCurType(string $cur);
+
 }

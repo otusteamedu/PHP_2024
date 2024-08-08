@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string("rateTo");
             $table->string("email");
             $table->string("recipient_account");
+            $table->string("incoming_asset");
             $table->timestamps();
 
             $table->foreign('cur_from')

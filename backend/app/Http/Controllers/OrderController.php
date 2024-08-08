@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Infrastructure\OrderManager\OrderManager;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -15,16 +15,22 @@ class OrderController extends Controller
         return response()->json($orderManagerResponse);
     }
 
-    public function getOrderById(int $id): JsonResponse
+    public function getOrderById(int $id)
     {
-        $orderManagerResponse = (new OrderManager)->getOrderById($id);
-        return response()->json($orderManagerResponse);
+        return (new OrderManager)->getOrderById($id);
     }
+
 
     public function cancelOrderById(int $id): JsonResponse
     {
         $orderManagerResponse = (new OrderManager)->cancelOrderById($id);
         return response()->json($orderManagerResponse);
+    }
+
+    public function testing()
+    {
+        // For testing purposes
+        return (new OrderManager)->getIncomingAsset('usdt_trc20');
     }
 
 }

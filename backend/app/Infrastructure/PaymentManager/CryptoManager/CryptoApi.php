@@ -1,8 +1,11 @@
 <?php
 
-namespace app\Infrastructure\CryptoManager;
+namespace App\Infrastructure\PaymentManager\CryptoManager;
 
-use Illuminate\Support\Facades\Config;
+use GuzzleHttp\Promise\PromiseInterface;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+use function App\Infrastructure\CryptoManager\http_req;
 
 class CryptoApi
 {
@@ -13,34 +16,36 @@ class CryptoApi
 
     public function __construct()
     {
-        $this->api_key = Config::get('BYBIT_API_KEY');
-        $this->secret_key = Config::get('BYBIT_API_SECRET_KEY');
-        $this->base_endpoint = Config::get('BYBIT_API_BASE_ENDPOINT');
+        $this->api_key = config('app.BYBIT_API_KEY');
+        $this->secret_key = config('app.BYBIT_API_SECRET_KEY');
+        $this->base_endpoint = config('app.BYBIT_API_BASE_ENDPOINT');
     }
 
-    public function gogogo(){
-        $curl = curl_init();
+    # GET /v5/asset/deposit/query-address?coin=USDT&chainType=ETH
+    public function getMasterDepositAddress(string $coin = 'USDT', string $chain = 'TRX'): PromiseInterface|Response
+    {
+        $params = 'coin=' .$coin. '&chainType=' .$chain;
+        $endpoint = $this->base_endpoint . '/v5/asset/deposit/query-address?' . $params;
 
-        #Create Order
-        $endpoint="/v5/order/create";
-        $method="POST";
-        $orderLinkId=uniqid();
-        $params='{"category":"linear","symbol": "BTCUSDT","side": "Buy","positionIdx": 0,"orderType": "Limit","qty": "0.001","price": "10000","timeInForce": "GTC","orderLinkId": "' . $orderLinkId . '"}';
-        http_req("$endpoint","$method","$params","Create Order");
+        $timestamp = time() * 1000;
+        $params_for_signature = $timestamp . $this->api_key . "5000" . $params;
+        $signature = hash_hmac('sha256', $params_for_signature, $this->secret_key);
 
-#Get Order List
-        $endpoint="/v5/order/realtime";
-        $method="GET";
-        $params="category=linear&settleCoin=USDT";
-        http_req($endpoint,$method,$params,"List Order");
+        $response = Http::withHeaders([
+                "X-BAPI-API-KEY" => $this->api_key,
+                "X-BAPI-SIGN" => $signature,
+                "X-BAPI-SIGN-TYPE" => "2",
+                "X-BAPI-TIMESTAMP" => $timestamp,
+                "X-BAPI-RECV-WINDOW" => "5000",
+            ])
+            ->acceptJson()
+            ->get($endpoint);
+        return $response;
+    }
 
-#Cancel Order
-        $endpoint="/v5/order/cancel";
-        $method="POST";
-        $params='{"category":"linear","symbol": "BTCUSDT","orderLinkId": "' . $orderLinkId . '"}';
-        http_req($endpoint,$method,$params,"Cancel Order");
-
-        curl_close($curl);
+    public function GetServerTime()
+    {
+        return Http::get('https://api.bybit.com/v5/market/time');
     }
 
 

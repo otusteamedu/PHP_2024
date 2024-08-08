@@ -20,6 +20,7 @@ class OrderEntity
     private AmountValueObject $rateTo;
     private EmailValueObject $email;
     private AccountValueObject $recipientAccount;
+    private AccountValueObject $incomingAsset;
 
     public function __construct(
         CurrencyValueObject $curFrom,
@@ -29,7 +30,8 @@ class OrderEntity
         AmountValueObject $rateFrom,
         AmountValueObject $rateTo,
         EmailValueObject $email,
-        AccountValueObject $recipientAccount
+        AccountValueObject $recipientAccount,
+        AccountValueObject $incomingAsset = null
     )
     {
         $this->curFrom = $curFrom;
@@ -40,6 +42,7 @@ class OrderEntity
         $this->rateTo = $rateTo;
         $this->email = $email;
         $this->recipientAccount = $recipientAccount;
+        $this->incomingAsset = $incomingAsset;
     }
 
     public function getCurFrom(): string
@@ -91,5 +94,16 @@ class OrderEntity
     {
         return $this->recipientAccount->account;
     }
+
+    public function getIncomingAsset(): string
+    {
+        return $this->incomingAsset->account;
+    }
+
+    public function setIncomingAsset(string $incomingAsset): void
+    {
+        $this->incomingAsset->account = $incomingAsset;
+    }
+
 
 }

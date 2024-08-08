@@ -185,4 +185,11 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    # Bybit
+
+    'BYBIT_API_KEY' => env('BYBIT_API_KEY'),
+    'BYBIT_API_SECRET_KEY' => env('BYBIT_API_SECRET'),
+    'BYBIT_API_BASE_ENDPOINT' => env('BYBIT_API_BASE_ENDPOINT'),
+
+
 ];
