@@ -17,9 +17,9 @@ interface AdapterInterface
      * @param string $key
      * @param mixed $value
      * @param integer $priority
-     * @return void
+     * @return boolean
      */
-    public function add(string $key, mixed $value, $priority = 0): void;
+    public function add(string $key, mixed $value, $priority = 0): bool;
     
     /**
      * @param string $key

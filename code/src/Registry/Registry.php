@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Viking311\Analytics\Registry;
 
+use RuntimeException;
 use Viking311\Analytics\Registry\Adapter\AdapterInterface;
 
 class Registry
@@ -28,15 +29,20 @@ class Registry
     /**
      * @param EventEntity $event
      * @return void
+     * @throws RuntimeException
      */
     public function addEvent(EventEntity $event): void
     {
 
-        $this->adapter->add(
+        $success = $this->adapter->add(
             self::STORAGE_KEY,
             json_encode($event->getArray()),
             $event->priority
         );
+
+        if (!$success) {
+            throw new RuntimeException('Something wrong');
+        }
     }
 
     /**
