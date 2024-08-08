@@ -6,10 +6,15 @@ namespace Viking311\Analytics\Config;
 
 class Config
 {
+    /** @var string     */
     public readonly string $registryAdapter;
+    /** @var string     */
     public readonly string $redisHost;
+    /** @var integer */
     public readonly int $redisPort;
+    /** @var string     */
     public readonly string $memcachedHost;
+    /** @var integer */
     public readonly int $memcachedPort;
 
     /**

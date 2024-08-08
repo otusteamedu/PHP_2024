@@ -8,4 +8,4 @@ require 'vendor/autoload.php';
 
 $app = new Application();
 
-$app->run()->render();
+echo $app->run()->render();

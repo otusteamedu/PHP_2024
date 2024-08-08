@@ -10,6 +10,9 @@ use Viking311\Analytics\Registry\Adapter\RedisAdapter;
 
 class RedisAdapterFactory 
 {
+    /**
+     * @return RedisAdapter
+     */
     public static function getInstance() : RedisAdapter {
         $config  = new Config();
 

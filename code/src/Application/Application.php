@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 namespace Viking311\Analytics\Application;
 
+use Viking311\Analytics\Command\AddCommand;
+use Viking311\Analytics\Command\CommandInterface;
 use Viking311\Analytics\Command\FlushCommand;
+use Viking311\Analytics\Command\SearchCommand;
 use Viking311\Analytics\Http\Request\Request;
 use Viking311\Analytics\Http\Response\Response;
-use Viking311\Analytics\Registry\Adapter\RedisAdapterFactory;
 
 class Application
 {
+    /**  @var array<string, CommandInterface>   */
     private array $routes = [
         '/flush' => FlushCommand::class,
+        '/add' => AddCommand::class,
+        '/search' => SearchCommand::class
     ];
+
+    /**
+     *
+     * @return Response
+     */
     public function run(): Response
     {
         $request = new Request();
@@ -32,4 +42,3 @@ class Application
         return $response;
     }
 }
-

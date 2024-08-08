@@ -31,6 +31,8 @@ services:
   redis:
     image: redis:7.2.3
     container_name: redis
+    ports:
+      - "63790:6379"
     networks:
       - app-network
   memcached:
