@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+use App\App;
+use App\Console\Input;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$app = new App();
+$input = new Input($argv);
+
+try {
+    $app->run($input);
+} catch (Exception $e) {
+    echo 'Error: ' . $e->getMessage();
+}

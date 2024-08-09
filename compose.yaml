@@ -1,0 +1,26 @@
+services:
+  php:
+    image: php:8.3-cli-alpine
+    working_dir: /var/www/html
+    networks:
+      - store
+    depends_on:
+      - elasticsearch
+    volumes:
+      - .:/var/www/html
+    command: ["php", "-S", "127.0.0.1:8000", "-t", "/var/www/html"]
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    ports:
+      - "9200:9200"
+    networks:
+      - store
+    environment:
+      - ELASTIC_PASSWORD=password
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+networks:
+  store:
+    driver: bridge
