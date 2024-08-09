@@ -1,0 +1,13 @@
+{
+    "name": "viking311/analytics",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Viking311\\Analytics\\": "src/"
+        }
+    },
+    "require": {
+        "ext-redis": "*",
+        "ext-memcached": "*"
+    }
+}
