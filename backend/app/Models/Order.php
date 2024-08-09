@@ -23,4 +23,6 @@ class Order extends Model
         'recipient_account',
         'incoming_asset'
     ];
+
+    public $timestamps = true;
 }

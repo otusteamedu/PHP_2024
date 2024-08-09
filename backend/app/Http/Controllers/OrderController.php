@@ -4,38 +4,47 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Infrastructure\OrderManager\OrderManager;
+use App\Infrastructure\Repository\DbWorkflow;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    private OrderManager $orderManager;
+    public function __construct(
+        public DbWorkflow $dbWorkflow
+    )
+    {
+        $this->orderManager = new OrderManager($this->dbWorkflow);
+    }
+
     public function createOrder(Request $request): JsonResponse
     {
-        $orderManagerResponse = (new OrderManager)->createOrder($request);
+        $orderManagerResponse = $this->orderManager->createOrder($request);
         return response()->json($orderManagerResponse);
     }
 
-    public function getOrderForPay(int $orderId): JsonResponse
+    public function getOrderForPay(int $orderId)
     {
         return $this->getOrderById($orderId);
     }
 
     private function getOrderById(int $id)
     {
-        return (new OrderManager)->getOrderById($id);
+        return $this->orderManager->getOrderById($id);
     }
 
 
     public function cancelOrderById(int $id): JsonResponse
     {
-        $orderManagerResponse = (new OrderManager)->cancelOrderById($id);
+        $orderManagerResponse = $this->orderManager->cancelOrderById($id);
         return response()->json($orderManagerResponse);
     }
 
     public function testing()
     {
         // For testing purposes
-        return (new OrderManager)->getIncomingAsset('usdt_trc20');
+        return $this->orderManager->test();
     }
 
 }

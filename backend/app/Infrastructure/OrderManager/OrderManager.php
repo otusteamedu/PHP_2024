@@ -2,27 +2,38 @@
 
 namespace App\Infrastructure\OrderManager;
 
+use App\Application\Interface\Repository;
 use App\Application\UseCase\CreateOrderUseCase;
 use App\Domain\Entity\OrderEntity;
 use App\Domain\ValueObject\AccountValueObject;
 use App\Domain\ValueObject\AmountValueObject;
 use App\Domain\ValueObject\CurrencyValueObject;
 use App\Domain\ValueObject\EmailValueObject;
-use App\Infrastructure\PaymentManager\CryptoManager\CryptoApi;
-use App\Infrastructure\PaymentManager\CryptoManager\CryptoManager;
-use App\Infrastructure\Repository\DbWorkflow;
+use App\Infrastructure\PaymentManager\PaymentManager;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderManager
 {
 
     const STATUS_CANCEL = 0;
+    const STATUS_WAITING = 1;
 
+    private int $orderLifetime;
+    private PaymentManager $paymentManager;
+    public function __construct(
+        public Repository $repository
+    ){
+        // Initialize payment manager
+        $this->paymentManager = new PaymentManager($this->repository);
+
+        $this->orderLifetime = config('app.ORDER_EXPIRE_TIME');;
+    }
     public function createOrder(Request $request): int
     {
         $curFrom = new CurrencyValueObject($request->input('curFrom'));
 
-        $incomingAsset = $this->getIncomingAsset($curFrom->currencyCode);
+        $incomingAsset = $this->paymentManager->getIncomingAsset($curFrom->currencyCode);
 
         $orderEntity = new OrderEntity(
             $curFrom,
@@ -38,7 +49,7 @@ class OrderManager
 
         $createOrderUseCase = new CreateOrderUseCase(
             $orderEntity,
-            new DbWorkflow
+            $this->repository
         );
 
         return $createOrderUseCase();
@@ -55,13 +66,13 @@ class OrderManager
      */
     public function cancelOrderById($orderId): int
     {
-        (new DbWorkflow)->updateOrderStatus($orderId,self::STATUS_CANCEL);
+        $this->repository->updateOrderStatus($orderId,self::STATUS_CANCEL);
         return self::STATUS_CANCEL;
     }
 
     public function getOrderById(int $orderId)
     {
-        return (new DbWorkflow)->getRowById($orderId);
+        return $this->repository->getRowById($orderId);
     }
 
     public function completeOrder($orderId)
@@ -70,16 +81,39 @@ class OrderManager
         // ...
     }
 
-
-    public function getIncomingAsset(string $cur): string
+    public function checkAwaitOrders()
     {
-        $curType = (new DbWorkflow)->getCurType($cur);
-        $incomingAsset = 'Ничего не найдено';
-        if ($curType === 'crypto') {
-            $cryptoManager = new CryptoManager(new CryptoApi);
-            $incomingAsset = $cryptoManager->getIncomingAsset($cur);
+    }
+
+    private function getAwaitCryptoOrders(): array
+    {
+        # TODO: Создать перекрестную выборку таблиц ордерс и курренси на наличие типа Crypto
+
+        $orders = [];
+        $ordersAll = $this->repository->getRowsWhere('status', self::STATUS_WAITING);
+
+        foreach ($ordersAll as $order) {
+            $dt = Carbon::parse($order->created_at);
+            if (Carbon::parse(now()) > $dt->addSeconds($this->orderLifetime)) continue;
+            $orders[] = $order;
         }
-        return $incomingAsset;
+
+        return $orders;
+    }
+
+    public function test()
+    {
+        // For testing purposes
+
+    }
+
+    public function checkOrderCryptoDeposit()
+    {
+        $awaitOrders = $this->getAwaitCryptoOrders();
+        foreach ($awaitOrders as $order) {
+
+            # Проверить,
+        }
     }
 
 }

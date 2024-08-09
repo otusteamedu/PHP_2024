@@ -66,28 +66,24 @@ class TestDataSeeder extends Seeder
                 'cur_to_code' => 'usdt_trc20',
                 'profit' => '1.03',
                 'status' => 1,
-                'expire_time' => 1800
             ],
             [
                 'cur_from_code' => 'volet_usd',
                 'cur_to_code' => 'usdt_erc20',
                 'profit' => '1.06',
                 'status' => 1,
-                'expire_time' => 1800
             ],
             [
                 'cur_from_code' => 'usdt_erc20',
                 'cur_to_code' => 'volet_usd',
                 'profit' => '1.01',
                 'status' => 1,
-                'expire_time' => 1800
             ],
             [
                 'cur_from_code' => 'usdt_trc20',
                 'cur_to_code' => 'volet_usd',
                 'profit' => '1.015',
                 'status' => 1,
-                'expire_time' => 1800
             ],
         ]);
     }

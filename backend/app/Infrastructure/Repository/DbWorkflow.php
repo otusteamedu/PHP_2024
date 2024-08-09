@@ -23,6 +23,8 @@ class DbWorkflow implements Repository
             'email' => $order->getEmail(),
             'recipient_account' => $order->getRecipientAccount(),
             'incoming_asset' => $order->getIncomingAsset(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 
@@ -52,5 +54,12 @@ class DbWorkflow implements Repository
         return DB::table('currencies')
             ->where('code', $cur)
             ->value('type');
+    }
+
+    public function getRowsWhere(string $field, string $value)
+    {
+        return DB::table('orders')
+            ->where($field, $value)
+            ->get();
     }
 }

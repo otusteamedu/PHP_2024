@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Infrastructure\OrderManager\OrderManager;
+use App\Infrastructure\Repository\DbWorkflow;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,8 +15,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(function () {
-            DB::table('recent_users')->delete();
-        })->daily();
+            (new OrderManager(new DbWorkflow()))->checkOrderCryptoDeposit();
+        })
+            ->everyThirtySeconds()
+            ->runInBackground();
     }
 
     /**

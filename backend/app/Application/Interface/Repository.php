@@ -12,4 +12,6 @@ interface Repository
 
     public function getCurType(string $cur);
 
+    public function getRowsWhere(string $field, string $value);
+
 }
