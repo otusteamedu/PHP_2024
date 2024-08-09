@@ -3,12 +3,16 @@
 namespace App\Connections;
 
 use App\Core\Config;
+use Exception;
 use PDO;
 
 class DatabaseConnection
 {
-    private PDO $pdo;
+    protected PDO $pdo;
 
+    /**
+     * @throws Exception
+     */
     public function getConnection(): PDO
     {
         if (!isset($this->pdo)) {
@@ -18,11 +22,24 @@ class DatabaseConnection
         return $this->pdo;
     }
 
-    private function connect(): void
+    /**
+     * @throws Exception
+     */
+    protected function connect(): void
     {
-        $config = Config::get('db', 'credentials');
+        $connection = Config::get('db', 'default');
 
-        $dsn = "mysql:host={$config['host']};port={$config['port']};dbname={$config['db']};charset={$config['charset']}";
+        if (!$connection) {
+            throw new Exception('Default connection is not set.');
+        }
+
+        $config = Config::get('db', $connection);
+
+        if (!$config) {
+            throw new Exception("Connection $connection does not have any configuration.");
+        }
+
+        $dsn = "$connection:host={$config['host']};port={$config['port']};dbname={$config['db']};charset={$config['charset']}";
 
         $this->pdo = new PDO($dsn, $config['user'], $config['password']);
     }
