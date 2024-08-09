@@ -3,6 +3,8 @@
 namespace App\Templates;
 
 use App\App;
+use App\DTO\ElasticSearchResponse;
+use App\DTO\SearchResponse;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 
@@ -16,9 +18,11 @@ final class DefaultTemplate
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search(): array
+    public function search(): SearchResponse
     {
-        return App::$instance->elastic->client->search($this->prepare())->asArray();
+        $raw = App::$instance->elastic->client->search($this->prepare())->asArray();
+
+        return new SearchResponse($raw);
     }
 
     public function prepare(): array
@@ -31,7 +35,10 @@ final class DefaultTemplate
                         'must' => [
                             [
                                 'match' => [
-                                    'title' => $this->title
+                                    'title' => [
+                                        'query' => $this->title,
+                                        'fuzziness' => 'AUTO'
+                                    ]
                                 ]
                             ]
                         ],

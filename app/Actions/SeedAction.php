@@ -27,7 +27,7 @@ final class SeedAction
      */
     private function createIndex(): void
     {
-        if (App::$instance->elastic->client->indices()->exists(['index' => 'otus-shop'])) {
+        if (App::$instance->elastic->client->indices()->exists(['index' => 'otus-shop'])->asBool()) {
             App::$instance->elastic->client->indices()->flush(['index' => 'otus-shop']);
         } else {
             App::$instance->elastic->client->indices()->create([
@@ -36,11 +36,11 @@ final class SeedAction
                     'settings' => [
                         'analysis' => [
                             'filter' => [
-                                'stop' => [
+                                'ru_stop' => [
                                     'type' => 'stop',
                                     'stopwords' => '_russian_'
                                 ],
-                                'stemmer' => [
+                                'ru_stemmer' => [
                                     'type' => 'stemmer',
                                     'language' => 'russian'
                                 ]
@@ -50,8 +50,8 @@ final class SeedAction
                                     'tokenizer' => 'standard',
                                     'filter' => [
                                         'lowercase',
-                                        'stop',
-                                        'stemmer'
+                                        'ru_stop',
+                                        'ru_stemmer'
                                     ]
                                 ]
                             ]
@@ -60,7 +60,8 @@ final class SeedAction
                     'mappings' => [
                         'properties' => [
                             'title' => [
-                                'type' => 'text'
+                                'type' => 'text',
+                                'analyzer' => 'my_russian'
                             ],
                             'sku' => [
                                 'type' => 'keyword'

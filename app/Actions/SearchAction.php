@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\DTO\SearchResponse;
 use App\Templates\DefaultTemplate;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
@@ -14,24 +15,23 @@ class SearchAction
      */
     public function run(string $title, int $price): void
     {
-        $result = (new DefaultTemplate($title, $price))->search();
+        $searchResponse = (new DefaultTemplate($title, $price))->search();
 
-        $this->print($result);
+        $this->print($searchResponse);
     }
 
-    private function print(array $result): void
+    private function print(SearchResponse $response): void
     {
-        $hits = $result['hits']['hits'];
-
         $headers = ["SKU", "Title", "Category", "Price", "Total Stock"];
 
         $columnWidths = array_map('strlen', $headers);
-        foreach ($hits as $hit) {
-            $sku = $hit['_source']['sku'];
-            $title = $hit['_source']['title'];
-            $category = $hit['_source']['category'];
-            $price = $hit['_source']['price'];
-            $totalStock = array_sum(array_column($hit['_source']['stock'], 'stock'));
+
+        foreach ($response->hits as $hit) {
+            $sku = $hit->sku;
+            $title = $hit->title;
+            $category = $hit->category;
+            $price = $hit->price;
+            $totalStock = array_reduce($hit->stock, static fn($carry, $stock): int => $carry + $stock->quantity, 0);
 
             $columnWidths[0] = max($columnWidths[0], strlen($sku));
             $columnWidths[1] = max($columnWidths[1], strlen($title));
@@ -47,12 +47,12 @@ class SearchAction
             str_pad($headers[4], $columnWidths[4]) . PHP_EOL;
         echo str_repeat("-", array_sum($columnWidths) + 3 * count($headers) + 1) . PHP_EOL;
 
-        foreach ($hits as $hit) {
-            $sku = $hit['_source']['sku'];
-            $title = $hit['_source']['title'];
-            $category = $hit['_source']['category'];
-            $price = $hit['_source']['price'];
-            $totalStock = array_sum(array_column($hit['_source']['stock'], 'stock'));
+        foreach ($response->hits as $hit) {
+            $sku = $hit->sku;
+            $title = $hit->title;
+            $category = $hit->category;
+            $price = $hit->price;
+            $totalStock = array_reduce($hit->stock, static fn($carry, $stock): int => $carry + $stock->quantity, 0);
 
             echo str_pad($sku, $columnWidths[0]) . " | " .
                 str_pad($title, $columnWidths[1]) . " | " .
