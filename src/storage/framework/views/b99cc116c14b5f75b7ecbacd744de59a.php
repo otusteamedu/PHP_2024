@@ -1,0 +1,1 @@
+<?php /**PATH C:\Users\ASUS\PhpstormProjects\PHP_2024\src\resources\views/welcome.blade.php ENDPATH**/ ?>
