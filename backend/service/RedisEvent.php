@@ -5,8 +5,8 @@ namespace Service;
 class RedisEvent
 {
     private \Redis $redis;
-    private const string DEFAULT_HOST = 'redis';
-    private const int DEFAULT_PORT = 6379;
+    private const DEFAULT_HOST = 'redis';
+    private const DEFAULT_PORT = 6379;
 
     public function __construct(string $host = self::DEFAULT_HOST, int $port = self::DEFAULT_PORT)
     {
@@ -42,8 +42,7 @@ class RedisEvent
                     }
                 }
             }
-        }
-        catch (\JsonException $e) {
+        } catch (\JsonException $e) {
             throw new \Exception("Failed to decode event data: " . $e->getMessage());
         }
         return $bestEvent;
