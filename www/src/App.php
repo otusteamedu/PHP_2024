@@ -3,8 +3,8 @@ require_once "./src/Email.php";
 
 class App
 {
-  private $emailAddress;
-  public function __construct($emailAddress)
+  private array $emailAddress;
+  public function __construct(array $emailAddress)
   {
     $this->emailAddress = $emailAddress;
   }

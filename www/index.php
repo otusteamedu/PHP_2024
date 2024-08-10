@@ -8,7 +8,5 @@ $emails = [
   "coco.mail.ru"
 ];
 
-foreach ($emails as $email) {
-  $checkAddress =  new App($email);
-  echo $checkAddress->checkEmail();
-}
+$checkAddress = new App($emails);
+print_r($checkAddress->checkEmail());

@@ -2,29 +2,29 @@
 
 class Email
 {
-  private $email;
+  private array $emails;
   private $regularExpressions = "/^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i";
-  public function __construct($email)
+  public function __construct(array $emails)
   {
-    $this->email = $email;
+    $this->emails = $emails;
   }
 
   public function checkMailAddress()
   {
     $record = "MX";
-    $message = "";
+    $message = [];
+    foreach ($this->emails as $email) {
+      if (!preg_match($this->regularExpressions, $email)) {
+        $message[$email] = "Не правильно написан адрес\n";
+      } else {
+        list($address, $domain) = explode("@", $email);
 
-    if (!preg_match($this->regularExpressions, $this->email)) {
-      $message .= "Не правильно написан адрес \n";
-      return $message;
-    }
-
-    list($address, $domain) = explode("@", $this->email);
-
-    if (!checkdnsrr($domain, $record)) {
-      $message .= "Такого email не существует \n";
-    } else {
-      $message .= "Email введен верно \n";
+        if (!checkdnsrr($domain, $record)) {
+          $message[$email] = "Такого email не существует \n";
+        } else {
+          $message[$email] = "Email введен верно \n";
+        }
+      }
     }
     return $message;
   }
