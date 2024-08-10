@@ -1,0 +1,9 @@
+{
+  "name": "t.bublikova/php_2024",
+  "description": "Working with redis",
+  "autoload": {
+    "psr-4": {
+      "Service\\": "service/"
+    }
+  }
+}

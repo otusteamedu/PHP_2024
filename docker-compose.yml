@@ -26,24 +26,3 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-
-  memcached:
-    image: memcached:alpine
-    container_name: memcached
-    ports:
-      - "11211:11211"
-
-  pgsql:
-    image: postgres:16-alpine
-    container_name: pgsql
-    ports:
-      - '5432:5432'
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-
-volumes:
-  postgres_data:
