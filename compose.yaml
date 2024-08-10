@@ -21,7 +21,7 @@ services:
     command: php -S 0.0.0.0:8000
     container_name: php
     volumes:
-      - ./src:/var/www/html
+      - ./:/var/www/html
     working_dir: /var/www/html
     depends_on:
       - db
