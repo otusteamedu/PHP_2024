@@ -24,4 +24,15 @@ class EmailValidate
         $domain = explode('@', $email)[1];
         return checkdnsrr($domain, 'MX');
     }
+
+    public static function printValidationResults(array $emails, array $results): void
+    {
+        foreach ($results as $key => $result) {
+            if (!$result) {
+                echo $emails[$key] . " - определён как невалидный " . '<br>';
+            } else {
+                echo $emails[$key] . " - определён как валидный " . '<br>';
+            }
+        }
+    }
 }

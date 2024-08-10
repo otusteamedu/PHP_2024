@@ -26,10 +26,6 @@ $emails = [
     'test@.domain.com',
 ];
 
-foreach (EmailValidate::validateArray($emails) as $key => $result) {
-    if (!$result) {
-        echo $emails[$key] . " - определён как невалдиный " . '<br>';
-    } else {
-        echo $emails[$key] . " - определён как валдиный " . '<br>';
-    }
-}
+$results = EmailValidate::validateArray($emails);
+EmailValidate::printValidationResults($emails, $results);
+
