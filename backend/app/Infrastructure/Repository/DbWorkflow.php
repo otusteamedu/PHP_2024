@@ -56,9 +56,18 @@ class DbWorkflow implements Repository
             ->value('type');
     }
 
-    public function getRowsWhere(string $field, string $value)
+    public function getRowsOrderWhere(string $field, string $value)
     {
         return DB::table('orders')
+            ->where($field, $value)
+            ->get();
+    }
+
+    public function getRowsOrderWhereCurfromIsCrypto($field, $value)
+    {
+        return DB::table('orders')
+            ->join('currencies', 'orders.cur_from', '=', 'currencies.code')
+            ->where('currencies.type', 'crypto')
             ->where($field, $value)
             ->get();
     }

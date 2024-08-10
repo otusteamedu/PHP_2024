@@ -87,6 +87,26 @@ class CryptoApi
         echo $response . "\n";
     }
 
+    public function getDepositHistory(string $coin, int $startTime, int $endTime)
+    {
+        $params = 'coin=' .$coin. '&startTime=' .$startTime. '&endTime=' .$endTime;
+        $endpoint = $this->base_endpoint . '/v5/asset/deposit/query-record?' . $params;
+
+        $timestamp = time() * 1000;
+        $params_for_signature = $timestamp . $this->api_key . "5000" . $params;
+        $signature = hash_hmac('sha256', $params_for_signature, $this->secret_key);
+
+        $response = Http::withHeaders([
+            "X-BAPI-API-KEY" => $this->api_key,
+            "X-BAPI-SIGN" => $signature,
+            "X-BAPI-SIGN-TYPE" => "2",
+            "X-BAPI-TIMESTAMP" => $timestamp,
+            "X-BAPI-RECV-WINDOW" => "5000",
+        ])
+            ->acceptJson()
+            ->get($endpoint);
+        return $response;
+    }
 
 
 }

@@ -12,6 +12,7 @@ interface Repository
 
     public function getCurType(string $cur);
 
-    public function getRowsWhere(string $field, string $value);
+    public function getRowsOrderWhere(string $field, string $value);
+    public function getRowsOrderWhereCurfromIsCrypto(string $field, string $value);
 
 }

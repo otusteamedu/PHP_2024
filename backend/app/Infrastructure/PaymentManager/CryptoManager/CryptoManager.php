@@ -42,4 +42,9 @@ class CryptoManager
         $res = $this->cryptoApi->getMasterDepositAddress($coin, $this->chains[$chain]);
         return $res['result']['chains'][0]['addressDeposit'];
     }
+
+    public function getDepositHistory(string $coin, int $startTime, int $endTime)
+    {
+        return $this->cryptoApi->getDepositHistory($coin, $startTime, $endTime);
+    }
 }
