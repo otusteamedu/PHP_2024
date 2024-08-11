@@ -22,7 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/rates', RateController::class);
 
+Route::get('/order/{id}/status', [OrderController::class, 'getOrderStatus']);
+
 Route::get('/order/{id}', [OrderController::class, 'getOrderForPay']);
+
+
 
 Route::get('/cancelOrder/{id}', [OrderController::class, 'cancelOrderById']);
 

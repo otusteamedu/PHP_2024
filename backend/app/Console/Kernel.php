@@ -19,11 +19,6 @@ class Kernel extends ConsoleKernel
             (new OrderManager(new DbWorkflow()))->checkOrderCryptoDeposit();
 
         })->everyThirtySeconds();
-            //->runInBackground();
-
-//        $schedule->call(function () {
-//            Log::debug('Check logging....');
-//        })->everyThirtySeconds();
     }
 
     /**

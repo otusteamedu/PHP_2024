@@ -24,6 +24,12 @@ class OrderController extends Controller
         return response()->json($orderManagerResponse);
     }
 
+    public function getOrderStatus(int $orderId): JsonResponse
+    {
+        $order = $this->getOrderById($orderId);
+        return response()->json($order->status);
+    }
+
     public function getOrderForPay(int $orderId)
     {
         return $this->getOrderById($orderId);

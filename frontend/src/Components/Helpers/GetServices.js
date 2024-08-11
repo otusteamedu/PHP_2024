@@ -29,6 +29,27 @@ export default class GetServices {
 
     }
 
+    static async getOrderStatus(id) {
+
+        try {
+            const res = await axios({
+                url: this.API_GET_ORDER_URL + id + '/status',
+                credentials: true,
+                method: 'get',
+                httpOnly: true,
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With' : 'XMLHttpRequest',
+                    'xsrfCookieName': 'XSRF-TOKEN',
+                    'xsrfHeaderName': 'X-XSRF-TOKEN',
+                }
+            });
+            return res.data;
+        } catch (e) {
+            console.log('что-то пошло не так ...' + e);
+        }
+    }
+
 
     static async getOrderData(id) {
 

@@ -9,6 +9,8 @@ const OrderBody = ({ data }) => {
 
     const [status, setStatus] = React.useState("");
 
+    const orderStatusUpdateTime = 20;
+
     const orderStatus = {
         0: "Отменен",
         1: "В ожидании оплаты",
@@ -32,7 +34,30 @@ const OrderBody = ({ data }) => {
             })
             .catch(error => console.log(error));
     }
-    console.log(data);
+
+    const updateOrderStatus = async () => {
+        await GetServices.getOrderStatus(param.id)
+            .then(res => {
+                if (res) {
+                    setStatus(orderStatus[res]);
+                    console.log(res);
+                }
+            })
+    }
+
+    //console.log(data);
+
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            updateOrderStatus()
+                .then(() => {})
+                .catch((err) => console.warn(err))
+
+        }, orderStatusUpdateTime * 1000);
+        return () => clearInterval(interval);
+
+    });
+
     return (
 
         <div className="ob_div">

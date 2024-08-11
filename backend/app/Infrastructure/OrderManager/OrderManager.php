@@ -110,7 +110,6 @@ class OrderManager
 
     public function checkOrderCryptoDeposit(): void
     {
-        Log::debug('Проверка.....');
         $awaitOrders = $this->getAwaitCryptoOrders();
         foreach ($awaitOrders as $order) {
             $currency = explode('_',$order->cur_from);
@@ -119,13 +118,6 @@ class OrderManager
             $startTime = Carbon::parse($order->created_at)->timestamp - 3600 * 10;
             $endTime = ($startTime + $this->orderLifetime);
             $json = $this->paymentManager->checkCryptoDeposit(strtoupper($coin), $startTime, $endTime);
-
-
-
-            # Сравнить сумму и chain , а так же чтоб status = 3
-
-//            $json = '{"retCode":0,"retMsg":"success","result":{"rows":[{"coin":"USDT","chain":"TRX","amount":"10","txID":"729d93d191550c1412080d86183e27f69a926678ee5e745a731f9767d12b6de4","status":3,"toAddress":"TYVDb5TyCj2yTqZkMKKTKZSurkHABMW5PB","tag":"","depositFee":"","successAt":"1723377403000","confirmations":"51","txIndex":"0","blockHash":"0000000003d44840ea05cc65546f384cdc06c0d82472671435881d0f988d4267","batchReleaseLimit":"-1","depositType":"0"}],"nextPageCursor":"eyJtaW5JRCI6OTI5MjU1NzUsIm1heElEIjo5MjkyNTU3NX0="},"retExtInfo":{},"time":1723379538982}';
-
 
             $json = json_decode($json, true);
 
