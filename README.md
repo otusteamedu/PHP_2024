@@ -1,22 +1,10 @@
-### Prerequisites
+### add Event
+php index.php add 1000 '{"param1":1}' 'Event 1'
 
-- Docker
-- Docker Compose
+### clear all events
+php index.php clear
 
-###  Clone the repository:
+### get best matching event
+php index.php get '{"param1":1,"param2":2}'
 
-```bash
-   git clone <your-repo-url>
-   cd <your-repo-directory>
-```
 
-### Create an .env file in the root directory as in env.example file
-
-### Build and start
-docker-compose up --build
-
-### Add hosts to the /etc/hosts file:
-```shell
-    127.0.0.1 http://dev.otus/
-```
-The project is working now and does not need anything to set up.

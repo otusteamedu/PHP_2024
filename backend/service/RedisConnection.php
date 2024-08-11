@@ -1,4 +1,5 @@
 <?php
+
 namespace Service;
 
 class RedisConnection
