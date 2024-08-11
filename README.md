@@ -1,3 +1,10 @@
-# PHP_2024
+### add Event
+php index.php add 1000 '{"param1":1}' 'Event 1'
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+### clear all events
+php index.php clear
+
+### get best matching event
+php index.php get '{"param1":1,"param2":2}'
+
+
