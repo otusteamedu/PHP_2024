@@ -6,6 +6,7 @@ use App\Infrastructure\OrderManager\OrderManager;
 use App\Infrastructure\Repository\DbWorkflow;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,9 +17,13 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             (new OrderManager(new DbWorkflow()))->checkOrderCryptoDeposit();
-        })
-            ->everyThirtySeconds()
-            ->runInBackground();
+
+        })->everyThirtySeconds();
+            //->runInBackground();
+
+//        $schedule->call(function () {
+//            Log::debug('Check logging....');
+//        })->everyThirtySeconds();
     }
 
     /**

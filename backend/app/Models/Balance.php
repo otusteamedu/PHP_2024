@@ -11,6 +11,11 @@ class Balance extends Model
 
     protected $table = 'balances';
 
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
     protected $fillable = [
         'cur_code',
         'balance'

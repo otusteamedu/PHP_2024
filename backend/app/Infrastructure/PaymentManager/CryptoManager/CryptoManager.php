@@ -5,7 +5,7 @@ namespace App\Infrastructure\PaymentManager\CryptoManager;
 class CryptoManager
 {
 
-    private array $chains;
+    public array $chains;
     private CryptoApi $cryptoApi;
 
     public function __construct(

@@ -11,6 +11,11 @@ class Currency extends Model
 
     protected $table = 'currencies';
 
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
     protected $fillable = [
         'code',
         'title',

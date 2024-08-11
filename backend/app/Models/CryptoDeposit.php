@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class CryptoDeposit extends Model
 {
     use HasFactory;
 
-    protected $table = 'orders';
+    protected $table = 'crypto_deposits';
 
     public static function getTableName()
     {
@@ -17,16 +17,11 @@ class Order extends Model
     }
 
     protected $fillable = [
+        'orderId',
+        'coin',
+        'amount',
+        'txid',
         'status',
-        'cur_from',
-        'cur_to',
-        'amount_from',
-        'amount_to',
-        'rateFrom',
-        'rateTo',
-        'email',
-        'recipient_account',
-        'incoming_asset'
     ];
 
     public $timestamps = true;

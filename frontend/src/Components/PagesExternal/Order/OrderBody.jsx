@@ -13,8 +13,7 @@ const OrderBody = ({ data }) => {
         0: "Отменен",
         1: "В ожидании оплаты",
         2: "Оплачено",
-        3: "Отправлен в обработку",
-        4: "Выполнен"
+        3: "Выполнен"
     };
 
     const timer = (time) => {
@@ -73,7 +72,7 @@ const OrderBody = ({ data }) => {
                 </div>
 
                 {
-                    status !== orderStatus[0] && (
+                    status === orderStatus[1] && (
                         <div className="ob_d_i">
                             <div className="ob_d_i_left"><p>Время действия заказа:</p></div>
                             <div className="ob_d_i_right"><p>{timer(30)} мин</p>
@@ -86,7 +85,7 @@ const OrderBody = ({ data }) => {
             </div>
 
             {
-                status !== orderStatus[0] && (
+                status === orderStatus[1] && (
                     <div className="ob_d_btn">
                         <button className="red_btn" onClick={() => cancelOrder()}><span>Отменить</span></button>
                     </div>

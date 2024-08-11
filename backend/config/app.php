@@ -186,7 +186,21 @@ return [
     ])->toArray(),
 
     # App vars
-    'ORDER_EXPIRE_TIME' => env('ORDER_EXPIRE_TIME'),
+//    'ORDER_EXPIRE_TIME' => env('ORDER_EXPIRE_TIME'),
+    'ORDER_EXPIRE_TIME' => 60 * 60 * 18, // 24 hours
+
+
+    # Order status
+    'ORDER_STATUS_CANCEL' => 0,
+    'ORDER_STATUS_WAITING' => 1,
+    'ORDER_STATUS_PAID' => 2,
+    'ORDER_STATUS_COMPLETED' => 3,
+
+    # Crypto deposit status
+    'CRYPTO_DEPOSIT_PROCESSING' => 1,
+    'CRYPTO_DEPOSIT_REJECTED' => 2,
+    'CRYPTO_DEPOSIT_ACCEPTED' => 3,
+
 
 
     # Bybit

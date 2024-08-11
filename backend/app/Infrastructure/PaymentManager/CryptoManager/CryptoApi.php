@@ -89,7 +89,9 @@ class CryptoApi
 
     public function getDepositHistory(string $coin, int $startTime, int $endTime)
     {
-        $params = 'coin=' .$coin. '&startTime=' .$startTime. '&endTime=' .$endTime;
+        $ms = '000';
+        $params = 'coin=' .$coin. '&startTime=' .$startTime.$ms. '&endTime=' .$endTime.$ms;
+        //$params = 'coin=' .$coin;
         $endpoint = $this->base_endpoint . '/v5/asset/deposit/query-record?' . $params;
 
         $timestamp = time() * 1000;

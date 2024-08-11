@@ -11,6 +11,11 @@ class Exchange extends Model
 
     protected $table = 'exchanges';
 
+    public static function getTableName()
+    {
+        return with(new static)->getTable();
+    }
+
     protected $fillable = [
         'cur_from_code',
         'cur_to_code',

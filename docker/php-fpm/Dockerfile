@@ -4,6 +4,7 @@ EXPOSE 9000
 
 RUN apt-get update && apt-get install -y \
     supervisor \
+    cron \
     curl \
     wget \
     git \
@@ -38,7 +39,9 @@ COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY ./php.ini /usr/local/etc/php/conf.d/php.ini
 COPY ./laravel-worker.conf /etc/supervisor/conf.d/laravel-worker.conf
 #COPY ./composer.json /data/composer.json
-#
+
+RUN crontab -l | { cat; echo "* * * * * cd /app && php artisan schedule:run >> /dev/null 2>&1"; } | crontab -
+
 #RUN composer install && composer dump-autoload
 #RUN supervisorctl start "laravel-worker:*"
 CMD ["php-fpm"]

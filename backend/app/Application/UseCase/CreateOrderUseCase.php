@@ -14,7 +14,7 @@ class CreateOrderUseCase
 
     public function __invoke(): int
     {
-        return $this->repository->save($this->order);
+        return $this->repository->saveOrder($this->order);
     }
 
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class DbWorkflow implements Repository
 {
 
-    public function save(OrderEntity $order): int
+    public function saveOrder(OrderEntity $order): int
     {
         return DB::table('orders')->insertGetId([
             'status' => $order->getStatus(),
@@ -56,9 +56,9 @@ class DbWorkflow implements Repository
             ->value('type');
     }
 
-    public function getRowsOrderWhere(string $field, string $value)
+    public function getRowsWhere(string $table, string $field, $value)
     {
-        return DB::table('orders')
+        return DB::table($table)
             ->where($field, $value)
             ->get();
     }
@@ -69,6 +69,15 @@ class DbWorkflow implements Repository
             ->join('currencies', 'orders.cur_from', '=', 'currencies.code')
             ->where('currencies.type', 'crypto')
             ->where($field, $value)
+            ->select('orders.id','orders.cur_from','orders.amount_from','orders.created_at')
             ->get();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function save(string $table, array $data)
+    {
+        return DB::table($table)->insertGetId($data);
     }
 }

@@ -8,7 +8,7 @@ use App\Infrastructure\PaymentManager\CryptoManager\CryptoManager;
 
 class PaymentManager
 {
-    private CryptoManager $cryptoManager;
+    public CryptoManager $cryptoManager;
 
     public function __construct(
         public Repository $repository
