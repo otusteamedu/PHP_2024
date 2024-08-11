@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
+use App\Domain\Event\EventManager;
+use App\Domain\Event\OrderStatusChanged;
+use App\Domain\Interface\PublisherInterface;
+use App\Domain\Listener\OrderStatusChangedListener;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -26,5 +30,11 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+        PublisherInterface::class => function () {
+            $eventManager = new EventManager();
+            $eventManager->subscribe(OrderStatusChanged::class, OrderStatusChangedListener::class);
+
+            return $eventManager;
+        }
     ]);
 };
