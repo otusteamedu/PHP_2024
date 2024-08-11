@@ -1,0 +1,1 @@
+<?php /**PATH /data/laravel-docker/resources/views/welcome.blade.php ENDPATH**/ ?>
