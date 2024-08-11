@@ -4,14 +4,8 @@ namespace Service;
 
 class RedisEvent
 {
-    private \Redis $redis;
-    private const DEFAULT_HOST = 'redis';
-    private const DEFAULT_PORT = 6379;
-
-    public function __construct(string $host = self::DEFAULT_HOST, int $port = self::DEFAULT_PORT)
+    public function __construct(private readonly \Redis $redis)
     {
-        $this->redis = new \Redis();
-        $this->redis->connect($host, $port);
     }
 
     public function addEvent($priority, $conditions, $event)
