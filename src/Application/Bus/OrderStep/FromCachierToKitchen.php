@@ -33,7 +33,7 @@ class FromCachierToKitchen extends AbstractStep
     private function createNewOrder(): Order
     {
         // create new order via repository
-        $order = new Order();
+        $order = get(Order::class);
         $order->setStatus(OrderStatuses::New);
 
         return $order;

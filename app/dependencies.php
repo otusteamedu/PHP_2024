@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Application\Bus\MainBus;
+use App\Application\Bus\OrderStep\FromCachierToKitchen;
+use App\Application\Bus\OrderStep\FromKitchenToCachier;
 use App\Application\Settings\SettingsInterface;
 use App\Domain\Event\EventManager;
 use App\Domain\Event\OrderStatusChanged;
@@ -35,6 +38,10 @@ return function (ContainerBuilder $containerBuilder) {
             $eventManager->subscribe(OrderStatusChanged::class, OrderStatusChangedListener::class);
 
             return $eventManager;
+        },
+        MainBus::class => function (ContainerInterface $c) {
+            return new MainBus($c->get(FromCachierToKitchen::class)
+                ->setNext($c->get(FromKitchenToCachier::class)));
         }
     ]);
 };

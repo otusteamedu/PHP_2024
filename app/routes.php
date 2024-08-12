@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
+use App\Application\Bus\MainBus;
+use App\Application\DTO\OrderDto;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -23,5 +25,28 @@ return function (App $app) {
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
+    });
+
+    $app->group('/order', function (Group $group) {
+        $group->post('', function (Request $request, Response $response) {
+            $body = $request->getParsedBody();
+            $orderDTO = new OrderDto(
+                cook: $body['cook'],
+                cookingProcess: $body['cookingProcess'],
+                productCustomizers: $body['productCustomizers'] ?? null
+            );
+
+            $this->get(MainBus::class)->execute($orderDTO);
+
+            return $response;
+        });
+        $group->post('/cooked', function (Request $request, Response $response) {
+            $body = $request->getParsedBody();
+            $orderDTO = new OrderDto(id: $body['id']);
+
+            $this->get(MainBus::class)->execute($orderDTO);
+
+            return $response;
+        });
     });
 };
