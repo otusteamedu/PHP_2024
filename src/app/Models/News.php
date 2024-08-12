@@ -13,6 +13,7 @@ class News extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['title', 'body', 'category', 'user_id'];
     public function author():BelongsTo {
         return $this->belongsTo(User::class, 'user_id');
     }

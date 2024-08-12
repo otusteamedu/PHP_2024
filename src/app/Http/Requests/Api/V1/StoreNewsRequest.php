@@ -11,7 +11,7 @@ class StoreNewsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,23 @@ class StoreNewsRequest extends FormRequest
      */
     public function rules(): array
     {
+        $rules =  [
+            'data.attributes.title' => 'required|string',
+            'data.attributes.body' => 'required|string',
+            'data.attributes.category' => 'required|string|in:Culture,Sport,Politics',
+        ];
+
+        if($this->routeIs('news.store')) {
+            $rules['data.relationships.author.data.id'] = 'required|integer';
+        }
+
+        return $rules;
+    }
+
+    public function messages() {
         return [
-            //
+            'data.attributes.category' => 'The data.attributes.category value is invalid.Please use Culture,Sport or Politics.'
+
         ];
     }
 }

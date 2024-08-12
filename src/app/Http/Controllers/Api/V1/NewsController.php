@@ -7,6 +7,8 @@ use App\Http\Requests\Api\V1\StoreNewsRequest;
 use App\Http\Requests\Api\V1\UpdateNewsRequest;
 use App\Http\Resources\V1\NewsResource;
 use App\Models\News;
+use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder;
 
 class NewsController extends ApiController
@@ -33,7 +35,22 @@ class NewsController extends ApiController
      */
     public function store(StoreNewsRequest $request)
     {
-        //
+        try {
+            User::query()->findOrFail($request->input('data.relationships.author.data.id'));
+        } catch (ModelNotFoundException) {
+            return $this->ok('User not found', [
+                'error' => 'The provided user id does not exist'
+            ]);
+        }
+
+        $model = [
+            'title' => $request->input('data.attributes.title'),
+            'body' => $request->input('data.attributes.body'),
+            'category' => $request->input('data.attributes.category'),
+            'user_id' => $request->input('data.relationships.author.data.id'),
+        ];
+
+        return new NewsResource(News::query()->create($model));
     }
 
     /**
