@@ -1,0 +1,5 @@
+{
+    "require": {
+        "kostarh9/otus-composer-package": "^1.0"
+    }
+}
