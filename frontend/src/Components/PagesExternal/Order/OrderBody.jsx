@@ -38,9 +38,10 @@ const OrderBody = ({ data }) => {
     const updateOrderStatus = async () => {
         await GetServices.getOrderStatus(param.id)
             .then(res => {
-                if (res) {
-                    setStatus(orderStatus[res]);
-                    console.log(res);
+                setStatus(orderStatus[res]);
+                console.log(res);
+                if (!res) {
+                    setStatus(orderStatus[0]);
                 }
             })
     }
@@ -49,10 +50,11 @@ const OrderBody = ({ data }) => {
 
     React.useEffect(() => {
         const interval = setInterval(() => {
-            updateOrderStatus()
-                .then(() => {})
-                .catch((err) => console.warn(err))
-
+            if (status !== orderStatus[0] || status !== orderStatus[3]) {
+                updateOrderStatus()
+                    .then(() => {})
+                    .catch((err) => console.warn(err))
+            }
         }, orderStatusUpdateTime * 1000);
         return () => clearInterval(interval);
 

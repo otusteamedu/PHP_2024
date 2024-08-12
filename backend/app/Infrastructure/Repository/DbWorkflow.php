@@ -5,6 +5,7 @@ namespace App\Infrastructure\Repository;
 use App\Application\Interface\Repository;
 use App\Domain\Entity\OrderEntity;
 use App\Models\Order;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class DbWorkflow implements Repository
@@ -22,6 +23,7 @@ class DbWorkflow implements Repository
             'rateTo' => $order->getRateTo(),
             'email' => $order->getEmail(),
             'recipient_account' => $order->getRecipientAccount(),
+            'withdraw_txid' => '',
             'incoming_asset' => $order->getIncomingAsset(),
             'created_at' => now(),
             'updated_at' => now(),
@@ -56,28 +58,35 @@ class DbWorkflow implements Repository
             ->value('type');
     }
 
-    public function getRowsWhere(string $table, string $field, $value)
+    public function getRowsWhere(string $table, string $field, $value): Collection
     {
         return DB::table($table)
             ->where($field, $value)
             ->get();
     }
 
-    public function getRowsOrderWhereCurfromIsCrypto($field, $value)
+    public function getRowsOrderWhereCurfromIsCrypto($field, $value): Collection
     {
         return DB::table('orders')
             ->join('currencies', 'orders.cur_from', '=', 'currencies.code')
             ->where('currencies.type', 'crypto')
             ->where($field, $value)
-            ->select('orders.id','orders.cur_from','orders.amount_from','orders.created_at')
+            ->select('orders.id','orders.cur_from','orders.cur_to','orders.amount_from','orders.amount_to','recipient_account','orders.created_at')
             ->get();
     }
 
     /**
      * @throws \Exception
      */
-    public function save(string $table, array $data)
+    public function save(string $table, array $data): int
     {
         return DB::table($table)->insertGetId($data);
+    }
+
+    public function updateRow(string $table, int $id, array $data): void
+    {
+        DB::table($table)
+            ->where('id', $id)
+            ->update($data);
     }
 }

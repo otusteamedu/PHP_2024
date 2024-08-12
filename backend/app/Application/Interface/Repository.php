@@ -18,4 +18,6 @@ interface Repository
 
     public function getRowsWhere(string $table, string $field, mixed $value);
 
+    public function updateRow(string $table, int $id, array $data);
+
 }
