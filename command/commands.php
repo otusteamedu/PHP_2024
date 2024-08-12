@@ -27,5 +27,3 @@ if (!$commandName || empty($commands[$commandName])) {
 /** @var CommandInterface $command */
 $command = $commands[$commandName];
 $command->execute();
-
-

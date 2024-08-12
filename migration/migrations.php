@@ -1,4 +1,5 @@
 <?php
+
 use App\Provider\PostgresProvider;
 
 require_once __DIR__ . "/../vendor/autoload.php";
