@@ -1,0 +1,5 @@
+Seq Scan on ticket  (cost=0.00..189.00 rows=56 width=8) (actual time=0.014..0.960 rows=56 loops=1)
+  Filter: (session_id = 1)
+  Rows Removed by Filter: 9944
+Planning Time: 0.112 ms
+Execution Time: 0.981 ms

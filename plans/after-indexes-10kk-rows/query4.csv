@@ -1,0 +1,61 @@
+Limit  (cost=311905.23..311905.23 rows=3 width=27) (actual time=754.693..758.001 rows=3 loops=1)
+  ->  Sort  (cost=311905.23..311907.73 rows=1000 width=27) (actual time=744.538..747.845 rows=3 loops=1)
+        Sort Key: (sum((sum(ticket.price)))) DESC
+        Sort Method: top-N heapsort  Memory: 25kB
+        ->  HashAggregate  (cost=311882.30..311892.30 rows=1000 width=27) (actual time=744.344..747.716 rows=1000 loops=1)
+              Group Key: m.title
+              Batches: 1  Memory Usage: 193kB
+              ->  Nested Loop  (cost=278998.53..311406.61 rows=95139 width=27) (actual time=639.257..734.693 rows=100000 loops=1)
+                    ->  Merge Join  (cost=278998.25..308736.31 rows=95139 width=12) (actual time=639.232..713.809 rows=100000 loops=1)
+                          Merge Cond: (s.id = ticket.session_id)
+                          ->  Index Scan using session_pkey on session s  (cost=0.29..3244.29 rows=100000 width=8) (actual time=0.041..10.178 rows=100000 loops=1)
+                          ->  Finalize GroupAggregate  (cost=278997.96..303101.39 rows=95139 width=12) (actual time=639.176..690.549 rows=100000 loops=1)
+                                Group Key: ticket.session_id
+                                ->  Gather Merge  (cost=278997.96..301198.61 rows=190278 width=12) (actual time=639.135..670.911 rows=300000 loops=1)
+                                      Workers Planned: 2
+                                      Workers Launched: 2
+                                      ->  Sort  (cost=277997.93..278235.78 rows=95139 width=12) (actual time=626.461..633.453 rows=100000 loops=3)
+                                            Sort Key: ticket.session_id
+                                            Sort Method: external merge  Disk: 2552kB
+                                            Worker 0:  Sort Method: external merge  Disk: 2552kB
+                                            Worker 1:  Sort Method: external merge  Disk: 2552kB
+                                            ->  Partial HashAggregate  (cost=248811.50..270131.01 rows=95139 width=12) (actual time=565.741..606.453 rows=100000 loops=3)
+                                                  Group Key: ticket.session_id
+                                                  Batches: 5  Memory Usage: 8241kB  Disk Usage: 11896kB
+                                                  Worker 0:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 13072kB
+                                                  Worker 1:  Batches: 5  Memory Usage: 8241kB  Disk Usage: 13080kB
+                                                  ->  Parallel Seq Scan on ticket  (cost=0.00..115196.67 rows=2085695 width=12) (actual time=3.245..205.058 rows=1666866 loops=3)
+                                                        Filter: bought
+                                                        Rows Removed by Filter: 1666468
+                    ->  Memoize  (cost=0.29..0.30 rows=1 width=23) (actual time=0.000..0.000 rows=1 loops=100000)
+                          Cache Key: s.movie_id
+                          Cache Mode: logical
+                          Hits: 99000  Misses: 1000  Evictions: 0  Overflows: 0  Memory Usage: 122kB
+                          ->  Index Scan using movie_pkey on movie m  (cost=0.28..0.29 rows=1 width=23) (actual time=0.001..0.001 rows=1 loops=1000)
+                                Index Cond: (id = s.movie_id)
+Planning Time: 0.205 ms
+JIT:
+  Functions: 63
+"  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+"  Timing: Generation 2.272 ms, Inlining 0.000 ms, Optimization 1.476 ms, Emission 27.776 ms, Total 31.524 ms"
+Execution Time: 761.491 ms
+
+
+-- После триггера
+
+Limit  (cost=3420.33..3420.34 rows=3 width=27) (actual time=23.844..23.847 rows=3 loops=1)
+  ->  Sort  (cost=3420.33..3422.83 rows=1000 width=27) (actual time=23.843..23.845 rows=3 loops=1)
+        Sort Key: (sum(s.earned_money)) DESC
+        Sort Method: top-N heapsort  Memory: 25kB
+        ->  HashAggregate  (cost=3397.41..3407.41 rows=1000 width=27) (actual time=23.680..23.757 rows=1000 loops=1)
+              Group Key: m.title
+              Batches: 1  Memory Usage: 193kB
+              ->  Hash Join  (cost=29.79..2897.41 rows=100000 width=23) (actual time=0.166..14.530 rows=100000 loops=1)
+                    Hash Cond: (s.movie_id = m.id)
+                    ->  Index Only Scan using session_movie_earned_money on session s  (cost=0.29..2604.29 rows=100000 width=8) (actual time=0.007..6.312 rows=100000 loops=1)
+                          Heap Fetches: 0
+                    ->  Hash  (cost=17.00..17.00 rows=1000 width=23) (actual time=0.149..0.150 rows=1000 loops=1)
+                          Buckets: 1024  Batches: 1  Memory Usage: 64kB
+                          ->  Seq Scan on movie m  (cost=0.00..17.00 rows=1000 width=23) (actual time=0.004..0.057 rows=1000 loops=1)
+Planning Time: 0.316 ms
+Execution Time: 23.876 ms

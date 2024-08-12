@@ -1,0 +1,13 @@
+Sort  (cost=3879.39..3933.45 rows=21623 width=27) (actual time=12.547..14.638 rows=21796 loops=1)
+  Sort Key: s.start_time
+  Sort Method: quicksort  Memory: 1944kB
+  ->  Hash Join  (cost=29.50..2322.51 rows=21623 width=27) (actual time=0.222..8.624 rows=21796 loops=1)
+        Hash Cond: (s.movie_id = m.id)
+        ->  Seq Scan on session s  (cost=0.00..2236.00 rows=21623 width=12) (actual time=0.005..5.704 rows=21796 loops=1)
+              Filter: ((start_time >= '2024-03-21 00:00:00'::timestamp without time zone) AND (start_time < '2024-03-28 00:00:00'::timestamp without time zone))
+              Rows Removed by Filter: 78204
+        ->  Hash  (cost=17.00..17.00 rows=1000 width=23) (actual time=0.201..0.202 rows=1000 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 64kB
+              ->  Seq Scan on movie m  (cost=0.00..17.00 rows=1000 width=23) (actual time=0.003..0.082 rows=1000 loops=1)
+Planning Time: 0.150 ms
+Execution Time: 15.116 ms

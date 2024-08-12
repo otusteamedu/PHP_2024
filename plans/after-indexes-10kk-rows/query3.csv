@@ -1,0 +1,15 @@
+Sort  (cost=3166.74..3220.82 rows=21633 width=27) (actual time=8.430..11.000 rows=21796 loops=1)
+  Sort Key: s.start_time
+  Sort Method: quicksort  Memory: 1944kB
+  ->  Hash Join  (cost=491.53..1609.06 rows=21633 width=27) (actual time=1.019..5.233 rows=21796 loops=1)
+        Hash Cond: (s.movie_id = m.id)
+        ->  Bitmap Heap Scan on session s  (cost=462.03..1522.53 rows=21633 width=12) (actual time=0.877..2.743 rows=21796 loops=1)
+              Recheck Cond: ((start_time >= '2024-03-21 00:00:00'::timestamp without time zone) AND (start_time < '2024-03-28 00:00:00'::timestamp without time zone))
+              Heap Blocks: exact=736
+              ->  Bitmap Index Scan on session_start_time  (cost=0.00..456.62 rows=21633 width=0) (actual time=0.816..0.817 rows=21796 loops=1)
+                    Index Cond: ((start_time >= '2024-03-21 00:00:00'::timestamp without time zone) AND (start_time < '2024-03-28 00:00:00'::timestamp without time zone))
+        ->  Hash  (cost=17.00..17.00 rows=1000 width=23) (actual time=0.138..0.139 rows=1000 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 64kB
+              ->  Seq Scan on movie m  (cost=0.00..17.00 rows=1000 width=23) (actual time=0.003..0.051 rows=1000 loops=1)
+Planning Time: 0.196 ms
+Execution Time: 11.467 ms
