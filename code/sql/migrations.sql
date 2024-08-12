@@ -68,7 +68,7 @@ create table if not exists attribute_value
     text_value text DEFAULT NULL,
     bool_value bool DEFAULT NULL,
     timestamp_value timestamp DEFAULT NULL,
-    float_value float DEFAULT NULL
+    float_value numeric DEFAULT NULL
     );
 create index if not exists ix_attribute_value_movie on attribute_value using hash (movie_id);
 create index if not exists ix_attribute_value_attribute on attribute_value using hash (attribute_id);
