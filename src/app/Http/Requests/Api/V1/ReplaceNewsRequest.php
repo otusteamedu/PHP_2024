@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreNewsRequest extends BaseNewsRequest
+class ReplaceNewsRequest extends BaseNewsRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +25,16 @@ class StoreNewsRequest extends BaseNewsRequest
             'data.attributes.title' => 'required|string',
             'data.attributes.body' => 'required|string',
             'data.attributes.category' => 'required|string|in:Culture,Sport,Politics',
+            'data.relationships.author.data.id' => 'required|integer'
         ];
 
-        if($this->routeIs('news.store')) {
-            $rules['data.relationships.author.data.id'] = 'required|integer';
-        }
-
         return $rules;
+    }
+
+    public function messages() {
+        return [
+            'data.attributes.category' => 'The data.attributes.category value is invalid.Please use Culture,Sport or Politics.'
+
+        ];
     }
 }

@@ -21,7 +21,7 @@ class NewsResource extends JsonResource
             'attributes' => [
                 'title' => $this->title,
                 'body' => $this->when(
-                    $request->routeIs('news.show'),
+                    !$request->routeIs(['news.index', 'authors.news.index']),
                     $this->body
                 ),
                 'category' => $this->category,

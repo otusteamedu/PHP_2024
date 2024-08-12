@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Filters\V1\NewsFilter;
+use App\Http\Requests\Api\V1\ReplaceNewsRequest;
 use App\Http\Requests\Api\V1\StoreNewsRequest;
 use App\Http\Requests\Api\V1\UpdateNewsRequest;
 use App\Http\Resources\V1\NewsResource;
@@ -43,25 +44,25 @@ class NewsController extends ApiController
             ]);
         }
 
-        $model = [
-            'title' => $request->input('data.attributes.title'),
-            'body' => $request->input('data.attributes.body'),
-            'category' => $request->input('data.attributes.category'),
-            'user_id' => $request->input('data.relationships.author.data.id'),
-        ];
-
-        return new NewsResource(News::query()->create($model));
+        return new NewsResource(News::query()->create($request->mappedAttributes()));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(News $news): NewsResource
+    public function show($news_id)
     {
-        if($this->include('author')) {
-            return new NewsResource($news->load('user'));
+        try {
+
+            $news = News::query()->findOrFail($news_id);
+            if($this->include('author')) {
+                return new NewsResource($news->load('user'));
+            }
+            return new NewsResource($news);
+        } catch (ModelNotFoundException $exception) {
+            return $this->error('News can not be found', 404);
         }
-        return new NewsResource($news);
+
     }
 
     /**
@@ -74,17 +75,58 @@ class NewsController extends ApiController
 
     /**
      * Update the specified resource in storage.
+     * PATCH method
      */
-    public function update(UpdateNewsRequest $request, News $news)
+    public function update(UpdateNewsRequest $request, $news_id)
     {
-        //
+        try {
+            $news = News::query()->findOrFail($news_id);
+
+
+            $model = [
+                'title' => $request->input('data.attributes.title'),
+                'body' => $request->input('data.attributes.body'),
+                'category' => $request->input('data.attributes.category'),
+                'user_id' => $request->input('data.relationships.author.data.id'),
+            ];
+
+            $news->update($request->mappedAttributes());
+
+            return new NewsResource($news);
+
+        } catch (ModelNotFoundException) {
+            return $this->error('News can not be found', 404);
+        }
     }
+
+    //PUT method
+    public function replace(ReplaceNewsRequest $request, $news_id)
+    {
+        try {
+            $news = News::query()->findOrFail($news_id);
+
+            $news->update($request->mappedAttributes());
+
+            return new NewsResource($news);
+
+        } catch (ModelNotFoundException) {
+            return $this->error('News can not be found', 404);
+        }
+    }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(News $news)
+    public function destroy($news_id)
     {
-        //
+        try {
+            $news = News::query()->findOrFail($news_id);
+            $news->delete();
+
+            return $this->ok('News successfully deleted');
+        } catch (ModelNotFoundException $exception) {
+            return $this->error('News can not be found', 404);
+        }
     }
 }

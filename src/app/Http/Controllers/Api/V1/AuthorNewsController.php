@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Filters\V1\NewsFilter;
+use App\Http\Requests\Api\V1\ReplaceNewsRequest;
 use App\Http\Requests\Api\V1\StoreNewsRequest;
+use App\Http\Requests\Api\V1\UpdateNewsRequest;
 use App\Http\Resources\V1\NewsResource;
 use App\Models\News;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class AuthorNewsController extends Controller
+class AuthorNewsController extends ApiController
 {
     public function index($author_id, NewsFilter $filters) {
         return NewsResource::collection(
@@ -25,14 +27,60 @@ class AuthorNewsController extends Controller
     public function store($author_id, StoreNewsRequest $request)
     {
 
-        $model = [
-            'title' => $request->input('data.attributes.title'),
-            'body' => $request->input('data.attributes.body'),
-            'category' => $request->input('data.attributes.category'),
-            'user_id' => $author_id,
-        ];
+        return new NewsResource(News::query()->create($request->mappedAttributes()));
+    }
 
-        return new NewsResource(News::query()->create($model));
+    public function destroy($author_id, $news_id)
+    {
+        try {
+            $news = News::query()->findOrFail($news_id);
+
+            if($news->user_id == $author_id) {
+                $news->delete();
+                return $this->ok('News successfully deleted');
+            }
+
+            return $this->error('News can not be found', 404);
+
+        } catch (ModelNotFoundException $exception) {
+            return $this->error('News can not be found', 404);
+        }
+    }
+
+    public function replace(ReplaceNewsRequest $request, $author_id, $news_id)
+    {
+        try {
+            $news = News::query()->findOrFail($news_id);
+
+            if ($news->user_id == $author_id) {
+                $news->update($request->mappedAttributes());
+            }
+
+            //TODO news does not belong to author
+
+            return new NewsResource($news);
+
+        } catch (ModelNotFoundException) {
+            return $this->error('News can not be found', 404);
+        }
+    }
+
+    public function update(UpdateNewsRequest $request, $author_id, $news_id)
+    {
+        try {
+            $news = News::query()->findOrFail($news_id);
+
+            if ($news->user_id == $author_id) {
+                $news->update($request->mappedAttributes());
+            }
+
+            //TODO news does not belong to author
+
+            return new NewsResource($news);
+
+        } catch (ModelNotFoundException) {
+            return $this->error('News can not be found', 404);
+        }
     }
 
 }
