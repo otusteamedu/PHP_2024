@@ -46,7 +46,7 @@ services:
     image: redis:alpine
     container_name: otus2024-redis
     ports:
-      - "6382:6379"
+      - "6379:6379"
     networks:
       - otus2024-network
 
