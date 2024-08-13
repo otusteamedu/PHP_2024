@@ -41,13 +41,23 @@ CREATE TABLE customers (
                            phone_number VARCHAR(20)
 );
 
+CREATE TABLE seats (
+                       id SERIAL PRIMARY KEY,
+                       hall_id INT,
+                       row_number INT,
+                       seat_number INT,
+                       seat_type VARCHAR(50),
+                       FOREIGN KEY (hall_id) REFERENCES halls(id)
+);
+
 CREATE TABLE tickets (
                          id SERIAL PRIMARY KEY,
                          session_id INT,
-                         seat_number VARCHAR(10),
+                         seat_id INT,
                          price DECIMAL(10, 2),
                          purchase_time TIMESTAMP,
                          customer_id INT,
                          FOREIGN KEY (session_id) REFERENCES sessions(id),
+                         FOREIGN KEY (seat_id) REFERENCES seats(id),
                          FOREIGN KEY (customer_id) REFERENCES customers(id)
 );
