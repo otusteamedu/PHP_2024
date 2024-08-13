@@ -1,0 +1,138 @@
+openapi: 3.0.0
+info:
+  title: Документация к API
+  contact:
+    name: Александр Гладков
+  version: '1'
+servers:
+  - url: '{schema}://{apiHost}'
+    variables:
+      schema:
+        enum:
+          - http
+        default: http
+      apiHost:
+        default: application.local
+tags:
+  - name: Task
+    description: Операции с задачами.
+paths:
+  /task:
+    post:
+      tags:
+        - Task
+      summary: Создать задачу и поставить её в очередь.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - body
+              properties:
+                body:
+                  type: string
+                  example: task1
+      responses:
+        '200':
+          description: Успешно обработанный запрос.
+          content:
+            application/json:
+              schema:
+                required:
+                  - id
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID созданной задачи
+              examples:
+                success:
+                  value:
+                    id: 1
+        '400':
+          description: Запрос неправильно сформирован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+              example:
+                errors:
+                  body:
+                    - This value should not be null.
+        '422':
+          description: Данные в запросе не корректны в контексте логики приложения.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+              example:
+                errors:
+                  body:
+                    - This value is too long. It should have 255 characters or less.
+  '/task/{id}/status':
+    get:
+      tags:
+        - Task
+      summary: Получение статуса задачи.
+      parameters:
+        - in: path
+          name: id
+          description: ID задачи
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Успешно обработанный запрос.
+          content:
+            application/json:
+              schema:
+                required:
+                  - status
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                      - queued
+                      - processing
+                      - completed
+                    description: Текущий статус задачи
+              examples:
+                success:
+                  value:
+                    status: queued
+        '400':
+          description: Запрос неправильно сформирован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+              example:
+                errors:
+                  id:
+                    - This value should not be null.
+        '404':
+          description: Задача не найдена.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+              example:
+                errors:
+                  general:
+                    - Задача не найдена
+components:
+  schemas:
+    errorResponse:
+      required:
+        - errors
+      type: object
+      properties:
+        errors:
+          type: object
+          additionalProperties: true
+          description: Содержит объект с информацией об ошибках для каждого поля запроса. В поле general будут содержаться общие ошибки.

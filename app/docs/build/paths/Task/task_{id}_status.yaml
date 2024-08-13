@@ -1,0 +1,56 @@
+get:
+  tags:
+    - 'Task'
+  summary: 'Получение статуса задачи.'
+  parameters:
+    - in: path
+      name: id
+      description: ID задачи
+      required: true
+      schema:
+        type: integer
+        example: 1
+  responses:
+    200:
+      description: |-
+        Успешно обработанный запрос.
+      content:
+        application/json:
+          schema:
+            required:
+              - status
+            type: object
+            properties:
+              status:
+                type: string
+                enum:
+                  - queued
+                  - processing
+                  - completed
+                description: >-
+                  Текущий статус задачи
+          examples:
+            success:
+              value:
+                status: queued
+    400:
+      description: 'Запрос неправильно сформирован.'
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/errorResponse.yaml'
+          example:
+            errors:
+              id:
+                - This value should not be null.
+    404:
+      description: 'Задача не найдена.'
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/errorResponse.yaml'
+          example:
+            errors:
+              general:
+                - Задача не найдена
+

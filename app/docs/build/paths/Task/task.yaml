@@ -1,0 +1,55 @@
+post:
+  tags:
+    - 'Task'
+  summary: 'Создать задачу и поставить её в очередь.'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - body
+          properties:
+            body:
+              type: string
+              example: 'task1'
+  responses:
+    200:
+      description: |-
+        Успешно обработанный запрос.
+      content:
+        application/json:
+          schema:
+            required:
+              - id
+            type: object
+            properties:
+              id:
+                type: integer
+                description: >-
+                  ID созданной задачи
+          examples:
+            success:
+              value:
+                id: 1
+    400:
+      description: 'Запрос неправильно сформирован.'
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/errorResponse.yaml'
+          example:
+            errors:
+              body:
+                - This value should not be null.
+    422:
+      description: 'Данные в запросе не корректны в контексте логики приложения.'
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/errorResponse.yaml'
+          example:
+            errors:
+              body:
+                - This value is too long. It should have 255 characters or less.

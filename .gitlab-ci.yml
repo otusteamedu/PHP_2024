@@ -1,0 +1,41 @@
+stages:
+  - deploy
+  - rollback
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  - 'which ssh-agent || (apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - export DIR=$(date +%Y%m%d_%H%M%S)
+
+deploy_server1:
+  stage: deploy
+  environment:
+    name: server1
+    url: $SERVER1
+  script:
+    - ssh $SSH_USER@$SERVER1 "cd /var/www/hw21 &&
+      git clone https://alexander:gldt-_rkJqbizs4Yin1QJsLo7@gitlab.com/learn5014125/hw21.git $DIR &&
+      sudo chown www-data:www-data $DIR -R &&
+      cd $DIR &&
+      sh ./deploy.sh $SERVER1 $DATABASE_HOST $DATABASE_USER $DATABASE_PASSWORD $DATABASE_NAME $RABBITMQ_HOST $RABBITMQ_USER $RABBITMQ_PASSWORD &&
+      cd .. &&
+      rm -rf /var/www/hw21/$DIR/app/var/log &&
+      ln -s /var/www/hw21/shared/log /var/www/hw21/$DIR/app/var/log &&
+      ( [ ! -d /var/www/hw21/current ] || mv -Tf /var/www/hw21/current /var/www/hw21/previous ) &&
+      ln -s /var/www/hw21/$DIR /var/www/hw21/current"
+  only:
+    - main
+
+rollback:
+  stage: rollback
+  script:
+    - ssh $SSH_USER@$SERVER1 "unlink /var/www/hw21/current &&
+      mv -Tf /var/www/demo/previous /var/www/hw21/current &&
+      cd /var/www/hw21/current &&
+      sh ./rollback.sh $SERVER1"
+  when: manual
