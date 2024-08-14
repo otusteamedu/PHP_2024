@@ -1,0 +1,10 @@
+{
+    "name": "viking311/db_pattern",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Viking311\\DbPattern\\": "src/"
+        }
+    },
+    "require": {}
+}

@@ -1,0 +1,44 @@
+version: '3'
+services:
+  php:
+    build:
+      context: docker/php-fpm
+      dockerfile: Dockerfile
+    image: php_app
+    container_name: app
+#    env_file:
+#      - .env
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    networks:
+      - app-network
+  webserver:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    image: ws
+    container_name: web
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    depends_on:
+      - php
+    networks:
+      - app-network
+  db:
+    image: postgres:16.4
+    container_name: postgres_db
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    ports:
+      - "54320:5432"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  php_socket:
