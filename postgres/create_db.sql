@@ -19,6 +19,10 @@ CREATE TABLE session
 (
     Id SERIAL PRIMARY KEY,
     time_display TIMESTAMP,
+    time_ratio NUMERIC, -- status_ratio э{1.0, 1.5, 2.0} 
+                        -- 1.0 утро буднего дня
+                        -- 1.5  вечер буднего дня / утро выходного
+                        -- 2.0  вечер выходного дня
     film_id INTEGER,
     hall_id INTEGER,
     FOREIGN KEY (film_id) REFERENCES film (Id) ON DELETE CASCADE,
@@ -43,7 +47,7 @@ CREATE TABLE ticket
     session_id INTEGER,
     FOREIGN KEY (site_id) REFERENCES site (Id) ON DELETE CASCADE,
     FOREIGN KEY (session_id) REFERENCES session (Id) ON DELETE CASCADE,
-    price NUMERIC  -- = film.price * hall.status_ratio * site.status_ratio
+    price NUMERIC  -- = film.price * hall.status_ratio * site.status_ratio * session.time_ratio
 );
 
 CREATE TABLE buyer
