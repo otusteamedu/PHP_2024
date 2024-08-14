@@ -1,0 +1,17 @@
+{
+  "name": "pyivanov/hw4",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Pyivanov\\hw4\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=8.0",
+    "ext-http": "*",
+    "ext-redis": "*"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.10"
+  }
+}

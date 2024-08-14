@@ -1,0 +1,103 @@
+services:
+  #контейнер с балансировщиком Nginx
+  balancer:
+    build:
+      context: ./balancer/nginx
+      dockerfile: Dockerfile
+    image: balance/balancer
+    container_name: balancer
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  #контейнер с nginx1
+  nginx1:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx1
+    volumes_from:
+      - app1
+    networks:
+      - app-network
+
+  #контейнер с nginx2
+  nginx2:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: nginx2
+    volumes_from:
+      - app2
+    networks:
+      - app-network
+
+  #Контейнер с PHP-FPM, app1
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app1
+    volumes:
+      - ./code:/data/mysite.local
+      - ./vendor/:/data/mysite.local/vendor/
+    networks:
+      - app-network
+    environment:
+      XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+
+  #Контейнер с PHP-FPM, app2
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./code:/data/mysite.local
+      - ./vendor/:/data/mysite.local/vendor/
+    networks:
+      - app-network
+    env_file:
+      - .env
+    environment:
+      XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    ports:
+      - "6379:6379"
+    command: >
+      sh -c '
+        mkdir -p /usr/local/etc/redis &&
+        echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+        echo "requirepass $REDIS_PASSWORD" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
+        echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
+        echo "user default on nopass ~* +@all" > /usr/local/etc/redis/users.acl &&
+        echo "user $REDIS_USER on >$REDIS_USER_PASSWORD ~* +@all" >> /usr/local/etc/redis/users.acl &&
+        redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
+      '
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
