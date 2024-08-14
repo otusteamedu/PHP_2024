@@ -10,26 +10,26 @@
  */
 
 namespace Task1;
- 
+
 class Solution 
 {
-   /**
+    /**
     * @param ListNode $head
-      * @return Boolean
-      */
-   public function hasCycle($head) 
-   {
-      $hash = [];
-      $p = $head;
+    * @return Boolean
+    */
+    public function hasCycle($head)
+    {
+        $hash = [];
+        $p = $head;
 
-      while ($p !== null) {
-         if (in_array($p, $hash, true)) {
-         return true;
-         }
-         $hash[] = $p;
-         $p = $p->next;
-      }
+        while ($p !== null) {
+            if (in_array($p, $hash, true)) {
+                return true;
+            }
+            $hash[] = $p;
+            $p = $p->next;
+        }
 
-      return false;
-   }
+        return false; 
+    }
 }

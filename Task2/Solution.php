@@ -19,7 +19,7 @@ class Solution
      * @param String $digits
      * @return String[]
      */
-    public function letterCombinations($digits) 
+    public function letterCombinations($digits)
     {
         if (empty($digits)) {
             return [];
@@ -27,7 +27,7 @@ class Solution
 
         $combs = $this->map[$digits[0]];
         $n = strlen($digits);
-        for ($i=1; $i < $n; $i++) {
+        for ($i = 1; $i < $n; $i++) {
             $newCombs = [];
             $letters = $this->map[$digits[$i]];
             foreach ($letters as $letter) {
