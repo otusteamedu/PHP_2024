@@ -1,5 +1,7 @@
 <?php
 
+namespace Task2;
+
 class Solution
 {
     private  $map = [
@@ -17,7 +19,7 @@ class Solution
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits) {
+    public function letterCombinations($digits) {
         if (empty($digits)) {
             return [];
         }
