@@ -1,0 +1,85 @@
+version: '3'
+
+services:
+
+  balancer:
+    image: nginx:alpine
+    container_name: balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/hosts/mysite.balancer.conf:/etc/nginx/conf.d/mysite.local.conf
+      - ./code/public:/data/mysite.local
+    networks:
+      - app-network
+
+  nginx1:
+    image: nginx:alpine
+    container_name: nginx1
+    restart: always
+    volumes:
+      - ./nginx/hosts/mysite.nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./code/public:/data/mysite.local
+    networks:
+      - app-network
+  
+  nginx2:
+    image: nginx:alpine
+    container_name: nginx2
+    restart: always
+    volumes:
+      - ./nginx/hosts/mysite.nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./code/public:/data/mysite.local
+    networks:
+      - app-network
+
+
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app1
+    volumes:
+       - ./code/public:/data/mysite.local
+       - ./code/src:/data/mysite.local/src
+    networks:
+      - app-network
+  
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app2
+    volumes:
+       - ./code/public:/data/mysite.local/
+       - ./code/src:/data/mysite.local/src
+    networks:
+      - app-network
+
+
+
+  redis:
+    image: redis:7.2.5-alpine
+    container_name: "redis"
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=qwerty
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=16
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    #command: redis-sever --requirepass qwerty --include /usr/local/etc/redis/redis.conf
+    command: redis-server --requirepass qwerty
+    networks:
+      - app-network
+    
+
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
