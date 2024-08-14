@@ -1,5 +1,9 @@
 .idea/
+vendor/
 /vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
+/code/Playground
+.env
+/data/

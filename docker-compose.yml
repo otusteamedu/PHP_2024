@@ -1,0 +1,53 @@
+networks:
+  app-otus-study:
+    driver: bridge
+services:
+  app:
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+    container_name: app
+    networks:
+      - app-otus-study
+    ports:
+      - 9002:9000
+    volumes:
+      - ./code/:/srv/code
+    depends_on:
+      - db
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - app-otus-study
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    networks:
+      - app-otus-study
+  nginx:
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+    container_name: webserver
+    ports:
+      - 8080:80
+    volumes_from:
+      - app
+    restart: always
+    networks:
+      - app-otus-study
+  db:
+    build:
+      context: .
+      dockerfile: .docker/mysql/Dockerfile
+    container_name: db
+    restart: always
+    volumes:
+      - "./data:/var/lib/mysql"
+    ports:
+      - 15306:3306
+    networks:
+      - app-otus-study
