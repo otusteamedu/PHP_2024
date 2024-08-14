@@ -11,15 +11,17 @@
 
 namespace Task1;
  
-class Solution {
+class Solution 
+{
    /**
     * @param ListNode $head
-    * @return Boolean
-    */
-   public function hasCycle($head) {
+      * @return Boolean
+      */
+   public function hasCycle($head) 
+   {
       $hash = [];
       $p = $head;
-      
+
       while ($p !== null) {
          if (in_array($p, $hash, true)) {
          return true;
@@ -28,6 +30,6 @@ class Solution {
          $p = $p->next;
       }
 
-      return false; 
+      return false;
    }
 }

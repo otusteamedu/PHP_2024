@@ -4,7 +4,7 @@ namespace Task2;
 
 class Solution
 {
-    private  $map = [
+    private $map = [
             '2' => ['a', 'b', 'c'],
             '3' => ['d', 'e', 'f'],
             '4' => ['g', 'h', 'i'],
@@ -19,7 +19,8 @@ class Solution
      * @param String $digits
      * @return String[]
      */
-    public function letterCombinations($digits) {
+    public function letterCombinations($digits) 
+    {
         if (empty($digits)) {
             return [];
         }
@@ -29,10 +30,10 @@ class Solution
         for ($i=1; $i < $n; $i++) {
             $newCombs = [];
             $letters = $this->map[$digits[$i]];
-            foreach($letters as $letter) {
+            foreach ($letters as $letter) {
                 foreach ($combs as $comb) {
                     $newCombs[] = $comb . $letter;
-                } 
+                }
             }
             $combs = $newCombs;
         }
