@@ -30,6 +30,6 @@ class Solution
             $p = $p->next;
         }
 
-        return false; 
+        return false;
     }
 }
