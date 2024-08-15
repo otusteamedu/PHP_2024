@@ -1,7 +1,10 @@
 <?php
-class Solution {
 
-    const COMBINATIONS = [
+namespace MyNamespace;
+
+class Solution
+{
+    public const COMBINATIONS = [
         '2' => ['a', 'b', 'c'],
         '3' => ['d', 'e', 'f'],
         '4' => ['g', 'h', 'i'],
@@ -16,7 +19,8 @@ class Solution {
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits) {
+    public function letterCombinations($digits)
+    {
         $digitsLen = strlen($digits);
 
         $combinations = [];
@@ -29,8 +33,7 @@ class Solution {
             return self::COMBINATIONS[$digits] ?? $combinations;
         }
 
-        for ($i = 0; $i < $digitsLen; $i++)
-        {
+        for ($i = 0; $i < $digitsLen; $i++) {
             $digit = $digits[$i];
 
             if (!isset(self::COMBINATIONS[$digit])) {
@@ -47,7 +50,7 @@ class Solution {
 
             foreach ($combinations as $combination) {
                 foreach ($lettersByDigit as $letter) {
-                    $tempRes[] = $combination.$letter;
+                    $tempRes[] = $combination . $letter;
                 }
             }
 
@@ -57,16 +60,15 @@ class Solution {
         return $combinations;
     }
 
-    function hasCycle(ListNode $head)
+    public function hasCycle(ListNode $head)
     {
         $next = $nextNext = $head;
 
-        while ($nextNext->next != null)
-        {
+        while ($nextNext->next != null) {
             $next = $next->next;
             $nextNext = $nextNext->next->next;
 
-            if(is_null($next) || is_null($nextNext))
+            if (is_null($next) || is_null($nextNext))
                 return false;
 
             if ($next === $nextNext) {
