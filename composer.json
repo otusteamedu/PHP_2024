@@ -1,0 +1,5 @@
+{
+    "require": {
+        "komarov/test-composer-package": "^1.0"
+    }
+}

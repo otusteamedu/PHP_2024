@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "9b10af5a936b4c4b3c09a631f55f76f8",
+    "packages": [
+        {
+            "name": "komarov/test-composer-package",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Serjke/test-composer-package.git",
+                "reference": "3acdeec9e66953de017d96fc3b63339c46d4dd6d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Serjke/test-composer-package/zipball/3acdeec9e66953de017d96fc3b63339c46d4dd6d",
+                "reference": "3acdeec9e66953de017d96fc3b63339c46d4dd6d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Komarov\\TestComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Komarov Sergey",
+                    "email": "sk-2006@mail.ru"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/Serjke/test-composer-package/issues",
+                "source": "https://github.com/Serjke/test-composer-package/tree/1.0.0"
+            },
+            "time": "2024-08-15T09:57:07+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=8.0"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
