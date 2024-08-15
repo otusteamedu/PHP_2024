@@ -2,22 +2,21 @@
 ARG1=$1
 ARG2=$2
 
-if ! command -v bc &> /dev/null
-then
+if ! command -v bc &>/dev/null; then
     echo "'bc' could not be found"
     echo "Please, install 'bc' package"
     exit 1
 fi
 
-if ! [[ $ARG1 =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]]; then
-    echo "'${ARG1}' is not number"
-    exit 1
-fi
+checkNumber() {
+    if ! [[ $1 =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]]; then
+        echo "'${1}' is not number"
+        exit 1
+    fi
+}
 
-if ! [[ $ARG2 =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]]; then
-    echo "'${ARG2}' is not number"
-    exit 1
-fi
+checkNumber $ARG1
+checkNumber $ARG2
 
 SUM=$(echo "${ARG1} + ${ARG2}" | bc)
 
