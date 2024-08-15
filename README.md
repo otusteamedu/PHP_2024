@@ -1,3 +1,6 @@
-# PHP_2024
+# Проверка установки собственного пакета PasswordPackage
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+## Установка из терминала
+```bash
+composer require pyivanov/password-package
+```
