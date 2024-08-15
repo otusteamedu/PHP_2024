@@ -1,0 +1,54 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "7740a40a8cfc24214249b70e279fe087",
+    "packages": [
+        {
+            "name": "amikha1lov/otus-composer-package",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/amikha1lov/otus-composer-package.git",
+                "reference": "40f947cc605aff3259b5b8fc16275edf4d4338a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/amikha1lov/otus-composer-package/zipball/40f947cc605aff3259b5b8fc16275edf4d4338a5",
+                "reference": "40f947cc605aff3259b5b8fc16275edf4d4338a5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Amikha1lov\\OtusComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "AlexeyMikhailov"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/amikha1lov/otus-composer-package/issues",
+                "source": "https://github.com/amikha1lov/otus-composer-package/tree/1.0.0"
+            },
+            "time": "2024-08-15T21:02:42+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
