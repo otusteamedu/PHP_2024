@@ -11,7 +11,7 @@
 
 namespace Task1;
 
-class Solution 
+class Solution
 {
     /**
     * @param ListNode $head
