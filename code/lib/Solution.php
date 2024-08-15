@@ -68,8 +68,9 @@ class Solution
             $next = $next->next;
             $nextNext = $nextNext->next->next;
 
-            if (is_null($next) || is_null($nextNext))
+            if (is_null($next) || is_null($nextNext)) {
                 return false;
+            }
 
             if ($next === $nextNext) {
                 return true;
