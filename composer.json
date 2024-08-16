@@ -1,0 +1,5 @@
+{
+  "require": {
+    "sukhov/slugger": "^1.0"
+  }
+}

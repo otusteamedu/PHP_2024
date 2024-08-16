@@ -1,0 +1,57 @@
+{
+  "_readme": [
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
+  ],
+  "content-hash": "ac67b82f9c2291839c5be4be0a0aea8a",
+  "packages": [
+    {
+      "name": "sukhov/slugger",
+      "version": "1.0.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/SukhovVA/slugger.git",
+        "reference": "bd87123f03c432f089971f7feebc80c82f694a66"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/SukhovVA/slugger/zipball/bd87123f03c432f089971f7feebc80c82f694a66",
+        "reference": "bd87123f03c432f089971f7feebc80c82f694a66",
+        "shasum": ""
+      },
+      "require": {
+        "ext-mbstring": "*",
+        "php": ">=7.0"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "Sukhov\\Slugger\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "authors": [
+        {
+          "name": "Vladislav Sukhov",
+          "email": "VSukhov@prosv.ru"
+        }
+      ],
+      "description": "String Slugger",
+      "support": {
+        "issues": "https://github.com/SukhovVA/slugger/issues",
+        "source": "https://github.com/SukhovVA/slugger/tree/v1.0.0"
+      },
+      "time": "2024-08-16T07:45:05+00:00"
+    }
+  ],
+  "packages-dev": [],
+  "aliases": [],
+  "minimum-stability": "stable",
+  "stability-flags": [],
+  "prefer-stable": false,
+  "prefer-lowest": false,
+  "platform": [],
+  "platform-dev": [],
+  "plugin-api-version": "2.6.0"
+}
