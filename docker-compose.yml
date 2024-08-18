@@ -1,0 +1,73 @@
+version: '3'
+
+services:
+    nginx:
+        build:
+            context: docker/nginx/proxy
+            dockerfile: Dockerfile
+        container_name: otus.nginx-balancer
+        ports:
+            - "80:80"
+        networks:
+            - app-network
+        depends_on:
+            - nginx1
+            - nginx2
+
+    nginx1:
+        build:
+            context: docker/nginx/balancer
+            dockerfile: Dockerfile
+        container_name: otus.nginx-1
+        restart: unless-stopped
+        volumes:
+            - ./src:/data/dev.otus
+        networks:
+            - app-network
+        depends_on:
+            - php-fpm1
+            - php-fpm2
+
+    nginx2:
+        build:
+            context: docker/nginx/balancer
+            dockerfile: Dockerfile
+        container_name: otus.nginx-2
+        restart: unless-stopped
+        volumes:
+            - ./src:/data/dev.otus
+        networks:
+            - app-network
+        depends_on:
+            - php-fpm1
+            - php-fpm2
+
+    php-fpm1:
+        container_name: otus.php-fpm1
+        build:
+            context: docker/php-fpm
+            dockerfile: Dockerfile
+        volumes:
+            - ./src:/data/dev.otus
+        networks:
+            - app-network
+
+    php-fpm2:
+        container_name: otus.php-fpm2
+        build:
+            context: docker/php-fpm
+            dockerfile: Dockerfile
+        volumes:
+            - ./src:/data/dev.otus
+        networks:
+            - app-network
+
+    redis:
+        image: redis:5.0-alpine
+        container_name: otus.redis
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
