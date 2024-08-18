@@ -1,0 +1,57 @@
+# версия синтаксиса
+version: '3'
+
+# в этом блоке мы описываем контейнеры, которые будут запускаться
+services:
+  #контейнер с Nginx
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - app
+    container_name: "${APP_NAME}_nginx"
+    # проброс портов
+    ports:
+      - "81:80"
+    volumes:
+      - ./src:/${APP_NAME}
+      - ./Docker/nginx/conf.d:/etc/nginx/conf.d
+      - sock:/sock/
+
+  #Контейнер с PHP-FPM, назовём его app
+  app:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./Docker/php
+      dockerfile: Dockerfile
+    container_name: "${APP_NAME}_app" # имя контейнера после запуска
+    volumes:
+      - ./src:/${APP_NAME}
+      - sock:/sock/
+    depends_on:
+      - db
+  #контейнер с Mysql
+  db:
+    image: mysql:8.0
+    restart: always
+    container_name: "${APP_NAME}_db"
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+    ports:
+      - "33061:3306"
+    environment:
+      MYSQL_DATABASE: '${DB_NAME}'
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+  #контейнер с Redis
+  redis:
+    image: redis:7.4
+    container_name: "${APP_NAME}_redis"
+  #контейнер с Memcache
+  memcached:
+    image: memcached:latest
+    container_name: "${APP_NAME}_memcached"
+
+#общие volume
+volumes:
+  sock:
+    driver: local
