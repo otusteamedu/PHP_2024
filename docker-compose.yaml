@@ -13,7 +13,7 @@ services:
     ports:
       - "81:80"
     volumes:
-      - ./src:/${APP_NAME}
+      - ./:/${APP_NAME}
       - ./Docker/nginx/conf.d:/etc/nginx/conf.d
       - sock:/sock/
 
@@ -25,7 +25,7 @@ services:
       dockerfile: Dockerfile
     container_name: "${APP_NAME}_app" # имя контейнера после запуска
     volumes:
-      - ./src:/${APP_NAME}
+      - ./:/${APP_NAME}
       - sock:/sock/
     depends_on:
       - db
