@@ -22,4 +22,3 @@ if (!checkStringBrackets()) {
 
 http_response_code(200);
 echo "true";
-
