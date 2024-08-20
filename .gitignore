@@ -6,3 +6,4 @@
 composer.json
 composer.lock
 tmp/
+.env
