@@ -10,8 +10,5 @@
             "name": "Vadim Kasatkin",
             "email": "penguin2804@gmail.com"
         }
-    ],
-    "require": {
-        "penguin-astronaut/otus-test-package": "^1.0"
-    }
+    ]
 }
