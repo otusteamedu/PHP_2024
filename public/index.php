@@ -14,6 +14,6 @@ try {
         $parser = new Validator();
         $parser->validateString($_POST['string'] ?? '');
     }
-} catch (EmptyStringException|InvalidStringException $e) {
+} catch (EmptyStringException | InvalidStringException $e) {
     http_response_code(400);
 }
