@@ -1,0 +1,16 @@
+{
+    "name": "komarov/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Komarov\\Hw4\\": "App/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Komarov",
+            "email": "sk-2006@mail.ru"
+        }
+    ],
+    "require": {}
+}

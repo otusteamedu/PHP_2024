@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/App/App.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Komarov\Hw4\App;
 
 (new App())->run();

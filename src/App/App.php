@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-require_once 'Validate.php';
+namespace Komarov\Hw4;
+
+use Exception;
 
 class App
 {
