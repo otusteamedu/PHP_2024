@@ -1,0 +1,15 @@
+{
+    "name": "pavel-miasnov/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "PavelMiasnov\\Hw4\\": "Application/"
+        }
+    },
+    "authors": [
+        {
+            "name": "PavelMiasnov"
+        }
+    ],
+    "require": {}
+}
