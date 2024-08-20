@@ -3,30 +3,61 @@ version: '3'
 
 # в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #контейнер с Nginx
-  nginx:
+  #контейнеры с Nginx
+  balancer:
     image: nginx:latest
     depends_on:
-      - app
-    container_name: "${APP_NAME}_nginx"
-    # проброс портов
-    ports:
-      - "81:80"
+      - nginx1
+      - nginx2
+    container_name: "${APP_NAME}_nginx_balancer"
     volumes:
       - ./:/${APP_NAME}
-      - ./Docker/nginx/conf.d:/etc/nginx/conf.d
-      - sock:/sock/
+      - ./Docker/nginx/confbalancer.d:/etc/nginx/conf.d
+    ports:
+      - "81:80"
+  nginx1:
+    image: nginx:latest
+    depends_on:
+      - app2
+    container_name: "${APP_NAME}_nginx1"
+    volumes:
+      - ./:/${APP_NAME}
+      - ./Docker/nginx/conf1.d:/etc/nginx/conf.d
+      - sock1:/sock1/
+      - sock2:/sock2/
+  nginx2:
+    image: nginx:latest
+    depends_on:
+      - app2
+    container_name: "${APP_NAME}_nginx2"
+    volumes:
+      - ./:/${APP_NAME}
+      - ./Docker/nginx/conf2.d:/etc/nginx/conf.d
+      - sock1:/sock1/
+      - sock2:/sock2/
 
   #Контейнер с PHP-FPM, назовём его app
-  app:
+  app1:
     # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./Docker/php
       dockerfile: Dockerfile
-    container_name: "${APP_NAME}_app" # имя контейнера после запуска
+    container_name: "${APP_NAME}_app1" # имя контейнера после запуска
     volumes:
       - ./:/${APP_NAME}
-      - sock:/sock/
+      - sock1:/sock/
+    depends_on:
+      - db
+  #Контейнер с PHP-FPM(2), назовём его app
+  app2:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./Docker/php
+      dockerfile: Dockerfile
+    container_name: "${APP_NAME}_app2" # имя контейнера после запуска
+    volumes:
+      - ./:/${APP_NAME}
+      - sock2:/sock/
     depends_on:
       - db
   #контейнер с Mysql
@@ -53,5 +84,7 @@ services:
 
 #общие volume
 volumes:
-  sock:
+  sock1:
+    driver: local
+  sock2:
     driver: local
