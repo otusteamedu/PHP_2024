@@ -1,0 +1,12 @@
+{
+  "name": "t.bublikova/php_2024",
+  "description": "Datamapper pattern and Identity Map",
+  "autoload": {
+    "psr-4": {
+      "Service\\": "service/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*"
+  }
+}

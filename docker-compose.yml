@@ -21,18 +21,6 @@ services:
     env_file:
       - .env
 
-  redis:
-    image: redis:alpine
-    container_name: redis
-    ports:
-      - "6379:6379"
-
-  memcached:
-    image: memcached:alpine
-    container_name: memcached
-    ports:
-      - "11211:11211"
-
   pgsql:
     image: postgres:16-alpine
     container_name: pgsql

@@ -1,63 +1,22 @@
-CREATE TABLE cinema (
-                        id SERIAL PRIMARY KEY,
-                        name VARCHAR(100) NOT NULL,
-                        location VARCHAR(255),
-                        number_of_halls INT
-);
-
-CREATE TABLE halls (
-                       id SERIAL PRIMARY KEY,
-                       cinema_id INT,
-                       name VARCHAR(50),
-                       capacity INT,
-                       layout JSON,
-                       FOREIGN KEY (cinema_id) REFERENCES cinema(id)
-);
-
-CREATE TABLE movies (
-                        id SERIAL PRIMARY KEY,
-                        title VARCHAR(150) NOT NULL,
-                        genre VARCHAR(50),
-                        duration INT,
-                        rating DECIMAL(2, 1)
-);
-
-CREATE TABLE sessions (
-                          id SERIAL PRIMARY KEY,
-                          hall_id INT,
-                          movie_id INT,
-                          start_time TIMESTAMP,
-                          end_time TIMESTAMP,
-                          price DECIMAL(10, 2),
-                          available_seats INT,
-                          FOREIGN KEY (hall_id) REFERENCES halls(id),
-                          FOREIGN KEY (movie_id) REFERENCES movies(id)
-);
-
-CREATE TABLE customers (
-                           id SERIAL PRIMARY KEY,
-                           name VARCHAR(100),
-                           email VARCHAR(100),
-                           phone_number VARCHAR(20)
-);
-
-CREATE TABLE seats (
-                       id SERIAL PRIMARY KEY,
-                       hall_id INT,
-                       row_number INT,
-                       seat_number INT,
-                       seat_type VARCHAR(50),
-                       FOREIGN KEY (hall_id) REFERENCES halls(id)
-);
-
-CREATE TABLE tickets (
+CREATE TABLE authors (
                          id SERIAL PRIMARY KEY,
-                         session_id INT,
-                         seat_id INT,
-                         price DECIMAL(10, 2),
-                         purchase_time TIMESTAMP,
-                         customer_id INT,
-                         FOREIGN KEY (session_id) REFERENCES sessions(id),
-                         FOREIGN KEY (seat_id) REFERENCES seats(id),
-                         FOREIGN KEY (customer_id) REFERENCES customers(id)
+                         name varchar(255) NOT NULL,
+                         last_name VARCHAR(255) NOT NULL,
+                         patronymic VARCHAR(255),
+                         date_of_birth DATE NOT NULL,
+                         date_of_death DATE,
+                         country varchar(255),
+                         gender CHAR(1)
 );
+
+CREATE TABLE books (
+                       id SERIAL PRIMARY KEY,
+                       name varchar(255) NOT NULL,
+                       author_id INTEGER REFERENCES authors(id) ON DELETE CASCADE,
+                       date_of_issue DATE,
+                       rating FLOAT,
+                       number_of_copies integer
+);
+
+CREATE INDEX idx_authors_last_name ON authors(last_name);
+CREATE INDEX idx_books_rating ON books(rating);
