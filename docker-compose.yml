@@ -45,15 +45,15 @@ services:
         container_name: memcached
         networks:
             - app-network
-
+    #убрал также порты
     db:
         image: mysql:8.0
         restart: always
         volumes:
             - ./tmp/db:/var/lib/mysql
         environment:
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}  #изменил, поставил через енв, как было сказано в чате
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} #здесь тоже
         command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
         container_name: db
         networks:
