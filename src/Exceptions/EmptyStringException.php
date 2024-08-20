@@ -2,7 +2,9 @@
 
 namespace PenguinAstronaut\App\Exceptions;
 
-class EmptyStringException
+use Exception;
+
+class EmptyStringException extends Exception
 {
 
 }

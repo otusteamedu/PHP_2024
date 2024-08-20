@@ -5,7 +5,7 @@ namespace PenguinAstronaut\App;
 use PenguinAstronaut\App\Exceptions\EmptyStringException;
 use PenguinAstronaut\App\Exceptions\InvalidStringException;
 
-class Parser
+class Validator
 {
     /**
      * @throws EmptyStringException
@@ -17,9 +17,11 @@ class Parser
             throw new EmptyStringException('Empty string');
         }
 
-        $stringParsedItemCount = count($this->parseString($string));
+        if (!str_contains($string, '(')) {
+            throw new InvalidStringException('Invalid string');
+        }
 
-        if (!$stringParsedItemCount || $stringParsedItemCount % 2 !== 0) {
+        if (count($this->parseString($string))) {
             throw new InvalidStringException('Invalid string');
         }
 
@@ -31,14 +33,16 @@ class Parser
      */
     private function parseString(string $string): array
     {
-        $charList = explode('', $string);
+        $charList = str_split($string);
         $stack = [];
 
         foreach ($charList as $char) {
-            if ($char === ')' && !empty($stack)) {
+            if ($char === ')' && empty($stack)) {
                 throw new InvalidStringException('Invalid string');
             } elseif ($char === ')' && end($stack) !== '(') {
                 throw new InvalidStringException('Invalid string');
+            } elseif ($char === ')') {
+                array_pop($stack);
             } elseif ($char === '(') {
                 $stack[] = $char;
             }
