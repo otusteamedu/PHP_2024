@@ -11,10 +11,13 @@ use App\Domain\ValueObject\CurrencyValueObject;
 use App\Domain\ValueObject\EmailValueObject;
 use App\Infrastructure\PaymentManager\PaymentManager;
 use App\Models\CryptoDeposit;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use JsonException;
 use PhpParser\Builder\Class_;
+use RuntimeException;
 
 class OrderManager
 {
@@ -56,10 +59,19 @@ class OrderManager
         return $createOrderUseCase();
     }
 
-    public function paidOrder($orderId, $newStatus)
+    /**
+     * @throws JsonException
+     */
+    private function orderPaid($order): void
     {
-        // Implementation to update the order status
-        // ...
+        $this->repository->updateOrderStatus($order->id, config('app.ORDER_STATUS_PAID'));
+        Log::debug("Status has been updated");
+        $txid = $this->orderMakePayment($order->id, $order->recipient_account, $order->amount_to);
+        Log::debug("Making payment ...");
+        if (!is_null($txid)) {
+            Log::debug("Got transaction: " . $txid);
+            $this->orderComplete($order->id, $txid);
+        }
     }
 
     /**
@@ -76,14 +88,13 @@ class OrderManager
         return $this->repository->getRowById($orderId);
     }
 
-    public function completeOrder($orderId)
+    private function orderComplete($orderId, $txid): void
     {
-        // Implementation to retrieve order details
-        // ...
-    }
-
-    public function checkAwaitOrders()
-    {
+        $this->repository->updateRow(Order::getTableName(),$orderId, [
+            'withdraw_txid' => $txid,
+            'status' => config('app.ORDER_STATUS_COMPLETED'),
+        ]);
+        Log::debug("Complete order!");
     }
 
     private function getAwaitCryptoOrders(): array|string
@@ -95,42 +106,42 @@ class OrderManager
         }
         foreach ($ordersAll as $order) {
             $dt = Carbon::parse($order->created_at);
-            if (Carbon::parse(now()) > $dt->addSeconds($this->orderLifetime)) continue;
+            if (Carbon::parse(now()) > $dt->addSeconds($this->orderLifetime)) {
+                continue;
+            }
             $orders[] = $order;
         }
 
         return $orders;
     }
 
-    public function test()
-    {
-        //return $this->checkOrderCryptoDeposit();
-        Log::debug("Checking orderCryptoDeposit");
-    }
-
+    /**
+     * @throws JsonException
+     */
     public function checkOrderCryptoDeposit(): void
     {
         $awaitOrders = $this->getAwaitCryptoOrders();
         foreach ($awaitOrders as $order) {
+            Log::debug("Check deposit", [$order]);
             $currency = explode('_',$order->cur_from);
             $coin = $currency[0];
             $chain = $currency[1];
-            $startTime = Carbon::parse($order->created_at)->timestamp - 3600 * 10;
+            $startTime = Carbon::parse($order->created_at)->timestamp;
             $endTime = ($startTime + $this->orderLifetime);
             $json = $this->paymentManager->checkCryptoDeposit(strtoupper($coin), $startTime, $endTime);
 
-            $json = json_decode($json, true);
+            $json = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
             // Validate and update order status if conditions are met
             foreach ($json['result']['rows'] as $row) {
-
+                Log::debug("Check deposit", [$row]);
                 if (
                     $row['status'] === config('app.CRYPTO_DEPOSIT_ACCEPTED') &&
                     $row['chain'] === $this->paymentManager->cryptoManager->chains[$chain] &&
                     (float)$row['amount'] === (float)number_format($order->amount_from, 2) &&
                     !count($this->repository->getRowsWhere(CryptoDeposit::getTableName(),'txid', $row['txID']))
                 ) {
-                    Log::debug("Check deposit", [$row]);
+                    Log::debug("Conditions have passed");
                     // Update order status and save deposit
                     $depId = $this->repository->save(CryptoDeposit::getTableName(), [
                         'orderId' => $order->id,
@@ -142,13 +153,36 @@ class OrderManager
                         'updated_at' => Carbon::now()
                     ]);
                     if ($depId) {
-                        $this->repository->updateOrderStatus($order->id, config('app.ORDER_STATUS_PAID'));
+                        $this->orderPaid($order);
                         break 2;
                     }
                 }
 
             }
         }
+    }
+
+    /**
+     * @throws RuntimeException|JsonException
+     */
+    private function orderMakePayment($orderId, $recipient_account, $amount_to)
+    {
+        // Implementation to make payment
+        try {
+            Log::debug("Попали в orderMakePayment");
+            $res = $this->paymentManager->fiatManager->makePayment($recipient_account, $amount_to);
+            return $res;
+        } catch (\RuntimeException $e) {
+            Log::error("Payment failed", ['message' => $e->getMessage(), 'order_id' => $orderId]);
+            throw new \RuntimeException("Payment failed");
+        }
+        # '{"return":"7bd01cf6-0c0c-40e8-8f9f-2017d6dd2695"}'
+
+    }
+
+    public function test()
+    {
+        return 'response: ' . $this->orderMakePayment(3, 'U431122090131', '');
     }
 
 }

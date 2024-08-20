@@ -186,9 +186,8 @@ return [
     ])->toArray(),
 
     # App vars
-//    'ORDER_EXPIRE_TIME' => env('ORDER_EXPIRE_TIME'),
-    'ORDER_EXPIRE_TIME' => 60 * 60 * 18, // 24 hours
-
+    'ORDER_EXPIRE_TIME' => env('ORDER_EXPIRE_TIME'),
+//    'ORDER_EXPIRE_TIME' => 60 * 60 * 2,
 
     # Order status
     'ORDER_STATUS_CANCEL' => 0,
@@ -201,15 +200,25 @@ return [
     'CRYPTO_DEPOSIT_REJECTED' => 2,
     'CRYPTO_DEPOSIT_ACCEPTED' => 3,
 
-
-
     # Bybit
-
     'BYBIT_API_KEY' => env('BYBIT_API_KEY'),
     'BYBIT_API_SECRET_KEY' => env('BYBIT_API_SECRET'),
     'BYBIT_API_BASE_ENDPOINT' => env('BYBIT_API_BASE_ENDPOINT'),
 
+    # Volet
+//    'VOLET_ACCOUNT_EMAIL' => env('VOLET_ACCOUNT_EMAIL'),
+//    'VOLET_SCI_NAME' => env('VOLET_SCI_NAME'),
+//    'VOLET_SCI_PASSWORD' => env('VOLET_SCI_PASSWORD'),
+//    'VOLET_API_NAME' => env('VOLET_API_NAME'),
+//    'VOLET_API_PASSWORD' => env('VOLET_API_PASSWORD'),
+//    'VOLET_API_BASE_ENDPOINT' => env('VOLET_API_BASE_ENDPOINT')
 
 
+    'VOLET_ACCOUNT_EMAIL' => 'bitubint@protonmail.com',
+    'VOLET_SCI_NAME' => env('VOLET_SCI_NAME'),
+    'VOLET_SCI_PASSWORD' => env('VOLET_SCI_PASSWORD'),
+    'VOLET_API_NAME' => 'bith',
+    'VOLET_API_PASSWORD' => 'GJ398jfuer54fis',
+    'VOLET_API_BASE_ENDPOINT' => env('VOLET_API_BASE_ENDPOINT')
 
 ];

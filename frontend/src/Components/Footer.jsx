@@ -10,9 +10,9 @@ export default function Footer() {
                     <div className="footer_d_menu">
                         <div className="f_d_m_item"><span>info@coinschest.io</span></div>
                     </div>
-                    <div className="footer_d_label">
-                        <p>Автоматический криптовалютный обменник © 2023</p>
-                    </div>
+                    {/*<div className="footer_d_label">*/}
+                    {/*    <p>Автоматический криптовалютный обменник © 2024</p>*/}
+                    {/*</div>*/}
                 </div>
             </div>
         </footer>

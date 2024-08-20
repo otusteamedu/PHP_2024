@@ -18,9 +18,11 @@ RUN apt-get update && apt-get install -y \
 	zlib1g-dev \
 	libssl-dev \
 	libpq-dev \
+    libxml2-dev \
     && docker-php-ext-install -j$(nproc) iconv mbstring pdo pdo_pgsql pgsql mysqli pdo_mysql zip \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install soap \
     && docker-php-ext-install sockets && docker-php-ext-enable sockets \
 #    && pecl install redis && docker-php-ext-enable redis \
     && pecl install xdebug && docker-php-ext-enable xdebug \

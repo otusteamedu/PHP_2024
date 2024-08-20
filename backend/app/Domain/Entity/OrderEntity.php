@@ -31,7 +31,7 @@ class OrderEntity
         AmountValueObject $rateTo,
         EmailValueObject $email,
         AccountValueObject $recipientAccount,
-        AccountValueObject $incomingAsset = null
+        AccountValueObject $incomingAsset = null,
     )
     {
         $this->curFrom = $curFrom;

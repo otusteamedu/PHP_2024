@@ -17,8 +17,11 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function () {
             (new OrderManager(new DbWorkflow()))->checkOrderCryptoDeposit();
-
         })->everyThirtySeconds();
+
+//        $schedule->call(function () {
+//            Log::debug("Schedule");
+//        })->everyThirtySeconds();
     }
 
     /**
