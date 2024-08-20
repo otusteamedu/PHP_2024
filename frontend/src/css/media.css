@@ -1,0 +1,797 @@
+@media (max-width: 450px) {
+    .i_ex_hf_l_all {
+        display: none;
+    }
+
+/********************* Page login *********************/
+    .page_head {
+        padding: 40px 0 0;
+    }
+
+    .log_head_title {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 0 16px;
+        width: 100%;
+        height: 61px;
+    }
+
+    .log_head_title h2 {
+        font-family: 'PTRootUIWebBold', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 48px;
+        line-height: 93%;
+        letter-spacing: -0.02em;
+        color: #000000;
+    }
+
+    .page_body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 72px 0;
+        gap: 40px;
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+    }
+
+    .log_body_signin ,
+    .log_body_sign_code {
+        width: 359px;
+    }
+
+    /********************* LK - Partner *********************/
+
+    .p_p_h_rl_btnlink {
+        flex-direction: column;
+    }
+
+    .p_p_h_rl_btnlink button {
+        order: 1;
+        width: 359px;
+    }
+
+    .p_p_h_rl_bl_link {
+        order: 0;
+    }
+
+    .p_p_s_w_rigthdiv {
+        flex-direction: column;
+    }
+
+    .p_p_h_bl_emptyorder button span {
+        font-size: 13px;
+    }
+
+    .partner_grid {
+        width: unset;
+    }
+
+    .partner_page_history {
+        padding-left: unset;
+        padding-right: unset;
+    }
+
+    .p_p_h_bl_ot_bl_r_profit {
+        width: unset;
+    }
+
+}
+
+@media (min-width: 562px) and (max-width: 768px) {
+    .i_b_bl_card {
+        flex-direction: row;
+    }
+
+    .i_b_bl_c_bottom {
+        padding-top: 12px;
+    }
+}
+
+@media (max-width: 680px) {
+    .tab_bl_row {
+        flex-direction: column;
+    }
+
+
+
+}
+
+@media (max-width: 768px) {
+
+    /*    Common things   */
+
+    h1 {
+        font-size: 56px;
+    }
+
+    .p_p_h_header h2 ,
+    .card_page_head_title h2 ,
+    .log_head_title h2 ,
+    .part_head_block h2 {
+        font-size: 48px;
+    }
+
+    .i_p_t_div h4,
+    .i_p_t_div h4 span,
+    .i_b_bl_c_bottom h4,
+    .i_b_bl_c_bottom h4 span {
+        font-size: 24px;
+    }
+
+    .sandwich {
+        padding: 12px 8px;
+        position: absolute;
+        right: 8px;
+        display: flex;
+        flex-direction: column;
+        max-width: 36px;
+        width: 100%;
+        max-height: 36px;
+        height: 100%;
+        cursor: pointer;
+        top: 8px;
+        z-index: 20;
+    }
+
+
+    .sandwich:before,
+    .sandwich:after {
+        width: 18px;
+        height: 2px;
+        position: relative;
+        background: #333333;
+        display: flex;
+        transition: .5s;
+        border-radius: 1px;
+    }
+
+    .sandwich:before,
+    .sandwich:after{
+        content: "";
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 18px;
+        height: 2px;
+    }
+
+    .sandwich:after {
+        bottom: -8px;
+    }
+
+    .sandwich.active:before {
+        transform: rotate(45deg);
+        top: 6px;
+    }
+
+    .sandwich.active:after {
+        transform: rotate(-45deg);
+        top: 4px;
+    }
+
+    div.client-menu {
+        padding: 0;
+        position: absolute;
+        /* width: 184px; */
+        /* height: 84px; */
+        left: calc(50% - 184px/2);
+        top: calc(80% - 84px/2 + 120px);
+    }
+
+
+
+    /*    Header   */
+
+    .header-row {
+        padding: 0;
+    }
+
+    .header-row.open {
+        display: flex;
+        flex-direction: row;
+        position: fixed;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        align-items: flex-start;
+        padding: 8px;
+        background: #FFFFFF;
+    }
+
+    .header-logo {
+        height: 36px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0;
+        gap: 8px;
+    }
+
+    .header-logo a {
+        padding: 0;
+    }
+
+    .header-logo-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .header-nav {
+        display: none;  
+    }
+
+    .mob_nav_btn {
+        height: 36px;
+        display: flex;
+    }
+
+    .nav_btn img {
+        max-width: 36px;
+        max-height: 36px;
+    }
+
+    .header-row.open .header-nav-mob {
+        top: 126px;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        left: 50%;
+        transform: translate(-50%, 0);
+        gap: 96px;
+    }
+
+    .header-row.open .header-nav-mob .h-n-m-row {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        padding-top: 4px;
+        gap: 16px;
+    }
+
+    .h-n-m-row div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        gap: 2px;
+        width: 123.5px;
+        vertical-align: center;
+    
+    }
+
+    div.nav-client-div {
+        flex-direction: row;
+        width: 100%;
+        padding: 0 36px;
+    }
+
+    img.nav-client-icon {
+        height: 38px;
+    }
+
+
+    /*    Footer    */
+
+    .footer {
+        padding: 24px 0;
+    }
+
+    .footer_div , .footer_div .footer_d_menu {
+        flex-direction: column;
+    }
+
+    .footer_d_label {
+        align-items: flex-start;
+    }
+
+    .footer_div {
+        gap: 40px;
+    }
+
+    .footer.menu_open {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index: 1;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+
+
+    /*       Page Exchanger          */
+
+    .i_ex_f_elems {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .i_ex_f_els_b_input {
+        min-height: 64px;
+    }
+
+    .i_ex_f_els_b_input input {
+        font-weight: 500;
+        font-size: 40px;
+        line-height: 48px;
+    }
+
+    #select_fc , #select_tc {
+        /*margin-top: 100px;*/
+    }
+
+    .i_ex_f_els_b_inp_crypto {
+        font-size: 15px;
+        line-height: 18px;
+        min-height: 48px;
+    }
+
+    .i_ex_f_els_b_u_minmax {
+        font-size: 12px;
+    }
+
+    .i_ex_f_elems_revert {
+        gap: 3px;
+        width: 34px;
+        height: 51px;
+        border-radius: 4px;
+        transform: rotate(-90deg);
+    }
+
+    .i_ex_fields {
+        padding-bottom: 48px;
+    }
+
+    .i_ex_btn button {
+        font-size: 28px;
+        line-height: 34px;
+        padding: 8px 21px 9px;
+        width: 198px;
+    }
+
+
+    /*   Exchanger - Profit rates   */
+
+    .index_exchinfo {
+        flex-direction: column;
+        padding: 15px 4px;
+    }
+
+    .i_ex_pr_label {
+        padding: 0 0 10px 10px;
+    }
+
+    .i_ex_pr_block_log_out {
+        flex-direction: column;
+    }
+
+    .i_ex_prrates {
+        padding-bottom: 48px;
+    }
+
+    .i_ex_pr_l_d_div h4,
+    .i_ex_hf_l_links h4,
+    .i_ex_hf_l_all p {
+        font-family: 'PTRootUIWebMedium' , sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+    }
+
+
+    /*    Exchanger - FAQ   */
+
+    .i_f_block {
+        flex-direction: column;
+    }
+
+    .index_faq {
+        padding: 45px 4px 72px;
+    }
+
+
+    /*    Exchanger - Partner    */
+
+    .index_partner {
+        padding: 40px 8px 0 8px;
+    }
+
+
+    /*    Exchanger - Bonus    */
+
+    .index_bonus {
+        padding: 48px 0 24px;
+    }
+
+    .i_b_block {
+        flex-direction: column;
+    }
+
+    .i_b_bl_c_top img,
+    .i_b_bl_c_chat img {
+        width: 240px;
+    }
+
+    .index_warning {
+        padding: 40px 0;
+    }
+
+    /*     Page login/signup       */
+
+    .page_head {
+        padding: 58px 0 0;
+    }
+
+
+    /*            Page Partner              */
+
+    .partner_header {
+        padding: 40px 0 0 0;
+    }
+
+    .part_head_block {
+        padding-bottom: 16px;
+    }
+
+    .partner_body {
+        padding: 72px 0;
+    }
+
+    .part_body_block {
+        padding: 0;
+    }
+
+    .part_body_bl_grid {
+        padding: 0;
+    }
+
+    .partner_grid {
+        flex-direction: row;
+    }
+
+    .ps_g_row1_td {
+        font-size: 15px;
+        line-height: 18px;
+    }
+
+    .ps_g_row1_td ,
+    .ps_g_row2_td ,
+    .ps_g_row3_td {
+        min-height: 54px;
+        padding: 10px 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .ps_g_row1_td1 {
+        min-width: 106px;
+        min-height: 52px;
+    }
+
+    .ps_g_row2_td1, .ps_g_row3_td1 {
+        font-family: 'PTRootUIWebMedium', sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        min-width: 127px;
+        min-height: 52px;
+    }
+
+    .ps_g_row2_td {
+        font-size: 32px;
+        line-height: 120%;
+        padding-left: 20px;
+    }
+
+    .ps_g_row1_td ,
+    .ps_g_row3_td {
+        padding: 19px 0 10px 0;
+    }
+
+    .ps_g_row1 , .ps_g_row2 , .ps_g_row3 {
+        flex-direction: column;
+        border-top: unset;
+    }
+
+    .part_grid_descr {
+        padding: 0;
+    }
+
+    .partner_footer {
+        padding: 24px 18px 72px;
+    }
+
+    /*            Page LK - History              */
+
+    .h_t_bl_row {
+        padding: 16px 0;
+    }
+
+    .h_t_tablehead {
+        padding: 0 0 16px;
+    }
+
+    .h_t_bl_r_cur {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        gap: 4px;
+        min-width: 180px;
+        max-height: 76px;
+    }
+
+    .h_t_th_time {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 0 8px 0 0;
+        gap: 10px;
+        width: 100px;
+        height: 18px;
+    }
+
+    .cr_c_bank img {
+        width: 30px;
+    }
+
+    .c_p_b_title_steps h3 {
+        font-size: 32px;
+        line-height: 93%;
+    }
+
+    .card_page_head {
+        padding: 20px 0 30px;
+    }
+
+    .card_page_body {
+        padding: 72px 0;
+    }
+
+    /*            Page LK - Partner              */
+
+    .partner_page_statistic {
+        flex-direction: column;
+        align-items: unset;
+        margin: 0 -8px;
+        padding: 12px 8px;
+    }
+
+    .p_p_s_operations {
+        justify-content: space-between;
+    }
+
+    .partner_page_history {
+        padding-top: unset;
+    }
+
+    .p_p_h_bl_ot_bl_r_profit span {
+        font-size: 18px;
+    }
+
+    /*            Page Exchanger             */
+
+    .e_p_b_o2_head {
+        order: 1;
+    }
+
+    .e_p_b_o2_h_c_r_send ,
+    .e_p_b_o2_t_row ,
+    .e_p_b_o2_h_c_row {
+        flex-direction: column;
+    }
+
+    .e_p_b_o2_head img {
+        order: 1;
+    }
+
+    .e_p_b_o2_h_c_r_send {
+        align-items: flex-start;
+    }
+
+    .e_p_b_o2_h_c_row {
+        gap: 16px;
+    }
+
+    .e_p_b_o2_h_cond {
+        align-items: flex-start;
+        gap: 32px;
+    }
+
+    .e_p_b_o2_bottom {
+        order: 2;
+        align-items: center;
+    }
+
+    .e_p_b_o2_t_r_right {
+        max-width: unset;
+    }
+
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    h1 {
+        font-size: 65px;
+    }
+
+    .p_p_h_header h2 ,
+    .card_page_head_title h2 ,
+    .log_head_title h2 ,
+    .part_head_block h2 {
+        font-size: 60px;
+    }
+
+    .index_exch {
+        padding: 30px 0;
+    }
+
+    /*   Profit rates   */
+
+    .index_exchinfo {
+        flex-direction: column;
+        padding: 15px 4px;
+    }
+
+    .i_ex_pr_label {
+        padding: 0 0 0 10px;
+    }
+
+    .i_ex_pr_b_item {
+        align-items: center;
+    }
+
+    .i_ex_pr_block_log_in ,
+    .i_ex_pr_block_log_out {
+        padding-bottom: 30px;
+        flex-direction: row;
+    }
+
+    /*   Partner   */
+
+    .index_partner {
+        padding: 30px 9px 12px;
+        height: 350px;
+    }
+
+    .index_partner .i_p_text {
+        padding: 0;
+    }
+
+    .i_p_img {
+        height: 220px;
+    }
+
+    .i_p_t_div h4 span , .i_b_bl_c_bottom h4 span {
+        font-size: 20px;
+    }
+
+    .i_p_t_div h4 ,
+    .i_b_bl_c_bottom h4 ,
+    .i_ex_pr_l_d_div h4,
+    .i_ex_hf_l_links h4 ,
+    .i_ex_hf_l_all p {
+        font-size: 20px;
+    }
+
+    .i_ex_btn button {
+        font-size: 25px;
+    }
+
+    .i_f_bl_item h5, .i_f_bl_item p {
+        font-size: 14px;
+    }
+
+    .cr_c_bank img {
+        width: 40px;
+    }
+
+}
+
+@media (min-width: 769px) and (max-width: 900px) {
+    .i_ex_pr_block_log_out .i_ex_pr_b_item .i_ex_pr_b_i_middle svg,
+    .i_ex_pr_block_log_in .i_ex_pr_b_item .i_ex_pr_b_i_middle svg {
+        display: none;
+    }
+
+    .e_p_b_o2_h_c_r_send span {
+        font-size: 16px;
+    }
+
+}
+
+@media (min-width: 1024px) and (max-width: 1230px) {
+    h1 {
+        font-size: 80px;
+    }
+
+    .p_p_h_header h2 ,
+    .card_page_head_title h2 ,
+    .log_head_title h2 ,
+    .part_head_block h2 {
+        font-size: 70px;
+    }
+
+    .index_exch {
+        padding: 45px 0;
+    }
+
+    /*   Profit rates   */
+
+    .index_exchinfo {
+        flex-direction: column;
+        padding: 22px 6px;
+    }
+
+    .i_ex_pr_label {
+        padding: 0 0 0 10px;
+    }
+
+    .i_ex_pr_block_log_in ,
+    .i_ex_pr_block_log_out {
+        flex-direction: row;
+        padding-bottom: 48px;
+    }
+
+    .index_partner {
+        padding: 45px 14px 18px;
+        height: 400px;
+    }
+
+    .index_partner .i_p_text {
+        padding: 0;
+    }
+
+    .i_p_img {
+        height: 280px;
+    }
+
+    .i_p_t_div h4 span , .i_b_bl_c_bottom h4 span {
+        font-size: 22px;
+    }
+
+    .i_p_t_div h4 ,
+    .i_b_bl_c_bottom h4 ,
+    .i_ex_pr_l_d_div h4 ,
+    .i_ex_hf_l_links h4 ,
+    .i_ex_hf_l_all p {
+        font-size: 22px;
+    }
+
+    .i_ex_btn button {
+        font-size: 28px;
+    }
+
+    .i_f_bl_item h5, .i_f_bl_item p {
+        font-size: 16px;
+    }
+
+    .cr_c_bank img {
+        width: 50px;
+    }
+
+}
+
+@media (min-width: 1230px) {
+    .i_ex_prrates {
+        max-width: 466px;
+    }
+
+}
+
+@media (min-width: 768px) {
+    /*           User Partner            */
+
+    #form-setting-partner .container {
+        padding: 8px 18px;
+    }
+}
