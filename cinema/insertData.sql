@@ -87,23 +87,38 @@ do $$
 declare
   rnd_show integer;
   rnd_seat integer;
+  base_price numeric;
+  extra_price numeric;
+  max_discount numeric;
+  seat_extra_price numeric;
+  sold_price numeric;
+  sold_at timestamp;
 begin
   for t in 1..30 loop
     rnd_show := floor(random() * 90 + 1);
-    rnd_seat := floor(random() * 2250 + 1); -- ??
-    insert into tickets(showId, seatId, soldPrice, soldAt) values
-    	(rnd_show,
-    	rnd_seat,
-  	  (select basePrice from halls
-  	    join shows on shows.hallId = halls.id
-  	    where halls.id = shows.hallId and shows.id = rnd_show)
-  	    * (((select extraPrice from shows where shows.id = rnd_show) +
-            (select extraPrice from seats where seats.id = rnd_seat))::float / 100 + 1)
-        -- discount and final price ??
-            ,
-    	timestamp '2024-07-24 00:00:00' +
-        random() * (timestamp '2024-08-18 00:00:00' -
-                    timestamp '2024-07-24 00:00:00'));
+    rnd_seat := floor(random() * 2250 + 1);
+
+    select basePrice into base_price
+    from halls
+    join shows on shows.hallId = halls.id
+    where shows.id = rnd_show;
+
+    select extraPrice, maxDiscount into extra_price, max_discount
+    from shows
+    where id = rnd_show;
+
+    select extraPrice into seat_extra_price
+    from seats
+    where id = rnd_seat;
+
+    sold_price := base_price * (1 + (extra_price + seat_extra_price - random() * max_discount ) / 100);
+
+    sold_at := timestamp '2024-07-24 00:00:00' +
+               random() * (timestamp '2024-08-18 00:00:00' -
+                           timestamp '2024-07-24 00:00:00');
+
+    insert into tickets (showId, seatId, soldPrice, soldAt)
+    values (rnd_show, rnd_seat, sold_price, sold_at);
   end loop;
 end;
 $$ language plpgsql;
