@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Service;
 
 class AuthorMapper
@@ -11,17 +13,19 @@ class AuthorMapper
         $this->dbConnection = $databaseConnection->getConnection();
     }
 
-    public function find($id) {
+    public function find(int $id): ?Author
+    {
         $statement = $this->dbConnection->prepare("SELECT * FROM authors WHERE id = ?");
         $statement->execute([$id]);
-        $row = $statement->fetch();
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return $this->mapRowToAuthor($row);
+        return $row ? $this->mapRowToAuthor($row) : null;
     }
 
-    public function findAll() {
+    public function findAll(): array
+    {
         $statement = $this->dbConnection->query("SELECT * FROM authors");
-        $rows = $statement->fetchAll();
+        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $authors = [];
 
         foreach ($rows as $row) {
@@ -31,7 +35,8 @@ class AuthorMapper
         return $authors;
     }
 
-    public function save(Author $author) {
+    public function save(Author $author): void
+    {
         if ($author->getId()) {
             $this->update($author);
         } else {
@@ -39,7 +44,8 @@ class AuthorMapper
         }
     }
 
-    private function insert(Author $author) {
+    private function insert(Author $author): void
+    {
         $statement = $this->dbConnection->prepare(
             "INSERT INTO authors (name, last_name, patronymic, date_of_birth, date_of_death, country, gender) 
             VALUES (?, ?, ?, ?, ?, ?, ?)"
@@ -48,15 +54,16 @@ class AuthorMapper
             $author->getName(),
             $author->getLastName(),
             $author->getPatronymic(),
-            $author->getDateOfBirth(),
-            $author->getDateOfDeath(),
+            $author->getDateOfBirth()->format('Y-m-d'),
+            $author->getDateOfDeath()?->format('Y-m-d'),
             $author->getCountry(),
             $author->getGender()
         ]);
-        $author->setId($this->dbConnection->lastInsertId());
+        $author->setId((int)$this->dbConnection->lastInsertId());
     }
 
-    private function update(Author $author) {
+    private function update(Author $author): void
+    {
         $statement = $this->dbConnection->prepare(
             "UPDATE authors SET name = ?, last_name = ?, patronymic = ?, date_of_birth = ?, date_of_death = ?, country = ?, gender = ? WHERE id = ?"
         );
@@ -64,24 +71,26 @@ class AuthorMapper
             $author->getName(),
             $author->getLastName(),
             $author->getPatronymic(),
-            $author->getDateOfBirth(),
-            $author->getDateOfDeath(),
+            $author->getDateOfBirth()->format('Y-m-d'),
+            $author->getDateOfDeath()?->format('Y-m-d'),
             $author->getCountry(),
             $author->getGender(),
             $author->getId()
         ]);
     }
 
-    private function mapRowToAuthor($row) {
+    private function mapRowToAuthor(array $row): Author
+    {
         $author = new Author();
-        $author->setId($row['id']);
+        $author->setId((int)$row['id']);
         $author->setName($row['name']);
         $author->setLastName($row['last_name']);
         $author->setPatronymic($row['patronymic']);
-        $author->setDateOfBirth($row['date_of_birth']);
-        $author->setDateOfDeath($row['date_of_death']);
+        $author->setDateOfBirth(new \DateTimeImmutable($row['date_of_birth']));
+        $author->setDateOfDeath($row['date_of_death'] ? new \DateTimeImmutable($row['date_of_death']) : null);
         $author->setCountry($row['country']);
         $author->setGender($row['gender']);
+
         return $author;
     }
 }

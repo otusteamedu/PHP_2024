@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Service;
 
 class BookMapper
@@ -12,7 +14,7 @@ class BookMapper
         $this->dbConnection = $databaseConnection->getConnection();
     }
 
-    public function find($id): ?Book
+    public function find(int $id): ?Book
     {
         if (isset($this->identityMap[$id])) {
             return $this->identityMap[$id];
@@ -24,7 +26,7 @@ class BookMapper
 
         if ($row) {
             $book = $this->mapRowToBook($row);
-            $this->identityMap[$id] = $book; // Добавляем книгу в Identity Map
+            $this->identityMap[$id] = $book;
             return $book;
         }
 
@@ -39,13 +41,13 @@ class BookMapper
 
         $books = [];
         foreach ($rows as $row) {
-            $bookId = $row['id'];
+            $bookId = (int)$row['id'];
 
             if (isset($this->identityMap[$bookId])) {
                 $books[] = $this->identityMap[$bookId];
             } else {
                 $book = $this->mapRowToBook($row);
-                $this->identityMap[$bookId] = $book; // Добавляем книгу в Identity Map
+                $this->identityMap[$bookId] = $book;
                 $books[] = $book;
             }
         }
@@ -53,9 +55,10 @@ class BookMapper
         return $books;
     }
 
-    public function findAll() {
+    public function findAll(): array
+    {
         $statement = $this->dbConnection->query("SELECT * FROM books");
-        $rows = $statement->fetchAll();
+        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
         $books = [];
 
         foreach ($rows as $row) {
@@ -65,7 +68,8 @@ class BookMapper
         return $books;
     }
 
-    public function save(Book $book) {
+    public function save(Book $book): void
+    {
         if ($book->getId()) {
             $this->update($book);
         } else {
@@ -73,43 +77,47 @@ class BookMapper
         }
     }
 
-    private function insert(Book $book) {
+    private function insert(Book $book): void
+    {
         $statement = $this->dbConnection->prepare(
             "INSERT INTO books (name, author_id, date_of_issue, rating, number_of_copies) 
-            VALUES (?, ?, ?, ?, ?)"
+            VALUES (:name, :author_id, :date_of_issue, :rating, :number_of_copies)"
         );
         $statement->execute([
-            $book->getName(),
-            $book->getAuthorId(),
-            $book->getDateOfIssue(),
-            $book->getRating(),
-            $book->getNumberOfCopies()
+            'name' => $book->getName(),
+            'author_id' => $book->getAuthorId(),
+            'date_of_issue' => $book->getDateOfIssue()->format('Y-m-d'),
+            'rating' => $book->getRating(),
+            'number_of_copies' => $book->getNumberOfCopies()
         ]);
-        $book->setId($this->dbConnection->lastInsertId());
+        $book->setId((int)$this->dbConnection->lastInsertId());
     }
 
-    private function update(Book $book) {
+    private function update(Book $book): void
+    {
         $statement = $this->dbConnection->prepare(
-            "UPDATE books SET name = ?, author_id = ?, date_of_issue = ?, rating = ?, number_of_copies = ? WHERE id = ?"
+            "UPDATE books SET name = :name, author_id = :author_id, date_of_issue = :date_of_issue, 
+            rating = :rating, number_of_copies = :number_of_copies WHERE id = :id"
         );
         $statement->execute([
-            $book->getName(),
-            $book->getAuthorId(),
-            $book->getDateOfIssue(),
-            $book->getRating(),
-            $book->getNumberOfCopies(),
-            $book->getId()
+            'name' => $book->getName(),
+            'author_id' => $book->getAuthorId(),
+            'date_of_issue' => $book->getDateOfIssue()->format('Y-m-d'),
+            'rating' => $book->getRating(),
+            'number_of_copies' => $book->getNumberOfCopies(),
+            'id' => $book->getId()
         ]);
     }
 
-    private function mapRowToBook($row) {
+    private function mapRowToBook(array $row): Book
+    {
         $book = new Book();
-        $book->setId($row['id']);
+        $book->setId((int)$row['id']);
         $book->setName($row['name']);
-        $book->setAuthorId($row['author_id']);
-        $book->setDateOfIssue($row['date_of_issue']);
-        $book->setRating($row['rating']);
-        $book->setNumberOfCopies($row['number_of_copies']);
+        $book->setAuthorId((int)$row['author_id']);
+        $book->setDateOfIssue(new \DateTimeImmutable($row['date_of_issue']));
+        $book->setRating($row['rating'] !== null ? (float)$row['rating'] : null);
+        $book->setNumberOfCopies((int)$row['number_of_copies']);
         return $book;
     }
 }

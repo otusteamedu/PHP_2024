@@ -7,7 +7,8 @@ namespace Service;
 final class DatabaseConnection
 {
     private readonly \PDO $connection;
-    public function __construct(){
+    public function __construct()
+    {
         try {
             $dsn = "pgsql:host=" . getenv('DB_HOST') . ";port=" . getenv('DB_PORT') . ";dbname=" . getenv('DB_NAME') . ";user=" . getenv('DB_USER') . ";password=" . getenv('DB_PASSWORD');
             $this->connection = new \PDO($dsn);
@@ -16,7 +17,8 @@ final class DatabaseConnection
         }
     }
 
-    public function getConnection() {
+    public function getConnection(): \PDO
+    {
         return $this->connection;
     }
 }
