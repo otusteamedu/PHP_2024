@@ -12,7 +12,7 @@ class Validator
      * @param $string
      * @return bool
      */
-    public static function validate(string $input) : bool
+    public static function validate(string $input): bool
     {
         if (empty($input)) {
             throw new InvalidArgumentException('Empty string');
