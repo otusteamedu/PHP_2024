@@ -8,7 +8,7 @@ class Application
 {
     public function run()
     {
-        echo $this->request();
+        return $this->request();
     }
 
     private function request(): string

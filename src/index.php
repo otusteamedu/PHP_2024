@@ -6,4 +6,4 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use PavelMiasnov\Hw4\Application;
 
-(new Application())->run();
+echo (new Application())->run();
