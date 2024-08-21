@@ -12,5 +12,7 @@
             "email": "sk-2006@mail.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">= 8.1"
+    }
 }

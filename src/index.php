@@ -6,4 +6,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Komarov\Hw4\App;
 
-(new App())->run();
+try {
+    (new App())->run();
+} catch (Exception $e) {
+    http_response_code($e->getCode());
+    echo $e->getMessage();
+}

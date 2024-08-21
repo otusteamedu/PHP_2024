@@ -22,12 +22,9 @@ class App
     public function run(): void
     {
         if (!$this->validate->checkStringBrackets()) {
-            http_response_code(400);
-            throw new Exception("Bad request");
+            throw new Exception("Bad request", 400);
         }
 
-        http_response_code(200);
-
-        echo "true";
+        throw new Exception("Success request", 200);
     }
 }
