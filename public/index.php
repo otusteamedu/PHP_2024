@@ -11,8 +11,8 @@ use PenguinAstronaut\App\Validator;
 
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $parser = new Validator();
-        $parser->validateString($_POST['string'] ?? '');
+        $validator = new Validator();
+        $validator->validateString($_POST['string'] ?? '');
     }
 } catch (EmptyStringException | InvalidStringException $e) {
     http_response_code(400);
