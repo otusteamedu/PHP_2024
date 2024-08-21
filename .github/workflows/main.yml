@@ -3,7 +3,7 @@ name: "CI"
 on:
   pull_request:
     paths:
-      - "**.php"
+      - "**.fpm"
       - "phpcs.xml"
       - ".github/workflows/phpcs.yml"
       
@@ -21,8 +21,8 @@ jobs:
         run: |
           curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
           php phpcs.phar --version
-      - uses: tinovyatkin/action-php-codesniffer@v1
+      - uses: tinovyatkin/action-fpm-codesniffer@v1
         with:
-          files: "**.php" # you may customize glob as needed
-          phpcs_path: php phpcs.phar
+          files: "**.fpm" # you may customize glob as needed
+          phpcs_path: fpm phpcs.phar
           standard: phpcs.xml
