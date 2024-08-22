@@ -1,3 +1,4 @@
-# PHP_2024
+# PHP_2024 HW10: Postgresql
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+> docker compose up -d --build
+> docker exec -it postgresql psql -U otus -d otuscinema
