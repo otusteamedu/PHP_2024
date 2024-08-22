@@ -25,6 +25,16 @@ class App
             throw new Exception("Bad request", 400);
         }
 
-        throw new Exception("Success request", 200);
+        $this->successResponse();
+    }
+
+    /**
+     * @return void
+     */
+    private function successResponse(): void
+    {
+        http_response_code(200);
+
+        echo "Success request";
     }
 }
