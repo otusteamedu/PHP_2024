@@ -32,7 +32,11 @@ RUN sed -i "s|;listen.owner = www-data|listen.owner = www-data|" /usr/local/etc/
     && sed -i "s|;listen.group = www-data|listen.group = www-data|" /usr/local/etc/php-fpm.d/www.conf \
     && sed -i "s|;listen.mode = 0660|listen.mode = 0660|" /usr/local/etc/php-fpm.d/www.conf
 
+# Создаем директорию для сокета и устанавливаем правильные права
 RUN mkdir -p /var/run/php && chown www-data:www-data /var/run/php
+
+# Копируем свой файл www.conf в контейнер
+COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Устанавливаем Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -40,8 +44,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Устанавливаем PDO
 RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
 
+# Устанавливаем текстовые редакторы
+RUN apt-get update && apt-get install -y vim nano
+
 WORKDIR /data
 
 VOLUME /data
 
+# Запускаем PHP-FPM
 CMD ["php-fpm"]
