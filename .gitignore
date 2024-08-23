@@ -6,3 +6,4 @@
 /mysql/
 /code/composer.lock
 /code/vendor/
+.env
