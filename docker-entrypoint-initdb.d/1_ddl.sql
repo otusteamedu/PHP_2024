@@ -1,4 +1,10 @@
 -- drop tables if they exist
+drop view if exists "query_1" cascade;
+drop view if exists "query_2" cascade;
+drop view if exists "query_3" cascade;
+drop view if exists "query_4" cascade;
+drop view if exists "query_5" cascade;
+drop view if exists "query_6" cascade;
 drop table if exists "ticket_purchase" cascade;
 drop table if exists "ticket" cascade;
 drop table if exists "purchase" cascade;
@@ -80,6 +86,7 @@ create table if not exists "user" (
     "name" varchar(255) not null,
     "lastname" varchar(255) not null
 );
+
 create table if not exists "customer" (
     "id" serial primary key,
     "user_id" int not null unique,
@@ -116,4 +123,61 @@ create table if not exists ticket (
     "price" decimal(10,2) not null,
     unique("showtime_id", "seat_id")
 );
-DROP FUNCTION IF EXISTS generate_tickets(INT);
+
+--1. Выбор всех фильмов на сегодня
+create view query_1 as
+    select distinct film.title
+        from film
+            join showtime on film.id = showtime.film_id
+        where date(showtime.start) = CURRENT_DATE
+    order by film.title
+;
+--2. Подсчёт проданных билетов за неделю
+create view query_2 as
+    select count(*)
+        from ticket
+            join purchase on ticket.purchase_id = purchase.id
+        where purchase.purchase_date >= current_date - interval '7 days' and purchase.purchase_date <= current_date;
+;
+--3. Формирование афиши (фильмы, которые показывают сегодня)
+create view query_3 as
+    select film.id, film.title, showtime.start, showtime.end
+        from film
+            join showtime on film.id = showtime.film_id
+        where date(showtime.start) = CURRENT_DATE
+;
+--4. Поиск 3 самых прибыльных фильмов за неделю
+create view query_4 as
+    select film.title, t1.total_income
+    from (
+         select showtime.film_id, sum(ticket.price) as total_income
+         from showtime
+                  join ticket on showtime.id = ticket.showtime_id
+         where date(showtime.start) between current_date - interval '7 days' AND CURRENT_DATE
+         group by showtime.film_id
+         order by total_income desc limit 3
+    ) t1
+    join film on t1.film_id = film.id
+    order by t1.total_income desc
+;
+--5. Сформировать схему зала и показать на ней свободные и занятые места на конкретный сеанс
+create view query_5 as
+    select seat.row_number, seat.seat_number,
+        case when ticket.id is not null then '1'
+            else '0'
+        end as state
+    from
+        seat
+            inner join showtime on seat.screen_id = showtime.screen_id
+            left join ticket on showtime.id = ticket.showtime_id and seat.id = ticket.seat_id
+        where showtime.id = 1
+    order by
+        seat.row_number,
+        seat.seat_number
+;
+--6. Вывести диапазон миниальной и максимальной цены за билет на конкретный сеанс
+create view query_6 as
+    select max(ticket.price), min(ticket.price)
+    from ticket
+    where ticket.showtime_id = 1
+;

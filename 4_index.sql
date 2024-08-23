@@ -1,0 +1,17 @@
+--1. Выбор всех фильмов на сегодня
+DROP INDEX IF EXISTS IX_SHOWTIME_1;
+DROP INDEX IF EXISTS IX_SHOWTIME_2;
+EXPLAIN ANALYZE select * FROM query_1;
+
+CREATE INDEX IX_SHOWTIME_1 ON showtime (film_id);
+CREATE INDEX IX_SHOWTIME_2 ON showtime (start);
+
+EXPLAIN ANALYZE select * FROM query_1;
+
+DROP INDEX IF EXISTS IX_SHOWTIME_1;
+EXPLAIN ANALYZE SELECT * from query_1;
+--2. Подсчёт проданных билетов за неделю
+DROP INDEX IF EXISTS IX_PURCHASE_1;
+EXPLAIN ANALYZE SELECT * from query_2;
+CREATE INDEX IX_PURCHASE_1 ON purchase (purchase_date);
+EXPLAIN ANALYZE SELECT * from query_2;

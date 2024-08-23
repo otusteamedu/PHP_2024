@@ -78,4 +78,3 @@ INSERT INTO "employer" ("user_id", "position_id", "cinema_id", "salary") VALUES
 (3, 3, 1, 40000),
 (4, 4, 2, 42000),
 (5, 5, 1, 39000);
-
