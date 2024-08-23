@@ -18,7 +18,7 @@ class ExportDate
      * @throws InvalidArgumentException
      * @throws DateMalformedStringException
      */
-    public function __construct(string|DateTimeImmutable $value): void
+    public function __construct(string|DateTimeImmutable $value)
     {
         if (is_string($value)) {
             $this->value = new DateTimeImmutable($value);
@@ -27,5 +27,10 @@ class ExportDate
         } else {
             throw new InvalidArgumentException('Date is incorrect');
         }
+    }
+
+    public function getValue(): DateTimeImmutable
+    {
+        return $this->value;
     }
 }

@@ -8,6 +8,8 @@ use App\Domain\ValueObject\ExportDate;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
 
+use function PHPUnit\Framework\isNull;
+
 class News
 {
     /** @var integer|null */
@@ -16,8 +18,13 @@ class News
     public function __construct(
         private Url $url,
         private Title $title,
-        private ExportDate $exportDate
-    ) {}
+        private ExportDate $exportDate,
+        ?int $id = null
+    ) {
+        if (!is_null($id)) {
+            $this->id = $id;
+        }
+    }
 
     /**
      * @return integer|null

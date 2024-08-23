@@ -16,7 +16,7 @@ class Url
      * @return void
      * @throws InvalidArgumentException
      */
-    public function __construct(string $value): void
+    public function __construct(string $value)
     {
         $this->assert($value);
         $this->value = $value;
