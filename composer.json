@@ -1,0 +1,5 @@
+{
+    "require": {
+        "alex-agapitov/otus-composer-package": "^1.1"
+    }
+}
