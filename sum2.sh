@@ -1,12 +1,5 @@
 #!/bin/bash
 
-checkbc=$(dpkg-query -s bc 2> /dev/null)
-if [ -z "$checkbc" ]
-  then
-      echo "Установите bc!";
-      exit;
-fi;
-
 if [ $# -lt 2 ]
   then
     echo "Введите два слагаемых!";
@@ -19,7 +12,8 @@ if [ $# -gt 2 ]
     exit;
 fi;
 
-re='^[-]?[0-9]+([.][0-9]+)?$'
+separator=$(locale decimal_point);
+re="^[-]?[0-9]+([${separator}][0-9]+)?$"
 if ! [[ $1 =~ $re ]]
   then
      echo "Первое слагаемое - не число!";
@@ -32,5 +26,4 @@ if ! [[ $2 =~ $re ]]
   exit;
 fi;
 
-sum=$(echo "$1 + $2" | bc);
-echo $sum;
+echo "$1 $2" | awk '{sum=$1+$2} END {print sum}';
