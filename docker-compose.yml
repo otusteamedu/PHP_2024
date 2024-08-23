@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/mysite.local
+       - phpsocket:/var/run
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+       - ./code:/data/mysite.local
+       - phpsocket:/var/run
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6.0.7
+    container_name: redis
+    restart: always
+    volumes:
+      - ./redis:/data/redis
+  #  ports:
+  #    - "6379:6379"
+    networks:
+      - app-network
+    depends_on:
+      - helper
+
+  mysql:
+    image: mysql:8.1
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_NAME}
+  #  ports:
+  #    - "6052:3306"
+    networks:
+      - app-network
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    restart: always
+
+
+  memcached:
+    image: memcached:1-alpine
+    container_name: memcached
+  #  ports:
+  #    - "6212:6212"
+    networks:
+      - app-network
+
+  helper:
+    image: alpine
+    command: sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+    privileged: true
+
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  phpsocket:

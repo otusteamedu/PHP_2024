@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/mysql/
+/code/composer.lock
+/code/vendor/

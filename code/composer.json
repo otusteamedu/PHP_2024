@@ -1,0 +1,8 @@
+{
+    "require": {
+        "predis/predis": "^2.2",
+        "ext-redis": "*",
+        "ext-pdo": "*",
+        "ext-memcached": "*"
+    }
+}
