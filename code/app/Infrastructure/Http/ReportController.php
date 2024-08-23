@@ -7,6 +7,7 @@ namespace App\Infrastructure\Http;
 use App\Application\UseCase\Report\ReportRequest;
 use App\Application\UseCase\Report\ReportUseCase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController
 {
@@ -22,11 +23,18 @@ class ReportController
         foreach ($rawIds as $rawId) {
             $ids[] = (int) $rawId;
         }
+        try {
+            $request = new ReportRequest($ids);
+            $response = ($this->reportUseCase)($request);
+            $content = view('report', ['newsList' => $response->news]);
+            $fileName = uniqid() . '.html';
+            Storage::put('public/' . $fileName, $content);
+        } catch (\Exception) {
+            response('Internal server  error', 500);
+        }
 
-        $request = new ReportRequest($ids);
-        $response = ($this->reportUseCase)($request);
-
-
-        return response()->json(['fdd' => 'd']);
+        return response()->json([
+            'reportUrl' => asset('storage/' . $fileName),
+        ]);
     }
 }
