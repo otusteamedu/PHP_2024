@@ -28,7 +28,7 @@ class NewsListController
                     'exportDate' => $news->getExportDate()->getValue()->format('Y-m-d'),
                 ];
             }
-        } catch (\Exception $ex) {
+        } catch (\Exception) {
             return response('Server internal error', 500);
         }
 

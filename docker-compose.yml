@@ -6,8 +6,15 @@ services:
       dockerfile: Dockerfile
     image: php_app
     container_name: app
-#    env_file:
-#      - .env
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgres_db
+      - DB_PORT=5432
+      - DB_DATABASE=postgres
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=mysecretpassword
+      - SESSION_DRIVER=file
+      - APP_KEY=base64:BIfnCyZe9uzGkCQ64kME9rZ+dBYWRZJ27I9uMrNb8b0=
     volumes:
       - ./code:/data/mysite.local
       - php_socket:/var/run/php
