@@ -12,5 +12,6 @@ class ReportRequest
      */
     public function __construct(
         public array $ids
-    ) {}
+    ) {
+    }
 }

@@ -12,7 +12,8 @@ class AddNewsController
 {
     public function __construct(
         private AddNewsUseCase $addNewsUseCase
-    ) {}
+    ) {
+    }
     public function __invoke(Request $httpRequest)
     {
         $url = $httpRequest->json('url');

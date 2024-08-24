@@ -11,5 +11,6 @@ class NewsListResponse
      */
     public function __construct(
         public iterable $newsList
-    ) {}
+    ) {
+    }
 }

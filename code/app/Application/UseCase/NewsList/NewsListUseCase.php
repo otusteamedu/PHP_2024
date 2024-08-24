@@ -9,7 +9,9 @@ use App\Domain\Repository\NewsRepositoryInterface;
 
 class NewsListUseCase
 {
-    public function __construct(private NewsRepositoryInterface $newsRepository) {}
+    public function __construct(private NewsRepositoryInterface $newsRepository)
+    {
+    }
 
     public function __invoke(): NewsListResponse
     {

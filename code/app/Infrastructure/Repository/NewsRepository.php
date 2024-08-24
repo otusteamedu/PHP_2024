@@ -16,7 +16,9 @@ class NewsRepository implements NewsRepositoryInterface
 {
     const TABLE_NAME = 'news';
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
     /**
      * @param integer $id
      * @return News|null

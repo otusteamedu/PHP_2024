@@ -11,7 +11,8 @@ class NewsListController
 {
     public function __construct(
         private NewsListUseCase $newsListUseCase
-    ) {}
+    ) {
+    }
 
 
     public function __invoke()

@@ -13,7 +13,8 @@ class ReportController
 {
     public function __construct(
         private ReportUseCase $reportUseCase
-    ) {}
+    ) {
+    }
 
     public function __invoke(Request $httpRequest)
     {

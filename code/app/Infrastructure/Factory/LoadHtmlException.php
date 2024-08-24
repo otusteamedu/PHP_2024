@@ -6,4 +6,6 @@ namespace App\Infrastructure\Factory;
 
 use Exception;
 
-class LoadHtmlException extends Exception {}
+class LoadHtmlException extends Exception
+{
+}

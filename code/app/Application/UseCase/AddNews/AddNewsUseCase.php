@@ -11,9 +11,9 @@ readonly class AddNewsUseCase
 {
     public function __construct(
         private NewsFactoryInterface $newsFactory,
-        private  NewsRepositoryInterface $newsRepository
+        private NewsRepositoryInterface $newsRepository
     ) {
-        // 
+        //
     }
 
     public function __invoke(AddNewsRequest $request): AddNewsResponse

@@ -15,7 +15,8 @@ class NewsFactory implements NewsFactoryInterface
 {
     public function __construct(
         private NewsLoader $loader
-    ) {}
+    ) {
+    }
 
     public function create(string $url): News
     {
