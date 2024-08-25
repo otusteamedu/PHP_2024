@@ -16,4 +16,4 @@ check_is_number 1
 var1=$2
 check_is_number 2
 
-echo "($1 + $2)" | bc
+echo "$1 $2" | awk '{sum=$1+$2} END {print sum}'
