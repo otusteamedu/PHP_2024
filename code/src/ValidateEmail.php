@@ -1,6 +1,6 @@
 <?php
 
-namespace Src;
+namespace AlexAgapitov\OtusComposerProject;
 
 class ValidateEmail
 {

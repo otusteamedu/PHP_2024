@@ -1,8 +1,8 @@
 <?php
 
-use Src\ValidateEmail;
+use AlexAgapitov\OtusComposerProject\ValidateEmail;
 
-require 'autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
 $emails = [
     'example@example.com',
