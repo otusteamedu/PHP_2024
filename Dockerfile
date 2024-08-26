@@ -7,12 +7,4 @@ RUN apt update  \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer  \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-#WORKDIR /data
-#
-#COPY . .
-#
-#RUN composer install --optimize-autoloader
-
 WORKDIR /data/src
-
-CMD ["php"]
