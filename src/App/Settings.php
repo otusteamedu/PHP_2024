@@ -6,7 +6,7 @@ use Komarov\Hw5\Exception\AppException;
 
 class Settings
 {
-    private static Settings | null $instance = null;
+    private static Settings|null $instance = null;
     private array $settings;
 
     /**
@@ -34,11 +34,11 @@ class Settings
 
     public static function getInstance(): self
     {
-         if (is_null(self::$instance)) {
+        if (is_null(self::$instance)) {
             self::$instance = new self;
-         }
+        }
 
-         return self::$instance;
+        return self::$instance;
     }
 
     /**
