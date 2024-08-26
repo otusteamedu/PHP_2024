@@ -78,8 +78,6 @@ class Socket
             throw new AppException('Socket accept error');
         }
 
-        $this->socket = $socketAccept;
-
         return $socketAccept;
     }
 
