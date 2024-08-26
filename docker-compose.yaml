@@ -1,0 +1,30 @@
+services:
+    server:
+        container_name: otus.socket.server
+        restart: unless-stopped
+        build:
+            context: php-fpm
+            dockerfile: Dockerfile
+        volumes:
+            - ./src:/data/src
+            - ./vendor:/data/vendor
+            - ./config:/data/config
+            - socket:/tmp
+        command: [ "php", "app.php", "server" ]
+
+    client:
+        container_name: otus.socket.client
+        build:
+            context: php-fpm
+            dockerfile: Dockerfile
+        tty: true
+        volumes:
+            - ./src:/data/src
+            - ./vendor:/data/vendor
+            - ./config:/data/config
+            - socket:/tmp
+        depends_on:
+            - server
+
+volumes:
+    socket:
