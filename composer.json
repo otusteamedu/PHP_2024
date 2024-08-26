@@ -1,0 +1,15 @@
+{
+  "name": "vsukhov/sockets",
+  "description": "homework5",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "VSukhov\\Sockets\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8",
+    "ext-sockets": "*",
+    "ext-readline": "*"
+  }
+}
