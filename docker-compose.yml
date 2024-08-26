@@ -1,0 +1,28 @@
+services:
+  server-side:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: chat/console-php-server
+    container_name: server-side
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  client-side:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: chat/console-php-client
+    container_name: client-side
+    volumes:
+      - ./code:/data/mysite.local
+    depends_on:
+      - server-side
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
