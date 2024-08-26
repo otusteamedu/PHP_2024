@@ -8,8 +8,6 @@ use App\Domain\ValueObject\ExportDate;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
 
-use function PHPUnit\Framework\isNull;
-
 class News
 {
     /** @var integer|null */
