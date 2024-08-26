@@ -1,0 +1,16 @@
+{
+    "name": "komarov/hw6",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Komarov\\Hw6\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Komarov",
+            "email": "sk-2006@mail.ru"
+        }
+    ],
+    "require": {}
+}
