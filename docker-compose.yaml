@@ -1,0 +1,26 @@
+services:
+  server:
+    container_name: server
+    restart: unless-stopped
+    build: .
+    volumes:
+      - ./src:/data/src
+      - ./vendor:/data/vendor
+      - ./config:/data/config
+      - socket:/tmp
+    command: ["php", "app.php", "server"]
+
+  client:
+    container_name: client
+    build: .
+    tty: true
+    volumes:
+      - ./src:/data/src
+      - ./vendor:/data/vendor
+      - ./config:/data/config
+      - socket:/tmp
+    depends_on:
+      - server
+
+volumes:
+  socket:

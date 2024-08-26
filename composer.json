@@ -1,0 +1,20 @@
+{
+    "name": "komarov/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Komarov\\Hw5\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Komarov",
+            "email": "sk-2006@mail.ru"
+        }
+    ],
+    "require": {
+        "php": ">=8",
+        "ext-sockets": "*",
+        "ext-readline": "*"
+    }
+}
