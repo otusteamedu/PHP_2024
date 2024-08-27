@@ -2,7 +2,9 @@
 
 namespace VSukhov\Validator\Exception;
 
-class AppException extends \Exception
+use Exception;
+
+class AppException extends Exception
 {
 
 }
