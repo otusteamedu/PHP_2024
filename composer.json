@@ -1,0 +1,10 @@
+{
+  "name": "vsukhov/validator",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "VSukhov\\Validator\\": "src/"
+    }
+  },
+  "require": {}
+}
