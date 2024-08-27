@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: 'postgresql'
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./dump:/dump
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: otuscinema
+      POSTGRES_USER: otus
+      POSTGRES_PASSWORD: example
