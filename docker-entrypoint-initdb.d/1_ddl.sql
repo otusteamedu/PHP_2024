@@ -134,7 +134,7 @@ create view query_1 as
 ;
 --2. Подсчёт проданных билетов за неделю
 create view query_2 as
-    select count(*)
+    select count(distinct ticket.id)
         from ticket
             join purchase on ticket.purchase_id = purchase.id
         where purchase.purchase_date >= current_date - interval '7 days' and purchase.purchase_date <= current_date;
