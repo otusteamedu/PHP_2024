@@ -1,0 +1,53 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "aacb15f12e3ae092d5e5887d4b10d8a9",
+    "packages": [
+        {
+            "name": "mukhametali-kussaiynov/otus-composer-package",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mukhametali/otus-composer-package.git",
+                "reference": "79a544e6b6f1b6ae162d0f665f32d2e35b9a45c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mukhametali/otus-composer-package/zipball/79a544e6b6f1b6ae162d0f665f32d2e35b9a45c9",
+                "reference": "79a544e6b6f1b6ae162d0f665f32d2e35b9a45c9",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MukhametaliKussaiynov\\OtusComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Mukhametali Kussaiynov",
+                    "email": "m.kussaiynov1996@gmail.com"
+                }
+            ],
+            "description": "A simple package to check if a string is a palindrome.",
+            "support": {
+                "issues": "https://github.com/mukhametali/otus-composer-package/issues",
+                "source": "https://github.com/mukhametali/otus-composer-package/tree/1.0.4"
+            },
+            "time": "2024-08-28T13:36:37+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
