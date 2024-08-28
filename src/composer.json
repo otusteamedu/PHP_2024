@@ -1,0 +1,15 @@
+{
+    "name": "timur-shakirov/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "TimurShakirov\\Hw4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "TimurShakirov"
+        }
+    ],
+    "require": {}
+}
