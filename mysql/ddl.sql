@@ -54,30 +54,20 @@ COLLATE='utf8mb4_0900_ai_ci'
 ENGINE=InnoDB
 ;
 
-CREATE TABLE `prices` (
-      `id` INT(10) NOT NULL AUTO_INCREMENT,
-      `seat_id` INT(10) NOT NULL,
-      `session_id` INT(10) NOT NULL,
-      `price` INT(10) NOT NULL,
-      PRIMARY KEY (`id`) USING BTREE,
-      INDEX `FK__hall_seats` (`seat_id`) USING BTREE,
-      INDEX `FK__hall_session` (`session_id`) USING BTREE,
-      CONSTRAINT `FK__hall_seats` FOREIGN KEY (`seat_id`) REFERENCES `hall_seats` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
-      CONSTRAINT `FK__hall_session` FOREIGN KEY (`session_id`) REFERENCES `sessions_films` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
-)
-COLLATE='utf8mb4_0900_ai_ci'
-ENGINE=InnoDB
-;
 
 CREATE TABLE `tickets` (
        `id` INT(10) NOT NULL AUTO_INCREMENT,
-       `price_id` INT(10) NULL DEFAULT NULL,
+       `seat_id` INT(10) NOT NULL,
+       `session_id` INT(10) NOT NULL,
+       `price` INT(10) NOT NULL,
        `user_id` INT(10) NULL DEFAULT NULL,
        PRIMARY KEY (`id`) USING BTREE,
-       INDEX `FK__price` (`price_id`) USING BTREE,
        INDEX `FK__users` (`user_id`) USING BTREE,
-       CONSTRAINT `FK__price` FOREIGN KEY (`price_id`) REFERENCES `prices` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
-       CONSTRAINT `FK__users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+       INDEX `FK__hall_seats` (`seat_id`) USING BTREE,
+       INDEX `FK__hall_session` (`session_id`) USING BTREE,
+       CONSTRAINT `FK__users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+       CONSTRAINT `FK__hall_seats` FOREIGN KEY (`seat_id`) REFERENCES `hall_seats` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+       CONSTRAINT `FK__hall_session` FOREIGN KEY (`session_id`) REFERENCES `sessions_films` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 )
 COLLATE='utf8mb4_0900_ai_ci'
 ENGINE=InnoDB
