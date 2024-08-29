@@ -15,10 +15,21 @@ begin
 end;
 $$ language plpgsql;
 
+-- 50 movies
+insert into movies(name, duration, description, category, origin, releaseDate)
+  select
+  	concat ('movie_', random_string((3 + random()*5)::integer)),
+   	(3600 + random()*7200),
+   	random_string((12 + random()*12)::integer),
+   	(array['драма', 'триллер', 'комедия', 'боевик', 'хоррор'])[floor(random() * 5 + 1)],
+   	(array['Индия', 'Мексика', 'Англия', 'США', 'Россия'])[floor(random() * 5 + 1)],
+   	now() - interval '1 week' - random() * interval '50 years'
+  from generate_series(1,50);
+
 -- 6 halls
 insert into halls(name, basePrice)
   select
-  	CONCAT ('Зал_', random_string(3)),
+  	concat ('Зал_', random_string(3)),
    	(250 + random()*500)
   from generate_series(1,6);
 
@@ -51,30 +62,17 @@ begin
 end;
 $$ language plpgsql;
 
--- 6 movies
-insert into movies(name, duration, description, category, origin, releaseDate)
-  select
-  	CONCAT ('movie_', random_string((3 + random()*5)::integer)),
-   	(3600 + random()*7200),
-   	random_string((12 + random()*12)::integer),
-   	(array['драма', 'триллер', 'комедия', 'боевик', 'хоррор'])[floor(random() * 5 + 1)],
-   	(array['Индия', 'Мексика', 'Англия', 'США', 'Россия'])[floor(random() * 5 + 1)],
-   	   	timestamp '1970-01-01 00:00:00' +
-       random() * (timestamp '2024-08-18 00:00:00' -
-                   timestamp '1970-01-01 00:00:00')
-  from generate_series(1,6);
-  
--- 5 shows per day each hall
+-- 5 shows per day for each hall for last 30 days
 do $$
-
 begin
-  for d in 1..3 loop
+  for d in 1..30 loop
     for h in 1..6 loop
       insert into shows(movieId, hallId, startAt, extraPrice, maxDiscount)
         select
         	(1 + random()*5)::integer,
         	h,
-        	timestamp '2024-08-18 10:00:00' + ((d - 1) ||' days')::interval + (180 * (gs.id - 1) ||' minutes')::interval,
+        	now()::date - (30 - d ||' days')::interval +
+        	interval '10 hours' + (180 * (gs.id - 1) ||' minutes')::interval,
          	gs.id * (1 + random()*10)::integer,
          	(1 + random()*33)::integer
         from generate_series(1,5) as gs(id);
@@ -83,10 +81,14 @@ begin
 end;
 $$ language plpgsql;
 
+-- 10000 tickets
 do $$
 declare
   rnd_show integer;
+  rnd_row integer;
   rnd_seat integer;
+  hall_id integer;
+  seat_id integer;
   base_price numeric;
   extra_price numeric;
   max_discount numeric;
@@ -94,31 +96,27 @@ declare
   sold_price numeric;
   sold_at timestamp;
 begin
-  for t in 1..30 loop
-    rnd_show := floor(random() * 90 + 1);
-    rnd_seat := floor(random() * 2250 + 1);
-
-    select basePrice into base_price
+  for t in 1..10000 loop
+    rnd_show := floor(random() * 900 + 1);  -- 5*6*30
+    rnd_seat := floor(random() * 25 + 1);
+    rnd_row := floor(random() * 15 + 1);
+    
+    select halls.id, halls.basePrice, shows.extraPrice, shows.maxDiscount, shows.startAt
+    into hall_id, base_price, extra_price, max_discount, sold_at
     from halls
     join shows on shows.hallId = halls.id
     where shows.id = rnd_show;
 
-    select extraPrice, maxDiscount into extra_price, max_discount
-    from shows
-    where id = rnd_show;
-
-    select extraPrice into seat_extra_price
+    select seats.id, extraPrice into seat_id, seat_extra_price
     from seats
-    where id = rnd_seat;
+    join rows on rows.id = seats.rowId
+    where rows.hallId = hall_id and rows.row = rnd_row and seats.seat = rnd_seat;
 
     sold_price := base_price * (1 + (extra_price + seat_extra_price - random() * max_discount ) / 100);
-
-    sold_at := timestamp '2024-07-24 00:00:00' +
-               random() * (timestamp '2024-08-18 00:00:00' -
-                           timestamp '2024-07-24 00:00:00');
+    sold_at := least(sold_at - random()^2 * interval '7 days', now());
 
     insert into tickets (showId, seatId, soldPrice, soldAt)
-    values (rnd_show, rnd_seat, sold_price, sold_at);
+    values (rnd_show, seat_id, sold_price, sold_at);
   end loop;
 end;
 $$ language plpgsql;
