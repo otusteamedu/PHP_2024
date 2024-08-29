@@ -1,0 +1,21 @@
+{
+    "name": "bitrix/local",
+    "autoload": {
+        "psr-4": {
+            "Bitrix\\Local\\": "src/"
+        }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.27",
+        "vladimir-grinko/simple-increment": "^1.0"
+    },
+    "config": {
+        "vendor-dir": "vendor",
+        "allow-plugins": {
+            "wikimedia/composer-merge-plugin": true
+        },
+        "platform": {
+            "php": "8.1.14"
+        }
+    }
+}
