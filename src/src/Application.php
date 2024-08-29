@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace TimurShakirov\Hw4;
 
+session_start();
+
 use TimurShakirov\Hw4\StackBrackets;
 use Exception;
 
