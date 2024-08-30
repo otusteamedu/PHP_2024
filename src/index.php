@@ -1,5 +1,4 @@
 <?php
-
 $hostname = gethostname();
 header('Content-Type: text/plain');
 echo "Имя хоста: " . $hostname . PHP_EOL;
