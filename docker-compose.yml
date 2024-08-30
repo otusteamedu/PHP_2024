@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - php-1
+      - php-2
+      - php-3
+    networks:
+      - app-network
+
+  php-1:
+    container_name: php-1
+    build: ./php
+    hostname: php1-host
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      REDIS_HOST: redis
+    networks:
+      - app-network
+
+  php-2:
+    container_name: php-2
+    build: ./php
+    hostname: php2-host
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      REDIS_HOST: redis
+    networks:
+      - app-network
+
+  php-3:
+    container_name: php-3
+    build: ./php
+    hostname: php3-host
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      REDIS_HOST: redis
+    networks:
+      - app-network
+
+  redis:
+    container_name: redis
+    image: redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
