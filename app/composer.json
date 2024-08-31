@@ -17,10 +17,13 @@
   },
   "require": {
     "php-di/php-di": "^7",
-    "slim/slim": "4.*",
+    "slim/slim": "^4",
     "slim/psr7": "^1.7",
     "ext-pdo": "*",
     "ext-redis": "*",
     "ext-memcache": "*"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "3.*"
   }
 }

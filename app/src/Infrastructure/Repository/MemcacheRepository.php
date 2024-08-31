@@ -10,8 +10,7 @@ class MemcacheRepository
 {
     public function __construct(
         protected Memcache $connection
-    )
-    {
+    ) {
     }
 
     public function testConnection(): string

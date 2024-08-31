@@ -10,8 +10,7 @@ class PostgresRepository
 {
     public function __construct(
         protected PDO $connection
-    )
-    {
+    ) {
     }
 
     public function testConnection(): string

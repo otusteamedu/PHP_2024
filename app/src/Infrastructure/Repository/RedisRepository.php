@@ -10,8 +10,7 @@ class RedisRepository
 {
     public function __construct(
         protected Redis $connection
-    )
-    {
+    ) {
     }
 
     public function testConnection(): string

@@ -3,7 +3,6 @@
 use Slim\App;
 use Slim\Factory\AppFactory;
 use Psr\Container\ContainerInterface;
-
 use App\Infrastructure\Manager\ConnectionManager;
 use App\Infrastructure\Repository\PostgresRepository;
 use App\Infrastructure\Repository\MemcacheRepository;

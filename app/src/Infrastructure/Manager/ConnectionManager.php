@@ -14,8 +14,7 @@ class ConnectionManager
         protected PostgresRepository $postgres,
         protected MemcacheRepository $memcache,
         protected RedisRepository $redis
-    )
-    {
+    ) {
     }
 
     public function getStatus(): string
