@@ -1,0 +1,26 @@
+{
+  "name": "otus/hw-1",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Ivan Spitsyn"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "8.3"
+    }
+  },
+  "require": {
+    "php-di/php-di": "^7",
+    "slim/slim": "4.*",
+    "slim/psr7": "^1.7",
+    "ext-pdo": "*",
+    "ext-redis": "*",
+    "ext-memcache": "*"
+  }
+}

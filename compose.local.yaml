@@ -1,0 +1,25 @@
+services:
+  php:
+    build:
+      context: .
+      target: develop
+      dockerfile: ./deploy/php/Dockerfile
+      args:
+        APPLICATION_SOURCE_DIR: "./app"
+        APPLICATION_CONTAINER_DIR: "/data/app"
+        PHP_CONFIG_PATH: "./deploy/php/conf.d/develop.ini"
+    volumes:
+      - php_socket:/sock
+      - php_application:/data/app
+      - ./deploy/php/php-fpm.d/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./deploy/php/logs:/var/log/php
+  database:
+    ports:
+      - "5432"
+volumes:
+  php_application:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./app
