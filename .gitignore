@@ -1,5 +1,14 @@
 .idea/
 /vendor/
 .DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
 .AppleDouble
 .LSOverride
+.env
+.env.db
+deploy/nginx/logs
+deploy/php/logs
+deploy/db/data
+deploy/db/logs

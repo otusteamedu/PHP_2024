@@ -1,0 +1,66 @@
+services:
+  nginx:
+    restart: always
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - php_socket:/sock
+      - php_application:/data/app
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d
+      - ./deploy/nginx/logs:/var/log/nginx
+    depends_on:
+      - php
+  php:
+    restart: always
+    image: otus-hw-1/php:latest
+    build:
+      context: .
+      target: production
+      dockerfile: ./deploy/php/Dockerfile
+      args:
+        APPLICATION_SOURCE_DIR: "./app"
+        APPLICATION_CONTAINER_DIR: "/data/app"
+        PHP_CONFIG_PATH: "./deploy/php/conf.d/production.ini"
+    env_file:
+      - .env
+      - .env.db
+    networks:
+      - otus-hw-1_php
+    volumes:
+      - php_socket:/sock
+      - php_application:/data/app
+      - ./deploy/php/php-fpm.d/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./deploy/php/logs:/var/log/php
+  database:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    env_file:
+      - .env.db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
+    networks:
+      - otus-hw-1_php
+    volumes:
+      - ./deploy/db/data:/var/lib/postgresql/data:rw
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+  redis:
+    restart: always
+    image: redis:7-alpine
+    networks:
+      - otus-hw-1_php
+  memcached:
+    restart: always
+    image: memcached:1.6-alpine
+    networks:
+      - otus-hw-1_php
+volumes:
+  php_socket:
+  php_application:
+networks:
+  otus-hw-1_php:
