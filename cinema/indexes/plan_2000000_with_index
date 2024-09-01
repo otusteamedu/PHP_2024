@@ -1,0 +1,108 @@
+                                                                    QUERY PLAN                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=50.98..51.58 rows=60 width=12) (actual time=0.053..0.055 rows=6 loops=1)
+   Group Key: movies.name
+   Batches: 1  Memory Usage: 24kB
+   ->  Merge Join  (cost=50.04..50.83 rows=60 width=12) (actual time=0.036..0.044 rows=30 loops=1)
+         Merge Cond: (movies.id = shows.movieid)
+         ->  Index Scan using movies_pkey on movies  (cost=0.43..60434.18 rows=2000050 width=16) (actual time=0.009..0.011 rows=7 loops=1)
+         ->  Sort  (cost=49.31..49.46 rows=60 width=4) (actual time=0.023..0.025 rows=30 loops=1)
+               Sort Key: shows.movieid
+               Sort Method: quicksort  Memory: 25kB
+               ->  Index Scan using idx_shows_startat_date on shows  (cost=0.43..47.54 rows=60 width=4) (actual time=0.011..0.016 rows=30 loops=1)
+                     Index Cond: ((startat)::date = (now())::date)
+ Planning Time: 0.207 ms
+ Execution Time: 0.087 ms
+(13 rows)
+                                                                                QUERY PLAN                                                                                 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=31033.09..31033.10 rows=1 width=8) (actual time=77.578..79.451 rows=1 loops=1)
+   ->  Gather  (cost=31032.88..31033.09 rows=2 width=8) (actual time=77.389..79.443 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Partial Aggregate  (cost=30032.88..30032.89 rows=1 width=8) (actual time=74.526..74.527 rows=1 loops=3)
+               ->  Parallel Index Only Scan using idx_tickets_soldat on tickets  (cost=0.43..28122.02 rows=764341 width=0) (actual time=0.136..47.553 rows=611725 loops=3)
+                     Index Cond: ((soldat <= now()) AND (soldat > (now() - '7 days'::interval)))
+                     Heap Fetches: 0
+ Planning Time: 0.102 ms
+ Execution Time: 79.475 ms
+(10 rows)
+
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=7892.78..7917.79 rows=10004 width=52) (actual time=0.072..0.075 rows=30 loops=1)
+   Sort Key: s.startat
+   Sort Method: quicksort  Memory: 26kB
+   ->  Hash Join  (cost=37.87..7228.10 rows=10004 width=52) (actual time=0.031..0.063 rows=30 loops=1)
+         Hash Cond: (s.hallid = h.id)
+         ->  Nested Loop  (cost=0.87..7164.75 rows=10004 width=24) (actual time=0.020..0.047 rows=30 loops=1)
+               ->  Index Scan using idx_shows_startat_date on shows s  (cost=0.43..6903.00 rows=10004 width=16) (actual time=0.011..0.017 rows=30 loops=1)
+                     Index Cond: ((startat)::date = CURRENT_DATE)
+               ->  Memoize  (cost=0.44..1.68 rows=1 width=16) (actual time=0.001..0.001 rows=1 loops=30)
+                     Cache Key: s.movieid
+                     Cache Mode: logical
+                     Hits: 24  Misses: 6  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+                     ->  Index Scan using movies_pkey on movies m  (cost=0.43..1.67 rows=1 width=16) (actual time=0.002..0.002 rows=1 loops=6)
+                           Index Cond: (id = s.movieid)
+         ->  Hash  (cost=22.00..22.00 rows=1200 width=36) (actual time=0.007..0.007 rows=6 loops=1)
+               Buckets: 2048  Batches: 1  Memory Usage: 17kB
+               ->  Seq Scan on halls h  (cost=0.00..22.00 rows=1200 width=36) (actual time=0.004..0.005 rows=6 loops=1)
+ Planning Time: 0.212 ms
+ Execution Time: 0.102 ms
+(19 rows)
+
+                                                                                                              QUERY PLAN                                                                                                               
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=53459.10..53459.11 rows=3 width=44) (actual time=254.343..256.704 rows=3 loops=1)
+   ->  Sort  (cost=53459.10..53459.12 rows=6 width=44) (actual time=254.342..256.702 rows=3 loops=1)
+         Sort Key: (sum((sum(tickets.soldprice)))) DESC
+         Sort Method: quicksort  Memory: 25kB
+         ->  GroupAggregate  (cost=53458.90..53459.02 rows=6 width=44) (actual time=254.333..256.696 rows=6 loops=1)
+               Group Key: m.name
+               ->  Sort  (cost=53458.90..53458.92 rows=6 width=20) (actual time=254.327..256.687 rows=6 loops=1)
+                     Sort Key: m.name
+                     Sort Method: quicksort  Memory: 25kB
+                     ->  Nested Loop  (cost=53444.20..53458.83 rows=6 width=20) (actual time=254.290..256.677 rows=6 loops=1)
+                           ->  Finalize GroupAggregate  (cost=53443.78..53445.30 rows=6 width=12) (actual time=254.274..256.636 rows=6 loops=1)
+                                 Group Key: s.movieid
+                                 ->  Gather Merge  (cost=53443.78..53445.18 rows=12 width=12) (actual time=254.267..256.628 rows=18 loops=1)
+                                       Workers Planned: 2
+                                       Workers Launched: 2
+                                       ->  Sort  (cost=52443.75..52443.77 rows=6 width=12) (actual time=251.454..251.455 rows=6 loops=3)
+                                             Sort Key: s.movieid
+                                             Sort Method: quicksort  Memory: 25kB
+                                             Worker 0:  Sort Method: quicksort  Memory: 25kB
+                                             Worker 1:  Sort Method: quicksort  Memory: 25kB
+                                             ->  Partial HashAggregate  (cost=52443.62..52443.68 rows=6 width=12) (actual time=251.439..251.440 rows=6 loops=3)
+                                                   Group Key: s.movieid
+                                                   Batches: 1  Memory Usage: 24kB
+                                                   Worker 0:  Batches: 1  Memory Usage: 24kB
+                                                   Worker 1:  Batches: 1  Memory Usage: 24kB
+                                                   ->  Merge Join  (cost=196.93..48619.18 rows=764887 width=8) (actual time=3.663..172.158 rows=611675 loops=3)
+                                                         Merge Cond: (tickets.showid = s.id)
+                                                         ->  Parallel Index Only Scan using idx_tickets_showid_soldprice_soldat on tickets  (cost=0.43..38829.50 rows=764887 width=8) (actual time=3.508..103.974 rows=611675 loops=3)
+                                                               Index Cond: ((soldat <= now()) AND (soldat > (now() - '7 days'::interval)))
+                                                               Heap Fetches: 0
+                                                         ->  Index Scan using shows_pkey on shows s  (cost=0.43..49665.73 rows=2000880 width=8) (actual time=0.016..1.515 rows=8999 loops=3)
+                           ->  Index Scan using movies_pkey on movies m  (cost=0.43..2.25 rows=1 width=16) (actual time=0.006..0.006 rows=1 loops=6)
+                                 Index Cond: (id = s.movieid)
+ Planning Time: 0.455 ms
+ Execution Time: 256.760 ms
+(35 rows)
+
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Function Scan on crosstab ct  (cost=0.00..10.00 rows=1000 width=804) (actual time=2.074..2.075 rows=15 loops=1)
+ Planning Time: 0.031 ms
+ Execution Time: 2.092 ms
+(3 rows)
+
+                                                                     QUERY PLAN                                                                      
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=0.43..6.57 rows=1 width=36) (actual time=0.053..0.053 rows=1 loops=1)
+   ->  Index Only Scan using idx_tickets_showid_soldprice_soldat on tickets  (cost=0.43..5.43 rows=223 width=8) (actual time=0.017..0.035 rows=249 loops=1)
+         Index Cond: (showid = 42)
+         Heap Fetches: 0
+ Planning Time: 0.103 ms
+ Execution Time: 0.069 ms
+(6 rows)

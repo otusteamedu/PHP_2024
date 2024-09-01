@@ -1,0 +1,101 @@
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ Group  (cost=55.86..55.89 rows=7 width=32) (actual time=0.214..0.220 rows=6 loops=1)
+   Group Key: movies.name
+   ->  Sort  (cost=55.86..55.87 rows=7 width=32) (actual time=0.213..0.215 rows=30 loops=1)
+         Sort Key: movies.name
+         Sort Method: quicksort  Memory: 25kB
+         ->  Hash Join  (cost=39.09..55.76 rows=7 width=32) (actual time=0.178..0.188 rows=30 loops=1)
+               Hash Cond: (movies.id = shows.movieid)
+               ->  Seq Scan on movies  (cost=0.00..14.80 rows=480 width=36) (actual time=0.007..0.010 rows=50 loops=1)
+               ->  Hash  (cost=39.00..39.00 rows=7 width=4) (actual time=0.166..0.166 rows=30 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                     ->  Seq Scan on shows  (cost=0.00..39.00 rows=7 width=4) (actual time=0.154..0.160 rows=30 loops=1)
+                           Filter: ((startat)::date = (now())::date)
+                           Rows Removed by Filter: 870
+ Planning Time: 0.175 ms
+ Execution Time: 0.248 ms
+(15 rows)
+
+                                                 QUERY PLAN                                                  
+-------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=272.91..272.92 rows=1 width=8) (actual time=3.195..3.195 rows=1 loops=1)
+   ->  Seq Scan on tickets  (cost=0.00..272.80 rows=46 width=0) (actual time=0.012..3.119 rows=1634 loops=1)
+         Filter: ((soldat <= now()) AND (soldat > (now() - '7 days'::interval)))
+         Rows Removed by Filter: 8366
+ Planning Time: 0.061 ms
+ Execution Time: 3.212 ms
+(6 rows)
+
+                                                           QUERY PLAN                                                           
+--------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=82.51..82.53 rows=7 width=72) (actual time=0.296..0.300 rows=30 loops=1)
+   Sort Key: shows.startat
+   Sort Method: quicksort  Memory: 26kB
+   ->  Hash Join  (cost=55.84..82.41 rows=7 width=72) (actual time=0.273..0.280 rows=30 loops=1)
+         Hash Cond: (halls.id = shows.hallid)
+         ->  Seq Scan on halls  (cost=0.00..22.00 rows=1200 width=36) (actual time=0.004..0.005 rows=6 loops=1)
+         ->  Hash  (cost=55.76..55.76 rows=7 width=44) (actual time=0.264..0.265 rows=30 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 10kB
+               ->  Hash Join  (cost=39.09..55.76 rows=7 width=44) (actual time=0.226..0.258 rows=30 loops=1)
+                     Hash Cond: (movies.id = shows.movieid)
+                     ->  Seq Scan on movies  (cost=0.00..14.80 rows=480 width=36) (actual time=0.003..0.005 rows=50 loops=1)
+                     ->  Hash  (cost=39.00..39.00 rows=7 width=16) (actual time=0.214..0.215 rows=30 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                           ->  Seq Scan on shows  (cost=0.00..39.00 rows=7 width=16) (actual time=0.193..0.200 rows=30 loops=1)
+                                 Filter: ((startat)::date = (now())::date)
+                                 Rows Removed by Filter: 870
+ Planning Time: 0.170 ms
+ Execution Time: 0.320 ms
+(18 rows)
+
+                                                                               QUERY PLAN                                                                                
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=332.99..333.00 rows=3 width=64) (actual time=4.073..4.077 rows=3 loops=1)
+   ->  Sort  (cost=332.99..333.10 rows=46 width=64) (actual time=4.072..4.076 rows=3 loops=1)
+         Sort Key: (sum(ar.sum)) DESC
+         Sort Method: quicksort  Memory: 25kB
+         ->  GroupAggregate  (cost=331.47..332.39 rows=46 width=64) (actual time=4.034..4.040 rows=6 loops=1)
+               Group Key: m.name
+               ->  Sort  (cost=331.47..331.59 rows=46 width=40) (actual time=4.029..4.032 rows=6 loops=1)
+                     Sort Key: m.name
+                     Sort Method: quicksort  Memory: 25kB
+                     ->  Hash Join  (cost=314.13..330.20 rows=46 width=40) (actual time=4.007..4.018 rows=6 loops=1)
+                           Hash Cond: (m.id = ar.movieid)
+                           ->  Seq Scan on movies m  (cost=0.00..14.80 rows=480 width=36) (actual time=0.005..0.008 rows=50 loops=1)
+                           ->  Hash  (cost=313.56..313.56 rows=46 width=12) (actual time=3.988..3.990 rows=6 loops=1)
+                                 Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                 ->  Subquery Scan on ar  (cost=312.29..313.56 rows=46 width=12) (actual time=3.796..3.986 rows=6 loops=1)
+                                       ->  GroupAggregate  (cost=312.29..313.10 rows=46 width=12) (actual time=3.795..3.984 rows=6 loops=1)
+                                             Group Key: s.movieid
+                                             ->  Sort  (cost=312.29..312.41 rows=46 width=8) (actual time=3.770..3.836 rows=1634 loops=1)
+                                                   Sort Key: s.movieid
+                                                   Sort Method: quicksort  Memory: 100kB
+                                                   ->  Hash Join  (cost=273.37..311.02 rows=46 width=8) (actual time=3.349..3.556 rows=1634 loops=1)
+                                                         Hash Cond: (s.id = tickets.showid)
+                                                         ->  Seq Scan on shows s  (cost=0.00..24.50 rows=1450 width=8) (actual time=0.005..0.062 rows=900 loops=1)
+                                                         ->  Hash  (cost=272.80..272.80 rows=46 width=8) (actual time=3.244..3.244 rows=1634 loops=1)
+                                                               Buckets: 2048 (originally 1024)  Batches: 1 (originally 1)  Memory Usage: 80kB
+                                                               ->  Seq Scan on tickets  (cost=0.00..272.80 rows=46 width=8) (actual time=0.010..3.012 rows=1634 loops=1)
+                                                                     Filter: ((soldat <= now()) AND (soldat >= (now() - '7 days'::interval)))
+                                                                     Rows Removed by Filter: 8366
+ Planning Time: 0.536 ms
+ Execution Time: 4.122 ms
+(30 rows)
+
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Function Scan on crosstab ct  (cost=0.00..10.00 rows=1000 width=804) (actual time=3.282..3.284 rows=15 loops=1)
+ Planning Time: 0.031 ms
+ Execution Time: 3.327 ms
+(3 rows)
+
+                                                QUERY PLAN                                                 
+-----------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=0.00..180.25 rows=1 width=36) (actual time=0.724..0.724 rows=1 loops=1)
+   ->  Seq Scan on tickets  (cost=0.00..180.00 rows=46 width=8) (actual time=0.025..0.716 rows=16 loops=1)
+         Filter: (showid = 42)
+         Rows Removed by Filter: 9984
+ Planning Time: 0.104 ms
+ Execution Time: 0.741 ms
+(6 rows)
