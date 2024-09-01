@@ -17,7 +17,9 @@ class NewsEntity
 
     public function setId(int $value): void
     {
-        $this->id = $value;
+        if ($this->id === null) {
+            $this->id = $value;
+        }
     }
 
     public function getId(): ?int

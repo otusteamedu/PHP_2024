@@ -4,7 +4,6 @@ namespace App\Application\Actions;
 
 use App\Application\Requests\CreateNewsRequest;
 use App\Application\Responses\CreateNewsResponse;
-use App\Application\Services\HtmlCrawlerService;
 use App\Domain\Factories\NewsFactoryInterface;
 
 readonly class CreateNewsAction
