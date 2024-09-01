@@ -1,0 +1,136 @@
+                                                                       QUERY PLAN                                                                        
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+ Group  (cost=32782.90..33786.76 rows=10004 width=12) (actual time=128.516..131.915 rows=6 loops=1)
+   Group Key: movies.name
+   ->  Gather Merge  (cost=32782.90..33765.92 rows=8336 width=12) (actual time=128.515..131.911 rows=6 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Group  (cost=31782.88..31803.72 rows=4168 width=12) (actual time=112.559..112.563 rows=2 loops=3)
+               Group Key: movies.name
+               ->  Sort  (cost=31782.88..31793.30 rows=4168 width=12) (actual time=112.558..112.560 rows=10 loops=3)
+                     Sort Key: movies.name
+                     Sort Method: quicksort  Memory: 25kB
+                     Worker 0:  Sort Method: quicksort  Memory: 25kB
+                     Worker 1:  Sort Method: quicksort  Memory: 25kB
+                     ->  Nested Loop  (cost=0.44..31532.27 rows=4168 width=12) (actual time=69.827..112.530 rows=10 loops=3)
+                           ->  Parallel Seq Scan on shows  (cost=0.00..31387.00 rows=4168 width=4) (actual time=69.822..112.518 rows=10 loops=3)
+                                 Filter: ((startat)::date = (now())::date)
+                                 Rows Removed by Filter: 666950
+                           ->  Memoize  (cost=0.44..5.88 rows=1 width=16) (actual time=0.001..0.001 rows=1 loops=30)
+                                 Cache Key: shows.movieid
+                                 Cache Mode: logical
+                                 Hits: 24  Misses: 6  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+                                 ->  Index Scan using movies_pkey on movies  (cost=0.43..5.87 rows=1 width=16) (actual time=0.003..0.003 rows=1 loops=6)
+                                       Index Cond: (id = shows.movieid)
+ Planning Time: 0.174 ms
+ Execution Time: 131.951 ms
+(24 rows)
+
+                                                                 QUERY PLAN                                                                 
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=34561.19..34561.20 rows=1 width=8) (actual time=240.750..244.891 rows=1 loops=1)
+   ->  Gather  (cost=34560.97..34561.18 rows=2 width=8) (actual time=240.664..244.884 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Partial Aggregate  (cost=33560.97..33560.99 rows=1 width=8) (actual time=225.192..225.192 rows=1 loops=3)
+               ->  Parallel Seq Scan on tickets  (cost=0.00..31646.75 rows=765690 width=0) (actual time=0.014..200.720 rows=611827 loops=3)
+                     Filter: ((soldat <= now()) AND (soldat > (now() - '7 days'::interval)))
+                     Rows Removed by Filter: 58173
+ Planning Time: 0.104 ms
+ Execution Time: 244.918 ms
+(10 rows)
+
+                                                                    QUERY PLAN                                                                     
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ Gather Merge  (cost=32830.88..33803.48 rows=8336 width=52) (actual time=130.940..134.417 rows=30 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   ->  Sort  (cost=31830.85..31841.27 rows=4168 width=52) (actual time=115.327..115.331 rows=10 loops=3)
+         Sort Key: shows.startat
+         Sort Method: quicksort  Memory: 26kB
+         Worker 0:  Sort Method: quicksort  Memory: 25kB
+         Worker 1:  Sort Method: quicksort  Memory: 25kB
+         ->  Hash Join  (cost=37.44..31580.25 rows=4168 width=52) (actual time=71.800..115.299 rows=10 loops=3)
+               Hash Cond: (shows.hallid = halls.id)
+               ->  Nested Loop  (cost=0.44..31532.27 rows=4168 width=24) (actual time=71.794..115.290 rows=10 loops=3)
+                     ->  Parallel Seq Scan on shows  (cost=0.00..31387.00 rows=4168 width=16) (actual time=71.787..115.275 rows=10 loops=3)
+                           Filter: ((startat)::date = (now())::date)
+                           Rows Removed by Filter: 666950
+                     ->  Memoize  (cost=0.44..5.88 rows=1 width=16) (actual time=0.001..0.001 rows=1 loops=30)
+                           Cache Key: shows.movieid
+                           Cache Mode: logical
+                           Hits: 24  Misses: 6  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+                           ->  Index Scan using movies_pkey on movies  (cost=0.43..5.87 rows=1 width=16) (actual time=0.003..0.003 rows=1 loops=6)
+                                 Index Cond: (id = shows.movieid)
+               ->  Hash  (cost=22.00..22.00 rows=1200 width=36) (actual time=0.010..0.010 rows=6 loops=1)
+                     Buckets: 2048  Batches: 1  Memory Usage: 17kB
+                     ->  Seq Scan on halls  (cost=0.00..22.00 rows=1200 width=36) (actual time=0.005..0.006 rows=6 loops=1)
+ Planning Time: 0.222 ms
+ Execution Time: 134.460 ms
+(25 rows)
+
+                                                                                        QUERY PLAN                                                                                        
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=60080.41..60080.41 rows=3 width=44) (actual time=580.743..585.061 rows=3 loops=1)
+   ->  Sort  (cost=60080.41..60080.42 rows=6 width=44) (actual time=580.742..585.059 rows=3 loops=1)
+         Sort Key: (sum((sum(tickets.soldprice)))) DESC
+         Sort Method: quicksort  Memory: 25kB
+         ->  GroupAggregate  (cost=60080.21..60080.33 rows=6 width=44) (actual time=580.733..585.052 rows=6 loops=1)
+               Group Key: m.name
+               ->  Sort  (cost=60080.21..60080.22 rows=6 width=20) (actual time=580.727..585.044 rows=6 loops=1)
+                     Sort Key: m.name
+                     Sort Method: quicksort  Memory: 25kB
+                     ->  Nested Loop  (cost=60028.31..60080.13 rows=6 width=20) (actual time=580.706..585.034 rows=6 loops=1)
+                           ->  Finalize GroupAggregate  (cost=60027.88..60029.40 rows=6 width=12) (actual time=580.688..585.007 rows=6 loops=1)
+                                 Group Key: s.movieid
+                                 ->  Gather Merge  (cost=60027.88..60029.28 rows=12 width=12) (actual time=580.682..584.999 rows=18 loops=1)
+                                       Workers Planned: 2
+                                       Workers Launched: 2
+                                       ->  Sort  (cost=59027.86..59027.87 rows=6 width=12) (actual time=565.565..565.566 rows=6 loops=3)
+                                             Sort Key: s.movieid
+                                             Sort Method: quicksort  Memory: 25kB
+                                             Worker 0:  Sort Method: quicksort  Memory: 25kB
+                                             Worker 1:  Sort Method: quicksort  Memory: 25kB
+                                             ->  Partial HashAggregate  (cost=59027.72..59027.78 rows=6 width=12) (actual time=565.548..565.550 rows=6 loops=3)
+                                                   Group Key: s.movieid
+                                                   Batches: 1  Memory Usage: 24kB
+                                                   Worker 0:  Batches: 1  Memory Usage: 24kB
+                                                   Worker 1:  Batches: 1  Memory Usage: 24kB
+                                                   ->  Nested Loop  (cost=0.44..55199.14 rows=765715 width=8) (actual time=0.524..480.059 rows=611827 loops=3)
+                                                         ->  Parallel Seq Scan on tickets  (cost=0.00..31646.75 rows=765715 width=8) (actual time=0.011..225.886 rows=611827 loops=3)
+                                                               Filter: ((soldat <= now()) AND (soldat >= (now() - '7 days'::interval)))
+                                                               Rows Removed by Filter: 58173
+                                                         ->  Memoize  (cost=0.44..0.50 rows=1 width=8) (actual time=0.000..0.000 rows=1 loops=1835482)
+                                                               Cache Key: tickets.showid
+                                                               Cache Mode: logical
+                                                               Hits: 624579  Misses: 8322  Evictions: 0  Overflows: 0  Memory Usage: 878kB
+                                                               Worker 0:  Hits: 596641  Misses: 8322  Evictions: 0  Overflows: 0  Memory Usage: 878kB
+                                                               Worker 1:  Hits: 589296  Misses: 8322  Evictions: 0  Overflows: 0  Memory Usage: 878kB
+                                                               ->  Index Scan using shows_pkey on shows s  (cost=0.43..0.49 rows=1 width=8) (actual time=0.002..0.002 rows=1 loops=24966)
+                                                                     Index Cond: (id = tickets.showid)
+                           ->  Index Scan using movies_pkey on movies m  (cost=0.43..8.45 rows=1 width=16) (actual time=0.004..0.004 rows=1 loops=6)
+                                 Index Cond: (id = s.movieid)
+ Planning Time: 0.320 ms
+ Execution Time: 585.159 ms
+(41 rows)
+
+                                                    QUERY PLAN                                                     
+-------------------------------------------------------------------------------------------------------------------
+ Function Scan on crosstab ct  (cost=0.00..10.00 rows=1000 width=804) (actual time=67.672..67.674 rows=15 loops=1)
+ Planning Time: 0.061 ms
+ Execution Time: 67.745 ms
+(3 rows)
+
+                                                            QUERY PLAN                                                             
+-----------------------------------------------------------------------------------------------------------------------------------
+ Finalize GroupAggregate  (cost=1000.00..24272.46 rows=1 width=36) (actual time=67.394..71.647 rows=1 loops=1)
+   ->  Gather  (cost=1000.00..24272.42 rows=2 width=12) (actual time=67.286..71.636 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Partial GroupAggregate  (cost=0.00..23272.22 rows=1 width=12) (actual time=43.772..43.773 rows=1 loops=3)
+               ->  Parallel Seq Scan on tickets  (cost=0.00..23271.75 rows=93 width=8) (actual time=0.381..43.720 rows=83 loops=3)
+                     Filter: (showid = 42)
+                     Rows Removed by Filter: 669917
+ Planning Time: 0.105 ms
+ Execution Time: 71.677 ms
+(10 rows)
