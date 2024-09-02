@@ -16,7 +16,7 @@ $result = $builder
     ->where('id', '2')
     ->execute();
 
-foreach($result as $item) {
+foreach ($result as $item) {
     var_dump($item);
 }
 
@@ -28,6 +28,6 @@ $result = $lazyBuilder
     ->orderBy('id', 'desc')
     ->execute();
 
-foreach($result as $item) {
+foreach ($result as $item) {
     var_dump($item);
 }
