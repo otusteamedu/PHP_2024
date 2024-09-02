@@ -14,8 +14,8 @@ for i in $NUMBER_1 $NUMBER_2
 do
   if ! [[ $i =~ $NUMBER_REGEXP ]]
     then
-      echo "Error: '${i}' is not a number";
-      exit 1;
+      echo "Error: '${i}' is not a number"
+      exit 1
   fi
 done
 
