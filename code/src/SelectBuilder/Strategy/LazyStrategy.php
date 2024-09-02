@@ -10,7 +10,6 @@ use Viking311\Builder\SelectBuilder\ResultSet\ProxyResultSet;
 
 class LazyStrategy implements StrategyInterface
 {
-
     /**
      * @param PDOStatement $statement
      * @return AbstractResultSet
