@@ -4,11 +4,19 @@ namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\Actions\CreateNewsAction;
 use App\Application\Requests\CreateNewsRequest;
+use App\Domain\Repositories\NewsRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+    public function index(NewsRepositoryInterface $newsRepository): JsonResponse
+    {
+        $newsEntities = $newsRepository->all();
+
+        return response()->json($newsEntities);
+    }
+
     public function create(Request $request, CreateNewsAction $action): JsonResponse
     {
         $createNewsRequest = new CreateNewsRequest($request->url);

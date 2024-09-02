@@ -6,6 +6,11 @@ use App\Domain\Entities\NewsEntity;
 
 interface NewsRepositoryInterface
 {
+    /**
+     * @return NewsEntity[]
+     */
+    public function all(): iterable;
+
     public function findById(int $id): ?NewsEntity;
 
     public function save(NewsEntity $newsEntity): void;
