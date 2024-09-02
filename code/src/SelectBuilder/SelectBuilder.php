@@ -6,21 +6,33 @@ namespace Viking311\Builder\SelectBuilder;
 
 use PDO;
 use Viking311\Builder\SelectBuilder\ResultSet\AbstractResultSet;
-use Viking311\Builder\SelectBuilder\ResultSet\ProxyResultSet;
-use Viking311\Builder\SelectBuilder\ResultSet\ResultSet;
+use Viking311\Builder\SelectBuilder\Strategy\StrategyInterface;
 
 class SelectBuilder
 {
+    /** @var string  */
     private string $table;
+    /** @var array  */
     private array $where = [];
+    /** @var string|null  */
     private ?string $orderField = null;
+    /** @var string  */
     private string $orderDirection;
 
+    /**
+     * @param PDO $db
+     * @param StrategyInterface $strategy
+     */
     public function __construct(
-        readonly private PDO $db
+        readonly private PDO $db,
+        readonly private StrategyInterface $strategy
     ) {
     }
 
+    /**
+     * @param string $table
+     * @return $this
+     */
     public function from(string $table): SelectBuilder
     {
         $this->table = $table;
@@ -28,6 +40,11 @@ class SelectBuilder
         return $this;
     }
 
+    /**
+     * @param string $field
+     * @param string $value
+     * @return $this
+     */
     public function where(
         string $field,
         string $value
@@ -37,6 +54,11 @@ class SelectBuilder
         return $this;
     }
 
+    /**
+     * @param string $field
+     * @param string $direction
+     * @return $this
+     */
     public function orderBy(
         string $field,
         string $direction = 'asc'
@@ -47,27 +69,24 @@ class SelectBuilder
         return $this;
     }
 
-    public function execute(bool $lazy = false): AbstractResultSet
+    /**
+     * @return AbstractResultSet
+     */
+    public function execute(): AbstractResultSet
     {
         $query = 'SELECT * FROM ' . $this->table;
 
         $query .= ' ' . $this->buildWhere();
         $query .= ' ' . $this->buildOrderBy();
 
-        $sth = $this->db->prepare($query);
+        $statement = $this->db->prepare($query);
 
-        if ($lazy) {
-            $result = new ProxyResultSet($sth);
-        } else {
-            $sth->execute();
-            $result = new ResultSet(
-                $sth->fetchAll(PDO::FETCH_ASSOC)
-            );
-        }
-
-        return $result;
+        return $this->strategy->getResultSet($statement);
     }
 
+    /**
+     * @return string
+     */
     private function buildWhere(): string
     {
         $wheres = [];
@@ -81,6 +100,9 @@ class SelectBuilder
         return 'WHERE ' . implode(' AND ', $wheres);
     }
 
+    /**
+     * @return string
+     */
     private function buildOrderBy(): string
     {
         if (!is_null($this->orderField)) {

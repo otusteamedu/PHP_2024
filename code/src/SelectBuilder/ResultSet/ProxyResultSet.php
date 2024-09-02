@@ -9,13 +9,20 @@ use PDOStatement;
 
 class ProxyResultSet extends AbstractResultSet
 {
+    /** @var array|null  */
     protected ?array $data = null;
 
+    /**
+     * @param PDOStatement $statement
+     */
     public function __construct(
         readonly private PDOStatement $statement
     ) {
     }
 
+    /**
+     * @return array
+     */
     protected function getData(): array
     {
         if (is_null($this->data)) {

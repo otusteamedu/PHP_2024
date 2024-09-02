@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace Viking311\Builder\SelectBuilder\ResultSet;
 
-abstract class AbstractResultSet implements \Iterator
+use Iterator;
+
+abstract class AbstractResultSet implements Iterator
 {
+    /** @var int  */
     protected int $position = 0;
 
+    /**
+     * @return array
+     */
     abstract protected function getData(): array;
 
     /**
