@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus2024-hw3/php
+    container_name: otus2024-hw3-app
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www
