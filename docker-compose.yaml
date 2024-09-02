@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: postgresql
+    environment:
+      POSTGRES_DB: "pdb"
+      POSTGRES_USER: "kyberlox"
+      POSTGRES_PASSWORD: "4179"
+    volumes:
+      - ./postgres/dbdata:/var/lib/postgresql/data
+      - ./postgres/eav.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    networks:
+        - app-network
+
+
+
+networks:
+  app-network:
+    driver: bridge
