@@ -18,8 +18,7 @@ class SelectBuilder
 
     public function __construct(
         readonly private PDO $db
-    )
-    {
+    ) {
     }
 
 
@@ -33,8 +32,7 @@ class SelectBuilder
     public function where(
         string $field,
         string $value
-    ): SelectBuilder
-    {
+    ): SelectBuilder {
         $this->where[$field] = $value;
 
         return $this;
@@ -43,8 +41,7 @@ class SelectBuilder
     public function orderBy(
         string $field,
         string $direction = 'asc'
-    ): SelectBuilder
-    {
+    ): SelectBuilder {
         $this->orderField = $field;
         $this->orderDirection = $direction;
 
@@ -75,7 +72,7 @@ class SelectBuilder
     private function buildWhere(): string
     {
         $wheres = [];
-        foreach ($this->where as $field =>$value) {
+        foreach ($this->where as $field => $value) {
             $wheres[] = $field . '=' . $value;
         }
         if (empty($wheres)) {

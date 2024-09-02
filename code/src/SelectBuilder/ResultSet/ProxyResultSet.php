@@ -13,8 +13,7 @@ class ProxyResultSet extends AbstractResultSet
 
     public function __construct(
         readonly private PDOStatement $statement
-    )
-    {
+    ) {
     }
 
     protected function getData(): array

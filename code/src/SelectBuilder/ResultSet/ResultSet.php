@@ -8,8 +8,7 @@ class ResultSet extends AbstractResultSet
 {
     public function __construct(
         protected array $data
-    )
-    {
+    ) {
     }
 
     protected function getData(): array

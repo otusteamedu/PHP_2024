@@ -14,7 +14,6 @@ abstract class AbstractResultSet implements \Iterator
      * @inheritDoc
      */
     public function current(): array
-
     {
         $data = $this->getData();
         return $data[$this->position];
