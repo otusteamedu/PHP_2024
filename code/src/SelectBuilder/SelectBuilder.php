@@ -21,7 +21,6 @@ class SelectBuilder
     ) {
     }
 
-
     public function from(string $table): SelectBuilder
     {
         $this->table = $table;
@@ -43,7 +42,7 @@ class SelectBuilder
         string $direction = 'asc'
     ): SelectBuilder {
         $this->orderField = $field;
-        $this->orderDirection = $direction;
+        $this->orderDirection = in_array(strtolower($direction), ['asc', 'desc']) ? $direction : 'asc';
 
         return $this;
     }
