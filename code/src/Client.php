@@ -18,14 +18,14 @@ class Client
     public function app()
     {
         $this->client->socketConnect();
-            while (true) {
-                echo 'Введите сообщение. Для выхода нажмите CTRL + C (Windows, Linux) или CMD + C (Mac)' . PHP_EOL;
-                $msg = fgets(STDIN);
-                if (!$this->client->sendMessage($msg)) {
-                    echo 'Не удалось отправить сообщение. Сеанс завершен' . PHP_EOL;
-                    break;
-                }
+        while (true) {
+            echo 'Введите сообщение. Для выхода нажмите CTRL + C (Windows, Linux) или CMD + C (Mac)' . PHP_EOL;
+            $msg = fgets(STDIN);
+            if (!$this->client->sendMessage($msg)) {
+                echo 'Не удалось отправить сообщение. Сеанс завершен' . PHP_EOL;
+                break;
             }
-            $this->client->closeSession();
+        }
+        $this->client->closeSession();
     }
 }
