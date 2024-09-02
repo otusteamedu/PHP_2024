@@ -125,10 +125,12 @@ CREATE TABLE `sessions`
 ```sql
 CREATE TABLE `order_statuses`
 (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `code` VARCHAR(255) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
 
-    PRIMARY KEY(code)
+    PRIMARY KEY(id),
+    UNIQUE (`code`)
 );
 ```
 
@@ -138,13 +140,13 @@ CREATE TABLE `order_statuses`
 CREATE TABLE `orders`
 (
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    `status_code` VARCHAR(255) NOT NULL,
+    `status_id` INT UNSIGNED NULL,
     `customer_id` INT UNSIGNED NULL,
     `grand_total` DECIMAL(20, 2) NOT NULL,
     `date` DATE NOT NULL DEFAULT(CURRENT_DATE),
 
     PRIMARY KEY(id),
-    FOREIGN KEY (status_code) REFERENCES order_statuses(code) ON DELETE CASCADE,
+    FOREIGN KEY (status_id) REFERENCES order_statuses(id) ON DELETE SET NULL,
     FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL
 );
 ```
