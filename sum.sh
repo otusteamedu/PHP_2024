@@ -19,6 +19,6 @@ do
   fi
 done
 
-SUM=$(( NUMBER_1 + NUMBER_2 ))
+SUM=$(echo "$NUMBER_1" "$NUMBER_2" | awk '{print $1 + $2}')
 
 echo "Sum is: ${SUM}"
