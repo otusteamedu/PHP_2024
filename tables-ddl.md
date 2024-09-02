@@ -52,7 +52,7 @@ CREATE TABLE `movies_genres`
     `movie_id` INT UNSIGNED NOT NULL,
     `genre_id` INT UNSIGNED NOT NULL,
 
-    UNIQUE (`movie_id`, `genre_id`),
+    PRIMARY KEY(`movie_id`, `genre_id`),
     FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
     FOREIGN KEY (genre_id) REFERENCES movie_genres(id) ON DELETE CASCADE
 );
