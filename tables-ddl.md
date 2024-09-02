@@ -111,6 +111,7 @@ CREATE TABLE `sessions`
     `movie_id` INT UNSIGNED NOT NULL,
     `date` DATE NOT NULL,
     `start_time` TIME NOT NULL,
+    `end_time` TIME NOT NULL,
 
     PRIMARY KEY(id),
     FOREIGN KEY (hall_id) REFERENCES halls(id) ON DELETE CASCADE,
