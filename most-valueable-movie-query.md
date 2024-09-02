@@ -10,7 +10,7 @@ FROM
     JOIN `order_items` ON `sessions`.`id` = `order_items`.`session_id`
     JOIN `orders` ON `order_items`.`order_id` = `orders`.`id`
 WHERE
-    `orders`.`status_code` = "completed"
+    `orders`.`status_id` = (SELECT `id` from `order_statuses` WHERE `code` = "completed")
 GROUP BY
     `movies`.`id`
 ORDER BY
