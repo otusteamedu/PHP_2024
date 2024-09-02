@@ -4,9 +4,10 @@ namespace App\Application\Actions;
 
 use App\Application\Requests\CreateNewsRequest;
 use App\Application\Responses\CreateNewsResponse;
-use App\Application\Services\HtmlCrawlerService;
 use App\Domain\Factories\NewsFactoryInterface;
 use App\Domain\Repositories\NewsRepositoryInterface;
+use Exception;
+use Symfony\Component\DomCrawler\Crawler;
 
 readonly class CreateNewsAction
 {
@@ -18,12 +19,29 @@ readonly class CreateNewsAction
     public function __invoke(CreateNewsRequest $request): CreateNewsResponse
     {
         $date = date('d-m-y');
-        $title = (new HtmlCrawlerService($request->url))->extractTextFromTag('title');
+        $title = $this->extractTextFromUrl($request->url, 'title');
 
         $newsEntity = $this->newsFactory->create($date, $request->url, $title);
 
         $this->newsRepository->save($newsEntity);
 
         return new CreateNewsResponse($newsEntity->getId());
+    }
+
+    private function extractTextFromUrl(string $url, string $tag, ?string $default = null): ?string
+    {
+        try {
+            $html = file_get_contents($url);
+            $crawler = new Crawler($html);
+            $node = $crawler->filter($tag);
+
+            if ($node->count() === 0) {
+                return $default;
+            }
+
+            return $node->text();
+        } catch (Exception $e) {
+            throw new Exception("Could not parse $url. Error: ".$e->getMessage());
+        }
     }
 }

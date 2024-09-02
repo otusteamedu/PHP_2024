@@ -31,6 +31,24 @@ class NewsRepository implements NewsRepositoryInterface
         return $newsEntities;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function findMultipleById(int ...$ids): iterable
+    {
+        $models = News::findMany($ids);
+
+        $newsEntities = $models->map(static function (News $model): NewsEntity {
+            return $this->newsFactory->create(
+                $model->date,
+                $model->url,
+                $model->title
+            );
+        });
+
+        return $newsEntities;
+    }
+
     public function findById(int $id): ?NewsEntity
     {
         $model = News::find($id);
