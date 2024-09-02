@@ -84,6 +84,14 @@ create table if not exists show
     price_per_ticket numeric(10, 2) not null
 );
 
+create table if not exists discount
+(
+    id   serial
+        primary key,
+    type varchar(255)  not null,
+    rate numeric(4, 2) not null
+);
+
 create table if not exists ticket
 (
     id            serial
@@ -92,6 +100,8 @@ create table if not exists ticket
         references show,
     seat_id       integer   not null
         references seat,
+    discount_id   integer   not null
+        references discount,
     purchase_time timestamp not null
 );
 
