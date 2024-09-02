@@ -25,6 +25,8 @@ CREATE TABLE `movies`
     `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(255) NOT NULL,
     `duration_in_minutes` INT UNSIGNED NOT NULL,
+    `release_date` DATE NOT NULL,
+    `production_country` VARCHAR(255) NOT NULL,
 
     PRIMARY KEY(id)
 );
