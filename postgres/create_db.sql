@@ -34,7 +34,7 @@ CREATE TABLE site
     Id SERIAL PRIMARY KEY,
     site_row INTEGER,
     site_number INTEGER,
-    status_ratio NUMERIC, -- status_ratio э{1.0, 1.5, 2.0} 
+    status_ratio NUMERIC -- status_ratio э{1.0, 1.5, 2.0} 
                         --standart = 1.0
                         --vip = 1.5 
                         --chill zone = 2.0
