@@ -17,8 +17,7 @@ class ProxyResultSet implements Iterator
      */
     public function __construct(
         readonly private PDOStatement $statement
-    )
-    {
+    ) {
     }
 
     /**

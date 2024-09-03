@@ -16,8 +16,7 @@ class ResultSet implements Iterator
      */
     public function __construct(
         protected array $data
-    )
-    {
+    ) {
     }
 
     /**
