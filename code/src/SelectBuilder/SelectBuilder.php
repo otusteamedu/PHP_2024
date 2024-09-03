@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Viking311\Builder\SelectBuilder;
 
+use Iterator;
 use PDO;
-use Viking311\Builder\SelectBuilder\ResultSet\AbstractResultSet;
 use Viking311\Builder\SelectBuilder\Strategy\StrategyInterface;
 
 class SelectBuilder
@@ -70,9 +70,9 @@ class SelectBuilder
     }
 
     /**
-     * @return AbstractResultSet
+     * @return Iterator
      */
-    public function execute(): AbstractResultSet
+    public function execute(): Iterator
     {
         $query = 'SELECT * FROM ' . $this->table;
 

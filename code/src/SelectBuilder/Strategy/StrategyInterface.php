@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Viking311\Builder\SelectBuilder\Strategy;
 
+use Iterator;
 use PDOStatement;
-use Viking311\Builder\SelectBuilder\ResultSet\AbstractResultSet;
 
 interface StrategyInterface
 {
     /**
      * @param PDOStatement $statement
-     * @return AbstractResultSet
+     * @return Iterator
      */
-    public function getResultSet(PDOStatement $statement): AbstractResultSet;
+    public function getResultSet(PDOStatement $statement): Iterator;
 }
