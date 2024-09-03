@@ -1,4 +1,5 @@
-function letterCombinations($digits): array {
+function letterCombinations($digits): array 
+{
     if (!$digits) {
         return [];
     }
