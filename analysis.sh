@@ -12,7 +12,6 @@ check_utility "sort"
 check_utility "uniq"
 check_utility "head"
 
-# Проверка на количество аргументов
 if [ "$#" -ne 1 ]; then
     echo "Ошибка: требуется указать файл с таблицей данных."
     exit 1
