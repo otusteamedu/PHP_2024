@@ -1,0 +1,24 @@
+function letterCombinations($digits): array 
+{
+    if (!$digits) {
+        return [];
+    }
+    
+    $combinations = [''];
+    
+    for ($i = 0; $i < strlen($digits); $i++) {
+        $chunk = [];
+    
+        $letters = $this->mapping()[$digits[$i]];
+        
+        foreach ($combinations as $combination) {
+            foreach ($letters as $letter) {
+                $chunk[] = $combination . $letter;
+            }
+        }
+    
+        $combinations = $chunk;
+    }
+    
+    return $combinations;
+}

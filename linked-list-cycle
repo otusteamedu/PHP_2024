@@ -1,0 +1,19 @@
+function hasCycle($head): bool
+{
+    if (!$head) {
+        return false;
+    }
+
+    $aux = $head->next;
+
+    while ($aux && $aux->next) {
+        $head = $head->next;
+        $aux = $aux->next->next;
+
+        if ($head === $aux) {
+            return true;
+        }
+    }
+
+    return false;
+}
