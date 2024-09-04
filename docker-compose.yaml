@@ -1,0 +1,67 @@
+services:
+  nginx-upstream:
+    image: nginx:latest
+    container_name: nginx-upstream
+    ports:
+      - '80:80'
+    volumes:
+      - ./.docker/nginx/conf.d/balancer.conf:/etc/nginx/conf.d/balancer.conf
+    networks:
+      - default
+
+  nginx-1:
+    image: nginx:latest
+    container_name: nginx-1
+    volumes:
+       - ./app:/var/www/app
+       - ./.docker/nginx/conf.d/helloworld.conf:/etc/nginx/conf.d/helloworld.conf
+    networks:
+      - default
+
+  nginx-2:
+    image: nginx:latest
+    container_name: nginx-2
+    volumes:
+      - ./app:/var/www/app
+      - ./.docker/nginx/conf.d/helloworld.conf:/etc/nginx/conf.d/helloworld.conf
+    networks:
+      - default
+
+  app-1:
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    container_name: app-1
+    volumes:
+      - ./app:/var/www/app
+    env_file:
+      - .env
+    networks:
+      - default
+
+  app-2:
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    container_name: app-2
+    volumes:
+      - ./app:/var/www/app
+    env_file:
+      - .env
+    networks:
+      - default
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - '6380:6379'
+    command: /bin/sh -c 'redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}'
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
