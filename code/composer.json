@@ -1,0 +1,14 @@
+{
+  "name": "myapp/myproject",
+  "description": "A minimal PHP project setup with Redis and Memcached",
+  "require": {
+    "php": ">=8.2",
+    "ext-redis": "*",
+    "ext-memcached": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "MyApp\\": "src/"
+    }
+  }
+}
