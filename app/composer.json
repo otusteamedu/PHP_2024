@@ -1,0 +1,11 @@
+{
+    "name": "rybkinevg/otus-hw-4-2",
+    "type": "project",
+    "autoload": {
+        "files": [
+            "src/app.php",
+            "src/request.php",
+            "src/validate.php"
+        ]
+    }
+}

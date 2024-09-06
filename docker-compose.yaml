@@ -1,7 +1,7 @@
 services:
   nginx:
-    image: nginx:latest
     container_name: nginx
+    image: nginx:latest
     ports:
       - '80:80'
     volumes:
@@ -11,8 +11,10 @@ services:
       - default
 
   app:
-    image: php:8.3-fpm
     container_name: app
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
     volumes:
       - ./app:/var/www/app
     networks:
