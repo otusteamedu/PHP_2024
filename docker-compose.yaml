@@ -1,0 +1,24 @@
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - '80:80'
+    volumes:
+      - ./.docker/nginx/conf.d/helloworld.conf:/etc/nginx/conf.d/helloworld.conf
+      - ./app:/var/www/app
+    networks:
+      - default
+
+  app:
+    container_name: app
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    volumes:
+      - ./app:/var/www/app
+    networks:
+      - default
+
+networks:
+  default:
