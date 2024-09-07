@@ -1,5 +1,7 @@
 <?php
 
+namespace PHP2024\LinkedList;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {

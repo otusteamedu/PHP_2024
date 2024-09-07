@@ -1,5 +1,7 @@
 <?php
 
+namespace PHP2024\LetterCombinations;
+
 class Solution
 {
     /**
