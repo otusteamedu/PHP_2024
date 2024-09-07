@@ -1,17 +1,27 @@
 {
-    "name": "irayu/hw0",
-    "description": "Template for HW",
+    "name": "irayu/hw11",
+    "description": "Elasticsearch in a first view",
     "type": "project",
     "require": {
-        "php": ">=8.1"
+        "elasticsearch/elasticsearch": "^8.12",
+        "php": ">=8.1.2"
     },
+    "license": "free",
     "autoload": {
         "psr-4": {
-            "Irayu\\Hw0\\": "src/"
+            "IraYu\\Hw11\\": "src/"
         }
     },
-    "require-dev": {
-        "squizlabs/php_codesniffer": "^3.7"
-    },
-    "minimum-stability": "stable"
+    "authors": [
+        {
+            "name": "Irina Yurtaeva",
+            "email": "irina.s.yurtaeva@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }

@@ -5,3 +5,5 @@
 .LSOverride
 /code/vendor/
 /logs/
+/data/elastic/
+/.env
