@@ -1,11 +1,13 @@
 <?php
-class Solution {
 
+class Solution
+{
     /**
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations(string $digits): array {
+    public function letterCombinations(string $digits): array
+    {
         $buttons = [
             2 => 'abc',
             3 => 'def',
@@ -18,21 +20,21 @@ class Solution {
         ];
         $digitsArray = str_split($digits);
         $result = [];
-        foreach($digitsArray as $key => $digit) {
+        foreach ($digitsArray as $digit) {
             $result = $this->generateSeq($result, $digit, $buttons);
         }
         return $result;
     }
 
-    function generateSeq(array $lettersArray, string $digit, array $buttons): array {
+    private function generateSeq(array $lettersArray, string $digit, array $buttons): array
+    {
         $set = str_split($buttons[$digit]);
         $newar = [];
-        if($lettersArray === []) {
+        if ($lettersArray === []) {
             $newar = $set;
-        }
-        else {
-            foreach($lettersArray as $val){
-                foreach($set as $newval){
+        } else {
+            foreach ($lettersArray as $val) {
+                foreach ($set as $newval) {
                     $newar[] = $val . $newval;
                 }
             }

@@ -9,23 +9,25 @@
  * }
  */
 
-class Solution {
+class Solution
+{
     /**
-     * @param ListNode $head
+     * @param ListNode $headxw
      * @return Boolean
      */
-    function hasCycle($head) {
-        if($head === null || $head->next === null) {
+    public function hasCycle($head): bool
+    {
+        if ($head === null || $head->next === null) {
             return false;
         }
         $rabbit = $head;
         $turtle = $head;
 
-        while($rabbit !== null && $rabbit->next !== null) {
+        while ($rabbit !== null && $rabbit->next !== null) {
             $rabbit = $rabbit->next->next;
             $turtle = $turtle->next;
 
-            if($rabbit === $turtle) {
+            if ($rabbit === $turtle) {
                 return true;
             }
         }
