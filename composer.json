@@ -1,0 +1,17 @@
+{
+    "name": "vladimir-grinko/email-checker",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "VladimirGrinko\\EmailChecker\\": "src/EmailChecker/"
+        }
+    },
+    "authors": [
+        {
+            "name": "VladimirGrinko"
+        }
+    ],
+    "require": {
+        "php": ">=4.0"
+    }
+}
