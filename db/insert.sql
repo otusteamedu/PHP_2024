@@ -5,7 +5,7 @@ VALUES ('рецензии', 'text'),
        ('важные даты', 'date'),
        ('служебные даты', 'timestamp'),
        ('целочисленные значения', 'int'),
-       ('дробные значения', 'decimal');
+       ('дробные значения', 'float');
        
 INSERT INTO films (name)
 VALUES ('Interstellar'),
@@ -67,8 +67,8 @@ INSERT INTO attribute_value (film_id, attribute_id, value_int)
         ((SELECT id FROM films WHERE name = 'Leon'), (SELECT id FROM attribute WHERE name = 'Количеств оценок пользователей'), 778),
         ((SELECT id FROM films WHERE name = 'Dune'), (SELECT id FROM attribute WHERE name = 'Количеств оценок пользователей'), 5478);
 
---value_decimal
-INSERT INTO attribute_value (film_id, attribute_id, value_decimal)
+--value_float
+INSERT INTO attribute_value (film_id, attribute_id, value_float)
     VALUES ((SELECT id FROM films WHERE name = 'Interstellar'), (SELECT id FROM attribute WHERE name = 'Рейтинг кинопоиска'), 8.2),
         ((SELECT id FROM films WHERE name = 'Leon'), (SELECT id FROM attribute WHERE name = 'Рейтинг кинопоиска'), 7.8),
         ((SELECT id FROM films WHERE name = 'Dune'), (SELECT id FROM attribute WHERE name = 'Рейтинг кинопоиска'), 7.5),

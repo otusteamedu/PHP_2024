@@ -34,7 +34,7 @@ CREATE TABLE "attribute_value" (
   value_date date null,
   value_timestamp timestamp null,
   value_int int null,
-  value_decimal decimal(4,2) null,
+  value_float float null,
   FOREIGN KEY ("film_id") REFERENCES "films"("id"),
   FOREIGN KEY ("attribute_id") REFERENCES "attribute"("id")
 );

@@ -17,7 +17,7 @@ CREATE VIEW view_service_data AS
     (
         atrv.value_timestamp >= CURRENT_DATE + INTERVAL '20 days' + TIME '00:00:00'  AND 
         atrv.value_timestamp <= CURRENT_DATE + INTERVAL '20 days' + TIME '23:59:59'
-    )  
+    );  
 
 --- фильм, тип атрибута, атрибут, значение (значение выводим как текст)
 DROP VIEW IF EXISTS view_marketing_form;
@@ -32,7 +32,7 @@ CREATE VIEW view_marketing_form AS
             atrval.value_date::text,
             atrval.value_timestamp::text,
             atrval.value_int::text,
-            atrval.value_decimal::text
+            atrval.value_float::text
         ) AS value 
     FROM films f
         JOIN attribute_value atrval ON f.id = atrval.film_id
