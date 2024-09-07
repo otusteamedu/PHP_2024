@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  db:
+    image: postgres:15.3
+    restart: always
+    container_name: db
+    environment:
+        POSTGRES_DB: '${POSTGRES_DB}'
+        POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    ports:
+        - 5432:5432
+    volumes:
+        - ./docker_data/:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  adminer:
+      image: adminer
+      restart: always
+      container_name: adminer
+      depends_on:
+          - db
+      ports:
+          - 8083:8080
+      networks:
+          - app-network
+
+networks:
+  app-network:
+    driver: bridge
