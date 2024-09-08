@@ -3,23 +3,25 @@ version: '3'
 
 # в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #Контейнер с PHP-FPM, назовём его app
-  app_server:
-    # Если нет секции build, то система будет искать образ в репозиториях
-    build:
-      context: ./Docker/php
-      dockerfile: Dockerfile
-    container_name: "${APP_NAME}_app_server" # имя контейнера после запуска
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - app
+    container_name: "${APP_NAME}_nginx"
+    # проброс портов
+    ports:
+      - "80:80"
     volumes:
       - ./:/${APP_NAME}
+      - ./Docker/nginx/conf.d:/etc/nginx/conf.d
       - sock:/sock/
-
-  app_client:
+  #Контейнер с PHP-FPM
+  app:
     # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./Docker/php
       dockerfile: Dockerfile
-    container_name: "${APP_NAME}_app_client" # имя контейнера после запуска
+    container_name: "${APP_NAME}_app" # имя контейнера после запуска
     volumes:
       - ./:/${APP_NAME}
       - sock:/sock/
