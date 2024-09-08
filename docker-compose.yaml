@@ -1,0 +1,30 @@
+# версия синтаксиса
+version: '3'
+
+# в этом блоке мы описываем контейнеры, которые будут запускаться
+services:
+  #Контейнер с PHP-FPM, назовём его app
+  app_server:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./Docker/php
+      dockerfile: Dockerfile
+    container_name: "${APP_NAME}_app_server" # имя контейнера после запуска
+    volumes:
+      - ./:/${APP_NAME}
+      - sock:/sock/
+
+  app_client:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./Docker/php
+      dockerfile: Dockerfile
+    container_name: "${APP_NAME}_app_client" # имя контейнера после запуска
+    volumes:
+      - ./:/${APP_NAME}
+      - sock:/sock/
+
+#общие volume
+volumes:
+  sock:
+    driver: local
