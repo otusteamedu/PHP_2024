@@ -2,7 +2,9 @@
 
 namespace PenguinAstronaut\App\Exceptions;
 
-class SocketCreateException Extends \Exception
+use Exception;
+
+class SocketCreateException extends Exception
 {
 
 }

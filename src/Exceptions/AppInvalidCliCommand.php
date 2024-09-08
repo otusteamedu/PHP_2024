@@ -2,7 +2,9 @@
 
 namespace PenguinAstronaut\App\Exceptions;
 
-class AppInvalidCliCommand extends \Exception
+use Exception;
+
+class AppInvalidCliCommand extends Exception
 {
 
 }

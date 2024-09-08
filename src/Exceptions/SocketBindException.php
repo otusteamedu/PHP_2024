@@ -2,7 +2,9 @@
 
 namespace PenguinAstronaut\App\Exceptions;
 
-class SocketBindException Extends \Exception
+use Exception;
+
+class SocketBindException extends Exception
 {
 
 }

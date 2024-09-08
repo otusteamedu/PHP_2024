@@ -25,10 +25,10 @@ class App
             }
             $socketApp->run();
         } catch (
-            SocketAcceptException|
-            SocketBindException|
-            SocketConnectException|
-            SocketCreateException|
+            SocketAcceptException |
+            SocketBindException |
+            SocketConnectException |
+            SocketCreateException |
             SocketListenException $e)
         {
             echo 'App Socket error' . PHP_EOL;

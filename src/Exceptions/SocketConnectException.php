@@ -2,7 +2,9 @@
 
 namespace PenguinAstronaut\App\Exceptions;
 
-class SocketConnectException Extends \Exception
+use Exception;
+
+class SocketConnectException extends Exception
 {
 
 }
