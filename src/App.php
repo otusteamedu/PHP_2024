@@ -24,7 +24,6 @@ class App
             } catch (Exception $e) {
                 echo 'Invalid: ' . $email . PHP_EOL;
             }
-
         }
     }
 }
