@@ -1,0 +1,32 @@
+# версия синтаксиса
+version: '3'
+
+# в этом блоке мы описываем контейнеры, которые будут запускаться
+services:
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - app
+    container_name: "${APP_NAME}_nginx"
+    # проброс портов
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/${APP_NAME}
+      - ./Docker/nginx/conf.d:/etc/nginx/conf.d
+      - sock:/sock/
+  #Контейнер с PHP-FPM
+  app:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./Docker/php
+      dockerfile: Dockerfile
+    container_name: "${APP_NAME}_app" # имя контейнера после запуска
+    volumes:
+      - ./:/${APP_NAME}
+      - sock:/sock/
+
+#общие volume
+volumes:
+  sock:
+    driver: local
