@@ -4,7 +4,7 @@ namespace PenguinAstronaut\App;
 
 class EmailValidator
 {
-    const string DEFAULT_REGEX = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/ui';
+    const STRING DEFAULT_REGEX = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/ui';
 
     public function __construct(private array $regexRules = [])
     {
@@ -54,7 +54,7 @@ class EmailValidator
     {
         [, $domain] = explode('@', $email);
 
-        if (!$domain || !checkdnsrr($domain,'MX')) {
+        if (!$domain || !checkdnsrr($domain, 'MX')) {
             throw new EmailValidationDomainException('Email validation failed by domain: ' . $domain);
         }
 
