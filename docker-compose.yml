@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  php-cli:
+    build: docker/php-cli
+    container_name: ${PHP_CLI_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./var/php-fpm/log:/var/logs/php
+      - ./dump/books.json:/app/elasticsearch/books.json
+      - ./shell/install.sh:/app/elasticsearch/install.sh
+    env_file: .env
+    depends_on:
+      - elasticsearch
+    networks:
+      - otus-network
+    stdin_open: true
+    tty: true
+  elasticsearch:
+    image: elasticsearch:8.14.0
+    container_name: ${ELASTICSEARCH_CONTAINER_NAME}
+    ports:
+      - "${ELASTICSEARCH_LOCAL_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+    networks:
+      - otus-network
+
+networks:
+  otus-network:
+    driver: bridge
