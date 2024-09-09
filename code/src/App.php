@@ -17,9 +17,10 @@ class App
 
     public function __construct()
     {
-        $this->host = "0.0.0.0";
-        $this->port = 4444;
-        $this->length = 2048;
+        $this->config = parse_ini_file(__DIR__ . "/config.ini");
+        $this->host = $this->config["host"];
+        $this->port = intval($this->config["port"]);
+        $this->length = intval($this->config["length"]);
     }
 
     /**

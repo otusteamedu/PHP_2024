@@ -55,7 +55,7 @@ class UnixSocket
     {
         $msg = socket_read($this->client, $this->length);
 
-        return $msg;
+        yield $msg;
     }
 
     public function closeSession()

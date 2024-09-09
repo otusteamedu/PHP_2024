@@ -29,8 +29,7 @@ class Server
         $this->server->accept();
 
         while (true) {
-            $msg = $this->server->readMessage();
-            if ($msg) {
+            foreach ($this->server->readMessage() as $msg) {
                 echo $msg;
             }
         }
