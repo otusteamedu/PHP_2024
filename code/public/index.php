@@ -6,9 +6,14 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use Elastic\Elasticsearch\ClientBuilder;
 
+$host = getenv('ELASTIC_CONTAINER');
+$port = getenv('ELASTIC_PORT');
+$username = getenv('ELASTIC_USERNAME');
+$password = getenv('ELASTIC_PASSWORD');
+
 $client = ClientBuilder::create()
-    ->setHosts(['https://elastic:9200'])
-    ->setBasicAuthentication('elastic', '_osHo1z=ne7sDq44S+4z')
+    ->setHosts(["https://$host:$port"])
+    ->setBasicAuthentication($username, $password)
     ->setSSLVerification(false)
     ->build();
 

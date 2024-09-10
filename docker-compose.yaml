@@ -14,14 +14,16 @@ services:
         networks:
             - app-network
         tty: true
+        env_file: .env
 
     es:
         image: elasticsearch:8.15.1
-        container_name: elastic
+        container_name: ${ELASTIC_CONTAINER}
         ports:
-            - 9200:9200
+            - ${ELASTIC_PORT}:${ELASTIC_PORT}
         networks:
             - app-network
+        env_file: .env
 
 networks:
     app-network:
