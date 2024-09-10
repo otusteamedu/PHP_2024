@@ -17,6 +17,7 @@ $pool = new ValidationPool([
 $validator = new EmailValidator($pool);
 
 $emails = [
+    'hello world', // not valid
     'test@example.com.', // not valid
     'test@noname.com', // not valid
     'test@undefined-domain.com', // not valid
