@@ -9,6 +9,7 @@ class App
     public function __construct(
         protected string $esHost,
         protected string $esPassword,
+        protected string $esIndex,
     ) {
     }
 
@@ -22,7 +23,7 @@ class App
         $query = $filterService->getQuery('title');
         $filter = $filterService->getFilter();
         $search = [
-            'index' => 'otus-shop',
+            'index' => $this->esIndex,
             'body' => [
                 'size' => 100,
                 'query' => [
