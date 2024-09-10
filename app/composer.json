@@ -1,0 +1,9 @@
+{
+    "name": "rybkinevg/otus-hw-6-email-validator",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "ERybkin\\EmailValidator\\": "src/"
+        }
+    }
+}
