@@ -1,0 +1,51 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "78a1a2a4b1fbc43fff91441397b2e746",
+    "packages": [
+        {
+            "name": "igor-kachko/otus-composer-package",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IgorKachko/otus-composer-package.git",
+                "reference": "e3c4fcd7183bc1ab81ed44eef1264399d241b547"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IgorKachko/otus-composer-package/zipball/e3c4fcd7183bc1ab81ed44eef1264399d241b547",
+                "reference": "e3c4fcd7183bc1ab81ed44eef1264399d241b547",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "IgorKachko\\OtusComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "IgorKachko"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/IgorKachko/otus-composer-package/issues",
+                "source": "https://github.com/IgorKachko/otus-composer-package/tree/1.0.1"
+            },
+            "time": "2024-09-10T08:29:54+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}
