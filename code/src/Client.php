@@ -29,7 +29,7 @@ class Client
         }
     }
 
-    private function getMsg() 
+    private function getMsg()
     {
         echo 'Введите сообщение. Для выхода нажмите CTRL + C (Windows, Linux) или CMD + C (Mac)' . PHP_EOL;
         $msg = fgets(STDIN);
