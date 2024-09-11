@@ -1,0 +1,15 @@
+{
+    "name": "timur-shakirov/socket-chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "TimurShakirov\\SocketChat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "TimurShakirov"
+        }
+    ],
+    "require": {}
+}
