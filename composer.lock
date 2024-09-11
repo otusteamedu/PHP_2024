@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "igor-kachko/otus-composer-package",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/IgorKachko/otus-composer-package.git",
-                "reference": "e3c4fcd7183bc1ab81ed44eef1264399d241b547"
+                "reference": "a423fbb1c3b7afddb57d3ff54b8f68ede1c0e899"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/IgorKachko/otus-composer-package/zipball/e3c4fcd7183bc1ab81ed44eef1264399d241b547",
-                "reference": "e3c4fcd7183bc1ab81ed44eef1264399d241b547",
+                "url": "https://api.github.com/repos/IgorKachko/otus-composer-package/zipball/a423fbb1c3b7afddb57d3ff54b8f68ede1c0e899",
+                "reference": "a423fbb1c3b7afddb57d3ff54b8f68ede1c0e899",
                 "shasum": ""
             },
             "type": "library",
@@ -34,9 +34,9 @@
             ],
             "support": {
                 "issues": "https://github.com/IgorKachko/otus-composer-package/issues",
-                "source": "https://github.com/IgorKachko/otus-composer-package/tree/1.0.1"
+                "source": "https://github.com/IgorKachko/otus-composer-package/tree/1.0.2"
             },
-            "time": "2024-09-10T08:29:54+00:00"
+            "time": "2024-09-11T06:58:51+00:00"
         }
     ],
     "packages-dev": [],
