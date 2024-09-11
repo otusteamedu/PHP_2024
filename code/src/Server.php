@@ -10,12 +10,12 @@ class Server
 {
     public $server;
 
-    public function __construct($host, $port, $length)
+    public function __construct($file, $length)
     {
-        if (file_exists($host)) {
-            unlink($host);
+        if (file_exists($file)) {
+            unlink($file);
         }
-        $this->server = new UnixSocket($host, $port, $length);
+        $this->server = new UnixSocket($file, $length);
         echo "Ожидание сообщений. Для выхода нажмите CTRL + C (Windows, Linux) или CMD + C (Mac)" . PHP_EOL;
     }
 

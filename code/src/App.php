@@ -11,15 +11,13 @@ use TimurShakirov\SocketChat\Client;
 class App
 {
     public $config;
-    public $host;
-    public $port;
+    public $file;
     public $length;
 
     public function __construct()
     {
         $this->config = parse_ini_file(__DIR__ . "/config.ini");
-        $this->host = $this->config["host"];
-        $this->port = intval($this->config["port"]);
+        $this->file = $this->config["file"];
         $this->length = intval($this->config["length"]);
     }
 
@@ -31,11 +29,11 @@ class App
         $args = $_SERVER['argv'][1] ?? null;
         switch ($args) {
             case 'server':
-                $server = new Server($this->host, $this->port, $this->length);
+                $server = new Server($this->file, $this->length);
                 $server->app();
                 break;
             case 'client':
-                $client = new Client($this->host, $this->port, $this->length);
+                $client = new Client($this->file, $this->length);
                 $client->app();
                 break;
             default:

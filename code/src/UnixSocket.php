@@ -8,16 +8,14 @@ use Exception;
 
 class UnixSocket
 {
-    public $host;
-    public $port;
+    public $file;
     public $length;
     public $socket;
     public $client;
 
-    public function __construct($host, $port, $length)
+    public function __construct($file, $length)
     {
-        $this->host = $host;
-        $this->port = $port;
+        $this->file = $file;
         $this->length = $length;
         $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
         if (!$socket) {
@@ -28,7 +26,7 @@ class UnixSocket
 
     public function bind()
     {
-        socket_bind($this->socket, $this->host, $this->port);
+        socket_bind($this->socket, $this->file);
     }
 
     public function listen()
@@ -43,7 +41,7 @@ class UnixSocket
 
     public function socketConnect()
     {
-        socket_connect($this->socket, $this->host, $this->port);
+        socket_connect($this->socket, $this->file);
     }
 
     public function sendMessage($msg)
