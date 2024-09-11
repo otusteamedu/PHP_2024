@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace PavelMiasnov\Hw8;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
