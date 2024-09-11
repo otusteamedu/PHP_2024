@@ -1,0 +1,9 @@
+services:
+
+  php:
+    image: php:7.4-fpm-buster
+    restart: always
+    volumes:
+      - ./code/:/var/www/html
+    logging:
+      driver: none
