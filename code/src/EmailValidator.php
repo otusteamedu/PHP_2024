@@ -10,7 +10,8 @@ class EmailValidator
 {
     private $reg = "/^[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/";
 
-    public function validateEmail(string $email): bool {
+    public function validateEmail(string $email): bool
+    {
         return $this->regValidate($email) ? $this->dnsValidate($email) : false;
     }
 
