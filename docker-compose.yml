@@ -1,0 +1,15 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: data/php
+    container_name: php
+    volumes:
+      - ./code:/data/application.local
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

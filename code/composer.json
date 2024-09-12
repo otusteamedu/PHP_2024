@@ -1,0 +1,15 @@
+{
+    "name": "timur-shakirov/email-validator",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "TimurShakirov\\EmailValidator\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "TimurShakirov"
+        }
+    ],
+    "require": {}
+}
