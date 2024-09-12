@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Viking311\Chat\Command\ChatServer;
 
 use Viking311\Chat\Config\Config;
+use Viking311\Chat\Output\Writer;
 use Viking311\Chat\Socket\Socket;
-use Viking311\Chat\Socket\SocketException;
 
 class ChatServerFactory
 {
@@ -19,6 +19,9 @@ class ChatServerFactory
 
         $socket = new Socket($config->socketPath);
 
-        return new ChatServer($socket);
+        return new ChatServer(
+            $socket,
+            new Writer()
+        );
     }
 }
