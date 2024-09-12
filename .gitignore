@@ -1,5 +1,12 @@
 .idea/
 /vendor/
+/var/
 .DS_Store
 .AppleDouble
 .LSOverride
+/.env
+/.env.local
+/.env.local.php
+/.env.*.local
+
+
