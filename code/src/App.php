@@ -12,7 +12,8 @@ class App
     /**
      * @throws Exception
      */
-    private function getEmailFromFile($filename) {
+    private function getEmailFromFile($filename)
+    {
         try {
             if (!file_exists($filename)) {
                 throw new Exception("Нет файла" . $filename);
