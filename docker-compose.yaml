@@ -1,0 +1,28 @@
+services:
+  server:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: data/server
+    container_name: server
+    volumes:
+      - ./code:/data/application.local
+    networks:
+      - app-network
+
+  client:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: data/client
+    container_name: client
+    volumes:
+      - ./code:/data/application.local
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
