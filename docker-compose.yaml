@@ -46,8 +46,6 @@ services:
         POSTGRES_DB: ${POSTGRES_DB}
         POSTGRES_USER: ${POSTGRES_USER}
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      ports:
-          - "${POSTGRES_PORT}:5432"  
       networks:
           - otus
 
@@ -82,8 +80,6 @@ services:
     image: otus-memcached
     container_name: memcached
     restart: unless-stopped
-    ports:
-      - "${MEMCACHED_PORT}:11211"        
     networks:
       - otus
 
