@@ -42,8 +42,8 @@ class FilterService
                 $fieldName = substr($fieldName, 5);
                 $filter = $filters['range' . $fieldName] ?? new Filter\Range($fieldName);
                 $filters['range' . $fieldName] = $filter;
-                str_starts_with($raw, '--max') ? $filter->setMin($fieldValue)
-                    : $filter->setMax($fieldValue)
+                str_starts_with($raw, '--max') ? $filter->setMax($fieldValue)
+                    : $filter->setMin($fieldValue)
                 ;
             } elseif (str_starts_with($fieldName, '--eq')) {
                 $fieldName = substr($fieldName, 4);

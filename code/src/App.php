@@ -36,6 +36,6 @@ class App
         ];
         $result = $client->search($search);
 
-        var_dump($result->asArray());
+        (new View\BooksView())(($result->asArray())['hits']['hits']);
     }
 }
