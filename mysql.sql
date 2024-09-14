@@ -82,7 +82,6 @@ CREATE TABLE `sessions` (
 
 DROP TABLE `example`.`tickets`;
 
-
 CREATE TABLE `tickets` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `session_id` bigint NOT NULL,
