@@ -44,7 +44,7 @@ class Output
         return array_keys($fields);
     }
 
-    private static function getFieldName($hit, $fieldName)
+    private static function getFieldValue($hit, $fieldName)
     {
         $value = isset($hit['_source'][$fieldName]) ? $hit['_source'][$fieldName] : '';
         if ($fieldName === 'stock' && is_array($value)) {
@@ -76,7 +76,7 @@ class Output
         }
         foreach ($hits as $hit) {
             foreach ($fieldNames as $fieldName) {
-                $value = self::getFieldName($hit, $fieldName);
+                $value = self::getFieldValue($hit, $fieldName);
                 $maxLengths[$fieldName] = max($maxLengths[$fieldName], mb_strlen((string)$value));
             }
         }
@@ -99,7 +99,7 @@ class Output
         foreach ($hits as $hit) {
             $table .= "| ";
             foreach ($fieldNames as $fieldName) {
-                $value = self::getFieldName($hit, $fieldName);
+                $value = self::getFieldValue($hit, $fieldName);
                 $table .= self::mb_str_pad((string)$value, $maxLengths[$fieldName]) . " | ";
             }
             $table .= PHP_EOL;
