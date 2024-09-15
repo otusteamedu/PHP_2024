@@ -12,9 +12,17 @@ class Config
     /**
      * @throws ConfigException
      */
-    public function __construct()
+    public function __construct(string $configPath = '')
     {
-        $cfg = parse_ini_file(__DIR__ . '/../../app.ini');
+        if (empty($configPath)) {
+            $configPath = __DIR__ . '/../../app.ini';
+        }
+
+        if (!file_exists($configPath)) {
+            throw new ConfigException("File $configPath not exists");
+        }
+
+        $cfg = parse_ini_file($configPath);
         if ($cfg === false) {
             throw new ConfigException('Cannot parse app ini file');
         }
