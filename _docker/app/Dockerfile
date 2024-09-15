@@ -24,11 +24,9 @@ RUN pecl install memcached \
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+
 
 COPY ./_docker/app/php.ini /usr/local/etc/php/conf.d/php.ini
-COPY _docker/app/90-xdebug.ini "${PHP_INI_DIR}/conf.d"
 
 WORKDIR /var/www
 
