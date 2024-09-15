@@ -4,7 +4,7 @@ namespace Otus\App\Elastic;
 
 class Output
 {
-    private static function mb_str_pad($input, $pad_length, $pad_string = " ", $pad_type = STR_PAD_RIGHT, $encoding = "UTF-8")
+    private static function mbStrPad($input, $pad_length, $pad_string = " ", $pad_type = STR_PAD_RIGHT, $encoding = "UTF-8")
     {
         $input_length = mb_strlen($input, $encoding);
         $pad_length = $pad_length - $input_length;
@@ -84,7 +84,7 @@ class Output
         // Header
         $table = "| ";
         foreach ($fieldNames as $fieldName) {
-            $table .= self::mb_str_pad($fieldName, $maxLengths[$fieldName]) . " | ";
+            $table .= self::mbStrPad($fieldName, $maxLengths[$fieldName]) . " | ";
         }
         $table .= PHP_EOL;
 
@@ -100,7 +100,7 @@ class Output
             $table .= "| ";
             foreach ($fieldNames as $fieldName) {
                 $value = self::getFieldValue($hit, $fieldName);
-                $table .= self::mb_str_pad((string)$value, $maxLengths[$fieldName]) . " | ";
+                $table .= self::mbStrPad((string)$value, $maxLengths[$fieldName]) . " | ";
             }
             $table .= PHP_EOL;
         }

@@ -22,7 +22,9 @@ class App
     public function run()
     {
         $status = $this->healthChaeck();
-        if (!$status) throw new Exception('ERROR: Elastic is not reachable!');
+        if (!$status) {
+            throw new Exception('ERROR: Elastic is not reachable!');
+        }
 
         switch ($_SERVER['argv'][1]) {
             case 'init':
