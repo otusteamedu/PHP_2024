@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+composer.json
+composer.lock
+tmp/
