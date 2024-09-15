@@ -1,5 +1,5 @@
 {
-    "name": "otus/email-cheker",
+    "name": "otus/elasticsearch",
     "type": "project",
     "autoload": {
         "psr-4": {
@@ -12,5 +12,12 @@
             "email": "yu.serikov@myspaceport.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "elasticsearch/elasticsearch": "^8.15"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
 }

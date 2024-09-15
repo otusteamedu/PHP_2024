@@ -1,29 +1,29 @@
 version: '3'
 
 services:
-    nginx:
-        build:
-            context: ./nginx
-            dockerfile: Dockerfile
-        image: email/nginx
-        container_name: nginx
-        ports:
-            - "80:80"
-        volumes:
-            - ./code:/data/mysite.local
-        networks:
-            - app-network
-
     app:
         build:
-            context: ./fpm
+            context: ./php
             dockerfile: Dockerfile
-        image: email/php
+        image: store/php
         container_name: app
         volumes:
-            - ./code:/data/mysite.local
+            - ./code:/app
+        depends_on:
+            - es
         networks:
             - app-network
+        tty: true
+        env_file: .env
+
+    es:
+        image: elasticsearch:8.15.1
+        container_name: ${ELASTIC_CONTAINER}
+        ports:
+            - ${ELASTIC_PORT}:${ELASTIC_PORT}
+        networks:
+            - app-network
+        env_file: .env
 
 networks:
     app-network:
