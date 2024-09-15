@@ -4,12 +4,18 @@ declare(strict_types=1);
 
 namespace Viking311\Chat\Application;
 
-use Viking311\Chat\Command\ChatClient\ChatClientFactory;
-use Viking311\Chat\Command\ChatServer\ChatServerFactory;
+use Viking311\Chat\Command\CommandFactory;
+use Viking311\Chat\Command\CommandInterface;
 use Viking311\Chat\Socket\SocketException;
 
 class Application
 {
+    public function __construct(
+        private CommandFactory $commandFactory
+    )
+    {
+    }
+
     /**
      * @return void
      * @throws ApplicationException
@@ -20,10 +26,14 @@ class Application
         $mode = $this->getMode();
 
         $cmd = match ($mode) {
-            'server' => ChatServerFactory::createInstance(),
-            'client' => ChatClientFactory::createInstance(),
+            'server' => $this->commandFactory->getChatServer(),
+            'client' => $this->commandFactory->getChatClient(),
             default => throw new ApplicationException('Unknown mode'),
         };
+
+        if (!($cmd instanceof CommandInterface)) {
+            throw new ApplicationException('Invalid command');
+        }
 
         $cmd->execute();
     }
