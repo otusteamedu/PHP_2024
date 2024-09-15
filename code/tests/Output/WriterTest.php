@@ -9,15 +9,16 @@ use PHPUnit\Framework\TestCase;
 
 class WriterTest extends TestCase
 {
+    private $streamFilter;
     protected function setUp(): void
     {
         stream_filter_register('intercept', Intercept::class);
-        stream_filter_append(STDOUT, 'intercept');
+        $this->streamFilter = stream_filter_append(STDOUT, 'intercept');
     }
 
     protected function tearDown(): void
     {
-        stream_filter_remove(STDOUT);
+        stream_filter_remove($this->streamFilter);
     }
 
 
