@@ -1,0 +1,49 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "596a34110675027379fc3806a70f06a0",
+    "packages": [
+        {
+            "name": "stanislav-gavrilchik/otus-composer-package",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Gavrillavigne/otus-composer-package.git",
+                "reference": "6a8181e36530d945488e4bea13005add065d510e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Gavrillavigne/otus-composer-package/zipball/6a8181e36530d945488e4bea13005add065d510e",
+                "reference": "6a8181e36530d945488e4bea13005add065d510e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "StanislavGavrilchik\\OtusComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/Gavrillavigne/otus-composer-package/issues",
+                "source": "https://github.com/Gavrillavigne/otus-composer-package/tree/v1.0.1"
+            },
+            "time": "2024-02-23T04:03:54+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
