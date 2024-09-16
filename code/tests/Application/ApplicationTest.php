@@ -11,7 +11,6 @@ use Viking311\Chat\Application\ApplicationException;
 use Viking311\Chat\Command\ChatClient\ChatClient;
 use Viking311\Chat\Command\ChatServer\ChatServer;
 use Viking311\Chat\Command\CommandFactory;
-use Viking311\Chat\Command\CommandInterface;
 use Viking311\Chat\Socket\SocketException;
 
 class ApplicationTest extends TestCase
