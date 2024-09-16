@@ -1,0 +1,17 @@
+{
+    "name": "slava-makhov/otus-composer-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SlavaMakhov\\OtusComposerApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SlavaMakhov"
+        }
+    ],
+    "require": {
+        "slava-makhov/working-with-string": "^1.0"
+    }
+}
