@@ -8,17 +8,20 @@
     "packages": [
         {
             "name": "slava-makhov/working-with-string",
-            "version": "1.1.1",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlavaMakh/working-with-string.git",
-                "reference": "7f889c92ef0a899b6e818a1445488b632d4d7413"
+                "reference": "4fdee4e7bb7a2982ba3794df674547ae334ef4e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlavaMakh/working-with-string/zipball/7f889c92ef0a899b6e818a1445488b632d4d7413",
-                "reference": "7f889c92ef0a899b6e818a1445488b632d4d7413",
+                "url": "https://api.github.com/repos/SlavaMakh/working-with-string/zipball/4fdee4e7bb7a2982ba3794df674547ae334ef4e9",
+                "reference": "4fdee4e7bb7a2982ba3794df674547ae334ef4e9",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
             },
             "type": "library",
             "autoload": {
@@ -34,9 +37,9 @@
             ],
             "support": {
                 "issues": "https://github.com/SlavaMakh/working-with-string/issues",
-                "source": "https://github.com/SlavaMakh/working-with-string/tree/1.1.1"
+                "source": "https://github.com/SlavaMakh/working-with-string/tree/1.3.0"
             },
-            "time": "2024-09-02T21:48:02+00:00"
+            "time": "2024-09-16T17:57:40+00:00"
         }
     ],
     "packages-dev": [],
