@@ -2,60 +2,41 @@
 
 declare(strict_types=1);
 
-namespace  Otus\App;
+namespace Otus\App;
 
-use Otus\App\Elastic\Entry;
-use Otus\App\Elastic\Data;
-use Otus\App\Elastic\Query;
-use Otus\App\Elastic\Output;
 use Exception;
+use Otus\App\Redis\Data;
 
 class App
 {
-    private Entry $elastic;
-
-    public function __construct()
-    {
-        $this->elastic = new Entry();
-    }
 
     public function run()
     {
-        $status = $this->healthChaeck();
-        if (!$status) {
-            throw new Exception('ERROR: Elastic is not reachable!');
-        }
-
         switch ($_SERVER['argv'][1]) {
-            case 'init':
-                return $this->init();
-            case 'query':
-                return $this->query();
+            case 'add':
+                return $this->add();
+            case 'clear':
+                return $this->clear();
+            case 'get':
+                return $this->get();
             default:
-                throw new Exception('ERROR: No action specified. Use `init` or `query`');
+                throw new Exception('ERROR: No action specified. Use `add`, `get` or `clear`');
         }
     }
 
-    public function healthChaeck()
+    public function add()
     {
-        try {
-            $response = $this->elastic->client->cluster()->health();
-            echo "Elastic Health: " . $response['status'] . PHP_EOL;
-            return true;
-        } catch (Exception $e) {
-            echo "ERROR: " . $e->getMessage();
-            return false;
-        }
+        (new Data())->newEvent();
     }
 
-    public function init()
+    public function clear()
     {
-        (new Data($this->elastic))->loadFromFile();
+        (new Data())->clearAll();
     }
 
-    public function query()
+    public function get()
     {
-        $result = (new Query($this->elastic))->findAll();
-        (new Output())->renderTable($result);
+        (new Data())->getEvent();
     }
+
 }

@@ -10,20 +10,19 @@ services:
         volumes:
             - ./code:/app
         depends_on:
-            - es
+            - redis
         networks:
             - app-network
         tty: true
         env_file: .env
 
-    es:
-        image: elasticsearch:8.15.1
-        container_name: ${ELASTIC_CONTAINER}
+    redis:
+        image: redis:latest
+        container_name: ${REDIS_CONTAINER}
         ports:
-            - ${ELASTIC_PORT}:${ELASTIC_PORT}
+            - ${REDIS_PORT}:${REDIS_PORT}
         networks:
             - app-network
-        env_file: .env
 
 networks:
     app-network:

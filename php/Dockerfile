@@ -3,7 +3,9 @@ FROM php:8.2-cli
 RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libzip-dev \
-    && docker-php-ext-install zip
+    && docker-php-ext-install zip \
+    && pecl install redis \
+    && docker-php-ext-enable redis
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
