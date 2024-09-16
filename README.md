@@ -21,3 +21,4 @@ docker exec -it app php /app/public/index.php get '{params: {`key` = `val`, ...}
 ### Clear events:
 
     docker exec -it app php /app/public/index.php clear
+    // 1
