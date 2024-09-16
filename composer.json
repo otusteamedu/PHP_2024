@@ -1,0 +1,17 @@
+{
+    "name": "afilippov/hw11",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Afilippov\\Hw11\\": "src/"
+        }
+    },
+    "require": {
+        "elasticsearch/elasticsearch": "^8.12"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
