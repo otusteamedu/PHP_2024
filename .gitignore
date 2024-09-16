@@ -4,3 +4,4 @@ vendor
 .AppleDouble
 .LSOverride
 .env
+/dbdata/**
