@@ -9,7 +9,6 @@ use Otus\App\Redis\Data;
 
 class App
 {
-
     public function run()
     {
         switch ($_SERVER['argv'][1]) {
@@ -38,5 +37,4 @@ class App
     {
         (new Data())->getEvent();
     }
-
 }

@@ -74,5 +74,4 @@ class Data
         print_r($data);
         echo PHP_EOL;
     }
-
 }
