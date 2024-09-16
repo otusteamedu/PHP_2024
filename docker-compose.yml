@@ -1,0 +1,14 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 54320:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./dump:/dump
+    environment:
+      POSTGRES_PASSWORD: example
+
