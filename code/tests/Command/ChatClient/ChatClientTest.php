@@ -27,7 +27,7 @@ class ChatClientTest extends TestCase
             'message2'
         );
         $socket->expects(self::exactly(2))->method('read');
-        $reader = new ReaderStub();
+        $reader = new ReaderStub(STDIN, STDOUT);
         $writer = new WriterStub();
         $client = new ChatClient(
             $socket,

@@ -24,7 +24,7 @@ class CommandFactory
 
         return new ChatClient(
             $socket,
-            new Reader(),
+            new Reader(STDIN, STDOUT),
             new Writer()
         );
     }
