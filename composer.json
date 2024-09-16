@@ -1,0 +1,16 @@
+{
+    "name": "john9683/weather-parser",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "John9683\\WeatherParser\\": "src/"
+        }
+    },
+    "authors": [{
+        "name": "john9683",
+        "email": "john69683@gmail.com"
+    }],
+    "require": {
+        "php": ">=8.2"
+    }
+}
