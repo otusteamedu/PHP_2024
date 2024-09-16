@@ -1,0 +1,16 @@
+{
+    "name": "komarov/hw8",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Komarov\\Hw8\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Komarov Sergey",
+            "email": "sk-2006@mail.ru"
+        }
+    ],
+    "require": {}
+}

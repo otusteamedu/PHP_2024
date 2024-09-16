@@ -1,3 +1,3 @@
-# PHP_2024
-
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+# Сложность
+Временная сложность: O(n + m)  
+Пространственная сложность: O(1)
