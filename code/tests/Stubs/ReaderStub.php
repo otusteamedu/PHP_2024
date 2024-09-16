@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Test\Command\ChatClient\Stubs;
+namespace Test\Stubs;
 
 use Viking311\Chat\Input\Reader;
 

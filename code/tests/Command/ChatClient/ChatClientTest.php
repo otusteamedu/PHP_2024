@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Test\Command\ChatClient;
 
 use PHPUnit\Framework\MockObject\Exception;
-use Test\Command\ChatClient\Stubs\ReaderStub;
-use Test\Command\ChatClient\Stubs\WriterStub;
+use Test\Stubs\ReaderStub;
+use Test\Stubs\WriterStub;
 use Viking311\Chat\Command\ChatClient\ChatClient;
 use PHPUnit\Framework\TestCase;
 use Viking311\Chat\Socket\Socket;
