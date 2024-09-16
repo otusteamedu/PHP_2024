@@ -16,7 +16,7 @@ docker exec -it app php /app/public/index.php add '{priority:`val`, conditions: 
 docker exec -it app php /app/public/index.php get '{params: {`key` = `val`, ...}}'
 
     docker exec -it app php /app/public/index.php get '{params: {param1 = 1, param2 = 2}}'
-    // ::event3000::
+    // ::event3::
 
 ### Clear events:
 
