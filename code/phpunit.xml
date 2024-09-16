@@ -10,7 +10,8 @@
          displayDetailsOnPhpunitDeprecations="true"
          failOnPhpunitDeprecation="true"
          failOnRisky="true"
-         failOnWarning="true">
+         failOnWarning="true"
+         backupGlobals="true">
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>

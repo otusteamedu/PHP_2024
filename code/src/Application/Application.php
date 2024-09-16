@@ -11,7 +11,7 @@ use Viking311\Chat\Socket\SocketException;
 class Application
 {
     public function __construct(
-        private CommandFactory $commandFactory
+        private readonly CommandFactory $commandFactory
     )
     {
     }
