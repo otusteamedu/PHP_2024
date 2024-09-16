@@ -1,13 +1,23 @@
-### Initialize elastic data :
+## Redis
 
-    docker exec -it app php /app/public/index.php init
+### Add event:
 
-### Query elastic:
+docker exec -it app php /app/public/index.php add '{priority:`val`, conditions: {`key` = `val`, ...}, event: {`event`}}'
 
-    docker exec -it app php /app/public/index.php query [prop]=[val] [prop]=[val]
+    docker exec -it app php /app/public/index.php add '{priority: 1000, conditions: {param1 = 1}, event: {::event1::}}'
+    // 1
+    docker exec -it app php /app/public/index.php add '{priority: 2000, conditions: {param1 = 1, param2 = 2}, event: {::event2::}}'
+    // 1
+    docker exec -it app php /app/public/index.php add '{priority: 3000, conditions: {param1 = 1, param2 = 2}, event: {::event3::}}'
+    // 1
 
-Query examples:
+### Find event:
 
-    docker exec -it app php /app/public/index.php query title=рыцори 
-    docker exec -it app php /app/public/index.php query sku=031
-    docker exec -it app php /app/public/index.php query price_min=5188 price_max=6188
+docker exec -it app php /app/public/index.php get '{params: {`key` = `val`, ...}}'
+
+    docker exec -it app php /app/public/index.php get '{params: {param1 = 1, param2 = 2}}'
+    // ::event3000::
+
+### Clear events:
+
+    docker exec -it app php /app/public/index.php clear

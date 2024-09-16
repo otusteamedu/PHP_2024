@@ -14,7 +14,7 @@ class Entry
         $this->config = $config;
 
         $this->redis = new \Redis();
-        $connected = $this->redis->connect($_ENV['REDIS_HOST'], (int) $_ENV['REDIS_PORT']);
+        $connected = $this->redis->connect($this->config->host, $this->config->port);
 
         if (!$connected) {
             throw new \Exception('Could not connect to Redis');
