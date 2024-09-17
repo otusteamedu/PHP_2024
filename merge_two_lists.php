@@ -1,25 +1,13 @@
 <?php
-
-/**
- * Definition for a singly-linked list.
- * $currentNode * class ListNode {
- *     public $val = 0;
- *     public $next = null;
- *     function __construct($val = 0, $next = null) {
- *         $this->val = $val;
- *         $this->next = $next;
- *     }
- * }
- */
+namespace ANaimushina;
 class Solution
 {
-
     /**
      * @param ListNode $list1
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists($list1, $list2)
     {
         $head = new ListNode();
         $currentNodeFirst = $list1;
@@ -47,6 +35,7 @@ class Solution
 
         return $head->next;
     }
+
 }
 
 /**
