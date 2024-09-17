@@ -6,59 +6,43 @@ use Exception;
 
 class Data
 {
-    private \Redis $redis;
-    private Config $config;
+    private Entry $client;
+    private array $argv;
 
     public function __construct()
     {
-        $entry = new Entry();
-        $this->config = $entry->config;
-        $this->redis = $entry->redis;
+        $this->client = new Entry();
+        $this->argv = $this->client->config->argv;
     }
 
     public function newEvent()
     {
-        if (!isset($this->config->argv[2])) {
+        if (!isset($this->argv[2])) {
             throw new Exception('ERROR: No event data specified.');
         }
-        $query = $this->config->argv[2];
+        $query = $this->argv[2];
         $priority = $this->getPropData($query, 'priority');
         $conditions = $this->getPropData($query, 'conditions');
         $event = $this->getPropData($query, 'event');
 
-        $result = $this->redis->zAdd('events', $priority, json_encode([
-            'priority' => $priority,
-            'conditions' => $conditions,
-            'event' => $event
-        ]));
+        $result = $this->client->add($priority, $conditions, $event);
         $this->output($result);
     }
 
     public function clearAll()
     {
-        $result = $this->redis->del('events');
+        $result = $this->client->clear();
         $this->output($result);
     }
 
     public function getEvent()
     {
-        $position = 0;
-        $eventsLength = $this->redis->zCard('events');
-        $searchParams = isset($this->config->argv[2])
-            ? $this->getPropData($this->config->argv[2], 'params')
+        $searchParams = isset($this->argv[2])
+            ? $this->getPropData($this->argv[2], 'params')
             : '';
-        while ($position < $eventsLength) {
-            $result = $this->redis->zRevRangeByScore('events', '+inf', '-inf', ['limit' => [$position++, 1]])[0];
-            if (!$result) {
-                continue;
-            }
-            $decodedResult = json_decode($result);
-            if ($decodedResult && (!isset($decodedResult->conditions) || $decodedResult->conditions === $searchParams)) {
-                $this->output($decodedResult->event ?? 'No events found');
-                return;
-            }
-        }
-        $this->output('No events found');
+
+        $result = $this->client->get($searchParams);
+        $this->output($result);
     }
 
     private static function getPropData(string $subject, string $propName)
