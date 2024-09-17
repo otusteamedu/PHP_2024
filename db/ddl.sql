@@ -49,8 +49,8 @@ CREATE TABLE "films_genres"(
     FOREIGN KEY ("genre_id") REFERENCES "genres"("id")
 );
 
-DROP TABLE IF EXISTS "films_contries" CASCADE;
-CREATE TABLE "films_contries"(
+DROP TABLE IF EXISTS "films_countries" CASCADE;
+CREATE TABLE "films_countries"(
     id SERIAL PRIMARY KEY,
     film_id BIGINT NOT NULL,
     country_id INT NOT NULL,
