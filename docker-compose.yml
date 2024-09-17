@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+    nginx-proxy:
+        build:
+            context: _docker/nginx-proxy
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+        depends_on:
+            - nginx1
+            - nginx2
+        container_name: nginx-proxy
+        networks:
+            - app-network
+    nginx1:
+        build:
+            context: _docker/nginx-balancer
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - php-fpm1
+            - php-fpm2
+        container_name: nginx
+        networks:
+            - app-network
+
+    nginx2:
+        build:
+            context: _docker/nginx-balancer
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - php-fpm1
+            - php-fpm2
+        container_name: nginx2
+        networks:
+            - app-network
+    php-fpm1:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        volumes:
+            - ./:/var/www
+            - ./tmp/sockets:/var/run/php
+        container_name: php-fpm
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        environment:
+            PHP_IDE_CONFIG: serverName=Docker
+        networks:
+            - app-network
+    php-fpm2:
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        volumes:
+            - ./:/var/www
+            - ./tmp/sockets:/var/run/php
+        container_name: php-fpm2
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        environment:
+            PHP_IDE_CONFIG: serverName=Docker
+        networks:
+            - app-network
+    redis:
+        image: redis
+        container_name: redis
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
