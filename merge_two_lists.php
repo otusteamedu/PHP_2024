@@ -1,5 +1,7 @@
 <?php
+
 namespace ANaimushina;
+
 class Solution
 {
     /**
@@ -35,7 +37,6 @@ class Solution
 
         return $head->next;
     }
-
 }
 
 /**
@@ -43,3 +44,4 @@ class Solution
  * Так как мы проходимся одновременно по обоим массивам, сложность будет расти пропорционально
  * размерам переданных массивов
  */
+
