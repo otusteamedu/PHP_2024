@@ -1,0 +1,20 @@
+{
+    "name": "otus/redis",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Otus\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Yuri Serikov",
+            "email": "yu.serikov@myspaceport.ru"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
