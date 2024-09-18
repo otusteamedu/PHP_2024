@@ -27,7 +27,7 @@ class Socket
      */
     public function create(): static
     {
-        $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
+        $socket = @socket_create(AF_UNIX, SOCK_STREAM, 0);
         if ($socket === false) {
             throw new SocketException(
                 'socket_create() failed: '
@@ -51,7 +51,7 @@ class Socket
             unlink($this->socketPath);
         }
 
-        if (socket_bind($this->socket, $this->socketPath) === false) {
+        if (@socket_bind($this->socket, $this->socketPath) === false) {
             throw new SocketException('socket_bind() failed: '
                 . socket_strerror(socket_last_error($this->socket)));
         }
@@ -65,7 +65,7 @@ class Socket
      */
     public function connect(): static
     {
-        if (socket_connect($this->socket, $this->socketPath) === false) {
+        if (@socket_connect($this->socket, $this->socketPath) === false) {
             throw new SocketException(
                 'socket_connect() failed: '
                 . socket_strerror(socket_last_error())
@@ -100,7 +100,7 @@ class Socket
      */
     public function listen(int $backlog = 0): static
     {
-        if (socket_listen($this->socket, $backlog) === false) {
+        if (@socket_listen($this->socket, $backlog) === false) {
             throw new SocketException(
                 'socket_listen() failed: '
                 . socket_strerror(socket_last_error())
