@@ -115,6 +115,7 @@ VALUES
 (17, 4, 4, 1.5);
 
 
+
 --функция расчета цены на сессию и место
 CREATE OR REPLACE FUNCTION get_price(current_session_id INTEGER, current_site_id INTEGER)
     RETURNS INTEGER
@@ -170,29 +171,44 @@ VALUES
 
 
 
---1000 случайных показов
-do $$
- declare 
+--генерация случайных сеансов
+CREATE OR REPLACE FUNCTION create_session(quantity INTEGER)
+    RETURNS INTEGER
+
+AS $$
+ DECLARE
+
   counter integer := 12;
- begin
-  while counter <= 1000 loop
-	 INSERT INTO session (id, time_display, film_id, hall_id)
+  date_time timestamp;
+
+ BEGIN
+  WHILE counter <= quantity LOOP
+        --выберем дат и время показа
+        SELECT date_trunc('hour', (current_date + counter * '1 hour'::interval)) INTO date_time;
+
+	    INSERT INTO session (id, time_display, film_id, hall_id)
 		VALUES (
             counter, -- просто по порядку
-			(SELECT date_trunc('hour', (current_date + (random() * 360) * '1 day'::interval)) as enddate), -- случайная дата с точночтью до часа с сегодня на год вперд
+            date_time,
 			(SELECT Id FROM film ORDER BY RANDOM() LIMIT 1), --случайный фильм
 			(SELECT Id FROM hall ORDER BY RANDOM() LIMIT 1) --случайный зал
 		);
 	raise notice 'Counter %', counter;
 	counter := counter + 1;
-  end loop;
- end$$;
+  END LOOP;
 
---в одном зале не могут идти одновременно несколько фильмов
-DELETE FROM session s1 USING session s2 
-WHERE (s1.id > s2.id) 
-AND (s1.hall_id = s2.hall_id) 
-AND (date_trunc('hour', (s1.time_display)) = (date_trunc('hour', (s2.time_display))));
+  --в одном зале не могут идти одновременно несколько фильмов
+    DELETE FROM session s1 USING session s2 
+    WHERE (s1.id > s2.id) 
+    AND (s1.hall_id = s2.hall_id) 
+    AND (date_trunc('hour', (s1.time_display)) = (date_trunc('hour', (s2.time_display))));
+
+    SELECT COUNT(*) FROM session INTO counter;
+
+    RETURN counter;
+
+ END$$
+ LANGUAGE plpgsql;
 
 
 
@@ -220,24 +236,26 @@ LANGUAGE plpgsql;
 
 
 
---заполним 10000 билетов и на имеющихся покупателей
-DO $$
+--генерация билетов на имеющихся покупателей
+CREATE OR REPLACE FUNCTION create_ticket_buyer(quantity INTEGER)
+    RETURNS INTEGER
+
+AS $$
 DECLARE
 
-    counter INTEGER := 1;
+    counter INTEGER := 10;
     current_site_id INTEGER;
     current_session_id INTEGER;
     current_id INTEGER;
 
 BEGIN
-    while counter <= 10000 LOOP
-        SELECT MAX(Id)+1 FROM ticket INTO current_id; --вычисляем id
+    WHILE counter <= quantity LOOP
         SELECT Id FROM session ORDER BY RANDOM() LIMIT 1 INTO current_session_id; --случайнм образом вбираем сессию из существующих
-        SELECT * FROM get_free_site(current_session_id) INTO current_site_id; --выбираем свободное место
+        SELECT Id FROM get_free_site(current_session_id) ORDER BY RANDOM() LIMIT 1 INTO current_site_id; --выбираем свободное место
 
         --генерируем случайный билет
         INSERT INTO ticket (Id, session_id, site_id, price) VALUES (
-            current_id, 
+            counter, 
             current_session_id, 
             current_site_id, 
             (SELECT * FROM get_price(current_session_id, current_site_id)) --считаем цену
@@ -249,10 +267,22 @@ BEGIN
 
         raise notice 'Counter %', counter;
         counter := counter + 1;
+
     END LOOP;
-END$$;
+
+    --не пригодится, так как функция get_free_site не даст повторений НО на всякий случай оставлю тут
+    --DELETE FROM ticket AS t1 USING ticket AS t2 WHERE (t1.id > t2.id) AND (t1.session_id = t2.session_id) AND (t1.site_id = t2.site_id);--не пригодится, так как функция get_free_site не даст повторений НО на всякий случай оставлю тут
+    --DELETE FROM ticket AS t1 USING ticket AS t2 WHERE (t1.id > t2.id) AND (t1.session_id = t2.session_id) AND (t1.site_id = t2.site_id);
+    
+    SELECT COUNT(*) FROM ticket INTO counter;
+
+    RETURN counter;
+
+END
+$$
+LANGUAGE plpgsql;
+
+SELECT * FROM create_session(1000000);
+SELECT * FROM create_ticket_buyer(10000);
 
 
-
---не пригодится, так как функция get_free_site не даст повторений НО на всякий случай оставлю тут
---DELETE FROM ticket AS t1 USING ticket AS t2 WHERE (t1.id > t2.id) AND (t1.session_id = t2.session_id) AND (t1.site_id = t2.site_id);
