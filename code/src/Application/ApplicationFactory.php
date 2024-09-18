@@ -11,7 +11,7 @@ class ApplicationFactory
     /**
      * @return Application
      */
-    static public function getApplication(): Application
+    public static function getApplication(): Application
     {
         return new Application(
             new CommandFactory()

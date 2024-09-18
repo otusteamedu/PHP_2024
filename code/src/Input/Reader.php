@@ -9,8 +9,7 @@ class Reader
     public function __construct(
         private $inStream,
         private $outStream
-    )
-    {
+    ) {
     }
 
     /**

@@ -22,5 +22,4 @@ class WriterStub extends Writer
     {
         return $this->buffer;
     }
-
 }

@@ -24,5 +24,4 @@ class ReaderStub extends Reader
         self::$index++;
         return $this->inputs[self::$index];
     }
-
 }

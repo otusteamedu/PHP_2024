@@ -12,8 +12,7 @@ class Application
 {
     public function __construct(
         private readonly CommandFactory $commandFactory
-    )
-    {
+    ) {
     }
 
     /**

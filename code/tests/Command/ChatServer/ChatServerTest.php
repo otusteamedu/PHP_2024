@@ -3,6 +3,7 @@
 namespace Test\Command\ChatServer;
 
 use PHPUnit\Framework\MockObject\Exception;
+use ReflectionClass;
 use Test\Stubs\ReaderStub;
 use Test\Stubs\WriterStub;
 use Viking311\Chat\Command\ChatServer\ChatServer;
@@ -23,7 +24,6 @@ class ChatServerTest extends TestCase
         $socket = $this->createMock(Socket::class);
         $socket->method('read')->willReturn(
             $message
-
         );
         $socket
             ->expects(self::exactly(1))
@@ -31,13 +31,13 @@ class ChatServerTest extends TestCase
         $socket
             ->expects(self::exactly(1))
             ->method('write')
-            ->with('Received ' . strlen($message) .' bytes');
+            ->with('Received ' . strlen($message) . ' bytes');
         $writer = new WriterStub();
         $chatServer = new ChatServer(
-          $socket,
-          $writer
+            $socket,
+            $writer
         );
-        $reflect = new \ReflectionClass($chatServer);
+        $reflect = new ReflectionClass($chatServer);
         $prop = $reflect->getProperty('infinityLoop');
         $prop->setValue($chatServer, false);
 
@@ -45,7 +45,7 @@ class ChatServerTest extends TestCase
 
         $expectedOutput = [
             'Server started' . PHP_EOL,
-            'Received message from client: '. $message . PHP_EOL,
+            'Received message from client: ' . $message . PHP_EOL,
         ];
         $this->assertEquals(
             $expectedOutput,

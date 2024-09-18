@@ -32,7 +32,7 @@ class CommandFactory
     /**
      * @return ChatServer
      */
-    public function getChatServer():ChatServer
+    public function getChatServer(): ChatServer
     {
         $config = new Config();
 
