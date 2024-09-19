@@ -20,6 +20,12 @@ class App
         $newUser = new User(null, 'John', 'Doe', '123-456-7890', 'john.doe@example.com');
         $newUserId = $this->userMapper->insert($newUser);
 
+        // Пример получения всех пользователей
+        $users = $this->userMapper->findAll();
+        foreach ($users as $user) {
+            echo 'User Name: ' . $user->getName() . "\n";
+        }
+
         // Пример получения пользователя по ID
         $user = $this->userMapper->find($newUserId);
         echo 'User Name: ' . $user->getName() . "\n";
