@@ -5,3 +5,7 @@
 .LSOverride
 /code/vendor/
 /logs/
+/.env
+/data/elastic/
+/data/redisinsight/
+/data/redis/
