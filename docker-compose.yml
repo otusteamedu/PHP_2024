@@ -4,7 +4,7 @@ services:
     image: redis:7.2-alpine
     container_name: otus-php--redis
     volumes:
-      - ./data/redis:/root/redis
+      - ./data/redis:/data
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
     expose:
       - 6379
