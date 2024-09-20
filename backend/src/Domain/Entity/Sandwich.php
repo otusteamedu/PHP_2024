@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domain\Entity;
 
-class Burger implements MealInterface
+class Sandwich implements Meal
 {
     public function getName(): string
     {
-        return 'Burger';
-    }
-
-    public function prepare():void {
-        echo 'Burger is preparing';
+        return 'Sandwich';
     }
 }

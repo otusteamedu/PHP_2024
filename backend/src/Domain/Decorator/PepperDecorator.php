@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domain\Decorator;
 
-class LettuceDecorator extends MealDecorator
+class PepperDecorator extends MealDecorator
 {
     public function getName(): string
     {
-        return $this->meal->getName() . " с салатом";
+        return $this->meal->getName() . " with peper";
     }
 
     public function prepare(): void
@@ -20,7 +20,6 @@ class LettuceDecorator extends MealDecorator
 
     private function addOnion(): void
     {
-        echo "Добавляем салат.\n";
+        echo "Добавляем перец.\n";
     }
-
 }

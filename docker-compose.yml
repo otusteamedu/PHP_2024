@@ -15,7 +15,7 @@ services:
   php-fpm:
     build:
       context: ./backend
-      dockerfile: docker/Dockerfile
+      dockerfile: backend/docker/Dockerfile
     volumes:
       - ./backend:/var/www
     env_file:

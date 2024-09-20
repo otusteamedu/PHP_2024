@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Strategy;
 
-class GrillStrategy implements CookingStrategy
+use App\Domain\Entity\Meal;
+
+class GrillStrategy implements CookingStrategyInterface
 {
     public function cook(Meal $meal): void
     {
-        echo "Готовим " . $meal->getName() . " на гриле...\n";
+        echo "Prepare " . $meal->getName() . " on grill...\n";
     }
 }

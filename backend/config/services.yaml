@@ -6,6 +6,12 @@
 parameters:
 
 services:
+    App\Domain\Strategy\CookingStrategyInterface: '@App\Domain\Strategy\GrillStrategy'
+    App\Domain\Strategy\GrillStrategy: ~
+    App\Domain\Strategy\OvenStrategy: ~
+    App\Domain\Strategy\StoveStrategy: ~
+
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
