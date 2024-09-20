@@ -38,9 +38,10 @@ class UserMapper
         return null;
     }
 
-    public function findAll(): array
+    public function findAll(int $limit = 100, int $offset = 0): array
     {
-        $stmt = $this->pdo->query('SELECT * FROM users');
+        $stmt = $this->pdo->prepare('SELECT * FROM users LIMIT ? OFFSET ?');
+        $stmt->execute([$limit, $offset]);
         $users = [];
 
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -84,19 +85,24 @@ class UserMapper
 
     public function update(User $user): void
     {
-        $stmt = $this->pdo->prepare('
-            UPDATE users 
-            SET name = :name, lastName = :lastName, phone = :phone, email = :email
-            WHERE id = :id
-        ');
-        $stmt->execute([
-            'name' => $user->getName(),
-            'lastName' => $user->getLastName(),
-            'phone' => $user->getPhone(),
-            'email' => $user->getEmail(),
-            'id' => $user->getId()
-        ]);
+        $dirtyFields = $user->getDirtyFields();
+        if (empty($dirtyFields)) {
+            return;
+        }
+
+        $setPart = [];
+        foreach ($dirtyFields as $field => $value) {
+            $setPart[] = "$field = :$field";
+        }
+
+        $sql = 'UPDATE users SET ' . implode(', ', $setPart) . ' WHERE id = :id';
+        $params = array_merge($dirtyFields, ['id' => $user->getId()]);
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
         $this->identityMap[$user->getId()] = $user;
+        $user->clearDirtyFields();
     }
 
     public function delete($id): void

@@ -11,6 +11,7 @@ class User
     private $lastName;
     private $phone;
     private $email;
+    private array $dirtyFields = [];
 
     public function __construct($id, $name, $lastName, $phone, $email)
     {
@@ -48,26 +49,47 @@ class User
 
     public function setId($id)
     {
-        $this->id = $id;
+        $this->setField('id', $id);
     }
 
     public function setName($name)
     {
-        $this->name = $name;
+        $this->setField('name', $name);
     }
 
     public function setLastName($lastName)
     {
-        $this->lastName = $lastName;
+        $this->setField('lastName', $lastName);
     }
 
     public function setPhone($phone)
     {
-        $this->phone = $phone;
+        $this->setField('phone', $phone);
     }
 
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->setField('email', $email);
+    }
+
+    private function setField(string $fieldName, $newValue): void
+    {
+        if (property_exists($this, $fieldName)) {
+            $currentValue = $this->$fieldName;
+            if ($currentValue !== $newValue) {
+                $this->$fieldName = $newValue;
+                $this->dirtyFields[$fieldName] = $newValue;
+            }
+        }
+    }
+
+    public function getDirtyFields(): array
+    {
+        return $this->dirtyFields;
+    }
+
+    public function clearDirtyFields(): void
+    {
+        $this->dirtyFields = [];
     }
 }
