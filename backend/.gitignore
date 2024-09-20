@@ -9,3 +9,4 @@
 /vendor/
 /backend/vendor/
 /backend/var/cache/
+/backend/.env
