@@ -22,7 +22,7 @@ class SocketService implements UnixSocketInterface
      */
     public function create(): void
     {
-      $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
+        $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
 
         if (!$this->socket) {
             throw new Exception('SocketService create error');
@@ -35,7 +35,7 @@ class SocketService implements UnixSocketInterface
      */
     public function bind(): void
     {
-        if (socket_bind($this->socket,  $this->getStoragePath()) === false) {
+        if (socket_bind($this->socket, $this->getStoragePath()) === false) {
             throw new Exception('SocketService bind error');
         }
     }

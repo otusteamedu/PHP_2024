@@ -35,7 +35,6 @@ class ClientService implements ChatKeepingInterface
     public function keepChat(): void
     {
         foreach ($this->socketService->getReadGenerator() as $serverMessage) {
-
             echo ServiceMessage::ServerMessage->value . $serverMessage . PHP_EOL;
 
             $clientMessage = readline(ServiceMessage::ClientInvitation->value);

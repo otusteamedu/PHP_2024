@@ -45,7 +45,7 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
     {
         $this->socket = $this->socketService->accept();
         $serverMessage = ServiceMessage::WelcomeToChat->value;
-        $this->socketService->write($serverMessage,  $this->socket);
+        $this->socketService->write($serverMessage, $this->socket);
     }
 
     /**
@@ -55,7 +55,6 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
     public function keepChat(): void
     {
         foreach ($this->socketService->getReadGenerator($this->socket) as $clientMessage) {
-
             if ($clientMessage === ServiceCommand::ChatStop->value) {
                 break;
             }

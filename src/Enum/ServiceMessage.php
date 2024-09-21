@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Enum;
 
-enum ServiceMessage: string 
+enum ServiceMessage: string
 {
     case ServerStarted     = "[Server] Server started \n";
     case WelcomeToChat     = " Welcome to the chat! To stop the chat, type 'chat:stop'";
