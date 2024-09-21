@@ -11,19 +11,19 @@ use Exception;
 
 class App
 {
-  /**
-   * @param $argv
-   * @return void
-   * @throws Exception
-   */
-  public function run($argv): void
-  {
-    if (in_array(ServiceCommand::ServerStart->value, $argv)) {
-      (new ServerController())->run();
-    }
+    /**
+     * @param $argv
+     * @return void
+     * @throws Exception
+     */
+    public function run($argv): void
+    {
+        if (in_array(ServiceCommand::ServerStart->value, $argv)) {
+          (new ServerController())->run();
+        }
 
-    if (in_array(ServiceCommand::ClientStart->value, $argv)) {
-      (new ClientController())->run();
+        if (in_array(ServiceCommand::ClientStart->value, $argv)) {
+          (new ClientController())->run();
+        }
     }
-  }
 }
