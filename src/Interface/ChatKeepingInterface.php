@@ -6,7 +6,7 @@ namespace App\Interface;
 
 interface ChatKeepingInterface
 {
-  public function initializeChat(): void;
-  public function keepChat(): void;
-  public function stopChat(): void;
+    public function initializeChat(): void;
+    public function keepChat(): void;
+    public function stopChat(): void;
 }
