@@ -45,7 +45,7 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
     {
         $this->socket = $this->socketService->accept();
         $serverMessage = ServiceMessage::WelcomeToChat->value;
-        $this->socketService->write($serverMessage,  $this->socket);
+        $this->socketService->write($serverMessage, $this->socket);
     }
 
     /**

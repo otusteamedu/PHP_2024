@@ -35,7 +35,7 @@ class SocketService implements UnixSocketInterface
      */
     public function bind(): void
     {
-        if (socket_bind($this->socket,  $this->getStoragePath()) === false) {
+        if (socket_bind($this->socket, $this->getStoragePath()) === false) {
             throw new Exception('SocketService bind error');
         }
     }
