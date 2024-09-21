@@ -6,5 +6,5 @@ namespace App\Interface;
 
 interface ChatBeginningInterface
 {
-  public function beginChat(): void;
+    public function beginChat(): void;
 }
