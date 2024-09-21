@@ -142,5 +142,5 @@ class SocketService implements UnixSocketInterface
         $config = ConfigService::class;
 
         return $config::get('STORAGE_PATH') . '/' . $config::get('STORAGE_NAME');
-      }
+    }
 }
