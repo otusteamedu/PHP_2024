@@ -8,11 +8,11 @@ use App\Service\ClientService;
 
 class ClientController
 {
-  public function run(): void
-  {
-    $clientService = new ClientService();
-    $clientService->initializeChat();
-    $clientService->keepChat();
-    $clientService->stopChat();
-  }
+    public function run(): void
+    {
+        $clientService = new ClientService();
+        $clientService->initializeChat();
+        $clientService->keepChat();
+        $clientService->stopChat();
+    }
 }
