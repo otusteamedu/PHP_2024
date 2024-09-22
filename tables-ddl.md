@@ -62,7 +62,7 @@ VALUES
 
 ```postgresql
 CREATE TABLE movie_entity_attributes (
-    id SMALLSERIAL,
+    id SERIAL,
     type_id INTEGER NOT NULL,
     code VARCHAR(255) UNIQUE NOT NULL,
     label VARCHAR(255) NOT NULL,
