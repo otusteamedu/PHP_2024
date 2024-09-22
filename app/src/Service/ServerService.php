@@ -30,6 +30,7 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
     public function initializeChat(): void
     {
         $this->socketService = new SocketService();
+        $this->socketService->unlink();
         $this->socketService->create();
         $this->socketService->bind();
         $this->socketService->listen();
@@ -61,8 +62,8 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
 
             echo ServiceMessage::ClientMessage->value . $clientMessage . PHP_EOL;
 
-            $serverMessage = ServiceMessage::ServerAnswer->value . $clientMessage
-                            . ServiceMessage::ReceivedBytes->value . strlen($clientMessage);
+            $serverMessage = ServiceMessage::ServerAnswer->value . '"' . $clientMessage . '"'
+                           . ServiceMessage::ReceivedBytes->value . strlen($clientMessage) . ';'
             $this->socketService->write($serverMessage, $this->socket);
         }
     }

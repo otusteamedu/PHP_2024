@@ -131,7 +131,9 @@ class SocketService implements UnixSocketInterface
      */
     public function unlink(): void
     {
-        unlink($this->getStoragePath());
+        if (file_exists($this->getStoragePath())) {
+            unlink($this->getStoragePath());
+        }
     }
 
     /**
