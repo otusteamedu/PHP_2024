@@ -32,6 +32,8 @@ CREATE TABLE "attribute_values" (
     "value_text" TEXT NULL DEFAULT NULL,
     "value_date" DATE NULL DEFAULT NULL,
     "value_timestamp" TIMESTAMP NULL DEFAULT NULL,
+    "value_integer" INTEGER NULL DEFAULT NULL,
+    "value_decimal" DECIMAL(12,2) NULL DEFAULT NULL,
     CONSTRAINT "fk_film_id" FOREIGN KEY ("film_id") REFERENCES "films" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION,
     CONSTRAINT "fk_attribute_id" FOREIGN KEY ("attribute_id") REFERENCES "attributes" ("id") ON UPDATE NO ACTION ON DELETE NO ACTION
 );

@@ -7,6 +7,8 @@ SELECT f.name AS film, t.name AS attribute_type, a.name AS attribute,
         WHEN t.type = 'boolean' THEN v.value_boolean::text
         WHEN t.type = 'date' THEN v.value_date::text
         WHEN t.type = 'timestamp' THEN v.value_timestamp::text
+        WHEN t.type = 'integer' THEN v.value_integer::text
+        WHEN t.type = 'decimal' THEN v.value_decimal::text
         ELSE NULL
     END AS value
 
