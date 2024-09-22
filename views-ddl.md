@@ -29,9 +29,10 @@ SELECT
     COALESCE(
         values.value_varchar,
         values.value_text,
-        values.value_date::text,
-        values.value_int::text,
-        values.value_bool::text
+        values.value_date::date::text,
+        values.value_int::int::text,
+        values.value_bool::boolean::text,
+        values.value_float::float::text
     ) AS attribute_value
 FROM
     movie_entities as entities
