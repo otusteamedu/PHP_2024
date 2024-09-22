@@ -15,9 +15,9 @@ class CommandHandlerService
     public function commandHandler(string $clientMessage): string
     {
         if (str_contains($clientMessage, ServiceCommand::EmailValidate->value)) {
-        $emailList = substr($clientMessage, strlen(ServiceCommand::EmailValidate->value));
+            $emailList = substr($clientMessage, strlen(ServiceCommand::EmailValidate->value));
 
-            return (new EmailValidatorService())->validateEmail( $emailList, false);
+            return (new EmailValidatorService())->validateEmail($emailList, false);
         }
 
         return '';

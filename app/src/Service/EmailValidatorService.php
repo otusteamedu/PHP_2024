@@ -45,7 +45,7 @@ class EmailValidatorService
             if ($arrayAsResult) {
                 $validationResult['ValidationResult'][] = [$email => $checkEmail];
             } else {
-                $validationResult .= sprintf(' %s => %s;', $email,  ($checkEmail ? 'валиден' : 'не валиден'));
+                $validationResult .= sprintf(' %s => %s;', $email, ($checkEmail ? 'валиден' : 'не валиден'));
             }
         }
 
