@@ -3,6 +3,7 @@
 namespace App\Domain\Traits\Products;
 
 use App\Domain\Entities\Ingredients\IngredientInterface;
+use App\Domain\Entities\Products\ProductInterface;
 
 trait WithIngredients
 {

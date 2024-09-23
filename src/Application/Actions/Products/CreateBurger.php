@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Actions;
+namespace App\Application\Actions\Products;
 
 use App\Application\Enums\Recipes\BurgerType;
 use App\Application\Factories\Products\BurgerFactory;
