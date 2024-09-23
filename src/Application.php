@@ -15,7 +15,7 @@ class Application
 
     public function run()
     {
-        if (empty($_POST)) {
+        if (empty($_POST['string'])) {
             return;
         };
 
