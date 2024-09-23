@@ -17,6 +17,11 @@ class Application
 
     public function run()
     {
+
+        if (empty($_POST['emailAddresses'])) {
+            return;
+        }
+
         $emailAddresses = $_POST['emailAddresses'] ?? [];
 
         if (!$this->validator->isEmails($emailAddresses)) {
