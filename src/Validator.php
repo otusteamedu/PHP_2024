@@ -15,7 +15,6 @@ class Validator
             if ($bracket === '(') {
                 array_push($stack, $bracket);
             } elseif ($bracket === ')') {
-
                 if (empty($stack)) {
                     return false;
                 }
