@@ -6,5 +6,4 @@ use App\Domain\Entities\Products\ProductInterface;
 
 class Order
 {
-
 }
