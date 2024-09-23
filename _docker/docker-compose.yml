@@ -1,0 +1,36 @@
+services:
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}_php
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+    volumes:
+      - ./../:/var/www/
+      - php_socket:/var/run
+    networks:
+      - app-network
+
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./../:/var/www:rw
+      - php_socket:/var/run
+    depends_on:
+      - php
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  php_socket:
