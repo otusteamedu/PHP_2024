@@ -27,7 +27,6 @@ SELECT
     entities.title,
     attrs.label as attribute_label,
     COALESCE(
-        values.value_varchar,
         values.value_text,
         values.value_date::date::text,
         values.value_int::int::text,

@@ -25,12 +25,11 @@ CREATE TABLE eav_attribute_types (
 INSERT INTO eav_attribute_types
     (id, code, label)
 VALUES
-    (1, 'text', 'Long Text'),
+    (1, 'text', 'Text'),
     (2, 'integer', 'Number'),
     (3, 'date', 'Date'),
     (4, 'boolean', 'Boolean'),
-    (5, 'varchar', 'Text'),
-    (6, 'float', 'Float')
+    (5, 'float', 'Float')
 ;
 ```
 
@@ -91,9 +90,9 @@ VALUES
     (8, 3, 'sales_start_date', 'Дата начала продажи билетов', DEFAULT, DEFAULT),
     (9, 3, 'sales_end_date', 'Дата окончания продажи билетов', DEFAULT, DEFAULT),
     (10, 2, 'duration_in_minutes', 'Продолжительность (минуты)', DEFAULT, TRUE),
-    (11, 2, 'title_in_russian', 'Русское название', DEFAULT, TRUE),
-    (12, 6, 'rating_imdb', 'Рейтинг IMDB', DEFAULT, DEFAULT),
-    (13, 6, 'rating_kinopoisk', 'Рейтинг Кинопоиск', DEFAULT, DEFAULT)
+    (11, 1, 'title_in_russian', 'Русское название', DEFAULT, TRUE),
+    (12, 5, 'rating_imdb', 'Рейтинг IMDB', DEFAULT, DEFAULT),
+    (13, 5, 'rating_kinopoisk', 'Рейтинг Кинопоиск', DEFAULT, DEFAULT)
 ;
 ```
 
@@ -104,7 +103,6 @@ CREATE TABLE movie_entity_attribute_values (
     id SERIAL,
     entity_id INTEGER NOT NULL,
     attribute_id INTEGER NOT NULL,
-    value_varchar VARCHAR(255) NULL,
     value_text TEXT NULL,
     value_date DATE NULL,
     value_int INTEGER NULL,
@@ -121,24 +119,24 @@ CREATE TABLE movie_entity_attribute_values (
 
 ```postgresql
 INSERT INTO movie_entity_attribute_values
-    (entity_id, attribute_id, value_varchar, value_text, value_date, value_int, value_bool)
+    (entity_id, attribute_id, value_text, value_date, value_int, value_bool, value_float)
 VALUES
-    (1, 1, NULL, 'Очень длинная рецензия (IMBD)', NULL, NULL, NULL),
-    (1, 2, NULL, 'Очень длинная рецензия (Rotten Tomatos)', NULL, NULL, NULL),
-    (1, 3, NULL, NULL, NULL, NULL, TRUE),
-    (1, 4, NULL, NULL, '2001-12-10', NULL, NULL),
-    (1, 5, NULL, NULL, '2002-03-01', NULL, NULL),
-    (1, 6, NULL, NULL, '2024-09-01', NULL, NULL),
-    (1, 7, NULL, NULL, '2024-10-01', NULL, NULL),
-    (1, 8, NULL, NULL, '2024-09-10', NULL, NULL),
-    (1, 9, NULL, NULL, '2024-10-01', NULL, NULL),
-    (1, 10, NULL, NULL, NULL, 178, NULL),
+    (1, 1, 'Очень длинная рецензия (IMBD)', NULL, NULL, NULL, NULL),
+    (1, 2, 'Очень длинная рецензия (Rotten Tomatos)', NULL, NULL, NULL, NULL),
+    (1, 3, NULL, NULL, NULL, TRUE, NULL),
+    (1, 4, NULL, '2001-12-10', NULL, NULL, NULL),
+    (1, 5, NULL, '2002-03-01', NULL, NULL, NULL),
+    (1, 6, NULL, '2024-09-01', NULL, NULL, NULL),
+    (1, 7, NULL, '2024-10-01', NULL, NULL, NULL),
+    (1, 8, NULL, '2024-09-10', NULL, NULL, NULL),
+    (1, 9, NULL, '2024-10-01', NULL, NULL, NULL),
+    (1, 10, NULL, NULL, 178, NULL, NULL),
     (1, 11, 'Властелин колец: Братство кольца', NULL, NULL, NULL, NULL),
-    (1, 12, 8.9, NULL, NULL, NULL, NULL),
-    (1, 13, 8.6, NULL, NULL, NULL, NULL),
+    (1, 12, NULL, NULL, NULL, NULL, 8.9),
+    (1, 13, NULL, NULL, NULL, NULL, 8.6),
     (2, 11, 'Властелин колец: Две башни', NULL, NULL, NULL, NULL),
-    (2, 8, NULL, NULL, CURRENT_DATE, NULL, NULL),
+    (2, 8, NULL, CURRENT_DATE, NULL, NULL, NULL),
     (3, 11, 'Властелин колец: Возвращение короля', NULL, NULL, NULL, NULL),
-    (3, 8, NULL, NULL, CURRENT_DATE + INTERVAL '20 days', NULL, NULL)
+    (3, 8, NULL, CURRENT_DATE + INTERVAL '20 days', NULL, NULL, NULL)
 ;
 ```
