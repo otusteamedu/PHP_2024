@@ -1,6 +1,6 @@
 services:
-  app_1:
-    container_name: ${COMPOSE_PROJECT_NAME}_app_1
+  php:
+    container_name: ${COMPOSE_PROJECT_NAME}_php
     build:
       context: ./php
       dockerfile: Dockerfile
@@ -9,68 +9,22 @@ services:
         - PGID=${PGID}
     volumes:
       - ./../:/var/www/
-    depends_on:
-      - redis
+      - php_socket:/var/run
     networks:
       - app-network
 
-  app_2:
-    container_name: ${COMPOSE_PROJECT_NAME}_app_2
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx
     build:
-      context: ./php
-      dockerfile: Dockerfile
-      args:
-        - PUID=${PUID}
-        - PGID=${PGID}
-    volumes:
-      - ./../:/var/www/
-    depends_on:
-      - redis
-    networks:
-      - app-network
-
-  nginx-proxy:
-    container_name: ${COMPOSE_PROJECT_NAME}_nginx-proxy
-    build:
-      context: ./nginx-proxy
+      context: ./nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"
-    depends_on:
-      - nginx-balancer_1
-      - nginx-balancer_2
-    networks:
-      - app-network
-
-  nginx-balancer_1:
-    container_name: ${COMPOSE_PROJECT_NAME}_nginx-balancer_1
-    build:
-      context: ./nginx_balancer
-      dockerfile: Dockerfile
     volumes:
-      - ./../:/var/www/
+      - ./../:/var/www:rw
+      - php_socket:/var/run
     depends_on:
-      - app_1
-      - app_2
-    networks:
-      - app-network
-
-  nginx-balancer_2:
-    container_name: ${COMPOSE_PROJECT_NAME}_nginx-balancer_2
-    build:
-      context: ./nginx_balancer
-      dockerfile: Dockerfile
-    volumes:
-      - ./../:/var/www/
-    depends_on:
-      - app_1
-      - app_2
-    networks:
-      - app-network
-
-  redis:
-    image: redis:5.0-alpine
-    container_name: ${COMPOSE_PROJECT_NAME}_redis
+      - php
     networks:
       - app-network
 
@@ -78,3 +32,5 @@ networks:
   app-network:
     driver: bridge
 
+volumes:
+  php_socket:

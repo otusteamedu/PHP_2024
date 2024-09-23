@@ -19,7 +19,7 @@ down:
 	${DOCKER_COMPOSE} down
 
 app_bash:
-	${DOCKER_COMPOSE} exec -u www-data php bash
+	${DOCKER_COMPOSE} exec -u www-data php sh
 
 app_nginx:
 	${DOCKER_COMPOSE} exec -u www-data nginx bash

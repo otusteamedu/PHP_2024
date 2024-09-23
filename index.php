@@ -1,4 +1,17 @@
 <?php
-echo '<pre>';
-var_dump($_SERVER['HOSTNAME']);
-echo '</pre>';
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use App\Application;
+
+try {
+
+    (new Application())->run();
+
+} catch (Exception $e) {
+
+    echo $e->getMessage();
+
+}
