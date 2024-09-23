@@ -1,12 +1,16 @@
 <?php
 
-use Ingredients\Bun;
-use Ingredients\Ketchup;
-use Ingredients\Mustard;
-use Ingredients\Salat;
-use Ingredients\Tomato;
-use Interfaces\Recipes\InteractsWithIngredients;
-use Traits\Recipes\WithIngredients;
+namespace App\Application\Decorators\Recipes\Burgers;
+
+use App\Domain\Decorators\Recipes\InteractsWithIngredients;
+use App\Domain\Decorators\Recipes\RecipeDecoratorInterface;
+use App\Domain\Entities\Ingredients\Bun;
+use App\Domain\Entities\Ingredients\Ketchup;
+use App\Domain\Entities\Ingredients\Mustard;
+use App\Domain\Entities\Ingredients\Salat;
+use App\Domain\Entities\Ingredients\Tomato;
+use App\Domain\Entities\Products\ProductInterface;
+use App\Domain\Traits\Products\WithIngredients;
 
 class VeggieBurgerDecorator implements RecipeDecoratorInterface, InteractsWithIngredients
 {

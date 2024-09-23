@@ -1,8 +1,8 @@
 <?php
 
-namespace Interfaces\Recipes;
+namespace App\Domain\Decorators\Recipes;
 
-use Ingredients\IngredientInterface;
+use App\Domain\Entities\Ingredients\IngredientInterface;
 
 interface InteractsWithIngredients
 {

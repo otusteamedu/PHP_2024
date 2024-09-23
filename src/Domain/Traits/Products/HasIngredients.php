@@ -1,8 +1,8 @@
 <?php
 
-namespace Traits\Products;
+namespace App\Domain\Traits\Products;
 
-use Ingredients\IngredientInterface;
+use App\Domain\Entities\Ingredients\IngredientInterface;
 
 trait HasIngredients
 {

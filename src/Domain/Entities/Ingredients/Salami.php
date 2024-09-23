@@ -1,6 +1,6 @@
 <?php
 
-namespace Ingredients;
+namespace App\Domain\Entities\Ingredients;
 
 class Salami implements IngredientInterface
 {

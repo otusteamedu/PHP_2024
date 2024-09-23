@@ -1,6 +1,6 @@
 <?php
 
-use Ingredients\IngredientInterface;
+namespace App\Domain\Entities\Products;
 
 interface ProductInterface
 {

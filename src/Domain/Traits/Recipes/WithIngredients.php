@@ -1,9 +1,8 @@
 <?php
 
-namespace Traits\Recipes;
+namespace App\Domain\Traits\Products;
 
-use Ingredients\IngredientInterface;
-use ProductInterface;
+use App\Domain\Entities\Ingredients\IngredientInterface;
 
 trait WithIngredients
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Interfaces\Products;
+namespace App\Domain\Entities\Products;
 
-use Ingredients\IngredientInterface;
+use App\Domain\Entities\Ingredients\IngredientInterface;
 
 interface WithIngredients
 {

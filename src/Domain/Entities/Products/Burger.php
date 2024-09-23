@@ -1,7 +1,8 @@
 <?php
 
-use Interfaces\Products\WithIngredients;
-use Traits\Products\HasIngredients;
+namespace App\Domain\Entities\Products;
+
+use App\Domain\Traits\Products\HasIngredients;
 
 class Burger implements ProductInterface, WithIngredients
 {
