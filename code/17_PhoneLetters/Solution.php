@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Otus\Leetcode\PhoneLetters;
+
 // Сложность O(k^n) - пепребираем число длиной n элементов, для каждого числа n раз перебираем k вариантов символов;
 class Solution
 {
-    function getDigitChars()
+    private function getDigitChars()
     {
         $result = [];
         for ($i = 2; $i <= 9; $i++) {
@@ -16,10 +18,9 @@ class Solution
             }
         }
         return $result;
-
     }
 
-    function letterCombinations($digits)
+    public function letterCombinations($digits)
     {
         $digitChars = self::getDigitChars();
         $variants = [];

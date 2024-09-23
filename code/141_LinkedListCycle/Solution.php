@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+namespace Otus\Leetcode\LinkedListCycle;
+
 // Сложность O(n) - пепребираем n элементов, выходим при повторе;
 class Solution
 {
-    function hasCycle($head)
+    public function hasCycle($head)
     {
         $hash = [];
         $node = $head;
