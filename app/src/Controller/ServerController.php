@@ -4,16 +4,28 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\SocketException;
 use App\Service\ServerService;
+use Generator;
 
 class ServerController
 {
-    public function run(): void
+    /**
+     * @return Generator
+     * @throws SocketException
+     */
+    public function run(): Generator
     {
         $serverService = new ServerService();
-        $serverService->initializeChat();
+        yield $serverService->initializeChat();
         $serverService->beginChat();
-        $serverService->keepChat();
-        $serverService->stopChat();
+
+        foreach ($serverService->keepChat() as $post) {
+            yield $post;
+        }
+
+        foreach ($serverService->stopChat() as $post) {
+            yield $post;
+        }
     }
 }

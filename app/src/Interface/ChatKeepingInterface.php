@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Interface;
 
+use Generator;
+
 interface ChatKeepingInterface
 {
-    public function initializeChat(): void;
-    public function keepChat(): void;
-    public function stopChat(): void;
+    public function initializeChat(): string;
+    public function keepChat(): Generator;
+    public function stopChat(): Generator;
 }

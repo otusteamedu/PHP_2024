@@ -6,7 +6,7 @@ namespace App\Enum;
 
 enum ServiceCommand: string
 {
-    case ServerStart = 'server:start';
-    case ClientStart = 'client:start';
-    case ChatStop    = 'chat:stop';
+    case ServerStart   = 'server:start';
+    case ClientStart   = 'client:start';
+    case ChatStop      = 'chat:stop';
 }

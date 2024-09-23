@@ -6,7 +6,9 @@ namespace App\Service;
 
 use App\Enum\ServiceCommand;
 use App\Enum\ServiceMessage;
+use App\Exception\SocketException;
 use App\Interface\ChatKeepingInterface;
+use Generator;
 
 class ClientService implements ChatKeepingInterface
 {
@@ -16,26 +18,26 @@ class ClientService implements ChatKeepingInterface
     private SocketService $socketService;
 
     /**
-     * @return void
-     * @throws \Exception
+     * @return string
+     * @throws SocketException
      */
-    public function initializeChat(): void
+    public function initializeChat(): string
     {
         $this->socketService = new SocketService();
         $this->socketService->create();
         $this->socketService->connect();
 
-        echo ServiceMessage::ClientStarted->value;
+        return ServiceMessage::ClientStarted->value;
     }
 
     /**
-     * @return void
-     * @throws \Exception
+     * @return Generator
+     * @throws SocketException
      */
-    public function keepChat(): void
+    public function keepChat(): Generator
     {
         foreach ($this->socketService->getReadGenerator() as $serverMessage) {
-            echo ServiceMessage::ServerMessage->value . $serverMessage . PHP_EOL;
+            yield ServiceMessage::ServerMessage->value . $serverMessage . PHP_EOL;
 
             $clientMessage = trim(readline(ServiceMessage::ClientInvitation->value));
             $this->socketService->write($clientMessage);
@@ -47,12 +49,12 @@ class ClientService implements ChatKeepingInterface
     }
 
     /**
-     * @return void
+     * @return Generator
      */
-    public function stopChat(): void
+    public function stopChat(): Generator
     {
         $this->socketService->close();
 
-        echo ServiceMessage::ClientStopped->value;
+        yield ServiceMessage::ClientStopped->value;
     }
 }
