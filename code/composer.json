@@ -1,0 +1,20 @@
+{
+  "name": "otus/chat",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Otus\\Chat\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Pavel Ivanov",
+      "email": "xeolit@bk.ru"
+    }
+  ],
+  "require": {
+    "ext-mbstring": "*",
+    "ext-sockets": "*",
+    "ext-readline": "*"
+  }
+}
