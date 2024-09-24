@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Unit;
+
 use App\Sockets\ClientSocket;
 use App\Config\SocketConfig;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 class ClientSocketTest extends TestCase

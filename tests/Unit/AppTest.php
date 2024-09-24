@@ -1,8 +1,12 @@
 <?php
 
+namespace Tests\Unit;
+
 use App\Core\App;
 use App\Sockets\ClientSocket;
 use App\Sockets\ServerSocket;
+use Generator;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class AppTest extends TestCase
