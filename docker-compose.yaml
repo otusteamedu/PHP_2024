@@ -10,3 +10,7 @@ services:
       POSTGRES_DB: 'otus_hw_9'
       POSTGRES_USER: 'otus'
       POSTGRES_PASSWORD: 'otus'
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./dump:/dump
+      - ./src:/src
