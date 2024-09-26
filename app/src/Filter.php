@@ -86,7 +86,7 @@ class Filter
         if (!empty($must)) {
             $elasticFilter['must'] = $must;
         }
-       
+
         if (!empty($filter)) {
             $elasticFilter['filter'] = $filter;
         }

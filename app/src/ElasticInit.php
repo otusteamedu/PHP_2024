@@ -30,7 +30,6 @@ class ElasticInit extends Elastic
         }
     }
 
-    
     private function loadSettings()
     {
         if (!$this->pathToFileSettings) {
@@ -64,7 +63,7 @@ class ElasticInit extends Elastic
             'index' => $this->indexName,
             'body' => ['data-binary' => file_get_contents($FullPathToFileBooks)]
         ])->asBool();
-        
+
         return $result;
     }
 

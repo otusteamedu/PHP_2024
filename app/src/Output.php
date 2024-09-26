@@ -16,7 +16,7 @@ class Output
         ];
 
         $arData = [];
-        
+
         foreach ($hits as $hit) {
             $hitSource = $hit['_source'];
             $stock = [];

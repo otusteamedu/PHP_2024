@@ -19,7 +19,7 @@ class Helpers
             // build padding string 1 $pad_string at a time until the desired $paddingLength is reached
             $padding .= mb_substr($pad_string, 0, $paddingLength - $l, $encoding);
         }
-        return match($pad_type) {
+        return match ($pad_type) {
             STR_PAD_RIGHT => $string . $padding,
             STR_PAD_LEFT => $padding . $string,
             STR_PAD_BOTH =>
