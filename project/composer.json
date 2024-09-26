@@ -1,0 +1,16 @@
+{
+    "name": "sfadeev/project",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Sfadeev\\Project\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Fadeev",
+            "email": "fadeevsn92@gmail.com"
+        }
+    ],
+    "require": {}
+}
