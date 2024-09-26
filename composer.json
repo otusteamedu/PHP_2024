@@ -1,0 +1,12 @@
+{
+    "name": "afilipov/hw12",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Afilipov\\Hw12\\": "src/"
+        }
+    },
+    "require": {
+      "ext-redis": "*"
+    }
+}
