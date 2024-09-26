@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app
+    env_file: .env
+    tty: true
+    volumes:
+       - ./app:/var/www/html
+       - ./data:/var/www/html/data
+    networks:
+      - app-network
+
+  es:
+    image: elasticsearch:8.15.1
+    networks:
+      - app-network
+    container_name: elasticsearch
+    ports:
+      - "${ELASTIC_PORT}:${ELASTIC_PORT}"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+
+
+networks:
+  app-network:
+    driver: bridge
