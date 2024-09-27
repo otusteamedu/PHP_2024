@@ -1,0 +1,20 @@
+{
+    "name": "otus/sergei-dudyuk-hw3",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Otus\\SergeiDudyukHw3\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergei Dudyuk",
+            "email": "imesergei@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "dudyuk-sergei/date-time-helper": "^0.0.1"
+    }
+}
