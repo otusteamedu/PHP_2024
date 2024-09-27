@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Task1;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -19,7 +20,7 @@ class Solution
      * @param ListNode $headB
      * @return ListNode
      */
-    function getIntersectionNode($headA, $headB)
+    public function getIntersectionNode($headA, $headB)
     {
         if (is_null($headA) || is_null($headB)) {
             return null;

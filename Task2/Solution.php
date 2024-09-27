@@ -11,7 +11,7 @@ class Solution
      * @param Integer $denominator
      * @return String
      */
-    function fractionToDecimal($numerator, $denominator)
+    public function fractionToDecimal($numerator, $denominator)
     {
         if ($numerator === 0) {
             return '0';
@@ -20,7 +20,7 @@ class Solution
         $result = '';
 
         if (($numerator < 0) xor ($denominator < 0)) {
-            $result .='-';
+            $result .= '-';
             $numerator = abs($numerator);
             $denominator = abs($denominator);
         }
