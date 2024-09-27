@@ -20,7 +20,31 @@ class EventFactory
         return new Event(
             $input['name'],
             $input['priority'],
-            $input['properties'],
+            EventPropertyFactory::createFromArray($input['properties'] ?? []),
         );
+    }
+
+    /**
+     * @param string $json
+     * @return Event[]
+     * @throws \JsonException
+     */
+    public static function createListFromJson(string $json): array
+    {
+        $inputs = json_decode(
+            $json,
+            true,
+            512,
+            JSON_THROW_ON_ERROR,
+        );
+        $result = [];
+        foreach ($inputs as $input) {
+            $result[] = new Event(
+                $input['name'],
+                $input['priority'],
+                EventPropertyFactory::createFromArray($input['properties']),
+            );
+        }
+        return $result;
     }
 }

@@ -10,10 +10,17 @@ class EventSerializer
 {
     public static function toJson(Domain\Entity\Event $event): string
     {
-        return json_encode([
-            'priority' => $event->getPriority(),
+        $res = [
             'name' => $event->getName(),
-            'params' => $event->getProperties(),
-        ]);
+            'priority' => $event->getPriority(),
+            'properties' => array_merge(...array_map(
+                fn(Domain\Entity\EventProperty $property) => [
+                    $property->getName() => $property->getValue(),
+                ],
+                $event->getProperties()->jsonSerialize()
+            ))
+        ];
+
+        return json_encode($res, JSON_THROW_ON_ERROR);
     }
 }

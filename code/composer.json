@@ -1,0 +1,18 @@
+{
+    "name": "irayu/hw12",
+    "description": "The analytical systems game",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "phpyurta/cli-table": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "IraYu\\Hw12\\": "src/"
+        }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.10"
+    },
+    "minimum-stability": "stable"
+}
