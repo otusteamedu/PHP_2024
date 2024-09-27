@@ -2,17 +2,6 @@
 
 declare(strict_types=1);
 
-/*
-echo PHP_EOL . json_encode([
-    'priority' => 1,
-    'name' => 'First player',
-    'properties' => [
-        'game' => 'Baseball',
-        'team' => 'Yankees',
-    ]
-    ]) . PHP_EOL;
-exit;*/
-
 require '../vendor/autoload.php';
 
 $ini = parse_ini_file('./app.ini');
