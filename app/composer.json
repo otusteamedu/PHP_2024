@@ -1,0 +1,17 @@
+{
+    "name": "evgenyart/elastic-homework",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\ElasticHomework\\": "src/"
+        }
+    },
+    "require": {
+        "elasticsearch/elasticsearch": "^8.15"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
