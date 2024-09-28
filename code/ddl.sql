@@ -26,11 +26,11 @@ CREATE TABLE "halls"
 
 CREATE TABLE "movies"
 (
-    "id"       bigserial    NOT NULL primary key,
-    "title"    varchar(255) NOT NULL,
-    "duration" int          NOT NULL,
-    "genre_id" bigint       NOT NULL REFERENCES "genres" ("id"),
-    "rating"   float        NOT NULL
+    "id"       bigserial     NOT NULL primary key,
+    "title"    varchar(255)  NOT NULL,
+    "duration" int           NOT NULL,
+    "genre_id" bigint        NOT NULL REFERENCES "genres" ("id"),
+    "rating"   decimal(2, 1) NOT NULL
 );
 
 CREATE INDEX idx_movies_genre_id on movies ("genre_id");
@@ -63,10 +63,10 @@ CREATE INDEX idx_sessions_hall_id on sessions ("hall_id");
 
 CREATE TABLE "ticket_prices"
 (
-    "id"         bigserial NOT NULL primary key,
-    "session_id" bigserial NOT NULL REFERENCES "sessions" ("id"),
-    "seat_id"    bigserial NOT NULL REFERENCES "seats" ("id"),
-    "price"      float     NOT NULL
+    "id"         bigserial     NOT NULL primary key,
+    "session_id" bigserial     NOT NULL REFERENCES "sessions" ("id"),
+    "seat_id"    bigserial     NOT NULL REFERENCES "seats" ("id"),
+    "price"      decimal(5, 2) NOT NULL
 );
 
 CREATE INDEX idx_ticket_prices_session_id on ticket_prices ("session_id");
@@ -74,11 +74,11 @@ CREATE INDEX idx_ticket_prices_seat_id on ticket_prices ("seat_id");
 
 CREATE TABLE "tickets"
 (
-    "id"              bigserial NOT NULL primary key,
-    "ticket_price_id" bigserial NOT NULL REFERENCES "ticket_prices" ("id"),
-    "customer_id"     bigserial NOT NULL REFERENCES "customers" ("id"),
-    "price"           float     NOT NULL,
-    "purchased_at"    timestamp NOT NULL
+    "id"              bigserial     NOT NULL primary key,
+    "ticket_price_id" bigserial     NOT NULL REFERENCES "ticket_prices" ("id"),
+    "customer_id"     bigserial     NOT NULL REFERENCES "customers" ("id"),
+    "price"           decimal(5, 2) NOT NULL,
+    "purchased_at"    timestamp     NOT NULL
 );
 
 CREATE INDEX idx_tickets_customer_id on tickets ("customer_id");
