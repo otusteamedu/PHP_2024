@@ -7,7 +7,7 @@ services:
     container_name: 'postgresql'
     restart: always
     environment:
-      POSTGRES_DB: 'otus_hw_9'
+      POSTGRES_DB: 'otus_hw_10'
       POSTGRES_USER: 'otus'
       POSTGRES_PASSWORD: 'otus'
     volumes:
