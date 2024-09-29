@@ -1,6 +1,6 @@
 -- Cleanup
-TRUNCATE sessions RESTART IDENTITY;
-TRUNCATE sales RESTART IDENTITY;
+TRUNCATE sessions RESTART IDENTITY CASCADE;
+TRUNCATE sales RESTART IDENTITY CASCADE;
 
 -- Fill "sessions" table
 SELECT generate_sessions(10000);
