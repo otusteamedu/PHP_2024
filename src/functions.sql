@@ -2,9 +2,12 @@
 DROP FUNCTION IF EXISTS random_string(INT);
 DROP FUNCTION IF EXISTS date_from_now(INT);
 DROP FUNCTION IF EXISTS random_number_between(BIGINT, BIGINT);
+DROP FUNCTION IF EXISTS generate_movies(INT);
 DROP FUNCTION IF EXISTS generate_sessions(INT);
 DROP FUNCTION IF EXISTS generate_sales(INT);
-DROP FUNCTION IF EXISTS random_element(ANYARRAY);
+DROP FUNCTION IF EXISTS random_sessions_id();
+DROP FUNCTION IF EXISTS random_movies_id();
+DROP FUNCTION IF EXISTS random_hall_seats_id_by_hall_id(INT);
 
 -- Create "random_string" function
 CREATE OR REPLACE FUNCTION random_string(INT) RETURNS TEXT LANGUAGE 'plpgsql' AS $$ BEGIN
@@ -21,6 +24,19 @@ CREATE OR REPLACE FUNCTION random_number_between(min BIGINT, max BIGINT) RETURNS
     RETURN floor(random() * (max - min + 1) + min);
 END $$;
 
+-- Create "generate_movies" function
+CREATE OR REPLACE FUNCTION generate_movies(moviesCount INT) RETURNS VOID LANGUAGE 'plpgsql' AS $$ BEGIN
+    BEGIN
+        FOR i IN 1..moviesCount LOOP
+                INSERT INTO movies
+                    (title)
+                VALUES
+                    (random_string(random_number_between(10, 15)))
+                ;
+            END LOOP;
+    END;
+END $$;
+
 -- Create "generate_sessions" function
 CREATE OR REPLACE FUNCTION generate_sessions(sessionCount INT) RETURNS VOID LANGUAGE 'plpgsql' AS $$ BEGIN
     BEGIN
@@ -34,8 +50,8 @@ CREATE OR REPLACE FUNCTION generate_sessions(sessionCount INT) RETURNS VOID LANG
                 )
             VALUES
                 (
-                    random_number_between(1, (SELECT COUNT(id) FROM movies)),
-                    random_number_between(1, (SELECT COUNT(id) FROM halls)),
+                    random_movies_id(),
+                    random_number_between(1, 3),
                     date_from_now(i % 10),
                     date_from_now(i % 10) + interval '3 hours'
                 )
@@ -54,9 +70,9 @@ CREATE OR REPLACE FUNCTION generate_sales(salesCount INT) RETURNS VOID LANGUAGE 
 
     BEGIN
         FOR i IN 1..salesCount LOOP
-            sessionId := random_number_between(1, (SELECT COUNT(id) FROM sessions));
+            sessionId := random_sessions_id();
             sessionHallId := (SELECT hall_id FROM sessions WHERE id = sessionId);
-            sessionHallSeatId := random_element(ARRAY(SELECT id FROM hall_seats WHERE hall_id = sessionHallId))::int;
+            sessionHallSeatId := random_hall_seats_id_by_hall_id(sessionHallId);
             sessionHallSeatPrice := (SELECT price FROM hall_seats WHERE id = sessionHallSeatId);
 
             INSERT INTO sales
@@ -78,6 +94,47 @@ CREATE OR REPLACE FUNCTION generate_sales(salesCount INT) RETURNS VOID LANGUAGE 
     END;
 END $$;
 
-CREATE OR REPLACE FUNCTION random_element(elements anyarray) RETURNS anyelement LANGUAGE 'plpgsql' AS $$ BEGIN
-    RETURN elements[trunc(random() * array_length(elements, 1) + 1)];
+-- Create "random_sessions_id" function
+CREATE OR REPLACE FUNCTION random_sessions_id() RETURNS TABLE(id BIGINT) LANGUAGE 'plpgsql' AS $$ BEGIN
+    RETURN QUERY
+        SELECT
+            sessions."id"
+        FROM
+            sessions
+        WHERE
+            sessions."id" >= (SELECT random() * (max(sessions."id") - min(sessions."id")) + min(sessions."id") FROM sessions)
+        ORDER BY
+            sessions."id"
+        LIMIT
+            1;
+END $$;
+
+-- Create "random_movies_id" function
+CREATE OR REPLACE FUNCTION random_movies_id() RETURNS TABLE(id BIGINT) LANGUAGE 'plpgsql' AS $$ BEGIN
+    RETURN QUERY
+        SELECT
+            movies."id"
+        FROM
+            movies
+        WHERE
+            movies."id" >= (SELECT random() * (max(movies."id") - min(movies."id")) + min(movies."id") FROM movies)
+        ORDER BY
+            movies."id"
+        LIMIT
+            1;
+END $$;
+
+-- Create "random_hall_seats_id_by_hall_id" function
+CREATE OR REPLACE FUNCTION random_hall_seats_id_by_hall_id(hallId INT) RETURNS TABLE(id BIGINT) LANGUAGE 'plpgsql' AS $$ BEGIN
+    RETURN QUERY
+        SELECT
+            hall_seats."id"
+        FROM
+            hall_seats
+        WHERE
+            hall_seats."id" >= (SELECT random() * (max(hall_seats."id") - min(hall_seats."id")) + min(hall_seats."id") FROM hall_seats WHERE hall_seats.hall_id = hallId)
+        ORDER BY
+            hall_seats."id"
+        LIMIT
+            1;
 END $$;

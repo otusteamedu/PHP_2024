@@ -1,42 +1,43 @@
 -- Cleanup
 DROP TABLE IF EXISTS movies CASCADE;
+DROP SEQUENCE IF EXISTS movies_id;
 DROP TABLE IF EXISTS halls CASCADE;
+DROP SEQUENCE IF EXISTS halls_id;
 DROP TYPE IF EXISTS hall_seat_type CASCADE;
 DROP TABLE IF EXISTS hall_seats CASCADE;
+DROP SEQUENCE IF EXISTS hall_seats_id;
 DROP TABLE IF EXISTS sessions CASCADE;
+DROP SEQUENCE IF EXISTS sessions_id;
 DROP TABLE IF EXISTS sales CASCADE;
+DROP SEQUENCE IF EXISTS sales_id;
 
 -- Create "movies" table
-CREATE SEQUENCE movies_id_seq;
+CREATE SEQUENCE movies_id;
 
 CREATE TABLE movies(
-    id BIGINT NOT NULL DEFAULT nextval('movies_id_seq'),
+    id BIGINT NOT NULL DEFAULT nextval('movies_id'),
     title VARCHAR(255) NOT NULL,
 
     PRIMARY KEY(id)
 );
 
-ALTER SEQUENCE movies_id_seq OWNED BY movies.id;
-
 -- Create "halls" table
-CREATE SEQUENCE halls_id_seq;
+CREATE SEQUENCE halls_id;
 
 CREATE TABLE halls(
-    id SMALLINT NOT NULL DEFAULT nextval('halls_id_seq'),
+    id SMALLINT NOT NULL DEFAULT nextval('halls_id'),
     name VARCHAR(255) NOT NULL,
 
     PRIMARY KEY(id)
 );
 
-ALTER SEQUENCE halls_id_seq OWNED BY halls.id;
-
 -- Create "hall_seats" table
 CREATE TYPE hall_seat_type AS ENUM ('regular', 'comfort', 'VIP');
 
-CREATE SEQUENCE hall_seats_id_seq;
+CREATE SEQUENCE hall_seats_id;
 
 CREATE TABLE hall_seats(
-    id BIGINT NOT NULL DEFAULT nextval('hall_seats_id_seq'),
+    id BIGINT NOT NULL DEFAULT nextval('hall_seats_id'),
     hall_id SMALLINT NOT NULL,
     type hall_seat_type,
     row_number SMALLINT NOT NULL,
@@ -48,13 +49,11 @@ CREATE TABLE hall_seats(
     UNIQUE(hall_id, row_number, place_number)
 );
 
-ALTER SEQUENCE hall_seats_id_seq OWNED BY hall_seats.id;
-
 -- Create "sessions" table
-CREATE SEQUENCE sessions_id_seq;
+CREATE SEQUENCE sessions_id;
 
 CREATE TABLE sessions(
-    id BIGINT NOT NULL DEFAULT nextval('sessions_id_seq'),
+    id BIGINT NOT NULL DEFAULT nextval('sessions_id'),
     movie_id BIGINT NOT NULL,
     hall_id SMALLINT NOT NULL,
     date_start TIMESTAMP NOT NULL,
@@ -65,13 +64,11 @@ CREATE TABLE sessions(
     FOREIGN KEY(hall_id) REFERENCES halls(id)
 );
 
-ALTER SEQUENCE sessions_id_seq OWNED BY sessions.id;
-
 -- Create "sales" table
-CREATE SEQUENCE sales_id_seq;
+CREATE SEQUENCE sales_id;
 
 CREATE TABLE sales(
-    id BIGINT NOT NULL DEFAULT nextval('sales_id_seq'),
+    id BIGINT NOT NULL DEFAULT nextval('sales_id'),
     session_id BIGINT NOT NULL,
     seat_id BIGINT NOT NULL,
     date TIMESTAMP NOT NULL,
@@ -82,5 +79,3 @@ CREATE TABLE sales(
     FOREIGN KEY(seat_id) REFERENCES hall_seats(id),
     UNIQUE(session_id, seat_id)
 );
-
-ALTER SEQUENCE sales_id_seq OWNED BY sales.id;

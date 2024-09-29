@@ -16,7 +16,7 @@ FROM
 JOIN
     movies ON movies.id = sessions.movie_id
 WHERE
-    NOW() BETWEEN sessions.date_start AND CURRENT_DATE + INTERVAL '1 days'
+    sessions.date_start BETWEEN NOW() AND CURRENT_DATE + INTERVAL '1 days'
 ORDER BY
     sessions.date_start
 ;
@@ -70,6 +70,8 @@ GROUP BY
     movies.id
 ORDER BY
     sales_grand_total DESC
+LIMIT
+    3
 ;
 
 -- Create "q_5_hall_schema"
@@ -89,7 +91,7 @@ JOIN
 LEFT JOIN
     sales ON sales.session_id = sessions.id AND sales.seat_id = hall_seats.id
 WHERE
-    sessions.id = (SELECT session_id from sales LIMIT 1)
+    sessions.id = 2001
 ;
 
 -- Create "q_6_min_max_session_price"
@@ -106,7 +108,7 @@ JOIN
 JOIN
     hall_seats ON hall_seats.hall_id = sessions.hall_id
 WHERE
-    sessions.id = (SELECT session_id from sales LIMIT 1)
+    sessions.id = 2001
 GROUP BY
     movies.id
 ;
