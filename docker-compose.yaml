@@ -1,0 +1,16 @@
+services:
+
+  postgres:
+    image: postgres:15
+    ports:
+      - 15432:5432
+    container_name: 'postgresql'
+    restart: always
+    environment:
+      POSTGRES_DB: 'otus_hw_10'
+      POSTGRES_USER: 'otus'
+      POSTGRES_PASSWORD: 'otus'
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./dump:/dump
+      - ./src:/src
