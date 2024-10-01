@@ -2,9 +2,7 @@
     "name": "ali-user/php_2024",
     "autoload": {
         "psr-4": {
-            "Core\\": "src/Core/",
-            "Controller\\": "src/Controller/",
-            "Service\\": "src/Service/"
+            "Ali\\": "src/"
         }
     },
     "authors": [

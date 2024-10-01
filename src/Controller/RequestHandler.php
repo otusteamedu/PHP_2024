@@ -1,9 +1,9 @@
 <?php
 
-namespace Controller;
+namespace Ali\Controller;
 
-use Service\SessionManager;
-use Service\Validator;
+use Ali\Service\SessionManager;
+use Ali\Service\Validator;
 
 class RequestHandler
 {

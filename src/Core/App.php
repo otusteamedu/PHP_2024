@@ -1,8 +1,8 @@
 <?php
 
-namespace Core;
+namespace Ali\Core;
 
-use Controller\RequestHandler;
+use Ali\Controller\RequestHandler;
 
 class App
 {
