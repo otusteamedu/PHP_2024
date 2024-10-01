@@ -1,0 +1,17 @@
+{
+    "name": "ali-user/php_2024",
+    "autoload": {
+        "psr-4": {
+            "Core\\": "src/Core/",
+            "Controller\\": "src/Controller/",
+            "Service\\": "src/Service/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mukhametali",
+            "email": "m.kussaiynov1996@gmail.com"
+        }
+    ],
+    "require": {}
+}

@@ -15,8 +15,20 @@ RUN apt-get update && apt-get install -y \
     && pecl install redis \
     && docker-php-ext-enable redis
 
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+
+COPY ../composer.json /var/www/html/src/composer.json
+
+COPY ../src /var/www/html/src
+
+COPY ../vendor /var/www/html/vendor
+
+WORKDIR /var/www/html
+
 # Добавляем конфигурацию для хранения сессий в Redis
 RUN echo "session.save_handler = redis" > /usr/local/etc/php/conf.d/redis-session.ini
 RUN echo "session.save_path = \"tcp://redis:6379\"" >> /usr/local/etc/php/conf.d/redis-session.ini
 
-COPY php.ini /usr/local/etc/php/php.ini
+COPY php/php.ini /usr/local/etc/php/php.ini
+

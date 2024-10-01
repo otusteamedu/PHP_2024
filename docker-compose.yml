@@ -1,4 +1,4 @@
-#version: '3'
+version: '3'
 
 services:
 
@@ -8,7 +8,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./src:/var/www/html
+      - ./src:/var/www/html/src
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - php-1
@@ -19,10 +19,12 @@ services:
 
   php-1:
     container_name: php-1
-    build: ./php
+    build:
+      context: .               # Указываем корень проекта
+      dockerfile: php/Dockerfile  # Путь к Dockerfile
     hostname: php1-host
     volumes:
-      - ./src:/var/www/html
+      - ./src:/var/www/html/src
     environment:
       REDIS_HOST: redis
     networks:
@@ -30,10 +32,12 @@ services:
 
   php-2:
     container_name: php-2
-    build: ./php
+    build:
+      context: .
+      dockerfile: php/Dockerfile
     hostname: php2-host
     volumes:
-      - ./src:/var/www/html
+      - ./src:/var/www/html/src
     environment:
       REDIS_HOST: redis
     networks:
@@ -41,10 +45,12 @@ services:
 
   php-3:
     container_name: php-3
-    build: ./php
+    build:
+      context: .
+      dockerfile: php/Dockerfile
     hostname: php3-host
     volumes:
-      - ./src:/var/www/html
+      - ./src:/var/www/html/src
     environment:
       REDIS_HOST: redis
     networks:
