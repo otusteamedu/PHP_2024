@@ -15,9 +15,6 @@ RUN apt-get update && apt-get install -y \
     && pecl install redis \
     && docker-php-ext-enable redis
 
-
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
-
 COPY ../composer.json /var/www/html/src/composer.json
 
 COPY ../src /var/www/html/src
