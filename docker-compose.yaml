@@ -1,0 +1,102 @@
+version: '3'
+
+services:
+  nginx-balancer:
+    build:
+      context: ./nginx-balancer
+      dockerfile: Dockerfile
+    image: balance-nginx-balancer
+    container_name: nginx-balancer
+    ports:
+      - "${APP_PORT}:80"
+    networks:
+      - app-network
+
+  nginx-1:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance-nginx
+    container_name: nginx-1
+    volumes:
+      - ./app:/data/app
+    networks:
+      - app-network    
+
+  nginx-2:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance-nginx
+    container_name: nginx-2
+    volumes:
+      - ./app:/data/app
+    networks:
+      - app-network        
+
+  nginx-3:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance-nginx
+    container_name: nginx-3
+    volumes:
+      - ./app:/data/app
+    networks:
+      - app-network    
+
+  php-1:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: balance-php 
+    container_name: php-1 
+    volumes:
+       - ./app:/data/app
+    environment:   
+      REDIS_PASSWORD: ${REDIS_PASSWORD}   
+    networks:
+      - app-network
+
+  php-2:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: balance-php 
+    container_name: php-2 
+    volumes:
+      - ./app:/data/app
+    environment:   
+      REDIS_PASSWORD: ${REDIS_PASSWORD}   
+    networks:
+      - app-network
+
+  php-3:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: balance-php 
+    container_name: php-3 
+    volumes:
+      - ./app:/data/app
+    environment:   
+      REDIS_PASSWORD: ${REDIS_PASSWORD}   
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+    driver: local
