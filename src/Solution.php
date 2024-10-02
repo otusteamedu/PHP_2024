@@ -26,7 +26,6 @@ class Solution
         $list2->next = $this->mergeTwoLists($list1, $list2->next);
 
         return $list2;
-
     }
 
 }
