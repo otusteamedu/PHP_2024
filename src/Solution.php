@@ -27,5 +27,4 @@ class Solution
 
         return $list2;
     }
-
 }
