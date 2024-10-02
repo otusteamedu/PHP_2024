@@ -6,9 +6,10 @@ namespace App\Service;
 
 use App\Enum\ServiceCommand;
 use App\Enum\ServiceMessage;
+use App\Exception\SocketException;
 use App\Interface\ChatBeginningInterface;
 use App\Interface\ChatKeepingInterface;
-use Exception;
+use Generator;
 use Socket;
 
 class ServerService implements ChatKeepingInterface, ChatBeginningInterface
@@ -24,10 +25,10 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
     private Socket $socket;
 
     /**
-     * @return void
-     * @throws Exception
+     * @return string
+     * @throws SocketException
      */
-    public function initializeChat(): void
+    public function initializeChat(): string
     {
         $this->socketService = new SocketService();
         $this->socketService->unlink();
@@ -35,12 +36,12 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
         $this->socketService->bind();
         $this->socketService->listen();
 
-        echo ServiceMessage::ServerStarted->value;
+        return ServiceMessage::ServerStarted->value;
     }
 
     /**
      * @return void
-     * @throws Exception
+     * @throws SocketException
      */
     public function beginChat(): void
     {
@@ -50,34 +51,33 @@ class ServerService implements ChatKeepingInterface, ChatBeginningInterface
     }
 
     /**
-     * @return void
-     * @throws Exception
+     * @return Generator
+     * @throws SocketException
      */
-    public function keepChat(): void
+    public function keepChat(): Generator
     {
         foreach ($this->socketService->getReadGenerator($this->socket) as $clientMessage) {
             if ($clientMessage === ServiceCommand::ChatStop->value) {
                 break;
             }
 
-            echo ServiceMessage::ClientMessage->value . $clientMessage . PHP_EOL;
+            yield ServiceMessage::ClientMessage->value . $clientMessage . PHP_EOL;
 
             $serverMessage = ServiceMessage::ServerAnswer->value . '"' . $clientMessage . '"'
-                           . ServiceMessage::ReceivedBytes->value . strlen($clientMessage) . ';'
-                           . (new CommandHandlerService())->commandHandler($clientMessage);
+                          . ServiceMessage::ReceivedBytes->value . strlen($clientMessage) . ';'
+                          . (new CommandHandlerService())->commandHandler($clientMessage);
             $this->socketService->write($serverMessage, $this->socket);
         }
     }
 
     /**
-     * @return void
+     * @return Generator
      */
-    public function stopChat(): void
+    public function stopChat(): Generator
     {
         $this->socketService->close();
         $this->socketService->unlink();
 
-        echo ServiceMessage::ClientStoppedChat->value;
-        echo ServiceMessage::ServerStopped->value;
+        yield ServiceMessage::ClientStoppedChat->value . ServiceMessage::ServerStopped->value;
     }
 }

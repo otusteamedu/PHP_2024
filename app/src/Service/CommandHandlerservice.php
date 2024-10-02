@@ -20,6 +20,24 @@ class CommandHandlerService
             return (new EmailValidatorService())->validateEmail($emailList, false);
         }
 
+        if (str_contains($clientMessage, ServiceCommand::StoragePost->value)) {
+            $string = trim(substr($clientMessage, strlen(ServiceCommand::StoragePost->value)));
+
+            return (new StorageService())->addRecord($string);
+        }
+
+        if (str_contains($clientMessage, ServiceCommand::StorageGet->value)) {
+            $string = trim(substr($clientMessage, strlen(ServiceCommand::StorageGet->value)));
+
+            return (new StorageService())->getRecord($string);
+        }
+
+        if (str_contains($clientMessage, ServiceCommand::StorageClear->value)) {
+            $string = trim(substr($clientMessage, strlen(ServiceCommand::StorageClear->value)));
+
+            return (new StorageService())->removeAllRecord($string);
+        }
+
         return '';
     }
 }

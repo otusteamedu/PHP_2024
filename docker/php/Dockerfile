@@ -1,16 +1,3 @@
-#FROM php:8.2-fpm
-#
-#RUN docker-php-ext-install sockets \
-#    curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-#
-#COPY --from=composer /usr/bin/composer /usr/local/bin/composer
-#
-#WORKDIR /data
-#
-#VOLUME /data
-#
-#CMD ["php-fpm"]
-
 FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y zlib1g-dev g++ git libicu-dev zip libzip-dev zip -y libpq-dev curl \
@@ -18,8 +5,6 @@ RUN apt-get update && apt-get install -y zlib1g-dev g++ git libicu-dev zip libzi
         && docker-php-ext-install pdo pdo_pgsql pgsql \
         && pecl install apcu \
         && pecl install redis \
-        # && pecl install mcrypt-1.0.3 \
-        # && docker-php-ext-enable mcrypt
         && docker-php-ext-enable apcu \
         && docker-php-ext-configure zip \
         && docker-php-ext-install zip \
@@ -35,7 +20,6 @@ RUN apt-get update && apt-get install -y zlib1g-dev g++ git libicu-dev zip libzi
         &&  echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
-#COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
 WORKDIR /data
 

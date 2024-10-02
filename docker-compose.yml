@@ -7,17 +7,36 @@ services:
       context: ./docker/php
       dockerfile: Dockerfile
     image: otus-chat
-    container_name: chat-client
+    container_name: redis-chat-client
     volumes:
       - ./app:/data/app
-      - ./app/storage:${STORAGE_PATH}
+      - ./app/socket:${SOCKET_PATH}
 
   app-server:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
     image: otus-chat
-    container_name: chat-server
+    container_name: redis-chat-server
     volumes:
       - ./app:/data/app
-      - ./app/storage:${STORAGE_PATH}
+      - ./app/socket:${SOCKET_PATH}
+    networks:
+      - otus    
+
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_CONTAINER_NAME}
+    command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
+    volumes:
+      - redis_data:/data
+    networks:
+      - otus  
+
+networks:
+  otus:
+    driver: bridge 
+
+volumes:
+  redis_data:      
+    driver: local
