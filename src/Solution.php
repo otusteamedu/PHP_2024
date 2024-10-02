@@ -6,7 +6,7 @@ namespace App;
 
 class Solution
 {
-    function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ?ListNode
+    public function mergeTwoLists(?ListNode $list1, ?ListNode $list2): ?ListNode
     {
 
         if (is_null($list1)) {
@@ -28,4 +28,5 @@ class Solution
         return $list2;
 
     }
+
 }
