@@ -8,19 +8,19 @@ use App\Service\BracketValidator;
 
 class BracketController
 {
-  /**
-   * @return string
-   */
-  public function getValidation(): string
-  {
-    $validationResult = (new BracketValidator())->validate($_POST['string']);
+    /**
+     * @return string
+     */
+    public function getValidation(): string
+    {
+        $validationResult = (new BracketValidator())->validate($_POST['string']);
 
-    if ( $validationResult) {
-      header("HTTP/1.1 200 OK", true, 200);
-    } else {
-      header("HTTP/1.1 400 BAD REQUEST", true, 400);
+        if ($validationResult) {
+            header("HTTP/1.1 200 OK", true, 200);
+        } else {
+            header("HTTP/1.1 400 BAD REQUEST", true, 400);
+        }
+
+        return json_encode(['bracketValidationResult' => $validationResult]);
     }
-
-    return json_encode(['bracketValidationResult' => $validationResult]);
-  }
 }

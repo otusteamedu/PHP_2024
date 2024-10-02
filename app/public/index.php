@@ -8,4 +8,3 @@ use App\Routing\App;
 
 $app = (new App());
 $app->run();
-
