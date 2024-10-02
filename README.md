@@ -15,7 +15,7 @@ storage:post {"priority": 2000, "conditions": {"param1": 1, "param2": 2}, "event
 2. Получить запись по параметрам, , где "event" - это тип записи: 
 storage:get {"event": {"param1": 1, "param2": 2}}
 
-3. Удалить все записи типа, , где "event" - это тип записи: 
+3. Удалить все записи типа, где "event" - это тип записи: 
 storage:clear event
 
 ```
