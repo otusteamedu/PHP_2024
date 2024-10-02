@@ -29,7 +29,9 @@ class BracketValidator
             if ($bracket === '(') {
                 $stack[] = $bracket;
             } else {
-                if (array_pop($stack) !== '(') return false;
+                if (array_pop($stack) !== '(') {
+                    return false;
+                }
             }
         }
 
