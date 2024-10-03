@@ -1,0 +1,29 @@
+services:
+  server:
+    container_name: ${COMPOSE_PROJECT_NAME}_server
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+    volumes:
+      - ./../:/var/www/
+      - php_socket:/var/run
+
+  client:
+    container_name: ${COMPOSE_PROJECT_NAME}_client
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+    volumes:
+      - ./../:/var/www/
+      - php_socket:/var/run
+    depends_on:
+      - server
+
+volumes:
+  php_socket:
