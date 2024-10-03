@@ -84,3 +84,32 @@ CREATE TABLE "tickets"
 CREATE INDEX idx_tickets_customer_id on tickets ("customer_id");
 CREATE INDEX idx_tickets_ticket_price_id on tickets ("ticket_price_id");
 
+-- EAV модель
+create table attribute_types
+(
+    "id"   serial primary key,
+    "type" varchar not null
+);
+
+create table attributes
+(
+    "id"     serial primary key,
+    "name"   varchar not null,
+    "type_id" integer not null references attribute_types
+);
+
+create table movie_attributes
+(
+    "id"            serial primary key,
+    "movie_id"       integer not null references movies,
+    "attribute_id"   integer not null references attributes,
+    "value_boolean" boolean,
+    "value_integer" integer,
+    "value_float"   float,
+    "value_date"    date,
+    "value_varchar" varchar
+);
+
+create index on movie_attributes (movie_id);
+create index on movie_attributes (attribute_id);
+
