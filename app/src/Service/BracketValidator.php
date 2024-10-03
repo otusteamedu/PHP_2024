@@ -12,19 +12,16 @@ class BracketValidator
      */
     public function validate(string $string): bool
     {
-        if (!empty($string)) {
-            $bracketArray = str_split($string);
-        } else {
+        if (empty($string)) {
             return false;
         }
 
-        if ($bracketArray[0] === ')' || count($bracketArray) === 0) {
-            http_response_code(400);
+        $bracketArray = str_split($string);
+        if ($bracketArray[0] === ')') {
             return false;
         }
 
         $stack = [];
-
         foreach ($bracketArray as $bracket) {
             if ($bracket === '(') {
                 $stack[] = $bracket;
