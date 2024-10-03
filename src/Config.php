@@ -6,5 +6,4 @@ namespace Otus\SocketChat;
 
 interface Config
 {
-
 }

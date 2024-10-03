@@ -8,7 +8,6 @@ use Exception;
 
 class Client implements Socketable
 {
-
     public function __construct(private readonly Socket $socket)
     {
     }
