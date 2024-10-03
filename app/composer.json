@@ -1,0 +1,15 @@
+{
+    "name": "evgenyart/hw12",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\Hw12\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Evgenii Art"
+        }
+    ],
+    "require": {}
+}

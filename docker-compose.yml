@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app
+    tty: true
+    volumes:
+       - ./app:/var/www/html
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - ./data/redis:/data
+    ports:
+      - 6379:6379
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
