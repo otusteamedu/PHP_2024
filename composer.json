@@ -1,0 +1,12 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Otus\\SocketChat\\": "src/"
+    }
+  },
+  "require": {
+    "ext-sockets": "*",
+    "ext-mbstring": "*",
+    "ext-readline": "*"
+  }
+}
