@@ -6,7 +6,6 @@ namespace Evgenyart\Hw12;
 
 class Run implements CommandsInterface
 {
-
     public static function addEvent($params)
     {
         $redisClient = new RedisClient();
