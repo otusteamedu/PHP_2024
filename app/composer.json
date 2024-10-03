@@ -1,0 +1,17 @@
+{
+    "name": "john9683/hw4",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Evgenii Shulman",
+            "email": "john69683@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-redis": "*"
+    }
+}
