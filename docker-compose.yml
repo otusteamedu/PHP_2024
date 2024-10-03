@@ -1,0 +1,17 @@
+# версия синтаксиса
+version: '3.8'
+
+# в этом блоке мы описываем контейнеры, которые будут запускаться
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5455:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: ${PGDATA}
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
