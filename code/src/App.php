@@ -25,7 +25,6 @@ class App
             'del' => $this->deleteAll($eventManager),
             default => throw new Exception('Unknown command "' . $command . '"')
         };
-
     }
 
     /**
@@ -69,6 +68,4 @@ class App
         $eventManager->deleteAll();
         yield 'Все события успешно удалены' . PHP_EOL;
     }
-
-
 }

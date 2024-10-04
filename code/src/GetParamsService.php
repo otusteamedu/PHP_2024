@@ -4,7 +4,6 @@ namespace Naimushina\EventManager;
 
 class GetParamsService
 {
-
     /**
      * Запрашиваем приоритет добавляемого события
      * @return int
@@ -39,7 +38,6 @@ class GetParamsService
             echo 'Либо нажмите любой другой символ для отмены' . PHP_EOL;
             $input = fgets(STDIN);
             $exit = trim($input) !== 'y';
-
         }
         return $params;
     }

@@ -4,7 +4,6 @@ namespace Naimushina\EventManager;
 
 class EventManager
 {
-
     /**
      * @var StorageInterface
      */

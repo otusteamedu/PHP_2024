@@ -40,5 +40,4 @@ class Event
         $propertiesArray['conditions'] = json_encode($this->conditions);
         return $propertiesArray;
     }
-
 }
