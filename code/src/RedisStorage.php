@@ -38,7 +38,6 @@ class RedisStorage implements StorageInterface
         } catch (Exception $exception) {
             throw new Exception('Ошибка при удалении событий: ' . $exception->getMessage());
         }
-
     }
 
     /**
@@ -73,7 +72,6 @@ class RedisStorage implements StorageInterface
             $valuesForParam = $this->redis->hgetall("$redisKey:params:$param");
             $eventIds = [...array_keys($valuesForParam), ...$eventIds];
             $keys[$param] = $valuesForParam;
-
         }
         $eventIds = array_unique($eventIds);
         foreach ($params as $param => $paramValue) {

@@ -23,5 +23,4 @@ interface StorageInterface
      * @return mixed
      */
     public function getEventsByParams(array $params): array;
-
 }

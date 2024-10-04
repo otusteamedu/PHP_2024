@@ -45,5 +45,4 @@ class EventManager
     {
         return $this->storage->getEventsByParams($params);
     }
-
 }
