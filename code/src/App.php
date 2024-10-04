@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Naimushina\Verificator;
+namespace Naimushina\EventManager;
 
 use Exception;
+use Generator;
 
 class App
 {
@@ -12,42 +13,62 @@ class App
      * Запуск приложения
      * @throws Exception
      */
-    public function run(): \Generator
+    public function run(): Generator
     {
-        yield 'Приложение проверки email адресов.' . PHP_EOL;
-        yield 'Введите email адреса через запятую' . PHP_EOL;
+        $storage = new RedisStorage();
+        $eventManager = new EventManager($storage);
+        $consoleManager = new GetParamsService();
+        $command = $_SERVER['argv'][1] ?? null;
+        return match ($command) {
+            'set' => $this->addEvent($consoleManager, $eventManager),
+            'get' => $this->getEvent($consoleManager, $eventManager),
+            'del' => $this->deleteAll($eventManager),
+            default => throw new Exception('Unknown command "' . $command . '"')
+        };
 
-        $input = trim(fgets(STDIN));
-        $verificator = new EmailVerificator();
-        $emails = explode(',', $input);
+    }
 
-        foreach ($emails as $email) {
-            if (!$email) {
-                break;
-            }
+    /**
+     * Добавляем событие в систему хранения
+     * @param GetParamsService $consoleManager
+     * @param EventManager $eventManager
+     * @return Generator
+     */
+    private function addEvent(GetParamsService $consoleManager, EventManager $eventManager): Generator
+    {
+        $priority = $consoleManager->getPriorityInfo();
+        $conditions = $consoleManager->getParamsInfo();
+        $event = $consoleManager->getEventInfo();
+        $eventManager->addEvent($priority, $conditions, $event);
+        yield 'Событие успешно добавлено' . PHP_EOL;
+    }
 
-            $correctFormat = $verificator->checkByRegEx($email);
-
-
-            yield "адрес $email" . PHP_EOL;
-            yield $this->showResult($correctFormat, 'Валидация по регулярным выражениям');
-            if ($correctFormat) {
-                $dnsCorrect = $verificator->checkByDns($email);
-                yield $this->showResult($dnsCorrect, 'Проверка DNS mx записи');
-            }
+    /**
+     * Получаем наиболее подходящее событие по запросу пользователя
+     * @param GetParamsService $consoleManager
+     * @param EventManager $eventManager
+     * @return Generator
+     */
+    private function getEvent(GetParamsService $consoleManager, EventManager $eventManager): Generator
+    {
+        $conditions = $consoleManager->getParamsInfo();
+        $events = $eventManager->getByParams($conditions);
+        yield 'Количество подходящих событий ' . count($events) . PHP_EOL;
+        if (count($events)) {
+            yield 'наиболее подходящее событие: ' . $events[0]->data . PHP_EOL;
         }
     }
 
-
     /**
-     * Вывод информации о результатах проверки
-     * @param bool $result
-     * @param string $checkType
-     * @return string
+     * Очищаем все доступные события
+     * @param EventManager $eventManager
+     * @return Generator
      */
-    private function showResult(bool $result, string $checkType): string
+    private function deleteAll(EventManager $eventManager): Generator
     {
-        $message = $result ? ' пройдена успешно' : ' не пройдена';
-        return $checkType . $message . PHP_EOL;
+        $eventManager->deleteAll();
+        yield 'Все события успешно удалены' . PHP_EOL;
     }
+
+
 }

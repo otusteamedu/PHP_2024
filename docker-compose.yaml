@@ -1,23 +1,64 @@
-# версия синтаксиса
 version: '3'
 
-networks:
-  app-network:
-    driver: bridge
 services:
-  verification:
+  #Контейнер с php-fpm
+  app:
     build:
-      context: docker/php
+      context: ./docker/php
       dockerfile: Dockerfile
-    image: verification/php
-    container_name: verification
+    image: myapp/php
+    container_name: app
+    env_file:
+      - .env
     volumes:
       - ./code:/data/mysite.local
-    env_file: .env
+    working_dir: /data/mysite.local
+    networks:
+      - app-network
+
+  #контейне с Nginx
+  webserver:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    image: nginx:latest
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  # контейнер с MySQL
+  db:
+    image: mysql:5.7.22
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - ./docker/dbdata:/var/lib/mysql
     networks:
       - app-network
 
 
+  #redis (соединяется с php по порту)
+  cache:
+    image: redis:latest
+    container_name: cache
+    ports:
+      -  "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - app-network
 
-
-
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

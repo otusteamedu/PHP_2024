@@ -1,12 +1,13 @@
 {
-    "name": "naimushina/verificator",
+    "name": "naimushina/event_manager",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Naimushina\\Verificator\\": "src/"
+            "Naimushina\\EventManager\\": "src/"
         }
     },
     "require": {
-        "php": ">=8.0"
+        "php": ">=8.0",
+        "predis/predis": "^2.2"
     }
 }
