@@ -42,7 +42,7 @@ class CommandHelper
                 }
                 return ['id' => $params[2], 'key' => $params[3], 'value' => $params[4]];
                 break;
-            
+
             case 'insert':
                 if (!isset($params[2]) || !isset($params[3]) || !isset($params[4]) || !isset($params[5]) || !isset($params[6]) || !isset($params[7])) {
                     throw new Exception('В запросе необходимо 6 параметров в такой последовательности: name original_name release_date rating duration description');
