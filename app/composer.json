@@ -1,0 +1,10 @@
+{
+    "name": "evgenyart/hw13",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Evgenyart\\Hw13\\": "src/"
+        }
+    },
+    "require": {}
+}
