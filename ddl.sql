@@ -31,7 +31,7 @@ CREATE TABLE price (
 	value MONEY NOT NULL,
 	CONSTRAINT price_pkey PRIMARY KEY(id),
 	CONSTRAINT session_seat_unique UNIQUE(session_id, seat_type_id),
-	CHECK (MONEY > 0),
+	CHECK (value > 0),
 );
 
 CREATE INDEX ON price (session_id);
