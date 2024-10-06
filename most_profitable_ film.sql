@@ -9,6 +9,7 @@ WHERE ticket.is_sold IS TRUE
 GROUP BY
 	movie.name
 ORDER BY
-	sum(price.value) DESC
+	sum((price.value - (price.value / 100 * ticket.discount_percent))) DESC
 LIMIT
-	1
+	1;
+	
