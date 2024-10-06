@@ -9,6 +9,7 @@ use TBublikova\Php2024\ChatApp;
 use TBublikova\Php2024\Socket;
 use TBublikova\Php2024\ServerChat;
 use TBublikova\Php2024\ClientChat;
+
 class ChatAppTest extends TestCase
 {
     public function setUp(): void
