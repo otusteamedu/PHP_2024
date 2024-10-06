@@ -4,14 +4,21 @@ namespace TBublikova\Php2024;
 
 class ServerChat
 {
+    private bool $stop = false;
+
     public function __construct(private Socket $socket)
     {
         $this->socket->bindAndListen();
     }
 
+    public function stop(): void
+    {
+        $this->stop = true;
+    }
+
     public function run(): void
     {
-        while (true) {
+        while (!$this->stop) {
             echo "Ready to receive...\n";
 
             $clientSocket = $this->socket->accept();

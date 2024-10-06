@@ -9,5 +9,13 @@
     "psr-4": {
       "TBublikova\\Php2024\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TBublikova\\Php2024\\Tests\\": "src/tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5"
   }
 }

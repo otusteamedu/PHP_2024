@@ -2,7 +2,7 @@
 
 namespace TBublikova\Php2024;
 
-final class Socket
+class Socket
 {
     public $socket;
 
@@ -12,7 +12,6 @@ final class Socket
             throw new \RuntimeException('The sockets extension is not loaded.');
         }
 
-        // Создание сокета
         $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
         if (!$this->socket) {
             throw new \RuntimeException('Unable to create AF_UNIX socket');
