@@ -22,23 +22,26 @@ class FilmMapper
 
     private PDOStatement $deleteStatement;
 
+    private $identityMap = [];
+
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
 
         $this->selectStatement = $pdo->prepare('SELECT * FROM films WHERE id = ?');
-        $this->selectAllStatement = $pdo->prepare('SELECT * FROM films');
+        $this->selectAllStatement = $pdo->prepare('SELECT * FROM films LIMIT ? OFFSET ?');
         $this->insertStatement = $pdo->prepare('INSERT INTO films (name, original_name, release_date, rating, duration, description) VALUES (?, ?, ?, ?, ?, ?)');
         $this->deleteStatement = $pdo->prepare('DELETE FROM films WHERE id = ?');
+        $this->updateStatement = $pdo->prepare('UPDATE films SET name = ?, original_name = ?, release_date = ?, rating = ?, duration = ?, description = ?  WHERE id = ?');
     }
 
-    public function selectAll()
+    public function selectAll($limit = 50, $offset = 0)
     {
         $films = [];
-        $this->selectAllStatement->execute();
+        $this->selectAllStatement->execute([$limit, $offset]);
         $rows = $this->selectAllStatement->fetchAll(PDO::FETCH_ASSOC);
         foreach ($rows as $row) {
-            $films[] = new Film(
+            $film = new Film(
                 $row['id'],
                 $row['name'],
                 $row['original_name'],
@@ -47,19 +50,25 @@ class FilmMapper
                 $row['duration'],
                 $row['description']
             );
+            $this->identityMap[$row['id']] = $film;
+            $films[] = $film;
         }
         return $films;
     }
 
     public function findById($id)
     {
+        if (isset($this->identityMap[$id])) {
+            return $this->identityMap[$id];
+        }
+
         $this->selectStatement->setFetchMode(PDO::FETCH_ASSOC);
         $this->selectStatement->execute([$id]);
 
         $result = $this->selectStatement->fetch();
 
         if ($result) {
-            return new Film(
+            $film = new Film(
                 $result['id'],
                 $result['name'],
                 $result['original_name'],
@@ -68,15 +77,30 @@ class FilmMapper
                 $result['duration'],
                 $result['description']
             );
+            $this->identityMap[$id] = $film;
+            return $film;
         } else {
             return [];
         }
     }
 
-    public function update($id, $key, $value)
+    public function update($objectFilm)
     {
-        $this->updateStatement = $this->pdo->prepare('UPDATE films SET ' . $key . ' = ? WHERE id = ?');
-        return $this->updateStatement->execute([$value, $id]);
+        $id = $objectFilm->getId();
+
+        $film = $this->updateStatement->execute([
+            $objectFilm->getName(),
+            $objectFilm->getOriginalName(),
+            $objectFilm->getReleaseDate(),
+            $objectFilm->getRating(),
+            $objectFilm->getDuration(),
+            $objectFilm->getDescription(),
+            $id
+        ]);
+
+        $this->identityMap[$id] = $objectFilm;
+
+        return $film;
     }
 
     public function insert(array $rawFilmData)
@@ -90,8 +114,10 @@ class FilmMapper
             $rawFilmData['description']
         ]);
 
-        return new Film(
-            (int)$this->pdo->lastInsertId(),
+        $id = (int)$this->pdo->lastInsertId();
+
+        $film = new Film(
+            $id,
             $rawFilmData['name'],
             $rawFilmData['original_name'],
             $rawFilmData['release_date'],
@@ -99,10 +125,19 @@ class FilmMapper
             $rawFilmData['duration'],
             $rawFilmData['description']
         );
+
+        $this->identityMap[$id] = $film;
+        
+        return $film;
     }
 
     public function delete($id)
     {
-        return $this->deleteStatement->execute([$id]);
+        $res = $this->deleteStatement->execute([$id]);
+        if (isset($this->identityMap[$id])) {
+            unset($this->identityMap[$id]);
+        }
+        
+        return $res;
     }
 }

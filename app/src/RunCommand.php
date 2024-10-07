@@ -30,7 +30,32 @@ class RunCommand
     public function updataData($params)
     {
         $arParams = CommandHelper::checkParams($params, 'update');
-        $result = $this->filmMapper->update($arParams['id'], $arParams['key'], $arParams['value']);
+        $film = $this->filmMapper->findById($arParams['id']);
+        $key = $arParams['key'];
+        $value = $arParams['value'];
+
+        switch ($key) {
+            case 'name':
+                $film->setName($value);
+                break;
+            case 'original_name':
+                $film->setOriginalName($value);
+                break;
+            case 'release_date':
+                $film->setReleaseDate($value);
+                break;
+            case 'rating':
+                $film->setRating($value);
+                break;
+            case 'duration':
+                $film->setDuration($value);
+                break;
+            case 'description':
+                $film->setDescription($value);
+                break;
+        }
+
+        $result = $this->filmMapper->update($film);
         if ($result) {
             print_r("Запись успешно обновлена" . PHP_EOL);
             $resultAfter = $this->filmMapper->findById($arParams['id']);
