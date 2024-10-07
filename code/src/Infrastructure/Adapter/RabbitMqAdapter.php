@@ -16,13 +16,15 @@ class RabbitMqAdapter implements QueueAdapterInterface
     /** @var AMQPChannel */
     private AbstractChannel $channel;
 
+    private string $lastReceivedMessage;
+
     /**
      * @param AMQPStreamConnection $connection
      * @param string $queue
      */
     public function __construct(
         private readonly AMQPStreamConnection $connection,
-        private readonly string $queue,
+        private readonly string               $queue,
     )
     {
         $this->channel = $this->connection->channel();
@@ -53,9 +55,34 @@ class RabbitMqAdapter implements QueueAdapterInterface
         );
     }
 
+    /**
+     * @return string
+     */
     public function receive(): string
     {
-        // TODO: Implement receive() method.
+        $this->channel->basic_qos(0, 1, null);
+        $this->channel->basic_consume(
+            $this->queue,
+            '',
+            false,
+            false,
+            false,
+            false,
+            [$this, 'storeMessage']
+        );
+        $this->channel->wait();
+
+        return $this->lastReceivedMessage;
+    }
+
+    /**
+     * @param AMQPMessage $msg
+     * @return void
+     */
+    public function storeMessage(AMQPMessage $msg): void
+    {
+        $this->lastReceivedMessage = $msg->getBody();
+        $msg->getChannel()->basic_ack($msg->getDeliveryTag());
     }
 
     /**
