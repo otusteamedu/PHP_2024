@@ -22,6 +22,8 @@ class Film
 
     private $description;
 
+    private $changedFields = [];
+
     public function __construct($id, $name, $original_name, $release_date, $rating, $duration, $description)
     {
         $this->id = $id;
@@ -45,9 +47,7 @@ class Film
 
     public function setName($name): self
     {
-        $this->name = $name;
-
-        return $this;
+        return $this->compareValue('name', $name);
     }
 
     public function getOriginalName()
@@ -57,9 +57,7 @@ class Film
 
     public function setOriginalName($original_name): self
     {
-        $this->original_name = $original_name;
-
-        return $this;
+        return $this->compareValue('original_name', $original_name);
     }
 
     public function getReleaseDate()
@@ -69,9 +67,7 @@ class Film
 
     public function setReleaseDate($release_date): self
     {
-        $this->release_date = $release_date;
-
-        return $this;
+        return $this->compareValue('release_date', $release_date);
     }
 
     public function getRating()
@@ -81,9 +77,7 @@ class Film
 
     public function setRating($rating): self
     {
-        $this->rating = $rating;
-
-        return $this;
+        return $this->compareValue('rating', $rating);
     }
 
     public function getDuration()
@@ -93,9 +87,7 @@ class Film
 
     public function setDuration($duration): self
     {
-        $this->duration = $duration;
-
-        return $this;
+        return $this->compareValue('duration', $duration);
     }
 
     public function getDescription()
@@ -105,8 +97,21 @@ class Film
 
     public function setDescription($description): self
     {
-        $this->description = $description;
+        return $this->compareValue('description', $description);
+    }
 
+    private function compareValue($field, $newValue)
+    {
+        $oldValue = $this->$field;
+        if ($oldValue <> $newValue) {
+            $this->changedFields[$field] = $newValue;
+            $this->$field = $newValue;
+        }
         return $this;
+    }
+
+    public function getChangedFields()
+    {
+        return $this->changedFields;
     }
 }

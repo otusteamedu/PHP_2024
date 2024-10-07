@@ -32,7 +32,6 @@ class FilmMapper
         $this->selectAllStatement = $pdo->prepare('SELECT * FROM films LIMIT ? OFFSET ?');
         $this->insertStatement = $pdo->prepare('INSERT INTO films (name, original_name, release_date, rating, duration, description) VALUES (?, ?, ?, ?, ?, ?)');
         $this->deleteStatement = $pdo->prepare('DELETE FROM films WHERE id = ?');
-        $this->updateStatement = $pdo->prepare('UPDATE films SET name = ?, original_name = ?, release_date = ?, rating = ?, duration = ?, description = ?  WHERE id = ?');
     }
 
     public function selectAll($limit = 50, $offset = 0)
@@ -87,20 +86,26 @@ class FilmMapper
     public function update($objectFilm)
     {
         $id = $objectFilm->getId();
+        $changedFields = $objectFilm->getChangedFields();
 
-        $film = $this->updateStatement->execute([
-            $objectFilm->getName(),
-            $objectFilm->getOriginalName(),
-            $objectFilm->getReleaseDate(),
-            $objectFilm->getRating(),
-            $objectFilm->getDuration(),
-            $objectFilm->getDescription(),
-            $id
-        ]);
+        if (!empty($changedFields)) {
+            $strFields = "";
+            $arValues = [];
 
-        $this->identityMap[$id] = $objectFilm;
+            foreach ($changedFields as $k => $v) {
+                $strFields .= $k . ' = ?';
+                $arValues[] = $v;
+            }
+            $arValues[] = $id;
 
-        return $film;
+            $this->updateStatement = $this->pdo->prepare('UPDATE films SET ' . $strFields . '  WHERE id = ?');
+            $film = $this->updateStatement->execute($arValues);
+            $this->identityMap[$id] = $objectFilm;
+
+            return $film;
+        } else {
+            return false;
+        }
     }
 
     public function insert(array $rawFilmData)
