@@ -30,8 +30,7 @@ CREATE TABLE price (
 	seat_type_id SERIAL NOT NULL,
 	value MONEY NOT NULL,
 	CONSTRAINT price_pkey PRIMARY KEY(id),
-	CONSTRAINT session_seat_unique UNIQUE(session_id, seat_type_id),
-	CHECK (value > 0),
+	CONSTRAINT session_seat_unique UNIQUE(session_id, seat_type_id)
 );
 
 CREATE INDEX ON price (session_id);
@@ -41,11 +40,12 @@ CREATE TABLE ticket (
 	id SERIAL NOT NULL,
 	session_id SERIAL NOT NULL,
 	seat_id SERIAL NOT NULL,
+	price MONEY NOT NULL,
 	discount_percent NUMERIC(5,2) DEFAULT 0,
 	is_sold BOOLEAN NOT NULL,
 	CONSTRAINT ticket_pkey PRIMARY KEY(id),
 	CONSTRAINT ticket_unique UNIQUE(session_id, seat_id),
-	CHECK (discount_percent >= 0 AND discount_percent <= 100),
+	CHECK (discount_percent >= 0 AND discount_percent <= 100)
 );
 
 CREATE INDEX ON ticket (session_id);
