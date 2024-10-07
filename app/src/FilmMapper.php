@@ -127,7 +127,7 @@ class FilmMapper
         );
 
         $this->identityMap[$id] = $film;
-        
+
         return $film;
     }
 
@@ -137,7 +137,7 @@ class FilmMapper
         if (isset($this->identityMap[$id])) {
             unset($this->identityMap[$id]);
         }
-        
+
         return $res;
     }
 }
