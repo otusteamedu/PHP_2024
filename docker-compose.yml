@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+        context: ./docker/php
+        dockerfile: Dockerfile
+    image: otus/php
+    container_name: app
+    env_file: .env
+    tty: true
+    volumes:
+        - ./app:/var/www/html
+    networks:
+        - app-network
+
+  db:
+    image: postgres:15.3
+    shm_size: 1g
+    restart: always
+    container_name: db
+    environment:
+        POSTGRES_DB: '${POSTGRES_DB}'
+        POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
+    ports:
+        - 5432:5432
+    volumes:
+        - ./docker_data/:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  adminer:
+      image: adminer
+      restart: always
+      container_name: adminer
+      depends_on:
+          - db
+      ports:
+          - 8083:8080
+      networks:
+          - app-network
+
+networks:
+  app-network:
+    driver: bridge
