@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Viking311\Queue\Application\UseCase\ProcessEvent;
 
-class ProcessEventResponse
+readonly class ProcessEventResponse
 {
     public function __construct(
-        public readonly string $message
-    ){
+        public string $message
+    ) {
     }
-
 }

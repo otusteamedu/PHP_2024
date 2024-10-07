@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Viking311\Queue\Infrastructure;
 
-use Viking311\Queue\Infrastructure\Factory\Controller\AddEventControllerFactory;
+use Viking311\Queue\Infrastructure\Factory\Command\AddEventCommandFactory;
 use Viking311\Queue\Infrastructure\Http\Request;
 use Viking311\Queue\Infrastructure\Http\Response;
 
@@ -27,9 +27,9 @@ class Application
             return $response;
         }
 
-        $controller = AddEventControllerFactory::createInstance();
+        $cmd = AddEventCommandFactory::createInstance();
 
-        $controller($request, $response);
+        $cmd->execute($request, $response);
 
         return $response;
     }

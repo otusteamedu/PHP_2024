@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Viking311\Queue\Infrastructure;
 
 use Exception;
-use Viking311\Queue\Infrastructure\Factory\Controller\ProcessEventControllerFactory;
+use Viking311\Queue\Infrastructure\Factory\Command\ProcessEventCommandFactory;
 
 class Console
 {
@@ -15,7 +15,7 @@ class Console
      */
     public function run(): void
     {
-        $cmd = ProcessEventControllerFactory::createInstance();
+        $cmd = ProcessEventCommandFactory::createInstance();
         $cmd->execute();
     }
 }

@@ -24,7 +24,7 @@ class Email
     /**
      * @return string
      */
-    public function getVaule(): string
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -36,7 +36,7 @@ class Email
      */
     private function assert(string $value): void
     {
-        if(filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
             throw new InvalidArgumentException('Email is invalid');
         }
     }

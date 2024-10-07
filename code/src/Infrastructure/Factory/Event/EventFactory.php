@@ -26,11 +26,11 @@ class EventFactory implements EventFactoryInterface
      * @throws InvalidArgumentException
      */
     public function create(
-        string                   $name,
-        string                   $email,
+        string $name,
+        string $email,
         DateTimeImmutable|string $eventDate,
-        string                   $address,
-        int                      $guest
+        string $address,
+        int $guest
     ): Event
     {
         $nameObject = new Name($name);

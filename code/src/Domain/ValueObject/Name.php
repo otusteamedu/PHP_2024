@@ -40,5 +40,4 @@ class Name
             throw new InvalidArgumentException('Name cannot be empty');
         }
     }
-
 }

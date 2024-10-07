@@ -9,7 +9,7 @@ class MailConfig
     /** @var string  */
     public string $host = 'localhost';
     /** @var int  */
-    public  int $port = 25;
+    public int $port = 25;
     /** @var string  */
     public string $user = '';
     /** @var string  */

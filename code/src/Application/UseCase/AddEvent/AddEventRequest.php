@@ -18,7 +18,7 @@ readonly class AddEventRequest
         public string $email,
         public string $eventDate,
         public string $address,
-        public int    $guest
-    ){
+        public int $guest
+    ) {
     }
 }

@@ -20,8 +20,8 @@ interface EventFactoryInterface
      * @throws InvalidArgumentException
      */
     public function create(
-        string                   $name,
-        string                   $email,
+        string $name,
+        string $email,
         string|DateTimeImmutable $eventDate,
         string $address,
         int $guest

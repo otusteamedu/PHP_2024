@@ -24,9 +24,8 @@ class RabbitMqAdapter implements QueueAdapterInterface
      */
     public function __construct(
         private readonly AMQPStreamConnection $connection,
-        private readonly string               $queue,
-    )
-    {
+        private readonly string $queue,
+    ) {
         $this->channel = $this->connection->channel();
         $this->channel->queue_declare(
             $this->queue,

@@ -13,7 +13,7 @@ readonly class AddEventUseCase
     public function __construct(
         private EventFactoryInterface $eventFactory,
         private QueueAdapterInterface $queue
-    ){
+    ) {
     }
 
     /**
@@ -33,7 +33,7 @@ readonly class AddEventUseCase
             );
         $message = json_encode([
             'name' => $event->getName()->getValue(),
-            'email' => $event->getEmail()->getVaule(),
+            'email' => $event->getEmail()->getValue(),
             'eventDate' => $event->getEventDate()->getValue()->format('Y-d-m H:i'),
             'place' => $event->getPlace()->getValue(),
             'guest' => $event->getGuests()->getValue()

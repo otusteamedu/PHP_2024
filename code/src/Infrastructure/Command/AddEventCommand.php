@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Viking311\Queue\Infrastructure\Controller;
+namespace Viking311\Queue\Infrastructure\Command;
 
 use Exception;
 use InvalidArgumentException;
@@ -11,14 +11,14 @@ use Viking311\Queue\Application\UseCase\AddEvent\AddEventUseCase;
 use Viking311\Queue\Infrastructure\Http\Request;
 use Viking311\Queue\Infrastructure\Http\Response;
 
-readonly class AddEventController
+readonly class AddEventCommand
 {
     /**
      * @param AddEventUseCase $useCase
      */
     public function __construct(
         private AddEventUseCase $useCase
-    ){
+    ) {
     }
 
     /**
@@ -26,7 +26,7 @@ readonly class AddEventController
      * @param Response $response
      * @return void
      */
-    public function __invoke(Request $request, Response $response): void
+    public function execute(Request $request, Response $response): void
     {
         $data = $request->getPost();
         $useCaseRequest = new AddEventRequest(
@@ -34,7 +34,7 @@ readonly class AddEventController
             $data['email'] ?? '',
             $data['eventDate'] ?? '',
             $data['address'] ?? '',
-                (isset($data['guest']) ? (int) $data['guest'] : 0)
+            (isset($data['guest']) ? (int) $data['guest'] : 0)
         );
         try {
             ($this->useCase)($useCaseRequest);
@@ -47,5 +47,4 @@ readonly class AddEventController
             $response->setContent('Internal server error');
         }
     }
-
 }

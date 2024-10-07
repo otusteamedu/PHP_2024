@@ -10,7 +10,7 @@ use Viking311\Queue\Domain\ValueObject\EventDate;
 use Viking311\Queue\Domain\ValueObject\Name;
 use Viking311\Queue\Domain\ValueObject\NonZeroNumber;
 
-class Event
+readonly class Event
 {
     /**
      * @param Name $name
@@ -20,12 +20,12 @@ class Event
      * @param NonZeroNumber $guests
      */
     public function __construct(
-        private readonly Name      $name,
-        private readonly Email     $email,
-        private readonly EventDate $eventDate,
-        private readonly Address $place,
-        private readonly NonZeroNumber $guests
-    ){
+        private Name $name,
+        private Email $email,
+        private EventDate $eventDate,
+        private Address $place,
+        private NonZeroNumber $guests
+    ) {
     }
 
     /**

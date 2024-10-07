@@ -11,13 +11,12 @@ use Viking311\Queue\Domain\Entity\Event;
 
 class Mail implements NotificationInterface
 {
-    const  string SUBJECT = 'Ваша заявка на проведение мероприятия обработана';
-    const string TEMPLATE = 'Уважаемый %s<br>Ваша заявка на проведение мероприятия %s обработана';
+    const  SUBJECT = 'Ваша заявка на проведение мероприятия обработана';
+    const TEMPLATE = 'Уважаемый %s<br>Ваша заявка на проведение мероприятия %s обработана';
 
     public function __construct(
         private readonly PHPMailer $mailer
-    )
-    {
+    ) {
     }
 
     /**
@@ -26,7 +25,7 @@ class Mail implements NotificationInterface
     public function send(Event $event): void
     {
         $this->mailer->addAddress(
-            $event->getEmail()->getVaule(),
+            $event->getEmail()->getValue(),
             $event->getName()->getValue()
         );
         $this->mailer->isHTML();
