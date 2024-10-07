@@ -15,7 +15,8 @@ readonly class CreateNewsAction implements CreateNewsActionInterface
     public function __construct(
         private NewsFactoryInterface $newsFactory,
         private NewsRepositoryInterface $newsRepository
-    ) {}
+    ) {
+    }
 
     public function __invoke(CreateNewsRequest $request): CreateNewsResponse
     {
@@ -42,7 +43,7 @@ readonly class CreateNewsAction implements CreateNewsActionInterface
 
             return $node->text();
         } catch (Exception $e) {
-            throw new Exception("Could not parse $url. Error: ".$e->getMessage());
+            throw new Exception("Could not parse $url. Error: " . $e->getMessage());
         }
     }
 }

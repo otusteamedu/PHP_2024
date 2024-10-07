@@ -6,5 +6,6 @@ readonly class CreateNewsResponse
 {
     public function __construct(
         public int $id,
-    ) {}
+    ) {
+    }
 }

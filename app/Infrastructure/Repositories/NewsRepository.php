@@ -12,8 +12,7 @@ class NewsRepository implements NewsRepositoryInterface
 {
     public function __construct(
         private NewsFactoryInterface $newsFactory
-    )
-    {
+    ) {
     }
 
     /**
@@ -95,6 +94,5 @@ class NewsRepository implements NewsRepositoryInterface
 
         $property->setAccessible(true);
         $property->setValue($newsEntity, $id);
-
     }
 }

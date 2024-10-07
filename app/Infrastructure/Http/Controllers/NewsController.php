@@ -36,11 +36,10 @@ class NewsController extends Controller
     }
 
     public function export(
-        ExportNewsRequest         $request,
+        ExportNewsRequest $request,
         ExportNewsActionInterface $action,
-        NewsRepositoryInterface   $newsRepository
-    ): JsonResponse
-    {
+        NewsRepositoryInterface $newsRepository
+    ): JsonResponse {
         $newsEntities = $newsRepository->findMultipleById($request->validated('ids'));
 
         try {

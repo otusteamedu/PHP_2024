@@ -12,8 +12,8 @@ class ExportNewsAction implements ExportNewsActionInterface
     {
         $html = $this->generateHtml($newsEntities);
 
-        $fileName = 'news_report_'.time().'.html';
-        $filePath = 'exports/'.$fileName;
+        $fileName = 'news_report_' . time() . '.html';
+        $filePath = 'exports/' . $fileName;
 
         Storage::disk('public')->put($filePath, $html);
 

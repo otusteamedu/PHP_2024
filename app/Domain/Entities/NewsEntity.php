@@ -13,7 +13,8 @@ class NewsEntity
         private DateTimeImmutable $date,
         private Url $url,
         private string $title
-    ) {}
+    ) {
+    }
 
     public function getId(): ?int
     {
