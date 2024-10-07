@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Viking311\Queue\Infrastructure\Http;
 
+use InvalidArgumentException;
+
 class Response
 {
     const MIN_STATUS_CODE_VALUE = 100;
