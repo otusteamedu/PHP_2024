@@ -12,6 +12,7 @@
         }
     ],
     "require": {
-        "predis/predis": "^2.2"
+        "predis/predis": "^2.2",
+        "vlucas/phpdotenv": "^5.6"
     }
 }
