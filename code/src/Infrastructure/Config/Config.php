@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Viking311\Queue\Infrastructure\Config;
 
+use Viking311\Queue\Infrastructure\Config\ConfigItem\MailConfig;
 use Viking311\Queue\Infrastructure\Config\ConfigItem\RabbitMqConfig;
 
 class Config
 {
+    /** @var RabbitMqConfig  */
     public RabbitMqConfig $rabbitMq;
-
+    /** @var MailConfig  */
+    public MailConfig $mail;
     /**
      * @throws ConfigException
      */
@@ -25,6 +28,13 @@ class Config
         } else {
             $this->rabbitMq = new RabbitMqConfig(
                 $cfg['rabbit'] ?? []
+            );
+        }
+        if (array_key_exists(',ail', $cfg) && !is_array($cfg['mail'])) {
+            throw new ConfigException('Mail must be section');
+        } else {
+            $this->mail = new MailConfig(
+                $cfg['mail'] ?? []
             );
         }
     }

@@ -7,6 +7,8 @@ namespace Viking311\Queue\Infrastructure\Factory\UseCase\ProcessEvent;
 use Exception;
 use Viking311\Queue\Application\UseCase\ProcessEvent\ProcessEventUseCase;
 use Viking311\Queue\Infrastructure\Factory\Adapter\RabbitMqAdapterFactory;
+use Viking311\Queue\Infrastructure\Factory\Event\EventFactory;
+use Viking311\Queue\Infrastructure\Factory\Notification\MailFactory;
 
 class ProcessEventUseCaseFactory
 {
@@ -18,6 +20,14 @@ class ProcessEventUseCaseFactory
     {
         $queueAdapter = RabbitMqAdapterFactory::createInstance();
 
-        return new ProcessEventUseCase($queueAdapter);
+        $factory = new EventFactory();
+
+        $mail = MailFactory::createInstance();
+
+        return new ProcessEventUseCase(
+            $queueAdapter,
+            $factory,
+            $mail
+        );
     }
 }

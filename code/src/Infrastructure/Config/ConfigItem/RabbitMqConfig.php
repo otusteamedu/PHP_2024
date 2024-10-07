@@ -7,22 +7,40 @@ namespace Viking311\Queue\Infrastructure\Config\ConfigItem;
 class RabbitMqConfig
 {
     /** @var string */
-    public string $host;
+    public string $host = 'localhost';
     /** @var int  */
-    public int $port;
+    public int $port = 5672;
     /** @var string  */
-    public string $user;
+    public string $user = 'guest';
     /** @var string  */
-    public string $password;
+    public string $password = 'guest';
     /** @var string  */
-    public string $queue;
+    public string $queue = 'events';
 
     public function __construct(array $cfg)
     {
-        $this->host = $cfg['host'] ?? 'localhost';
-        $this->port = array_key_exists('port', $cfg) ? (int) $cfg['port'] : 5672;
-        $this->user = $cfg['user'] ?? 'guest';
-        $this->password = $cfg['password'] ?? 'guest';
-        $this->queue = $cfg['queue'] ?? 'events';
+        if (array_key_exists( 'host', $cfg)){
+            $this->host = $cfg['host'];
+        }
+
+        if (array_key_exists('port', $cfg)) {
+            $this->port = (int)$cfg['port'];
+        }
+
+        if (array_key_exists( 'user', $cfg)){
+            $this->user = $cfg['user'];
+        }
+
+        if (array_key_exists( 'password', $cfg)){
+            $this->password = $cfg['password'];
+        }
+
+        if (array_key_exists( 'password', $cfg)){
+            $this->password = $cfg['password'];
+        }
+
+        if (array_key_exists( 'queue', $cfg)){
+            $this->queue = $cfg['queue'];
+        }
     }
 }
