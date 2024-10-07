@@ -10,11 +10,9 @@ class Url
 
     public function __construct(string $value)
     {
-        $url = filter_var($value, FILTER_VALIDATE_URL);
+        $this->assertValidValue($value);
 
-        $this->assertValidValue($url);
-
-        $this->value = $url;
+        $this->value = $value;
     }
 
     public function getValue(): string
@@ -22,8 +20,10 @@ class Url
         return $this->value;
     }
 
-    private function assertValidValue(string|false $url): void
+    private function assertValidValue(string $value): void
     {
+        $url = filter_var($value, FILTER_VALIDATE_URL);
+
         if ($url === false) {
             throw new InvalidArgumentException('Invalid url.');
         }

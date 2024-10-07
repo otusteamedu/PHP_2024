@@ -2,12 +2,13 @@
 
 namespace App\Infrastructure\Http\Controllers;
 
-use App\Application\Actions\CreateNewsAction;
-use App\Application\Actions\ExportNewsAction;
+use App\Application\Actions\CreateNewsActionInterface;
+use App\Application\Actions\ExportNewsActionInterface;
 use App\Application\Requests\CreateNewsRequest;
 use App\Domain\Repositories\NewsRepositoryInterface;
 use App\Infrastructure\Requests\ExportNewsRequest;
 use App\Infrastructure\Requests\StoreNewsRequest;
+use Exception;
 use Illuminate\Http\JsonResponse;
 
 class NewsController extends Controller
@@ -19,30 +20,37 @@ class NewsController extends Controller
         return response()->json($newsEntities);
     }
 
-    public function store(StoreNewsRequest $request, CreateNewsAction $action): JsonResponse
+    public function store(StoreNewsRequest $request, CreateNewsActionInterface $action): JsonResponse
     {
         $createNewsRequest = new CreateNewsRequest($request->validated('url'));
 
-        $createNewsResponse = call_user_func($action, $createNewsRequest);
+        try {
+            $createNewsResponse = call_user_func($action, $createNewsRequest);
+        } catch (Exception $exception) {
+            // todo: log
 
-        return response()->json([
-            'message' => 'Article created successful.',
-            'data' => get_object_vars($createNewsResponse),
-        ]);
+            return response()->withException($exception)->json(status: 400);
+        }
+
+        return response()->json(get_object_vars($createNewsResponse));
     }
 
     public function export(
-        ExportNewsRequest $request,
-        ExportNewsAction $action,
-        NewsRepositoryInterface $newsRepository
-    ): JsonResponse {
+        ExportNewsRequest         $request,
+        ExportNewsActionInterface $action,
+        NewsRepositoryInterface   $newsRepository
+    ): JsonResponse
+    {
         $newsEntities = $newsRepository->findMultipleById($request->validated('ids'));
 
-        $exportNewsResponse = call_user_func($action, $newsEntities);
+        try {
+            $exportNewsResponse = call_user_func($action, $newsEntities);
+        } catch (Exception $exception) {
+            // todo: log
 
-        return response()->json([
-            'message' => 'Export successfully prepared.',
-            'data' => get_object_vars($exportNewsResponse),
-        ]);
+            return response()->withException($exception)->json(status: 400);
+        }
+
+        return response()->json(get_object_vars($exportNewsResponse));
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Application\Actions;
+namespace App\Infrastructure\Actions;
 
+use App\Application\Actions\CreateNewsActionInterface;
 use App\Application\Requests\CreateNewsRequest;
 use App\Application\Responses\CreateNewsResponse;
 use App\Domain\Factories\NewsFactoryInterface;
@@ -9,7 +10,7 @@ use App\Domain\Repositories\NewsRepositoryInterface;
 use Exception;
 use Symfony\Component\DomCrawler\Crawler;
 
-readonly class CreateNewsAction
+readonly class CreateNewsAction implements CreateNewsActionInterface
 {
     public function __construct(
         private NewsFactoryInterface $newsFactory,

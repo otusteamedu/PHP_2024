@@ -2,25 +2,18 @@
 
 namespace App\Domain\Entities;
 
-use App\Domain\Values\Date;
 use App\Domain\Values\Url;
+use DateTimeImmutable;
 
 class NewsEntity
 {
     private ?int $id = null;
 
     public function __construct(
-        private Date $date,
+        private DateTimeImmutable $date,
         private Url $url,
         private string $title
     ) {}
-
-    public function setId(int $value): void
-    {
-        if ($this->id === null) {
-            $this->id = $value;
-        }
-    }
 
     public function getId(): ?int
     {

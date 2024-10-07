@@ -6,12 +6,15 @@ use App\Domain\Entities\NewsEntity;
 use App\Domain\Factories\NewsFactoryInterface;
 use App\Domain\Repositories\NewsRepositoryInterface;
 use App\Infrastructure\Models\News;
+use ReflectionClass;
 
 class NewsRepository implements NewsRepositoryInterface
 {
     public function __construct(
         private NewsFactoryInterface $newsFactory
-    ) {}
+    )
+    {
+    }
 
     /**
      * {@inheritdoc}
@@ -53,7 +56,7 @@ class NewsRepository implements NewsRepositoryInterface
     {
         $model = News::find($id);
 
-        if (! $model) {
+        if (!$model) {
             return null;
         }
 
@@ -71,17 +74,27 @@ class NewsRepository implements NewsRepositoryInterface
                 'id' => $newsEntity->getId(),
             ],
             [
-                'date' => (string) $newsEntity->getDate(),
-                'url' => (string) $newsEntity->getUrl(),
+                'date' => (string)$newsEntity->getDate(),
+                'url' => (string)$newsEntity->getUrl(),
                 'title' => $newsEntity->getTitle(),
             ]
         );
 
-        $newsEntity->setId($model->id);
+        $this->setId($newsEntity, $model->id);
     }
 
     public function delete(NewsEntity $newsEntity): void
     {
         News::destroy($newsEntity->getId());
+    }
+
+    private function setId(NewsEntity $newsEntity, string $id): void
+    {
+        $reflectionClass = new ReflectionClass($newsEntity);
+        $property = $reflectionClass->getProperty('id');
+
+        $property->setAccessible(true);
+        $property->setValue($newsEntity, $id);
+
     }
 }

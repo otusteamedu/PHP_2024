@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Application\Actions;
+namespace App\Infrastructure\Actions;
 
+use App\Application\Actions\ExportNewsActionInterface;
 use App\Application\Responses\ExportNewsResponse;
 use Illuminate\Support\Facades\Storage;
 
-class ExportNewsAction
+class ExportNewsAction implements ExportNewsActionInterface
 {
     public function __invoke(iterable $newsEntities): ExportNewsResponse
     {
