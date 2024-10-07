@@ -15,16 +15,18 @@ class EventDate
 
     /**
      * @param string|DateTimeImmutable $value
-     * @throws DateMalformedStringException
+     * @throws InvalidArgumentException
      */
     public function __construct(string|DateTimeImmutable $value)
     {
         if (is_string($value)) {
-            $this->value = new DateTimeImmutable($value);
-        } elseif ($value instanceof DateTimeImmutable) {
-            $this->value = $value;
+            try {
+                $this->value = new DateTimeImmutable($value);
+            } catch (DateMalformedStringException $ex) {
+                throw new InvalidArgumentException($ex->getMessage());
+            }
         } else {
-            throw new InvalidArgumentException('Date is incorrect');
+            $this->value = $value;
         }
     }
 

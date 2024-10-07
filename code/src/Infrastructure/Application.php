@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Viking311\Queue\Infrastructure;
 
+use Viking311\Queue\Infrastructure\Factory\Controller\AddEventControllerFactory;
 use Viking311\Queue\Infrastructure\Http\Request;
 use Viking311\Queue\Infrastructure\Http\Response;
 
@@ -21,14 +22,14 @@ class Application
         }
 
         if ($request->getMethod() != 'POST') {
-            $response->setResultCode(400);
+            $response->setResultCode(405);
             $response->setContent('Method not allowed');
             return $response;
         }
 
+        $controller = AddEventControllerFactory::createInstance();
 
-
-        $response->setContent('Ваш запрос обрабатывается');
+        $controller($request, $response);
 
         return $response;
     }

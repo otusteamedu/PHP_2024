@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace Viking311\Queue\Infrastructure\Config;
 
+use Viking311\Queue\Infrastructure\Config\ConfigItem\RabbitMqConfig;
+
 class Config
 {
+    public RabbitMqConfig $rabbitMq;
+
     /**
      * @throws ConfigException
      */
@@ -16,6 +20,12 @@ class Config
             throw new ConfigException('Cannot parse app.ini file');
         }
 
+        if (array_key_exists('rabbit', $cfg) && !is_array($cfg['rabbit'])) {
+            throw new ConfigException('Rabbit must be section');
+        } else {
+            $this->rabbitMq = new RabbitMqConfig(
+                $cfg['rabbit'] ?? []
+            );
+        }
     }
-
 }

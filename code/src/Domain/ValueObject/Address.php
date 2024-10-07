@@ -37,7 +37,7 @@ class Address
     private function assert(string $value): void
     {
         if (empty($value)) {
-            throw new InvalidArgumentException('Title can\'t be empty');
+            throw new InvalidArgumentException('Address can\'t be empty');
         }
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Viking311\Queue\Domain\Factory;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Viking311\Queue\Domain\Entity\Event;
 
 interface EventFactoryInterface
@@ -16,6 +17,7 @@ interface EventFactoryInterface
      * @param string $address
      * @param int $guest
      * @return Event
+     * @throws InvalidArgumentException
      */
     public function create(
         string                   $name,

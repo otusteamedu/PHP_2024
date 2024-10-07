@@ -21,6 +21,9 @@ class Email
         $this->value = $value;
     }
 
+    /**
+     * @return string
+     */
     public function getVaule(): string
     {
         return $this->value;

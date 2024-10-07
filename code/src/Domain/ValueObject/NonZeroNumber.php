@@ -8,6 +8,7 @@ use InvalidArgumentException;
 
 class NonZeroNumber
 {
+    /** @var int  */
     private int $value;
 
     /**

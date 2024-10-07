@@ -14,8 +14,9 @@ class Event
 {
     /**
      * @param Name $name
-     * @param EventDate $eventDate
      * @param Email $email
+     * @param EventDate $eventDate
+     * @param Address $place
      * @param NonZeroNumber $guests
      */
     public function __construct(
@@ -59,6 +60,9 @@ class Event
         return $this->guests;
     }
 
+    /**
+     * @return Address
+     */
     public function getPlace(): Address
     {
         return $this->place;

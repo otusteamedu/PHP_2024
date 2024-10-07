@@ -18,7 +18,7 @@ class Request
         $this->method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI']);
         $this->uri = $uri['path'];
-        $this->post = $_GET;
+        $this->post = $_POST;
     }
 
     /**
