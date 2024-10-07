@@ -31,8 +31,7 @@ class EventFactory implements EventFactoryInterface
         DateTimeImmutable|string $eventDate,
         string $address,
         int $guest
-    ): Event
-    {
+    ): Event {
         $nameObject = new Name($name);
         $emailObject = new Email($email);
         $eventDateObject = new EventDate($eventDate);
