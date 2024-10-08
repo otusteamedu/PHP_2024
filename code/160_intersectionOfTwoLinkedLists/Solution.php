@@ -15,7 +15,7 @@ class Solution
      * @param ListNode $headB
      * @return ListNode|null
      */
-    function getIntersectionNode(ListNode $headA, ListNode $headB): ?ListNode
+    public function getIntersectionNode(ListNode $headA, ListNode $headB): ?ListNode
     {
         $pointerA = $headA;
         $pointerB = $headB;

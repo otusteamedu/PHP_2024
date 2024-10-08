@@ -6,14 +6,14 @@ namespace Otus\FractionToDecimal;
 
 // Вычислительная сложность O(n) т.к. алгоритм в цикле перебирает цифры делителя.
 // Пространственная сложность O(n) т.к. на каждой итерации цикла может быть сохранено не более n символов делителя.
-class Solution {
-
+class Solution
+{
     /**
      * @param Integer $numerator
      * @param Integer $denominator
      * @return String
      */
-    function fractionToDecimal(int $numerator, int $denominator): string
+    public function fractionToDecimal(int $numerator, int $denominator): string
     {
         if ($numerator == 0) {
             return "0";
