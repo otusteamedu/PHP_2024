@@ -4,7 +4,6 @@ namespace Evgenyart\Hw14;
 
 class SolutionLetterCombinations
 {
-
     const LETTERS = [
         2 => ['a', 'b', 'c'],
         3 => ['d', 'e', 'f'],
