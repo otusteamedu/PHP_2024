@@ -1,0 +1,26 @@
+services:
+  server:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: server-socket
+    volumes:
+      - ./src:/socket
+    networks:
+      - app-network
+
+  client:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: client-socket
+    volumes:
+      - ./src:/socket
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
