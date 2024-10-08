@@ -41,8 +41,9 @@ CREATE TABLE "seats"
 (
     "id"          serial NOT NULL primary key,
     "hall_id"     serial NOT NULL REFERENCES "halls" ("id"),
-    "seat_number" int    NOT NULL,
-    "row_number"  int    NOT NULL
+    "row_number"  int    NOT NULL,
+    "seat_number" int    NOT NULL
+
 );
 
 CREATE INDEX idx_seats_hall_id on seats ("hall_id");
@@ -66,7 +67,7 @@ CREATE TABLE "ticket_prices"
     "id"         bigserial     NOT NULL primary key,
     "session_id" bigserial     NOT NULL REFERENCES "sessions" ("id"),
     "seat_id"    bigserial     NOT NULL REFERENCES "seats" ("id"),
-    "price"      decimal(5, 2) NOT NULL
+    "price"      decimal(6, 2) NOT NULL
 );
 
 CREATE INDEX idx_ticket_prices_session_id on ticket_prices ("session_id");
@@ -77,7 +78,7 @@ CREATE TABLE "tickets"
     "id"              bigserial     NOT NULL primary key,
     "ticket_price_id" bigserial     NOT NULL REFERENCES "ticket_prices" ("id"),
     "customer_id"     bigserial     NOT NULL REFERENCES "customers" ("id"),
-    "price"           decimal(5, 2) NOT NULL,
+    "price"           decimal(6, 2) NOT NULL,
     "purchased_at"    timestamp     NOT NULL
 );
 

@@ -1,0 +1,135 @@
++--------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                  |
++--------------------------------------------------------------------------------------------------------------------------------------------+
+|Group  (cost=720.13..720.75 rows=125 width=12) (actual time=57.506..57.527 rows=6 loops=1)                                                  |
+|  Group Key: movies.title                                                                                                                   |
+|  ->  Sort  (cost=720.13..720.44 rows=125 width=12) (actual time=57.500..57.507 rows=30 loops=1)                                            |
+|        Sort Key: movies.title                                                                                                              |
+|        Sort Method: quicksort  Memory: 25kB                                                                                                |
+|        ->  Nested Loop  (cost=0.16..715.77 rows=125 width=12) (actual time=56.673..56.725 rows=30 loops=1)                                 |
+|              ->  Seq Scan on sessions  (cost=0.00..708.80 rows=125 width=8) (actual time=56.635..56.648 rows=30 loops=1)                   |
+|                    Filter: ((start_time)::date = (now())::date)                                                                            |
+|                    Rows Removed by Filter: 24960                                                                                           |
+|              ->  Memoize  (cost=0.16..0.56 rows=1 width=20) (actual time=0.002..0.002 rows=1 loops=30)                                     |
+|                    Cache Key: sessions.movie_id                                                                                            |
+|                    Cache Mode: logical                                                                                                     |
+|                    Hits: 24  Misses: 6  Evictions: 0  Overflows: 0  Memory Usage: 1kB                                                      |
+|                    ->  Index Scan using movies_pkey1 on movies  (cost=0.15..0.55 rows=1 width=20) (actual time=0.005..0.005 rows=1 loops=6)|
+|                          Index Cond: (id = sessions.movie_id)                                                                              |
+|Planning Time: 20.497 ms                                                                                                                    |
+|Execution Time: 58.684 ms                                                                                                                   |
++--------------------------------------------------------------------------------------------------------------------------------------------+
+
++-------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+|Finalize Aggregate  (cost=167037.29..167037.30 rows=1 width=8) (actual time=5521.559..5696.825 rows=1 loops=1)                             |
+|  ->  Gather  (cost=167037.07..167037.28 rows=2 width=8) (actual time=5494.531..5696.689 rows=3 loops=1)                                   |
+|        Workers Planned: 2                                                                                                                 |
+|        Workers Launched: 2                                                                                                                |
+|        ->  Partial Aggregate  (cost=166037.07..166037.08 rows=1 width=8) (actual time=5416.656..5417.341 rows=1 loops=3)                  |
+|              ->  Parallel Seq Scan on tickets  (cost=0.00..165949.02 rows=35222 width=0) (actual time=64.782..5397.529 rows=26250 loops=3)|
+|                    Filter: ((purchased_at <= now()) AND (purchased_at > (now() - '7 days'::interval)))                                    |
+|                    Rows Removed by Filter: 3097500                                                                                        |
+|Planning Time: 1.297 ms                                                                                                                    |
+|JIT:                                                                                                                                       |
+|  Functions: 14                                                                                                                            |
+|  Options: Inlining false, Optimization false, Expressions true, Deforming true                                                            |
+|  Timing: Generation 5.972 ms, Inlining 0.000 ms, Optimization 23.119 ms, Emission 142.707 ms, Total 171.798 ms                            |
+|Execution Time: 6152.036 ms                                                                                                                |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+
++--------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                  |
++--------------------------------------------------------------------------------------------------------------------------------------------+
+|Sort  (cost=727.10..727.41 rows=125 width=31) (actual time=9.221..9.225 rows=30 loops=1)                                                    |
+|  Sort Key: sessions.start_time                                                                                                             |
+|  Sort Method: quicksort  Memory: 26kB                                                                                                      |
+|  ->  Nested Loop  (cost=0.33..722.74 rows=125 width=31) (actual time=9.094..9.168 rows=30 loops=1)                                         |
+|        ->  Nested Loop  (cost=0.16..715.77 rows=125 width=28) (actual time=9.044..9.087 rows=30 loops=1)                                   |
+|              ->  Seq Scan on sessions  (cost=0.00..708.80 rows=125 width=24) (actual time=9.013..9.025 rows=30 loops=1)                    |
+|                    Filter: ((start_time)::date = (now())::date)                                                                            |
+|                    Rows Removed by Filter: 24960                                                                                           |
+|              ->  Memoize  (cost=0.16..0.56 rows=1 width=20) (actual time=0.001..0.001 rows=1 loops=30)                                     |
+|                    Cache Key: sessions.movie_id                                                                                            |
+|                    Cache Mode: logical                                                                                                     |
+|                    Hits: 24  Misses: 6  Evictions: 0  Overflows: 0  Memory Usage: 1kB                                                      |
+|                    ->  Index Scan using movies_pkey1 on movies  (cost=0.15..0.55 rows=1 width=20) (actual time=0.004..0.004 rows=1 loops=6)|
+|                          Index Cond: (id = sessions.movie_id)                                                                              |
+|        ->  Memoize  (cost=0.16..0.56 rows=1 width=15) (actual time=0.002..0.002 rows=1 loops=30)                                           |
+|              Cache Key: sessions.hall_id                                                                                                   |
+|              Cache Mode: logical                                                                                                           |
+|              Hits: 24  Misses: 6  Evictions: 0  Overflows: 0  Memory Usage: 1kB                                                            |
+|              ->  Index Scan using halls_pkey on halls  (cost=0.15..0.55 rows=1 width=15) (actual time=0.009..0.009 rows=1 loops=6)         |
+|                    Index Cond: (id = sessions.hall_id)                                                                                     |
+|Planning Time: 7.877 ms                                                                                                                     |
+|Execution Time: 9.295 ms                                                                                                                    |
++--------------------------------------------------------------------------------------------------------------------------------------------+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                                                                              |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|Limit  (cost=293951.79..293951.80 rows=3 width=44) (actual time=13137.984..13363.019 rows=3 loops=1)                                                                                                    |
+|  ->  Sort  (cost=293951.79..293951.80 rows=6 width=44) (actual time=13034.786..13259.819 rows=3 loops=1)                                                                                               |
+|        Sort Key: (sum((sum(t.price)))) DESC                                                                                                                                                            |
+|        Sort Method: quicksort  Memory: 25kB                                                                                                                                                            |
+|        ->  GroupAggregate  (cost=293951.59..293951.71 rows=6 width=44) (actual time=13034.669..13259.712 rows=6 loops=1)                                                                               |
+|              Group Key: m.title                                                                                                                                                                        |
+|              ->  Sort  (cost=293951.59..293951.61 rows=6 width=44) (actual time=13034.595..13259.627 rows=6 loops=1)                                                                                   |
+|                    Sort Key: m.title                                                                                                                                                                   |
+|                    Sort Method: quicksort  Memory: 25kB                                                                                                                                                |
+|                    ->  Nested Loop  (cost=293656.80..293951.51 rows=6 width=44) (actual time=13020.557..13256.635 rows=6 loops=1)                                                                      |
+|                          ->  Finalize GroupAggregate  (cost=293656.65..293922.43 rows=6 width=40) (actual time=13013.246..13249.223 rows=6 loops=1)                                                    |
+|                                Group Key: s.movie_id                                                                                                                                                   |
+|                                ->  Gather Merge  (cost=293656.65..293922.26 rows=12 width=40) (actual time=13008.586..13248.847 rows=18 loops=1)                                                       |
+|                                      Workers Planned: 2                                                                                                                                                |
+|                                      Workers Launched: 2                                                                                                                                               |
+|                                      ->  Partial GroupAggregate  (cost=292656.63..292920.85 rows=6 width=40) (actual time=12820.577..12838.123 rows=6 loops=3)                                         |
+|                                            Group Key: s.movie_id                                                                                                                                       |
+|                                            ->  Sort  (cost=292656.63..292744.68 rows=35220 width=14) (actual time=12812.082..12817.882 rows=26250 loops=3)                                             |
+|                                                  Sort Key: s.movie_id                                                                                                                                  |
+|                                                  Sort Method: quicksort  Memory: 1799kB                                                                                                                |
+|                                                  Worker 0:  Sort Method: quicksort  Memory: 1730kB                                                                                                     |
+|                                                  Worker 1:  Sort Method: quicksort  Memory: 1853kB                                                                                                     |
+|                                                  ->  Hash Join  (cost=167160.54..289996.79 rows=35220 width=14) (actual time=6548.754..12791.730 rows=26250 loops=3)                                   |
+|                                                        Hash Cond: (tp.session_id = s.id)                                                                                                               |
+|                                                        ->  Parallel Hash Join  (cost=166389.27..289133.06 rows=35220 width=14) (actual time=6491.745..12708.421 rows=26250 loops=3)                    |
+|                                                              Hash Cond: (tp.id = t.ticket_price_id)                                                                                                    |
+|                                                              ->  Parallel Seq Scan on ticket_prices tp  (cost=0.00..107954.30 rows=3904730 width=16) (actual time=2.411..3429.111 rows=3123750 loops=3)|
+|                                                              ->  Parallel Hash  (cost=165949.02..165949.02 rows=35220 width=14) (actual time=6468.528..6468.530 rows=26250 loops=3)                    |
+|                                                                    Buckets: 131072  Batches: 1  Memory Usage: 4800kB                                                                                   |
+|                                                                    ->  Parallel Seq Scan on tickets t  (cost=0.00..165949.02 rows=35220 width=14) (actual time=2.239..6398.695 rows=26250 loops=3)     |
+|                                                                          Filter: ((purchased_at <= now()) AND (purchased_at > (now() - '7 days'::interval)))                                           |
+|                                                                          Rows Removed by Filter: 3097500                                                                                               |
+|                                                        ->  Hash  (cost=458.90..458.90 rows=24990 width=16) (actual time=56.474..56.475 rows=24990 loops=3)                                             |
+|                                                              Buckets: 32768  Batches: 1  Memory Usage: 1428kB                                                                                          |
+|                                                              ->  Seq Scan on sessions s  (cost=0.00..458.90 rows=24990 width=16) (actual time=33.178..40.086 rows=24990 loops=3)                       |
+|                          ->  Index Scan using movies_pkey1 on movies m  (cost=0.15..4.84 rows=1 width=20) (actual time=0.983..0.983 rows=1 loops=6)                                                    |
+|                                Index Cond: (id = s.movie_id)                                                                                                                                           |
+|Planning Time: 37.494 ms                                                                                                                                                                                |
+|JIT:                                                                                                                                                                                                    |
+|  Functions: 92                                                                                                                                                                                         |
+|  Options: Inlining false, Optimization false, Expressions true, Deforming true                                                                                                                         |
+|  Timing: Generation 17.619 ms, Inlining 0.000 ms, Optimization 11.778 ms, Emission 197.171 ms, Total 226.568 ms                                                                                        |
+|Execution Time: 13374.227 ms                                                                                                                                                                            |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
++----------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                      |
++----------------------------------------------------------------------------------------------------------------+
+|Function Scan on crosstab ct  (cost=0.00..10.00 rows=1000 width=804) (actual time=19.561..19.562 rows=0 loops=1)|
+|Planning Time: 0.203 ms                                                                                         |
+|Execution Time: 35.067 ms                                                                                       |
++----------------------------------------------------------------------------------------------------------------+
+
++-------------------------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                                 |
++-------------------------------------------------------------------------------------------------------------------------------------------+
+|GroupAggregate  (cost=7.36..1434.66 rows=1 width=40) (actual time=0.014..0.015 rows=0 loops=1)                                             |
+|  ->  Bitmap Heap Scan on ticket_prices tp  (cost=7.36..1432.75 rows=377 width=14) (actual time=0.013..0.014 rows=0 loops=1)               |
+|        Recheck Cond: (session_id = 42)                                                                                                    |
+|        ->  Bitmap Index Scan on idx_ticket_prices_session_id  (cost=0.00..7.26 rows=377 width=0) (actual time=0.011..0.011 rows=0 loops=1)|
+|              Index Cond: (session_id = 42)                                                                                                |
+|Planning Time: 1.146 ms                                                                                                                    |
+|Execution Time: 0.051 ms                                                                                                                   |
++-------------------------------------------------------------------------------------------------------------------------------------------+
