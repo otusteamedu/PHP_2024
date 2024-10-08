@@ -50,6 +50,13 @@ create table movies_actors
     actor_id bigint references actors (id)
 );
 
+create table seats
+(
+    id          serial primary key,
+    seat_number integer not null,
+    row_number  integer not null,
+    hall_id     bigint references hall (id)
+);
 
 create table tickets
 (
@@ -57,9 +64,8 @@ create table tickets
     price         integer,
     purchase_time timestamp,
     session_id    bigint references sessions (id),
-    seat          smallint
+    seat_id       bigint references seats (id),
 );
-
 
 create table buyer
 (
