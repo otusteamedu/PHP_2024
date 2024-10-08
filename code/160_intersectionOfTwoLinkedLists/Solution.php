@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Otus\MergeTwoLists;
+namespace Otus\GetIntersectionNode;
 
 // Вычислительная сложность O(N + M), где N и M - длины списков headA и headB.
 // В худшем случае алгоритм обойдёт все узлы обоих списков.

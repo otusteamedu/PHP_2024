@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Otus\MergeTwoLists;
+namespace Otus\GetIntersectionNode;
 
 class ListNode
 {
