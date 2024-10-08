@@ -1,0 +1,15 @@
+{
+    "name": "ali/email",
+    "autoload": {
+        "psr-4": {
+            "Ali\\": "core/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mukhametali",
+            "email": "m.kussaiynov1996@gmail.com"
+        }
+    ],
+    "require": {}
+}
