@@ -3,11 +3,16 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Naimushina\\EventManager\\": "src/"
+            "Naimushina\\ChannelManager\\": "src/"
         }
     },
     "require": {
         "php": ">=8.0",
-        "predis/predis": "^2.2"
+        "elasticsearch/elasticsearch": "^8.15"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }

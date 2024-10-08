@@ -13,6 +13,8 @@ services:
     volumes:
       - ./code:/data/mysite.local
     working_dir: /data/mysite.local
+    depends_on:
+      - elasticsearch
     networks:
       - app-network
 
@@ -30,6 +32,19 @@ services:
       - ./code:/data/mysite.local
     networks:
       - app-network
+
+  elasticsearch:
+    container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    ports:
+      - "9200:9200"
+    networks:
+      - app-network
+    environment:
+      - ELASTIC_PASSWORD=password
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
 
   # контейнер с MySQL
   db:

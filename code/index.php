@@ -1,6 +1,6 @@
 <?php
 
-use Naimushina\EventManager\App;
+use Naimushina\ChannelManager\App;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -8,9 +8,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 $app = new App();
 
 try {
-    foreach ($app->run() as $message) {
-        echo $message;
-    };
+    echo $app->run();
+    /*foreach ($app->run() as $message) {
+
+    };*/
 } catch (Exception $e) {
     echo $e->getMessage();
 }
