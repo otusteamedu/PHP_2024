@@ -1,7 +1,8 @@
 .idea/
-/vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
 /code/vendor/
 /logs/
+/data
+/.env
