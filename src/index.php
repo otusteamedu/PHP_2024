@@ -4,15 +4,8 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Ali\App;
 
-$app = new App();
+$app = new App($argv);
 
-$emails = $argv;
-array_shift($emails);
-
-foreach ($emails as $email) {
+foreach ($app->getEmails() as $email) {
     echo "Email '$email' is " . $app->run($email) . PHP_EOL;
 }
-
-
-
-
