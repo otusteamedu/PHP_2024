@@ -6,7 +6,11 @@ use Ali\App;
 
 $app = new App();
 
-$app->run();
+$emails = $argv;
+
+foreach ($emails as $email) {
+    echo "Email '$email' is " . $app->run($email) . PHP_EOL;
+}
 
 
 

@@ -6,3 +6,4 @@ services:
     container_name: email-verification
     volumes:
       - ./src:/app
+    entrypoint: [ "php", "/app/index.php" ]
