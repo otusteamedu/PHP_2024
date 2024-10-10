@@ -8,11 +8,12 @@ class User
 {
     private array $dirtyFields = [];
 
-    public function __construct(private ?int    $id,
-                                private ?string $name,
-                                private ?string $last_name,
-                                private ?string $phone,
-                                private ?string $email)
+    public function __construct(
+        private ?int $id,
+        private ?string $name,
+        private ?string $last_name,
+        private ?string $phone,
+        private ?string $email)
     {
     }
 

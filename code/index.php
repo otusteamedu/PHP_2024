@@ -7,4 +7,3 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Otus\AppPDO\App;
 
 (new App())->run();
-
