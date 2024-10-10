@@ -2,7 +2,8 @@
 
 class FractionSolution
 {
-    function fractionToDecimal($numerator, $denominator) {
+    public function fractionToDecimal($numerator, $denominator)
+    {
         if ($numerator == 0) {
             return "0";
         }

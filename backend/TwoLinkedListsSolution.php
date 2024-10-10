@@ -7,7 +7,8 @@ class TwoLinkedListsSolution
      * @param ListNode $headB
      * @return ListNode
      */
-    function getIntersectionNode($headA, $headB) {
+    public function getIntersectionNode($headA, $headB)
+    {
         if ($headA === null || $headB === null) {
             return null;
         }
