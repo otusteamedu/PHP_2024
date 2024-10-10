@@ -1,0 +1,10 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Otus\\AppPDO\\": "App/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*"
+  }
+}
