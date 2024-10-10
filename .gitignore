@@ -1,5 +1,6 @@
-.idea/
-/vendor/
-.DS_Store
-.AppleDouble
-.LSOverride
+/vendor
+/.idea
+Homestead.json
+Homestead.yaml
+.env
+.phpunit.result.cache
