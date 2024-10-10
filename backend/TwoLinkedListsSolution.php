@@ -1,5 +1,7 @@
 <?php
 
+namespace TBublikova\Solutions;
+
 class TwoLinkedListsSolution
 {
     /**

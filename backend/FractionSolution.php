@@ -1,5 +1,7 @@
 <?php
 
+namespace TBublikova\Solutions;
+
 class FractionSolution
 {
     public function fractionToDecimal($numerator, $denominator)
