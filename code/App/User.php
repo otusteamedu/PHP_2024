@@ -14,8 +14,7 @@ class User
         private ?string $last_name,
         private ?string $phone,
         private ?string $email
-    )
-    {}
+    ) {}
 
     /**
      * @return int
