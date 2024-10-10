@@ -13,5 +13,5 @@
 |
 */
 
-$router->post('/enqueue', 'ApiController@enqueueRequest');
-$router->get('/status/{id}', 'ApiController@checkStatus');
+$router->post('/queue', 'QueueController@create');
+$router->get('/queue/{id}', 'QueueController@show');

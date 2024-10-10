@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use App\Jobs\ProcessRequestJob;
 
-class ApiController extends Controller
+class QueueController extends Controller
 {
-    public function enqueueRequest(Request $request)
+    public function create(Request $request)
     {
         $requestId = uniqid();
 
@@ -19,7 +19,7 @@ class ApiController extends Controller
         return response()->json(['request_id' => $requestId]);
     }
 
-    public function checkStatus($requestId)
+    public function show($requestId)
     {
         $status = Redis::get('request_status:' . $requestId);
 
