@@ -6,6 +6,7 @@ class Solution
 {
 
     /**
+     * Сложность O(4ⁿ * n)
      * @param String $digits
      * @return String[]
      */
