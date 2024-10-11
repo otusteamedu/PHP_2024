@@ -1,7 +1,9 @@
 <?php
+
 namespace LinkedListCycle;
 
-class Solution {
+class Solution
+{
     /**
      * Проверяем связный ли лист обходя его всего один раз
      * Проверяя каждый шаг и следующий за ним одновременно
