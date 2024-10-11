@@ -4,7 +4,6 @@ namespace LetterCombination;
 
 class Solution
 {
-
     /**
      * Сложность O(4ⁿ * n)
      * Мы проходимся по всему массиву цифр один раз
@@ -12,7 +11,7 @@ class Solution
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits)
+    public function letterCombinations($digits)
     {
         $letterMapping = [
             "2" => ['a', 'b', 'c'],
@@ -45,7 +44,5 @@ class Solution
         }
 
         return $result;
-
-
     }
 }
