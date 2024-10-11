@@ -16,11 +16,11 @@ class Solution
         $oneStep = $head;
         $twoSteps = $head;
 
-        while ($oneStep && $oneStep->next){
+        while ($oneStep && $oneStep->next) {
             $oneStep = $oneStep->next;
             $twoSteps = $twoSteps->next->next;
 
-            if($oneStep === $twoSteps){
+            if ($oneStep === $twoSteps) {
                 return true;
             }
         }
