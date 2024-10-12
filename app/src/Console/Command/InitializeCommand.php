@@ -57,20 +57,18 @@ class InitializeCommand extends Command
     private function getIndexSettings(): array
     {
         return [
-            "settings" => [
-                "analysis" => [
-                    "filter" => [
-                        "ru_stop" => ["type" => "stop", "stopwords" => "_russian_"],
-                        "ru_stemmer" => ["type" => "stemmer", "language" => "russian"],
-                    ],
-                    "analyzer" => [
-                        "my_russian" => [
-                            "tokenizer" => "standard",
-                            "filter" => ["lowercase", "ru_stop", "ru_stemmer"],
-                        ],
+            'analysis' => [
+                'filter' => [
+                    'ru_stop' => ['type' => 'stop', 'stopwords' => '_russian_'],
+                    'ru_stemmer' => ['type' => 'stemmer', 'language' => 'russian'],
+                ],
+                'analyzer' => [
+                    'my_russian' => [
+                        'tokenizer' => 'standard',
+                        'filter' => ['lowercase', 'ru_stop', 'ru_stemmer'],
                     ],
                 ],
-            ]
+            ],
         ];
     }
 
@@ -97,11 +95,11 @@ class InitializeCommand extends Command
                 'price' => [
                     'type' => 'integer',
                 ],
-                "stock" => [
-                    "type" => "nested",
-                    "properties" => [
-                        "shop" => ["type" => "keyword"],
-                        "stock" => ["type" => "integer"],
+                'stock' => [
+                    'type' => 'nested',
+                    'properties' => [
+                        'shop' => ['type' => 'keyword'],
+                        'stock' => ['type' => 'integer'],
                     ],
                 ],
             ]
