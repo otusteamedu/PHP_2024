@@ -6,7 +6,7 @@ namespace App\Exception;
 
 use Exception;
 
-class ClientNotFoundException extends Exception
+class ClientException extends Exception
 {
-
+    //
 }

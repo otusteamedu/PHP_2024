@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Elasticsearch;
 
 use App\Elasticsearch\Search\QueryBuilder;
+use App\Exception\ClientException;
 use App\Search\ClientInterface;
 use App\Search\Data;
 use Elastic\Elasticsearch\Client as ElasticsearchClient;
@@ -30,7 +31,7 @@ final readonly class Client implements ClientInterface
 
             $this->client->info();
         } catch (Exception $e) {
-            printf("Проблема подключения к ElasticSearch: %s", $e->getMessage());
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -43,19 +44,31 @@ final readonly class Client implements ClientInterface
             'body' => $data->isEmpty() ? $query->all() : $query->fromData($data),
         ];
 
-        return $this->client->search($params)->asArray();
+        try {
+            return $this->client->search($params)->asArray();
+        } catch (Exception $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     public function bulk(array $payload): void
     {
-        $this->client->bulk(['index' => $this->indexName, 'body' => $payload]);
+        try {
+            $this->client->bulk(['index' => $this->indexName, 'body' => $payload]);
+        } catch (Exception $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     public function createIndex(string $name, array $params = []): void
     {
-        $this->client->indices()->create([
-            'index' => $name,
-            ...$params
-        ]);
+        try {
+            $this->client->indices()->create([
+                'index' => $name,
+                ...$params
+            ]);
+        } catch (Exception $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 }
