@@ -17,11 +17,7 @@ class News
         private Url $url,
         private Title $title,
         private ExportDate $exportDate,
-        ?int $id = null
     ) {
-        if (!is_null($id)) {
-            $this->id = $id;
-        }
     }
 
     /**

@@ -11,6 +11,7 @@ use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
+use ReflectionProperty;
 
 class NewsRepository implements NewsRepositoryInterface
 {
@@ -19,6 +20,7 @@ class NewsRepository implements NewsRepositoryInterface
     public function __construct()
     {
     }
+
     /**
      * @param integer $id
      * @return News|null
@@ -35,12 +37,15 @@ class NewsRepository implements NewsRepositoryInterface
 
         $newsRaw = $newsCollection->get(0);
 
-        return new News(
+        $news = new News(
             new Url($newsRaw->url),
             new Title($newsRaw->title),
-            new ExportDate($newsRaw->export_date),
-            $newsRaw->id
+            new ExportDate($newsRaw->export_date)
         );
+
+        $this->setId($newsRaw->id, $news);
+
+        return $news;
     }
 
     /**
@@ -55,12 +60,13 @@ class NewsRepository implements NewsRepositoryInterface
 
         foreach ($newsCollection as $newsRaw) {
             try {
-                $result[] = new News(
+                $news = new News(
                     new Url($newsRaw->url),
                     new Title($newsRaw->title),
-                    new ExportDate($newsRaw->export_date),
-                    $newsRaw->id
+                    new ExportDate($newsRaw->export_date)
                 );
+                $this->setId($newsRaw->id, $news);
+                $result[] = $news;
             } catch (InvalidArgumentException) {
                 continue;
             }
@@ -102,9 +108,10 @@ class NewsRepository implements NewsRepositoryInterface
             ]);
         $newsId = DB::getPdo()->lastInsertId();
 
-        $reflectionProperty = new \ReflectionProperty(News::class, 'id');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($news, $newsId);
+        $this->setId(
+            (int)$newsId,
+            $news
+        );
     }
 
     private function update(News $news): void
@@ -118,5 +125,17 @@ class NewsRepository implements NewsRepositoryInterface
                     'export_date' => $news->getExportDate()->getValue()->format('Y-m-d')
                 ]
             );
+    }
+
+    /**
+     * @param int $id
+     * @param News $news
+     * @return void
+     */
+    private function setId(int $id, News $news): void
+    {
+        $reflectionProperty = new ReflectionProperty(News::class, 'id');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($news, $id);
     }
 }
