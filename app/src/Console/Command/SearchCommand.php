@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SearchCommand extends Command
+final class SearchCommand extends Command
 {
     private const OPTION_TITLE = 'title';
     private const OPTION_SKU = 'sku';

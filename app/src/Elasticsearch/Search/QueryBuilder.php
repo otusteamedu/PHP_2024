@@ -6,7 +6,7 @@ namespace App\Elasticsearch\Search;
 
 use App\Search\Data;
 
-class QueryBuilder
+final class QueryBuilder
 {
     private array $query = [
         'query' => [
