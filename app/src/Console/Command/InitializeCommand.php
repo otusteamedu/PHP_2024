@@ -34,35 +34,8 @@ class InitializeCommand extends Command
             $client = (new ClientFactory())->make();
 
             $params = [
-                'mappings' => [
-                    'properties' => [
-                        'category' => [
-                            'type' => 'keyword',
-                        ],
-                        'title' => [
-                            'type' => 'text',
-                            'fields' => [
-                                'keyword' => [
-                                    'type' => 'keyword',
-                                    'ignore_above' => 256,
-                                ],
-                            ],
-                        ],
-                        'sku' => [
-                            'type' => 'keyword',
-                        ],
-                        'price' => [
-                            'type' => 'integer',
-                        ],
-                        "stock" => [
-                            "type" => "nested",
-                            "properties" => [
-                                "shop" => ["type" => "keyword"],
-                                "stock" => ["type" => "integer"],
-                            ],
-                        ],
-                    ]
-                ]
+                'settings' => $this->getIndexSettings(),
+                'mappings' => $this->getIndexMappings(),
             ];
 
             $client->createIndex(getenv('ES_INDEX_NAME'), $params);
@@ -79,5 +52,59 @@ class InitializeCommand extends Command
 
             return self::FAILURE;
         }
+    }
+
+    private function getIndexSettings(): array
+    {
+        return [
+            "settings" => [
+                "analysis" => [
+                    "filter" => [
+                        "ru_stop" => ["type" => "stop", "stopwords" => "_russian_"],
+                        "ru_stemmer" => ["type" => "stemmer", "language" => "russian"],
+                    ],
+                    "analyzer" => [
+                        "my_russian" => [
+                            "tokenizer" => "standard",
+                            "filter" => ["lowercase", "ru_stop", "ru_stemmer"],
+                        ],
+                    ],
+                ],
+            ]
+        ];
+    }
+
+    private function getIndexMappings(): array
+    {
+        return [
+            'properties' => [
+                'category' => [
+                    'type' => 'keyword',
+                ],
+                'title' => [
+                    'type' => 'text',
+                    'analyzer' => 'my_russian',
+                    'fields' => [
+                        'keyword' => [
+                            'type' => 'keyword',
+                            'ignore_above' => 256,
+                        ],
+                    ],
+                ],
+                'sku' => [
+                    'type' => 'keyword',
+                ],
+                'price' => [
+                    'type' => 'integer',
+                ],
+                "stock" => [
+                    "type" => "nested",
+                    "properties" => [
+                        "shop" => ["type" => "keyword"],
+                        "stock" => ["type" => "integer"],
+                    ],
+                ],
+            ]
+        ];
     }
 }
