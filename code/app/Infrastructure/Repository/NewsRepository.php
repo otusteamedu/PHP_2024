@@ -9,9 +9,11 @@ use App\Domain\Repository\NewsRepositoryInterface;
 use App\Domain\ValueObject\ExportDate;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
+use DateTimeImmutable;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use ReflectionProperty;
+use DateMalformedStringException;
 
 class NewsRepository implements NewsRepositoryInterface
 {
@@ -24,6 +26,7 @@ class NewsRepository implements NewsRepositoryInterface
     /**
      * @param integer $id
      * @return News|null
+     * @throws DateMalformedStringException
      */
     public function getById(int $id): ?News
     {
@@ -37,10 +40,12 @@ class NewsRepository implements NewsRepositoryInterface
 
         $newsRaw = $newsCollection->get(0);
 
+        $exportDate = new DateTimeImmutable($newsRaw->export_date);
+
         $news = new News(
             new Url($newsRaw->url),
             new Title($newsRaw->title),
-            new ExportDate($newsRaw->export_date)
+            new ExportDate($exportDate)
         );
 
         $this->setId($newsRaw->id, $news);
@@ -60,14 +65,15 @@ class NewsRepository implements NewsRepositoryInterface
 
         foreach ($newsCollection as $newsRaw) {
             try {
+                $exportDate = new DateTimeImmutable($newsRaw->export_date);
                 $news = new News(
                     new Url($newsRaw->url),
                     new Title($newsRaw->title),
-                    new ExportDate($newsRaw->export_date)
+                    new ExportDate($exportDate)
                 );
                 $this->setId($newsRaw->id, $news);
                 $result[] = $news;
-            } catch (InvalidArgumentException) {
+            } catch (InvalidArgumentException | DateMalformedStringException) {
                 continue;
             }
         }
