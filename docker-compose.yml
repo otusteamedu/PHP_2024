@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+       - ./code/:/code
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.1
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    ports:
+      - "6052:3306"
+    networks:
+      - app-network
+    volumes:
+      - ./code/:/code
+    restart: always
+
+
+networks:
+  app-network:
+    driver: bridge
