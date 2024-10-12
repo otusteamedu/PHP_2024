@@ -31,6 +31,6 @@ search-4:
 search-5:
 	docker exec -it otus-shop-php-cli php index.php search --price_min=100 --price_max=200
 
-# Поиск по максимальной цене и минимальной цене
-search-5:
-	docker exec -it otus-shop-php-cli php index.php search --category="Исторический роман" --price_max=2000 --in_stock=0
+# Поиск по категории, мин. цене и по остаткам
+search-6:
+	docker exec -it otus-shop-php-cli php index.php search --category="Исторический роман" --price_max=2000 --in_stock=1
