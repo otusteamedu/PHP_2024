@@ -6,7 +6,6 @@ namespace App\Infrastructure\Http;
 
 use App\Application\UseCase\AddNews\AddNewsRequest;
 use App\Application\UseCase\AddNews\AddNewsUseCase;
-use App\Infrastructure\Parser\LoadHtmlException;
 use Exception;
 use Illuminate\Http\Request;
 use InvalidArgumentException;

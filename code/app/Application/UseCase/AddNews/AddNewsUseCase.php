@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\UseCase\AddNews;
 
 use App\Application\Parser\ParserInterface;
+use App\Application\Validator\Url;
 use App\Domain\Factory\NewsFactoryInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
 use DateTimeImmutable;
@@ -16,7 +17,8 @@ readonly class AddNewsUseCase
     public function __construct(
         private NewsFactoryInterface $newsFactory,
         private NewsRepositoryInterface $newsRepository,
-        private ParserInterface $parser
+        private ParserInterface $parser,
+        private Url $urlValidator
     ) {
     }
 
@@ -28,7 +30,7 @@ readonly class AddNewsUseCase
      */
     public function __invoke(AddNewsRequest $request): AddNewsResponse
     {
-        if (filter_var($request->url, FILTER_VALIDATE_URL) === false) {
+        if (!$this->urlValidator->isValid($request->url)) {
             throw new InvalidArgumentException('Invalid URL');
         }
 
