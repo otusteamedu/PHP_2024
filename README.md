@@ -37,20 +37,22 @@ curl --request GET \
 ```
 Ответ:
 ```
-[
-	{
-		"id": 1,
-		"title": "Из Windows исчезнет «Панель управления»: Софт: Наука и техника: Lenta.ru",
-		"url": "https:\/\/lenta.ru\/news\/2024\/08\/23\/cpanel\/",
-		"exportDate": "2024-08-24"
-	},
-	{
-		"id": 2,
-		"title": "REST API на Laravel в 100 строк кода &#x2F; Хабр",
-		"url": "https:\/\/habr.com\/ru\/articles\/441946\/",
-		"exportDate": "2024-08-24"
-	}
-]
+{
+    "newsList": [
+        {
+            "id": 1,
+            "title": "Из Windows исчезнет «Панель управления»: Софт: Наука и техника: Lenta.ru",
+            "url": "https:\/\/lenta.ru\/news\/2024\/08\/23\/cpanel\/",
+            "exportDate": "2024-08-24"
+        },
+        {
+            "id": 2,
+            "title": "REST API на Laravel в 100 строк кода &#x2F; Хабр",
+            "url": "https:\/\/habr.com\/ru\/articles\/441946\/",
+            "exportDate": "2024-08-24"
+        }
+    ]
+}
 ```
 
 ## Генерация отчета
