@@ -7,7 +7,7 @@ namespace App\Application\UseCase\NewsList;
 class NewsListResponse
 {
     /**
-     * @param News[] $newsList
+     * @param NewsListItem[] $newsList
      */
     public function __construct(
         public iterable $newsList

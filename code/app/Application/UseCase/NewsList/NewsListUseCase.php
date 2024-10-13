@@ -7,7 +7,7 @@ namespace App\Application\UseCase\NewsList;
 use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
 
-class NewsListUseCase
+readonly class NewsListUseCase
 {
     public function __construct(private NewsRepositoryInterface $newsRepository)
     {
@@ -17,6 +17,16 @@ class NewsListUseCase
     {
         $newsList = $this->newsRepository->getAll();
 
-        return new NewsListResponse($newsList);
+        $list = [];
+        foreach ($newsList as $news) {
+            $list[] = new NewsListItem(
+                $news->getId(),
+                $news->getTitle()->getValue(),
+                $news->getUrl()->getValue(),
+                $news->getExportDate()->getValue()->format('Y-m-d H:i')
+            );
+        }
+
+        return new NewsListResponse($list);
     }
 }

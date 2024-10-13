@@ -13,7 +13,6 @@ use DateTimeImmutable;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use ReflectionProperty;
-use DateMalformedStringException;
 
 class NewsRepository implements NewsRepositoryInterface
 {
@@ -24,9 +23,9 @@ class NewsRepository implements NewsRepositoryInterface
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      * @return News|null
-     * @throws DateMalformedStringException
+     * @throws \DateMalformedStringException
      */
     public function getById(int $id): ?News
     {
@@ -73,7 +72,7 @@ class NewsRepository implements NewsRepositoryInterface
                 );
                 $this->setId($newsRaw->id, $news);
                 $result[] = $news;
-            } catch (InvalidArgumentException | DateMalformedStringException) {
+            } catch (InvalidArgumentException | \DateMalformedStringException) {
                 continue;
             }
         }
