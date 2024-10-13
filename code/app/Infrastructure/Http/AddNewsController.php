@@ -6,9 +6,12 @@ namespace App\Infrastructure\Http;
 
 use App\Application\UseCase\AddNews\AddNewsRequest;
 use App\Application\UseCase\AddNews\AddNewsUseCase;
+use App\Infrastructure\Parser\LoadHtmlException;
+use Exception;
 use Illuminate\Http\Request;
+use InvalidArgumentException;
 
-class AddNewsController
+readonly class AddNewsController
 {
     public function __construct(
         private AddNewsUseCase $addNewsUseCase
@@ -18,22 +21,19 @@ class AddNewsController
     {
         $url = $httpRequest->json('url');
 
-        if (filter_var($url, FILTER_VALIDATE_URL) === false) {
-            return response('URL is invalid', 400);
-        }
-
         $request = new AddNewsRequest($url);
 
         try {
             $response = ($this->addNewsUseCase)($request);
-        } catch (\Exception) {
+
+        } catch (InvalidArgumentException $ex) {
+            return response($ex->getMessage(), 400);
+        } catch (Exception) {
             return response('Server internal error', 500);
         }
 
         return response()->json(
-            [
-                'id' => $response->id
-            ]
+            $response
         );
     }
 }

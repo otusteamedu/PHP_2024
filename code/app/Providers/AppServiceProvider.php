@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Providers;
+namespace App\Providers;
 
+use App\Application\Parser\ParserInterface;
 use App\Domain\Factory\NewsFactoryInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
 use App\Infrastructure\Factory\NewsFactory;
+use App\Infrastructure\Parser\NewsParser;
 use App\Infrastructure\Repository\NewsRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             NewsFactoryInterface::class,
             NewsFactory::class
+        );
+        $this->app->bind(
+            ParserInterface::class,
+            NewsParser::class
         );
     }
 

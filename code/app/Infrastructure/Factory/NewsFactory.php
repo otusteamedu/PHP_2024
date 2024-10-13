@@ -13,20 +13,17 @@ use DateTimeImmutable;
 
 class NewsFactory implements NewsFactoryInterface
 {
-    public function __construct(
-        private NewsLoader $loader
-    ) {
-    }
-
-    public function create(string $url): News
+    public function create(
+        string $url,
+        string $title,
+        DateTimeImmutable $exportDate
+    ): News
     {
-        $title = $this->loader->getTitle($url);
-
         return new News(
             new Url($url),
             new Title($title),
             new ExportDate(
-                new DateTimeImmutable()
+                $exportDate
             )
         );
     }
