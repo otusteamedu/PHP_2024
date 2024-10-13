@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Report;
 
+use App\Domain\Entity\News;
+
 class ReportResponse
 {
     /**
-     * @param News[] $news
+     * @param string $reportUrl
      */
     public function __construct(
-        public iterable $news
+        public string $reportUrl
     ) {
     }
 }

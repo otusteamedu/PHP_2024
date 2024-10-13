@@ -7,7 +7,7 @@ namespace App\Infrastructure\Http;
 use App\Application\UseCase\NewsList\NewsListUseCase;
 use Exception;
 
-class NewsListController
+readonly class NewsListController
 {
     public function __construct(
         private NewsListUseCase $newsListUseCase
