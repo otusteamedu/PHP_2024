@@ -16,3 +16,5 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
     docker exec -it app php /app/public/index.php query sku=033
     docker exec -it app php /app/public/index.php query price=5100:6100
     docker exec -it app php /app/public/index.php query price=5100:6100 title=рыцори
+    docker exec -it app php /app/public/index.php query price=:6100 title=рыцори
+    docker exec -it app php /app/public/index.php query price=5100: title=рыцори
