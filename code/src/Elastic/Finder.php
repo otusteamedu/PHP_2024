@@ -40,12 +40,11 @@ class Finder
         $searchParams = $this->config->searchParams;
 
         foreach ($searchParams as $key => $value) {
-
             switch (true) {
-                case is_array($value) :
+                case is_array($value):
                     $this->processRangeParameter($key, $value);
                     break;
-                default :
+                default:
                     $this->searchQuery['body']['query']['bool']['must'][] = [
                         'match' => [
                             $key => [
