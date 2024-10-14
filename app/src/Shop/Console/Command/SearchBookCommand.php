@@ -112,7 +112,9 @@ final class SearchBookCommand extends Command
             $priceMaxFilter = (null === $priceMax) ? null : new SimpleFilter('price_max', 'lte', $priceMax);
 
             $filters[] = new RangeFilter(
-                'price', $priceMinFilter ?? $priceMaxFilter, $priceMaxFilter ?? $priceMinFilter
+                'price',
+                $priceMinFilter ?? $priceMaxFilter,
+                $priceMaxFilter ?? $priceMinFilter
             );
         }
 
