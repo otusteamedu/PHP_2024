@@ -2,6 +2,8 @@
 
 namespace  Otus\App\Elastic;
 
+use InvalidArgumentException;
+
 readonly class Config
 {
     public string $host;
@@ -36,9 +38,15 @@ readonly class Config
         $searchParams = [];
         for ($i = 2; $i < count($argv); $i++) {
             $arg = explode('=', $argv[$i]);
-            if (count($arg) === 2) {
-                $searchParams[$arg[0]] = $arg[1];
+
+            if (count($arg) !== 2) {
+                throw new InvalidArgumentException(
+                    "Wrong input parameters format!" . PHP_EOL .
+                    'Please check the documentation!'
+                );
             }
+
+            $searchParams[$arg[0]] = str_contains($arg[1], ':') ? explode(':', $arg[1]) : $arg[1];
         }
 
         return $searchParams;

@@ -13,7 +13,8 @@
     }
   ],
   "require": {
-    "elasticsearch/elasticsearch": "^8.15"
+    "elasticsearch/elasticsearch": "^8.15",
+    "ext-mbstring": "*"
   },
   "config": {
     "allow-plugins": {

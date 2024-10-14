@@ -8,10 +8,11 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 
 ### Формат запроса данных:
 
-    docker exec -it app php /app/public/index.php query [prop]=[val] [prop]=[val]
+    docker exec -it app php /app/public/index.php query [prop]=[val] [prop_name=min_value:max_value]
 
 Примеры запросов:
 
     docker exec -it app php /app/public/index.php query title=рыцори 
     docker exec -it app php /app/public/index.php query sku=033
-    docker exec -it app php /app/public/index.php query price_min=5100 price_max=6100
+    docker exec -it app php /app/public/index.php query price=5100:6100
+    docker exec -it app php /app/public/index.php query price=5100:6100 title=рыцори

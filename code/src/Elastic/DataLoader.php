@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Otus\App\Elastic;
 
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Exception;
+use InvalidArgumentException;
 
 class DataLoader
 {
@@ -18,20 +21,18 @@ class DataLoader
         $this->config = $elastic->config;
     }
 
+    /**
+     * @throws Exception
+     */
     public function loadFromFile(): void
     {
         $jsonFilePath = realpath(__DIR__ . '/../../' . $this->config->dataFile);
 
-        if (!file_exists($jsonFilePath)) {
-            echo "File not found: $jsonFilePath" . PHP_EOL;
-            return;
+        if (!$jsonFilePath) {
+            throw new Exception("File not found: $jsonFilePath");
         }
 
-        try {
-            $this->readAndIndex($jsonFilePath);
-        } catch (Exception $e) {
-            echo "ERROR: " . $e->getMessage() . PHP_EOL;
-        }
+        $this->readAndIndex($jsonFilePath);
     }
 
     /**
@@ -68,8 +69,7 @@ class DataLoader
     private function bulkIndex(array $bulkData): void
     {
         if (empty($bulkData)) {
-            echo "No data to index." . PHP_EOL;
-            return;
+            throw new InvalidArgumentException("No data to index.");
         }
 
         $params = ['body' => $bulkData];

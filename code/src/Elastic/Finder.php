@@ -5,25 +5,21 @@ namespace Otus\App\Elastic;
 use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
+use InvalidArgumentException;
 
 class Finder
 {
     public Client $client;
     public Config $config;
 
+    public array $searchQuery;
+
     public function __construct($elastic)
     {
         $this->client = $elastic->client;
         $this->config = $elastic->config;
-    }
 
-    /**
-     * @throws ServerResponseException
-     * @throws ClientResponseException
-     */
-    public function findAll()
-    {
-        $params = [
+        $this->searchQuery = [
             'index' => $this->config->indexName,
             'body' => [
                 'query' => [
@@ -33,41 +29,77 @@ class Finder
                 ]
             ]
         ];
+    }
 
-        // price_min | price_max
-        if (isset($this->config->searchParams['price_min']) || isset($this->config->searchParams['price_max'])) {
-            $rangeQuery = [];
+    /**
+     * @throws ServerResponseException
+     * @throws ClientResponseException
+     */
+    public function findAll()
+    {
+        $searchParams = $this->config->searchParams;
 
-            if (isset($this->config->searchParams['price_min'])) {
-                $rangeQuery['gte'] = $this->config->searchParams['price_min'];
-            }
+        foreach ($searchParams as $key => $value) {
 
-            if (isset($this->config->searchParams['price_max'])) {
-                $rangeQuery['lte'] = $this->config->searchParams['price_max'];
-            }
-
-            $params['body']['query']['bool']['must'][] = [
-                'range' => [
-                    'price' => $rangeQuery
-                ]
-            ];
-        }
-
-        // Rest
-        foreach ($this->config->searchParams as $key => $value) {
-            if ($key !== 'price_min' && $key !== 'price_max') {
-                $params['body']['query']['bool']['must'][] = [
-                    'match' => [
-                        $key => [
-                            'query' => $value,
-                            'fuzziness' => 'AUTO'
+            switch (true) {
+                case is_array($value) :
+                    $this->processRangeParameter($key, $value);
+                    break;
+                default :
+                    $this->searchQuery['body']['query']['bool']['must'][] = [
+                        'match' => [
+                            $key => [
+                                'query' => $value,
+                                'fuzziness' => 'AUTO'
+                            ]
                         ]
-                    ]
-                ];
+                    ];
             }
         }
 
-        $found = $this->client->search($params)->asArray();
+        $found = $this->client->search($this->searchQuery)->asArray();
         return $found['hits']['hits'];
+    }
+
+    /**
+     * Обработка range параметров
+     * @param string $paramName
+     * @param array $parts
+     * @return void
+     */
+    private function processRangeParameter(string $paramName, array $parts): void
+    {
+        $gte = $parts[0];
+        $lte = $parts[1];
+
+        if (!$paramName) {
+            throw new InvalidArgumentException(
+                "Parameter name can't be empty!" . PHP_EOL .
+                'Please check the documentation!'
+            );
+        }
+
+        if (!$lte && !$gte) {
+            throw new InvalidArgumentException(
+                "Both lte and gte params can't be empty simultaneously!" . PHP_EOL .
+                'Please check the documentation!'
+            );
+        }
+
+        $rangeQuery = [];
+
+        if (isset($gte)) {
+            $rangeQuery['gte'] = $gte;
+        }
+
+        if (isset($lte)) {
+            $rangeQuery['lte'] = $lte;
+        }
+
+        $this->searchQuery['body']['query']['bool']['must'][] = [
+            'range' => [
+                $paramName => $rangeQuery
+            ]
+        ];
     }
 }

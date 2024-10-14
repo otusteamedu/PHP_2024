@@ -26,40 +26,44 @@ class App
      */
     public function run(): void
     {
-        $status = $this->healthCheck();
-        if (!$status) {
-            throw new Exception('ERROR: Elastic is not reachable!');
+        try {
+            $status = $this->healthCheck();
+            if (!$status) {
+                throw new Exception('ERROR: Elastic is not reachable!');
+            }
+
+            switch ($_SERVER['argv'][1]) {
+                case 'init':
+                    $this->init();
+                    break;
+                case 'query':
+                    $this->query();
+                    break;
+                default:
+                    throw new Exception('ERROR: No action specified. Use `init` or `query`');
+            }
+        } catch (Exception $e) {
+            // имитация логирования и возврата ошибки пользователю
+            echo "ERROR: " . $e->getMessage();
         }
 
-        switch ($_SERVER['argv'][1]) {
-            case 'init':
-                $this->init();
-                break;
-            case 'query':
-                $this->query();
-                break;
-            default:
-                throw new Exception('ERROR: No action specified. Use `init` or `query`');
-        }
     }
 
     /**
      * @return bool
+     * @throws ClientResponseException
+     * @throws ServerResponseException
      */
     public function healthCheck(): bool
     {
-        try {
-            $response = $this->elastic->client->cluster()->health();
-            echo "Elastic Health: " . $response['status'] . PHP_EOL;
-            return true;
-        } catch (Exception $e) {
-            echo "ERROR: " . $e->getMessage();
-            return false;
-        }
+        $response = $this->elastic->client->cluster()->health();
+        echo "Elastic Health: " . $response['status'] . PHP_EOL;
+        return isset($response['status']) && !empty($response['status']);
     }
 
     /**
      * @return void
+     * @throws Exception
      */
     public function init(): void
     {
