@@ -18,12 +18,12 @@ readonly class ReportController
 
     public function __invoke(Request $httpRequest)
     {
-        $rawIds = $httpRequest->get('ids');
+        $ids = $httpRequest->get('ids');
 
-        $ids = [];
-        foreach ($rawIds as $rawId) {
-            $ids[] = (int) $rawId;
+        if (empty($ids) || !is_array($ids)) {
+            return response('Bad request', 400);
         }
+
         try {
             $request = new ReportRequest($ids);
             $response = ($this->reportUseCase)($request);
