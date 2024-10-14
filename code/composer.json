@@ -1,0 +1,24 @@
+{
+  "name": "otus/elasticsearch",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Otus\\App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Pavel Ivanov",
+      "email": "xeolit@bk.ru"
+    }
+  ],
+  "require": {
+    "elasticsearch/elasticsearch": "^8.15",
+    "ext-mbstring": "*"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}
