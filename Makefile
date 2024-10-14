@@ -10,8 +10,8 @@ shell:
 # Инициализация (создание индекса с правильным маппингом и заполнение его данными)
 init:
 	docker exec -it otus-shop-php-cli php index.php index:delete otus-shop \
-		&& docker exec -it otus-shop-php-cli php index.php index:create otus-shop /data/var/import/schema.json \
-		&& docker exec -it otus-shop-php-cli php index.php index:seed otus-shop /data/var/import/books.json
+		&& docker exec -it otus-shop-php-cli php index.php index:create otus-shop /data/var/import/book-index-schema.json \
+		&& docker exec -it otus-shop-php-cli php index.php index:seed otus-shop /data/var/import/book-index-data.json
 
 # Поиск по заголовку
 search-1:
