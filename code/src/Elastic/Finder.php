@@ -87,11 +87,11 @@ class Finder
 
         $rangeQuery = [];
 
-        if (isset($gte)) {
+        if ($gte) {
             $rangeQuery['gte'] = $gte;
         }
 
-        if (isset($lte)) {
+        if ($lte) {
             $rangeQuery['lte'] = $lte;
         }
 
