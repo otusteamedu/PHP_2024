@@ -2,27 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Irayu\Hw0\Domain;
+namespace Irayu\Hw13\Domain;
 
 class Competition
 {
-    private int $id;
-    private string $name;
-    private string $location;
-    private DateTime $date;
-    private array $boulderProblems; // Array of BoulderProblem entities
+    public function __construct(
+        public readonly ?int $id,
+        public readonly  string $name,
+        public readonly  string $location,
+        public readonly  \DateTime $start,
+        public readonly  \DateTime $finish,
+        private VO\BoulderProblemCollection $boulderProblems
+    ) {
+    }
 
-    public function __construct(int $id, string $name, string $location, DateTime $date, array $boulderProblems = [])
+    public function getId(): ?int
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->location = $location;
-        $this->date = $date;
-        $this->boulderProblems = $boulderProblems;
+        return $this->id;
     }
 
     public function addBoulderProblem(BoulderProblem $problem): void
     {
         $this->boulderProblems[] = $problem;
+    }
+
+    public function getBoulderProblems(): VO\BoulderProblemCollection
+    {
+        return $this->boulderProblems->getLoaded();
     }
 }

@@ -6,25 +6,30 @@ namespace Irayu\Hw13;
 
 use Irayu\Hw13\Domain;
 use Irayu\Hw13\Infrastructure\Repository;
+use Irayu\Hw13\Application\UseCase;
+use Irayu\Hw13\UI;
 
 class App
 {
+    private Repository\IdentityMap $identityMap;
     private Domain\Repository\CompetitionRepositoryInterface $competitionRepository;
 
     public function __construct(
         array $dbConnection,
     ) {
+        $client = Repository\Mysql\ClientFactory::create(
+            host: $dbConnection['host'],
+            port: (int) $dbConnection['port'],
+            user: $dbConnection['user'],
+            password: $dbConnection['password'],
+            dbName: $dbConnection['db_name'],
+        );
+        $this->identityMap = new Repository\IdentityMap();
 
-
-        $this->eventRepository = new Repository\Mysql\CompetitionRepository(
-            new Repository\Mysql\CompetitionMapper(),
-            Repository\Mysql\ClientFactory::create(
-                host: $dbConnection['host'],
-                port: (int) $dbConnection['port'],
-                user: $dbConnection['user'],
-                password: $dbConnection['password'],
-                dbNumber: (int) $dbConnection['db_name'],
-            )
+        $this->competitionRepository = new Repository\Mysql\CompetitionRepository(
+            $client,
+            new Repository\Mysql\Mapper\CompetitionMapper($client),
+            $this->identityMap,
         );
     }
 
@@ -32,16 +37,17 @@ class App
     {
         switch ($action) {
             case "find":
-                $events = (new UseCase\FindEvents(
-                    new UseCase\Request\FindEventsFromJsonRequest(
-                        competitionRepository: $this->eventRepository,
-                        jsonString: $jsonParams,
+                $competitions = (new UseCase\FindCompetitions(
+                    new UseCase\Request\FindCompetitionsRequest(
+                        competitionRepository: $this->competitionRepository,
+                        filterJson: $jsonParams,
                     )
-                ))->run();
-                if (empty($events)) {
+                ))->run()->competitions;
+
+                if (empty($competitions)) {
                     echo 'There are no any results for: ' . $jsonParams . PHP_EOL;
                 } else {
-                    echo PHP_EOL . (new EventsView($events))->render() . PHP_EOL;
+                    echo PHP_EOL . (new UI\View\CompetitionView($competitions))->render() . PHP_EOL;
                 }
                 break;
         }

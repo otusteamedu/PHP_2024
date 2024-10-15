@@ -6,6 +6,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
+RUN mkdir -p /var/log/php && chmod -R 777 /var/log/php
+
+RUN install-php-extensions pdo_mysql-8.0.27
 RUN install-php-extensions xdebug-3.3.1
 
 EXPOSE 9003

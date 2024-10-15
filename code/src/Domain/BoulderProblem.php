@@ -2,25 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Irayu\Hw0\Domain;
+namespace Irayu\Hw13\Domain;
 
 class BoulderProblem
 {
-    private int $id;
-    private string $name;
-    private string $grade; // e.g., V5, V8
-    private int $top;      // Score for reaching the top
-    private int $zone;     // Score for reaching the zone
-    private int $maxAttempts; // Maximum allowed attempts
-
-    public function __construct(int $id, string $name, string $grade, int $top, int $zone, int $maxAttempts)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->grade = $grade;
-        $this->top = $top;
-        $this->zone = $zone;
-        $this->maxAttempts = $maxAttempts;
+    public function __construct(
+        private int $id,
+        private string $name,
+        private string $grade,
+        private int $top,
+        private int $zone,
+        private int $maxAttempts
+    ) {
     }
 
     public function calculateScore(int $attempts, bool $topAchieved, bool $zoneAchieved): int
