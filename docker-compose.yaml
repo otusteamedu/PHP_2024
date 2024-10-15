@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: store/php
+    container_name: app
+    volumes:
+      - ./code:/app
+    depends_on:
+      - redis
+    networks:
+      - app-network
+    tty: true
+    env_file: .env
+
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_CONTAINER}
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

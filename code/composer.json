@@ -1,0 +1,23 @@
+{
+  "name": "otus/redis",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Otus\\App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Pavel Ivanov",
+      "email": "xeolit@bk.ru"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  },
+  "require": {
+    "ext-redis": "*"
+  }
+}
