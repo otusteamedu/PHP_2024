@@ -8,10 +8,10 @@ class Competition
 {
     public function __construct(
         public readonly ?int $id,
-        public readonly  string $name,
-        public readonly  string $location,
-        public readonly  \DateTime $start,
-        public readonly  \DateTime $finish,
+        public readonly string $name,
+        public readonly string $location,
+        public readonly \DateTime $start,
+        public readonly \DateTime $finish,
         private VO\BoulderProblemCollection $boulderProblems
     ) {
     }
