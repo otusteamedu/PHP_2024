@@ -1,19 +1,23 @@
 <?php
 
-namespace Otus\App\Redis;
+namespace Otus\App\Config;
 
 readonly class Config
 {
     public string $host;
-    public string $port;
+    public int $port;
     public array $argv;
     public array $params;
+    public string $sortedSetName;
+    public ?string $query;
 
     public function __construct()
     {
         $this->host = getenv('REDIS_HOST');
-        $this->port = getenv('REDIS_PORT');
+        $this->port = (int)getenv('REDIS_PORT');
         $this->argv = $_SERVER['argv'];
+        $this->sortedSetName = $_SERVER['argv'][2];
+        $this->query = $_SERVER['argv'][3] ?? null;
         $this->params = $this->getArguments();
     }
 
@@ -27,7 +31,7 @@ readonly class Config
         }
 
         $params = [];
-        for ($i = 2; $i < count($this->argv); $i++) {
+        for ($i = 3; $i < count($this->argv); $i++) {
             $arg = explode('=', $this->argv[$i], 2);
             if (count($arg) === 2) {
                 $params[$arg[0]] = $arg[1];

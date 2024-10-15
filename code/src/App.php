@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Otus\App;
 
 use Exception;
-use Otus\App\Redis\Data;
+use Otus\App\Services\EventService;
 use RedisException;
 
 class App
@@ -15,19 +15,25 @@ class App
      */
     public function run(): void
     {
-        switch ($_SERVER['argv'][1]) {
-            case 'add':
-                $this->add();
-                break;
-            case 'clear':
-                $this->clear();
-                break;
-            case 'get':
-                $this->get();
-                break;
-            default:
-                throw new Exception('ERROR: No action specified. Use `add`, `get` or `clear`');
+        try {
+            switch ($_SERVER['argv'][1]) {
+                case 'add':
+                    $this->add();
+                    break;
+                case 'clear':
+                    $this->clear();
+                    break;
+                case 'get':
+                    $this->get();
+                    break;
+                default:
+                    throw new Exception('ERROR: No action specified. Use `add`, `get` or `clear`');
+            }
+        } catch (\Exception $e) {
+            // Имитация логирования и вывода сообщения об ошибке
+            echo $e->getMessage();
         }
+
     }
 
     /**
@@ -35,7 +41,7 @@ class App
      */
     public function add(): void
     {
-        (new Data())->newEvent();
+        (new EventService())->newEvent();
     }
 
     /**
@@ -44,7 +50,7 @@ class App
      */
     public function clear(): void
     {
-        (new Data())->clearAll();
+        (new EventService())->clearAll();
     }
 
     /**
@@ -53,6 +59,6 @@ class App
      */
     public function get(): void
     {
-        (new Data())->getEvent();
+        (new EventService())->getEvent();
     }
 }
