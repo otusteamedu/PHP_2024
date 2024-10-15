@@ -43,11 +43,8 @@ class EventService
         $result = $this->storage->add(
             $this->sortedSetName,
             $priority,
-            json_encode([
-                'priority' => $priority,
-                'conditions' => $conditions,
-                'event' => $event
-            ]));
+            json_encode(['priority' => $priority, 'conditions' => $conditions, 'event' => $event])
+        );
 
         $this->output($result);
     }
