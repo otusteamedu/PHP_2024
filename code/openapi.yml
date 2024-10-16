@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  title: 'API заявок на проведение мероприятий'
+  description: 'Приложение принимает заявки на проведение мероприятий.'
+  version: '1.0'
+paths:
+  /api/v1/events:
+    post:
+      operationId: 0e9bf4c535fbcbd5eb76a4093f2ce8e5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddEventRequest'
+            example:
+              name: Adam
+              email: example@example.com
+              eventDate: '2024-12-25 12:00'
+              address: address
+              guest: 1
+      responses:
+        '200':
+          description: 'Возвращает Id созданной заявки'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddEventResponse'
+              example:
+                eventId: 670f69ee1f624
+  '/api/v1/events/{eventId}':
+    get:
+      description: 'Получение статуса заявки по её Id'
+      operationId: da03fae27ee9553a725d708c21cb2d0e
+      parameters:
+        -
+          name: eventId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Возвращает статус заявки, если она существует'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStatusResponse'
+components:
+  schemas:
+    AddEventRequest:
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        eventDate:
+          type: string
+        address:
+          type: string
+        guest:
+          type: integer
+      type: object
+    AddEventResponse:
+      properties:
+        eventId:
+          type: string
+      type: object
+    GetStatusResponse:
+      properties:
+        status:
+          type: string
+          nullable: true
+      type: object

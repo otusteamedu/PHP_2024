@@ -11,6 +11,8 @@
         "slim/slim": "^4.14",
         "guzzlehttp/psr7": "^2.7",
         "php-amqplib/php-amqplib": "^3.7",
-        "ext-redis": "*"
+        "ext-redis": "*",
+        "zircote/swagger-php": "^4.11",
+        "doctrine/annotations": "^2.0"
     }
 }

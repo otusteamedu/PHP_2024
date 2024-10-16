@@ -51,7 +51,7 @@ readonly class AddEventCommand
         );
         try {
             $useCaseResponse = ($this->useCase)($useCaseRequest);
-            $response->getBody()->write($useCaseResponse->eventId);
+            $response->getBody()->write(json_encode($useCaseResponse));
         } catch (InvalidArgumentException $ex) {
             $errResponse  = $response
                 ->withStatus(400, 'Bad request');

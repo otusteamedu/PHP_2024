@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Viking311\Api\Application\UseCase\GetStatus;
 
-class GetStatusRequest
+/**
+ * @OA\Schema
+ */
+class GetStatusResponse
 {
-    /**
-     * @param string $id
-     */
     public function __construct(
-        public string $id
+        /**
+         * @OA\Property
+         */
+        public ?string $status
     ) {
     }
-
 }
