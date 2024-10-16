@@ -2,10 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Naimushina\ChannelManager;
+namespace Naimushina\ElasticSearch;
 
 use Exception;
-use Generator;
+use Naimushina\ElasticSearch\Commands\ClearStorageCommand;
+use Naimushina\ElasticSearch\Commands\SearchInStorageCommand;
+use Naimushina\ElasticSearch\Commands\SeedFromFileCommand;
+use Naimushina\ElasticSearch\Storages\ElasticSearchStorage;
+use Symfony\Component\Console\Application;
+
 
 class App
 {
@@ -13,18 +18,20 @@ class App
      * Запуск приложения
      * @throws Exception
      */
-    public function run()
+    public function run(): int
     {
-        $storage = new ElasticSearchStorage();
-        $storage->createIndex('new_one');
-       /* $eventManager = new EventManager($storage);
-        $consoleManager = new GetParamsService();
-        $command = $_SERVER['argv'][1] ?? null;
-        return match ($command) {
-            'set' => $this->addEvent($consoleManager, $eventManager),
-            'get' => $this->getEvent($consoleManager, $eventManager),
-            'del' => $this->deleteAll($eventManager),
-            default => throw new Exception('Unknown command "' . $command . '"')
-        };*/
+        $configs = new ConfigService();
+
+        $storage = new ElasticSearchStorage(...$configs->getConfigByName('elastic'));
+        $commandName = $_SERVER['argv'][1] ?? null;
+        $consoleApp = new Application();
+         match ($commandName) {
+            'seed' => $consoleApp->add(new SeedFromFileCommand($storage)),
+            'clear' => $consoleApp->add(new ClearStorageCommand($storage)),
+            'search' => $consoleApp->add(new SearchInStorageCommand($storage)),
+
+            default => throw new Exception('Unknown command "' . $commandName . '"')
+        };
+         return $consoleApp->run();
     }
 }
