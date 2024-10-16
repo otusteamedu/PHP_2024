@@ -21,6 +21,8 @@ class Event
      * @param EventDate $eventDate
      * @param Address $place
      * @param NonZeroNumber $guests
+     * @param string $status
+     * @param string|null $id
      */
     public function __construct(
         private Name $name,
