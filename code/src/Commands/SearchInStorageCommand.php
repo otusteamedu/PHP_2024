@@ -21,7 +21,7 @@ class SearchInStorageCommand extends Command
      */
     public function __construct(
         private StorageInterface $storage
-    ){
+    ) {
         parent::__construct('search-in-storage');
     }
 

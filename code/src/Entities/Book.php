@@ -12,11 +12,11 @@ class Book
      * @param array $stock
      */
     public function __construct(
-            private string $title,
-            private string $sku,
-            private string $category,
-            private float $price,
-            private array $stock )
+        private string $title,
+        private string $sku,
+        private string $category,
+        private float  $price,
+        private array  $stock)
     {
     }
 
@@ -36,7 +36,7 @@ class Book
     {
         $params = get_object_vars($this);
 
-        return array_filter($params, function($param) use ($filter){
+        return array_filter($params, function ($param) use ($filter) {
             return in_array($param, $filter);
         }, ARRAY_FILTER_USE_KEY);
     }
