@@ -22,7 +22,7 @@ interface StorageInterface
      * @param array $params
      * @return array
      */
-    public function search( RepositoryInterface $repository, array $params): array;
+    public function search(RepositoryInterface $repository, array $params): array;
 
     /**
      * @return bool
@@ -31,6 +31,4 @@ interface StorageInterface
      * @throws ServerResponseException
      */
     public function clear(): bool;
-
 }
-

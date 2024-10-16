@@ -1,4 +1,5 @@
 <?php
+
 return [
     'elastic' => [
         'host' =>  getenv('ELASTIC_HOST') ? getenv('ELASTIC_HOST') : 'elastic:9200',
