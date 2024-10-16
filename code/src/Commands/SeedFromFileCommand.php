@@ -59,6 +59,5 @@ class SeedFromFileCommand extends Command
             $output->writeln("Ошибка добавления данных из файла $fileName : " . $e->getMessage());
             return self::FAILURE;
         }
-
     }
 }

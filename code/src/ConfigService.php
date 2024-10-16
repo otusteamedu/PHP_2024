@@ -11,7 +11,7 @@ class ConfigService
      */
     public function __construct(string $configFile = 'config.php')
     {
-        $this->configs = include ($configFile);
+        $this->configs = include($configFile);
     }
 
     /**

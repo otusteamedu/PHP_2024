@@ -20,7 +20,8 @@ class SearchInStorageCommand extends Command
      * @param StorageInterface $storage
      */
     public function __construct(
-        private StorageInterface $storage)
+        private StorageInterface $storage
+    )
     {
         parent::__construct('search-in-storage');
     }
@@ -63,6 +64,5 @@ class SearchInStorageCommand extends Command
             $output->writeln("Ошибка поиска $jsonParams: " . $e->getMessage());
             return self::FAILURE;
         }
-
     }
 }
