@@ -40,17 +40,18 @@ class ElasticSearchStorage implements StorageInterface
     public function __construct(
         string $host,
         string $index,
-        array  $mappings = [],
-        array  $settings = []
-    )
-    {
+        array $mappings = [],
+        array $settings = []
+    ) {
         $this->setClient($host);
         $this->indexName = $index;
         $params['body'] = [
             'mappings' => $mappings,
             'settings' => $settings
         ];
-        if (!$this->checkIfIndexExists()) $this->createIndex($index, $params);
+        if (!$this->checkIfIndexExists()) {
+            $this->createIndex($index, $params);
+        }
     }
 
     /**
@@ -98,7 +99,6 @@ class ElasticSearchStorage implements StorageInterface
 
         $response = $this->client->search($request);
         return $this->getItemsFromResponse($response);
-
     }
 
     /**
@@ -142,7 +142,6 @@ class ElasticSearchStorage implements StorageInterface
         } else {
             throw new Exception("Нет данных для загрузки в файле $fullPath");
         }
-
     }
 
     /**

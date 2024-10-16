@@ -55,7 +55,6 @@ class BookRepository implements RepositoryInterface
                         ];
                     }
                     break;
-
             }
         }
         $elasticSearchParams['query']['bool'] = $searchParams;
@@ -66,5 +65,4 @@ class BookRepository implements RepositoryInterface
 
         return $elasticSearchParams;
     }
-
 }
