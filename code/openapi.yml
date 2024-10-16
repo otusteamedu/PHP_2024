@@ -6,18 +6,13 @@ info:
 paths:
   /api/v1/events:
     post:
+      description: 'Создание новой заявки'
       operationId: 0e9bf4c535fbcbd5eb76a4093f2ce8e5
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AddEventRequest'
-            example:
-              name: Adam
-              email: example@example.com
-              eventDate: '2024-12-25 12:00'
-              address: address
-              guest: 1
       responses:
         '200':
           description: 'Возвращает Id созданной заявки'
@@ -25,8 +20,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AddEventResponse'
-              example:
-                eventId: 670f69ee1f624
+        '400':
+          description: "Не валидные данные\n                "
   '/api/v1/events/{eventId}':
     get:
       description: 'Получение статуса заявки по её Id'

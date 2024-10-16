@@ -13,5 +13,4 @@ class GetStatusRequest
         public string $id
     ) {
     }
-
 }
