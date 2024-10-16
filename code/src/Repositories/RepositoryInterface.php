@@ -10,5 +10,4 @@ interface RepositoryInterface
      * @return array
      */
     public function formatSearchParams(array $params): array;
-
 }

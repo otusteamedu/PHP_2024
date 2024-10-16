@@ -15,9 +15,9 @@ class Book
         private string $title,
         private string $sku,
         private string $category,
-        private float  $price,
-        private array  $stock)
-    {
+        private float $price,
+        private array $stock
+    ) {
     }
 
     /**
