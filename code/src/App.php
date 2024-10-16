@@ -11,7 +11,6 @@ use Naimushina\ElasticSearch\Commands\SeedFromFileCommand;
 use Naimushina\ElasticSearch\Storages\ElasticSearchStorage;
 use Symfony\Component\Console\Application;
 
-
 class App
 {
     /**
@@ -25,13 +24,13 @@ class App
         $storage = new ElasticSearchStorage(...$configs->getConfigByName('elastic'));
         $commandName = $_SERVER['argv'][1] ?? null;
         $consoleApp = new Application();
-         match ($commandName) {
+        match ($commandName) {
             'seed' => $consoleApp->add(new SeedFromFileCommand($storage)),
             'clear' => $consoleApp->add(new ClearStorageCommand($storage)),
             'search' => $consoleApp->add(new SearchInStorageCommand($storage)),
 
             default => throw new Exception('Unknown command "' . $commandName . '"')
         };
-         return $consoleApp->run();
+        return $consoleApp->run();
     }
 }

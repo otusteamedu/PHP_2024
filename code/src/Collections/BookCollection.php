@@ -6,7 +6,6 @@ use Naimushina\ElasticSearch\Entities\Book;
 
 class BookCollection extends Collection
 {
-
     public function __construct(array $books = [])
     {
         foreach ($books as $book) {
@@ -25,6 +24,4 @@ class BookCollection extends Collection
             return $itemInfo ;
         }, $this->items);
     }
-
-
 }

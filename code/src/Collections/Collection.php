@@ -6,10 +6,8 @@ class Collection
 {
     protected array $items = array();
 
-    public function addItem($obj, $key = null) {
+    public function addItem($obj, $key = null)
+    {
         $this->items[] = $obj;
     }
-
-
-
 }
