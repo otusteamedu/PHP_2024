@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Viking311\Api\Application\UseCase\AddEvent;
 
-/**
- * @OA\Schema
- */
+use OpenApi\Attributes as OA;
+
+#[OA\Schema]
 readonly class AddEventRequest
 {
     /**
@@ -17,25 +17,15 @@ readonly class AddEventRequest
      * @param int $guest
      */
     public function __construct(
-        /**
-         * @OA\Property
-         */
+        #[OA\Property]
         public string $name,
-        /**
-         * @OA\Property
-         */
+        #[OA\Property]
         public string $email,
-        /**
-         * @OA\Property
-         */
+        #[OA\Property]
         public string $eventDate,
-        /**
-         * @OA\Property
-         */
+        #[OA\Property]
         public string $address,
-        /**
-         * @OA\Property
-         */
+        #[OA\Property]
         public int $guest
     ) {
     }

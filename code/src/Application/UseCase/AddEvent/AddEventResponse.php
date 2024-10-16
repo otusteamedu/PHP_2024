@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace Viking311\Api\Application\UseCase\AddEvent;
 
-/**
- * @OA\Schema
- */
+use OpenApi\Attributes as OA;
+
+#[OA\Schema]
 class AddEventResponse
 {
     public function __construct(
-        /**
-         * @OA\Property
-         */
+        #[OA\Property]
         public string $eventId
     ) {
     }
-
 }
