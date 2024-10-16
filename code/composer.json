@@ -1,0 +1,19 @@
+{
+    "name": "naimushina/elastic_search",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Naimushina\\ElasticSearch\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "elasticsearch/elasticsearch": "^8.15",
+        "symfony/console": "^6.4"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
