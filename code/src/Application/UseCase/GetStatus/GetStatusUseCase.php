@@ -16,13 +16,12 @@ readonly class GetStatusUseCase
     public function __invoke(GetStatusRequest $request): GetStatusResponse
     {
         $event = $this->repository->getById($request->id);
-         if (is_null($event)) {
-             return new GetStatusResponse(null);
-         }
+        if (is_null($event)) {
+         return new GetStatusResponse(null);
+        }
 
-         return new GetStatusResponse(
-             $event->getStatus()
-         );
+        return new GetStatusResponse(
+         $event->getStatus()
+        );
     }
-
 }

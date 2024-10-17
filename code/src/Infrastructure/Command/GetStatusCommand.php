@@ -24,8 +24,8 @@ readonly class GetStatusCommand
         $response
             ->getBody()
             ->write(
-            json_encode($useCaseResponse)
-        );
+                json_encode($useCaseResponse)
+            );
 
         return $response
             ->withHeader('Content-Type', 'application/json');

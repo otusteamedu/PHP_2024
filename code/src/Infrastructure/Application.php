@@ -72,13 +72,13 @@ class Application
 
         $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
-        $app->post('/api/v1/events', function (Request $request, Response $response){
+        $app->post('/api/v1/events', function (Request $request, Response $response) {
             $cmd = AddEventCommandFactory::createInstance();
             return $cmd->execute($request, $response);
         });
 
 
-        $app->get('/api/v1/events/{eventId}', function (Request $request, Response $response, array $args){
+        $app->get('/api/v1/events/{eventId}', function (Request $request, Response $response, array $args) {
             $cmd = GetStatusCommandFactory::createInstance();
             return $cmd->execute($request, $response, $args['eventId']);
         });
