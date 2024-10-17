@@ -16,11 +16,17 @@ try {
 
     $User = new User();
     $User->connection($Db);
-    $User->setFirstName(3);
-    $User->setLastName(3);
-    $User->setSecondName(3);
+    $User->setFirstName(3)
+        ->setLastName(3)
+        ->setSecondName(3);
     $User->setId(2);
-    var_dump($User->findById(2));
+    $r = $User->update();
+    $User->setFirstName(4)
+        ->setLastName(4)
+        ->setSecondName(4);
+    $r = $User->update();
+    $User->setFirstName(5);
+    $r = $User->update();
 
 
 } catch (Exception $exception) {
