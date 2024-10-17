@@ -17,11 +17,11 @@ readonly class GetStatusUseCase
     {
         $event = $this->repository->getById($request->id);
         if (is_null($event)) {
-         return new GetStatusResponse(null);
+            return new GetStatusResponse(null);
         }
 
         return new GetStatusResponse(
-         $event->getStatus()
+            $event->getStatus()
         );
     }
 }
