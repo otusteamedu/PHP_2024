@@ -39,7 +39,7 @@ final class FindEventsByConditionsCommand extends Command
     {
         $this
             ->setName('analytics:events:find')
-            ->setDescription('Creates new event')
+            ->setDescription('Finds an event matching the provided conditions')
             ->addArgument(
                 self::ARGUMENT_EVENT_CONDITIONS_AS_STRING,
                 InputArgument::REQUIRED,

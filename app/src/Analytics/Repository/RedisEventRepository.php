@@ -75,12 +75,20 @@ final readonly class RedisEventRepository implements EventRepositoryInterface
                 'WITHSCORES' => true
             ];
 
-            $rawEvent = $this->client->zRevRangeByScore(self::KEY, '+inf', '-inf', $options);
+            $rawEvent = $this->client->zRevRangeByScore(
+                self::KEY,
+                '+inf',
+                '-inf',
+                $options
+            );
 
-            $data = json_decode(key($rawEvent), true);
-            $data['priority'] = current($rawEvent);
+            $rawEvent = preg_replace(
+                '/"priority":(\d*)/',
+                '"priority": ' . current($rawEvent),
+                key($rawEvent)
+            );
 
-            yield $this->eventFactory->makeFromArray($data);
+            yield $this->eventFactory->makeFromJson($rawEvent);
         }
     }
 }
