@@ -1,0 +1,47 @@
+version: '3'
+services:
+  queue:
+    image: rabbitmq:3-management
+    container_name: rabbit
+    ports:
+      - "8030:15672"
+    networks:
+      - app-network
+  redis:
+    image: redis:7.2.3
+    container_name: redis
+    ports:
+      - "63790:6379"
+    networks:
+      - app-network
+  php:
+    build:
+      context: docker/php-fpm
+      dockerfile: Dockerfile
+    image: php_app
+    container_name: app
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    networks:
+      - app-network
+  webserver:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    image: ws
+    container_name: web
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/mysite.local
+      - php_socket:/var/run/php
+    depends_on:
+      - php
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  php_socket:

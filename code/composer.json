@@ -1,0 +1,18 @@
+{
+    "name": "viking311/api",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Viking311\\Api\\": "src/"
+        }
+    },
+    "require": {
+        "slim/slim": "^4.14",
+        "guzzlehttp/psr7": "^2.7",
+        "php-amqplib/php-amqplib": "^3.7",
+        "ext-redis": "*",
+        "zircote/swagger-php": "^4.11",
+        "doctrine/annotations": "^2.0"
+    }
+}
