@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+      - ./code:/app
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6.0.7
+    container_name: redis
+    restart: always
+    volumes:
+      - ./redis:/data/redis
+    networks:
+      - app-network
+    depends_on:
+      - helper
+
+  helper:
+    image: alpine
+    command: sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+    privileged: true
+
+
+networks:
+  app-network:
+    driver: bridge
