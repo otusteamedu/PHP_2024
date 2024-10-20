@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/app/vendor/
+server.sock
+.phpunit.result.cache
