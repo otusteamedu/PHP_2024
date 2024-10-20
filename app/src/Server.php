@@ -21,7 +21,7 @@ class Server
     public function start($test = false)
     {
         $connection = $this->connection();
-        
+
         while (1) {
             $resultRead = $this->read($connection);
             print_r('Client sent message: ' . $resultRead . PHP_EOL);
