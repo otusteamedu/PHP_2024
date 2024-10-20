@@ -2,26 +2,26 @@
 
 namespace Evgenyart\UnixSocketChat;
 
-use Exception;
+use Evgenyart\UnixSocketChat\Exceptions\ConfigException;
 
 class Config
 {
-    const CONFIG_PATH = "/../config.ini";
+    const CONFIG_PATH = __DIR__  . "/../config.ini";
 
-    public static function load()
+    public static function load($path = self::CONFIG_PATH)
     {
-        if (!file_exists(__DIR__  . self::CONFIG_PATH)) {
-            throw new Exception("No isset config.ini");
+        if (!file_exists($path)) {
+            throw new ConfigException("No isset config.ini");
         }
 
-        $arSections = parse_ini_file(__DIR__  . self::CONFIG_PATH);
+        $arSections = parse_ini_file($path);
 
         if (!isset($arSections['socket_path'])) {
-            throw new Exception("No isset socket_path in config.ini");
+            throw new ConfigException("No isset socket_path in config.ini");
         }
 
         if (!strlen($arSections['socket_path'])) {
-            throw new Exception("Empty value socket_path in config.ini");
+            throw new ConfigException("Empty value socket_path in config.ini");
         }
 
         return $arSections['socket_path'];

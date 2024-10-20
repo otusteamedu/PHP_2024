@@ -2,7 +2,7 @@
 
 namespace Evgenyart\UnixSocketChat;
 
-use Exception;
+use Evgenyart\UnixSocketChat\Exceptions\SocketException;
 
 class Socket
 {
@@ -12,30 +12,45 @@ class Socket
     public function __construct($socketPath)
     {
         if (!extension_loaded('sockets')) {
-            throw new Exception('The sockets extension is not loaded.');
+            throw new SocketException('The sockets extension is not loaded.');
         }
 
-        $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
-
-        if (!$this->socket) {
-            throw new Exception('Unable to create AF_UNIX socket');
-        }
+        $this->create();
 
         if (!strlen($socketPath)) {
-            throw new Exception('Error socket path');
+            throw new SocketException('Error socket path');
         }
 
         $this->socketPath = $socketPath;
     }
 
-    public function bind()
+    public function create($test = false)
+    {
+        $this->socket = socket_create(AF_UNIX, SOCK_STREAM, ($test ? 99 : 1));
+
+        if (!$this->socket) {
+            throw new SocketException('Unable to create AF_UNIX socket');
+        }
+
+        return $this;
+    }
+
+    public function bind($test = false)
     {
         if (file_exists($this->socketPath)) {
             unlink($this->socketPath);
         }
 
-        if (!socket_bind($this->socket, $this->socketPath)) {
-            throw new Exception('Unable to bind to ' . $this->socketPath);
+        $resultBind = socket_bind($this->socket, $this->socketPath);
+
+        if ($test) {
+            $resultBind = false;
+        }
+
+        if (!$resultBind) {
+            throw new SocketException('Unable to bind to ' . $this->socketPath);
+        } else {
+            return $this;
         }
     }
 
@@ -48,8 +63,11 @@ class Socket
 
     public function connect()
     {
-        if (!socket_connect($this->socket, $this->socketPath)) {
-            throw new Exception('Unable connect to ' . $this->socketPath);
+        $resultConnect = socket_connect($this->socket, $this->socketPath);
+        if (!$resultConnect) {
+            throw new SocketException('Unable connect to ' . $this->socketPath);
+        } else {
+            return $this;
         }
     }
 
@@ -57,7 +75,7 @@ class Socket
     {
         $bytes_sent = socket_write(($res ? $res : $this->socket), $msg, strlen($msg));
         if ($bytes_sent == -1) {
-            throw new Exception('An error occured while sending to the socket');
+            throw new SocketException('An error occured while sending to the socket');
         }
     }
 
@@ -66,7 +84,7 @@ class Socket
         $message = socket_read(($res ? $res : $this->socket), 4096);
 
         if (!$message) {
-            throw new Exception('Error read message from socket');
+            throw new SocketException('Error read message from socket');
         }
 
         return $message;
@@ -74,8 +92,12 @@ class Socket
 
     public function listen()
     {
-        if (!socket_listen($this->socket)) {
-            throw new Exception('Unable to listen socket');
+        $resultListen = socket_listen($this->socket);
+
+        if (!$resultListen) {
+            throw new SocketException('Unable to listen socket');
+        } else {
+            return $this;
         }
     }
 
@@ -84,7 +106,7 @@ class Socket
         $connection = socket_accept($this->socket);
 
         if (!$connection) {
-            throw new Exception('Unable to accept socket');
+            throw new SocketException('Unable to accept socket');
         }
 
         return $connection;

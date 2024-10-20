@@ -15,6 +15,11 @@ RUN docker-php-ext-install sockets
 RUN docker-php-ext-install zip mbstring
 RUN docker-php-ext-enable mbstring sockets
 
+# Get the Xdebug extension
+RUN pecl install xdebug \
+   # Enable the installed Xdebug
+    && docker-php-ext-enable xdebug
+
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

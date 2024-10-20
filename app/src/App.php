@@ -2,7 +2,7 @@
 
 namespace Evgenyart\UnixSocketChat;
 
-use Exception;
+use Evgenyart\UnixSocketChat\Exceptions\AppException;
 
 class App
 {
@@ -16,24 +16,40 @@ class App
     public function run()
     {
         $args = $_SERVER['argv'];
-        $ExceptionError = "Необходимо ввести параметр `start-server` либо `start-client`";
 
         if (!isset($args[1])) {
-            throw new Exception($ExceptionError);
+            throw new AppException("Не введен параметр запуска (ожидается `start-server` либо `start-client`)");
         }
 
         switch ($args[1]) {
             case 'start-server':
-                $server = new Server($this->socketPath);
-                $server->start();
+                $this->startServer();
+                echo "Server is running";
                 break;
             case 'start-client':
-                $client = new Client($this->socketPath);
-                $client->start();
+                $this->startClient();
+                echo "Client is running";
                 break;
             default:
-                throw new Exception($ExceptionError);
+                throw new AppException("Неизвестный параметр. Ожидается `start-server` либо `start-client`");
                 break;
         }
+    }
+
+    public function startServer()
+    {
+        $server = new Server($this->socketPath);
+        $server->start();
+    }
+
+    public function startClient()
+    {
+        $client = new Client($this->socketPath);
+        $client->start();
+    }
+
+    public function getSocketPath()
+    {
+        return $this->socketPath;
     }
 }

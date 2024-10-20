@@ -13,11 +13,11 @@ class Client
 
     public function start()
     {
-        $this->socket->connect();
-        while (1) {
-            #$this->socket->setBlock();
-            $message = readline('Enter a message (or `stop` for exit): ');
+        $this->connection();
+        print_r("Client starting");
 
+        while (1) {
+            $message = $this->sendReadline();
             if ($message == 'stop') {
                 $this->socket->close();
                 break;
@@ -26,6 +26,21 @@ class Client
                 $resultRead = $this->socket->read();
                 print_r($resultRead);
             }
+        }
+    }
+
+    public function connection()
+    {
+        return $this->socket->connect();
+    }
+
+    public function sendReadline($test = false)
+    {
+        if ($test) {
+            return "stop";
+        } else {
+            print_r(PHP_EOL);
+            return readline('Enter a message (or `stop` for exit): ');
         }
     }
 }
