@@ -1,26 +1,11 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $string = $_POST['string'] ?? '';
+require_once 'App.php';
 
-    // Проверка на непустоту
-    if (empty($string)) {
-        http_response_code(400);
-        echo "Bad Request: String cannot be empty.";
-        exit;
-    }
-
-    // Проверка на корректность количества открытых и закрытых скобок
-    $openCount = substr_count($string, '(');
-    $closeCount = substr_count($string, ')');
-
-    if ($openCount !== $closeCount) {
-        http_response_code(400);
-        echo "Bad Request: Mismatched parentheses.";
-        exit;
-    }
-
-    // Если все проверки пройдены
-    http_response_code(200);
-    echo "OK: The string is valid.";
+try {
+    $app = new App();
+    echo $app->run();
+} catch (Exception $e) {
+    http_response_code(500);
+    echo "Internal Server Error: " . $e->getMessage();
 }
