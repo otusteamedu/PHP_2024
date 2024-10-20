@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+    volumes:
+      - shared_volume:/app/shared_volume
+    command: php app.php
+
+  client:
+    build:
+      context: ./client
+    volumes:
+      - shared_volume:/app/shared_volume
+    command: php app.php
+
+volumes:
+  shared_volume:
