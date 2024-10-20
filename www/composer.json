@@ -1,0 +1,17 @@
+{
+  "name": "root/app",
+  "type": "application",
+  "autoload": {
+    "psr-4": {
+      "Root\\App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "APeskovatzkov"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.6"
+  }
+}
