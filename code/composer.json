@@ -1,0 +1,19 @@
+{
+    "name": "irayu/hw13",
+    "description": "Working with the database patterns",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "phpyurta/cli-table": ">=1.0",
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Irayu\\Hw13\\": "src/"
+        }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7"
+    },
+    "minimum-stability": "stable"
+}
