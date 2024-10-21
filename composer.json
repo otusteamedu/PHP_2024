@@ -1,0 +1,10 @@
+{
+  "name": "vsukhov/hw8",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "VSukhov\\Hw8\\": "src/"
+    }
+  },
+  "require": {}
+}
