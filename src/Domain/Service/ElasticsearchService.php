@@ -9,9 +9,9 @@ class ElasticsearchService implements StorageInterface
 {
     private ElasticsearchRepository $repository;
 
-    public function __construct() 
+    public function __construct()
     {
-        $this->repository = new ElasticsearchRepository;
+        $this->repository = new ElasticsearchRepository();
     }
 
     public function addRecord(string $json): string

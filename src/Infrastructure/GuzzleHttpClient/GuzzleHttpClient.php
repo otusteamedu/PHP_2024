@@ -13,9 +13,9 @@ class GuzzleHttpClient
     private ConfigService $config;
     private Client $httpClient;
 
-    public function __construct() 
+    public function __construct()
     {
-        $this->config = new ConfigService;
+        $this->config = new ConfigService();
         $this->httpClient = new Client();
     }
 
@@ -106,7 +106,7 @@ class GuzzleHttpClient
     public function search(string $json): ResponseInterface
     {
         return $this->httpClient->get(
-            $this->getUrl() . '/' . $this->jsonToArray($json)['index'] .'/_search',
+            $this->getUrl() . '/' . $this->jsonToArray($json)['index'] . '/_search',
             [
                 'verify' => $this->isSslVerification(),
                 RequestOptions::AUTH => $this->getCredentials(),

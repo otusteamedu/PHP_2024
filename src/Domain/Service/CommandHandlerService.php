@@ -15,8 +15,8 @@ class CommandHandlerService
 
         if (str_contains($clientMessage, ' ')) {
             $commandSeparatorIndex =  stripos($clientMessage, ' ');
-            $command = substr($clientMessage, 0,  $commandSeparatorIndex);
-            $json = trim(substr($clientMessage,  $commandSeparatorIndex));
+            $command = substr($clientMessage, 0, $commandSeparatorIndex);
+            $json = trim(substr($clientMessage, $commandSeparatorIndex));
         }
 
         return match (ServiceCommand::tryFrom($command)) {

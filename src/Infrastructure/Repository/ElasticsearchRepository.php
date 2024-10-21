@@ -16,7 +16,7 @@ class ElasticsearchRepository
     private ConfigService $config;
     private GuzzleHttpClient $guzzleHttpClient;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->config = new ConfigService;
         $this->guzzleHttpClient = new GuzzleHttpClient();
