@@ -11,7 +11,7 @@ class StorageService implements StorageInterface
 {
     private RedisRepository $repository;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->repository = new RedisRepository();
     }

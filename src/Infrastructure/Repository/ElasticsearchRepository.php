@@ -18,7 +18,7 @@ class ElasticsearchRepository
 
     public function __construct()
     {
-        $this->config = new ConfigService;
+        $this->config = new ConfigService();
         $this->guzzleHttpClient = new GuzzleHttpClient();
     }
 
@@ -39,7 +39,6 @@ class ElasticsearchRepository
         $response = $this->guzzleHttpClient->getIndexInfo($json);
 
         return $response ? "\nFound: " . $response->getBody() : ServiceMessage::ElasticIndexNotFound->value;
-
     }
 
     public function bulk(string $json): string
