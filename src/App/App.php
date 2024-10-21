@@ -21,21 +21,21 @@ class App
      */
     public function run(): void
     {
-        $this->router->addRoute('POST', '/', function() {
+        $this->router->addRoute('POST', '/', function () {
             $data = $this->validateRequest();
             $id = $this->storage->addEvent($data);
 
             $this->successResponse(compact('id'));
         });
 
-        $this->router->addRoute('POST', '/search', function() {
+        $this->router->addRoute('POST', '/search', function () {
             $data = $this->validateRequest();
             $result = $this->storage->getBestEvent($data['params']);
 
             $this->successResponse($result);
         });
 
-        $this->router->addRoute('GET', '/clear', function() {
+        $this->router->addRoute('GET', '/clear', function () {
             $this->storage->clearEvents();
         });
 

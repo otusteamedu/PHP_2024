@@ -5,10 +5,12 @@ namespace Komarov\Hw11\Storage;
 use Komarov\Hw11\Interface\EventStorageInterface;
 use Predis\Client;
 
-class RedisStorage implements EventStorageInterface {
+class RedisStorage implements EventStorageInterface
+{
     private Client $redis;
 
-    public function __construct(string $host = '127.0.0.1', int $port = 6379) {
+    public function __construct(string $host = '127.0.0.1', int $port = 6379)
+    {
         $this->redis = new Client([
             'host' => $host,
             'port' => $port,
@@ -47,7 +49,8 @@ class RedisStorage implements EventStorageInterface {
         $this->redis->del('event_id');
     }
 
-    public function getBestEvent(array $params) {
+    public function getBestEvent(array $params)
+    {
         $events = $this->redis->keys('event:*');
         $bestEvent = null;
         $highestPriority = -1;

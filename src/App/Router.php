@@ -5,7 +5,8 @@ namespace Komarov\Hw11\App;
 use Closure;
 use Komarov\Hw11\Exception\AppException;
 
-class Router {
+class Router
+{
     protected array $routes = [];
 
     public function addRoute(string $method, string $url, Closure $target): void
