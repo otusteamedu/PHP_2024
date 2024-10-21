@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  app-client:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: otus-chat
+    container_name: chat-client
+    volumes:
+      - ./app:/data/app
+      - ./app/storage:${STORAGE_PATH}
+
+  app-server:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: otus-chat
+    container_name: chat-server
+    volumes:
+      - ./app:/data/app
+      - ./app/storage:${STORAGE_PATH}
