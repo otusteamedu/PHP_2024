@@ -7,20 +7,20 @@ services:
       context: ./docker/php
       dockerfile: Dockerfile
     image: otus-chat
-    container_name: redis-chat-client
+    container_name: chat-client
     volumes:
-      - ./app:/data/app
-      - ./app/socket:${SOCKET_PATH}
+      - ./:/app
+      - ./socket/:${SOCKET_PATH}
 
   app-server:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
     image: otus-chat
-    container_name: redis-chat-server
+    container_name: chat-server
     volumes:
-      - ./app:/data/app
-      - ./app/socket:${SOCKET_PATH}
+      - ./:/app
+      - ./socket/:${SOCKET_PATH}
     networks:
       - otus    
 
@@ -29,14 +29,27 @@ services:
     container_name: ${REDIS_CONTAINER_NAME}
     command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
     volumes:
-      - redis_data:/data
+      - redis_data:/app
     networks:
-      - otus  
+      - otus
+
+  elasticsearch:
+    image: elasticsearch:8.12.2
+    container_name: ${ELASTICSEARCH_CONTAINER_NAME}
+    environment:
+      - "discovery.type=single-node"
+    volumes:
+       - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - otus
 
 networks:
   otus:
-    driver: bridge 
+    driver: bridge
 
 volumes:
   redis_data:      
     driver: local
+  elasticsearch_data:
+    external: true
+

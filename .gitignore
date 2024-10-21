@@ -8,3 +8,4 @@
 /.env.local
 /.env.local.php
 /.env.*.local
+backup
