@@ -1,0 +1,19 @@
+{
+    "name": "komarov/hw11",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Komarov\\Hw11\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Komarov",
+            "email": "sk-2006@mail.ru"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "predis/predis": "^2.2"
+    }
+}
