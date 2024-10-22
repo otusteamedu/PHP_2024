@@ -49,9 +49,6 @@ services:
     container_name: "composer"
     volumes:
       - "./www:/app"
-    entrypoint:
-      - "composer"
-      - "install"
 
 networks:
   app-network:
