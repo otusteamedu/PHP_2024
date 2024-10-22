@@ -6,7 +6,7 @@ class LetterCombinations
      * @param String $digits
      * @return String[]
      */
-    function getLetterCombinations(string $digits): array 
+    public function getLetterCombinations(string $digits): array
     {
         if ($digits === '') {
             return [];
