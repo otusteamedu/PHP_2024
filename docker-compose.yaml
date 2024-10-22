@@ -8,7 +8,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./code:/data/otusphp.local
+      - ./app:/data/otusphp.local
       - phpsocket:/usr/local/var/run/
     networks:
       - app_otus_php
@@ -17,7 +17,7 @@ services:
       context: ./Docker/Php-fpm
     image: php-fpm
     volumes:
-      - ./code:/data/otusphp.local
+      - ./app:/data/otusphp.local
       - phpsocket:/usr/local/var/run/
     networks:
       - app_otus_php
@@ -32,10 +32,6 @@ services:
       - phpsocket:/usr/local/var/run/
     networks:
       - app_otus_php
-  redis:
-    image: redis
-    networks:
-      - app_otus_php
   memcached:
     image: memcached
     networks:
@@ -47,5 +43,3 @@ networks:
 
 volumes:
   phpsocket:
-
-
