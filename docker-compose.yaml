@@ -1,0 +1,55 @@
+services:
+  php:
+    build:
+      context: "images"
+      dockerfile: "php.dockerfile"
+    container_name: "php"
+    volumes:
+      - "./www:/data/application.local"
+      - "./.env:/data/application.local/.env"
+      - "./.env.example:/data/application.local/.env.example"
+    networks:
+      - "app-network"
+  nginx:
+    image: "nginx:1.27.1"
+    container_name: "nginx"
+    volumes:
+      - "./volumes/nginx/conf.d/application.local.conf:/etc/nginx/conf.d/application.local.conf:ro"
+      - "./www:/data/application.local"
+    ports:
+      - "80:80"
+    depends_on:
+      - "php"
+    networks:
+      - "app-network"
+  mysql:
+    image: "mysql:8.4.2"
+    container_name: "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    volumes:
+      - "./volumes/mysql/data:/var/lib/mysql"
+    ports:
+      - "3307:3306"
+    networks:
+      - "app-network"
+  redis:
+    image: "redis:6.0.2"
+    container_name: "redis"
+    networks:
+      - "app-network"
+  memcached:
+    image: "memcached:1.6.31"
+    container_name: "memcached"
+    networks:
+      - "app-network"
+
+  composer:
+    image: composer:2.2.24
+    container_name: "composer"
+    volumes:
+      - "./www:/app"
+
+networks:
+  app-network:
+    name: "app-network"
