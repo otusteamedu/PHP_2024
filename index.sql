@@ -1,0 +1,3 @@
+CREATE INDEX idx_film_id ON attribute_values(film_id);
+CREATE INDEX idx_attribute_id ON attribute_values(attribute_id);
+CREATE INDEX idx_value_date ON attribute_values(value_date);
