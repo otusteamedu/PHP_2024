@@ -36,6 +36,13 @@ class CommandHandlerService
             ServiceCommand::ElasticRemove => (new ElasticsearchService())->removeRecord($json),
             ServiceCommand::ElasticSearch => (new ElasticsearchService())->search($json),
 
+            ServiceCommand::ProductLoad       => (new ProductService())->loadProductArrayFromFile($json),
+            ServiceCommand::ProductFindById   => (new ProductServiceAdapter())->findById($json),
+            ServiceCommand::ProductCriteria   => (new ProductServiceAdapter())->findByCriteria($json),
+            ServiceCommand::ProductUpdate     => (new ProductServiceAdapter())->update($json),
+            ServiceCommand::ProductRemove     => (new ProductServiceAdapter())->remove($json),
+            ServiceCommand::ProductCreate     => (new ProductServiceAdapter())->create($json),
+
             default => ''
         };
     }

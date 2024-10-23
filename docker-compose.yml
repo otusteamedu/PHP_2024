@@ -43,13 +43,45 @@ services:
     networks:
       - otus
 
+  postgres:
+    image: postgres:15
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - dump:/app/dump
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      - otus
+
+  pgadmin:
+    container_name: ${PGADMIN_CONTAINER_NAME}
+    image: dpage/pgadmin4:7.8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: ${PGADMIN_CONFIG_SERVER_MODE}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: always
+    ports:
+      - ${PGADMIN_PORT}:80
+    networks:
+      - otus
+
 networks:
   otus:
     driver: bridge
 
 volumes:
+  dump:
+  postgresql:
+  pgadmin-data:
   redis_data:      
     driver: local
   elasticsearch_data:
     external: true
-

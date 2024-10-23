@@ -45,3 +45,22 @@
 
 8. Удалить индекс, где otus-shop - название индекса:
    es:clear {"index":"otus-shop"}   
+
+9. Загрузить данные о продуктах из файла в реляционную БД через DataMapper
+   product:load {"fileName":"otus-shop"} 
+
+10. Найти данные о продукте в реляционной БД по ID
+    product:find {"id":"500-000"} 
+
+11. Найти данные о продуктах к реляционной БД по критериям
+    product:criteria {"category":"Вино","price":1815}
+    product:criteria {"category":"Вино","volume":1}
+
+12. Обновить данные о продукте в реляционной Бд
+    product:update  {"id":"500-000", "title":"Вино белое Дартаньян","sku":"500-000","category":"Вино","price":3257,"volume":11}
+    
+13. Удалить продукт в реляционной Бд
+    product:remove {"id":"500-000"} 
+
+14. Добавить продукт
+    product:post {"id":"500-000", "title":"Вино белое Дартаньян","sku":"500-000","category":"Вино","price":3257,"volume":1}
