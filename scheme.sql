@@ -27,5 +27,6 @@ CREATE TABLE attribute_values (
     value_date DATE,
     value_boolean BOOLEAN,
     value_float FLOAT,
+    value_int INT,  -- Добавлено поле для хранения целых чисел
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

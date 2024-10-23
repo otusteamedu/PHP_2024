@@ -8,9 +8,13 @@ WHERE av.value_date = CURRENT_DATE;
 
 
 -- View для маркетинга
-CREATE VIEW film_marketing_data AS
+CREATE OR REPLACE VIEW film_marketing_data AS
 SELECT f.title, at.type_name, a.attribute_name, 
-       COALESCE(av.value_text, av.value_date::text, av.value_boolean::text, av.value_float::text) AS value
+       COALESCE(av.value_text, 
+                av.value_date::text, 
+                av.value_boolean::text, 
+                av.value_float::text, 
+                av.value_int::text) AS value
 FROM films f
 JOIN attribute_values av ON f.film_id = av.film_id
 JOIN attributes a ON av.attribute_id = a.attribute_id
