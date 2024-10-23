@@ -10,7 +10,7 @@ There are come pictures from leetcode.com with tasks and solutions.
 ![Runtime](./img/141_RudeSolution_0.png)
 ![Memory](./img/141_RudeSolution_1.png)
 ### Stolen solution:
-    Complexity: O(n*n) ???
+    Complexity: O(n)
     Memory: O(1)
 ![Runtime](./img/141_Stolen_0.png)
 ![Memory](./img/141_Stolen_1.png)
