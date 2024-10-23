@@ -65,7 +65,6 @@ class ProductRepository
         foreach ($fileAsArray as $row) {
             $row = $this->jsonToArray($row);
             if (array_key_exists('title', $row)) {
-
                 $resultArray[] = $this->create(
                     new Product(
                         $row['sku'],

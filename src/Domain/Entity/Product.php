@@ -87,7 +87,7 @@ class Product extends AbstractEntity
         return $this->volume;
     }
 
-    public function setVolume(float$volume): void
+    public function setVolume(float $volume): void
     {
         $this->volume = $volume;
     }

@@ -63,7 +63,7 @@ class ProductMapper implements MapperInterface
         $whereString = '';
         $productArray = [];
 
-        foreach ($criteriaArray as $key=>$value) {
+        foreach ($criteriaArray as $key => $value) {
             $whereString .=  $key . ' = ' . "'$value'" . ' AND ';
         }
         $whereString = substr($whereString, 0, -5);
