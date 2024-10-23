@@ -38,6 +38,14 @@ CREATE TABLE Tickets (
     ID SERIAL PRIMARY KEY,
     Session_ID INT REFERENCES Sessions(ID),
     Customer_ID INT REFERENCES Customers(ID),
-    place INT,
+    Seat_ID INT REFERENCES Seats(ID),
     Price DECIMAL(10, 2)
+);
+
+CREATE TABLE Seats (
+    ID SERIAL PRIMARY KEY,
+    Hall_ID INT REFERENCES Halls(ID),
+    Row_Number INT,
+    Seat_Number INT,
+    Status VARCHAR(20) DEFAULT 'available' -- Статусы: available, reserved, sold
 );

@@ -12,3 +12,5 @@ GROUP BY
 ORDER BY 
     Total_profit DESC
 LIMIT 1;
+
+ALTER TABLE Sessions ADD COLUMN Base_Price DECIMAL(10, 2); --До покупки узнаем стоимость
