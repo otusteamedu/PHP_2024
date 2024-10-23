@@ -31,36 +31,36 @@ class ESClient
 
         $params = [
             "index" => $this->indexName,
-            "body" =>[
-                "query"=> [
-                    "bool"=> [
-                        "must"=> [
+            "body" => [
+                "query" => [
+                    "bool" => [
+                        "must" => [
                             [
-                                "match"=> [
-                                    "title"=> [
-                                        "query"=> $query,
-                                        "fuzziness"=> 1
+                                "match" => [
+                                    "title" => [
+                                        "query" => $query,
+                                        "fuzziness" => 1
                                     ]
                                 ]
                             ],
                             [
-                                "match"=> [
+                                "match" => [
                                     "category" => $category
                                 ]
                             ],
                         ],
-                        "filter"=> [
+                        "filter" => [
                             [
-                                "range"=> [
-                                    "price"=> [
-                                        "lte"=> $maxPrice
+                                "range" => [
+                                    "price" => [
+                                        "lte" => $maxPrice
                                     ]
                                 ]
                             ],
 
                             [
-                                "range"=> [
-                                    "stock.stock"=> [
+                                "range" => [
+                                    "stock.stock" => [
                                         "gte" => $minStock
                                     ]
                                 ]
@@ -75,7 +75,6 @@ class ESClient
 
         return $response;
     }
-
 }
 
 //$clnt = new ESClient("otus-shop", "elastic");

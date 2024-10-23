@@ -2,7 +2,7 @@
 
 namespace Kyberlox\Elastic\table;
 
-include_once __DIR__."/ESClient.php";
+include_once __DIR__ . "/ESClient.php";
 use Kyberlox\Elastic\ESClient\ESClient as ESClient;
 
 require 'View/vendor/autoload.php';
@@ -28,11 +28,11 @@ class Table
             ->addHeader('Price')
             ->addHeader('Stock');
 
-        for ($i = 0; $i <= count($this->data->hits->hits)-1; $i++) {
+        for ($i = 0; $i <= count($this->data->hits->hits) - 1; $i++) {
             $line = $this->data->hits->hits[$i]->_source;
 
             $stock = "";
-            for ($j = 0; $j <= count($line->stock)-1; $j++){
+            for ($j = 0; $j <= count($line->stock) - 1; $j++) {
                 $shop = $line->stock[$j]->shop;
                 $stock_child = $line->stock[$j]->stock;
                 $stock = "$stock $shop : $stock_child шт ";
@@ -43,11 +43,7 @@ class Table
                 ->addColumn($line->category)
                 ->addColumn($line->price)
                 ->addColumn($stock);
-
-
         };
-
-        //$this->table->display();
 
         return $this->table;
     }

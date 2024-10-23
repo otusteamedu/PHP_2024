@@ -1,6 +1,7 @@
 <?php
 
 namespace Kyberlox\Elastic\index;
+
 use Curl\Curl;
 
 class Index
@@ -17,10 +18,8 @@ class Index
             //если нет - создать
             if ($this->createIndex()) {
                 echo "Индекс создан \n";
-            };
-
-        };
-
+            }
+        }
     }
 
     public function isIndexExists()
@@ -28,21 +27,19 @@ class Index
         //проверка есть ли такой индекс
         $curl = curl_init("$this->link?pretty");
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_exec($curl);
         $answer = (curl_getinfo($curl, CURLINFO_HTTP_CODE));
         curl_close($curl);
         if ($answer == 200) {
-            return True;
+            return true;
         } else {
-            return False;
+            return false;
         }
-
     }
 
     public function createIndex()
     {
-        //создать индекс
         $data = array(
             "mappings" => array(
                 "properties" => array(
@@ -99,10 +96,11 @@ class Index
                 )
             )
         );
+        //создать индекс
         $curl = curl_init($this->link);
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_exec($curl);
         curl_close($curl);
 
@@ -114,11 +112,12 @@ class Index
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_exec($curl);
         curl_close($curl);
 
-        return True;
+        return true;
     }
 }
+
 //$inx = new Index("otus-shop", "elastic");
