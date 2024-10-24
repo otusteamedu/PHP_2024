@@ -29,7 +29,7 @@ class LetterCombinations
         $current = '';
 
         $this->getCombinations(0, $digits, $btnArray, $current, $result);
-        
+
         return $result;
     }
 
@@ -37,7 +37,7 @@ class LetterCombinations
     {
         if (strlen($current) === strlen($nums)) {
             $result[] = $current;
-            
+
             return;
         }
 
