@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 class GuzzleHttpClient
 {
     private ConfigService $config;
+
     private Client $httpClient;
 
     public function __construct()

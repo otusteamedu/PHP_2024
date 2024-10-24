@@ -33,4 +33,12 @@ enum ServiceMessage: string
     case ElasticCreateSuccess = "\nУспешно: индекс создан";
     case ElasticCreateError   = "\nОшибка: такой индекс уже существует";
     case ElasticIndexNotFound = "\nОшибка: индекс не найден";
+
+    case ProductLoadSuccess   = "\nУспешно: продукты загружены";
+    case ProductLoadError     = "\nОшибка: продукты не загружены";
+    case ProductFindError     = "\nОшибка: продукт не найден";
+    case ProductUpdateSuccess = "\nУспешно: продукт обновлён";
+    case ProductCreateSuccess = "\nУспешно: продукт создан ";
+    case ProductCreateError   = "\nОшибка: продукт не создан";
+    case ProductRemoveSuccess = "\nУспешно: продукт удалён";
 }

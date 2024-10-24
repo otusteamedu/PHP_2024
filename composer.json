@@ -19,7 +19,9 @@
         "elasticsearch/elasticsearch": "^8.15",
     "ext-curl": "*",
     "ext-iconv": "*",
-    "ext-intl": "*"
+    "ext-intl": "*",
+    "ext-pdo": "*",
+    "ext-cassandra": "*"
   },
     "config": {
         "allow-plugins": {

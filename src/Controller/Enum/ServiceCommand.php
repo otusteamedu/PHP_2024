@@ -25,4 +25,11 @@ enum ServiceCommand: string
     case ElasticBulk   = 'es:bulk';
     case ElasticRemove = 'es:remove';
     case ElasticSearch = 'es:search';
+
+    case ProductLoad     = 'product:load';
+    case ProductFindById = 'product:find';
+    case ProductCriteria = 'product:criteria';
+    case ProductUpdate   = 'product:update';
+    case ProductRemove   = 'product:remove';
+    case ProductCreate   = 'product:post';
 }
