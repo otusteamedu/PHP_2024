@@ -4,14 +4,19 @@ namespace App\Domain\Service;
 
 use App\Controller\Enum\ServiceMessage;
 use App\Domain\Entity\Product;
+use App\Domain\Factory\ModelFactory;
+use App\Domain\Model\Product\ProductUpdate\ProductUpdateModel;
 
 class ProductServiceAdapter
 {
     private ProductService $service;
 
+    private ModelFactory $modelFactory;
+
     public function __construct()
     {
         $this->service = new ProductService();
+        $this->modelFactory = new ModelFactory();
     }
 
     public function findById(string $json): string
@@ -45,12 +50,21 @@ class ProductServiceAdapter
     public function update(string $json): string
     {
         $productAsArray = $this->jsonToArray($json);
-        $product = $this->buildProductFromArray($productAsArray);
-        $result = $this->service->update($product);
+        $productModel = $this->modelFactory->makeModel(
+            ProductUpdateModel::class,
+            $productAsArray['id'],
+            $productAsArray['title'] ?? null,
+            $productAsArray['sku'] ?? null,
+            $productAsArray['category'] ?? null,
+            $productAsArray['price'] ?? null,
+            $productAsArray['volume'] ?? null
+        );
+
+        $result = $this->service->update($productModel);
 
         return $result ?
-                ServiceMessage::ProductUpdateSuccess->value
-                : ServiceMessage::ProductFindError->value;
+            ServiceMessage::ProductUpdateSuccess->value
+            : ServiceMessage::ProductFindError->value;
     }
 
     public function create(string $json): string

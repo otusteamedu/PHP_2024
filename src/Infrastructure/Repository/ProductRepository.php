@@ -2,21 +2,21 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Application\DataMapper\ProductMapper;
+use App\Application\DataMapper\ProductDataMapper;
 use App\Controller\Enum\ServiceMessage;
 use App\Domain\Entity\Product;
+use App\Domain\Model\Product\ProductUpdate\ProductUpdateModel;
 use App\Domain\Service\ConfigService;
-use PDOException;
 
 class ProductRepository
 {
-    private ProductMapper $mapper;
+    private ProductDataMapper $mapper;
 
     private ConfigService $config;
 
     public function __construct()
     {
-        $this->mapper = new ProductMapper();
+        $this->mapper = new ProductDataMapper();
         $this->config = new ConfigService();
     }
 
@@ -39,13 +39,13 @@ class ProductRepository
         return $this->mapper->findByCriteria($criteriaArray);
     }
 
-    public function update(Product $product): bool
+    public function update(ProductUpdateModel $model): bool
     {
-        if (!$this->findById($product->getId())) {
+        if (!$this->findById($model->id)) {
             return false;
         }
 
-        return $this->mapper->update($product);
+        return $this->mapper->update($model);
     }
 
     public function remove(Product $product): bool

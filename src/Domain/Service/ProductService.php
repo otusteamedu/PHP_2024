@@ -3,6 +3,7 @@
 namespace App\Domain\Service;
 
 use App\Domain\Entity\Product;
+use App\Domain\Model\Product\ProductUpdate\ProductUpdateModel;
 use App\Infrastructure\Repository\ProductRepository;
 
 class ProductService
@@ -33,9 +34,9 @@ class ProductService
         return $this->repository->findByCriteria($criteriaArray);
     }
 
-    public function update(Product $product): bool
+    public function update(ProductUpdateModel $model): bool
     {
-        return $this->repository->update($product);
+        return $this->repository->update($model);
     }
 
     public function remove(Product $product): bool

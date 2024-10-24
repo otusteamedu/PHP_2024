@@ -3,8 +3,9 @@
 namespace App\Application\DataMapper\Interface;
 
 use App\Domain\Entity\AbstractEntity;
+use App\Domain\Model\AbstractModel;
 
-interface MapperInterface
+interface DataMapperInterface
 {
     public function findById(string $id): ?AbstractEntity;
 
@@ -16,7 +17,7 @@ interface MapperInterface
 
     public function insert(AbstractEntity $entity): ?AbstractEntity;
 
-    public function update(AbstractEntity $entity);
+    public function update(AbstractModel $model): bool;
 
-    public function delete(AbstractEntity $entity);
+    public function delete(AbstractEntity $entity): bool;
 }

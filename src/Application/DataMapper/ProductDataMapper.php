@@ -2,14 +2,16 @@
 
 namespace App\Application\DataMapper;
 
-use App\Application\DataMapper\Interface\MapperInterface;
+use App\Application\DataMapper\Interface\DataMapperInterface;
 use App\Domain\Entity\AbstractEntity;
 use App\Domain\Entity\Product;
+use App\Domain\Model\AbstractModel;
+use App\Domain\Model\Product\ProductUpdate\ProductUpdateModel;
 use App\Domain\Service\ConfigService;
 use PDO;
 use PDOStatement;
 
-class ProductMapper implements MapperInterface
+class ProductDataMapper implements DataMapperInterface
 {
     private const TABLE = 'product';
 
@@ -122,26 +124,25 @@ class ProductMapper implements MapperInterface
     }
 
     /**
-     * @var Product $product
+     * @var ProductUpdateModel $model
      */
-    public function update(AbstractEntity $product): bool
+    public function update(AbstractModel $model): bool
     {
+        $valueString = '';
+
+        foreach ($model as $key => $value) {
+            if ($value) {
+                $valueString .= $key . ' = ' . "'$value'" . ', ';
+            }
+        }
+        $valueString = substr($valueString, 0, -2);
+
         /** @var PDOStatement $stmt */
         $stmt = $this->pdo->prepare(
-            'UPDATE ' . self::TABLE
-            . ' SET title = ?, sku = ?, category = ?, price = ?, volume = ? WHERE id = ?'
+            'UPDATE ' . self::TABLE . ' SET ' . $valueString . ' WHERE id = ?'
         );
 
-        return $stmt->execute(
-            [
-                $product->getTitle(),
-                $product->getSku(),
-                $product->getCategory(),
-                $product->getPrice(),
-                $product->getVolume(),
-                $product->getId()
-            ]
-        );
+        return $stmt->execute([$model->id]);
     }
 
     /**
