@@ -37,6 +37,7 @@ class LetterCombinations
     {
         if (strlen($current) === strlen($nums)) {
             $result[] = $current;
+            
             return;
         }
 
