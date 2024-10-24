@@ -1,5 +1,2 @@
-.idea/
-/vendor/
-.DS_Store
-.AppleDouble
-.LSOverride
+./code/src/Elastic/vendor
+

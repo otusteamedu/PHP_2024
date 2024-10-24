@@ -1,3 +1,10 @@
 # PHP_2024
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Пользователь ищет все исторические романы дешевле 2000 рублей (и в наличии) по поисковому запросу "рыцОри"
+
+Для этого нужно запустить ``docker-compose up`` и дождаться, когда в контейнере ``elastic`` закончится загрузка,
+затем в контейнере ``php-fpm`` выполнить:
+
+``php app.php 'рыцОри' 'Исторический роман' 2000 1``
+
+<img src="./screen.png">

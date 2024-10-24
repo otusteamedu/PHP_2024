@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+
+  elasticsearch:
+    image: elasticsearch:8.8.0
+    container_name: "elastic"
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - ./data:/bitnami/elasticsearch/data
+      - ./data/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    container_name: "php-fpm"
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./code/:/data/elastic-fpm/
+      - ./data/books_db.json:/data/elastic-fpm/books_db.json
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-network
+
+
+
+networks:
+  app-network:
+    driver: bridge
