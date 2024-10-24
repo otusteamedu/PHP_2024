@@ -6,7 +6,6 @@ use Kyberlox\Elastic\index\Index as Index;
 use Kyberlox\Elastic\ESClient\ESClient as ESClient;
 use Kyberlox\Elastic\table\Table as Table;
 
-
 class App
 {
     public $indexName;
