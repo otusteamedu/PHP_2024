@@ -2,7 +2,6 @@
 
 namespace Kyberlox\Elastic\table;
 
-include_once __DIR__ . "/ESClient.php";
 use Kyberlox\Elastic\ESClient\ESClient as ESClient;
 
 require 'View/vendor/autoload.php';

@@ -6,10 +6,6 @@ use Kyberlox\Elastic\index\Index as Index;
 use Kyberlox\Elastic\ESClient\ESClient as ESClient;
 use Kyberlox\Elastic\table\Table as Table;
 
-include_once __DIR__ . "/Index.php";
-include_once __DIR__ . "/ESClient.php";
-include_once __DIR__ . "/Table.php";
-
 
 class App
 {

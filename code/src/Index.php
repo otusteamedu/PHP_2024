@@ -12,14 +12,16 @@ class Index
     {
         $this->link = "http://$indexHost:9200/$indexName";
         //проверка есть ли такой индекс
-        if ($this->isIndexExists()) {
-            echo "Индекс был создан \n";
+        if (! $this->isIndexExists()) {
+            return true;
         } else {
             //если нет - создать
             if ($this->createIndex()) {
-                echo "Индекс создан \n";
+                return true;
             }
         }
+
+        return false;
     }
 
     public function isIndexExists()
