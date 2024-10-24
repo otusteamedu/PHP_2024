@@ -1,12 +1,14 @@
 <?php
 
+namespace \Kyberlox\solution;
+
 class Solution
 {
     /**
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits)
+    public function letterCombinations($digits)
     {
         if (empty($digits)) {
             return [];
@@ -22,7 +24,7 @@ class Solution
             '8' => ['t', 'u', 'v'],
             '9' => ['w', 'x', 'y', 'z']
         ];
-        $combinations=[''];
+        $combinations = [''];
 
         for ($i = 0; $i < strlen($digits); $i++) {
             $current_combination = [];

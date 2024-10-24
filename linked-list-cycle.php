@@ -1,5 +1,7 @@
 <?php
 
+namespace \Kyberlox\solution;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -15,7 +17,7 @@ class Solution
      * @param ListNode $head
      * @return Boolean
      */
-    function hasCycle($head)
+    public function hasCycle($head)
     {
         $after = $head;
         $before = $head->next;
