@@ -1,0 +1,40 @@
+{
+    "packages": [
+        {
+            "name": "predis/predis",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/predis/predis.git",
+                "reference": "f1b839d1ef5b75d162a6b2aef61c1b3f3b77621e"
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {},
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "autoload-dev": {},
+            "minimum-stability": "stable",
+            "prefer-stable": true
+        }
+    ],
+    "packages-dev": [],
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "content-hash": "5e0d3c2c1f5aaf028c5fc3b8c9c80d2a",
+    "version": "1.0",
+    "hash": "5e0d3c2c1f5aaf028c5fc3b8c9c80d2a"
+}
