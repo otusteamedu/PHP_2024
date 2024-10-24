@@ -22,7 +22,7 @@ class Solution
         $after = $head;
         $before = $head->next;
 
-        while ($before != null)
+        while ($before != null) 
         {
             $next = $before->next;
 
