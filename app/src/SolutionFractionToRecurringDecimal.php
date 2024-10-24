@@ -19,7 +19,7 @@ class SolutionFractionToRecurringDecimal
         }
 
         $result = ((($numerator > 0 && $denominator > 0) || ($numerator < 0 && $denominator < 0)) ? "" : "-");
-        
+
         $numerator = abs($numerator);
         $denominator = abs($denominator);
         $result .= intdiv($numerator, $denominator);

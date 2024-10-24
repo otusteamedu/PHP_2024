@@ -15,7 +15,7 @@ class SolutionIntersectionofTwoLinkedLists
         $originalListA = $listA;
         $originalListB = $listB;
         $longList = $shortList = null;
-        
+
         $lenA = $lenB = 1;
 
         do {
