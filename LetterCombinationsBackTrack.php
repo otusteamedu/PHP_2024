@@ -1,12 +1,14 @@
 <?php
 
-class LetterCombinations 
+namespace App;
+
+class LetterCombinations
 {
     /**
     * @param String $digits
     * @return String[]
     */
-    public function getLetterCombination($digits) 
+    public function getLetterCombination($digits)
     {
         if ($digits === '') {
             return [];
@@ -31,7 +33,7 @@ class LetterCombinations
         return $result;
     }
 
-    private function getCombinations($start, $nums, $btnArray, &$current, &$result) 
+    private function getCombinations($start, $nums, $btnArray, &$current, &$result)
     {
         if (strlen($current) === strlen($nums)) {
             $result[] = $current;
