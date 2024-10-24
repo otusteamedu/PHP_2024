@@ -1,11 +1,13 @@
 <?php
-class Solution {
 
+class Solution
+{
     /**
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits) {
+    function letterCombinations($digits)
+    {
         if (empty($digits)) {
             return [];
         };

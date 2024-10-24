@@ -9,16 +9,19 @@
  * }
  */
 
-class Solution {
+class Solution
+{
     /**
      * @param ListNode $head
      * @return Boolean
      */
-    function hasCycle($head) {
+    function hasCycle($head)
+    {
         $after = $head;
         $before = $head->next;
 
-        while ($before != null) {
+        while ($before != null)
+        {
             $next = $before->next;
 
             if ($next == null) {
