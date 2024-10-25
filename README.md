@@ -1,3 +1,8 @@
-# PHP_2024
+```shell
+make up # up docker containers
+make init # migrate and seed database
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+make search-post-with-id-1 # search for blog post with ID = 1
+make search-post-with-id-100 # search for blog post with ID = 100
+make search-all-posts # search for all blog posts
+```

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Blog\Console\Command\CreateBlogPostsCommand;
 use App\Blog\Console\Command\SearchBlogPostsCommand;
 use App\Blog\DataMapper\PostCommentMapper;
 use App\Blog\DataMapper\PostMapper;
@@ -28,7 +27,6 @@ final readonly class Kernel
 
         // Blog
         $application->add(new SearchBlogPostsCommand($postMapper));
-        $application->add(new CreateBlogPostsCommand($postMapper));
 
         $application->run();
     }

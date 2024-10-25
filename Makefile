@@ -1,4 +1,4 @@
-.PHONY: up down exec shell
+.PHONY: up down exec shell init migrate seed search-post-with-id-1 search-post-with-id-100 search-all-posts
 
 up:
 	docker-compose up -d --build
@@ -28,10 +28,3 @@ search-post-with-id-100:
 
 search-all-posts:
 	make exec ARGS='php bin/console blog:posts:search'
-
-create-post:
-	make exec ARGS='php bin/console blog:posts:create "#?" "Some content..." "draft"'
-
-create-post-with-comments:
-	make exec ARGS='php bin/console blog:posts:create "#?" "Some content..." "draft" "Comment #1, Comment #2, Comment #3, Comment #4"'
-
