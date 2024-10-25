@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/php-cli/Dockerfile
+    container_name: ${PROJECT_PREFIX}-php-cli
+    command: tail -f /dev/null # prevents container stop after up
+    env_file: .env
+    volumes:
+      - ./app:/var/www/otus/hw13
+
+  postgres:
+    image: postgres:15
+    ports:
+      - 15432:5432
+    container_name: ${PROJECT_PREFIX}-postgresql
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRESQL_DB}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+    volumes:
+      - ./volume/postgresql/data:/var/lib/postgresql/data
