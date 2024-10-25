@@ -2,7 +2,7 @@
 
 Irina Yurtaeva PHP-24
 
-There are come pictures from leetcode.com with tasks and solutions.
+There are some pictures from leetcode.com with tasks and solutions.
 ## 141. Linked List Cycle
 ### Rude solution: 
     Complexity: O(n)
@@ -21,7 +21,7 @@ There are come pictures from leetcode.com with tasks and solutions.
 ![Memory](./img/141_Straight_1.png)
 
 ## 17. Letter Combinations of a Phone Number
-### Just solution:
+### Just a solution:
     Complexity: O(n*m)
     Memory: O(n)
 ![Runtime](./img/17_JustSolution_0.png)
