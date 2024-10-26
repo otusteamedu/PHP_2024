@@ -1,0 +1,19 @@
+{
+    "name": "agapitov-alexandr/otus-homework",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AgapitovAlexandr\\OtusHomework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "AgapitovAlexandr"
+        }
+    ],
+    "require": {
+        "predis/predis": "^2.2",
+        "vlucas/phpdotenv": "^5.6",
+      "ext-pdo": "*"
+    }
+}

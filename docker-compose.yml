@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+      - ./code:/code
+    networks:
+      - app-network
+
+  helper:
+    image: alpine
+    command: sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+    privileged: true
+
+  mysql:
+    image: mysql:8.1
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "6052:3306"
+    networks:
+      - app-network
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge

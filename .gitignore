@@ -3,3 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/code/.env
+/code/vendor/
+/code/script-39289-396320.md
+/mysql/
