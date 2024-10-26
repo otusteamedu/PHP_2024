@@ -13,8 +13,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SearchBlogPostsCommand extends Command
+class ListBlogPostsCommand extends Command
 {
+    private const OPTION_PAGE_SIZE = 'post_id';
     private const OPTION_POST_ID = 'post_id';
 
     public function __construct(
@@ -29,6 +30,12 @@ class SearchBlogPostsCommand extends Command
         $this
             ->setName('blog:posts:search')
             ->setDescription('Searches for blog posts')
+            ->addOption(
+                self::OPTION_POST_ID,
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'ID of the blog post'
+            )
             ->addOption(
                 self::OPTION_POST_ID,
                 null,
