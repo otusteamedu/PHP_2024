@@ -6,6 +6,8 @@ namespace App\Shared\Model;
 
 abstract class AbstractModel
 {
+    protected array $dirtyFields = [];
+
     public function __construct(
         private ?int $id,
     ) {}
@@ -29,5 +31,25 @@ abstract class AbstractModel
     public function isNew(): bool
     {
         return null === $this->getId();
+    }
+
+    public function isDirty(string $field): bool
+    {
+        return isset($this->dirtyFields[$field]);
+    }
+
+    public function getDirtyFields(): array
+    {
+        return $this->dirtyFields;
+    }
+
+    public function resetDirtyFields(): void
+    {
+        $this->dirtyFields = [];
+    }
+
+    protected function markDirty(string $field): void
+    {
+        $this->dirtyFields[$field] = true;
     }
 }

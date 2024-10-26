@@ -27,6 +27,10 @@ final class Post extends AbstractModel
 
     public function setTitle(string $title): self
     {
+        if ($title !== $this->title) {
+            $this->markDirty('title');
+        }
+
         $this->title = $title;
 
         return $this;
@@ -39,6 +43,10 @@ final class Post extends AbstractModel
 
     public function setContent(string $content): self
     {
+        if ($content !== $this->content) {
+            $this->markDirty('content');
+        }
+
         $this->content = $content;
 
         return $this;
@@ -51,6 +59,10 @@ final class Post extends AbstractModel
 
     public function setStatus(PostStatus $status): self
     {
+        if ($status->value !== $this->status->value) {
+            $this->markDirty('status');
+        }
+
         $this->status = $status;
 
         return $this;

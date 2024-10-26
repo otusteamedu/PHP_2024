@@ -7,7 +7,12 @@ namespace App\Blog\DataMapper;
 use App\Blog\Model\Post;
 use App\Shared\Model\Collection;
 use App\Shared\Model\CollectionProxy;
+use App\Shared\Utility\StringFormatter;
+use Exception;
 use PDO;
+use PDOStatement;
+use RuntimeException;
+use UnitEnum;
 
 final readonly class PostMapper
 {
@@ -65,6 +70,79 @@ final readonly class PostMapper
         $statement->execute();
 
         return (int) $statement->fetchColumn();
+    }
+
+    public function save(Post $post): Post
+    {
+        $statement = $post->isNew()
+            ? $this->makeCreateStatement($post)
+            : $this->makeUpdateStatement($post);
+
+        if (null === $statement) {
+            return $post;
+        }
+
+        try {
+            $statement->execute();
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage(), previous: $e);
+        }
+
+        if ($post->isNew()) {
+            $post->setId((int) $this->pdo->lastInsertId());
+        }
+
+        return $post;
+    }
+
+    private function makeCreateStatement(Post $post): PDOStatement
+    {
+        $query = 'INSERT INTO blog_posts(title, content, status) VALUES(:title, :content, :status)';
+
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':title', $post->getTitle());
+        $statement->bindValue(':content', $post->getContent());
+        $statement->bindValue(':status', $post->getStatus()->value);
+
+        return $statement;
+    }
+
+    private function makeUpdateStatement(Post $post): ?PDOStatement
+    {
+        $dirtyFields = array_keys($post->getDirtyFields());
+
+        if (empty($dirtyFields)) {
+            return null;
+        }
+
+        $query = 'UPDATE blog_posts SET ';
+
+        foreach ($dirtyFields as $field) {
+            $query .= $field . ' = :' . $field . ', ';
+        }
+
+        $query = rtrim($query, ', ') . ' WHERE id = :id';
+
+        $statement = $this->pdo->prepare($query);
+
+        foreach ($dirtyFields as $field) {
+            $accessor = StringFormatter::fromSnakeCaseToCamelCase('get' . $field);
+
+            $value = $post->{$accessor}();
+            $value = match (true) {
+                $value instanceof UnitEnum => $value->value,
+                default => $value,
+            };
+
+
+            $statement->bindValue(':' . $field, $value);
+        }
+
+        $statement->bindValue(':id', $post->getId());
+
+        $post->resetDirtyFields();
+
+        return $statement;
     }
 
     private function makePostFromRow(array $row): Post
