@@ -20,11 +20,17 @@ migrate:
 seed:
 	make exec ARGS='php bin/console database:import /var/www/otus/hw13/database/migrations/blog-dml.sql'
 
-search-post-with-id-1:
-	make exec ARGS='php bin/console blog:posts:search --post_id=1'
+find-post-with-id-1:
+	make exec ARGS='php bin/console blog:posts:find-by-id 1'
 
-search-post-with-id-100:
-	make exec ARGS='php bin/console blog:posts:search --post_id=100'
+find-post-with-id-100:
+	make exec ARGS='php bin/console blog:posts:find-by-id 100'
 
-search-all-posts:
-	make exec ARGS='php bin/console blog:posts:search'
+list-posts:
+	make exec ARGS='php bin/console blog:posts:list'
+
+list-posts-by-pages-1:
+	make exec ARGS='php bin/console blog:posts:list --page_size=5'
+
+list-posts-by-pages-2:
+	make exec ARGS='php bin/console blog:posts:list --page_size=5 --page_number=2'

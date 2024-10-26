@@ -33,9 +33,17 @@ final readonly class PostMapper
         return $this->makePostFromRow($row);
     }
 
-    public function findAll(): Collection
+    public function findAll(?int $pageSize = null, int $pageNumber = 1): Collection
     {
         $query = 'SELECT * FROM blog_posts ORDER BY id';
+
+        if ($pageSize) {
+            $query .= ' LIMIT ' . $pageSize;
+        }
+
+        if ($pageSize && $pageNumber) {
+            $query .= ' OFFSET ' . $pageSize * ($pageNumber - 1);
+        }
 
         $statement = $this->pdo->prepare($query);
         $statement->execute();
@@ -47,6 +55,16 @@ final readonly class PostMapper
         }
 
         return new Collection(array_map([$this, 'makePostFromRow'], $rows));
+    }
+
+    public function count(): int
+    {
+        $query = 'SELECT COUNT(id) FROM blog_posts';
+
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+
+        return (int) $statement->fetchColumn();
     }
 
     private function makePostFromRow(array $row): Post

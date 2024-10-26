@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Blog\Console\Command\SearchBlogPostsCommand;
+use App\Blog\Console\Command\FindBlogPostByIdCommand;
+use App\Blog\Console\Command\ListBlogPostsCommand;
 use App\Blog\DataMapper\PostCommentMapper;
 use App\Blog\DataMapper\PostMapper;
 use App\Shared\Console\Command\ExecuteDatabaseImportCommand;
@@ -26,7 +27,8 @@ final readonly class Kernel
         $application->add(new ExecuteDatabaseImportCommand($pdo));
 
         // Blog
-        $application->add(new SearchBlogPostsCommand($postMapper));
+        $application->add(new ListBlogPostsCommand($postMapper));
+        $application->add(new FindBlogPostByIdCommand($postMapper));
 
         $application->run();
     }

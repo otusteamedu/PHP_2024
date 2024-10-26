@@ -15,8 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ListBlogPostsCommand extends Command
 {
-    private const OPTION_PAGE_SIZE = 'post_id';
-    private const OPTION_POST_ID = 'post_id';
+    private const OPTION_PAGE_NUMBER = 'page_number';
+    private const OPTION_PAGE_SIZE = 'page_size';
 
     public function __construct(
         private readonly PostMapper $postMapper,
@@ -28,48 +28,58 @@ class ListBlogPostsCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('blog:posts:search')
-            ->setDescription('Searches for blog posts')
+            ->setName('blog:posts:list')
+            ->setDescription('List blog posts')
             ->addOption(
-                self::OPTION_POST_ID,
+                self::OPTION_PAGE_SIZE,
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'ID of the blog post'
+                'Count of blog posts per page',
+                25
             )
             ->addOption(
-                self::OPTION_POST_ID,
+                self::OPTION_PAGE_NUMBER,
                 null,
                 InputOption::VALUE_OPTIONAL,
-                'ID of the blog post'
+                'Page number',
             )
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $postId = $input->getOption(self::OPTION_POST_ID);
+        $pageSize = (int) $input->getOption(self::OPTION_PAGE_SIZE);
+        $pageNumber = $input->getOption(self::OPTION_PAGE_NUMBER);
+        $pageNumber = (null === $pageNumber) ? 1 : (int) $pageNumber;
 
-        $posts = $postId
-            ? $this->postMapper->findById((int) $postId)
-            : $this->postMapper->findAll()->all();
+        $posts = $this->postMapper->findAll($pageSize, $pageNumber);
+        $foundPostCount = $posts->count();
 
-        if (empty($posts)) {
+        if ($foundPostCount === 0) {
             $output->writeln('<error>Blog posts matching your request does not exists</error>');
 
             return self::INVALID;
         }
 
-        $posts = is_array($posts)
-            ? array_map(fn(Post $post): array => $post->toArray(), $posts)
-            : [$posts->toArray()];
+        $totalPostCount = $this->postMapper->count();
 
-        $table = ListFormatter::toTable($posts);
+        $table = ListFormatter::toTable(array_map(fn(Post $post): array => $post->toArray(), $posts->all()));
 
         (new Table($output))
             ->setHeaders($table['headers'])
             ->setRows($table['rows'])
             ->render()
         ;
+
+        $output->writeln(
+            sprintf(
+                '<info>Showing [%s] of total [%s], page [%s] of total [%s]</info>',
+                $foundPostCount,
+                $totalPostCount,
+                $pageNumber,
+                ceil($totalPostCount / $pageSize)
+            )
+        );
 
         return self::SUCCESS;
     }
