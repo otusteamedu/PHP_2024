@@ -1,0 +1,10 @@
+{
+    "require": {
+        "predis/predis": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        }
+    }
+}
