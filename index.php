@@ -9,8 +9,10 @@ $newUser->save();
 UserRegistry::add($newUser);
 
 
-$users = User::findAll();
+$page = 0; 
+$limit = 10; 
+$users = User::findAll($limit, $page * $limit);
+
 foreach ($users as $user) {
     echo $user->getId() . ": " . $user->getName() . " - " . $user->getEmail() . "\n";
 }
-

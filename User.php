@@ -1,5 +1,5 @@
 <?php
-//Класс User, реализующий паттерн Active Record.
+// Класс User, реализующий паттерн Active Record.
 class User {
     private $id;
     private $name;
@@ -19,8 +19,11 @@ class User {
 
     public function save() {
         if ($this->id) {
-            $stmt = self::$db->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
-            $stmt->execute([$this->name, $this->email, $this->id]);
+            $existingUser = self::findById($this->id);
+            if ($existingUser->getName() !== $this->name || $existingUser->getEmail() !== $this->email) {
+                $stmt = self::$db->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
+                $stmt->execute([$this->name, $this->email, $this->id]);
+            }
         } else {
             $stmt = self::$db->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
             $stmt->execute([$this->name, $this->email]);
@@ -28,8 +31,18 @@ class User {
         }
     }
 
-    public static function findAll() {
-        $stmt = self::$db->query("SELECT * FROM users");
+    public static function findById($id) {
+        $stmt = self::$db->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return new self($result['name'], $result['email'], $result['id']);
+    }
+
+    public static function findAll($limit = 100, $offset = 0) {
+        $stmt = self::$db->prepare("SELECT * FROM users LIMIT :limit OFFSET :offset");
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $users = [];
 
