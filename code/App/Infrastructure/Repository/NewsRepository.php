@@ -24,8 +24,16 @@ class NewsRepository implements NewsRepositoryInterface
 
     public function findAll(): iterable
     {
-        // TODO: Implement findAll() method.
-        return [];
+        $news = [];
+        $sql_q = "SELECT * FROM `news`";
+
+        $rows = self::$Db->query($sql_q)->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($rows ?? [] AS $row) {
+            $news[] = $this->prepareNews($row);
+        }
+
+        return $news;
     }
 
     /**
@@ -39,20 +47,9 @@ class NewsRepository implements NewsRepositoryInterface
         $row = self::$Db->query($sql_q)->fetch(PDO::FETCH_ASSOC);
 
         if (!empty($row)) {
-//            $reflectionClass = new \ReflectionClass(News::class);
-//            foreach ($reflectionClass->getProperties() AS $property) {
-//                $property_name = $property->getName();
-//                if (isset($row[$property_name])) {
-//                    $reflectionProperty = $reflectionClass->getProperty($property_name);
-//                    $reflectionProperty->setAccessible(true);
-//                    $reflectionProperty->setValue($reflectionClass, $row[$property_name]);
-//                }
-//            }
-//            var_dump($reflectionClass);exit;
-//            $reflectionProperty = $reflectionClass->getProperty('id');
-//            $reflectionProperty->setAccessible(true);
-//            $reflectionProperty->setValue($news, $row['id']);
-//            var_dump($news);exit;
+            $news = $this->prepareNews($row);
+        } else {
+            throw new \Exception('News not found');
         }
 
         return $news;
@@ -84,5 +81,25 @@ class NewsRepository implements NewsRepositoryInterface
     public function delete(News $news): void
     {
         // TODO: Implement delete() method.
+    }
+
+    private function prepareNews(array $row)
+    {
+        $reflectionClass = new \ReflectionClass(News::class);
+        $news = $reflectionClass->newInstanceWithoutConstructor();
+        foreach ($reflectionClass->getProperties() AS $property) {
+            $property_name = $property->getName();
+            if (isset($row[$property_name])) {
+                $reflectionProperty = $reflectionClass->getProperty($property_name);
+                $type = $reflectionProperty->getType()->getName();
+                if(!$property->getType()->isBuiltin()) //types names are strings
+                    $value = new $type($row[$property_name]);
+                else
+                    $value = $row[$property_name];
+                $reflectionProperty->setAccessible(true);
+                $reflectionProperty->setValue($news, $value);
+            }
+        }
+        return $news;
     }
 }
