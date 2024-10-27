@@ -1,17 +1,17 @@
 <?php
 
-require_once 'src/EventManager.php';
+require_once 'vendor/autoload.php'; // Подключаем автозагрузчик
 
 use Src\EventManager;
+use Src\RedisStorage;
 
-$eventManager = new EventManager();
-
+$storage = new RedisStorage();
+$eventManager = new EventManager($storage);
 
 $eventManager->addEvent(1500, ['location' => 'New York', 'type' => 'concert'], 'Rock Concert at Central Park');
 $eventManager->addEvent(2000, ['location' => 'Los Angeles', 'type' => 'movie'], 'Premiere of the Latest Sci-Fi Movie');
 $eventManager->addEvent(2500, ['location' => 'Chicago', 'type' => 'exhibition'], 'Art Exhibition: Modern Art at The Art Institute');
 $eventManager->addEvent(3000, ['location' => 'San Francisco', 'type' => 'conference'], 'Tech Conference: Innovations in AI');
-
 
 $params = ['location' => 'Chicago', 'type' => 'exhibition'];
 $bestEvent = $eventManager->getBestEvent($params);
@@ -21,6 +21,5 @@ if ($bestEvent) {
 } else {
     echo "No matching event found.\n";
 }
-
 
 $eventManager->clearEvents();
