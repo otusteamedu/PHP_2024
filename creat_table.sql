@@ -49,3 +49,23 @@ CREATE TABLE Seats (
     Seat_Number INT,
     Status VARCHAR(20) DEFAULT 'available' -- Статусы: available, reserved, sold
 );
+
+--Эта таблица задает коэффициенты для цены в зависимости от дня недели и времени суток.
+
+
+CREATE TABLE PricingRules (
+    ID SERIAL PRIMARY KEY,
+    Day_of_Week VARCHAR(20), -- Например, Monday, Tuesday и т. д.
+    Time_of_Day VARCHAR(20), -- Утро, день, вечер, ночь
+    Price_Coefficient DECIMAL(4, 2) -- Коэффициент (например, 0.8, 1.0, 1.2)
+);
+
+--Содержит информацию о популярности фильма и соответствующем коэффициенте.
+
+
+CREATE TABLE MovieRating (
+    ID SERIAL PRIMARY KEY,
+    Movie_ID INT REFERENCES Movies(ID),
+    Popularity_Rating INT, -- Рейтинг популярности, например, от 1 до 5
+    Price_Coefficient DECIMAL(4, 2) -- Коэффициент на основе рейтинга популярности
+);
