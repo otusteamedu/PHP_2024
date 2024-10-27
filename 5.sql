@@ -1,4 +1,15 @@
-EXPLAIN ANALYZE
+SET profiling = 1;
+ ANALYZE
 SELECT seat_number, is_sold
 FROM seats
-WHERE session_id = <specific_session_id>;
+WHERE session_id = 1;
+
+SHOW PROFILES;
+-- для 10 000
+-- время выполнения без индекса 0.00443465
+-- время выполнения с индексом  0.00507529
+
+
+-- для 1000 000
+-- время выполнения без индекса 0.00875034
+-- время выполнения с индексом 0.00811009
