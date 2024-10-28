@@ -9,7 +9,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 #[AllowDynamicProperties]
 class DigitalArrayValidator extends ConstraintValidator
 {
-
     /**
      * @param array $value
      * @param Constraint $constraint
