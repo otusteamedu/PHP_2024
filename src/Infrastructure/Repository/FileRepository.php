@@ -4,7 +4,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Interface\Repository\FileRepositoryInterface;
 
-class FileRepository implements  FileRepositoryInterface
+class FileRepository implements FileRepositoryInterface
 {
     public function store(string $fileName, string $content): false|int
     {

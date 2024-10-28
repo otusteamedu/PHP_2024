@@ -29,7 +29,7 @@ class ControllerManager
 
         return ($this->createNewsUseCase)(
             new CreateNewsUseCaseRequest(
-                $getTitleUseCaseResponse->title, 
+                $getTitleUseCaseResponse->title,
                 $getTitleUseCaseResponse->url
             )
         );

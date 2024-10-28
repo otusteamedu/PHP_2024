@@ -38,4 +38,3 @@ class UniqueUrlValidator extends ConstraintValidator
             ->addViolation();
     }
 }
-

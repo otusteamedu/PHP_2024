@@ -28,7 +28,6 @@ class ExceptionEventListener
         if ($exception instanceof ValidationFailedException) {
             $event->setResponse($this->getValidationFailedResponse($exception));
         }
-
     }
 
     private function getHttpResponse($message, $code): Response

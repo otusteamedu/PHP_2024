@@ -2,8 +2,6 @@
 
 namespace App\Infrastructure\Gateway\HttpClient;
 
-namespace App\Infrastructure\Gateway\HttpClient;
-
 use App\Application\Gateway\HttpClient\HttpClientGatewayInterface;
 use DOMDocument;
 use DOMXPath;

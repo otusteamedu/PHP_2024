@@ -25,8 +25,9 @@ class DigitalArrayValidator extends ConstraintValidator
 
         $notNumberList = '';
         foreach ($value as $number) {
-            if (!is_int($number))
+            if (!is_int($number)) {
                 $notNumberList .= "'" . $number . "', ";
+            }
         }
 
         if (empty($notNumberList)) {
@@ -40,4 +41,3 @@ class DigitalArrayValidator extends ConstraintValidator
             ->addViolation();
     }
 }
-
