@@ -1,5 +1,6 @@
 <form id="subscribe">
     <div style="display: flex">
+        <input type="hidden" name="user_id" value="1">
         <label for="category">Категория</label>
         <input name="category" id="category">
     </div>

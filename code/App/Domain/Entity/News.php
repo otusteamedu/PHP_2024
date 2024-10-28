@@ -2,15 +2,14 @@
 
 namespace App\Domain\Entity;
 
-use App\Domain\Output\AppendedTextInterface;
-use App\Domain\Output\NewsPrepareTextInterface;
-use App\Domain\ValueObject\Name;
-use App\Domain\ValueObject\Text;
+use App\Domain\Decorator\NewsDecoratorInterface;
 use App\Domain\ValueObject\Author;
 use App\Domain\ValueObject\Category;
+use App\Domain\ValueObject\Name;
+use App\Domain\ValueObject\Text;
 use DateTime;
 
-class News implements AppendedTextInterface
+class News
 {
     private ?int $id = null;
     private ?DateTime $date_created = null;

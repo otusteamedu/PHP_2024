@@ -50,9 +50,7 @@ class Start
     {
         $params = Router::getParams()['POST'];
 
-        var_dump($params);exit;
-
-        Router::showJson(!empty($data = App::add($params['name'], $params['author'], $params['category'], $params['text']))
+        Router::showJson(!empty($data = App::subcribe($params['user_id'], $params['category']))
             ? Router::buildSuccess(['id' => $data->id])
             : Router::buildError('extra opening parenthesis')
         );

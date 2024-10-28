@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\GetListNews;
 
-use App\Application\UseCase\GetListNews\GetListNewsRequest;
-use App\Application\UseCase\GetListNews\GetListNewsResponse;
-use App\Domain\Output\NewsPrepareTextInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
+use App\Domain\Strategy\NewsStrategyInterface;
 
 class GetListNewsUseCase
 {
     private NewsRepositoryInterface $newsRepository;
-    private NewsPrepareTextInterface $newsOutputTextStrategy;
+    private NewsStrategyInterface $newsStrategy;
     public function __construct(
         NewsRepositoryInterface $newsRepository,
-        NewsPrepareTextInterface $newsOutputTextStrategy
+        NewsStrategyInterface $newsStrategy
     )
     {
         $this->newsRepository = $newsRepository;
-        $this->newsOutputTextStrategy = $newsOutputTextStrategy;
+        $this->newsStrategy = $newsStrategy;
     }
 
     public function __invoke(GetListNewsRequest $request): GetListNewsResponse
@@ -27,7 +25,7 @@ class GetListNewsUseCase
         $ans = [];
         $news_list = $this->newsRepository->findAll();
         foreach ($news_list AS $news) {
-            $text = $this->newsOutputTextStrategy->prepareText($news); // :string
+            $text = $this->newsStrategy->getText($news); // :string
             $ans[] = [
                 'id' => $news->getId(),
                 'text' => $text,

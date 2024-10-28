@@ -4,31 +4,26 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\GetNews;
 
-use App\Domain\Entity\News;
-use App\Domain\Output\AppendedTextInterface;
-use App\Domain\Output\NewsPrepareTextInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
+use App\Domain\Strategy\NewsStrategyInterface;
 
 class GetNewsUseCase
 {
     private NewsRepositoryInterface $newsRepository;
-    private NewsPrepareTextInterface $newsOutputTextStrategy;
-    private AppendedTextInterface $newsOutputTextDecorator;
+    private NewsStrategyInterface $newsStrategy;
     public function __construct(
         NewsRepositoryInterface $newsRepository,
-        NewsPrepareTextInterface $newsOutputTextStrategy,
-        AppendedTextInterface $newsOutputTextDecorator
+        NewsStrategyInterface $newsStrategy
     )
     {
         $this->newsRepository = $newsRepository;
-        $this->newsOutputTextStrategy = $newsOutputTextStrategy;
-        $this->newsOutputTextDecorator = $newsOutputTextDecorator;
+        $this->newsStrategy = $newsStrategy;
     }
 
     public function __invoke(GetNewsRequest $request): GetNewsResponse
     {
         $news = $this->newsRepository->findById($request->id);
-        $text = $this->newsOutputTextStrategy->prepareText($news); // :string
+        $text = $this->newsStrategy->getText($news);
 
         return new GetNewsResponse(
             $news->getId(),
