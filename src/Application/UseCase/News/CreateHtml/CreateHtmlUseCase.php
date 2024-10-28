@@ -27,11 +27,7 @@ class CreateHtmlUseCase implements CreateHtmlUseCaseInterface
 
     private function saveHtml(array $request): string
     {
-        $fileName = 'news-list.html';
-        $href = 'http://' . $_ENV['APP_URL'] . ":" . $_ENV['APP_PORT'] . "/" . $fileName;
-        $result = $this->fileRepository->store($fileName, $this->getTemplate($request));
-
-        return $result ? $href : 'error';
+        return $this->fileRepository->storeHtmlNewsList($this->getTemplate($request));
     }
 
     private function getTemplate(array $request): string

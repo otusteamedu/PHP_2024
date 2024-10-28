@@ -6,8 +6,14 @@ use App\Domain\Interface\Repository\FileRepositoryInterface;
 
 class FileRepository implements FileRepositoryInterface
 {
-    public function store(string $fileName, string $content): false|int
+    public function storeHtmlNewsList(string $content): string
     {
-        return file_put_contents($fileName, $content);
+        $fileName = $_ENV['HTML_NEWS_LIST_FILE_NAME'];
+        $href = 'http://' . $_ENV['APP_URL'] . ":" . $_ENV['APP_PORT']
+                . "/" . $fileName;
+
+        $result = file_put_contents($fileName, $content);
+
+        return $result ? $href : 'error';
     }
 }
