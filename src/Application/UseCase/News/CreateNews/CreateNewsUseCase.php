@@ -10,7 +10,7 @@ use App\Domain\Interface\UseCase\CreateNewsUseCaseInterface;
 class CreateNewsUseCase implements CreateNewsUseCaseInterface
 {
     public function __construct(
-        private readonly EntityFactoryInterface  $factory,
+        private readonly EntityFactoryInterface $factory,
         private readonly NewsRepositoryInterface $newsRepository,
     ) {
     }

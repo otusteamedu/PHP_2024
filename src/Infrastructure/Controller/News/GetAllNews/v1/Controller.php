@@ -19,7 +19,7 @@ class Controller
     public function __invoke(): Response
     {
         $result = ($this->manager)();
-        $response = new JsonResponse($result, $result ?Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
+        $response = new JsonResponse($result, $result ? Response::HTTP_CREATED : Response::HTTP_BAD_REQUEST);
 
         return $response->setEncodingOptions(JSON_UNESCAPED_UNICODE);
     }

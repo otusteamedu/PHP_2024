@@ -12,7 +12,7 @@ class Url
 
     private const MIN_LENGTH = 12;
 
-    #[ORM\Column(type: 'string', length: 300,  unique: true, nullable: false)]
+    #[ORM\Column(type: 'string', length: 300, unique: true, nullable: false)]
     private string $value;
 
     public function __construct(string $value)
