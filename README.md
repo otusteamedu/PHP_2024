@@ -1,3 +1,11 @@
-# PHP_2024
+## Моменты, в которых сам догадываюсь, что возможно намудрил - пожалуйста обратите внимание, правильно ли я сделал (вообще всё, что сделал не правильно - переделаю):
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+1. Request для Controller, чтобы иметь возможность использовать Symfony\Component\Validator\Constraint на слое инфраструктуры
+
+2. ControllerManager для Controller, чтобы вызывать поочерёдно нужные UseCase (если их несколько), сохраняя Controller тонким
+
+3. Почему-то решил, что не нужно весь код класса писать в __invoke, а лучше разделить на методы там, где можно
+
+4. Interface для UseCase, чтобы внедрять зависимости в ControllerManager через абстракцию
+
+5. На слое Application тоже есть фабрика - ResponseFactory, чтобы создавать Responses разных классов, а все Interface на слое Domain
