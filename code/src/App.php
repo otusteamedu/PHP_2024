@@ -49,7 +49,13 @@ class App
                 ))($request, $response, $args);
             }
         );
-
+        $app->get(
+            pattern: '/',
+            callable: function (Request $request, Response $response, $args) use ($futureConfigs) {
+                $response->getBody()->write('Hello, World!');
+                return $response;
+            }
+        );
         $app->run();
     }
 }
