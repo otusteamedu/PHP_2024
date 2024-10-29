@@ -19,7 +19,6 @@ abstract class JsonController
         try {
             $result = $this->applyUseCase($request, $response, $args);
             $response->getBody()->write(json_encode($result));
-            $response->withStatus(201);
         } catch (\Throwable $e) {
             $errorResponse = [
                 'message' => $e->getMessage()

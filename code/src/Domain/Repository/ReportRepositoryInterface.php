@@ -10,5 +10,5 @@ interface ReportRepositoryInterface
 {
     public function save(Report $report): void;
 
-    public function findById(int $id): ?Report;
+    public function findByHash(string $hash): ?Report;
 }

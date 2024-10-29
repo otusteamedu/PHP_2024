@@ -36,7 +36,6 @@ class ListNewsController extends JsonController
                 'url' => $item->getUrl()->getValue(),
                 'title' => $item->getTitle()->getValue(),
                 'date' => $item->getDate()->getValue()->format('Y-m-d'),
-
             ],
             $newsItemResponse->items,
         );

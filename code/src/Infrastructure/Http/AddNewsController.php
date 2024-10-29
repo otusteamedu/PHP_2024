@@ -27,12 +27,16 @@ class AddNewsController extends JsonController
 
     protected function applyUseCase(Request $request, Response $response, array $args): array
     {
-        return [
+        $result = [
             'id' => ($this->useCase)(
                 new Application\UseCase\Request\AddNewsItemRequest(
                     $request->getParsedBody()['url'],
                 )
             )->id,
         ];
+
+        $response->withStatus(201, 'Created');
+
+        return $result;
     }
 }

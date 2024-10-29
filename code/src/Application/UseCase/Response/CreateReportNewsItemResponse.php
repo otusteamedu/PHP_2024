@@ -9,7 +9,6 @@ use Irayu\Hw15\Domain;
 class CreateReportNewsItemResponse implements DefaultNewsItemResponse
 {
     public function __construct(
-        public readonly int $id,
         public readonly string $hash,
     ) {
     }

@@ -8,18 +8,15 @@ use Irayu\Hw15\Domain;
 
 class Report
 {
-    private int $id;
     private string $hash;
 
     public function __construct(
-        private array $newsItemIds,
+        /**
+         * @var NewsItem[]
+         */
+        private array $newsItems,
     ) {
         $this->generateHash();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getHash(): string
@@ -30,17 +27,17 @@ class Report
     /**
      * @return NewsItem[]
      */
-    public function getNewsItemIds(): array
+    public function getNewsItems(): array
     {
-        return $this->newsItemIds;
+        return $this->newsItems;
     }
 
     protected function generateHash(): void
     {
-        $hash = '';
-        foreach ($this->newsItemIds as $newsItemId) {
-            $hash .= $newsItemId;
+        $hashData = [];
+        foreach ($this->newsItems as $newsItem) {
+            $hashData[] = $newsItem->getId();
         }
-        $this->hash = md5($hash);
+        $this->hash = md5(implode(',', $hashData));
     }
 }

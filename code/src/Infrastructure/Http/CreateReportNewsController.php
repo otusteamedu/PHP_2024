@@ -26,14 +26,15 @@ class CreateReportNewsController extends JsonController
 
     protected function applyUseCase(Request $request, Response $response, array $args): array
     {
-        $newsItemResponse = ($this->useCase)(
+        $createReportResponse = ($this->useCase)(
             new Application\UseCase\Request\CreateReportNewsItemRequest(
                 $request->getParsedBody()['id'],
             )
         );
+        $response->withStatus(201);
 
         return [
-            'url' => '/api/news/report/get/' . $newsItemResponse->id . '/' . $newsItemResponse->hash,
+            'url' => '/api/news/report/get/' . $createReportResponse->hash,
         ];
     }
 }
