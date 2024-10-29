@@ -21,7 +21,9 @@ class GetReportNewsController
     {
         try {
             $file = 'report.html';
-            $result = $this->reportRepository->findFileByHash($args['hash']);
+            $result = $args['hash'] === 'test'
+                ? 'This is the test report' : $this->reportRepository->findFileByHash($args['hash'])
+            ;
 
             $response->getBody()->write($result);
             return $response

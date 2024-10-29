@@ -11,7 +11,7 @@
 > 
 > curl -i --request POST --data "id[]=1&id[]=2&id[]=3" http://ira.yu/api/news/report/create
 > 
-> curl -i --request GET http://ira.yu/api/news/report/get/testre
+> curl -i --request GET http://ira.yu/api/news/report/get/test
 > 
 > curl -i --request GET http://ira.yu/api/news/report/get/55b84a9d317184fe61224bfb4a060fb0
 > 
