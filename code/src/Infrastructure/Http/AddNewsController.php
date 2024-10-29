@@ -11,22 +11,28 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class AddNewsController extends JsonController
 {
-    private Application\UseCase\AddNewsUseCase $useCase;
+    private Application\UseCase\AddNewsItemUseCase $useCase;
 
-    public function __construct(Infrastructure\Repository\FileNewsRepository $repository)
-    {
-        $this->useCase = new Application\UseCase\AddNewsUseCase(
+    public function __construct(
+        Infrastructure\Factory\FirstFactory $newsFactory,
+        Infrastructure\Repository\FileNewsRepository $repository,
+        Infrastructure\Gateway\NewsLoader $urlLoader,
+    ) {
+        $this->useCase = new Application\UseCase\AddNewsItemUseCase(
+            $newsFactory,
             $repository,
+            $urlLoader
         );
     }
 
     protected function applyUseCase(Request $request, Response $response, array $args): array
     {
-        $url = $request->getParsedBody()['url'];
-        $newsItemRequest = (new NewsItemLoader($url))->run();
-
         return [
-            'id' => ($this->useCase)($newsItemRequest)->id,
+            'id' => ($this->useCase)(
+                new Application\UseCase\Request\AddNewsItemRequest(
+                    $request->getParsedBody()['url'],
+                )
+            )->id,
         ];
     }
 }

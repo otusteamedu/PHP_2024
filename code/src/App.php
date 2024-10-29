@@ -31,33 +31,39 @@ class App
          */
         $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
-        $futureConfigs = [
-            'repoPath' => __DIR__ . '/../data/news.db',
-            'reportPath' => __DIR__ . '/../data/report.db',
-        ];
+        $futureConfigs = parse_ini_file('../config.ini');
 
         $app->post('/api/news/add', function (Request $request, Response $response, $args) use ($futureConfigs) {
             return (new Infrastructure\Http\AddNewsController(
-                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath'])
+                new Infrastructure\Factory\FirstFactory(),
+                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoNewsPath']),
+                new Infrastructure\Gateway\NewsLoader(),
             ))($request, $response, $args);
         });
         $app->get('/api/news/list', function (Request $request, Response $response, $args) use ($futureConfigs) {
             return (new Infrastructure\Http\ListNewsController(
-                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath'])
+                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoNewsPath'])
             ))($request, $response, $args);
         });
-        $app->post('/api/news/report/create', function (Request $request, Response $response, $args) use ($futureConfigs) {
-            return (new Infrastructure\Http\CreateReportNewsController(
-                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath']),
-                new Infrastructure\Repository\FileReportRepository($futureConfigs['reportPath'])
-            ))($request, $response, $args);
-        });
-        $app->get('/api/news/report/get/{id}/{hash}', function (Request $request, Response $response, $args) use ($futureConfigs) {
-            return (new Infrastructure\Http\GetReportNewsController(
-                new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoPath']),
-                new Infrastructure\Repository\FileReportRepository($futureConfigs['reportPath'])
-            ))($request, $response, $args);
-        });
+        $app->post(
+            pattern: '/api/news/report/create',
+            callable: function (Request $request, Response $response, $args) use ($futureConfigs) {
+                return (new Infrastructure\Http\CreateReportNewsController(
+                    new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoNewsPath']),
+                    new Infrastructure\Repository\FileReportRepository($futureConfigs['reportPath'])
+                ))($request, $response, $args);
+            }
+        );
+        $app->get(
+            pattern: '/api/news/report/get/{id}/{hash}',
+            callable: function (Request $request, Response $response, $args) use ($futureConfigs) {
+                return (new Infrastructure\Http\GetReportNewsController(
+                    new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoNewsPath']),
+                    new Infrastructure\Repository\FileReportRepository($futureConfigs['reportPath'])
+                ))($request, $response, $args);
+            }
+        );
+
         $app->run();
     }
 }

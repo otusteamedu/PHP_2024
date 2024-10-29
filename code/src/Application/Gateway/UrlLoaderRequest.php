@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Irayu\Hw15\Application\UseCase\Request;
+namespace Irayu\Hw15\Application\Gateway;
 
-class AddNewsItemRequest implements DefaultNewsItemRequest
+class UrlLoaderRequest
 {
     public function __construct(
         public readonly string $url,

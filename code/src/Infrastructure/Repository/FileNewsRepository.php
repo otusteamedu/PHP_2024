@@ -12,8 +12,14 @@ class FileNewsRepository implements Domain\Repository\NewsRepositoryInterface
     private $lastId = 0;
 
     private const DATE_FORMAT = 'Y-m-d';
-    public function __construct($filename)
+    public function __construct(string $filename)
     {
+        $dir = dirname($filename);
+        if (is_dir($dir)) {
+            chmod($dir, 0755);
+        } else {
+            mkdir($dir, 0755, true);
+        }
         $this->filename = $filename;
         if (!file_exists($this->filename)) {
             $f = fopen($this->filename, 'w');

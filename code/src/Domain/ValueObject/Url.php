@@ -19,7 +19,7 @@ class Url
         return $this->value;
     }
 
-    private function checkCorrectness(string $value)
+    private function checkCorrectness(string $value): void
     {
         if (preg_match("/^((https?):\/\/)/", $value) === false) {
             throw new \InvalidArgumentException(

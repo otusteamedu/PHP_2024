@@ -5,4 +5,4 @@
 .LSOverride
 /logs/
 /code/vendor/
-/code/data/report.db
+/data/files/

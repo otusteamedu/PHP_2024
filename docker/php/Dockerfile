@@ -44,11 +44,9 @@ RUN docker-php-ext-install -j$(nproc) gd
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-WORKDIR /data
+WORKDIR /data/files
 
 COPY ./php-custom.ini /usr/local/etc/php/conf.d/
 COPY ./docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/
-
-VOLUME /data
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
