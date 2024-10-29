@@ -9,6 +9,7 @@ use Irayu\Hw15\Infrastructure;
 use Irayu\Hw15\Domain;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Psr7\Uri;
 
 class CreateReportNewsController extends JsonController
 {
@@ -33,8 +34,15 @@ class CreateReportNewsController extends JsonController
         );
         $response->withStatus(201);
 
+        $uri = new Uri(
+            $request->getUri()->getScheme(),
+            $request->getUri()->getHost(),
+            null,
+            '/api/news/report/get/' . $createReportResponse->hash
+        );
+
         return [
-            'url' => '/api/news/report/get/' . $createReportResponse->hash,
+            'url' => $uri->__toString(),
         ];
     }
 }

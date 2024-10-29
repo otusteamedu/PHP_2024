@@ -12,42 +12,16 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class GetReportNewsController
 {
-    private Application\UseCase\GetReportNewsUseCase $useCase;
-
     public function __construct(
-        Infrastructure\Repository\FileNewsRepository $newsRepository,
-        Infrastructure\Repository\FileReportRepository $reportRepository,
+        protected Infrastructure\Repository\FileReportRepository $reportRepository,
     ) {
-        $this->useCase = new Application\UseCase\GetReportNewsUseCase(
-            $newsRepository,
-            $reportRepository,
-        );
-    }
-
-    protected function applyUseCase(Request $request, Response $response, array $args): string
-    {
-        $newsItemResponse = ($this->useCase)(
-            new Application\UseCase\Request\GetReportNewsItemRequest(
-                (int) $args['id'],
-                (string) $args['hash'],
-            )
-        );
-
-        $items = array_map(
-            fn(Domain\Entity\NewsItem $item) =>
-                '<li><a href="' . htmlspecialchars($item->getUrl()->getValue()) . '">'
-                    . $item->getTitle()->getValue() . '</a></li>',
-            $newsItemResponse->items,
-        );
-
-        return '<ul>' . implode('', $items) . '</ul>';
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
         try {
             $file = 'report.html';
-            $result = $this->applyUseCase($request, $response, $args);
+            $result = $this->reportRepository->findFileByHash($args['hash']);
 
             $response->getBody()->write($result);
             return $response
@@ -59,7 +33,7 @@ class GetReportNewsController
                 ->withHeader('Cache-Control', 'must-revalidate')
                 ->withHeader('Pragma', 'public')
                 ->withHeader('Content-Length', strlen($result))
-                ->withStatus(201)
+                ->withStatus(200)
             ;
         } catch (\Throwable $e) {
             $errorResponse = [

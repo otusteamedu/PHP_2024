@@ -54,4 +54,13 @@ class FileReportRepository implements Domain\Repository\ReportRepositoryInterfac
     {
         return null;
     }
+
+    public function findFileByHash(string $hash): ?string
+    {
+        if (file_exists($this->dirName . '/' . $hash . '.report')) {
+            return file_get_contents($this->dirName . '/' . $hash . '.report');
+        }
+
+        return null;
+    }
 }

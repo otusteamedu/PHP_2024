@@ -42,10 +42,9 @@ class App
             }
         );
         $app->get(
-            pattern: '/api/news/report/get/{id}/{hash}',
+            pattern: '/api/news/report/get/{hash}',
             callable: function (Request $request, Response $response, $args) use ($futureConfigs) {
                 return (new Infrastructure\Http\GetReportNewsController(
-                    new Infrastructure\Repository\FileNewsRepository($futureConfigs['repoNewsPath']),
                     new Infrastructure\Repository\FileReportRepository($futureConfigs['repoReportPath'])
                 ))($request, $response, $args);
             }
