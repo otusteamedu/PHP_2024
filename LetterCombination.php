@@ -4,7 +4,7 @@ class Solution
 {
     // Временная сложность: O(4^n)
     // Пространственная сложность: O(n)
-    function letterCombinations(string $digits): array
+    public function letterCombinations(string $digits): array
     {
         $phoneMap = [
             '2' => 'abc',
