@@ -1,0 +1,10 @@
+{
+  "name": "vsukhov/hw13",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "VSukhov\\Hw13\\": "src/"
+    }
+  },
+  "require": {}
+}
