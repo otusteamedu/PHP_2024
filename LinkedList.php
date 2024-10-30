@@ -1,7 +1,9 @@
 <?php
+
     // Временная сложность: O(n)
     // Пространственная сложность: O(1)
-    class ListNode {
+    class ListNode
+    {
         public int $val = 0;
         public ?ListNode $next = null;
 
