@@ -1,6 +1,6 @@
 <?php
 
-namespace VladimirGrinko\ElasticSearch;
+namespace VladimirGrinko\Seeker\ElasticSearch;
 
 class Connect
 {

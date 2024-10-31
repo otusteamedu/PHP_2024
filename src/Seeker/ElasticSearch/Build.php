@@ -1,26 +1,31 @@
 <?php
 
-namespace VladimirGrinko\ElasticSearch;
+namespace VladimirGrinko\Seeker\ElasticSearch;
 
 class Build
 {
     private $params = [];
 
-    public function __construct(
-        string $name,
-        string $category,
-        ?float $priceBot = null,
-        ?float $priceTop = null,
-        string $shop = '',
-        ?int $stock = null
-    ) {
-        $this->params['bool']['must'] = $this->buildMust($name, $category);
-        $this->params['bool']['filter'] = $this->buildPrice($priceBot, $priceTop);
-        $this->params['bool']['filter'] = $this->buildStock($shop, $stock);
+    private string $name = '';
+    private string $category = '';
+    private ?float $priceBot = null;
+    private ?float $priceTop = null;
+    private string $shop = '';
+    private ?int $stock = null;
+
+    public function __construct()
+    {
     }
 
     public function getParams(): array
     {
+        $this->params['bool']['must'] = $this->buildMust($this->name, $this->category);
+        if (!empty($arPrice = $this->buildPrice($this->priceBot, $this->priceTop))) {
+            $this->params['bool']['filter'] = $arPrice;
+        }
+        if (!empty($arStock = $this->buildStock($this->shop, $this->stock))) {
+            $this->params['bool']['filter'] = $arStock;
+        }
         return $this->params;
     }
 
@@ -100,5 +105,35 @@ class Build
                 ]
             ]
         ];
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setCategory(string $category): void
+    {
+        $this->category = $category;
+    }
+
+    public function setPriceBot(float $priceBot): void
+    {
+        $this->priceBot = $priceBot;
+    }
+
+    public function setPriceTop(float $priceTop): void
+    {
+        $this->priceTop = $priceTop;
+    }
+
+    public function setShop(string $shop): void
+    {
+        $this->shop = $shop;
+    }
+
+    public function setStock(int $stock): void
+    {
+        $this->stock = $stock;
     }
 }

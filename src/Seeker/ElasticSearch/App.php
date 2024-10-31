@@ -1,8 +1,6 @@
 <?php
 
-namespace VladimirGrinko\ElasticSearch;
-
-use VladimirGrinko\ElasticSearch as ES;
+namespace VladimirGrinko\Seeker\ElasticSearch;
 
 class App
 {
@@ -42,8 +40,8 @@ class App
             echo 'Пустой запрос';
         } else {
             try {
-                $connectES = new ES\Connect();
-                $search = new ES\Search($connectES->getClient());
+                $connectES = new Connect();
+                $search = new Search($connectES->getClient());
                 $res = $search->skuSearch($sku);
                 $format = new Format($res);
                 echo $format->formatOnce();
@@ -56,35 +54,53 @@ class App
     private function paramsSearch(): void
     {
         $params = [];
-        $params['title'] = readline('Название книги (Enter, чтобы пропустить): ');
-        $params['category'] = readline('Жанр (Enter, чтобы пропустить): ');
-        $params['price']['bot'] = readline('Цена от (Enter, чтобы пропустить): ');
-        $params['price']['top'] = readline('Цена до (Enter, чтобы пропустить): ');
-        $params['stock'] = readline('Наличие в магазинах (Например, Мира-10) (Enter, чтобы пропустить): ');
+        $builder = new Build();
+        if (!empty($name = readline('Название книги (Enter, чтобы пропустить): '))) {
+            $builder->setName($name);
+        }
+
+        if (!empty($category = readline('Жанр (Enter, чтобы пропустить): '))) {
+            $builder->setCategory($category);
+        }
+
+        if (!empty($priceBot = readline('Цена от (Enter, чтобы пропустить): '))) {
+            $builder->setPriceBot($priceBot);
+        }
+
+        if (!empty($priceTop = readline('Цена до (Enter, чтобы пропустить): '))) {
+            $builder->setPriceTop($priceTop);
+        }
+
+        if (!empty($stock = readline('Наличие в магазинах (Например, Мира-10) (Enter, чтобы пропустить): '))) {
+            $arrStock = explode('-', $stock);
+            $builder->setShop($arrStock[0]);
+            $builder->setStock($arrStock[1]);
+        }
 
         $from = 1;
 
         try {
             while ($from > 0) {
-                $page = $this->getPage($params, $from);
+                $page = $this->getPage($builder, $from);
                 echo $page['content'];
                 if ($page['pages'] > 1) {
                     do {
                         $from = readline('Введите страницу от 1 до ' . $page['pages'] . ' или 0 для выхода из программы: ');
                     } while ($from < 0 || $from > $page['pages']);
+                } else {
+                    break;
                 }
             }
         } catch (\Throwable $th) {
             echo $th->getMessage();
         }
-        
     }
 
-    private function getPage($params, $from = 1): array
+    private function getPage(Build $build, $from = 1): array
     {
-        $connectES = new ES\Connect();
-        $search = new ES\Search($connectES->getClient());
-        $res = $search->paramsSearch($params, $from);
+        $connectES = new Connect();
+        $search = new Search($connectES->getClient());
+        $res = $search->paramsSearch($build, $from);
         $format = new Format($res);
         return [
             'content' => $format->formatList($res),
