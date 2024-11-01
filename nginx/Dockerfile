@@ -1,6 +1,6 @@
 FROM nginx:latest
 
-COPY ./hosts/mysite.local.conf /etc/nginx/conf.d/mysite.local.conf
+COPY ./hosts/application.local.conf /etc/nginx/conf.d/application.local.conf
 
 WORKDIR /data  
 
