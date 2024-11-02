@@ -11,4 +11,3 @@ class HotDog extends Product
         return "HotDog with " . implode(", ", array_map(fn($i) => $i->getName(), $this->ingredients));
     }
 }
-

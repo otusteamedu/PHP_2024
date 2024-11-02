@@ -26,7 +26,6 @@ class CreateProductConsoleController
         try {
             $useCase = $this->container->getPrepareProductUseCase($productType);
             $product = $useCase->prepareProduct($ingredients);
-
         } catch (Exception $e) {
             throw new RuntimeException('Error: ' . $e->getMessage());
         }
