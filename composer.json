@@ -1,0 +1,13 @@
+{
+  "name": "sukhov/hw14",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "VSukhov\\Hw14\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "ext-pdo": "*"
+  }
+}
