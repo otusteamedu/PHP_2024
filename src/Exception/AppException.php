@@ -1,6 +1,6 @@
 <?php
 
-namespace VSukhov\Hw11\Exception;
+namespace VSukhov\Hw14\Exception;
 
 use Exception;
 

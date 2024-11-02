@@ -1,6 +1,7 @@
 <?php
 
-use VSukhov\Hw11\App\App;
+
+use VSukhov\Hw14\App\App;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
