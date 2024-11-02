@@ -2,7 +2,8 @@
 
 namespace Komarov\Hw14\App;
 
-readonly class Product {
+readonly class Product
+{
     public function __construct(
         private int    $id,
         private string $name,

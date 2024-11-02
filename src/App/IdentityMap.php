@@ -2,14 +2,17 @@
 
 namespace Komarov\Hw14\App;
 
-class IdentityMap {
+class IdentityMap
+{
     private array $entities = [];
 
-    public function add(int $id, Product $product): void {
+    public function add(int $id, Product $product): void
+    {
         $this->entities[$id] = $product;
     }
 
-    public function get(int $id): ?Product {
+    public function get(int $id): ?Product
+    {
         return $this->entities[$id] ?? null;
     }
 }

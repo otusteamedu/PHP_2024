@@ -5,7 +5,8 @@ namespace Komarov\Hw14\App;
 use PDO;
 use PDOException;
 
-class Database {
+class Database
+{
     private static ?PDO $connection = null;
 
     public static function getConnection(): PDO

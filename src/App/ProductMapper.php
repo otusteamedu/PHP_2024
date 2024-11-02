@@ -4,7 +4,8 @@ namespace Komarov\Hw14\App;
 
 use PDO;
 
-class ProductMapper {
+class ProductMapper
+{
     private PDO $db;
     private IdentityMap $identityMap;
 
