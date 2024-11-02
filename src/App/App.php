@@ -2,7 +2,6 @@
 
 namespace VSukhov\Hw11\App;
 
-
 use VSukhov\Hw11\Exception\AppException;
 use VSukhov\Hw11\Redis\Storage;
 
