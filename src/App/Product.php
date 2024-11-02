@@ -9,9 +9,7 @@ readonly class Product
         private string $name,
         private string $description,
         private float $price
-    ) {
-
-    }
+    ) {}
 
     public function getId(): int
     {
