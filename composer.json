@@ -1,0 +1,13 @@
+{
+  "name": "sukhov/hw11",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "VSukhov\\Hw11\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.1",
+    "predis/predis": "^2.2"
+  }
+}
