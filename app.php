@@ -4,14 +4,20 @@ require 'vendor/autoload.php';
 use App\Application\Service\ProductSearchService;
 use App\Console\SearchCommand;
 use App\Infrastructure\Persistence\ElasticSearchProductRepository;
+use App\Infrastructure\Persistence\AnotherDatabaseProductRepository;
 
 // Загружаем конфигурацию
 $config = require 'config/config.php';
 
-// Инициализируем репозиторий и сервис поиска
-$productRepository = new ElasticSearchProductRepository($config['elasticsearch']);
-$productSearchService = new ProductSearchService($productRepository);
+// Выбираем репозиторий на основе конфигурации
+$productRepository = null;
 
-// Создаем и выполняем команду поиска
+if ($config['repository'] === 'elastic') {
+    $productRepository = new ElasticSearchProductRepository($config['elasticsearch']);
+} elseif ($config['repository'] === 'another_db') {
+    $productRepository = new AnotherDatabaseProductRepository();
+}
+
+$productSearchService = new ProductSearchService($productRepository);
 $command = new SearchCommand($productSearchService);
 $command->execute($argv);
