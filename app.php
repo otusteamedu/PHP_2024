@@ -1,16 +1,17 @@
 <?php
 require 'vendor/autoload.php';
 
-use App\Data\ElasticSearchClient;
-use App\Data\ProductRepository;
+use App\Application\Service\ProductSearchService;
 use App\Console\SearchCommand;
+use App\Infrastructure\Persistence\ElasticSearchProductRepository;
 
+// Загружаем конфигурацию
 $config = require 'config/config.php';
-$client = new ElasticSearchClient($config['elasticsearch']);
-$repository = new ProductRepository($client);
 
-// Если нужно инициализировать данные
-$repository->initializeData('data/books.json');
+// Инициализируем репозиторий и сервис поиска
+$productRepository = new ElasticSearchProductRepository($config['elasticsearch']);
+$productSearchService = new ProductSearchService($productRepository);
 
-$command = new SearchCommand($repository);
+// Создаем и выполняем команду поиска
+$command = new SearchCommand($productSearchService);
 $command->execute($argv);

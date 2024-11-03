@@ -1,3 +1,16 @@
-# PHP_2024
+1. Принцип единственной ответственности и инверсии зависимостей
+До: ElasticSearchClient выполняет несколько задач, включая управление индексом и обработку запросов.
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+После: Создаем интерфейс ProductRepository, который реализует ElasticSearchProductRepository. Теперь логика поиска размещается в ProductSearchService, отвечающем только за поиск, а ElasticSearchProductRepository отвечает за конкретное хранилище.
+
+2. Принцип открытости/закрытости и инверсии зависимостей
+До: SearchCommand использует конкретную реализацию ElasticSearchClient.
+
+После: SearchCommand зависит от ProductSearchService, который, в свою очередь, использует ProductRepository интерфейс, что позволяет легко заменять реализацию.
+
+3. Применение шаблона "Сервис" и улучшение читаемости
+До: Все взаимодействие происходит в одном классе, нет разделения логики.
+
+После: Создаем сервис ProductSearchService, который инкапсулирует логику поиска, упрощая SearchCommand и повышая читаемость.
+
+Код до https://github.com/otusteamedu/PHP_2024/tree/AYakovlev/hw14
