@@ -21,9 +21,13 @@ class UserTableGateway
         $this->identityMap = new IdentityMap();
     }
 
-    public function getAllUsers(): array
+    public function getAllUsers(int $limit = 100, int $offset = 0): array
     {
-        $statement = $this->db->query("SELECT * FROM users");
+        $statement = $this->db->prepare("SELECT * FROM users LIMIT :limit OFFSET :offset");
+        $statement->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $statement->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $statement->execute();
+
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($results as $user) {

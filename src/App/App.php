@@ -6,13 +6,9 @@ use VSukhov\Hw14\Gate\UserTableGateway;
 
 class App
 {
-    public function run(): void
+    public function run(int $limit = 100, int $offset = 0): array
     {
         $userTableGateway = new UserTableGateway();
-        $users = $userTableGateway->getAllUsers();
-
-        foreach ($users as $user) {
-            echo "User ID: {$user['id']}, Name: {$user['name']}" . PHP_EOL;
-        }
+        return $userTableGateway->getAllUsers($limit, $offset);
     }
 }
