@@ -66,5 +66,7 @@ curl --location --globoff 'http://localhost/api/v1/news/report?ids[]=1&ids[]=16&
 
 Ответ:
 ```
-
+{
+    "filePath": "/var/www/html/public/reports/20241103_235956.html"
+}
 ```
