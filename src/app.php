@@ -11,9 +11,7 @@ try {
     $offset = 0;
     $users = $app->run($limit, $offset);
 
-    foreach ($users as $user) {
-        echo "User ID: {$user['id']}, Name: {$user['name']}" . PHP_EOL;
-    }
+    return $users;
 } catch (AppException $e) {
     echo $e->getMessage();
 }
