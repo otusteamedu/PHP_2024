@@ -21,7 +21,7 @@ class GetNewsListController extends AbstractFOSRestController
     {
         try {
             $response = ($this->useCase)();
-            return new Response(json_encode($response, JSON_UNESCAPED_UNICODE), 201);
+            return new Response(json_encode($response, JSON_UNESCAPED_UNICODE), 200);
         } catch (\Throwable $e) {
             $errorResponse = [
                 'message' => $e->getMessage()
