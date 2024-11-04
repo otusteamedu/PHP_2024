@@ -3,3 +3,15 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+.env
+/app/.env
+
+###> symfony/framework-bundle ###
+/app/.env.local
+/app/.env.local.php
+/app/.env.*.local
+/app/config/secrets/prod/prod.decrypt.private.php
+/app/public/bundles/
+/app/var/
+/app/vendor/
+###< symfony/framework-bundle ###
