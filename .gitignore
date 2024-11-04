@@ -5,8 +5,6 @@
 .LSOverride
 .env
 /app/.env
-/app/public/reports/
-/app/storage/news/
 
 ###> symfony/framework-bundle ###
 /app/.env.local
