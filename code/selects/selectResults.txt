@@ -1,0 +1,85 @@
++-------------+
+|movies_today |
++-------------+
+|movie_KGoOe0y|
+|movie_8qyPW  |
+|movie_eech   |
+|movie_4BaKYe |
+|movie_ryHA   |
+|movie_hcX    |
++-------------+
+
++------------------+
+|weekly_sales_count|
++------------------+
+|78750             |
++------------------+
+
++--------------+--------------------------+-------+
+|sessions_today|start_time                |hall   |
++--------------+--------------------------+-------+
+|movie_ryHA    |2024-10-08 00:00:00.000000|Зал_xiT|
+|movie_8qyPW   |2024-10-08 00:00:00.000000|Зал_xiT|
+|movie_8qyPW   |2024-10-08 00:00:00.000000|Зал_xiT|
+|movie_hcX     |2024-10-08 00:00:00.000000|Зал_xiT|
+|movie_4BaKYe  |2024-10-08 00:00:00.000000|Зал_xiT|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_59s|
+|movie_KGoOe0y |2024-10-08 00:00:00.000000|Зал_59s|
+|movie_8qyPW   |2024-10-08 00:00:00.000000|Зал_59s|
+|movie_hcX     |2024-10-08 00:00:00.000000|Зал_59s|
+|movie_4BaKYe  |2024-10-08 00:00:00.000000|Зал_59s|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_kKU|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_kKU|
+|movie_8qyPW   |2024-10-08 00:00:00.000000|Зал_kKU|
+|movie_4BaKYe  |2024-10-08 00:00:00.000000|Зал_kKU|
+|movie_4BaKYe  |2024-10-08 00:00:00.000000|Зал_kKU|
+|movie_hcX     |2024-10-08 00:00:00.000000|Зал_co3|
+|movie_hcX     |2024-10-08 00:00:00.000000|Зал_co3|
+|movie_KGoOe0y |2024-10-08 00:00:00.000000|Зал_co3|
+|movie_8qyPW   |2024-10-08 00:00:00.000000|Зал_co3|
+|movie_4BaKYe  |2024-10-08 00:00:00.000000|Зал_co3|
+|movie_4BaKYe  |2024-10-08 00:00:00.000000|Зал_kOg|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_kOg|
+|movie_KGoOe0y |2024-10-08 00:00:00.000000|Зал_kOg|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_kOg|
+|movie_8qyPW   |2024-10-08 00:00:00.000000|Зал_kOg|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_Bok|
+|movie_4BaKYe  |2024-10-08 00:00:00.000000|Зал_Bok|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_Bok|
+|movie_hcX     |2024-10-08 00:00:00.000000|Зал_Bok|
+|movie_eech    |2024-10-08 00:00:00.000000|Зал_Bok|
++--------------+--------------------------+-------+
+
++---------------------+-----------+
+|top_profitable_movies|sum        |
++---------------------+-----------+
+|movie_eech           |13745738.69|
+|movie_4BaKYe         |13221821.33|
+|movie_8qyPW          |11404232.82|
++---------------------+-----------+
+
++---+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+|row|1   |2   |3   |4   |5   |6   |7   |8   |9   |10  |11  |12  |13  |14  |15  |16  |17  |18  |19  |20  |21  |22  |23  |24  |25  |
++---+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+|1  |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|x   |null|null|null|null|null|null|
+|2  |null|null|null|null|null|x   |null|null|x   |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|3  |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|4  |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|x   |null|null|null|null|null|null|
+|5  |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|6  |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|x   |x   |null|null|
+|7  |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|x   |null|
+|8  |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|9  |null|null|null|null|null|null|null|null|null|null|null|null|x   |x   |null|null|null|null|null|null|null|null|null|null|null|
+|10 |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|11 |null|null|x   |null|null|null|null|null|null|null|null|null|null|null|x   |null|null|null|null|x   |null|null|null|null|null|
+|12 |null|null|null|null|null|null|x   |null|null|null|x   |null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|13 |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|14 |x   |null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|null|
+|15 |null|null|null|null|null|null|null|null|null|null|null|null|x   |null|null|null|null|null|null|null|null|null|null|null|null|
++---+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+
+
++----------------+
+|price_range_42  |
++----------------+
+|301.06 - 1295.12|
++----------------+
