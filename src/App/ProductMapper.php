@@ -17,11 +17,17 @@ class ProductMapper
 
     public function getAllProducts(): array
     {
-        $stmt = $this->db->query("SELECT * FROM products");
+        $stmt = $this->db->prepare("SELECT * FROM products LIMIT :limit OFFSET :offset");
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
         $products = [];
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($result as $row) {
             $product = $this->identityMap->get($row['id']);
+
             if ($product === null) {
                 $product = new Product(
                     $row['id'],
@@ -31,6 +37,7 @@ class ProductMapper
                 );
                 $this->identityMap->add($row['id'], $product);
             }
+
             $products[] = $product;
         }
 

@@ -2,6 +2,7 @@
 
 namespace Komarov\Hw14\App;
 
+use Komarov\Hw14\Exception\AppException;
 use PDO;
 use PDOException;
 
@@ -16,7 +17,7 @@ class Database
                 self::$connection = new PDO("pgsql:host=localhost;dbname=db", "username", "password");
                 self::$connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             } catch (PDOException $e) {
-                die("Database connection failed: " . $e->getMessage());
+                throw new AppException("Database connection failed: " . $e->getMessage());
             }
         }
 

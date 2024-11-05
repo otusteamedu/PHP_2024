@@ -2,8 +2,13 @@
 
 namespace Komarov\Hw14\App;
 
+use Komarov\Hw14\Exception\AppException;
+
 class App
 {
+    /**
+     * @throws AppException
+     */
     public function run(): void
     {
         $db = Database::getConnection();
