@@ -1,0 +1,16 @@
+{
+  "name": "otus/email-cheker",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Otus\\App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Pavel Ivanov",
+      "email": "xeolit@bk.ru"
+    }
+  ],
+  "require": {}
+}
