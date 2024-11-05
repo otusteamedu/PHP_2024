@@ -11,7 +11,8 @@ class App
 {
     private ElasticService $elasticService;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->elasticService = new ElasticService();
     }
 

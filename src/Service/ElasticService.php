@@ -16,7 +16,8 @@ class ElasticService
     /**
      * @throws AuthenticationException
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->client = ClientBuilder::create()->setHosts(['localhost:9200'])->build();
     }
 
