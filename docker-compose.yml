@@ -27,8 +27,6 @@ services:
     image: redis:alpine
     container_name: redis
     restart: always
-    ports:
-      - "6379:6379"
     volumes:
       - redis:/data
     networks:
@@ -52,8 +50,6 @@ services:
   memcached:
     image: memcached:latest
     container_name: memcached
-    ports:
-      - "11211:11211"
     networks:
       - app-network
 
