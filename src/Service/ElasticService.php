@@ -9,7 +9,8 @@ use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Elastic\Elasticsearch\Response\Elasticsearch;
 
-class ElasticService {
+class ElasticService
+{
     private Client $client;
 
     /**

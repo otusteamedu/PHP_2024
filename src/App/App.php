@@ -7,7 +7,8 @@ use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Komarov\Hw12\Exception\AppException;
 use Komarov\Hw12\Service\ElasticService;
 
-class App {
+class App
+{
     private ElasticService $elasticService;
 
     public function __construct() {
