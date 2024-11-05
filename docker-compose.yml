@@ -1,0 +1,70 @@
+version: '3'
+
+services:
+  #Контейнер с php-fpm
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: myapp/php 
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+       - ./app:/data/mysite.local
+    working_dir: /data/mysite.local
+    networks:
+      - app-network
+
+  #контейне с Nginx
+  webserver:
+    image: nginx:latest
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+       - ./app:/data/mysite.local
+       - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/sites-enabled/mysite.local.conf
+    networks:
+      - app-network
+
+  # контейнер с MySQL
+  db:
+    image: mysql:5.7.22
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - ./docker/dbdata:/var/lib/mysql  
+    networks:
+      - app-network
+
+      
+#redis (соединяется с php по порту)
+  cache:
+    image: redis:latest
+    container_name: cache
+    ports:
+     -  "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - app-network
+#memcached (соединяется с php по порту)
+  memcached:
+    image: sameersbn/memcached:1.5.6-2
+    container_name: memcached
+    ports:
+      - "${MEMCACHED_PORT}:11211"
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
