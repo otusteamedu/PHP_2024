@@ -1,3 +1,22 @@
-# PHP_2024
+# Docker Compose
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Установите Docker
+
+## Установка и запуск
+
+Соберите контейнеры Docker с помощью Docker Compose:
+
+```bash
+    docker-compose up -d
+```
+
+Откройте файл hosts, добавив следующую строку в конец файла:
+
+```
+    127.0.0.1 application.local
+```
+
+## Доступ к приложению
+
+URL: http://application.local
+
