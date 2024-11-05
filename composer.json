@@ -1,0 +1,18 @@
+{
+    "name": "komarov/hw14",
+    "autoload": {
+        "psr-4": {
+            "Komarov\\Hw14\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Komarov Sergey",
+            "email": "sk-2006@mail.ru"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "ext-pdo": "*"
+    }
+}

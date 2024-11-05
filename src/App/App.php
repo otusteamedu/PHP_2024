@@ -1,0 +1,28 @@
+<?php
+
+namespace Komarov\Hw14\App;
+
+use Komarov\Hw14\Exception\AppException;
+
+class App
+{
+    /**
+     * @throws AppException
+     */
+    public function run(): void
+    {
+        $db = Database::getConnection();
+        $productMapper = new ProductMapper($db);
+        $products = $productMapper->getAllProducts(20);
+
+        foreach ($products as $product) {
+            echo sprintf("ID: %s, Name: %s, Price: %s%s", $product->getId(), $product->getName(), $product->getPrice(), PHP_EOL);
+        }
+
+        $product = $productMapper->getProductById(1);
+
+        if ($product) {
+            echo sprintf("Product ID 1: %s, Price: %s%s", $product->getName(), $product->getPrice(), PHP_EOL);
+        }
+    }
+}
