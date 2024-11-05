@@ -53,14 +53,14 @@ services:
     image: mysql:latest
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}                # задайте пароль для root
-      MYSQL_DATABASE: ${MYSQL_DATABASE}                   # имя базы данных
-      MYSQL_USER: ${MYSQL_USER}                            # пользователь базы данных
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}                    # пароль пользователя
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3306:3306"                               # порт для связи с PHP
+      - "3306:3306"
     volumes:
-      - ./dbdata:/var/lib/mysql                    # том для хранения данных MySQL
+      - ./dbdata:/var/lib/mysql
     networks:
       - app-network
 
