@@ -13,7 +13,7 @@ class App
     {
         $db = Database::getConnection();
         $productMapper = new ProductMapper($db);
-        $products = $productMapper->getAllProducts();
+        $products = $productMapper->getAllProducts(20);
 
         foreach ($products as $product) {
             echo sprintf("ID: %s, Name: %s, Price: %s%s", $product->getId(), $product->getName(), $product->getPrice(), PHP_EOL);

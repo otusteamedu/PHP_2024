@@ -15,7 +15,7 @@ class ProductMapper
         $this->identityMap = new IdentityMap();
     }
 
-    public function getAllProducts(): array
+    public function getAllProducts(int $limit = 40, int $offset = 0): array
     {
         $stmt = $this->db->prepare("SELECT * FROM products LIMIT :limit OFFSET :offset");
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
