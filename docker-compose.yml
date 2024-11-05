@@ -1,0 +1,80 @@
+# версия синтаксиса
+#version: '3.8'
+
+# в этом блоке мы описываем контейнеры, которые будут запускаться
+services:
+  #Контейнер с PHP, назовём его app
+  app:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php # имя будущего образа
+    container_name: app # имя контейнера после запуска
+    env_file:
+      - .env
+    volumes:
+       - ./:/var/www/html
+    # мы можем создать для контейнеров внутреннюю сеть
+    networks:
+      - app-network
+
+  #контейнер с Nginx
+  webserver:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    # проброс портов
+    ports:
+      - "81:80"
+      - "443:443"
+    volumes:
+       - ./:/var/www/html
+    networks:
+      - app-network
+
+  # контейнер с Redis
+  redis:
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    image: redis
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "6379"
+    networks:
+      - app-network
+
+  # контейнер с Memcached
+  memcached:
+    build:
+      context: ./memcached
+      dockerfile: Dockerfile
+    image: memcached:latest
+    command:
+      - '--memory-limit=128'
+    networks:
+      - app-network
+
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5455:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

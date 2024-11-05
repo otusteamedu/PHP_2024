@@ -1,0 +1,18 @@
+{
+  "require": {
+    "squizlabs/php_codesniffer": "3.*",
+    "ext-pgsql": "*",
+    "ext-redis": "*"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "8.3"
+    }
+  }
+}
