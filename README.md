@@ -1,3 +1,32 @@
-# PHP_2024
+Описание/Пошаговая инструкция выполнения домашнего задания:
+Развернуть ES и добавить в него индекс с товарами интернет-магазина, индекс приложен к материалам урока
+Написать консольное приложение для поиска по товарам
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Критерии оценки:
+Работа c ES при помощи готовых библиотек
+Выделен слой кода, отвечающий за работу с хранилищем.
+
+
+# Команды
+## Загрузка данных из файла
+```bash
+php index.php seed {абсолютный путь до файла}
+```
+### пример 
+```bash
+php index.php seed /data/mysite.local/books_39289_aa67f1-39289-6891db.json
+```
+## Очистка индекса
+```bash
+php index.php clear
+```
+## Поиск 
+```bash
+php index.php search {json с параметрами поиска}
+```
+### примеры
+```bash
+php index.php search '{"price": { "max": 1000 }}'
+php index.php search '{"price": { "max": 2000 },"category": "Исторический роман"}'
+php index.php search '{"title": "рыцОри", "price": { "max": 10000, "min": 1500 }}'
+```

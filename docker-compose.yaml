@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  #Контейнер с php-fpm
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+      - ./code:/data/mysite.local
+    working_dir: /data/mysite.local
+    depends_on:
+      - elasticsearch
+    networks:
+      - app-network
+
+  #контейне с Nginx
+  webserver:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    image: nginx:latest
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  elasticsearch:
+    container_name: elastic
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    ports:
+      - "9200:9200"
+    networks:
+      - app-network
+    environment:
+      - ELASTIC_PASSWORD=password
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+
+  # контейнер с MySQL
+  db:
+    image: mysql:5.7.22
+    container_name: db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    restart: unless-stopped
+    volumes:
+      - ./docker/dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+
+  #redis (соединяется с php по порту)
+  cache:
+    image: redis:latest
+    container_name: cache
+    ports:
+      -  "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
