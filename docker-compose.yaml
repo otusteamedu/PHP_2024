@@ -1,0 +1,79 @@
+name: hw1
+services:
+  
+  db:
+    image: mysql:latest
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=otus
+      - MYSQL_DATABASE=otus
+      - MYSQL_USER=otus
+      - MYSQL_PASSWORD=otus
+    expose:
+      - 3306
+      - 33060 
+  
+  cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
+
+  memcached:
+    image: memcached:latest
+    command:
+      - --conn-limit=1024
+      - --memory-limit=64
+      - --threads=4    
+  
+  #контейнер с Nginx
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: app/nginx
+    container_name: ${WEBSERVER_NAME}
+    # проброс портов
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  #Контейнер с PHP-FPM, назовём его app
+  app:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: app/php # имя будущего образа
+    container_name: ${APP_NAME} # имя контейнера после запуска
+    depends_on:
+      - db
+      - cache
+      - memcached
+    environment:
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81  
+    volumes:
+       - ./code:/data/mysite.local
+    # мы можем создать для контейнеров внутреннюю сеть
+    networks:
+      - app-network     
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  db_data:
+  cache:
