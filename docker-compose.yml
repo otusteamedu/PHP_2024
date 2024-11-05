@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./src:/var/www/html
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+
+  php-fpm:
+    image: php:8.2-fpm
+    container_name: php-fpm
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      - PHP_FPM_LISTEN=9000
+    expose:
+      - "9000"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    ports:
+      - "11211:11211"
+    expose:
+      - "11211"
+    networks:
+      - app-network
+
+  db:
+    image: mysql:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}                # задайте пароль для root
+      MYSQL_DATABASE: ${MYSQL_DATABASE}                   # имя базы данных
+      MYSQL_USER: ${MYSQL_USER}                            # пользователь базы данных
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}                    # пароль пользователя
+    ports:
+      - "3306:3306"                               # порт для связи с PHP
+    volumes:
+      - ./dbdata:/var/lib/mysql                    # том для хранения данных MySQL
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
