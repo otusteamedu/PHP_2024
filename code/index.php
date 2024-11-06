@@ -27,3 +27,5 @@ try {
     echo 'Connection to server failed<br>';
 }
 
+exec('composer --version', $output);
+echo "<hr>Check composer installation:<br> $output[0] <br>";
