@@ -10,6 +10,7 @@ services:
         volumes:
             - ./code:/data/mysite.local
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+            - phpsocket:/var/run
         networks:
             - docker-network
 
@@ -21,6 +22,7 @@ services:
         container_name: app
         volumes:
             - ./code:/data/mysite.local
+            - phpsocket:/var/run
         networks:
             - docker-network
 
@@ -56,3 +58,5 @@ networks:
     docker-network:
         driver: bridge
 
+volumes:
+    phpsocket:
