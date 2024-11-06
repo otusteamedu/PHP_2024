@@ -19,3 +19,11 @@ try {
     echo 'Connection to server failed<br>';
 }
 
+echo '<hr>Check MySQL connection: <br>';
+try {
+    $mysqli = new mysqli("mysql", "root", "123456");
+    echo "Версия сервера: {$mysqli->server_info}<br>";
+} catch (Exception $e) {
+    echo 'Connection to server failed<br>';
+}
+

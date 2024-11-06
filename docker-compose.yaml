@@ -2,7 +2,6 @@ version: '3'
 
 services:
 
-    #Nginx Service
     nginx:
         image: nginx:latest
         container_name: nginx
@@ -14,7 +13,6 @@ services:
         networks:
             - docker-network
 
-    #PHP Service
     php-fpm:
         build:
             context: ./docker/php-fpm
@@ -38,27 +36,22 @@ services:
         networks:
             - docker-network
 
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        restart: always
+        # если не нужен внешний доступ, то убрать раздел ports
+        ports:
+          - "3306:3306"
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        volumes:
+            - ./docker/mysql/data2:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - docker-network
 
-    #MySQL Service
-#    db:
-#        image: mysql:8.0
-#        container_name: db
-#        restart: unless-stopped
-#        tty: true
-#        ports:
-#            - "3306:3306"
-#        command: --init-file /data/application/init.sql
-#        environment:
-#            MYSQL_ALLOW_EMPTY_PASSWORD: 1
-#        volumes:
-#            - dbdata:/var/lib/mysql/
-#            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-#            - ./docker/mysql/init.sql:/data/application/init.sql
-#            - ./docker/mysql/dumps:/data/dumps/
-#        networks:
-#            - docker-network
-#
-#Docker Networks
 networks:
     docker-network:
         driver: bridge
