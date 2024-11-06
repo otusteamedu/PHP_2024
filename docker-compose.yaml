@@ -29,7 +29,14 @@ services:
     command:
       - --conn-limit=1024
       - --memory-limit=64
-      - --threads=4    
+      - --threads=4 
+
+  composer:
+    image: composer:latest
+    command: install
+    restart: 'no'
+    volumes:
+      - ./code:/data/mysite.local       
   
   #контейнер с Nginx
   nginx:
@@ -43,6 +50,7 @@ services:
       - "80:80"
     volumes:
        - ./code:/data/mysite.local
+       - ./php-socket:/var/run/php-fpm.sock
     networks:
       - app-network
 
@@ -58,15 +66,18 @@ services:
       - db
       - cache
       - memcached
+      - composer
     environment:
       REDIS_HOST: cache
       REDIS_PORT: 6379
       REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81  
     volumes:
        - ./code:/data/mysite.local
+       - ./php-socket:/var/run/php-fpm.sock
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
-      - app-network     
+      - app-network 
+      
 
 #Docker Networks
 networks:
