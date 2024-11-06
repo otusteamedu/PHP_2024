@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+
+    #Nginx Service
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./code:/data/mysite.local
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - docker-network
+
+    #PHP Service
+    php-fpm:
+        build:
+            context: ./docker/php-fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: app
+        volumes:
+            - ./code:/data/mysite.local
+        networks:
+            - docker-network
+
+    redis:
+        image: redis:latest
+        container_name: redis
+        networks:
+            - docker-network
+
+    memcached:
+        image: memcached:latest
+        container_name: memcached
+        networks:
+            - docker-network
+
+
+    #MySQL Service
+#    db:
+#        image: mysql:8.0
+#        container_name: db
+#        restart: unless-stopped
+#        tty: true
+#        ports:
+#            - "3306:3306"
+#        command: --init-file /data/application/init.sql
+#        environment:
+#            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+#        volumes:
+#            - dbdata:/var/lib/mysql/
+#            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+#            - ./docker/mysql/init.sql:/data/application/init.sql
+#            - ./docker/mysql/dumps:/data/dumps/
+#        networks:
+#            - docker-network
+#
+#Docker Networks
+networks:
+    docker-network:
+        driver: bridge
+
