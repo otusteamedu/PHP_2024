@@ -13,3 +13,12 @@ exec:
 
 shell:
 	make exec ARGS=bash
+
+doctrine-validate:
+	make exec ARGS='php bin/console doctrine:schema:validate'
+
+doctrine-diff:
+	make exec ARGS='php bin/console doctrine:migrations:diff'
+
+doctrine-migrate:
+	make exec ARGS='php bin/console doctrine:migrations:migrate'
