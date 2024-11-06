@@ -1,15 +1,11 @@
-# версия синтаксиса
 version: '3'
 
-# в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #контейнер с Nginx
   nginx-balancer:
     build:
       context: ./nginx/balancer
       dockerfile: Dockerfile
     container_name: nginx-balancer
-    # проброс портов
     ports:
       - "80:80"
     networks:
@@ -24,7 +20,7 @@ services:
       dockerfile: Dockerfile
     container_name: nginx1
     volumes:
-      - ./code:/data/mysite.local
+      - ./app:/data/mysite.local
     networks:
       - app-network
     depends_on:
@@ -38,7 +34,7 @@ services:
       dockerfile: Dockerfile
     container_name: nginx2
     volumes:
-      - ./code:/data/mysite.local
+      - ./app:/data/mysite.local
     networks:
       - app-network
     depends_on:
@@ -46,49 +42,113 @@ services:
       - app2
       - app3
 
-  #Контейнер с PHP-FPM, назовём его app
   app1:
-    # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./fpm
       dockerfile: Dockerfile
-    image: balance/php # имя будущего образа
-    container_name: app1 # имя контейнера после запуска
+    image: balance/php
+    container_name: app1
     volumes:
-       - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
+       - ./app:/data/mysite.local
     networks:
       - app-network
 
-  #Контейнер с PHP-FPM, назовём его app
   app2:
-    # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./fpm
       dockerfile: Dockerfile
-    image: balance/php # имя будущего образа
-    container_name: app2 # имя контейнера после запуска
+    image: balance/php
+    container_name: app2
     volumes:
-      - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
+      - ./app:/data/mysite.local
     networks:
       - app-network
 
-  #Контейнер с PHP-FPM, назовём его app
   app3:
-    # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./fpm
       dockerfile: Dockerfile
-    image: balance/php # имя будущего образа
-    container_name: app3 # имя контейнера после запуска
+    image: balance/php
+    container_name: app3
     volumes:
-      - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
+      - ./app:/data/mysite.local
     networks:
       - app-network
 
-#Docker Networks
+  redis1:
+    image: redis:6.2
+    container_name: redis1
+    command: [ "redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "/data/nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes" ]
+    volumes:
+      - redis1-data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  redis2:
+    image: redis:6.2
+    container_name: redis2
+    command: [ "redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "/data/nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes" ]
+    volumes:
+      - redis2-data:/data
+    ports:
+      - "6380:6379"
+    networks:
+      - app-network
+
+  redis3:
+    image: redis:6.2
+    container_name: redis3
+    command: [ "redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "/data/nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes" ]
+    volumes:
+      - redis3-data:/data
+    ports:
+      - "6381:6379"
+    networks:
+      - app-network
+
+  redis4:
+    image: redis:6.2
+    container_name: redis4
+    command: [ "redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "/data/nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes" ]
+    volumes:
+      - redis4-data:/data
+    ports:
+      - "6382:6379"
+    networks:
+      - app-network
+
+  redis5:
+    image: redis:6.2
+    container_name: redis5
+    command: [ "redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "/data/nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes" ]
+    volumes:
+      - redis5-data:/data
+    ports:
+      - "6383:6379"
+    networks:
+      - app-network
+
+  redis6:
+    image: redis:6.2
+    container_name: redis6
+    command: [ "redis-server", "--cluster-enabled", "yes", "--cluster-config-file", "/data/nodes.conf", "--cluster-node-timeout", "5000", "--appendonly", "yes" ]
+    volumes:
+      - redis6-data:/data
+    ports:
+      - "6384:6379"
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  redis1-data:
+  redis2-data:
+  redis3-data:
+  redis4-data:
+  redis5-data:
+  redis6-data:
