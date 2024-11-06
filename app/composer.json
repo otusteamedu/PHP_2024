@@ -1,4 +1,5 @@
 {
+    "name": "rybkinevg/otus-homework-15",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
@@ -7,14 +8,26 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/dbal": "^3",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/orm": "^3.3",
+        "phpdocumentor/reflection-docblock": "^5.4",
+        "phpstan/phpdoc-parser": "^1.33",
         "symfony/console": "7.1.*",
+        "symfony/css-selector": "7.1.*",
+        "symfony/dom-crawler": "7.1.*",
         "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.1.*",
+        "symfony/http-client": "7.1.*",
+        "symfony/mime": "7.1.*",
+        "symfony/property-access": "7.1.*",
+        "symfony/property-info": "7.1.*",
         "symfony/runtime": "7.1.*",
+        "symfony/serializer": "7.1.*",
+        "symfony/validator": "7.1.*",
         "symfony/yaml": "7.1.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {
@@ -62,7 +75,8 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.1.*"
+            "require": "7.1.*",
+            "docker": false
         }
     }
 }
