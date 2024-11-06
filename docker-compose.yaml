@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./code:/data/mysite.local
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+            - phpsocket:/var/run
+        networks:
+            - docker-network
+
+    php-fpm:
+        build:
+            context: ./docker/php-fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: app
+        volumes:
+            - ./code:/data/mysite.local
+            - phpsocket:/var/run
+        networks:
+            - docker-network
+
+    redis:
+        image: redis:latest
+        container_name: redis
+        networks:
+            - docker-network
+
+    memcached:
+        image: memcached:latest
+        container_name: memcached
+        networks:
+            - docker-network
+
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        restart: always
+        # если не нужен внешний доступ, то убрать раздел ports
+        ports:
+          - "3306:3306"
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        volumes:
+            - ./docker/mysql/data2:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - docker-network
+
+networks:
+    docker-network:
+        driver: bridge
+
+volumes:
+    phpsocket:
