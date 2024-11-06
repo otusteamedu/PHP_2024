@@ -68,7 +68,7 @@
 Создание файла с переменными окружения:
 
 ```shell
-cp .env.dist .env
+cp .env.dist .env && cp app/.env.dist app/.env 
 ```
 
 Запустить Docker контейнеры:
