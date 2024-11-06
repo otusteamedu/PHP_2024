@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[AsController]
-#[Route('/api/v1/posts/report', methods: ['POST'])]
+#[Route('/api/v1/reports', methods: ['POST'])]
 final readonly class GenerateReportController
 {
     public function __construct(
