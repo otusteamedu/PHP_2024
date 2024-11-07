@@ -9,6 +9,8 @@ services:
     volumes:
       - ../src:/var/www/html
       - ./etc/php/php.ini:/usr/local/etc/php/php.ini
+      - ./etc/php/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ./php-socket:/var/run/php
     networks:
       - otusnet
 
@@ -22,6 +24,7 @@ services:
       - ../src:/var/www/html
       - ./etc/nginx/hosts/:/etc/nginx/conf.d/
       - ./log/nginx/:/var/log/nginx/
+      - ./php-socket:/var/run/php
     networks:
       - otusnet
 
