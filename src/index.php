@@ -37,6 +37,7 @@ function memcached($env)
     $mc = new Memcached();
     $mc->addServer($env['MEMCACHED_HOST'], $env['MEMCACHED_PORT']);
     $statuses = $mc->getStats();
+
     if ($statuses[$env['MEMCACHED_HOST'] . ':' . $env['MEMCACHED_PORT']]['uptime'] < 1) {
         die("Memcached connection failed");
     } else {
