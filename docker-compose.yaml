@@ -33,14 +33,14 @@ services:
   redis:
     image: redis:latest
     ports:
-      - "6379:6379"
+      - "6379"
     networks:
       - app-network
   
   memcached:
     image: memcached:latest
     ports:
-      - "11211:11211"
+      - "11211"
     networks:
       - app-network
 
@@ -53,7 +53,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
     ports:
-      - "${DB_PORT}:5432"
+      - "${DB_PORT}"
     networks:
       - app-network
 
