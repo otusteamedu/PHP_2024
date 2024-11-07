@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+#  todo db bd basa
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: ${CONTAINER_NAME}
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached
+    container_name: memcached
+    networks:
+      - app-network
+    command:
+      - --conn-limit=1024
+      - --memory-limit=64
+      - --threads=4
+
+  redis:
+    image: redis
+    container_name: rediska
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_PASSWORD}
+      - REDIS_USER_PASSWORD=${REDIS_PASSWORD}
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
