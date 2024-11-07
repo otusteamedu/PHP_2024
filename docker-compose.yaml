@@ -19,7 +19,9 @@ services:
       - app-network
 
   php-fpm:
-    image: php:8.3-fpm
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
     container_name: php-fpm
     restart: unless-stopped
     environment:
@@ -39,8 +41,8 @@ services:
     container_name: mysql
     restart: unless-stopped
     tty: true
-    ports:
-      - 3306:3306
+    # ports:
+    #   - 3306:3306
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
@@ -55,8 +57,8 @@ services:
     image: redis:alpine
     container_name: redis
     restart: unless-stopped
-    ports:
-      - 6379:6379
+    # ports:
+    #   - 6379:6379
     networks:
       - app-network
 
@@ -68,7 +70,7 @@ services:
       - --conn-limit=1024
       - --memory-limit=64
       - --threads=4
-    ports:
-      - 11211:11211
+    # ports:
+    #   - 11211:11211
     networks:
       - app-network
