@@ -42,5 +42,4 @@ function memcached($env)
     } else {
         echo "Memcached connected successfully" . PHP_EOL;
     }
-
 }
