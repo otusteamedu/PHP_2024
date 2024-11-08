@@ -8,4 +8,3 @@ interface EventSubscriberInterface
 {
     public function update(EventInterface $event): void;
 }
-

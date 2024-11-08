@@ -59,11 +59,9 @@ class DatabaseQueryResult implements Iterator
 
     public function getQueryResult(array $queryResult): void
     {
-        foreach ($queryResult as $item)
-        {
+        foreach ($queryResult as $item) {
             $object = new stdClass();
-            foreach ($item as $key => $value)
-            {
+            foreach ($item as $key => $value) {
                 $object->$key = $value;
             }
             $this->collection[] =  $object;

@@ -22,7 +22,7 @@ class QueryBuilderPublisher implements PublisherInterface
 
     public function notify(EventInterface $event): void
     {
-        foreach($this->subscribers as $subscriber) {
+        foreach ($this->subscribers as $subscriber) {
             $subscriber->update($event);
         }
     }

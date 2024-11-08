@@ -22,7 +22,7 @@ $result       = $queryBuilder
     ->limit(3)
     ->execute();
 
-function iterate($result) 
+function iterate($result)
 {
     foreach ($result as $product) {
         echo $product->title.PHP_EOL;
