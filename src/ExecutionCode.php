@@ -1,4 +1,5 @@
 <?php
+
 /**
  * cd app/src/Application/QueryBuilder/Execution
  * php ExecutionCode.php
@@ -25,7 +26,7 @@ $result       = $queryBuilder
 function iterate($result)
 {
     foreach ($result as $product) {
-        echo $product->title.PHP_EOL;
+        echo $product->title . PHP_EOL;
     }
 }
 iterate($result);
