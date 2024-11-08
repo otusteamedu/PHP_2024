@@ -20,7 +20,6 @@ class Movie
     private PDOStatement $selectAllStatement;
     private PDOStatement $selectOneRandomStatement;
     private PDOStatement $insertStatement;
-    private PDOStatement $updateStatement;
     private PDOStatement $deleteStatement;
 
     public function __construct(PDO $pdo)
@@ -31,7 +30,7 @@ class Movie
             'SELECT * FROM moviers WHERE id = ?'
         );
         $this->selectAllStatement = $pdo->prepare(
-            'SELECT * FROM moviers'
+            'SELECT * FROM moviers LIMIT ?, ?'
         );
         $this->selectOneRandomStatement = $pdo->prepare(
             'SELECT * FROM moviers ORDER BY RAND() LIMIT 1'
@@ -39,12 +38,29 @@ class Movie
         $this->insertStatement = $pdo->prepare(
             'INSERT INTO moviers (name, year, rating, duration) VALUES (?, ?, ?, ?)'
         );
-        $this->updateStatement = $pdo->prepare(
-            'UPDATE moviers SET name = ?, year = ?, rating = ?, duration = ? WHERE id = ?'
-        );
         $this->deleteStatement = $pdo->prepare(
             'DELETE FROM moviers WHERE id = ?'
         );
+    }
+
+    private function updateStatement(): bool
+    {
+        $arParams = $arString = [];
+
+        foreach (['name', 'year', 'rating', 'duration'] as $field) {
+            if ($this->{$field} !== null) {
+                $arParams[] = $this->{$field};
+                $arString[] = $field . ' = ?';
+            }
+        }
+
+        if (empty($arParams)) {
+            throw new \Exception('Empty all fields');
+        }
+
+        return $this->pdo->prepare(
+            'UPDATE moviers SET '. implode(', ', $arString) .' WHERE id = ?'
+        )->execute($arParams);
     }
 
     public function getId(): ?int
@@ -117,10 +133,10 @@ class Movie
             ->setDuration($result['duration']);
     }
 
-    public function selectAll(): MovieCollection
+    public function selectAll(int $page = 0, int $limit = 1000): MovieCollection
     {
         $this->selectAllStatement->setFetchMode(PDO::FETCH_ASSOC);
-        $this->selectAllStatement->execute();
+        $this->selectAllStatement->execute([$page, $limit]);
 
         $result = $this->selectAllStatement->fetchAll(PDO::FETCH_ASSOC);
 
@@ -170,13 +186,7 @@ class Movie
 
     public function update(): bool
     {
-        return $this->updateStatement->execute([
-            $this->name,
-            $this->year,
-            $this->rating,
-            $this->duration,
-            $this->id,
-        ]);
+        return $this->updateStatement();
     }
 
     public function delete(int $id): bool
