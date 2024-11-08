@@ -44,8 +44,6 @@ services:
     volumes:
       - redisdata:/data
     restart: always
-    ports:
-      - 6379:6379
     networks:
       - doc-net
   memcached:
@@ -56,8 +54,6 @@ services:
       - --conn-limit=1024
       - --memory-limit=64
       - --threads=4
-    ports:
-      - 11211:11211
     networks:
       - doc-net
 
