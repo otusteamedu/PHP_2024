@@ -1,0 +1,43 @@
+services:
+  nginx:
+    build:
+      context: ./build/nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/data/dev.local
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: ./build/php-fpm
+    image: php:8.2-fpm
+    volumes:
+      - ./www:/data/dev.local
+    depends_on:
+      - redis
+      - memcached
+      - db
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
