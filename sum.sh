@@ -1,5 +1,12 @@
 #!/bin/bash
 
+for cmd in bc; do
+  if ! command -v "$cmd" &> /dev/null; then
+    echo "Утилита $cmd не установлена. Пожалуйста, установите её и повторите попытку."
+    exit 1
+  fi
+done
+
 if [ "$#" -ne 2 ]; then
     echo "Ошибка: Требуется ровно два числовых аргумента."
     exit 1
