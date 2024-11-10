@@ -2,7 +2,8 @@
 
 namespace Database;
 
-class DatabaseConnection {
+class DatabaseConnection
+{
     private $host;
     private $name;
     private $user;
@@ -27,7 +28,7 @@ class DatabaseConnection {
             $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             echo "Successful connection to PostgreSQL" . "<br>";
             return $this->pdo;
-        } catch(\PDOException $e) {
+        } catch (\PDOException $e) {
             echo "Connection error: " . $e->getMessage() . "<br>";
             return null;
         }
