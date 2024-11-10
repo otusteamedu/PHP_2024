@@ -1,0 +1,22 @@
+services:
+  php-cli:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: irayu/php-cli
+    container_name: otus-php--php
+    environment:
+      PHP_IDE_CONFIG: "serverName=php-docker"
+    volumes:
+      - ./code:/code
+      - ./logs/php:/var/log/php
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+    ports:
+      - "9003:9003"
+    stdin_open: true
+    tty: true
+    networks:
+      - otus-php-network
+networks:
+  otus-php-network:
+    driver: bridge
