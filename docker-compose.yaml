@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    container_name: ${DB_CONTAINER_NAME}
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+      args:
+        UID: "3000"
+    image: myapp/nginx
+    container_name: ${SERVER_CONTAINER_NAME}
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/mysite.local
+       - ./php-socket:/var/run/php
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+      args:
+        UID: "3000"
+    image: myapp/php
+    container_name: ${APP_CONTAINER_NAME}
+    volumes:
+       - ./code:/data/mysite.local
+       - ./php-socket:/var/run/php
+    networks:
+      - app-network
+    depends_on:
+      - db
+      - memcached
+      - redis
+
+  memcached:
+    image: memcached
+    container_name: ${MEMCACHED_CONTAINER_NAME}
+    networks:
+      - app-network
+    command:
+      - --conn-limit=1024
+      - --memory-limit=64
+      - --threads=4
+
+  redis:
+    image: redis
+    container_name: ${REDIS_CONTAINER_NAME}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  pgdata:
