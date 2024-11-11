@@ -7,7 +7,7 @@ COPY cities.txt /tmp/cities.txt
 COPY ./sort.sh /tmp/sort.sh
 
 # Обновляем индексы и устанавливаем bc
-RUN apt update && apt install -y bc
+#RUN apt update && apt install -y bc
 
 # Устанавливаем команду запуска по умолчанию
 CMD ["bash"]
