@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Запрос выписки</title>
+</head>
+<body>
+<h1>Запросить выписку</h1>
+<form method="POST" action="/submit">
+    <label for="email">Email:</label>
+    <input type="email" name="email" required><br>
+
+    <label for="start_date">Начальная дата:</label>
+    <input type="date" name="start_date" required><br>
+
+    <label for="end_date">Конечная дата:</label>
+    <input type="date" name="end_date" required><br>
+
+    <button type="submit">Отправить запрос</button>
+</form>
+</body>
+</html>
