@@ -12,6 +12,7 @@ if ! [[ $1 =~ $numReg && $2 =~ $numReg ]]; then
   exit 1
 fi
 
-result=$(($1 + $2))
+
+result=$(awk "BEGIN {print $1 + $2}")
 
 echo "Результат сложения $1 + $2 = $result"
