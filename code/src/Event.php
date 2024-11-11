@@ -34,7 +34,7 @@ class Event
         return json_encode($this->params);
     }
 
-    public function ParamsArray()
+    public function paramsArray()
     {
         return json_decode($this->params, true);
     }
@@ -46,7 +46,7 @@ class Event
 
     public function getParamsKeys()
     {
-        $result = $this->ParamsArray();
+        $result = $this->paramsArray();
         return array_keys((array) $result);
     }
 
@@ -58,7 +58,7 @@ class Event
     public function paramValue($key)
     {
         if (in_array($key, $this->getParamsKeys())) {
-            $prms = $this->ParamsArray();
+            $prms = $this->paramsArray();
             return $prms[$key];
         } else {
             return false;

@@ -51,7 +51,7 @@ class Rds
             $key_curr_num = max(array_unique($keys_num)) + 1;
             $key = "user:$key_curr_num";
         } else {
-           $key = "user:0";
+            $key = "user:0";
         };
 
         //в него закидываем ключи и их знвчения
@@ -116,14 +116,14 @@ class Rds
                 //если значение массив
                 if (gettype($check_value) == 'array') {
                     foreach ($check_value as $value) {
-                        if ( ( ( string ) $value) == ( ( string ) $search_value ) ) {
+                        if (( (string) $value) == ( (string) $search_value)) {
                             array_push($result, $key);
                         } elseif (str_contains((string) $value, (string) $search_value)) {
                             array_push($result, $key);
                         };
                     }
                 } else {
-                    if ( ( ( string ) $check_value ) == ( ( string ) $search_value ) ) {
+                    if (( (string) $check_value) == ( (string) $search_value)) {
                         array_push($result, $key);
                     } elseif (str_contains((string) $check_value, (string) $search_value)) {
                         array_push($result, $key);
