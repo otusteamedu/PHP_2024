@@ -10,7 +10,8 @@ class Event
     public $priority;
     public $params;
 
-    public function __construct($jsn) {
+    public function __construct($jsn)
+    {
         $this->jsn = $jsn;
         $this->data = json_decode($this->jsn, true);
         $this->name = $this->data['Name'];
@@ -18,36 +19,44 @@ class Event
         $this->params = $this->data['Params'];
     }
 
-    public function getJSON() {
+    public function getJSON()
+    {
         return $this->jsn;
     }
 
-    public function getArray() {
+    public function getArray()
+    {
         return $this->data;
     }
 
-    public function ParamsJSON() {
+    public function paramsJSON()
+    {
         return json_encode($this->params);
     }
 
-    public function ParamsArray() {
+    public function ParamsArray()
+    {
         return json_decode($this->params, true);
     }
 
-    public function getKeys() {
+    public function getKeys()
+    {
         return array_keys($this->data);
     }
 
-    public function getParamsKeys() {
+    public function getParamsKeys()
+    {
         $result = $this->ParamsArray();
         return array_keys((array) $result);
     }
 
-    public function getAllKeys() {
+    public function getAllKeys()
+    {
         return array_merge(["Priority", "Name"], $this->getParamsKeys());
     }
 
-    public function ParamValue($key) {
+    public function paramValue($key)
+    {
         if (in_array($key, $this->getParamsKeys())) {
             $prms = $this->ParamsArray();
             return $prms[$key];

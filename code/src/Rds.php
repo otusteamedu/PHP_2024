@@ -14,7 +14,8 @@ class Rds
     public $password;
     public $event;
 
-    public function __construct($host, $port, $password) {
+    public function __construct($host, $port, $password)
+    {
         $this->host = $host;
         $this->port = $port;
         $this->password = $password;
@@ -24,7 +25,8 @@ class Rds
         $this->redis->auth($this->password);
     }
 
-    public function addEvent($jsn) {
+    public function addEvent($jsn)
+    {
         $this->event = new Event($jsn);
         //проверка глобального ключа
         if ($this->redis->Exists("user:0")) {
@@ -55,12 +57,13 @@ class Rds
         //в него закидываем ключи и их знвчения
         $this->redis->hSet($key, "Name", $this->event->name);
         $this->redis->hSet($key, "Priority", $this->event->priority);
-        $this->redis->hSet($key, "Params", $this->event->ParamsJSON());
+        $this->redis->hSet($key, "Params", $this->event->paramsJSON());
 
         return true;
     }
 
-    public function addEvents($jsn) {
+    public function addEvents($jsn)
+    {
         $events = json_decode($jsn, true);
         foreach ($events as $event) {
             $json = json_encode($event);
@@ -68,17 +71,19 @@ class Rds
         }
     }
 
-    public function clear() {
+    public function clear()
+    {
         $this->redis->flushDB();
     }
 
-    public function filter($array) {
-        for($j = 0; $j < count($array); $j ++) {
-            for($i = 0; $i < count($array)-1; $i ++){
-                if($array[$i]['Priority'] > $array[$i+1]['Priority']) {
-                    $ev = $array[$i+1];
-                    $array[$i+1]=$array[$i];
-                    $array[$i]=$ev;
+    public function filter($array)
+    {
+        for ($j = 0; $j < count($array); $j++) {
+            for ($i = 0; $i < count($array) - 1; $i++) {
+                if ($array[$i]['Priority'] > $array[$i + 1]['Priority']) {
+                    $ev = $array[$i + 1];
+                    $array[$i + 1] = $array[$i];
+                    $array[$i] = $ev;
                 };
             };
         };
@@ -86,7 +91,8 @@ class Rds
         return json_encode($array);
     }
 
-    public function search($jsn) {
+    public function search($jsn)
+    {
         $data = json_decode($jsn, true);
 
         $result = [];
@@ -99,9 +105,9 @@ class Rds
                 if ($search_key == "Name") {
                     $search_value = $data["Name"];
                     $check_value = $this->event->name;
-                } elseif ($this->event->ParamValue($search_key)) {
+                } elseif ($this->event->paramValue($search_key)) {
                     $search_value = $data[$search_key];
-                    $check_value = $this->event->ParamValue($search_key);
+                    $check_value = $this->event->paramValue($search_key);
                 } else {
                     $search_value = "+";
                     $check_value = "_";
@@ -110,14 +116,14 @@ class Rds
                 //если значение массив
                 if (gettype($check_value) == 'array') {
                     foreach ($check_value as $value) {
-                        if ( ((string)$value) == ((string)$search_value)) {
+                        if ( ( ( string ) $value) == ( ( string ) $search_value ) ) {
                             array_push($result, $key);
                         } elseif (str_contains((string) $value, (string) $search_value)) {
                             array_push($result, $key);
                         };
                     }
-                }   else {
-                    if ( ((string)$check_value) == ((string)$search_value)) {
+                } else {
+                    if ( ( ( string ) $check_value ) == ( ( string ) $search_value ) ) {
                         array_push($result, $key);
                     } elseif (str_contains((string) $check_value, (string) $search_value)) {
                         array_push($result, $key);

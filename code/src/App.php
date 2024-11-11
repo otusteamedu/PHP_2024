@@ -16,7 +16,8 @@ class App
 
     public $dataBase;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->host = (string) getenv("HOST");
         $this->port = (string) getenv("PORT");
         $this->password = (string) getenv("REDIS_PASS");
@@ -24,7 +25,8 @@ class App
         $this->dataBase = new Rds($this->host, $this->port, $this->password);
     }
 
-    public function run($params){
+    public function run($params)
+    {
         switch ($params[1]) {
             case "add":
                 $this->dataBase->addEvent($params[2]);

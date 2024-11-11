@@ -45,8 +45,8 @@ class Table
                     //если это параметр
                     if (in_array($key, $this->event->getParamsKeys())) {
                         //если это массив
-                        if (gettype($this->event->ParamValue($key)) == "array") {
-                            array_push($values, (implode(", ", $this->event->ParamValue($key))));
+                        if (gettype($this->event->paramValue($key)) == "array") {
+                            array_push($values, (implode(", ", $this->event->paramValue($key))));
                         } else {
                             array_push($values, $this->event->ParamValue($key));
                         }
