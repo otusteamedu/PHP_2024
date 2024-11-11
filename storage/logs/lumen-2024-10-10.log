@@ -1,0 +1,16 @@
+[2024-10-10 09:28:12] local.ERROR: Command "make:job" is not defined.
+
+Did you mean one of these?
+    make:migration
+    make:seeder {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"make:job\" is not defined.
+
+Did you mean one of these?
+    make:migration
+    make:seeder at /Users/tim/Personal/PHP_2024/vendor/symfony/console/Application.php:737)
+[stacktrace]
+#0 /Users/tim/Personal/PHP_2024/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('make:job')
+#1 /Users/tim/Personal/PHP_2024/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /Users/tim/Personal/PHP_2024/vendor/laravel/lumen-framework/src/Console/Kernel.php(160): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /Users/tim/Personal/PHP_2024/artisan(35): Laravel\\Lumen\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 

@@ -2,52 +2,36 @@
 
 namespace App\Services;
 
+use App\Contracts\QueueClientInterface;
+use App\Contracts\QueueTaskHandlerInterface;
 use App\Models\Request;
 use Redis;
 use RedisException;
 
 class QueueProcessor
 {
-    private Redis $redis;
+    private QueueClientInterface $queueClient;
 
-    /**
-     * @throws RedisException
-     */
-    public function __construct()
+    private array $handlers;
+
+    public function __construct(QueueClientInterface $queueClient)
     {
-        $this->redis = new Redis();
-        $this->redis->connect(getenv('REDIS_HOST'), 6379);
+        $this->queueClient = $queueClient;
+        $this->handlers = [];
     }
 
-    /**
-     * @throws RedisException
-     */
-    public function addToQueue($data): void
+    public function registerHandler(string $type, QueueTaskHandlerInterface $handler): void
     {
-        $this->redis->rpush('request_queue', json_encode($data));
+        $this->handlers[$type] = $handler;
     }
 
-    public function processQueue(NotificationService $notification)
+    public function processQueue(string $queueName): void
     {
-        $requestModel = new Request();
-
-        while (true) {
-            $data = $this->redis->lpop('request_queue');
-
-            if ($data) {
-                $request = json_decode($data, true);
-
-                echo "Обрабатывается запрос для {$request['email']} на даты с {$request['start_date']} по {$request['end_date']}\n";
-
-                $requestModel->updateStatus($request['email'], $request['start_date'], $request['end_date'], 'completed');
-
-                $notification->sendEmail(
-                    $request['email'],
-                    "Ваша выписка готова",
-                    "Ваша выписка за период с {$request['start_date']} по {$request['end_date']} готова."
-                );
-
-                $notification->sendTelegram("Запрос для {$request['email']} обработан.");
+        while ($task = $this->queueClient->pop($queueName)) {
+            if (isset($this->handlers[$task['type']])) {
+                $this->handlers[$task['type']]->handle($task['data']);
+            } else {
+                echo "Unknown task type: " . $task['type'] . PHP_EOL;
             }
         }
     }
