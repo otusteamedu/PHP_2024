@@ -7,10 +7,10 @@ services:
       - db_data:/var/lib/mysql
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=otus
-      - MYSQL_DATABASE=otus
-      - MYSQL_USER=otus
-      - MYSQL_PASSWORD=otus
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     expose:
       - 3306
       - 33060 
@@ -19,7 +19,7 @@ services:
     image: redis:latest
     restart: always
     ports:
-      - '6379:6379'
+      - 3679
     command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
     volumes: 
       - cache:/data
