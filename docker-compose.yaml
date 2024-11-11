@@ -1,39 +1,19 @@
-# версия синтаксиса
 version: '3'
 
-# в этом блоке мы описываем контейнеры, которые будут запускаться
 services:
-  #Контейнер с PHP, назовём его app
-  app:
-    # Если нет секции build, то система будет искать образ в репозиториях
+
+  php-fpm:
     build:
       context: ./fpm
       dockerfile: Dockerfile
-    image: myapp/php # имя будущего образа
-    container_name: app # имя контейнера после запуска
+    image: php-fpm
+    container_name: php-fpm
+    env_file:
+      - .env
     volumes:
-       - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
+       - ./code:/data/fpm-redis
     networks:
       - app-network
-
-  #контейне с Nginx
-  webserver:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: myapp/nginx
-    container_name: webserver
-    # проброс портов
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-       - ./code:/data/mysite.local
-    networks:
-      - app-network
-  
-
 
   redis:
     image: redis:7.2.5-alpine
@@ -42,40 +22,13 @@ services:
       - "6379:6379"
     environment:
       - REDIS_PASSWORD=${REDIS_PASS}
-      - REDIS_PORT=6379
+      - REDIS_PORT=${PORT}
       - REDIS_DATABASES=16
     volumes:
       - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-    #command: redis-sever --requirepass qwerty --include /usr/local/etc/redis/redis.conf
     command: redis-server --requirepass ${REDIS_PASS}
     networks:
       - app-network
-  
-
-
-  memcached:
-    image: memcached:1.6-alpine
-    container_name: "memcached"
-    ports:
-      - "11211:11211"
-    networks:
-      - app-network
-  
-
-
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgresql
-    ports:
-      - 5432:5432
-    env_file: 
-      - example.env
-    volumes:
-      - ./postgres/dbdata:/var/lib/postgres/data
-      #ещё хороший вариант не спалить пароли - создать БД скриптом и не комитить его
-      #- ./postgres/create_db.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-        - app-network
     
       
 

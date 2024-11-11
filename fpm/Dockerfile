@@ -15,9 +15,6 @@ RUN apt update && apt install -y \
     && docker-php-ext-enable mcrypt \
     && pecl install redis \
     && docker-php-ext-enable redis \
-    && pecl install memcached \
-    && docker-php-ext-enable memcached \
-    && docker-php-ext-install -j$(nproc) iconv mbstring pdo_pgsql zip xml \
     && docker-php-ext-install zip\
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
@@ -28,8 +25,9 @@ COPY --from=composer:2.7.6 /usr/bin/composer /usr/local/bin/composer
 
 RUN composer require vlucas/phpdotenv
 
-WORKDIR /data
+WORKDIR /data/fpm-redis/code/View
+RUN composer require phplucidframe/console-table
 
-VOLUME /data
+WORKDIR /data/fpm-redis
 
 CMD ["php-fpm"]
