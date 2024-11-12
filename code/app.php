@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/src/App.php';
+require "src/vendor/autoload.php";
 
 use Kyberlox\App\App as App;
 

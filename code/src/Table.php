@@ -2,7 +2,7 @@
 
 namespace Kyberlox\Table;
 
-require_once __DIR__ . '/Event.php';
+require "vendor/autoload.php";
 require 'View/vendor/autoload.php';
 
 use Kyberlox\Event\Event as Event;

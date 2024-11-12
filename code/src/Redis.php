@@ -2,11 +2,11 @@
 
 namespace Kyberlox\Rds;
 
-require_once __DIR__ . '/Event.php';
+require "vendor/autoload.php";
 
 use Kyberlox\Event\Event as Event;
 
-class Rds
+class Redis
 {
     public $redis;
     public $host;

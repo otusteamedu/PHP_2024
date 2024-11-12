@@ -2,10 +2,9 @@
 
 namespace Kyberlox\App;
 
-require_once __DIR__ . '/Rds.php';
-require_once __DIR__ . '/Table.php';
+require "vendor/autoload.php";
 
-use Kyberlox\Rds\Rds as Rds;
+use Kyberlox\Rds\Redis as Redis;
 use Kyberlox\Table\Table as Table;
 
 class App
@@ -22,7 +21,7 @@ class App
         $this->port = (string) getenv("PORT");
         $this->password = (string) getenv("REDIS_PASS");
 
-        $this->dataBase = new Rds($this->host, $this->port, $this->password);
+        $this->dataBase = new Redis($this->host, $this->port, $this->password);
     }
 
     public function run($params)

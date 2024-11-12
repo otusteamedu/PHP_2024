@@ -1,0 +1,5 @@
+{
+  "autoload": {
+    "files": ["App.php", "Redis.php", "Table.php","Event.php"]
+  }
+}
