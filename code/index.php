@@ -24,7 +24,7 @@ $memcached = connectToMemcached();
 $memcached->set('key', 'value');
 echo ' Memcached: ' . $memcached->get('key');  // Outputs: value
 
-function connectToDB($host, $dbname, $username, $password) 
+function connectToDB($host, $dbname, $username, $password)
 {
     try {
         // Create a new PDO instance and set the connection parameters
@@ -40,7 +40,7 @@ function connectToDB($host, $dbname, $username, $password)
     }
 }
 
-function connectToRedis() 
+function connectToRedis()
 {
     $host = 'redis';  // Hostname of the Redis server (Docker service name or IP address)
     $port = 6379;     // Default Redis port
@@ -55,7 +55,7 @@ function connectToRedis()
     }
 }
 
-function connectToMemcached() 
+function connectToMemcached()
 {
     $host = 'memcached';  // Hostname of the Memcached server (Docker service name or IP address)
     $port = 11211;        // Default Memcached port
