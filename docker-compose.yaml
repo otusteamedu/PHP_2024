@@ -9,6 +9,7 @@ services:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./code:/var/www/html
+      - ./src:/var/www/html/src
     env_file:
       - ./.env
     depends_on:
