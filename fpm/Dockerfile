@@ -11,7 +11,11 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install zip
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN curl -sS https://getcomposer.org/installer | php -- \
+    --filename=composer \
+    --install-dir=/usr/local/bin
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql mysqli
