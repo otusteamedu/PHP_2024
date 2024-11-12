@@ -31,13 +31,17 @@ if ! command -v bc &> /dev/null; then
       brew install bc;;
     *)
       echo "Неподдерживаемая операционная система. Установите пакет bc вручную."
-      exit 1
-      ;;
+      exit 1;;
   esac
 fi
 
-# Вычисляем сумму
-sum=$(echo "scale=2; $num1 + $num2" | bc)
+# Вычисляем сумму если получилось установить bc
+if ! command -v bc &> /dev/null; then
+  sum=$(echo "scale=2; $num1 + $num2" | bc)
+else
+  sum=$(awk "BEGIN {print $num1 + $num2}")
+fi
+
 
 # Выводим сумму
 echo $sum
