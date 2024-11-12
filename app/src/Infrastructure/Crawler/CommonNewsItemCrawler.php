@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Infrastructure\Bus;
+declare(strict_types=1);
 
-use App\Application\Bus\Dto\NewsItemUrlBusRequestDto;
-use App\Application\Bus\Dto\NewsItemUrlBusResponseDto;
-use App\Application\Bus\NewsItemUrlBusInterface;
+namespace App\Infrastructure\Crawler;
+
+use App\Application\Crawler\Dto\NewsItemCrawlerRequestDto;
+use App\Application\Crawler\Dto\NewsItemCrawlerResponseDto;
+use App\Application\Crawler\NewsItemCrawlerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class CommonNewsItemUrlBus implements NewsItemUrlBusInterface
+class CommonNewsItemCrawler implements NewsItemCrawlerInterface
 {
     public function __construct(
         private readonly HttpClientInterface $client,
     ) {
     }
 
-    public function getNewsItemByUrl(NewsItemUrlBusRequestDto $requestDto): NewsItemUrlBusResponseDto
+    public function getNewsItemByUrl(NewsItemCrawlerRequestDto $requestDto): NewsItemCrawlerResponseDto
     {
         $url = $requestDto->url;
         $response = $this->client->request('GET', $url);
@@ -28,10 +30,10 @@ class CommonNewsItemUrlBus implements NewsItemUrlBusInterface
         $crawler = new Crawler($content);
         $title = $crawler->filter('title')->text();
 
-        return new NewsItemUrlBusResponseDto(
+        return new NewsItemCrawlerResponseDto(
             $title,
             $url,
-            new \DateTime()
+            new \DateTimeImmutable()
         );
     }
 }

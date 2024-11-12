@@ -3,16 +3,16 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\NewsItem;
+use App\Domain\Factory\NewsItemFactoryInterface;
 use App\Domain\Repository\NewsItemRepositoryInterface;
 use App\Infrastructure\Doctrine\Entity\NewsItem as DoctrineNewsItem;
 use App\Infrastructure\Doctrine\Repository\NewsItemRepository;
-use App\Infrastructure\Factory\CommonNewsItemFactory;
 
 class CommonNewsItemRepository implements NewsItemRepositoryInterface
 {
     public function __construct(
         private readonly NewsItemRepository $ormRepository,
-        private readonly CommonNewsItemFactory $commonFactory,
+        private readonly NewsItemFactoryInterface $commonFactory,
     ) {
     }
 
@@ -50,7 +50,7 @@ class CommonNewsItemRepository implements NewsItemRepositoryInterface
 
         $item->setTitle($newsItem->getTitle()->getValue())
             ->setUrl($newsItem->getUrl()->getValue())
-            ->setDate($newsItem->getDate()->getValue())
+            ->setDate(\DateTime::createFromImmutable($newsItem->getDate()->getValue()))
         ;
 
         $this->ormRepository->registry->getManager()->persist($item);
@@ -85,7 +85,7 @@ class CommonNewsItemRepository implements NewsItemRepositoryInterface
             $domainItem = $this->commonFactory->create(
                 $item->getTitle(),
                 $item->getUrl(),
-                $item->getDate()
+                \DateTimeImmutable::createFromMutable($item->getDate())
             );
 
             $reflectionProperty->setValue($domainItem, $item->getId());
@@ -102,7 +102,7 @@ class CommonNewsItemRepository implements NewsItemRepositoryInterface
         $domainItem = $this->commonFactory->create(
             $item->getTitle(),
             $item->getUrl(),
-            $item->getDate()
+            \DateTimeImmutable::createFromMutable($item->getDate())
         );
 
         $reflectionProperty->setValue($domainItem, $item->getId());

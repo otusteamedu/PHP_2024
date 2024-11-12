@@ -17,8 +17,8 @@ class NewsListApiController extends AbstractController
     #[Route('/news', methods: ['GET'])]
     public function indexAction(): JsonResponse
     {
-        $newsItems = ($this->getAllNewsUseCase)();
+        $newsListResponseDto = ($this->getAllNewsUseCase)();
 
-        return $this->json($newsItems);
+        return $this->json($newsListResponseDto->newsList);
     }
 }

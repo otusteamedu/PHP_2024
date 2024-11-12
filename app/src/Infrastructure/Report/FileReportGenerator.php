@@ -6,11 +6,12 @@ namespace App\Infrastructure\Report;
 
 use App\Application\Report\Dto\SubmitReportGeneratorRequestDto;
 use App\Application\Report\Dto\SubmitReportGeneratorResponseDto;
+use App\Application\Report\ReportGeneratorInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class FileReportGenerator implements \App\Application\Report\ReportGeneratorInterface
+class FileReportGenerator implements ReportGeneratorInterface
 {
     public function __construct(
         private readonly Filesystem $filesystem,

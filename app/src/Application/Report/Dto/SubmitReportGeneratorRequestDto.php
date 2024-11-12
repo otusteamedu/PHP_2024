@@ -8,7 +8,7 @@ class SubmitReportGeneratorRequestDto
 {
     private array $newsItems;
 
-    public function __construct(array $newsItem)
+    public function __construct(iterable $newsItem)
     {
         foreach ($newsItem as $item) {
             $this->newsItems[] = $item;

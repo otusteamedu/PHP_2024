@@ -8,5 +8,5 @@ use App\Domain\Entity\NewsItem;
 
 interface NewsItemFactoryInterface
 {
-    public function create(string $title, string $url, \DateTime $date): NewsItem;
+    public function create(string $title, string $url, \DateTimeImmutable $date): NewsItem;
 }

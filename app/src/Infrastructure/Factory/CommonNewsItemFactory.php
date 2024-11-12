@@ -10,7 +10,7 @@ use App\Domain\ValueObject\Url;
 
 class CommonNewsItemFactory implements NewsItemFactoryInterface
 {
-    public function create(string $title, string $url, \DateTime $date): NewsItem
+    public function create(string $title, string $url, \DateTimeImmutable $date): NewsItem
     {
         return new NewsItem(
             new Title($title),

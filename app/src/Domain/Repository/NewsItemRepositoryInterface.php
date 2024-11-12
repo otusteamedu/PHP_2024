@@ -8,7 +8,7 @@ use App\Domain\Entity\NewsItem;
 
 interface NewsItemRepositoryInterface
 {
-    public function findAll(): array;
+    public function findAll(): iterable;
 
     public function findBy(array $params): iterable;
 
