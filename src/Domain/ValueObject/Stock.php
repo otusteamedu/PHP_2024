@@ -1,6 +1,7 @@
 <?php
 
 namespace VSukhov\Hw12\Domain\ValueObject;
+
 class Stock
 {
     private int $quantity;
