@@ -35,7 +35,7 @@ if ! command -v bc &> /dev/null; then
   esac
 fi
 
-# Вычисляем сумму если получилось установить bc
+# Если получилось установить bc, используем bc, иначе используем awk
 if ! command -v bc &> /dev/null; then
   sum=$(echo "scale=2; $num1 + $num2" | bc)
 else
