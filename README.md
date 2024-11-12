@@ -1,3 +1,13 @@
-# PHP_2024
+# Trading platform
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+## Для установки приложения необходимо выполнить следующие команды в терминале:
+
+### 1. Клонировать проект
+```
+git pull ...
+```
+### 2. Установить Yii2 
+```
+   cd src
+   composer create-project --prefer-dist yiisoft/yii2-app-basic .
+```

@@ -1,0 +1,81 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    image: trading_platform/php
+    container_name: app
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - postgres
+      - redis
+      - es
+    networks:
+      - app-network
+    stdin_open: true
+    tty: true
+    command: bash
+    env_file: .env
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: ${PGDATA}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./docker/volumes/postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    ports:
+      - ${POSTGRES_HOST_PORT}:${POSTGRES_CONTAINER_PORT}
+
+  redis:
+    image: redis:latest
+    ports:
+      - ${REDIS_HOST_PORT}:${REDIS_CONTAINER_PORT}
+
+  es:
+    image: elasticsearch:8.15.3
+    container_name: ${ELASTIC_CONTAINER}
+    ports:
+      - ${ELASTIC_HOST_PORT}:${ELASTIC_CONTAINER_PORT}
+    networks:
+      - app-network
+    env_file: .env
+    volumes:
+      - ./docker/volumes/elasticsearch_data:/usr/share/elasticsearch/data
+
+networks:
+  app-network:
+    driver: bridge

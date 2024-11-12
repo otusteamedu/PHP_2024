@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ruleset name="TradingPlatform">
+    <description>Trading Platform PHP CodeSniffer Configuration</description>
+
+    <!-- Использовать стандарты PSR-1, PSR-12 и Squiz -->
+    <rule ref="PSR1"/>
+    <rule ref="PSR12"/>
+    <rule ref="Squiz"/>
+
+    <!-- Исключить директории, которые не нужно проверять -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/runtime/*</exclude-pattern>
+    <exclude-pattern>*/web/*</exclude-pattern>
+
+    <!-- Добавить директории, которые нужно проверять -->
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- Настройки для отчетов -->
+    <arg name="colors"/>
+    <arg value="p"/>
+</ruleset>

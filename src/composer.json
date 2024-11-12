@@ -1,0 +1,44 @@
+{
+  "name": "itorn/trading-platform",
+  "description": "Trading Platform",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Otus\\App\\": "code/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Pavel Ivanov",
+      "email": "xeolit@bk.ru"
+    }
+  ],
+  "require": {
+    "yiisoft/yii2-app-basic": "~2.0.51",
+    "yiisoft/yii2-redis": "~2.0.0",
+    "yiisoft/yii2-elasticsearch": "~2.1.0",
+    "brick/math": "^0.9.3"
+  },
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.0.0",
+    "yiisoft/yii2-gii": "~2.0.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "phpunit/phpunit": "~9.5.0",
+    "squizlabs/php_codesniffer": "^3.6"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    },
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "phpcs --config-set installed_paths vendor/squizlabs/php_codesniffer/src/Standards/Squiz"
+    ],
+    "post-update-cmd": [
+      "phpcs --config-set installed_paths vendor/squizlabs/php_codesniffer/src/Standards/Squiz"
+    ]
+  }
+}
