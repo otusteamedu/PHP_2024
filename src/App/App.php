@@ -2,24 +2,27 @@
 
 namespace VSukhov\Hw12\App;
 
-use VSukhov\Hw12\Repository\ProductRepository;
-use VSukhov\Hw12\Service\SearchQueryBuilder;
-use VSukhov\Hw12\Service\SearchService;
+use VSukhov\Hw12\Application\Service\ProductSearchService;
+use VSukhov\Hw12\Infostructure\Elastic\ElasticSearchService;
+use VSukhov\Hw12\Infostructure\Elastic\ProductRepository;
+use VSukhov\Hw12\Interface\ProductSearchCommand;
 
 class App
 {
-    public function run(): array
+    private ProductSearchCommand $command;
+    private ElasticSearchService $elasticSearchService;
+
+    public function __construct()
     {
-        $esService = new SearchService();
-        $productRepository = new ProductRepository($esService);
+        $this->elasticSearchService = new ElasticSearchService();
+        $productRepository = new ProductRepository($this->elasticSearchService);
+        $productSearchService = new ProductSearchService($productRepository);
 
-        $productRepository->loadProductsFromFile(__DIR__ . '/../books.json');
+        $this->command = new ProductSearchCommand($productSearchService);
+    }
 
-        $queryBuilder = (new SearchQueryBuilder())
-            ->byCategory('Фантастика')
-            ->byPriceRange(1000, 5000)
-            ->inStock();
-
-        return $productRepository->searchProducts($queryBuilder)->asArray();
+    public function run(array $args): void
+    {
+        $this->command->execute($args);
     }
 }
