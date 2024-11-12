@@ -1,0 +1,91 @@
+name: CI/CD Pipeline for Laravel
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, bcmath, mysql
+          tools: composer
+
+      - name: Install Composer dependencies
+        run: composer install --no-scripts --no-progress --no-suggest
+
+      - name: Run PHPUnit tests
+        run: ./vendor/bin/phpunit --testdox
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Clone Configuration Repo
+        uses: actions/checkout@v3
+        with:
+          repository: timirey/config
+          path: config
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up SSH for Deployment
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Deploy Laravel Application
+        run: |
+          ssh -o StrictHostKeyChecking=no project@127.0.0.1 << 'EOF'
+          set -e
+
+          APP_DIR="/var/www/laravel-app"
+          BLUE_DIR="/var/www/laravel-app-blue"
+          GREEN_DIR="/var/www/laravel-app-green"
+          CURRENT_DIR="/var/www/laravel-app-current"
+          REPO_URL="git@github.com:timirey/laravel.git"
+
+          if [ ! -d "$BLUE_DIR" ] || [ "$(readlink $CURRENT_DIR)" == "$BLUE_DIR" ]; then
+            TARGET_DIR="$GREEN_DIR"
+          else
+            TARGET_DIR="$BLUE_DIR"
+          fi
+
+          if [ ! -d "$TARGET_DIR" ]; then
+            git clone $REPO_URL $TARGET_DIR
+          else
+            cd $TARGET_DIR
+            git reset --hard
+            git pull origin main
+          fi
+
+          cd $TARGET_DIR
+          composer install --no-dev --optimize-autoloader
+
+          cp ~/config/.env $TARGET_DIR/.env
+
+          php artisan migrate --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+          ln -sfn $TARGET_DIR $CURRENT_DIR
+
+          sudo systemctl reload php8.2-fpm
+          sudo systemctl reload nginx
