@@ -1,0 +1,13 @@
+{
+  "name": "sukhov/hw12",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "VSukhov\\Hw12\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.2",
+    "elasticsearch/elasticsearch": "*"
+  }
+}
