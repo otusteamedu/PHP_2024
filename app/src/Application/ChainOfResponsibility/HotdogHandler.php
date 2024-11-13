@@ -10,7 +10,6 @@ use App\Application\WorkWithIngredients;
 
 class HotdogHandler extends OrderHandler
 {
-
     public function handleOrder(ProductInterface $product, $ingredients)
     {
         if (strtolower($product->getName()) === 'hotdog') {

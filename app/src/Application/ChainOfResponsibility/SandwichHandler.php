@@ -10,7 +10,6 @@ use App\Application\WorkWithIngredients;
 
 class SandwichHandler extends OrderHandler
 {
-
     public function handleOrder(ProductInterface $product, $ingredients)
     {
         if (strtolower($product->getName()) === 'sandwich') {

@@ -65,11 +65,11 @@ class CookingOrderUseCase implements CookingOrderInterface
 
         $this->cookedProduct = $productHandler->handleOrder($this->order->getProduct(), $this->order->getIngredients());
     }
-    
+
     private function checkStandart(): bool
     {
         echo "Проверка заказа на соотвествие стандарту ";
-        
+
         //имимтация на проверку стандарту
         if (rand(0, 1) === 1) {
             echo " [успех!] " . PHP_EOL;

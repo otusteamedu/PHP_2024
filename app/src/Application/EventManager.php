@@ -6,7 +6,6 @@ namespace App\Application;
 
 class EventManager
 {
-
     private $events = [];
 
     public function addEvent($eventName, $callback)
