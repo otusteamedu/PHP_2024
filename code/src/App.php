@@ -2,7 +2,7 @@
 
 namespace Kyberlox\App;
 
-require "vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
 use Kyberlox\Rds\Redis as Redis;
 use Kyberlox\Table\Table as Table;
