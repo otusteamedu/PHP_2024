@@ -8,7 +8,6 @@ use App\Domain\Entity\ProductInterface;
 
 abstract class OrderHandler
 {
-
     public function __construct(private ?OrderHandler $nextHandler = null)
     {
     }

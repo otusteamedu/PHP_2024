@@ -6,5 +6,4 @@ namespace App\Domain\Entity;
 
 interface ProductInterface
 {
-
 }

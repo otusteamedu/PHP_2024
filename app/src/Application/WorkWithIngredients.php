@@ -23,14 +23,14 @@ class WorkWithIngredients
 {
     public function cook(ProductInterface $product, array $ingredients): ProductInterface
     {
-        $productAndIngredients = match(strtolower($product->getName())) {
+        $productAndIngredients = match (strtolower($product->getName())) {
             'burger' => new BasicProduct(new BreadBurger()),
             'sandwich' => new BasicProduct(new BreadSandwich()),
             'hotdog' => new BasicProduct(new BreadHotdog()),
         };
 
         foreach ($ingredients as $ingredient) {
-            $productAndIngredients = match(strtolower($ingredient->getName())) {
+            $productAndIngredients = match (strtolower($ingredient->getName())) {
                 'cheese' => new AddCheese($productAndIngredients),
                 'cucumber' => new AddCucumber($productAndIngredients),
                 'ham' => new AddHam($productAndIngredients),

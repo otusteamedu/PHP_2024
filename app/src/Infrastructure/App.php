@@ -14,7 +14,7 @@ class App
     public function run()
     {
         CreateOrder::create("burger", ['cheese', 'ham'], "tray");
-        
+
         die();
         while (1) {
             $product = trim(readline('Какой продукт вы ходите заказать [возможные варианты: : ' . implode(", ", $this->arAvailablesProduct) . '], либо введите exit: '));

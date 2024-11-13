@@ -57,7 +57,7 @@ class CreateOrder
         }
 
         foreach ($ingredients as $ingredient) {
-            $arIngredientsObject[] = match($ingredient) {
+            $arIngredientsObject[] = match ($ingredient) {
                 'cheese' => new Cheese(),
                 'cucumber' => new Cucumber(),
                 'ham' => new Ham(),
@@ -74,7 +74,7 @@ class CreateOrder
         $publisher->subscribe(new PrintNewStatus());
 
         $order = new Order($productObject, $arIngredientsObject, $servingObject);
-        
+
         $eventManager = new EventManager();
 
         $eventManager->addEvent('dispose_product', function () {
