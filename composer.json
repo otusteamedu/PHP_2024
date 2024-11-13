@@ -1,0 +1,15 @@
+{
+  "name": "vendor_name/api",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "user",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "admsvist/otus-hw3": "^1.0"
+  }
+}
