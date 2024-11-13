@@ -1,0 +1,10 @@
+{
+    "name": "evgenyart/hw16",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {}
+}
