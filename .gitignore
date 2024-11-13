@@ -3,3 +3,4 @@ code/vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
+.env
