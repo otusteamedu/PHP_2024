@@ -1,10 +1,5 @@
 <?php
 
-/**
- * cd app/src/Application/QueryBuilder/Execution
- * php ExecutionCode.php
-*/
-
 use App\Application\QueryBuilder\EventSubscriber\QueryBuilderSubscriber;
 use App\Application\QueryBuilder\Publisher\QueryBuilderPublisher;
 use App\Application\QueryBuilder\SelectQueryBuilder;
