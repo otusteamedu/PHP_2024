@@ -35,16 +35,16 @@ services:
   redis:
     image: redis:latest
     container_name: redis
-    ports:
-      - "6379:6379"
+    expose:
+      - 6379
     networks:
       - app_network
 
   memcached:
     image: memcached:latest
     container_name: memcached
-    ports:
-      - "11211:11211"
+    expose:
+      - 11211
     networks:
       - app_network
 
@@ -57,8 +57,8 @@ services:
       MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
-    ports:
-      - "3306:3306"
+    expose:
+      - 3306
     volumes:
       - db_data:/var/lib/mysql
     networks:
