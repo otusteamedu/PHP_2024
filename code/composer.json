@@ -1,0 +1,20 @@
+{
+    "name": "myvendor/myproject",
+    "description": "A simple PHP project",
+    "type": "project",
+    "autoload": {
+      "psr-4": {
+        "App\\": "src/"
+      }
+    },
+    "config": {
+      "preferred-install": "dist",
+      "optimize-autoloader": true
+    },
+    "scripts": {
+      "post-install-cmd": [
+        "echo 'Composer install complete!'"
+      ]
+    }
+  }
+  
