@@ -1,5 +1,7 @@
 <?php
 
+use App\MySQLConnection;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 // Access environment variables
@@ -8,7 +10,9 @@ $dbname = getenv('DB_NAME');
 $username = getenv('DB_USER');
 $password = getenv('DB_PASS');
 
-if (connectToDB($host, $dbname, $username, $password)) {
+$connection = new MySQLConnection($host, $username, $password, $dbname);
+
+if ($connection->connect()) {
     echo " Connected successfully to the database! ";
 } else {
     echo " Failed to connect to the database. ";
@@ -23,22 +27,6 @@ echo ' Redis: ' . $redis->get('foo') . ' ';  // Outputs: bar
 $memcached = connectToMemcached();
 $memcached->set('key', 'value');
 echo ' Memcached: ' . $memcached->get('key');  // Outputs: value
-
-function connectToDB($host, $dbname, $username, $password)
-{
-    try {
-        // Create a new PDO instance and set the connection parameters
-        $dsn = "mysql:host={$host};dbname={$dbname}";
-        $connection = new PDO($dsn, $username, $password);
-
-        // Set the PDO error mode to exception
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return true;
-    } catch (PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
-        return false;
-    }
-}
 
 function connectToRedis()
 {
