@@ -16,5 +16,11 @@ for arg in "$@"; do
     fi
 done
 
-result=$(echo "$1 + $2" | bc)
+sum() {
+    local num1=$1
+    local num2=$2
+    echo "$(awk "BEGIN {print $num1 + $num2}")"
+}
+
+result=$(sum "$1" "$2")
 echo "Результат: $result"
