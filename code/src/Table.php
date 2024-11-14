@@ -2,9 +2,6 @@
 
 namespace Kyberlox\Table;
 
-require_once __DIR__ . "/vendor/autoload.php";
-require_once __DIR__ . '/View/vendor/autoload.php';
-
 use Kyberlox\Event\Event as Event;
 use LucidFrame\Console\ConsoleTable as ConsoleTable;
 

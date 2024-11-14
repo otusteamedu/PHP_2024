@@ -2,8 +2,6 @@
 
 namespace Kyberlox\Rds;
 
-require_once __DIR__ . "/vendor/autoload.php";
-
 use Kyberlox\Event\Event as Event;
 
 class Redis
