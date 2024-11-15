@@ -47,7 +47,8 @@ class ServerTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testReceiveMessage(){
+    public function testReceiveMessage()
+    {
 
         $this->sock->method('receive')->willReturn(['new message', 12],['exit', 65536]);
         $this->sock->expects(self::once())->method('write');
@@ -59,5 +60,4 @@ class ServerTest extends TestCase
             'Received message: exit' . PHP_EOL
         );
     }
-
 }

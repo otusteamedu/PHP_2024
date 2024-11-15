@@ -49,7 +49,8 @@ class ClientTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testSendMessage(){
+    public function testSendMessage()
+    {
         $input = 'new message';
         $inputBytes = strlen($input);
         $this->sock->method('read')->willReturn("Received $inputBytes bytes");
@@ -66,5 +67,4 @@ class ClientTest extends TestCase
             'Input message' . PHP_EOL
         );
     }
-
 }
