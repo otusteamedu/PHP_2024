@@ -34,7 +34,7 @@ class Client
         while (true) {
             echo 'Input message' . PHP_EOL;
 
-            $message = fgets(STDIN);
+            $message = $this->getInput();
             $this->socket->write($this->socket->unixSocket, $message);
 
             $confirmation = $this->socket->read(
@@ -49,5 +49,10 @@ class Client
             }
         }
         $this->socket->close($this->socket->unixSocket);
+    }
+
+    public function getInput(): bool|string
+    {
+        return fgets(STDIN);
     }
 }
