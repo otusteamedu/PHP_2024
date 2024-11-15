@@ -152,7 +152,7 @@ POST /api/v1/reports
 
 ```json
 {
-    "url": "http://localhost:8080/reports/download/1"
+    "url": "http://localhost:8080/var/export/reports/6737904239e89.html"
 }
 ```
 
