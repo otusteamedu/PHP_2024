@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\MediaMonitoring\Infrastructure\Storage;
 
+use App\MediaMonitoring\Application\ReportGenerator\ReportType;
 use App\MediaMonitoring\Application\Storage\ReportStorageInterface;
-use App\MediaMonitoring\Domain\Enum\ReportType;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final readonly class ReportStorage implements ReportStorageInterface
 {
-    private const BASE_PATH = '/var/export/reports';
+    private const string BASE_PATH = '/var/export/reports';
 
     public function __construct(
         private KernelInterface $kernel,

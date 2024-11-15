@@ -7,6 +7,6 @@ namespace App\MediaMonitoring\Application\UseCase\GenerateReport;
 final readonly class GenerateReportResponse
 {
     public function __construct(
-        public int $reportId
+        public string $path,
     ) {}
 }

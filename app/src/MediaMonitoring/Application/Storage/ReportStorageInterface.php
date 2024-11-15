@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\MediaMonitoring\Application\Storage;
 
-use App\MediaMonitoring\Domain\Enum\ReportType;
+use App\MediaMonitoring\Application\ReportGenerator\ReportType;
 
 interface ReportStorageInterface
 {

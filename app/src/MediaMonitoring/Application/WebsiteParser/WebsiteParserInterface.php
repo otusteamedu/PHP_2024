@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MediaMonitoring\Application\Service;
+namespace App\MediaMonitoring\Application\WebsiteParser;
 
 use App\MediaMonitoring\Application\Exception\CouldNotParseWebsiteException;
 

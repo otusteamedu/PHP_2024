@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\MediaMonitoring\Infrastructure\Service;
+namespace App\MediaMonitoring\Infrastructure\WebsiteParser;
 
 use App\MediaMonitoring\Application\Exception\CouldNotParseWebsiteException;
-use App\MediaMonitoring\Application\Service\WebsiteParserInterface;
+use App\MediaMonitoring\Application\WebsiteParser\WebsiteParserInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

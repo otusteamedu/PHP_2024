@@ -5,12 +5,19 @@
                                       https://raw.github.com/doctrine/doctrine3/master/doctrine-mapping.xsd">
     <entity name="App\MediaMonitoring\Domain\Entity\Post"
             table="media_monitoring_posts">
-        <id name="id" type="integer" column="id">
+        <id name="id" type="post_id" column="id">
             <generator strategy="AUTO"/>
             <sequence-generator sequence-name="media_monitoring_posts_seq"/>
         </id>
-        <field name="title" type="string"/>
-        <field name="date" type="datetime"/>
-        <field name="url" type="string"/>
+
+        <embedded name="title"
+                  class="App\MediaMonitoring\Domain\Entity\PostTitle"
+                  use-column-prefix="false"/>
+
+        <embedded name="url"
+                  class="App\MediaMonitoring\Domain\Entity\PostUrl"
+                  use-column-prefix="false"/>
+
+        <field name="date" type="datetime" column="date"/>
     </entity>
 </doctrine-mapping>

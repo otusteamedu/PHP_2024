@@ -9,14 +9,57 @@ use DateTimeInterface;
 final class Post
 {
     public function __construct(
-        public ?int $id,
-        public string $title,
-        public DateTimeInterface $date,
-        public string $url,
+        private ?PostId $id,
+        private PostTitle $title,
+        private DateTimeInterface $date,
+        private PostUrl $url,
     ) {}
 
-    public static function make(string $title, DateTimeInterface $date, string $url): self
+    public function getId(): ?PostId
     {
-        return new self(null, $title, $date, $url);
+        return $this->id;
+    }
+
+    public function setId(?PostId $id): Post
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getTitle(): PostTitle
+    {
+        return $this->title;
+    }
+
+    public function setTitle(PostTitle $title): Post
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDate(): DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTimeInterface $date): Post
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getUrl(): PostUrl
+    {
+        return $this->url;
+    }
+
+    public function setUrl(PostUrl $url): Post
+    {
+        $this->url = $url;
+
+        return $this;
     }
 }

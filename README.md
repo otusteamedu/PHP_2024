@@ -77,6 +77,12 @@ cp .env.dist .env && cp app/.env.dist app/.env
 make up
 ```
 
+Установить зависимости:
+
+```shell
+make exec ARGS="composer install"
+```
+
 Запустить миграции:
 
 ```shell

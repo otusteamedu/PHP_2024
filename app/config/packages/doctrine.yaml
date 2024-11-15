@@ -10,6 +10,8 @@ doctrine:
     server_version: '%env(resolve:DATABASE_SERVER_VERSION)%'
     profiling_collect_backtrace: '%kernel.debug%'
     use_savepoints: true
+    types:
+      post_id: App\MediaMonitoring\Infrastructure\Doctrine\Type\PostIdType
   orm:
     auto_generate_proxy_classes: true
     enable_lazy_ghost_objects: true
@@ -20,12 +22,12 @@ doctrine:
       Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
     auto_mapping: true
     mappings:
-      MediaMonitoring:
-        type: xml
+      App\MediaMonitoring\Domain\Entity:
         is_bundle: false
+        type: xml
         dir: '%kernel.project_dir%/config/doctrine/entities/media_monitoring'
         prefix: 'App\MediaMonitoring\Domain\Entity'
-        alias: MediaMonitoring
+        alias: MediaMonitoringEntity
     controller_resolver:
       auto_mapping: false
 

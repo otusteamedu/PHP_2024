@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace App\MediaMonitoring\Application\UseCase\GenerateReport;
 
-use App\MediaMonitoring\Application\UseCase\CreateReport\CreateReportRequest;
-use App\MediaMonitoring\Application\UseCase\CreateReport\CreateReportUseCase;
+use App\MediaMonitoring\Application\ReportGenerator\ReportGeneratorInterface;
+use App\MediaMonitoring\Application\ReportGenerator\ReportItem;
+use App\MediaMonitoring\Application\Storage\ReportStorageInterface;
+use App\MediaMonitoring\Domain\Entity\Post;
 use App\MediaMonitoring\Domain\Repository\PostRepositoryInterface;
-use App\MediaMonitoring\Domain\Service\ReportGeneratorInterface;
-use App\Shared\Domain\Exception\CouldNotSaveEntityException;
 
 final readonly class GenerateReportUseCase
 {
     public function __construct(
         private PostRepositoryInterface $postRepository,
         private ReportGeneratorInterface $reportGenerator,
-        private CreateReportUseCase $createReportUseCase,
+        private ReportStorageInterface $reportStorage,
     ) {}
 
-    /**
-     * @throws CouldNotSaveEntityException
-     */
     public function execute(GenerateReportRequest $request): GenerateReportResponse
     {
         $postIds = $request->postIds;
@@ -29,15 +26,21 @@ final readonly class GenerateReportUseCase
             ? $this->postRepository->findAll()
             : $this->postRepository->findByIds($postIds);
 
-        $content = $this->reportGenerator->generate(...$posts);
+        $reportItems = array_map(
+            static fn(Post $post): ReportItem => new ReportItem(
+                $post->getTitle()->value(),
+                $post->getUrl()->value(),
+            ),
+            $posts
+        );
 
-        $reportId = $this->createReportUseCase->execute(
-            new CreateReportRequest(
-                $this->reportGenerator->getType(),
-                $content
-            )
-        )->reportId;
+        $content = $this->reportGenerator->generate(...$reportItems);
 
-        return new GenerateReportResponse($reportId);
+        $path = $this->reportStorage->put(
+            $this->reportGenerator->getType(),
+            $content
+        );
+
+        return new GenerateReportResponse($path);
     }
 }

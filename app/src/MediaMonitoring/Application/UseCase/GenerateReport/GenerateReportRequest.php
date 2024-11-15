@@ -6,7 +6,11 @@ namespace App\MediaMonitoring\Application\UseCase\GenerateReport;
 
 final readonly class GenerateReportRequest
 {
+    public array $postIds;
+
     public function __construct(
-        public array $postIds = [],
-    ) {}
+        int ...$postIds,
+    ) {
+        $this->postIds = $postIds;
+    }
 }

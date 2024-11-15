@@ -6,6 +6,8 @@ namespace App\MediaMonitoring\Infrastructure\Http\Controller\CreatePost;
 
 use App\MediaMonitoring\Application\UseCase\CreatePost\CreatePostRequest;
 use App\MediaMonitoring\Application\UseCase\CreatePost\CreatePostUseCase;
+use App\MediaMonitoring\Domain\Entity\PostUrl;
+use App\MediaMonitoring\Infrastructure\Http\Controller\CreatePost\CreatePostRequest as CreatePostHttpRequest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -19,14 +21,14 @@ final readonly class CreatePostController
         private CreatePostUseCase $createPostUseCase,
     ) {}
 
-    public function __invoke(#[MapRequestPayload] CreatePostRequest $request): JsonResponse
+    public function __invoke(#[MapRequestPayload] CreatePostHttpRequest $request): JsonResponse
     {
         $postId = $this->createPostUseCase->execute(
-            new CreatePostRequest($request->url)
+            new CreatePostRequest(new PostUrl($request->url))
         )->postId;
 
         return new JsonResponse([
-            'id' => $postId,
+            'id' => $postId->value(),
         ]);
     }
 }

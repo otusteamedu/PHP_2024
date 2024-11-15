@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\MediaMonitoring\Application\Exception;
 
-use Exception;
+use RuntimeException;
 
-class CouldNotParseWebsiteException extends Exception
+class CouldNotParseWebsiteException extends RuntimeException
 {
     //
 }

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\MediaMonitoring\Infrastructure\Http\Controller\ListPosts;
 
-use App\MediaMonitoring\Domain\Entity\Post;
-use App\MediaMonitoring\Domain\Repository\PostRepositoryInterface;
+use App\MediaMonitoring\Application\UseCase\ListPosts\ListPostsRequest;
+use App\MediaMonitoring\Application\UseCase\ListPosts\ListPostsUseCase;
+use App\MediaMonitoring\Application\UseCase\ListPosts\PostListItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,23 +16,25 @@ use Symfony\Component\Routing\Annotation\Route;
 final readonly class ListPostsController
 {
     public function __construct(
-        private PostRepositoryInterface $postRepository,
+        private ListPostsUseCase $useCase,
     ) {}
 
     public function __invoke(): JsonResponse
     {
-        $posts = array_map(
-            static function (Post $post): array {
+        $postListItems = $this->useCase->execute(new ListPostsRequest());
+
+        $postListItems = array_map(
+            static function (PostListItem $item): array {
                 return [
-                    'id' => $post->id,
-                    'title' => $post->title,
-                    'date' => $post->date,
-                    'url' => $post->url,
+                    'id' => $item->id->value(),
+                    'title' => $item->title->value(),
+                    'url' => $item->url->value(),
+                    'date' => $item->date,
                 ];
             },
-            $this->postRepository->findAll()
+            $postListItems->items
         );
 
-        return new JsonResponse($posts);
+        return new JsonResponse($postListItems);
     }
 }

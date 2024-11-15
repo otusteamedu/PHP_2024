@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Exception;
 
-use Exception;
+use RuntimeException;
+use Throwable;
 
-class CouldNotSaveEntityException extends Exception
+class CouldNotSaveEntityException extends RuntimeException
 {
-    public static function forEntity(string $name, ?Exception $e = null): self
+    public static function forEntity(string $name, ?Throwable $e = null): self
     {
         $message = sprintf('Could not save entity [%s]', $name);
 
