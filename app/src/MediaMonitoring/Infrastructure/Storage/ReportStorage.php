@@ -20,7 +20,7 @@ final readonly class ReportStorage implements ReportStorageInterface
 
     public function put(ReportType $type, string $content, ?string $name = null): string
     {
-        $name ??= time();
+        $name ??= uniqid();
 
         $filename = $name . '.' . $type->getExtension();
 
