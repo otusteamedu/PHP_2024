@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Проверка наличия утилиты bc
-if ! command -v bc &> /dev/null; then
-  echo "Ошибка: утилита 'bc' не установлена. Пожалуйста, установите её с помощью 'sudo apt install bc' (для Ubuntu/Debian)."
-  exit 1
-fi
-
 # Проверка, что переданы два аргумента
 if [ $# -ne 2 ]; then
   echo "Ошибка: необходимо указать два аргумента"
@@ -27,8 +21,8 @@ if [[ ! $2 =~ $number_regex ]]; then
   exit 1
 fi
 
-# Вычисление суммы
-sum=$(echo "$1 + $2" | bc)
+# Вычисляем их сумму с помощью AWK
+sum=$(awk "BEGIN {print $1 + $2}")
 
 # Вывод суммы
 echo "Сумма: $sum"
