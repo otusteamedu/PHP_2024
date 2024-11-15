@@ -1,8 +1,7 @@
 <?php
 
-namespace tests;
+namespace Naimushina\Chat;
 
-use Naimushina\Chat\App;
 use PHPUnit\Framework\TestCase;
 
 class AppTest extends TestCase

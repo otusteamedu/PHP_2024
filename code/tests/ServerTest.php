@@ -1,11 +1,7 @@
 <?php
 
+namespace Naimushina\Chat;
 
-use Naimushina\Chat\App;
-use Naimushina\Chat\Client;
-use Naimushina\Chat\ConfigManager;
-use Naimushina\Chat\Server;
-use Naimushina\Chat\Socket;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +20,7 @@ class ServerTest extends TestCase
         parent::setUp();
         $fakeSockConnection = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         $this->sock = $this->getMockBuilder(Socket::class)
-            ->onlyMethods(['accept', 'receive', 'write', 'close'])
+            ->onlyMethods(['accept', 'receive', 'write', 'close', 'bind', 'listen'])
             ->getMock();
         $this->sock->method('accept')->willReturn($fakeSockConnection);
         $this->configManager = new ConfigManager();

@@ -1,10 +1,9 @@
 <?php
 
-use Naimushina\Chat\Client;
-use Naimushina\Chat\ConfigManager;
+namespace Naimushina\Chat;
+
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Naimushina\Chat\Socket;
 
 class ClientTest extends TestCase
 {
