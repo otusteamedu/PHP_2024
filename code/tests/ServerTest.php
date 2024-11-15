@@ -15,6 +15,7 @@ class ServerTest extends TestCase
      * @var ConfigManager
      */
     private ConfigManager $configManager;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,8 +46,7 @@ class ServerTest extends TestCase
      */
     public function testReceiveMessage()
     {
-
-        $this->sock->method('receive')->willReturn(['new message', 12],['exit', 65536]);
+        $this->sock->method('receive')->willReturn(['new message', 12], ['exit', 65536]);
         $this->sock->expects(self::once())->method('write');
         $serverApp = new Server($this->sock, $this->configManager);
         $serverApp->run();
