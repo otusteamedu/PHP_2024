@@ -15,7 +15,6 @@ class RabbitMQService implements QueueInterface
 {
     private const QUEUE = "hw20";
     protected AMQPStreamConnection $connection;
-    
 
     public function __construct(LoadConfig $config)
     {

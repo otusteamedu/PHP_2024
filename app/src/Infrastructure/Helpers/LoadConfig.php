@@ -29,7 +29,7 @@ class LoadConfig
         if (!$this->user) {
             throw new \DomainException("No isset RABBIT_USER in .env");
         }
-        
+
         if (!$this->password) {
             throw new \DomainException("No isset RABBIT_PASSWORD in .env");
         }

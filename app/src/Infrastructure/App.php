@@ -37,7 +37,7 @@ class App
                 $callback = function ($msg) {
                     $body = $msg->body;
                     print_r('Received ' . $msg->body . PHP_EOL);
-                    
+
                     $decodeData = json_decode($body, true);
 
                     if (isset($decodeData['email'])) {
