@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Trading\ValueObjects;
 
-use Domain\Common\ValueObjects\Money;
+use Domain\Common\ValueObjects\Price;
 
 /**
  * Рыночные данные — это данные, которые используются торговой стратегией для анализа рынка.
@@ -18,7 +18,7 @@ class MarketData
         // Пример проверки и преобразования данных
         foreach ($data as $key => $value) {
             if (is_numeric($value)) {
-                $data[$key] = new Money((string)$value);
+                $data[$key] = new Price((string)$value);
             }
         }
         $this->data = $data;

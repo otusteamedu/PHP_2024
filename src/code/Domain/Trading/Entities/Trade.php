@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Trading\Entities;
 
-use Domain\Common\ValueObjects\Money;
+use Domain\Common\ValueObjects\Price;
 use Domain\Trading\ValueObjects\Asset;
 use Domain\Trading\ValueObjects\TradeType;
 
@@ -18,9 +18,9 @@ class Trade
     private TradeType $type;
     private Asset $asset;
     private int $quantity;
-    private Money $price;
+    private Price $price;
 
-    public function __construct(int $id, TradeType $type, Asset $asset, int $quantity, Money $price)
+    public function __construct(int $id, TradeType $type, Asset $asset, int $quantity, Price $price)
     {
         $this->id = $id;
         $this->type = $type;
@@ -49,7 +49,7 @@ class Trade
         return $this->quantity;
     }
 
-    public function getPrice(): Money
+    public function getPrice(): Price
     {
         return $this->price;
     }

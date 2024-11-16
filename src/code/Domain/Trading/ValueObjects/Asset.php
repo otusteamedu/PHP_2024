@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Trading\ValueObjects;
 
-use Domain\Common\ValueObjects\Money;
+use Domain\Common\ValueObjects\Price;
 
 /**
  * Актив — это финансовый инструмент,
@@ -14,9 +14,9 @@ class Asset
 {
     private string $symbol;
     private string $name;
-    private Money $price;
+    private Price $price;
 
-    public function __construct(string $symbol, string $name, Money $price)
+    public function __construct(string $symbol, string $name, Price $price)
     {
         $this->symbol = $symbol;
         $this->name = $name;
@@ -33,7 +33,7 @@ class Asset
         return $this->name;
     }
 
-    public function getPrice(): Money
+    public function getPrice(): Price
     {
         return $this->price;
     }

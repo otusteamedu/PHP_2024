@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Trading\ValueObjects;
 
-use Domain\Common\ValueObjects\Money;
+use Domain\Common\ValueObjects\Price;
 
 /**
  * Решение о сделке — это результат анализа рыночных данных торговой стратегией.
@@ -14,9 +14,9 @@ class TradeDecision
     private TradeType $type;
     private Asset $asset;
     private int $quantity;
-    private Money $price;
+    private Price $price;
 
-    public function __construct(TradeType $type, Asset $asset, int $quantity, Money $price)
+    public function __construct(TradeType $type, Asset $asset, int $quantity, Price $price)
     {
         $this->type = $type;
         $this->asset = $asset;
@@ -39,7 +39,7 @@ class TradeDecision
         return $this->quantity;
     }
 
-    public function getPrice(): Money
+    public function getPrice(): Price
     {
         return $this->price;
     }

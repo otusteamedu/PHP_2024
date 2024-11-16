@@ -8,7 +8,7 @@ use Domain\Trading\ValueObjects\MarketData;
 use Domain\Trading\ValueObjects\TradeDecision;
 use Domain\Trading\ValueObjects\TradeType;
 use Domain\Trading\ValueObjects\Asset;
-use Domain\Common\ValueObjects\Money;
+use Domain\Common\ValueObjects\Price;
 use Domain\Trading\Services\AbstractTradingStrategy;
 
 class SimpleMovingAverageStrategy extends AbstractTradingStrategy
@@ -24,9 +24,9 @@ class SimpleMovingAverageStrategy extends AbstractTradingStrategy
 
         return new TradeDecision(
             $tradeType,
-            new Asset('AAPL', 'Apple Inc.', new Money((string)$currentPrice)),
+            new Asset('AAPL', 'Apple Inc.', new Price((string)$currentPrice)),
             1,
-            new Money((string)$currentPrice)
+            new Price((string)$currentPrice)
         );
     }
 }
