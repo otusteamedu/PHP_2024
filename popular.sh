@@ -6,7 +6,7 @@ tail -n+2 "$1" \
     | cut -d' ' -f"$colnum" \
     | sort \
     | uniq -c \
-    | sort -r \
+    | sort -nr \
     | head -n3 \
     | awk '{ print $NF }'
 
