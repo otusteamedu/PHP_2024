@@ -26,7 +26,8 @@ CREATE TABLE values (
     value_boolean BOOLEAN NULL,
     value_date DATE NULL,
     value_int INTEGER NULL,
-    value_numeric NUMERIC NULL
+    value_numeric NUMERIC NULL,
+    value_float REAL NULL,
 );
 CREATE INDEX idx_values_movies_id ON values (movie_id);
 CREATE INDEX idx_values_attributes_id ON values (attribute_id);

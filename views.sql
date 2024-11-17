@@ -28,6 +28,7 @@ SELECT
         WHEN v.value_boolean IS NOT NULL THEN CASE WHEN v.value_boolean THEN 'Да' ELSE 'Нет' END
         WHEN v.value_date IS NOT NULL THEN TO_CHAR(v.value_date, 'DD-MM-YYYY')
         WHEN v.value_numeric IS NOT NULL THEN TO_CHAR(v.value_numeric, 'FM999999999.00')
+        WHEN v.value_float IS NOT NULL THEN TO_CHAR(v.value_float, 'FM999999999.00')
         ELSE 'Нет значения'
     END AS value
 FROM
