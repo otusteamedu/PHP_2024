@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  php-fpm:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: php-fpm
+    container_name: php-fpm
+    env_file:
+      - .env
+    volumes:
+       - ./code:/data/fpm-redis
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7.2.5-alpine
+    container_name: "redis"
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASS}
+      - REDIS_PORT=${PORT}
+      - REDIS_DATABASES=16
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server --requirepass ${REDIS_PASS}
+    networks:
+      - app-network
+    
+      
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

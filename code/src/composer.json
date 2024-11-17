@@ -1,0 +1,9 @@
+{
+  "autoload": {
+    "files": ["App.php", "Redis.php", "Table.php","Event.php"],
+    "classmap": ["View"]
+  },
+  "require": {
+    "phplucidframe/console-table": "^1.3"
+  }
+}
