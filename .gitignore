@@ -1,1 +1,3 @@
 .env
+./code/src/vendor/
+./code/src/View/vendor/

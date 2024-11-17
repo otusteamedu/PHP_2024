@@ -11,13 +11,13 @@ php app.php bulk '[{"Name":"Иванов Евгений Вмитриевич","P
 ```
 Кто главный?
 ```shell
-
+php app.php  search '{"position":"Директор"}'
 ```
 ![Filter example](/imgs/1.png)
 
 Все сотрудники
 ```shell
-php app.php  search '{"position":"Директор"}'
+php app.php  search '{"Name":""}'
 
 ```
 ![Filter example](/imgs/2.png)
