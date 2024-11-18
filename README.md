@@ -1,3 +1,21 @@
-# PHP_2024
+# String Processor
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Brief description of the package.
+
+## Requirements
+
+- PHP 7.4
+
+## Installation
+
+```bash
+$ composer require denis/fan-composer-package
+```
+
+## Usage
+
+```php
+<?php
+$processor = new StringProcessor();
+echo $processor->getLength('my string'); //9
+```
