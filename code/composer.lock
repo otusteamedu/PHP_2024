@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "adbb62fe175cb782435271acfd661825",
+    "content-hash": "17406945a3340154edc13a8af9db10ce",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -142,6 +142,47 @@
                 }
             ],
             "time": "2024-07-20T21:41:07+00:00"
+        },
+        {
+            "name": "string/string-processor",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bocukom/string-processor.git",
+                "reference": "5e8f7a1683b93a85623512bbb517d66f63afb1b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bocukom/string-processor/zipball/5e8f7a1683b93a85623512bbb517d66f63afb1b6",
+                "reference": "5e8f7a1683b93a85623512bbb517d66f63afb1b6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "String\\StringProcessor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Denis",
+                    "email": "denis.mesnyankin@gmail.com"
+                }
+            ],
+            "description": "Simple string to number conversion",
+            "support": {
+                "issues": "https://github.com/bocukom/string-processor/issues",
+                "source": "https://github.com/bocukom/string-processor/tree/v1.0.0"
+            },
+            "time": "2024-11-18T16:01:32+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -470,10 +511,10 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
-    "platform-dev": {},
+    "platform": [],
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
