@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace StringProcessor;
+namespace String\StringProcessor;
 
 class StringProcessor
 {

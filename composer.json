@@ -1,9 +1,10 @@
 {
-    "name": "string-processor",
+    "name": "string/string-processor",
     "type": "library",
+    "description": "Simple string to number conversion",
     "autoload": {
         "psr-4": {
-            "StringProcessor\\": "src/"
+            "String\\StringProcessor\\": "src/"
         }
     },
     "authors": [
@@ -15,5 +16,6 @@
     "require": {
         "php": ">=7.1.0", 
         "ext-mbstring": "*"
-    }
+    },
+    "license": "MIT"
 }
