@@ -1,0 +1,50 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "ab30b9d2dab568e05eeb713c0c5fcf02",
+    "packages": [
+        {
+            "name": "sergey-shirykalov/hash-calculator",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sergey-shirykalov/hash-calculator.git",
+                "reference": "ae691ba5c88d2f0acec3b5b3f5f4831d9dfe7002"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sergey-shirykalov/hash-calculator/zipball/ae691ba5c88d2f0acec3b5b3f5f4831d9dfe7002",
+                "reference": "ae691ba5c88d2f0acec3b5b3f5f4831d9dfe7002",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SergeyShirykalov\\HashCalculator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Hash Calculator",
+            "support": {
+                "issues": "https://github.com/sergey-shirykalov/hash-calculator/issues",
+                "source": "https://github.com/sergey-shirykalov/hash-calculator/tree/1.0.0"
+            },
+            "time": "2024-11-18T16:36:35+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
