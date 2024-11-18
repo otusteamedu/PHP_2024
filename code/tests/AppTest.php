@@ -45,7 +45,8 @@ class AppTest extends TestCase
      * @return void
      * @throws Exception
      */
-    public function testCreateApp($arg, $methodCalled){
+    public function testCreateApp($arg, $methodCalled)
+    {
         $_SERVER['argv'][1] = $arg;
         $app = $this->getMockBuilder(App::class)
             ->onlyMethods([$methodCalled])

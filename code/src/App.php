@@ -48,5 +48,4 @@ class App
     {
         return new Server($socket, $configManager);
     }
-
 }
