@@ -1,5 +1,4 @@
 <?php
 
-echo "Привет!";
-
+echo "Привет!<br><br>";
 phpinfo();
