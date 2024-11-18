@@ -22,8 +22,8 @@ class AppTest extends TestCase
 
     #[TestWith(['wrong'])]
     #[TestWith([123])]
-    #[TestWith(['//n'])]
-    #[TestWith(['<br/>'])]
+    #[TestWith([PHP_EOL])]
+    #[TestWith(['  '])]
     /**
      *
      * @return void
