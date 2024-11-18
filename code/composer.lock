@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17406945a3340154edc13a8af9db10ce",
+    "content-hash": "3f0204276bd72c5df2eb6ec3d66ba308",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -145,21 +145,21 @@
         },
         {
             "name": "string/string-processor",
-            "version": "v1.0.0",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bocukom/string-processor.git",
-                "reference": "5e8f7a1683b93a85623512bbb517d66f63afb1b6"
+                "reference": "a14f8ebed889684e3f14736abfc65b9460d39bb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bocukom/string-processor/zipball/5e8f7a1683b93a85623512bbb517d66f63afb1b6",
-                "reference": "5e8f7a1683b93a85623512bbb517d66f63afb1b6",
+                "url": "https://api.github.com/repos/bocukom/string-processor/zipball/a14f8ebed889684e3f14736abfc65b9460d39bb0",
+                "reference": "a14f8ebed889684e3f14736abfc65b9460d39bb0",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
-                "php": ">=7.1.0"
+                "php": ">=7.4.0"
             },
             "type": "library",
             "autoload": {
@@ -180,9 +180,9 @@
             "description": "Simple string to number conversion",
             "support": {
                 "issues": "https://github.com/bocukom/string-processor/issues",
-                "source": "https://github.com/bocukom/string-processor/tree/v1.0.0"
+                "source": "https://github.com/bocukom/string-processor/tree/v1.0.3"
             },
-            "time": "2024-11-18T16:01:32+00:00"
+            "time": "2024-11-18T16:44:04+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",

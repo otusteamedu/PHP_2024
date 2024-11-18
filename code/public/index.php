@@ -6,6 +6,7 @@ require '../config/config.php';
 use Database\DatabaseConnection;
 use Redis\RedisConnection;
 use SessionHandler\SessionHandler;
+use String\StringProcessor\StringProcessor;
 
 $config = require '../config/config.php';
 
@@ -17,6 +18,9 @@ $dbConnection->connect();
 
 $redisConnection = new RedisConnection($config['redis']);
 $redisConnection->connect();
+
+$processor = new StringProcessor();
+echo 'StringProcessor - ' . $processor->getLength('my string') . "<br>"; //9
 
 echo "Привет, Otus!<br>" . date("Y-m-d H:i:s") . "<br><br>";
 
