@@ -44,7 +44,7 @@ $response = (new SelectQueryUseCase())($request);
 
 $result = $response->queryResult;
 
-function iterate($result) 
+function iterate($result)
 {
     foreach ($result as $product) {
         echo $product->title . PHP_EOL;
