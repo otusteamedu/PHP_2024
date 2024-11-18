@@ -22,11 +22,31 @@ class App
         $configManager = new ConfigManager();
 
         $app = match ($type) {
-            'client' => new Client($socket, $configManager),
-            'server' => new Server($socket, $configManager),
+            'client' => $this->createClientApp($socket, $configManager),
+            'server' => $this->createServerApp($socket, $configManager),
             default => throw new Exception('Укажите тип приложения - client или server')
         };
-
         $app->run();
     }
+
+    /**
+     * @param $socket
+     * @param $configManager
+     * @return Client
+     */
+    public function createClientApp($socket, $configManager): Client
+    {
+        return new Client($socket, $configManager);
+    }
+
+    /**
+     * @param Socket $socket
+     * @param ConfigManager $configManager
+     * @return Server
+     */
+    public function createServerApp(Socket $socket, ConfigManager $configManager): Server
+    {
+        return new Server($socket, $configManager);
+    }
+
 }
