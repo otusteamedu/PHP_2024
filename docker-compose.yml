@@ -1,0 +1,94 @@
+version: "3"
+
+services:
+
+  app-server:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: php:8.2-xdebug
+    container_name: chat-server${WORK_INDEX}
+    volumes:
+      - ./:/app
+      - ./socket/:${SOCKET_PATH}
+    environment:
+      - "XDEBUG_MODE=coverage"
+    networks:
+      - otus
+
+  app-client:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: php:8.2-xdebug
+    container_name: chat-client${WORK_INDEX}
+    volumes:
+      - ./:/app
+      - ./socket/:${SOCKET_PATH}
+    environment:
+      - "XDEBUG_MODE=coverage"
+    depends_on:
+      - app-server
+
+  redis:
+    image: redis:latest
+    container_name: ${REDIS_CONTAINER_NAME}${WORK_INDEX}
+    command: ["sh", "-c", "exec redis-server --requirepass \"${REDIS_PASSWORD}\""]
+    volumes:
+      - redis_data:/app
+    networks:
+      - otus
+
+  elasticsearch:
+    image: elasticsearch:8.12.2
+    container_name: ${ELASTICSEARCH_CONTAINER_NAME}${WORK_INDEX}
+    environment:
+      - "discovery.type=single-node"
+    volumes:
+       - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - otus
+
+  postgres:
+    image: postgres:15
+    container_name: ${POSTGRES_CONTAINER_NAME}${WORK_INDEX}
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - dump:/app/dump
+      - postgresql:/var/lib/postgresql/data
+    networks:
+      - otus
+
+  pgadmin:
+    container_name: ${PGADMIN_CONTAINER_NAME}${WORK_INDEX}
+    image: dpage/pgadmin4:7.8
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_CONFIG_SERVER_MODE: ${PGADMIN_CONFIG_SERVER_MODE}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: always
+    ports:
+      - ${PGADMIN_PORT}:80
+    networks:
+      - otus
+
+networks:
+  otus:
+    driver: bridge
+
+volumes:
+  dump:
+  postgresql:
+  pgadmin-data:
+  redis_data:      
+    driver: local
+  elasticsearch_data:
+    external: true
+#  docker volume create elasticsearch_data
