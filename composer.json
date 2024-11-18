@@ -1,0 +1,12 @@
+{
+    "name": "sergey-shirykalov/using-my-package-sample",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SergeyShirykalov\\UsingMyPackageSample\\": "src/"
+        }
+    },
+    "require": {
+        "sergey-shirykalov/hash-calculator": "^1.0"
+    }
+}
