@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Application\QueryBuilder;
+namespace App\Domain\SelectQueryBuilder;
 
-use App\Application\QueryBuilder\Event\DatabaseQueryResultIsCreatedEvent;
-use App\Application\QueryBuilder\Publisher\PublisherInterface;
+use App\Application\Event\QueryBuilder\DatabaseQueryResultIsCreatedEvent;
+use App\Application\Publisher\QueryBuilder\PublisherInterface;
 use Iterator;
 use stdClass;
 

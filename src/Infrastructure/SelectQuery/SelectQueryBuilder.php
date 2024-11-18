@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Application\QueryBuilder;
+namespace App\Infrastructure\QueryBuilder;
 
-use App\Application\QueryBuilder\Publisher\PublisherInterface;
+use App\Application\Publisher\QueryBuilder\PublisherInterface;
+use App\Domain\DTO\SelectQueryBuilder\WhereDTO;
+use App\Domain\SelectQueryBuilder\DatabaseQueryResult;
 use App\Domain\Service\ConfigService;
 use PDO;
 use PDOStatement;
@@ -13,6 +15,8 @@ class SelectQueryBuilder implements SelectQueryBuilderInterface
     public string $select;
     /** @var string[] $where */
     public ?array $where;
+    /** @var string[] $whereDTO */
+    public ?array $whereDTO;
     public ?string $limit;
     public ?string $order;
 
@@ -42,6 +46,21 @@ class SelectQueryBuilder implements SelectQueryBuilderInterface
     public function where(string $field, string|int $value, string $operator = '='): self
     {
         $this->where[] = $field . $operator . (gettype($value) === 'string' ? "'$value'" : $value);
+
+        return $this;
+    }
+
+    /**
+     * @param WhereDTO[] $whereDTOArray
+     * @return $this
+     */
+    public function whereDTO(array $whereDTOArray): self
+    {
+        foreach ($whereDTOArray as $whereDTO) {
+            $this->whereDTO[] = $whereDTO->attribute
+                . ($whereDTO->operator !== null ? $whereDTO->operator : '=')
+                . (gettype($whereDTO->value) === 'string' ? "'$whereDTO->value'" : $whereDTO->value);
+        }
 
         return $this;
     }
@@ -78,8 +97,10 @@ class SelectQueryBuilder implements SelectQueryBuilderInterface
     {
         $this->query = $this->select;
 
-        if (!empty($this->where)) {
+        if (isset($this->where)) {
             $this->query .= ' WHERE ' . implode(' AND ', $this->where);
+        } elseif (isset($this->whereDTO)) {
+            $this->query .= ' WHERE ' . implode(' AND ', $this->whereDTO);
         }
 
         if (isset($this->order)) {

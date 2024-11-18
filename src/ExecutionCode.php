@@ -6,6 +6,7 @@ use App\Application\QueryBuilder\SelectQueryBuilder;
 
 require_once './../../../../vendor/autoload.php';
 
+/* Вариант 1: из кода*/
 $publisher = new QueryBuilderPublisher();
 $publisher->subscribe(new QueryBuilderSubscriber());
 
@@ -22,6 +23,30 @@ function iterate($result)
 {
     foreach ($result as $product) {
         echo $product->title . PHP_EOL;
+    }
+}
+iterate($result);
+
+/* Вариант-2: через UseCase */
+$request = new SelectQueryRequest(
+    'product',
+    [
+        new WhereDTO('category', 'Вино', null),
+        new WhereDTO('price', '5000', '>')
+    ],
+    'price',
+    null,
+    3,
+    null,
+    false
+);
+$response = (new SelectQueryUseCase)($request);
+
+$result = $response->queryResult;
+
+function iterate($result) {
+    foreach ($result as $product) {
+    echo $product->title.PHP_EOL;
     }
 }
 iterate($result);
