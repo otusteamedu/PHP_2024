@@ -15,7 +15,7 @@ class SocketServiceTest extends Unit
     private Socket $socket;
     private SocketService $socketService;
 
-    protected function _before()
+    protected function setUp(): void
     {
         $this->socketService = new SocketService();
         $this->socketService->unlink();

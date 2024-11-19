@@ -18,8 +18,7 @@ class ServerStopChatTest extends Unit
         ServerService $serverService,
         ClientService $clientService,
         array         $expectedAnswers
-    )
-    {
+    ) {
         $actualAnswers[] = $serverService->initializeChat();
         $actualAnswers[] = $clientService->initializeChat();
 

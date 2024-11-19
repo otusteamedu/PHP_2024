@@ -18,8 +18,7 @@ class GeneratorRunTest extends Unit
      */
     public function testGeneratorRun(
         array $expectedAnswers
-    )
-    {
+    ) {
         $actualAnswers = [];
         foreach ((new ServerGenerator())->run() as $messageServer) {
             $actualAnswers[] = $messageServer;

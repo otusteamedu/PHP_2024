@@ -101,7 +101,7 @@ class SecondRunClientTest extends Unit
         ];
     }
 
-    private function writeTestingCommandsIntoFile()
+    private function writeTestingCommandsIntoFile(): void
     {
         $testingCommands = TestingData::TEST_WORD
                         . PHP_EOL
