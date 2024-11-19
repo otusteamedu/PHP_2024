@@ -41,4 +41,19 @@ class Controller
             fwrite($this->outputServerStream, 'Error: ' . $e->getMessage() . PHP_EOL);
         }
     }
+
+    public function setInputStream($stream): void
+    {
+        $this->inputStream = $stream;
+    }
+
+    public function setOutputServerStream($stream): void
+    {
+        $this->outputServerStream = $stream;
+    }
+
+    public function setOutputClientStream($stream): void
+    {
+        $this->outputClientStream = $stream;
+    }
 }

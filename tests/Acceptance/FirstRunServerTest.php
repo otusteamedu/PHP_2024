@@ -12,11 +12,25 @@ use Support\TestingData\TestingData;
 
 class FirstRunServerTest extends Unit
 {
+    private Controller $serverController;
+
     public function setUp(): void
     {
         $config = ConfigService::class;
 
-        file_put_contents($config::get('INPUT_STREAM'), '');
+        file_put_contents($config::getConfigureForTesting('INPUT_STREAM'), '');
+        file_put_contents($config::getConfigureForTesting('INPUT_STREAM'), '');
+
+        $this->serverController = new Controller();
+        $this->serverController->setInputStream(
+            fopen((new ConfigService)::getConfigureForTesting('INPUT_STREAM'), 'r')
+        );
+        $this->serverController->setOutputServerStream(
+            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_SERVER_STREAM'), 'w')
+        );
+        $this->serverController->setOutputClientStream(
+            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_CLIENT_STREAM'), 'w')
+        );
     }
 
     /**
@@ -26,8 +40,7 @@ class FirstRunServerTest extends Unit
         array $serverStartCommand,
         array $expectedAnswers
     ) {
-        $serverController = new Controller();
-        $serverController->run($serverStartCommand['serverStart']);
+        $this->serverController->run($serverStartCommand['serverStart']);
 
         $actualAnswers[] = $this->getActualAnswers();
 
@@ -78,6 +91,6 @@ class FirstRunServerTest extends Unit
     {
         $config = ConfigService::class;
 
-        return trim(file_get_contents($config::get('OUTPUT_SERVER_STREAM')));
+        return trim(file_get_contents($config::getConfigureForTesting('OUTPUT_SERVER_STREAM')));
     }
 }

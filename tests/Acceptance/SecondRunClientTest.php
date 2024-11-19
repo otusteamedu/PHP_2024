@@ -12,9 +12,22 @@ use Support\TestingData\TestingData;
 
 class SecondRunClientTest extends Unit
 {
+    private Controller $clientController;
+
     public function setUp(): void
     {
         $this->writeTestingCommandsIntoFile();
+
+        $this->clientController = new Controller();
+        $this->clientController->setInputStream(
+            fopen((new ConfigService)::getConfigureForTesting('INPUT_STREAM'), 'r')
+        );
+        $this->clientController->setOutputServerStream(
+            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_SERVER_STREAM'), 'w')
+        );
+        $this->clientController->setOutputClientStream(
+            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_CLIENT_STREAM'), 'w')
+        );
     }
 
     /**
@@ -24,8 +37,7 @@ class SecondRunClientTest extends Unit
         array $clientStartCommand,
         array $expectedAnswers
     ) {
-        $clientController = new Controller();
-        $clientController->run($clientStartCommand['clientStart']);
+        $this->clientController->run($clientStartCommand['clientStart']);
 
         $actualAnswers[] = $this->getActualAnswers();
 
@@ -121,7 +133,7 @@ class SecondRunClientTest extends Unit
                         . ServiceCommand::ChatStop->value;
 
         $config = ConfigService::class;
-        file_put_contents($config::get('INPUT_STREAM'), $testingCommands);
+        file_put_contents($config::getConfigureForTesting('INPUT_STREAM'), $testingCommands);
     }
 
     /**
@@ -131,6 +143,6 @@ class SecondRunClientTest extends Unit
     {
         $config = ConfigService::class;
 
-        return trim(file_get_contents($config::get('OUTPUT_CLIENT_STREAM')));
+        return trim(file_get_contents($config::getConfigureForTesting('OUTPUT_CLIENT_STREAM')));
     }
 }
