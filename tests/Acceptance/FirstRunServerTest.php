@@ -21,7 +21,6 @@ class FirstRunServerTest extends Unit
         $this->serverController = new Controller();
 
         file_put_contents($this->config::getConfigureForTesting('INPUT_STREAM'), '');
-        file_put_contents($this->config::getConfigureForTesting('INPUT_STREAM'), '');
 
         $this->serverController->setInputStream(
             fopen($this->config::getConfigureForTesting('INPUT_STREAM'), 'r')

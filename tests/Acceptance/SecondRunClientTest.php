@@ -135,8 +135,7 @@ class SecondRunClientTest extends Unit
 
                         . ServiceCommand::ChatStop->value;
 
-        $config = ConfigService::class;
-        file_put_contents($config::getConfigureForTesting('INPUT_STREAM'), $testingCommands);
+        file_put_contents($this->config::getConfigureForTesting('INPUT_STREAM'), $testingCommands);
     }
 
     /**
