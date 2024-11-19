@@ -13,7 +13,6 @@ use App\Domain\Constant\BankStatementStatus;
 
 class BaseStatementRepository extends ServiceEntityRepository implements BankStatementRepositoryInterface
 {
-
     public function __construct(ManagerRegistry $registry, private Connection $db)
     {
         parent::__construct($registry, BankStatement::class);
@@ -34,7 +33,7 @@ class BaseStatementRepository extends ServiceEntityRepository implements BankSta
         if (isset($result[0])) {
             return $result[0];
         }
-        
+
         return [];
     }
 

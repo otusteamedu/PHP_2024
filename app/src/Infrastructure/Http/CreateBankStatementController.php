@@ -20,21 +20,21 @@ class CreateBankStatementController extends AbstractFOSRestController
     #[Route('/api/v1/statement', name: 'create_statement', methods: ['POST'])]
     public function __invoke(#[MapRequestPayload] SubmitStatementRequest $request): Response
     {
-    try {
-        $response = ($this->useCase)($request);
-        return new Response(
-            json_encode(
-                [
-                'id' => $response->id
-                ]
-            ),
-            201
-        );
-    } catch (\Throwable $e) {
-        $errorResponse = [
-            'message' => $e->getMessage()
-        ];
-        return new Response(json_encode($errorResponse), 400);
-    }
+        try {
+            $response = ($this->useCase)($request);
+            return new Response(
+                json_encode(
+                    [
+                    'id' => $response->id
+                    ]
+                ),
+                201
+            );
+        } catch (\Throwable $e) {
+            $errorResponse = [
+                'message' => $e->getMessage()
+            ];
+            return new Response(json_encode($errorResponse), 400);
+        }
     }
 }

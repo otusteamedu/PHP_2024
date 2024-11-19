@@ -20,7 +20,7 @@ class GetBankStatementUseCase
     public function __invoke(SubmitStatementRequest $request): SubmitStatementResponse
     {
         $bankStatement = $this->statementFactory->create($request->account, $request->dateFrom, $request->dateTo);
-        
+
         $this->statementRepository->save($bankStatement);
         $this->queueGateway->sendTask(new QueueGatewayRequest($bankStatement->getId()));
 
