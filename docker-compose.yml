@@ -5,5 +5,5 @@ services:
     volumes:
       - .:/usr/src/myapp
     working_dir: /usr/src/myapp
-    stdin_open: true # Открывает стандартный ввод для интерактивного режима
-    tty: true        # Включает поддержку терминала
+    stdin_open: true
+    tty: true
