@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "d25a938bae392a8c71dcf64ed9129547",
+    "packages": [
+        {
+            "name": "anatoly-shilyaev/my-composer-package",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AnatolySSS/my-composer-package.git",
+                "reference": "7ef9b06d9efccefd32d2aa3ab2367ae7bebc6b34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AnatolySSS/my-composer-package/zipball/7ef9b06d9efccefd32d2aa3ab2367ae7bebc6b34",
+                "reference": "7ef9b06d9efccefd32d2aa3ab2367ae7bebc6b34",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AnatolyShilyaev\\MyComposerPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Anatoly",
+                    "email": "Anatoly.Shilyaev@gmail.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/AnatolySSS/my-composer-package/issues",
+                "source": "https://github.com/AnatolySSS/my-composer-package/tree/1.0.2"
+            },
+            "time": "2024-11-19T06:35:38+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
