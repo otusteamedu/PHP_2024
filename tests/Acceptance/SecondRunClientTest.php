@@ -12,34 +12,22 @@ use Support\TestingData\TestingData;
 
 class SecondRunClientTest extends Unit
 {
-    public const TEST_WORD = 'test';
-
-    public function _setUp(): false|int
+    public function setUp(): void
     {
-        $config = ConfigService::class;
-
-        $data = TestingData::TEST_WORD . PHP_EOL
-                . ServiceCommand::EmailValidate->value . ' ' . TestingData::CHECK_EMAIL_QUERY . PHP_EOL
-                . ServiceCommand::SelectQuery->value . ' ' . TestingData::CHECK_SELECT_QUERY_POSITIVE . PHP_EOL
-                . ServiceCommand::SelectQuery->value . ' ' . TestingData::CHECK_SELECT_QUERY_NEGATIVE . PHP_EOL
-                . ServiceCommand::ChatStop->value;
-
-        return file_put_contents($config::get('INPUT_STREAM'), $data);
+        $this->writeTestingCommandsIntoFile();
     }
 
     /**
      * @dataProvider createTestCase
      */
     public function testRunClientTest(
-        array $command,
+        array $clientStartCommand,
         array $expectedAnswers
-    )
-    {
+    ) {
         $clientController = new Controller();
-        $clientController->run($command['clientStart']);
+        $clientController->run($clientStartCommand['clientStart']);
 
         $actualAnswers[] = $this->getActualAnswers();
-
 
         $this->assertSame($expectedAnswers, $actualAnswers);
     }
@@ -113,10 +101,33 @@ class SecondRunClientTest extends Unit
         ];
     }
 
+    private function writeTestingCommandsIntoFile()
+    {
+        $testingCommands = TestingData::TEST_WORD
+                        . PHP_EOL
+
+                        . ServiceCommand::EmailValidate->value . ' '
+                        . TestingData::CHECK_EMAIL_QUERY
+                        . PHP_EOL
+
+                        . ServiceCommand::SelectQuery->value . ' '
+                        . TestingData::CHECK_SELECT_QUERY_POSITIVE
+                        . PHP_EOL
+
+                        . ServiceCommand::SelectQuery->value . ' '
+                        . TestingData::CHECK_SELECT_QUERY_NEGATIVE
+                        . PHP_EOL
+
+                        . ServiceCommand::ChatStop->value;
+
+        $config = ConfigService::class;
+        file_put_contents($config::get('INPUT_STREAM'), $testingCommands);
+    }
+
     /**
      * @return false|string
      */
-    private static function getActualAnswers(): false|string
+    private function getActualAnswers(): false|string
     {
         $config = ConfigService::class;
 

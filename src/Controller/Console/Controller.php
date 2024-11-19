@@ -15,7 +15,7 @@ class Controller
     private $outputServerStream;
     private $outputClientStream;
 
-    public function __construct() 
+    public function __construct()
     {
         $config = ConfigService::class;
         $this->inputStream = fopen($config::get('INPUT_STREAM'), 'r');

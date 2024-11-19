@@ -12,23 +12,22 @@ use Support\TestingData\TestingData;
 
 class FirstRunServerTest extends Unit
 {
-    public function _setUp(): false|int
+    public function setUp(): void
     {
         $config = ConfigService::class;
 
-        return file_put_contents($config::get('INPUT_STREAM'), '');
+        file_put_contents($config::get('INPUT_STREAM'), '');
     }
 
     /**
      * @dataProvider createTestCase
      */
     public function testRunServerTest(
-        array $command,
+        array $serverStartCommand,
         array $expectedAnswers
-    )
-    {
+    ) {
         $serverController = new Controller();
-        $serverController->run($command['serverStart']);
+        $serverController->run($serverStartCommand['serverStart']);
 
         $actualAnswers[] = $this->getActualAnswers();
 
@@ -57,12 +56,12 @@ class FirstRunServerTest extends Unit
 
                     . ServiceMessage::ClientMessage->value
                     . ServiceCommand::SelectQuery->value . ' '
-                    .TestingData::CHECK_SELECT_QUERY_POSITIVE
+                    . TestingData::CHECK_SELECT_QUERY_POSITIVE
                     . PHP_EOL
 
                     . ServiceMessage::ClientMessage->value
                     . ServiceCommand::SelectQuery->value . ' '
-                    .TestingData::CHECK_SELECT_QUERY_NEGATIVE
+                    . TestingData::CHECK_SELECT_QUERY_NEGATIVE
                     . PHP_EOL
 
                     . ServiceMessage::ClientStoppedChat->value
@@ -75,7 +74,7 @@ class FirstRunServerTest extends Unit
     /**
      * @return false|string
      */
-    private static function getActualAnswers(): false|string
+    private function getActualAnswers(): false|string
     {
         $config = ConfigService::class;
 
