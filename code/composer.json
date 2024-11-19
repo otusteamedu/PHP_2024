@@ -1,0 +1,15 @@
+{
+    "name": "ali-user/code",
+    "autoload": {
+        "psr-4": {
+            "Ali\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mukhametali",
+            "email": "m.kussaiynov1996@gmail.com"
+        }
+    ],
+    "require": {}
+}
