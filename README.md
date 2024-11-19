@@ -1,3 +1,20 @@
-# PHP_2024
+# Запуск
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+```
+docker build -t <image-name> .
+
+docker run -it <image-name>
+
+cd tmp
+```
+
+## Калькулятор
+```
+./sum.sh <first arg> <second arg>
+```
+
+## Сортировщик
+```
+./sort.sh ./cities.txt
+```
+
