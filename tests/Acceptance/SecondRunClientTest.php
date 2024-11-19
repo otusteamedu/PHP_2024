@@ -12,21 +12,24 @@ use Support\TestingData\TestingData;
 
 class SecondRunClientTest extends Unit
 {
+    private ConfigService $config;
     private Controller $clientController;
 
     public function setUp(): void
     {
+        $this->config = new ConfigService();
+        $this->clientController = new Controller();
+
         $this->writeTestingCommandsIntoFile();
 
-        $this->clientController = new Controller();
         $this->clientController->setInputStream(
-            fopen((new ConfigService)::getConfigureForTesting('INPUT_STREAM'), 'r')
+            fopen($this->config::getConfigureForTesting('INPUT_STREAM'), 'r')
         );
         $this->clientController->setOutputServerStream(
-            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_SERVER_STREAM'), 'w')
+            fopen($this->config::getConfigureForTesting('OUTPUT_SERVER_STREAM'), 'w')
         );
         $this->clientController->setOutputClientStream(
-            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_CLIENT_STREAM'), 'w')
+            fopen($this->config::getConfigureForTesting('OUTPUT_CLIENT_STREAM'), 'w')
         );
     }
 
@@ -141,8 +144,6 @@ class SecondRunClientTest extends Unit
      */
     private function getActualAnswers(): false|string
     {
-        $config = ConfigService::class;
-
-        return trim(file_get_contents($config::getConfigureForTesting('OUTPUT_CLIENT_STREAM')));
+        return trim(file_get_contents($this->config::getConfigureForTesting('OUTPUT_CLIENT_STREAM')));
     }
 }

@@ -12,24 +12,25 @@ use Support\TestingData\TestingData;
 
 class FirstRunServerTest extends Unit
 {
+    private ConfigService $config;
     private Controller $serverController;
 
     public function setUp(): void
     {
-        $config = ConfigService::class;
-
-        file_put_contents($config::getConfigureForTesting('INPUT_STREAM'), '');
-        file_put_contents($config::getConfigureForTesting('INPUT_STREAM'), '');
-
+        $this->config = new ConfigService();
         $this->serverController = new Controller();
+
+        file_put_contents($this->config::getConfigureForTesting('INPUT_STREAM'), '');
+        file_put_contents($this->config::getConfigureForTesting('INPUT_STREAM'), '');
+
         $this->serverController->setInputStream(
-            fopen((new ConfigService)::getConfigureForTesting('INPUT_STREAM'), 'r')
+            fopen($this->config::getConfigureForTesting('INPUT_STREAM'), 'r')
         );
         $this->serverController->setOutputServerStream(
-            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_SERVER_STREAM'), 'w')
+            fopen($this->config::getConfigureForTesting('OUTPUT_SERVER_STREAM'), 'w')
         );
         $this->serverController->setOutputClientStream(
-            fopen((new ConfigService)::getConfigureForTesting('OUTPUT_CLIENT_STREAM'), 'w')
+            fopen($this->config::getConfigureForTesting('OUTPUT_CLIENT_STREAM'), 'w')
         );
     }
 
@@ -89,8 +90,6 @@ class FirstRunServerTest extends Unit
      */
     private function getActualAnswers(): false|string
     {
-        $config = ConfigService::class;
-
-        return trim(file_get_contents($config::getConfigureForTesting('OUTPUT_SERVER_STREAM')));
+        return trim(file_get_contents($this->config::getConfigureForTesting('OUTPUT_SERVER_STREAM')));
     }
 }
