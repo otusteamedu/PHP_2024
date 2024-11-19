@@ -1,0 +1,5 @@
+{
+    "require": {
+        "modes/ip-info": "^1.0"
+    }
+}
