@@ -16,7 +16,7 @@ class ClientStopChatTest extends Unit
     public function testClientKeepStopChat(
         ServerService $serverService,
         ClientService $clientService,
-        array         $expectedAnswers
+        array $expectedAnswers
     ) {
         $actualAnswers[] = $serverService->initializeChat();
         $actualAnswers[] = $clientService->initializeChat();

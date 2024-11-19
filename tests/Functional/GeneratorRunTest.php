@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Functional;
 
 use App\Application\Generator\Console\ClientGenerator;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Functional;
 
 use App\Domain\Enum\ServiceMessage;
@@ -17,7 +16,7 @@ class ServerStopChatTest extends Unit
     public function testServerKeepChat(
         ServerService $serverService,
         ClientService $clientService,
-        array         $expectedAnswers
+        array $expectedAnswers
     ) {
         $actualAnswers[] = $serverService->initializeChat();
         $actualAnswers[] = $clientService->initializeChat();
