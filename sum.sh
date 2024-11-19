@@ -13,15 +13,6 @@ if ! [[ $NUM_1 =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] || ! [[ $NUM_2 =~ ^[+-]?[0-9]+([.
     exit
 fi
 
-if ! command -v bc &> /dev/null; then
-  echo "Пакет bc не найден. Установка..."
-  apt update && apt install -y bc
-  if ! command -v bc &> /dev/null; then
-    echo "Установка не удалась"
-    exit
-  else
-    echo "Установка завершена успешно"
-  fi
-fi
+RESULT=$(awk "BEGIN {print $NUM_1 + $NUM_2}")
 
-echo "$NUM_1 + $NUM_2" | bc
+echo $RESULT
