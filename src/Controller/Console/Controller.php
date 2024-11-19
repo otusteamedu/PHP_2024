@@ -15,11 +15,12 @@ class Controller
     private $outputServerStream;
     private $outputClientStream;
 
-    public function __construct() {
+    public function __construct() 
+    {
         $config = ConfigService::class;
-        $this->inputStream = fopen($config::get('INPUT_STREAM'),'r');
-        $this->outputServerStream = fopen($config::get('OUTPUT_SERVER_STREAM'),'w');
-        $this->outputClientStream = fopen($config::get('OUTPUT_CLIENT_STREAM'),'w');
+        $this->inputStream = fopen($config::get('INPUT_STREAM'), 'r');
+        $this->outputServerStream = fopen($config::get('OUTPUT_SERVER_STREAM'), 'w');
+        $this->outputClientStream = fopen($config::get('OUTPUT_CLIENT_STREAM'), 'w');
     }
 
     public function run(array $argv): void
@@ -41,4 +42,3 @@ class Controller
         }
     }
 }
-

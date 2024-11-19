@@ -51,14 +51,14 @@ $request = new SelectQueryRequest(
     null,
     false
 );
-$response = (new SelectQueryUseCase)($request);
+$response = (new SelectQueryUseCase())($request);
 
 $result = $response->queryResult;
-//var_dump($result->getCollection()); die();
 
-function iterate($result) {
+function iterate($result) 
+{
     foreach ($result as $product) {
-        echo $product->title.PHP_EOL;
+        echo $product->title . PHP_EOL;
     }
 }
 iterate($result);

@@ -23,7 +23,7 @@ class SelectQueryService
             $selectQueryAsArray['lazy'] ?? null,
         );
 
-        $response = (new SelectQueryUseCase)($selectQueryRequest);
+        $response = (new SelectQueryUseCase())($selectQueryRequest);
 
         if (isset($response->queryResult->collection)) {
             return ServiceMessage::QuerySelectSuccess->value
