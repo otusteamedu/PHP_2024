@@ -1,0 +1,5 @@
+test
+check:email {"check":[{"email":"john69683@gmail.com"},{"email":"john69683@gmail.xxx"}]}
+query:select {"from":"product","where":[{"attribute":"price","value":"1000","operator":">"}], "limit":3, "lazy":false}
+query:select {"from":"product","where":[{"attribute":"price","value":"500000","operator":">"}], "limit":3, "lazy":false}
+chat:stop
