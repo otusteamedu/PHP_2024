@@ -1,0 +1,7 @@
+{
+    "name": "vrikhert/mysite.local",
+    "type": "project",
+    "require": {
+        "viking311/string_modify": "^1.0"
+    }
+}
