@@ -1,0 +1,10 @@
+{
+    "name": "afilippov/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Afilippov\\Hw4\\": "code/"
+        }
+    },
+    "require": {}
+}
