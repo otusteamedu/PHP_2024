@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Application\Loader\ContentLoaderInterface;
 use App\Application\Parser\ParserInterface;
 use App\Application\Report\GeneratorInterface;
 use App\Domain\Factory\NewsFactoryInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
 use App\Infrastructure\Factory\NewsFactory;
+use App\Infrastructure\Loader\ContentLoader;
 use App\Infrastructure\Parser\NewsParser;
 use App\Infrastructure\Report\ReportGenerator;
 use App\Infrastructure\Repository\NewsRepository;
@@ -36,6 +38,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             GeneratorInterface::class,
             ReportGenerator::class
+        );
+        $this->app->bind(
+            ContentLoaderInterface::class,
+            ContentLoader::class
         );
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\AddNews;
 
+use App\Application\Loader\ContentLoaderInterface;
 use App\Application\Parser\ParserInterface;
 use App\Application\Validator\Url;
 use App\Domain\Factory\NewsFactoryInterface;
@@ -18,7 +19,8 @@ readonly class AddNewsUseCase
         private NewsFactoryInterface $newsFactory,
         private NewsRepositoryInterface $newsRepository,
         private ParserInterface $parser,
-        private Url $urlValidator
+        private Url $urlValidator,
+        private ContentLoaderInterface $contentLoader
     ) {
     }
 
@@ -34,13 +36,9 @@ readonly class AddNewsUseCase
             throw new InvalidArgumentException('Invalid URL');
         }
 
-        $html = file_get_contents($request->url);
+        $content = $this->contentLoader->load($request->url);
 
-        if ($html === false) {
-            throw new Exception("Can't load html");
-        }
-
-        $parserResult = $this->parser->parse($html);
+        $parserResult = $this->parser->parse($content->content);
 
         $news  = $this->newsFactory->create(
             $request->url,
