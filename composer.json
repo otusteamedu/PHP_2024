@@ -1,0 +1,14 @@
+{
+    "name": "penguin-astronaut/app",
+    "autoload": {
+        "psr-4": {
+            "PenguinAstronaut\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vadim Kasatkin",
+            "email": "penguin2804@gmail.com"
+        }
+    ]
+}
