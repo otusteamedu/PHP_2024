@@ -9,7 +9,8 @@ $responseMessage = 'Unprocessable Entity';
 if ($requestMethod === 'POST') {
     $requestBody = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    if (!is_array($requestBody) ||
+    if (
+        !is_array($requestBody) ||
         !array_key_exists('string', $requestBody) ||
         empty($requestBody['string']) ||
         !is_string($requestBody['string'])
