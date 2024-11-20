@@ -4,7 +4,6 @@ namespace App\Infrastructure\Factories;
 
 use App\Domain\Entities\NewsEntity;
 use App\Domain\Factories\NewsFactoryInterface;
-use App\Domain\Values\Date;
 use App\Domain\Values\Url;
 use DateTimeImmutable;
 

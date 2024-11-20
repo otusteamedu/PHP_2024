@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Http\Controllers;
 
-use App\Application\Actions\CreateNewsActionInterface;
-use App\Application\Actions\ExportNewsActionInterface;
+use App\Application\Actions\CreateNewsAction;
+use App\Application\Actions\ExportNewsAction;
 use App\Application\Requests\CreateNewsRequest;
 use App\Domain\Repositories\NewsRepositoryInterface;
 use App\Infrastructure\Requests\ExportNewsRequest;
@@ -20,7 +20,7 @@ class NewsController extends Controller
         return response()->json($newsEntities);
     }
 
-    public function store(StoreNewsRequest $request, CreateNewsActionInterface $action): JsonResponse
+    public function store(StoreNewsRequest $request, CreateNewsAction $action): JsonResponse
     {
         $createNewsRequest = new CreateNewsRequest($request->validated('url'));
 
@@ -37,7 +37,7 @@ class NewsController extends Controller
 
     public function export(
         ExportNewsRequest $request,
-        ExportNewsActionInterface $action,
+        ExportNewsAction $action,
         NewsRepositoryInterface $newsRepository
     ): JsonResponse {
         $newsEntities = $newsRepository->findMultipleById($request->validated('ids'));
