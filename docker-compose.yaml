@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+
+  server:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: php
+    container_name: server
+    tty: true
+    volumes:
+      - ./code:/data
+
+  client:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    image: php
+    container_name: client
+    depends_on:
+      - server
+    tty: true
+    volumes:
+      - ./code:/data
