@@ -1,0 +1,10 @@
+{
+  "name": "otus/hw14",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Otus\\Hw14\\": "src/"
+    }
+  },
+  "require": {}
+}
