@@ -1,0 +1,10 @@
+{
+    "name": "hinoh/brackets",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Kagirova\\Brackets\\": "src/"
+        }
+    },
+    "require": {}
+}
