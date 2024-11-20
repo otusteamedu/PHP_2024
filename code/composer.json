@@ -1,0 +1,10 @@
+{
+    "name": "i-galimov/hw4-1",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "IGalimov\\Hw41\\": "src/"
+        }
+    },
+    "require": {}
+}
