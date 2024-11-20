@@ -37,8 +37,6 @@ services:
     container_name: myapp/memcached
     volumes:
       - ./cache:/var/lib/memcached
-    ports:
-      - '${INTERFACE}:11211:11211'
     networks:
       - app-network
     stdin_open: true
@@ -48,8 +46,6 @@ services:
   redis:
     image: redis:latest
     container_name: myapp/redis
-    ports:
-      - "6379:6379"
     volumes:
       - ./redis:/var/lib/redis
     environment:
