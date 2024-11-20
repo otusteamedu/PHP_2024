@@ -24,7 +24,6 @@ if ($requestMethod === 'POST') {
     $requestStringParam = $requestBody['string'];
 
     $openBracketsCount = preg_match_all('/\(/', $requestStringParam, $openBracketsMatches);
-
     $closeBracketsCount = preg_match_all('/\)/', $requestStringParam, $closeBracketsMatches);
 
     if (!$openBracketsCount || !$closeBracketsCount || $openBracketsCount !== $closeBracketsCount) {
@@ -54,6 +53,7 @@ function makeResponse(string $message, int $statusCode = 200): string
     return json_encode([
         'message' => $message,
         'code' => $statusCode,
+        'server_name' => $_SERVER['HOSTNAME'],
         'session_id' => session_id(),
     ]);
 }
