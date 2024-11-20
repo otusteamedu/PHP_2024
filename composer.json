@@ -1,0 +1,10 @@
+{
+  "name": "ahar/hw8",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Ahar\\Hw8\\": "src/"
+    }
+  },
+  "require": {}
+}
