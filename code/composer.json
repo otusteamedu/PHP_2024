@@ -1,0 +1,21 @@
+{
+    "name": "irina-s-yurtaeva/hw5",
+    "description": "unix socket chat",
+    "type": "project",
+    "require": {
+        "php": ">8.1",
+        "ext-sockets": "*",
+	  "ext-readline": "*"
+	},
+    "autoload": {
+        "psr-4": {
+            "IraYu\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Irina Yurtaeva",
+            "email": "irina.s.yurtaeva@gmail.com"
+        }
+    ]
+}

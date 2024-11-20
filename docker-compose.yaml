@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app1:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+#      args:
+#        chatrole: 'server'
+    image: chat-server
+    container_name: chat-server
+    volumes:
+      - ./code:/data
+      - ./logs/php:/var/log/php
+  app2:
+    build:
+      context: ./php
+      dockerfile: DockerfileClient
+#      args:
+#        chatrole: 'client'
+    image: phpclient
+    container_name: chat-client
+    depends_on:
+      - app1
+    volumes:
+      - ./code:/data
+      - ./logs/php:/var/log/php
