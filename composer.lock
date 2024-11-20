@@ -1,0 +1,49 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "aae492b289e1b9af7c1dc8fb41439e3d",
+    "packages": [
+        {
+            "name": "asyrovatkin/study-package",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elexandr/study-package.git",
+                "reference": "7822f750afa7f39d20144fcd6c342a82393f224b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elexandr/study-package/zipball/7822f750afa7f39d20144fcd6c342a82393f224b",
+                "reference": "7822f750afa7f39d20144fcd6c342a82393f224b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Asyrovatkin\\StudyPackage\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/elexandr/study-package/issues",
+                "source": "https://github.com/elexandr/study-package/tree/1.0.1"
+            },
+            "time": "2024-11-20T19:49:14+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
