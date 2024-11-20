@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  php-cli:
+    build: docker/php-fpm
+    container_name: ${PHP_CLI_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./var/php-fpm/log:/var/logs/php
+    env_file: .env
+    depends_on:
+      - redis
+    networks:
+      - otus-network
+    stdin_open: true
+    tty: true
+  redis:
+    image: redis:7.0.15-alpine
+    container_name: ${REDIS_CONTAINER_NAME}
+    networks:
+      - otus-network
+
+networks:
+  otus-network:
+    driver: bridge
