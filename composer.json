@@ -1,5 +1,5 @@
 {
     "require": {
-        "slavmin/string-chars-counter": "^0.0.1"
+        "slavmin/string-chars-counter": "^1.0.0"
     }
 }
