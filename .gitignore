@@ -3,3 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/code/vendor/
+/logs/
+/data/elastic/
+/.env

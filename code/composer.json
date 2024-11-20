@@ -1,0 +1,28 @@
+{
+    "name": "irayu/hw11",
+    "description": "Elasticsearch in a first view",
+    "type": "project",
+    "require": {
+        "elasticsearch/elasticsearch": "^8.12",
+        "php": ">=8.1.2",
+        "phpyurta/cli-table": "^1.0"
+    },
+    "license": "free",
+    "autoload": {
+        "psr-4": {
+            "IraYu\\Hw11\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Irina Yurtaeva",
+            "email": "irina.s.yurtaeva@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
