@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  php-cli:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    image: otus/php-cli
+    container_name: php-cli
+    tty: true
+    working_dir: /data
+    volumes:
+      - ./app/:/data
+      - ./json/:/data/json
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    networks:
+      - app-network
+
+  elastic:
+    image: elasticsearch:8.13.0
+    container_name: elastic-search
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+#    volumes:
+#      - otus_es_data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - xpack.security.http.ssl.enabled=false
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+#volumes:
+#  otus_es_data:
+#    driver: local
