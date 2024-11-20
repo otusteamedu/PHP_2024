@@ -1,0 +1,9 @@
+{
+    "name": "dsergei/hw6",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Dsergei\\Hw6\\": "src/"
+        }
+    }
+}
