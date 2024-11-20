@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  fpm:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: fpm
+    env_file: .env
+    volumes:
+      - ./data:/data/test.local
+      - ./logs/php:/var/log/php
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    hostname: 'redis'
+    expose:
+      - 6379
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
