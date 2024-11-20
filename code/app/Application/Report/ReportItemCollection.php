@@ -9,7 +9,7 @@ use Iterator;
 
 class ReportItemCollection implements Iterator
 {
-    protected  int $position = 0;
+    protected int $position = 0;
 
     public function __construct(
         private array $data = []

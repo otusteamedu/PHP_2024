@@ -24,7 +24,6 @@ readonly class AddNewsController
 
         try {
             $response = ($this->addNewsUseCase)($request);
-
         } catch (InvalidArgumentException $ex) {
             return response($ex->getMessage(), 400);
         } catch (Exception) {

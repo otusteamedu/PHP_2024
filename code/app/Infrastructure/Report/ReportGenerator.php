@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ReportGenerator implements GeneratorInterface
 {
-
     /**
      * @inheritDoc
      */

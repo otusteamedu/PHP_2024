@@ -10,7 +10,6 @@ use Exception;
 
 class ContentLoader implements ContentLoaderInterface
 {
-
     /**
      * @param string $url
      * @return ContentLoadResult

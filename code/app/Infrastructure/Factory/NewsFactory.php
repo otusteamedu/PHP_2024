@@ -17,8 +17,7 @@ class NewsFactory implements NewsFactoryInterface
         string $url,
         string $title,
         DateTimeImmutable $exportDate
-    ): News
-    {
+    ): News {
         return new News(
             new Url($url),
             new Title($title),

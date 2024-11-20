@@ -12,7 +12,6 @@ class ReportItem
         public readonly string $url,
         public readonly string $title,
         public readonly DateTimeImmutable $exportDate
-    )
-    {
+    ) {
     }
 }

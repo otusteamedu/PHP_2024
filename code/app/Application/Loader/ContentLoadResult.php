@@ -8,7 +8,6 @@ readonly class ContentLoadResult
 {
     public function __construct(
         public string $content
-    )
-    {
+    ) {
     }
 }
