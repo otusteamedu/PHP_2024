@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  es01:
+    image: elasticsearch:8.14.1
+    container_name: ${ES_HOST}
+    environment:
+      discovery.type: single-node
+      ELASTIC_PASSWORD: ${ES_PASSWORD}
+      node.name: es8
+      cluster.name: es-docker-cluster
+      xpack.security.enabled: false
+    ports:
+      - "${ES_PORT}:${ES_PORT}"
+    networks:
+      - app-network
+
+  php:
+    build:
+      dockerfile: Docker/fpm/Dockerfile
+    container_name: app
+    volumes:
+      - ./app:/app
+    depends_on:
+      - es01
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env.example
+    networks:
+      - app-network
+
+networks:
+  app-network:
+       driver: bridge
