@@ -33,10 +33,12 @@ CREATE TABLE values
     value_text    TEXT,
     value_boolean BOOLEAN,
     value_date    DATE,
+    value_number  NUMERIC,
     CONSTRAINT check_one_value CHECK (
         (value_text IS NOT NULL):: int +
         (value_boolean IS NOT NULL):: int +
-        (value_date IS NOT NULL):: int = 1
+        (value_date IS NOT NULL):: int +
+        (value_number IS NOT NULL):: int = 1
 )
     );
 
