@@ -1,0 +1,1 @@
+EXPLAIN ANALYZE SELECT COUNT(*) FROM tickets t WHERE t.purchase >= CURRENT_TIMESTAMP - '1 week'::interval AND t.purchase < CURRENT_TIMESTAMP;

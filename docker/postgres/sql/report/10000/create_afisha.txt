@@ -1,0 +1,33 @@
+                                                             QUERY PLAN                                                             
+------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=72.66..72.68 rows=7 width=32) (actual time=0.192..0.194 rows=24 loops=1)
+   Sort Key: s.start_time
+   Sort Method: quicksort  Memory: 26kB
+   ->  Nested Loop  (cost=4.52..72.57 rows=7 width=32) (actual time=0.048..0.154 rows=24 loops=1)
+         ->  Bitmap Heap Scan on sessions s  (cost=4.23..14.45 rows=7 width=12) (actual time=0.030..0.032 rows=24 loops=1)
+               Recheck Cond: ((start_time >= CURRENT_TIMESTAMP) AND (start_time < (CURRENT_TIMESTAMP + '1 day'::interval)))
+               Heap Blocks: exact=1
+               ->  Bitmap Index Scan on start_hall_id  (cost=0.00..4.23 rows=7 width=0) (actual time=0.014..0.014 rows=24 loops=1)
+                     Index Cond: ((start_time >= CURRENT_TIMESTAMP) AND (start_time < (CURRENT_TIMESTAMP + '1 day'::interval)))
+         ->  Index Scan using movies_pkey on movies m  (cost=0.29..8.30 rows=1 width=28) (actual time=0.005..0.005 rows=1 loops=24)
+               Index Cond: (id = s.movie_id)
+ Planning Time: 1.237 ms
+ Execution Time: 0.259 ms
+(13 rows)
+
+                                                             QUERY PLAN                                                             
+После добавление индека sessions_start_time_index для sessions.start_time значительно уменьшили стоимость запроса
+------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=10.44..10.44 rows=1 width=32) (actual time=0.209..0.213 rows=24 loops=1)
+   Sort Key: s.start_time
+   Sort Method: quicksort  Memory: 26kB
+   ->  Nested Loop  (cost=0.29..10.43 rows=1 width=32) (actual time=0.028..0.157 rows=24 loops=1)
+         ->  Seq Scan on sessions s  (cost=0.00..2.12 rows=1 width=12) (actual time=0.009..0.027 rows=24 loops=1)
+               Filter: ((start_time >= CURRENT_TIMESTAMP) AND (start_time < (CURRENT_TIMESTAMP + '1 day'::interval)))
+               Rows Removed by Filter: 26
+         ->  Index Scan using movies_pkey on movies m  (cost=0.29..8.30 rows=1 width=28) (actual time=0.005..0.005 rows=1 loops=24)
+               Index Cond: (id = s.movie_id)
+ Planning Time: 1.076 ms
+ Execution Time: 0.266 ms
+(11 rows)
+

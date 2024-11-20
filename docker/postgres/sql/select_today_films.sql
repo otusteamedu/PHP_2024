@@ -1,0 +1,1 @@
+EXPLAIN ANALYZE SELECT m.* FROM movies m WHERE m.release_date <= CURRENT_TIMESTAMP;

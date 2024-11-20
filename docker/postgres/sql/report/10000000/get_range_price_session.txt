@@ -1,0 +1,27 @@
+                                                QUERY PLAN                                                 
+-----------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=25.91..25.92 rows=1 width=64) (actual time=0.006..0.011 rows=1 loops=1)
+   ->  Seq Scan on tickets t  (cost=0.00..25.88 rows=6 width=16) (actual time=0.004..0.009 rows=0 loops=1)
+         Filter: (session_id = 33)
+ Planning Time: 0.440 ms
+ Execution Time: 0.062 ms
+(5 rows)
+
+                                                                               QUERY PLAN                                                                               
+ После добавление индека tickets_session_id_price_index для tickets.session_id и tickets.price значительно уменьшили стоимость запроса
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Result  (cost=8.34..8.35 rows=1 width=64) (actual time=0.031..0.037 rows=1 loops=1)
+   InitPlan 1 (returns $0)
+     ->  Limit  (cost=0.15..4.17 rows=1 width=16) (actual time=0.012..0.017 rows=0 loops=1)
+           ->  Index Only Scan Backward using tickets_session_id_price_index on tickets t  (cost=0.15..24.27 rows=6 width=16) (actual time=0.011..0.016 rows=0 loops=1)
+                 Index Cond: ((session_id = 33) AND (price IS NOT NULL))
+                 Heap Fetches: 0
+   InitPlan 2 (returns $1)
+     ->  Limit  (cost=0.15..4.17 rows=1 width=16) (actual time=0.018..0.018 rows=0 loops=1)
+           ->  Index Only Scan using tickets_session_id_price_index on tickets t_1  (cost=0.15..24.27 rows=6 width=16) (actual time=0.018..0.018 rows=0 loops=1)
+                 Index Cond: ((session_id = 33) AND (price IS NOT NULL))
+                 Heap Fetches: 0
+ Planning Time: 0.755 ms
+ Execution Time: 0.105 ms
+(13 rows)
+

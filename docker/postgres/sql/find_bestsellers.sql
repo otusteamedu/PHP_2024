@@ -1,0 +1,1 @@
+EXPLAIN ANALYZE SELECT m.title, SUM(t.price) as total_price FROM tickets t INNER JOIN sessions s ON t.session_id = s.id INNER JOIN movies m ON s.movie_id = m.id WHERE t.purchase >= CURRENT_TIMESTAMP - '1 week'::interval AND t.purchase < CURRENT_TIMESTAMP GROUP BY m.title ORDER BY total_price DESC

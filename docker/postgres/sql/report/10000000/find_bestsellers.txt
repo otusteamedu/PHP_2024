@@ -1,0 +1,47 @@
+                                                             QUERY PLAN                                                              
+-------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=90.57..90.58 rows=6 width=56) (actual time=0.098..0.100 rows=0 loops=1)
+   Sort Key: (sum(t.price)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  GroupAggregate  (cost=90.37..90.49 rows=6 width=56) (actual time=0.060..0.061 rows=0 loops=1)
+         Group Key: m.title
+         ->  Sort  (cost=90.37..90.39 rows=6 width=40) (actual time=0.057..0.058 rows=0 loops=1)
+               Sort Key: m.title
+               Sort Method: quicksort  Memory: 25kB
+               ->  Nested Loop  (cost=0.57..90.29 rows=6 width=40) (actual time=0.007..0.008 rows=0 loops=1)
+                     ->  Nested Loop  (cost=0.29..88.42 rows=6 width=20) (actual time=0.007..0.007 rows=0 loops=1)
+                           ->  Seq Scan on tickets t  (cost=0.00..38.58 rows=6 width=20) (actual time=0.007..0.007 rows=0 loops=1)
+                                 Filter: ((purchase < CURRENT_TIMESTAMP) AND (purchase >= (CURRENT_TIMESTAMP - '7 days'::interval)))
+                           ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..8.31 rows=1 width=8) (never executed)
+                                 Index Cond: (id = t.session_id)
+                     ->  Index Scan using movies_pkey on movies m  (cost=0.29..0.31 rows=1 width=28) (never executed)
+                           Index Cond: (id = s.movie_id)
+ Planning Time: 1.298 ms
+ Execution Time: 0.196 ms
+(18 rows)
+
+                                                                         QUERY PLAN                                                                          
+После добавление индека tickets_session_id_price_index для tickets.session_id уменьшили стоимость запроса
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=65.67..65.68 rows=6 width=56) (actual time=0.060..0.061 rows=0 loops=1)
+   Sort Key: (sum(t.price)) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  GroupAggregate  (cost=65.47..65.59 rows=6 width=56) (actual time=0.034..0.035 rows=0 loops=1)
+         Group Key: m.title
+         ->  Sort  (cost=65.47..65.48 rows=6 width=40) (actual time=0.033..0.034 rows=0 loops=1)
+               Sort Key: m.title
+               Sort Method: quicksort  Memory: 25kB
+               ->  Nested Loop  (cost=4.72..65.39 rows=6 width=40) (actual time=0.010..0.011 rows=0 loops=1)
+                     ->  Nested Loop  (cost=4.43..63.52 rows=6 width=20) (actual time=0.010..0.011 rows=0 loops=1)
+                           ->  Bitmap Heap Scan on tickets t  (cost=4.14..13.67 rows=6 width=20) (actual time=0.010..0.010 rows=0 loops=1)
+                                 Recheck Cond: ((purchase >= (CURRENT_TIMESTAMP - '7 days'::interval)) AND (purchase < CURRENT_TIMESTAMP))
+                                 ->  Bitmap Index Scan on tickets_purchase_index  (cost=0.00..4.14 rows=6 width=0) (actual time=0.009..0.009 rows=0 loops=1)
+                                       Index Cond: ((purchase >= (CURRENT_TIMESTAMP - '7 days'::interval)) AND (purchase < CURRENT_TIMESTAMP))
+                           ->  Index Scan using sessions_pkey on sessions s  (cost=0.29..8.31 rows=1 width=8) (never executed)
+                                 Index Cond: (id = t.session_id)
+                     ->  Index Scan using movies_pkey on movies m  (cost=0.29..0.31 rows=1 width=28) (never executed)
+                           Index Cond: (id = s.movie_id)
+ Planning Time: 1.653 ms
+ Execution Time: 0.183 ms
+(20 rows)
+

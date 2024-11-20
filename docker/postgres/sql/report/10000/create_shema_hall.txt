@@ -1,0 +1,45 @@
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=36.41..36.41 rows=1 width=40) (actual time=0.132..0.136 rows=20 loops=1)
+   Sort Key: st."row", st.number
+   Sort Method: quicksort  Memory: 25kB
+   ->  Nested Loop Left Join  (cost=8.18..36.40 rows=1 width=40) (actual time=0.054..0.102 rows=20 loops=1)
+         Join Filter: (st.id = t.seat_id)
+         ->  Hash Join  (cost=8.18..10.45 rows=1 width=16) (actual time=0.050..0.073 rows=20 loops=1)
+               Hash Cond: (st.hall_id = s.hall_id)
+               ->  Seq Scan on seats st  (cost=0.00..2.00 rows=100 width=16) (actual time=0.006..0.014 rows=100 loops=1)
+               ->  Hash  (cost=8.17..8.17 rows=1 width=8) (actual time=0.025..0.026 rows=1 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Index Scan using sessions_pkey on sessions s  (cost=0.15..8.17 rows=1 width=8) (actual time=0.013..0.014 rows=1 loops=1)
+                           Index Cond: (id = 1)
+         ->  Seq Scan on tickets t  (cost=0.00..25.88 rows=6 width=16) (actual time=0.000..0.000 rows=0 loops=20)
+               Filter: (session_id = 1)
+ Planning Time: 0.811 ms
+ Execution Time: 0.227 ms
+(16 rows)
+
+                                                                       QUERY PLAN                                                                        
+После добавление индека tickets_session_id_index для tickets.session_id уменьшили стоимость запроса
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=17.79..17.80 rows=2 width=40) (actual time=0.129..0.132 rows=20 loops=1)
+   Sort Key: st."row", st.number
+   Sort Method: quicksort  Memory: 25kB
+   ->  Nested Loop Left Join  (cost=5.84..17.78 rows=2 width=40) (actual time=0.055..0.083 rows=20 loops=1)
+         Join Filter: (st.id = t.seat_id)
+         ->  Hash Join  (cost=1.64..3.92 rows=2 width=16) (actual time=0.046..0.068 rows=20 loops=1)
+               Hash Cond: (st.hall_id = s.hall_id)
+               ->  Seq Scan on seats st  (cost=0.00..2.00 rows=100 width=16) (actual time=0.006..0.013 rows=100 loops=1)
+               ->  Hash  (cost=1.62..1.62 rows=1 width=8) (actual time=0.014..0.014 rows=1 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     ->  Seq Scan on sessions s  (cost=0.00..1.62 rows=1 width=8) (actual time=0.006..0.009 rows=1 loops=1)
+                           Filter: (id = 1)
+                           Rows Removed by Filter: 49
+         ->  Materialize  (cost=4.20..13.70 rows=6 width=16) (actual time=0.000..0.000 rows=0 loops=20)
+               ->  Bitmap Heap Scan on tickets t  (cost=4.20..13.67 rows=6 width=16) (actual time=0.004..0.004 rows=0 loops=1)
+                     Recheck Cond: (session_id = 1)
+                     ->  Bitmap Index Scan on tickets_session_id_price_index  (cost=0.00..4.20 rows=6 width=0) (actual time=0.002..0.003 rows=0 loops=1)
+                           Index Cond: (session_id = 1)
+ Planning Time: 1.075 ms
+ Execution Time: 0.231 ms
+(20 rows)
+
