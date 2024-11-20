@@ -1,0 +1,16 @@
+{
+  "name": "otus/ystopchyk",
+  "description": "Otus home work 17",
+  "minimum-stability": "dev",
+  "type": "project",
+  "require": {
+    "php": ">=8.0",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "hw17\\": "src/"
+    }
+  },
+  "prefer-stable": true
+}
