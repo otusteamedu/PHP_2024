@@ -1,5 +1,8 @@
 <?php
 
+// start session
+session_start();
+
 // Метод запроса
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
@@ -35,6 +38,12 @@ if ($requestMethod === 'POST') {
 
 exit(makeResponse($responseMessage, $responseCode));
 
+
+/**
+ * @param string $message
+ * @param int $statusCode
+ * @return string
+ */
 function makeResponse(string $message, int $statusCode = 200): string
 {
     $requestProtocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.0';
@@ -45,5 +54,6 @@ function makeResponse(string $message, int $statusCode = 200): string
     return json_encode([
         'message' => $message,
         'code' => $statusCode,
+        'session_id' => session_id(),
     ]);
 }
