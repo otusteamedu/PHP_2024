@@ -1,5 +1,6 @@
-.idea/
-/vendor/
+.idea/**
 .DS_Store
-.AppleDouble
-.LSOverride
+.env
+vendor
+composer.json
+composer.lock
