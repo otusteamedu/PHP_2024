@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    container_name: 'nginx'
+    working_dir: /app
+    volumes:
+      - ./app:/app
+      - ./docker/nginx/hosts/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    working_dir: /app
+    container_name: ${RABBIT_MQ_HOST}
+    ports:
+      - "${RABBIT_MQ_UI_PORT}:${RABBIT_MQ_UI_PORT}"
+      - "${RABBIT_MQ_PORT}:${RABBIT_MQ_PORT}"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASSWORD}
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: -rabbit disk_free_limit 2147483648
+    networks:
+      - app-network
+
+  php-sender:
+    build:
+      dockerfile: ./Docker/php/Sender/Dockerfile
+    container_name: 'php-sender'
+    ports:
+      - 9000:9000
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    working_dir: /app/public
+    env_file:
+      - .env.example
+
+  php-receiver:
+    build:
+      dockerfile: ./Docker/php/Receiver/Dockerfile
+    container_name: 'php-receiver'
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+    restart: always
+    working_dir: /app/public
+    env_file:
+      - .env.example
+
+networks:
+  app-network:
+    driver: bridge
