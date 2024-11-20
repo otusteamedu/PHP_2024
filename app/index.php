@@ -1,35 +1,48 @@
 <?php
 
-echo '<div style="text-align:center">';
+// Метод запроса
+$requestMethod = $_SERVER['REQUEST_METHOD'];
 
-echo 'MySQL: <br>';
-try {
-    $mysql = new PDO('mysql:host=mysql;dbname=database', 'dbuser', 'secret');
-    echo $mysql->getAttribute(PDO::ATTR_CONNECTION_STATUS);
-} catch (Throwable $e) {
-    echo $e->getMessage();
+$responseCode = 422;
+$responseMessage = 'Unprocessable Entity';
+
+if ($requestMethod === 'POST') {
+    $requestBody = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    if (!is_array($requestBody) ||
+        !array_key_exists('string', $requestBody) ||
+        empty($requestBody['string']) ||
+        !is_string($requestBody['string'])
+    ) {
+        exit(makeResponse($responseMessage, $responseCode));
+    }
+
+    $requestStringParam = $requestBody['string'];
+
+    $openBracketsCount = preg_match_all('/\(/', $requestStringParam, $openBracketsMatches);
+
+    $closeBracketsCount = preg_match_all('/\)/', $requestStringParam, $closeBracketsMatches);
+
+    if (!$openBracketsCount || !$closeBracketsCount || $openBracketsCount !== $closeBracketsCount) {
+        $responseMessage = 'Brackets count mismatch';
+        exit(makeResponse($responseMessage, $responseCode));
+    }
+
+    $responseCode = 200;
+    $responseMessage = 'OK';
 }
 
-echo '<hr>Redis: <br>';
-try {
-    $redis = new Redis();
-    $redis->connect('redis', 6379);
-    echo 'version: ' . $redis->info()['redis_version'] . '<br>';
-} catch (Throwable $e) {
-    echo $e->getMessage();
+exit(makeResponse($responseMessage, $responseCode));
+
+function makeResponse(string $message, int $statusCode = 200): string
+{
+    $requestProtocol = $_SERVER['SERVER_PROTOCOL'] ?? 'HTTP/1.0';
+
+    header('Content-type: application/json');
+    header($requestProtocol . ' ' . $statusCode . ' ' . $message);
+
+    return json_encode([
+        'message' => $message,
+        'code' => $statusCode,
+    ]);
 }
-
-echo '<hr>Memcached: <br>';
-try {
-    $memcached = new Memcached();
-    $memcached->addServer('memcached', 11211);
-    echo 'version: ' . implode(',', $memcached->getVersion());
-} catch (Exception $e) {
-    echo $e->getMessage();
-}
-
-echo '<br>';
-
-echo '</div>';
-
-echo phpinfo();
