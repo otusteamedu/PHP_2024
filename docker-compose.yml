@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  nginx:
+    build: nginx
+    container_name: ${NGINX_CONTAINER_NAME}
+    ports:
+      - "${NGINX_LOCAL_PORT}:${NGINX_CONTAINER_PORT}"
+    volumes:
+      - ./app:/app
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites:/etc/nginx/sites
+      - ./var/nginx/logs:/var/log/nginx
+    depends_on:
+      - php-fpm
+    networks:
+      - otus-network
+  php-fpm:
+    build: php-fpm
+    container_name: ${PHP_FPM_CONTAINER_NAME}
+    volumes:
+      - ./app:/app
+      - ./var/php-fpm/log:/var/logs/php
+      - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+    env_file: .env
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    networks:
+      - otus-network
+  redis:
+    build: redis
+    container_name: ${REDIS_CONTAINER_NAME}
+    volumes:
+      - ./var/redis:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - otus-network
+  memcached:
+    build: memcached
+    container_name: ${MEMCACHED_CONTAINER_NAME}
+    networks:
+      - otus-network
+  mysql:
+    build: mysql
+    container_name: ${MYSQL_CONTAINER_NAME}
+    env_file: .env
+    volumes:
+      - ./var/mysql:/var/lib/mysql
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - otus-network
+
+networks:
+  otus-network:
+    driver: bridge
