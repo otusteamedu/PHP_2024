@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  app:
+    build:
+      dockerfile: fpm/Dockerfile
+    volumes:
+      - ./app:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
