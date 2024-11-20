@@ -1,0 +1,12 @@
+{
+    "name": "afilipov/hw13",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Afilipov\\Hw13\\": "src/"
+        }
+    },
+    "require": {
+        "ext-pdo": "*"
+    }
+}
