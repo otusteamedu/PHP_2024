@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Report;
 
 use App\Application\Report\GeneratorInterface;
+use App\Application\Report\ReportItemCollection;
 use Illuminate\Support\Facades\Storage;
 
 class ReportGenerator implements GeneratorInterface
@@ -13,9 +14,9 @@ class ReportGenerator implements GeneratorInterface
     /**
      * @inheritDoc
      */
-    public function generate(array $news): string
+    public function generate(ReportItemCollection $items): string
     {
-        $content = view('report', ['newsList' => $news]);
+        $content = view('report', ['itemList' => $items]);
         $fileName = uniqid() . '.html';
         Storage::put('public/' . $fileName, $content);
 

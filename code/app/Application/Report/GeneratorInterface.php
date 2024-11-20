@@ -9,8 +9,8 @@ use App\Domain\Entity\News;
 interface GeneratorInterface
 {
     /**
-     * @param News[] $news
+     * @param ReportItemCollection $items
      * @return string
      */
-    public function generate(array $news): string;
+    public function generate(ReportItemCollection $items): string;
 }

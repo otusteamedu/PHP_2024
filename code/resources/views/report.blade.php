@@ -7,9 +7,9 @@
 
 <body>
     <ul>
-        @foreach ($newsList as $news)
+        @foreach ($itemList as $item)
         <li>
-            <a href="{{$news->getUrl()->getValue()}}">{{$news->getTitle()->getValue()}}</a>
+            <a href="{{$item->url}}">{{$item->title}}</a>
         </li>
         @endforeach
     </ul>
