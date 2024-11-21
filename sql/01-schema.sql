@@ -28,17 +28,21 @@ CREATE TABLE attributes
 -- Таблица: значения атрибутов
 CREATE TABLE values
 (
-    id            SERIAL PRIMARY KEY,
-    attribute_id  INT NOT NULL REFERENCES attributes (id) ON DELETE CASCADE,
-    value_text    TEXT,
-    value_boolean BOOLEAN,
-    value_date    DATE,
-    value_number  NUMERIC,
+    id              SERIAL PRIMARY KEY,
+    attribute_id    INT NOT NULL REFERENCES attributes (id) ON DELETE CASCADE,
+    value_text      TEXT NULL DEFAULT NULL,
+    value_boolean   BOOLEAN NULL DEFAULT NULL,
+    value_date      DATE NULL DEFAULT NULL,
+    value_timestamp TIMESTAMP NULL DEFAULT NULL,
+    value_integer   INTEGER NULL DEFAULT NULL,
+    value_decimal   DECIMAL(12, 2) NULL DEFAULT NULL,
     CONSTRAINT check_one_value CHECK (
         (value_text IS NOT NULL):: int +
         (value_boolean IS NOT NULL):: int +
         (value_date IS NOT NULL):: int +
-        (value_number IS NOT NULL):: int = 1
+        (value_timestamp IS NOT NULL):: int +
+        (value_integer IS NOT NULL):: int +
+        (value_decimal IS NOT NULL):: int = 1
 )
     );
 
