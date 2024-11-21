@@ -26,10 +26,8 @@ class ResponseClass
      * @param string $message
      * @param int $statusCode
      */
-    public static function sendResponse(string $message, int $statusCode = 200)
+    public static function sendResponse(string $message, int $statusCode = 200): void
     {
-        ob_start();
         echo static::makeResponse($message, $statusCode);
-        ob_end_flush();
     }
 }
