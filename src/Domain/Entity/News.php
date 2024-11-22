@@ -2,7 +2,7 @@
 
 namespace App\Domain\Entity;
 
-use App\Domain\Interface\Entity\EntityInterface;
+use App\Domain\Contract\Domain\Entity\EntityInterface;
 use App\Domain\ValueObject\Url;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,7 +26,7 @@ class News implements EntityInterface
         private Url $url,
         #[ORM\Column(type: 'string', length: 300, nullable: false)]
         private string $title,
-    ) {
+     ) {
     }
 
     public function getId(): ?int

@@ -2,9 +2,9 @@
 
 namespace App\Application\UseCase\News\GetNewsListByIdArray;
 
-use App\Domain\Interface\Factory\ResponseFactoryInterface;
-use App\Domain\Interface\Repository\NewsRepositoryInterface;
-use App\Domain\Interface\UseCase\GetNewsListByIdUseCaseInterface;
+use App\Domain\Contract\Application\Factory\ResponseFactoryInterface;
+use App\Domain\Contract\Application\UseCase\GetNewsListByIdUseCaseInterface;
+use App\Domain\Contract\Infrastructure\Repository\NewsRepositoryInterface;
 
 class GetNewsListByIdUseCase implements GetNewsListByIdUseCaseInterface
 {

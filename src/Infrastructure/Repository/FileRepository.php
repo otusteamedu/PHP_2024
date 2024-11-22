@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Interface\Repository\FileRepositoryInterface;
+use App\Domain\Contract\Infrastructure\Repository\FileRepositoryInterface;
 
 class FileRepository implements FileRepositoryInterface
 {

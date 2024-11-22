@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
-use App\Domain\Interface\Entity\EntityInterface;
+use App\Domain\Contract\Domain\Entity\EntityInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 
@@ -21,8 +21,8 @@ abstract class AbstractRepository
     }
 
     /**
-     * @param T $entity
-     * @return EntityInterface
+     * @param EntityInterface $entity
+     * @return T
      */
     protected function store(EntityInterface $entity): EntityInterface
     {
@@ -33,7 +33,7 @@ abstract class AbstractRepository
     }
 
     /**
-     * @param T $entity
+     * @param EntityInterface $entity
      * @throws ORMException
      */
     public function refresh(EntityInterface $entity): void

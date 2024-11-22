@@ -2,15 +2,17 @@
 
 namespace App\Application\UseCase\News\CreateNews;
 
+use App\Domain\Contract\Application\UseCase\CreateNewsUseCaseInterface;
+use App\Domain\Contract\Infrastructure\Factory\EntityFactoryInterface;
+use App\Domain\Contract\Infrastructure\Repository\NewsRepositoryInterface;
 use App\Domain\Entity\News;
-use App\Domain\Interface\Factory\EntityFactoryInterface;
-use App\Domain\Interface\Repository\NewsRepositoryInterface;
-use App\Domain\Interface\UseCase\CreateNewsUseCaseInterface;
 
 class CreateNewsUseCase implements CreateNewsUseCaseInterface
 {
     public function __construct(
+        /** @var EntityFactoryInterface<News> */
         private readonly EntityFactoryInterface $factory,
+        /** @var NewsRepositoryInterface<News> */
         private readonly NewsRepositoryInterface $newsRepository,
     ) {
     }

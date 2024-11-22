@@ -35,3 +35,4 @@ class GuzzleHttpClient implements HttpClientGatewayInterface
         return $extractedTitle;
     }
 }
+

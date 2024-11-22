@@ -2,8 +2,8 @@
 
 namespace App\Application\UseCase\News\CreateHtml;
 
-use App\Domain\Interface\Repository\FileRepositoryInterface;
-use App\Domain\Interface\UseCase\CreateHtmlUseCaseInterface;
+use App\Domain\Contract\Application\UseCase\CreateHtmlUseCaseInterface;
+use App\Domain\Contract\Infrastructure\Repository\FileRepositoryInterface;
 use Twig\Environment;
 
 class CreateHtmlUseCase implements CreateHtmlUseCaseInterface

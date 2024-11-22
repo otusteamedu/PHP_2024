@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Repository;
 
+use App\Domain\Contract\Infrastructure\Repository\NewsRepositoryInterface;
 use App\Domain\Entity\News;
-use App\Domain\Interface\Repository\NewsRepositoryInterface;
 use App\Domain\ValueObject\Url;
 
 /**
@@ -47,8 +47,7 @@ class NewsRepository extends AbstractRepository implements NewsRepositoryInterfa
         return $this->entityManager->createQuery(
             'SELECT news
             FROM App\Domain\Entity\News news
-            WHERE news.id IN (:idArray)'
-        )
+            WHERE news.id IN (:idArray)')
             ->setParameter('idArray', $idArray)
             ->getResult();
     }

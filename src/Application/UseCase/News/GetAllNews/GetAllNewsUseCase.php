@@ -2,16 +2,16 @@
 
 namespace App\Application\UseCase\News\GetAllNews;
 
-use App\Domain\Interface\Factory\ResponseFactoryInterface;
-use App\Domain\Interface\Repository\NewsRepositoryInterface;
-use App\Domain\Interface\UseCase\GetAllNewsUseCaseInterface;
+use App\Domain\Contract\Application\Factory\ResponseFactoryInterface;
+use App\Domain\Contract\Application\UseCase\GetAllNewsUseCaseInterface;
+use App\Domain\Contract\Infrastructure\Repository\NewsRepositoryInterface;
 
 class GetAllNewsUseCase implements GetAllNewsUseCaseInterface
 {
     public function __construct(
-        private readonly NewsRepositoryInterface $newsRepository,
         /** @var ResponseFactoryInterface<GetAllNewsUseCaseResponse> */
         private readonly ResponseFactoryInterface $responseFactory,
+        private readonly NewsRepositoryInterface $newsRepository,
     ) {
     }
 

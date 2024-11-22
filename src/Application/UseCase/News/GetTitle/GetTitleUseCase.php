@@ -3,7 +3,7 @@
 namespace App\Application\UseCase\News\GetTitle;
 
 use App\Application\Gateway\HttpClient\HttpClientGatewayInterface;
-use App\Domain\Interface\UseCase\GetTitleUseCaseInterface;
+use App\Domain\Contract\Application\UseCase\GetTitleUseCaseInterface;
 use App\Infrastructure\Gateway\HttpClient\HttpClientGatewayRequest;
 use App\Infrastructure\Gateway\HttpClient\HttpClientGatewayResponse;
 

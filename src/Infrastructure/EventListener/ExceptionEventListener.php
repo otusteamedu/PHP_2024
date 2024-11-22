@@ -35,9 +35,8 @@ class ExceptionEventListener
         return new JsonResponse([self::DEFAULT_PROPERTY => $message], $code);
     }
 
-    private function getValidationFailedResponse(
-        ValidationFailedException|UniqueConstraintViolationException|ConnectException $exception
-    ): Response {
+    private function getValidationFailedResponse(ValidationFailedException|UniqueConstraintViolationException|ConnectException $exception): Response
+    {
         $response = [];
         if ($exception instanceof ValidationFailedException) {
             foreach ($exception->getViolations() as $violation) {

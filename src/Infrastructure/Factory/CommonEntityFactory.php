@@ -2,15 +2,18 @@
 
 namespace App\Infrastructure\Factory;
 
-use App\Domain\Interface\Entity\EntityInterface;
-use App\Domain\Interface\Factory\EntityFactoryInterface;
+use App\Domain\Contract\Domain\Entity\EntityInterface;
+use App\Domain\Contract\Infrastructure\Factory\EntityFactoryInterface;
 
+/**
+ * @template T
+ */
 class CommonEntityFactory implements EntityFactoryInterface
 {
     /**
      * @param string $entityClass
      * @param ...$parameters
-     * @return EntityInterface
+     * @return T
      */
     public function makeEntity(string $entityClass, ...$parameters): EntityInterface
     {

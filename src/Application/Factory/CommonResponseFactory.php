@@ -2,7 +2,7 @@
 
 namespace App\Application\Factory;
 
-use App\Domain\Interface\Factory\ResponseFactoryInterface;
+use App\Domain\Contract\Application\Factory\ResponseFactoryInterface;
 
 /**
  * @template T
