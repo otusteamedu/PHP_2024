@@ -8,20 +8,20 @@
     "packages": [
         {
             "name": "asyrovatkin/study-package",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elexandr/study-package.git",
-                "reference": "7822f750afa7f39d20144fcd6c342a82393f224b"
+                "reference": "15361c7d61c7c026b410985e8024eb2c514b5c6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elexandr/study-package/zipball/7822f750afa7f39d20144fcd6c342a82393f224b",
-                "reference": "7822f750afa7f39d20144fcd6c342a82393f224b",
+                "url": "https://api.github.com/repos/elexandr/study-package/zipball/15361c7d61c7c026b410985e8024eb2c514b5c6f",
+                "reference": "15361c7d61c7c026b410985e8024eb2c514b5c6f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.1"
+                "php": ">=4.3.0"
             },
             "type": "library",
             "autoload": {
@@ -32,9 +32,9 @@
             "notification-url": "https://packagist.org/downloads/",
             "support": {
                 "issues": "https://github.com/elexandr/study-package/issues",
-                "source": "https://github.com/elexandr/study-package/tree/1.0.1"
+                "source": "https://github.com/elexandr/study-package/tree/1.0.2"
             },
-            "time": "2024-11-20T19:49:14+00:00"
+            "time": "2024-11-22T19:54:40+00:00"
         }
     ],
     "packages-dev": [],
