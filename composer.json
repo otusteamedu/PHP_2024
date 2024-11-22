@@ -1,0 +1,18 @@
+{
+    "name": "asyrovatkin/php_2024",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Asyrovatkin\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alexander Syrovatkin",
+            "email": "example@example.com"
+        }
+    ],
+    "require": {
+        "asyrovatkin/study-package": "^1.0"
+    }
+}
