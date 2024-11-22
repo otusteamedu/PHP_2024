@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo badResponse('Неверный метод, используйте POST!');
 } else {
