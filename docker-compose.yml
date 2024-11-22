@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  php-cli-composer:
+    build:
+      context: ./Docker/Php-cli
+    image: otus-php-cli
+    volumes:
+      - ./:/data

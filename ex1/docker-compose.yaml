@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+    image: hw4_ex1_nginx
+    container_name: hw4_ex1_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/data/mysite.local
+    networks:
+      - hw4_ex1_network
+  app:
+    build:
+      context: ./docker/php-fpm
+    image: hw4_ex1_php_fpm
+    container_name: hw4_ex1_php_fpm
+    volumes:
+      - ./:/data/mysite.local
+    networks:
+      - hw4_ex1_network
+networks:
+  hw4_ex1_network:
+    driver: bridge
+
+
+
+
+
