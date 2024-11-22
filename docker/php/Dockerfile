@@ -21,4 +21,7 @@ RUN pecl install redis && docker-php-ext-enable redis
 # Install the php memcached extension
 # RUN pecl install memcached && docker-php-ext-enable memcached
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 COPY ./docker/php/php.ini "$PHP_INI_DIR/php.ini"
