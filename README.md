@@ -9,4 +9,6 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 
 `docker-compose up -d`
 
+`docker exec -it php-fpm-1 /bin/bash -c 'composer dump-autoload --optimize'`
+
 Navigate to `http://localhost:8080/`
