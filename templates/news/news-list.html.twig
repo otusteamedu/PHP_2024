@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+    {% set title = title %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div>
+        <ul>
+            {% for news in newsPropertiesArray %}
+                <li><a href={{ news['href'] }}>{{ news['title'] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
