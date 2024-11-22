@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cinema_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_container
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
