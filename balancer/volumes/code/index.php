@@ -30,4 +30,3 @@ if (isset($_POST['string']) && !empty(trim($_POST['string']))) {
     header("HTTP/1.1 400 Bad Request");
     echo 'Все плохо: ничего не передали в параметр "string"' . PHP_EOL;
 }
-
