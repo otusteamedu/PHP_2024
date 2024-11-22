@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  nginx-proxy:
+    build:
+      context: ./docker/nginx-proxy
+    ports:
+      - "80:80"
+    networks:
+      - app_otus_php
+  nginx1:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./src:/data/otusphp.local
+    networks:
+      - app_otus_php
+  nginx2:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./src:/data/otusphp.local
+    networks:
+      - app_otus_php
+  nginx3:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./src:/data/otusphp.local
+    networks:
+      - app_otus_php
+  php-fpm1:
+    build:
+      context: ./docker/php-fpm
+    volumes:
+      - ./src:/data/otusphp.local
+    networks:
+      - app_otus_php
+  php-fpm2:
+    build:
+      context: ./docker/php-fpm
+    volumes:
+      - ./src:/data/otusphp.local
+    networks:
+      - app_otus_php
+  php-fpm3:
+    build:
+      context: ./docker/php-fpm
+    volumes:
+      - ./src:/data/otusphp.local
+    networks:
+      - app_otus_php
+  redis:
+    image: redis
+    networks:
+      - app_otus_php
+
+networks:
+  app_otus_php:
+    driver: bridge

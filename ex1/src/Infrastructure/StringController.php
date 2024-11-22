@@ -4,6 +4,7 @@ namespace IgorKachko\OtusComposerApp\Infrastructure;
 
 use IgorKachko\OtusComposerPackage\StringProcessor;
 
+
 class StringController
 {
     public function run(string $str) {
