@@ -1,0 +1,34 @@
+FROM public.ecr.aws/docker/library/php:8.2-cli
+
+ENV TIMEZONE Europe/Moscow
+
+RUN apt-get update && apt-get install -y \
+        curl \
+        zip \
+        libzip-dev \
+        libonig-dev \
+        unzip
+
+# Install PHP extensions
+RUN docker-php-ext-install sockets
+
+RUN docker-php-ext-install zip mbstring
+RUN docker-php-ext-enable mbstring sockets
+
+# Get the Xdebug extension
+RUN pecl install xdebug \
+   # Enable the installed Xdebug
+    && docker-php-ext-enable xdebug
+
+# Get latest Composer
+COPY --from=public.ecr.aws/docker/library/composer:latest /usr/bin/composer /usr/bin/composer
+
+# Install TimeZone
+RUN cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    && echo "${TIMEZONE}" > /etc/timezone
+
+WORKDIR /var/www/html/
+
+VOLUME /var/www/html/
+
+CMD ["php", "-a"]

@@ -1,0 +1,45 @@
+stages:
+  - analysis
+  - build
+  - test
+  - deploy
+
+phpcs-job:
+  stage: analysis
+  script:
+    - echo "Run PHP_CodeSniffer"
+    - phpcs -s -p --standard=PSR12 --warning-severity=6 --colors --extensions=php .
+  tags:
+    - runner-hw22
+
+build-job:
+  stage: build
+  tags:
+    - runner-hw22
+  script:
+    - echo "Run build image"
+    - docker compose up -d --build
+    - docker compose exec app composer install
+
+test-job:
+  stage: test
+  extends: build-job
+  tags:
+    - runner-hw22
+  script:
+    - echo "Run run phpUnit tests"
+    - docker compose exec app composer install
+    - docker compose exec app /var/www/html/vendor/bin/phpunit tests/
+
+deploy-job:
+  stage: deploy
+  only: 
+    - main
+  tags:
+    - runner-hw22
+  script:
+    - echo "Deploying to vps"
+    - cd /var/www/html/
+    - git pull
+    - docker compose up -d --build
+    - docker compose exec app composer install
