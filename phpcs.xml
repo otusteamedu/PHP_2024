@@ -11,6 +11,11 @@
 <!-- exclude our migrations directory from the violation check-->
 <exclude-pattern>*/migrations/*</exclude-pattern>
 
+<!-- exclude LineEndings from the violation check-->
+<rule ref="Generic.Files.LineEndings">
+    <exclude name="Generic.Files.LineEndings.InvalidEOLChar"/>
+</rule>
+
 <!-- ignore warnings and display ERRORS only -->
 <arg  value="np"/>
 
