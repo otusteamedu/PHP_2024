@@ -24,5 +24,4 @@ class BracketsChecker
 
         return count($stack) === 0;
     }
-
 }
