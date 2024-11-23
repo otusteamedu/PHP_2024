@@ -1,0 +1,116 @@
+version: "3.8"
+services:
+    web:
+        image: nginx:latest
+        container_name: balancer
+        volumes:
+            - ./balancer/conf/nginx/balancer.conf:/etc/nginx/nginx.conf
+            - ./balancer/volumes/log/balancer:/var/log/nginx
+        ports:
+            - "80:80"
+        restart: unless-stopped
+        depends_on:
+            - node1
+            - node2
+        networks:
+            - app-network
+    node1:
+        image: nginx:latest
+        container_name: b-nginx1
+        volumes:
+            - ./balancer/conf/nginx/node1/default.conf:/etc/nginx/conf.d/default.conf
+            - ./balancer/volumes/log/node1-nginx:/var/log/nginx
+            - ./balancer/volumes/code:/var/www/html
+        ports:
+            - "8081:80"
+        restart: unless-stopped
+        depends_on:
+            - php1
+        networks:
+            - app-network
+    node2:
+        image: nginx:latest
+        container_name: b-nginx2
+        volumes:
+            - ./balancer/conf/nginx/node1/default.conf:/etc/nginx/conf.d/default.conf
+            - ./balancer/volumes/log/node2-nginx:/var/log/nginx
+            - ./balancer/volumes/code:/var/www/html
+        ports:
+            - "8082:80"
+        restart: unless-stopped
+        depends_on:
+            - php2
+        networks:
+            - app-network
+    php1:
+        build:
+            context: balancer/php8.0-fpm
+            dockerfile: Dockerfile
+        image: balance/php1
+        container_name: b-php1
+        restart: unless-stopped
+        depends_on:
+            - redis
+            - database
+        volumes:
+            - ./balancer/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./balancer/volumes/code:/var/www/html
+        ports:
+            - "9000:9000"
+        networks:
+            - app-network
+    php2:
+        build:
+            context: balancer/php8.0-fpm
+            dockerfile: Dockerfile
+        image: balance/php2
+        container_name: b-php2
+        restart: unless-stopped
+        depends_on:
+            - redis
+            - database
+        volumes:
+            - ./balancer/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./balancer/volumes/code:/var/www/html
+        ports:
+            - "9001:9000"
+        networks:
+            - app-network
+    redis:
+        image: redis:latest
+        container_name: b-redis
+        volumes:
+            - ./balancer/volumes/redis-data/:/data
+        ports:
+            - "6379:6379"
+        networks:
+            - app-network
+    database:
+        env_file:
+            - .env
+        image: mysql:latest
+        container_name: b-mysql
+        restart: unless-stopped
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        volumes:
+            - ./balancer/volumes/mysql-data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - app-network
+    composer_ins:
+      container_name: composer_ins
+      image: composer
+      volumes:
+          - ./balancer/volumes/code:/var/www/html
+      working_dir: /var/www/html
+      command: composer dump-autoload
+      networks:
+          - app-network
+networks:
+    app-network:
+        driver: bridge

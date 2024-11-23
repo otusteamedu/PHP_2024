@@ -3,3 +3,10 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/balancer/volumes/log/balancer/*
+/balancer/volumes/log/node?-nginx/*
+/balancer/volumes/mysql-data/*
+/balancer/volumes/redis-data/*
+/balancer/volumes/code/vendor/
+.gitattributes
+.env
