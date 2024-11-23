@@ -14,5 +14,4 @@ class Normalizer
     {
         return preg_replace('/[^()]/', '', $str);
     }
-
 }
