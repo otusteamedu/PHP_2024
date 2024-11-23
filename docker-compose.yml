@@ -1,8 +1,6 @@
 version: "3.8"
 services:
     web:
-        env_file:
-            - .env
         image: nginx:latest
         container_name: balancer
         volumes:
@@ -17,8 +15,6 @@ services:
         networks:
             - app-network
     node1:
-        env_file:
-            - .env
         image: nginx:latest
         container_name: b-nginx1
         volumes:
@@ -33,8 +29,6 @@ services:
         networks:
             - app-network
     node2:
-        env_file:
-            - .env
         image: nginx:latest
         container_name: b-nginx2
         volumes:
@@ -108,6 +102,15 @@ services:
             - "3306:3306"
         networks:
             - app-network
+    composer_ins:
+      container_name: composer_ins
+      image: composer
+      volumes:
+          - ./balancer/volumes/code:/var/www/html
+      working_dir: /var/www/html
+      command: composer dump-autoload
+      networks:
+          - app-network
 networks:
     app-network:
         driver: bridge

@@ -7,4 +7,6 @@
 /balancer/volumes/log/node?-nginx/*
 /balancer/volumes/mysql-data/*
 /balancer/volumes/redis-data/*
+/balancer/volumes/code/vendor/
+.gitattributes
 .env
