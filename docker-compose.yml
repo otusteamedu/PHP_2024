@@ -1,0 +1,61 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    build: 
+      context: ./nginx
+      dockerfile: dockerfile
+    networks:
+      - devweb
+    volumes:
+      - ./www/:/var/www/html/
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./www/logs/nginx:/var/log/nginx/
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ./www/:/var/www/html/
+      - ./www/logs/php.log:/var/log/fpm-php.www.log
+    networks:
+      - devweb
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - devweb
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - devweb
+
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+    networks:
+      - devweb
+
+networks:
+  devweb:
+    driver: bridge
+
+volumes:
+  db_data
