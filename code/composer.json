@@ -1,0 +1,10 @@
+{
+    "name": "sergey-shirykalov/otus-brackets-checker",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SergeyShirykalov\\OtusBracketsChecker\\": "src/"
+        }
+    },
+    "require": {}
+}

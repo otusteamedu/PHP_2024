@@ -42,6 +42,9 @@ services:
             - ./code:/data/mysite.local
         networks:
             - docker-network
+        command: >
+            bash -c "composer install --no-dev --optimize-autoloader &&
+            php-fpm"
 
     php2:
         build:
@@ -53,6 +56,9 @@ services:
             - ./code:/data/mysite.local
         networks:
             - docker-network
+        command: >
+            bash -c "composer install --no-dev --optimize-autoloader &&
+            php-fpm"
 
     redis_1:
         image: redis
