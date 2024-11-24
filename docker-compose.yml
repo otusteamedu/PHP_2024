@@ -1,0 +1,6 @@
+services:
+  hw6-php-cli:
+    build:
+      context: ./docker/php-cli
+    volumes:
+      - ./:/app
