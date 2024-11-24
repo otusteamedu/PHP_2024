@@ -6,4 +6,4 @@ require '../vendor/autoload.php';
 
 use AnatolyShilyaev\App\App;
 
-echo (new App)->run();
+echo (new App())->run();
