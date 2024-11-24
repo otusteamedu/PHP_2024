@@ -1,29 +1,73 @@
 services:
 
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: hw4/nginx
-    container_name: hw4.nginx
+  nginx-balancer:
+    image: nginx
+    container_name: nginx-balancer
     ports:
       - "80:80"
     volumes:
-       - ./src:/app/hw4.local
+       - ./app:/data
+       - ./docker/nginx/hosts/hw4.balancer.conf:/etc/nginx/conf.d/hw4.balancer.conf
+    networks:
+      - app-network
+
+  nginx1:
+    image: nginx
+    container_name: nginx1
+    volumes:
+       - ./app:/data
+       - ./docker/nginx/hosts/hw4.local.conf:/etc/nginx/conf.d/hw4.local.conf
+    networks:
+      - app-network
+
+  nginx2:
+    image: nginx
+    container_name: nginx2
+    volumes:
+       - ./app:/data
+       - ./docker/nginx/hosts/hw4.local.conf:/etc/nginx/conf.d/hw4.local.conf
     networks:
       - app-network
   
-  app:
+  app1:
     build:
-      context: ./fpm
+      context: ./docker/php
       dockerfile: Dockerfile
-    image: hw4/fpm
-    container_name: hw4.fpm
+    image: app
+    container_name: app1
     volumes:
-       - ./src:/app/hw4.local
+       - ./app:/data
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: app
+    container_name: app2
+    volumes:
+        - ./app:/data
+    depends_on:
+      - redis
+    networks:
+      - app-network
+  
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  redis_data:
