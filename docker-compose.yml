@@ -1,0 +1,17 @@
+services:
+  otusphp-socket-server:
+    build:
+      context: ./docker/php-cli
+    volumes:
+      - ./:/socketapp
+      - phpsocket:${SOCKET_PATH}
+
+  otusphp-socket-client:
+    build:
+      context: ./docker/php-cli
+    volumes:
+        - ./:/socketapp
+        - phpsocket:${SOCKET_PATH}
+
+volumes:
+  phpsocket:
