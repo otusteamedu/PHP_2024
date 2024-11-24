@@ -1,0 +1,29 @@
+services:
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: hw4/nginx
+    container_name: hw4.nginx
+    ports:
+      - "80:80"
+    volumes:
+       - ./src:/app/hw4.local
+    networks:
+      - app-network
+  
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: hw4/fpm
+    container_name: hw4.fpm
+    volumes:
+       - ./src:/app/hw4.local
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
