@@ -1,0 +1,17 @@
+{
+    "name": "igor-kachko/check-email-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "IgorKachko\\CheckEmail\\": "app/src"
+        }
+    },
+    "authors": [
+        {
+            "name": "IgorKachko"
+        }
+    ],
+    "require": {
+        "igor-kachko/otus-composer-package": "^1.0"
+    }
+}
