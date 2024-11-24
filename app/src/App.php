@@ -18,13 +18,9 @@ class App
     }
 
     public function run(): void {
-        global $argv;
-        global $argc;
-
-        if($argc !== 2) {
+        if($_SERVER["argc"] !== 2) {
             throw new \Exception("Нужно обязательно указать один контроллер [server|client]");
         }
-
 
         if(empty($_ENV["SOCKET_PATH"]) || empty($_ENV["SOCKET_NAME"])) {
             throw new \Exception("Не указан файл сокета в настройках окружения.");
@@ -32,7 +28,7 @@ class App
 
         $socketPath = $_ENV["SOCKET_PATH"] . $_ENV["SOCKET_NAME"];
 
-        $controller = match ($argv[1]) {
+        $controller = match ($_SERVER["argv"][1]) {
             "client" => new ClientController(),
             "server" => new ServerController(),
             default => null,
