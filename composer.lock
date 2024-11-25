@@ -1,0 +1,54 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "5df42eee169da88e44f7ceb8d825acad",
+    "packages": [
+        {
+            "name": "andryjka/otus",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Andryjke/disk_free_space.git",
+                "reference": "239bde908d09c93b9d7ab7413f586d986570df44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Andryjke/disk_free_space/zipball/239bde908d09c93b9d7ab7413f586d986570df44",
+                "reference": "239bde908d09c93b9d7ab7413f586d986570df44",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Andryjka\\Otus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "andryjka"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/Andryjke/disk_free_space/issues",
+                "source": "https://github.com/Andryjke/disk_free_space/tree/1.0.1"
+            },
+            "time": "2024-11-25T19:00:50+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
