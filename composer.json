@@ -1,0 +1,18 @@
+{
+    "name": "andryjka/homework",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Andryjka\\Homework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andrey Kataev",
+            "email": "andryjka@gmail.com"
+        }
+    ],
+    "require": {
+        "andryjka/otus": "^1.0"
+    }
+}
