@@ -1,7 +1,8 @@
 .idea/
-/vendor/
+vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
-/app/vendor/
+app/vendor/
+app/composer.lock
 .env
