@@ -1,15 +1,13 @@
 services:
-  #контейнер с Nginx
   nginx_common:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    #image: balance/nginx
-    container_name: nginx_hw42
+    image: balance/nginx
+    container_name: ${CONTAINER_NAME}
     depends_on:
       - srv1
       - srv2
-    # проброс портов
     ports:
       - "80:80"
     networks:
@@ -19,8 +17,8 @@ services:
     build:
       context: ./srv1
       dockerfile: Dockerfile
-    #image: balance/nginx
-    container_name: srv1_hw42
+    image: srv1-nginx
+    container_name: ${SRV1_NAME}
     volumes:
        - ./code:/data/mysite.local
     ports:
@@ -28,52 +26,38 @@ services:
     networks:
       - app-network 
 
-  # srv2:
-  #   image: jmalloc/echo-server
-  #   container_name: srv2_hw42
-  #   networks:
-  #     - app-network
-  #   ports:
-  #     - "8080" 
-
-  #контейнер с Nginx app2
   srv2:
     build:
       context: ./srv2
       dockerfile: Dockerfile
-    image: balance/nginx
-    container_name: srv2_hw42
+    image: srv2-nginx
+    container_name: ${SRV2_NAME}
     volumes:
        - ./code:/data/mysite.local
     ports:
       - "8080"
     networks:
-      - app-network      
+      - app-network  
 
-  #Контейнер с PHP-FPM, назовём его app
   app1:
-    # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./fpm
       dockerfile: Dockerfile
-    #image: balance/php # имя будущего образа
-    container_name: app1_hw42  # имя контейнера после запуска
+    image: balance/php 
+    container_name: ${APP1_NAME}  
     volumes:
        - ./code:/data/mysite.local
     networks:
       - app-network
 
-  #Контейнер с PHP-FPM, назовём его app
   app2:
-    # Если нет секции build, то система будет искать образ в репозиториях
     build:
       context: ./fpm
       dockerfile: Dockerfile
-    image: balance/php # имя будущего образа
-    container_name: app2_hw42 # имя контейнера после запуска
+    image: balance/php 
+    container_name: ${APP2_NAME} 
     volumes:
       - ./code:/data/mysite.local
-    # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
 
@@ -83,8 +67,6 @@ services:
     ports:
       - "6379:6379"
   
-
-#Docker Networks
 networks:
   app-network:
     driver: bridge

@@ -1,32 +1,35 @@
 <?php
+include 'validate_post.php';
 
 echo "Привет, Otus!<br>".date("Y-m-d H:i:s") ."<br><br>";
 
-if(!isset($_POST["code"])){
-    http_response_code(400); 
-    echo "Запрос пустой"; 
-    exit;
-}
-
-$code = $_POST["code"];
-
-$i = 0;
-$open_bracket = 0;
-do {
-    $char = substr($code, $i, 1);
-    if( $char == "(" ) $open_bracket++;        
-    if( $char  == ")" ) $open_bracket--;
-    if($open_bracket < 0 ){
+$validator = new ValidatePost();
+$state = $validator->validate($_POST);
+switch($state){
+    case ErrorCodeValPost::EmptyPost: {
         http_response_code(400); 
-        echo "<br>Закрывающих скобока ) раньше открывающей (";    
+        echo "Запрос пустой"; 
         exit;
     }
-    ++$i;
-} while (isset($code{$i}));
-
-if($open_bracket != 0 ){
-    http_response_code(400); 
-        echo "<br>Нет $open_bracket закрывающих скобочек )";     
+    case ErrorCodeValPost::CloseBracketBeforeOpen: {
+        http_response_code(400); 
+        echo "<br>Закрывающих скобока ) раньше открывающей (";
+        exit;
+    }
+    case ErrorCodeValPost::CloseBracketАbsent: {
+        http_response_code(400); 
+        echo "<br>Нет закрывающих скобочек )"; 
+        exit;
+    }
+    case ErrorCodeValPost::Ok: {
+        http_response_code(200); 
+        echo "Хороший запрос"; 
+        exit;
+    } 
+    default:{
+        http_response_code(400); 
+        echo "Неизвестная ошибка ValidatePost"; 
         exit;    
+    }
 }
-echo "Все хорошо";     
+   
