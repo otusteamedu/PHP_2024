@@ -5,8 +5,7 @@ namespace App\Application\DTO;
 use App\Application\Contracts\DTO\GetNameInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class GetAgeByNameRequestDTO
-    implements GetNameInterface
+class GetAgeByNameRequestDTO implements GetNameInterface
 {
     #[Assert\NotBlank]
     #[Assert\Type('string')]

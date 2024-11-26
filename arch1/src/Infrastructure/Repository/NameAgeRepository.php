@@ -10,8 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<NameAge>
  */
-class NameAgeRepository extends ServiceEntityRepository
-    implements NameAgeRepositoryInterface
+class NameAgeRepository extends ServiceEntityRepository implements NameAgeRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

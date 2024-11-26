@@ -19,7 +19,9 @@ class MainController extends AbstractController
         private HttpClientInterface $httpClient,
         private LoggerInterface $logger,
         private GetAgeByNameUseCase $getAgeByName
-    ) {}
+    ) {
+        //
+    }
 
     #[Route('/api/v1/age')]
     public function index(Request $request): JsonResponse

@@ -6,13 +6,14 @@ use App\Domain\Gateway\RequestAgeByNameGatewayInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class GetAgeByNameGateway
-    implements RequestAgeByNameGatewayInterface
+class GetAgeByNameGateway implements RequestAgeByNameGatewayInterface
 {
     public function __construct(
         private ParameterBagInterface $parameterBag,
         private HttpClientInterface $httpClient,
-    ){}
+    ) {
+        //
+    }
 
     public function requestAge(string $name): ?int
     {

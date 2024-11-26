@@ -14,7 +14,9 @@ class GetAgeByNameUseCase
         private NameAgeFactory $nameAgeFactory,
         private RequestAgeByNameGatewayInterface $requestAgeByNameGateway,
         private NameAgeRepositoryInterface $nameAgeRepository
-    ){}
+    ) {
+        //
+    }
 
     public function __invoke(GetNameInterface $args): NameAge
     {
