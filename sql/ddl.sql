@@ -1,3 +1,4 @@
+-- Скрипт с предыдущего занятие
 CREATE TABLE Cinemas
 (
     id       SERIAL PRIMARY KEY,

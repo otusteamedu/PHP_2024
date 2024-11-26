@@ -201,9 +201,10 @@ FROM TicketSales
          JOIN Sessions ON Tickets.session_id = Sessions.id
          JOIN Movies ON Sessions.movie_id = Movies.id
 WHERE TicketSales.sale_time >= CURRENT_DATE - INTERVAL '7 days'
-GROUP BY Movies.id
+GROUP BY Movies.id, Movies.title
 ORDER BY total_revenue DESC
     LIMIT 3;
+
 
 QUERY PLAN
 Limit  (cost=1080.07..1080.08 rows=3 width=48) (actual time=6.507..6.513 rows=3 loops=1)
@@ -280,20 +281,24 @@ Planning Time: 1.137 ms
 Execution Time: 7.893 ms
 
 /**
-
+   cost:
+        было: 1080.07..1080.08
+        стало: 953.35..953.36
+        изменения: Стоимость выполнения запроса снизилась с 1080.07 до 953.35. Несущественные изменения
+    actual time:
+        было: 6.507..6.513
+        стало: 7.752..7.758
+        изменения: Время фактического выполнения запроса увеличилось с 6.507 до 7.752 мс. Несмотря на улучшение стоимости запроса, использование индекса увеличило общее время выполнения
+    execution Time:
+        было: 6.640 ms
+        стало: 7.893 ms
+        изменения: Время выполнения запроса увеличилось с 6.640 до 7.893 мс.
+    Индекс повлиял отрицательно
  */
-
-
-
-
-
-
-
-
 -- #####################################################################################################################
 -- #####################################################################################################################
 -- #####################################################################################################################
--- 5. Схема зала
+-- 5. Схема зала без оптимизации
 EXPLAIN ANALYZE
 SELECT
     Seats.row,
@@ -325,6 +330,54 @@ Nested Loop Left Join  (cost=8.30..387.37 rows=2 width=40) (actual time=0.714..0
 Planning Time: 0.268 ms
 Execution Time: 0.734 ms
 
+
+-- 5. Схема зала с оптимизацией
+-- Индекс на Seats.hall_id:
+CREATE INDEX idx_seats_hall_id ON Seats (hall_id);
+-- Создание составного индекса по столбцам seat_id и session_id:
+CREATE INDEX idx_tickets_seat_id_session_id ON Tickets (seat_id, session_id);
+
+QUERY PLAN
+Nested Loop Left Join  (cost=16.90..30.89 rows=2 width=40) (actual time=0.019..0.020 rows=0 loops=1)
+  Join Filter: (seats.id = tickets.seat_id)
+  InitPlan 1
+    ->  Index Scan using sessions_pkey on sessions  (cost=0.29..8.30 rows=1 width=4) (actual time=0.008..0.009 rows=1 loops=1)
+          Index Cond: (id = 2)
+  ->  Bitmap Heap Scan on seats  (cost=4.30..11.18 rows=2 width=12) (actual time=0.019..0.019 rows=0 loops=1)
+        Recheck Cond: (hall_id = (InitPlan 1).col1)
+        ->  Bitmap Index Scan on idx_seats_hall_id  (cost=0.00..4.30 rows=2 width=0) (actual time=0.016..0.016 rows=0 loops=1)
+              Index Cond: (hall_id = (InitPlan 1).col1)
+  ->  Materialize  (cost=4.30..11.35 rows=2 width=8) (never executed)
+        ->  Bitmap Heap Scan on tickets  (cost=4.30..11.34 rows=2 width=8) (never executed)
+              Recheck Cond: (session_id = 4)
+              ->  Bitmap Index Scan on idx_tickets_session_id  (cost=0.00..4.30 rows=2 width=0) (never executed)
+                    Index Cond: (session_id = 4)
+Planning Time: 0.534 ms
+Execution Time: 0.045 ms
+
+/**
+    1. Без индекса:
+        - Общая стоимость (cost): 8.30..387.37.
+        - Фактическое время выполнения: 0.714 ms.
+        - Детали плана:
+            * Для таблиц seats и tickets используются последовательные сканирования (Seq Scan), что приводит к обработке
+            большого объема данных, даже если часть из них не подходит по условиям.
+    2. С индексом:
+        - Общая стоимость (cost): 16.90..30.89.
+        - Фактическое время выполнения:  0.019 ms.
+        - Детали плана:
+            * Используется индекс для сканирования таблиц seats и tickets (Bitmap Index Scan), что значительно сокращает
+            объем данных, которые нужно обработать.
+    3. Итог
+    Использование индексов значительно улучшает производительность за счет:
+        * Сокращения количества строк, которые требуется обработать.
+        * Ускорения поиска данных с использованием индексов (Bitmap Index Scan) вместо последовательного сканирования
+        (Seq Scan)
+ */
+-- #####################################################################################################################
+-- #####################################################################################################################
+-- #####################################################################################################################
+
 -- 6. Диапазон цен на билет
 EXPLAIN ANALYZE
 SELECT MIN(price) AS min_price, MAX(price) AS max_price
@@ -338,3 +391,90 @@ Aggregate  (cost=199.01..199.02 rows=1 width=64) (actual time=0.503..0.503 rows=
         Rows Removed by Filter: 10000
 Planning Time: 0.121 ms
 Execution Time: 0.520 ms
+
+-- 6. Диапазон цен на билет оптимизация
+--  Индекс на session_id
+CREATE INDEX idx_session_id ON Tickets(session_id);
+-- Индекс для агрегатных функций
+CREATE INDEX idx_session_price ON Tickets(session_id, price);
+
+QUERY PLAN
+Aggregate  (cost=4.33..4.34 rows=1 width=64) (actual time=0.053..0.054 rows=1 loops=1)
+  ->  Index Only Scan using idx_session_price on tickets  (cost=0.29..4.32 rows=2 width=5) (actual time=0.051..0.051 rows=0 loops=1)
+        Index Cond: (session_id = 99)
+        Heap Fetches: 0
+Planning Time: 7.602 ms
+Execution Time: 0.077 ms
+
+/**
+    1. Без индекса:
+        - Общая стоимость (cost): 199.01..199.02.
+        - Фактическое время выполнения: 0.520 ms
+        - Детали плана:
+            * Полное последовательное сканирование таблицы (Seq Scan), что означает, что все строки в таблице (10,000)
+            проверяются на наличие соответствия условию session_id = 99.
+    2. С индексом:
+        - Общая стоимость (cost): 4.33..4.34.
+        - Фактическое время выполнения:  0.077 ms.
+        - Детали плана:
+            * Вместо полного сканирования используется Index Only Scan (индексное сканирование).
+            Индекс idx_session_price используется для поиска строк с session_id = 99, что позволяет избежать последовательного сканирования всей таблицы..
+    3. Итог
+    Использование индексов значительно улучшает производительность:
+        * Используется Index Only Scan, что значительно снижает стоимость выполнения запроса (4.32).
+        * Время выполнения сокращается до 0.077 мс — почти в 7 раз быстрее.
+        * Индекс позволяет эффективно искать строки с нужным session_id, без необходимости сканировать всю таблицу, и
+        запрос выполняется непосредственно через индекс без дополнительных обращений к данным в таблице.
+ */
+-- #####################################################################################################################
+-- #####################################################################################################################
+-- #####################################################################################################################
+
+-- отсортированный список (15 значений) самых больших по размеру объектов БД (таблицы, включая индексы, сами индексы)
+SELECT nspname || '.' || relname                     AS name,
+       pg_size_pretty(pg_total_relation_size(C.oid)) AS totalsize,
+       pg_size_pretty(pg_relation_size(C.oid))       AS relsize
+FROM pg_class C
+         LEFT JOIN pg_namespace N ON (N.oid = C.relnamespace)
+WHERE nspname = 'public'
+  AND C.relkind IN ('r', 'i')
+ORDER BY pg_total_relation_size(C.oid) DESC
+    LIMIT 15;
+
+-- Result
+-- name                                 totalsize   relsize
+public.tickets,                         2112 kB,    592 kB
+public.sessions,                        1376 kB,    592 kB
+public.movies,                          1272 kB,    752 kB
+public.ticketsales,                     1200 kB,    512 kB
+public.seats,                           920 kB,     440 kB
+public.halls,                           792 kB,     512 kB
+public.idx_session_price,               328 kB,     328 kB
+public.idx_tickets_seat_id_session_id,  240 kB,     240 kB
+public.seats_pkey,                      240 kB,     240 kB
+public.halls_pkey,                      240 kB,     240 kB
+public.tickets_pkey,                    240 kB,     240 kB
+public.sessions_pkey,                   240 kB,     240 kB
+public.ticketsales_pkey,                240 kB,     240 kB
+public.movies_pkey,                     240 kB,     240 kB
+public.idx_movies_id,                   240 kB,     240 kB
+
+
+-- #####################################################################################################################
+-- #####################################################################################################################
+-- #####################################################################################################################
+-- отсортированные списки (по 5 значений) самых часто и редко используемых индексов
+SELECT indexrelname AS index_name,
+       idx_scan     AS scan_count
+FROM pg_catalog.pg_stat_user_indexes
+WHERE schemaname = 'public'
+ORDER BY idx_scan DESC
+    LIMIT 5;
+
+-- Result
+-- index_name       scan_count
+halls_pkey,         20000
+movies_pkey,        10086
+sessions_pkey,      10015
+seats_pkey,         10006
+tickets_pkey,       10004

@@ -23,7 +23,7 @@ try {
         return date("Y-m-d", $timestamp);
     }
 
-    function generateRandomNumbers (int $from, int $to): int
+    function randomNumbers (int $from, int $to): int
     {
         return rand($from,$to);
     }
@@ -40,51 +40,51 @@ try {
     }
 
     // Halls
-    for ($i = 1; $i <= $raw10_000; $i++) {
-        $cinema_id = generateRandomNumbers(1, 100);
-        $pdo->exec("INSERT INTO Halls (cinema_id, name, seat_count) VALUES ($cinema_id, 'Hall_$i', " . generateRandomNumbers(50, 200) . ")");
+    for ($i = 1; $i <= $raw10_000_000; $i++) {
+        $cinema_id = randomNumbers(1, 100);
+        $pdo->exec("INSERT INTO Halls (cinema_id, name, seat_count) VALUES ($cinema_id, 'Hall_$i', " . randomNumbers(50, 200) . ")");
     }
 
     // Movies
-    for ($i = 1; $i <= $raw10_000; $i++) {
+    for ($i = 1; $i <= $raw10_000_000; $i++) {
         $title = "Movie_" . randomString(5);
-        $duration = generateRandomNumbers(60, 180) . ' minutes';
+        $duration = randomNumbers(60, 180) . ' minutes';
         $genre = ['Action', 'Drama', 'Comedy', 'Horror'][array_rand(['Action', 'Drama', 'Comedy', 'Horror'])];
         $release_date = randomDate('2020-01-01', '2024-12-31');
         $pdo->exec("INSERT INTO Movies (title, duration, genre, release_date) VALUES ('$title', '$duration', '$genre', '$release_date')");
     }
 
     // Sessions
-    for ($i = 1; $i <= $raw10_000; $i++) {
-        $hall_id = generateRandomNumbers(1, $raw10_000);
-        $movie_id = generateRandomNumbers(1, $raw10_000);
-        $start_time = randomDate('2024-01-01', '2024-12-31') . " " . generateRandomNumbers(0, 23) . ":00:00";
-        $price = generateRandomNumbers(5, 20) * 10;
+    for ($i = 1; $i <= $raw10_000_000; $i++) {
+        $hall_id = randomNumbers(1, $raw10_000_000);
+        $movie_id = randomNumbers(1, $raw10_000_000);
+        $start_time = randomDate('2024-01-01', '2024-12-31') . " " . randomNumbers(0, 23) . ":00:00";
+        $price = randomNumbers(5, 20) * 10;
         $pdo->exec("INSERT INTO Sessions (hall_id, movie_id, start_time, price) VALUES ($hall_id, $movie_id, '$start_time', $price)");
     }
 
     // Seats
-    for ($i = 1; $i <= $raw10_000; $i++) {
-        $hall_id = generateRandomNumbers(1, $raw10_000);
-        $row = generateRandomNumbers(1, 20);
-        $seat_number = generateRandomNumbers(1, 50);
+    for ($i = 1; $i <= $raw10_000_000; $i++) {
+        $hall_id = randomNumbers(1, $raw10_000_000);
+        $row = randomNumbers(1, 20);
+        $seat_number = randomNumbers(1, 50);
         $pdo->exec("INSERT INTO Seats (hall_id, row, seat_number) VALUES ($hall_id, $row, $seat_number)");
     }
 
     // Tickets
-    for ($i = 1; $i <= $raw10_000; $i++) {
-        $session_id = generateRandomNumbers(1, $raw10_000);
-        $seat_id = generateRandomNumbers(1, $raw10_000);
+    for ($i = 1; $i <= $raw10_000_000; $i++) {
+        $session_id = randomNumbers(1, $raw10_000_000);
+        $seat_id = randomNumbers(1, $raw10_000_000);
         $customer_name = "Customer_" . randomString(5);
-        $price = generateRandomNumbers(5, 20) * 10;
+        $price = randomNumbers(5, 20) * 10;
         $pdo->exec("INSERT INTO Tickets (session_id, seat_id, customer_name, price) VALUES ($session_id, $seat_id, '$customer_name', $price)");
     }
 
     // TicketSales
-    for ($i = 1; $i <= $raw10_000; $i++) {
-        $ticket_id = generateRandomNumbers(1, $raw10_000);
-        $sale_time = randomDate('2024-01-01', '2024-12-31') . " " . generateRandomNumbers(0, 23) . ":00:00";
-        $total_amount = generateRandomNumbers(5, 20) * 10;
+    for ($i = 1; $i <= $raw10_000_000; $i++) {
+        $ticket_id = randomNumbers(1, $raw10_000_000);
+        $sale_time = randomDate('2024-01-01', '2024-12-31') . " " . randomNumbers(0, 23) . ":00:00";
+        $total_amount = randomNumbers(5, 20) * 10;
         $pdo->exec("INSERT INTO TicketSales (ticket_id, sale_time, total_amount) VALUES ($ticket_id, '$sale_time', $total_amount)");
     }
 
