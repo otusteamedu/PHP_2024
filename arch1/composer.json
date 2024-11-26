@@ -38,8 +38,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "Avn\\App\\": "lib/vasechkin/src/"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {
