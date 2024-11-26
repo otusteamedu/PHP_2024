@@ -53,7 +53,6 @@ class MainController extends AbstractController
                     'age' => $nameAge->getAge(),
                 ]
             ]);
-
         } catch (Throwable $e) {
             $this->logger->error(implode(PHP_EOL, [
                 $e->getMessage(),
