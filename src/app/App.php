@@ -2,40 +2,43 @@
 
 namespace App;
 
+use App\MailValidationService;
+
 class App
 {
+    /**
+     * @throws \Exception
+     */
     public static function run(): void
     {
-        // start session
-        session_start();
-
-        // Метод запроса
         $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-        $responseCode = 422;
-        $responseMessage = 'Unprocessable Entity';
+        $requestBody = $requestParam = [];
+
+        $mailValidationService = new MailValidationService();
 
         if ($requestMethod === 'POST') {
             $requestBody = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            if (!ValidationClass::validateRequestBody($requestBody)) {
-                ResponseClass::sendResponse($responseMessage, $responseCode);
-                return;
-            }
-
-            // Строка запроса
-            $requestString = $requestBody['string'];
-
-            if (!ValidationClass::validateRequestString($requestString)) {
-                $responseMessage = 'Brackets count mismatch';
-                ResponseClass::sendResponse($responseMessage, $responseCode);
-                return;
-            }
-
-            $responseCode = 200;
-            $responseMessage = 'OK';
         }
 
-        ResponseClass::sendResponse($responseMessage, $responseCode);
+        if ($requestMethod === 'GET') {
+            $requestBody = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        }
+
+        if (!RequestValidationClass::validateRequestBody($requestBody, $mailValidationService::MAILS_PARAM_NAME)) {
+            echo 'Unprocessable Entity';
+            return;
+        }
+
+        // Строка запроса
+        $requestParam = $requestBody[$mailValidationService::MAILS_PARAM_NAME] ?? [];
+
+        if ($mailValidationService->validate($requestParam)) {
+            echo 'Email is valid';
+        } else {
+            echo 'Email is not valid';
+        }
+
+        return;
     }
 }

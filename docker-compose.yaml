@@ -3,77 +3,34 @@ networks:
     driver: bridge
 
 services:
-  nginx-balancer:
+  nginx:
     image: nginx:latest
-    container_name: nginx-balancer
+    container_name: web-server
     restart: unless-stopped
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      # Mounting app volume
+      - ./src:/var/www/html
+    links:
+      - php-fpm
     ports:
       - 80:80
-    volumes:
-      - ./docker/nginx/balancer.conf:/etc/nginx/conf.d/default.conf
-    depends_on:
-      - nginx-1
-      - nginx-2
     networks:
       - app-network
 
-  nginx-1:
-    image: nginx:latest
-    container_name: nginx-1
-    restart: unless-stopped
-    volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      # Mounting app volume
-      - ./src:/var/www/html
-    links:
-      - php-fpm-1
-      - php-fpm-2
-    networks:
-      - app-network
-
-  nginx-2:
-    image: nginx:latest
-    container_name: nginx-2
-    restart: unless-stopped
-    volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      # Mounting app volume
-      - ./src:/var/www/html
-    links:
-      - php-fpm-1
-      - php-fpm-2
-    networks:
-      - app-network
-
-  php-fpm-1:
+  php-fpm:
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
-    container_name: php-fpm-1
+    container_name: php-fpm
     restart: unless-stopped
     volumes:
       # Mounting app volume
       - ./src:/var/www/html
-    depends_on:
-      # - mysql
-      - redis
-      # - memcached
-    networks:
-      - app-network
-
-  php-fpm-2:
-    build:
-      context: .
-      dockerfile: ./docker/php/Dockerfile
-    container_name: php-fpm-2
-    restart: unless-stopped
-    volumes:
-      # Mounting app volume
-      - ./src:/var/www/html
-    depends_on:
-      # - mysql
-      - redis
-      # - memcached
+#    depends_on:
+#      - mysql
+#      - redis
+#      - memcached
     networks:
       - app-network
 
@@ -95,14 +52,14 @@ services:
   #   networks:
   #     - app-network
 
-  redis:
-    image: redis:alpine
-    container_name: redis
-    restart: unless-stopped
-    # ports:
-    #   - 6379:6379
-    networks:
-      - app-network
+  #  redis:
+  #    image: redis:alpine
+  #    container_name: redis
+  #    restart: unless-stopped
+  #    # ports:
+  #    #   - 6379:6379
+  #    networks:
+  #      - app-network
 
   # memcached:
   #   image: memcached:alpine
