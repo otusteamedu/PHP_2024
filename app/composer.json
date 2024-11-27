@@ -1,0 +1,17 @@
+{
+    "name": "ali-user/app",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mukhametali",
+            "email": "m.kussaiynov1996@gmail.com"
+        }
+    ],
+    "require": {
+        "predis/predis": "^2.3"
+    }
+}
