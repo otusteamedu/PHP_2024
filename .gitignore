@@ -1,5 +1,6 @@
 .idea/
-/vendor/
+/lib/vendor/
+/project/vendor/
 .DS_Store
 .AppleDouble
 .LSOverride
