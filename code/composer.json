@@ -1,0 +1,10 @@
+{
+    "name": "sergey-shirykalov/email-validator",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SergeyShirykalov\\EmailValidator\\": "src/"
+        }
+    },
+    "require": {}
+}
