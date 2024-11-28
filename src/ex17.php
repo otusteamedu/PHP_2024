@@ -59,6 +59,3 @@ class Solution {
         return $res;
     }
 }
-
-$solution = new Solution();
-$res = $solution->letterCombinations("237");
