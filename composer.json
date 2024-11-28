@@ -1,0 +1,16 @@
+{
+    "name": "skudashkin/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Skudashkin\\Hw5\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "sikudamobile",
+            "email": "ya.sikuda@yandex.ru"
+        }
+    ],
+    "require": {}
+}

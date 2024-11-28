@@ -1,0 +1,27 @@
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: hw5-nginx
+    # проброс портов
+    ports:
+      - "80:80"
+    volumes:
+       - ./src:/data/mysite.local
+    networks:
+      - app-network
+
+  app:
+    image: php:8.2-fpm
+    container_name: hw5-app 
+    volumes:
+       - ./src:/data/mysite.local
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
