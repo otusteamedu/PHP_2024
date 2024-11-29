@@ -6,7 +6,6 @@ namespace AnatolyShilyaev\App;
 
 class EmailValidator
 {
-
     public function check($email): bool
     {
         return $this->isFormatCorrect($email) && $this->hasMx($email);
