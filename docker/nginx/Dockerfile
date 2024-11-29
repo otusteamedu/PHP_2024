@@ -2,7 +2,7 @@ FROM nginx
 
 WORKDIR /data
 
-COPY ./hosts/hw4.local.conf /etc/nginx/conf.d/hw4.local.conf
+COPY ./hosts/mysite.local.conf /etc/nginx/conf.d/mysite.local.conf
 
 EXPOSE 80
 

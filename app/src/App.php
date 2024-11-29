@@ -6,16 +6,30 @@ namespace AnatolyShilyaev\App;
 
 class App
 {
-    public function run()
-    {
-        $result = (new Checker())->check($_POST['string']);
+    private array $emails;
 
-        if ($result) {
-            header("HTTP/1.1 200 OK", true, 200);
-            return '200 Ok!';
-        } else {
-            header("HTTP/1.1 400 BAD REQUEST", true, 400);
-            return '400 Bad request!';
-        }
+    public function __construct(string $inputString)
+    {
+        $this->emails = $this->extractEmails($inputString);
+    }
+
+    private function extractEmails($inputString): array
+    {
+        $pattern = "/\b[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}\b/";
+
+        preg_match_all($pattern, $inputString, $matches);
+
+        return $matches[0];
+    }
+
+    public function getEmails(): array
+    {
+        return $this->emails;
+    }
+
+    public function run(string $email): string
+    {
+        $result = (new EmailValidator())->check($email);
+        return $result ? "Email is valid" : 'Email is not valid';
     }
 }

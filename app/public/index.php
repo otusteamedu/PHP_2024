@@ -6,12 +6,12 @@ require '../vendor/autoload.php';
 
 use AnatolyShilyaev\App\App;
 
-use Redis;
+$inputString = $_POST['string'];
+$app = new App($_POST['string']);
+$emails = $app->getEmails();
 
-echo (new App())->run();
-
-$redis = new Redis();
-$redis->connect('localhost', 6379);
-echo $redis->ping();
-
-phpinfo();
+echo "<ul>";
+foreach ($emails as $email) {
+    echo "<li>" . $email . " - " . $app->run($email) .  "</li>";
+}
+echo "</ul>";

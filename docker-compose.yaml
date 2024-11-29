@@ -1,34 +1,14 @@
 services:
 
-  nginx-balancer:
+  nginx:
     image: nginx
-    container_name: nginx-balancer
+    container_name: nginx
     restart: always
     ports:
       - "80:80"
     volumes:
        - ./app:/data
-       - ./docker/nginx/hosts/hw4.balancer.conf:/etc/nginx/conf.d/hw4.balancer.conf
-    networks:
-      - app-network
-
-  nginx1:
-    image: nginx
-    container_name: nginx1
-    restart: always
-    volumes:
-       - ./app:/data
-       - ./docker/nginx/hosts/hw4.local.conf:/etc/nginx/conf.d/hw4.local.conf
-    networks:
-      - app-network
-
-  nginx2:
-    image: nginx
-    container_name: nginx2
-    restart: always
-    volumes:
-       - ./app:/data
-       - ./docker/nginx/hosts/hw4.local.conf:/etc/nginx/conf.d/hw4.local.conf
+       - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
       - app-network
   
@@ -42,7 +22,6 @@ services:
        - ./app:/data
     restart: always
     depends_on:
-      - redis
       - composer
     networks:
       - app-network
@@ -57,7 +36,6 @@ services:
         - ./app:/data
     restart: always
     depends_on:
-      - redis
       - composer
     networks:
       - app-network
@@ -69,16 +47,6 @@ services:
       - ./app:/data
     working_dir: /data
     command: ["composer", "install"]
-    networks:
-      - app-network
-
-  redis:
-    image: redis:latest
-    container_name: redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
     networks:
       - app-network
 
