@@ -1,0 +1,5 @@
+{
+    "require": {
+        "bulgar989/php-composer-otus": "dev-main"
+    }
+}
