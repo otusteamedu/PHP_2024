@@ -15,7 +15,7 @@ class EmailValidator
 
     private function isFormatCorrect($email): bool
     {
-        $pattern = (new Pattern)->getPattern();
+        $pattern = (new Pattern())->getPattern();
 
         if (empty($email)) {
             return false;

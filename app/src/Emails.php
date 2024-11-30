@@ -10,7 +10,7 @@ class Emails
 {
     public function extract($inputString): array
     {
-        $pattern = (new Pattern)->getPattern();
+        $pattern = (new Pattern())->getPattern();
 
         preg_match_all($pattern, $inputString, $matches);
 
