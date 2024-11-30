@@ -4,22 +4,15 @@ declare(strict_types=1);
 
 namespace AnatolyShilyaev\App;
 
+use AnatolyShilyaev\App\Emails;
+
 class App
 {
     private array $emails;
 
-    public function __construct(string $inputString)
+    public function __construct()
     {
-        $this->emails = $this->extractEmails($inputString);
-    }
-
-    private function extractEmails($inputString): array
-    {
-        $pattern = "/\b[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}\b/";
-
-        preg_match_all($pattern, $inputString, $matches);
-
-        return $matches[0];
+        $this->emails = (new Emails())->extract($_POST['string']);
     }
 
     public function getEmails(): array

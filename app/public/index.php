@@ -6,8 +6,7 @@ require '../vendor/autoload.php';
 
 use AnatolyShilyaev\App\App;
 
-$inputString = $_POST['string'];
-$app = new App($_POST['string']);
+$app = new App();
 $emails = $app->getEmails();
 
 echo "<ul>";
