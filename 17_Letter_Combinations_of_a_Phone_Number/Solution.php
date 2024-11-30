@@ -26,7 +26,6 @@ class Solution
         ];
 
         foreach (str_split($digits) as $digit) {
-
             $letters = $mapping[$digit];
             $temp = [];
 
