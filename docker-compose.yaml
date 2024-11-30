@@ -1,0 +1,58 @@
+services:
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+       - ./app:/data
+       - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+  
+  app1:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: app
+    container_name: app1
+    volumes:
+       - ./app:/data
+    restart: always
+    depends_on:
+      - composer
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: app
+    container_name: app2
+    volumes:
+        - ./app:/data
+    restart: always
+    depends_on:
+      - composer
+    networks:
+      - app-network
+  
+  composer:
+    image: composer/composer
+    container_name: composer
+    volumes:
+      - ./app:/data
+    working_dir: /data
+    command: ["composer", "install"]
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis_data:
