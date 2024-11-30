@@ -1,0 +1,9 @@
+services:
+  email:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    container_name: email-verification
+    volumes:
+      - ./src:/app
+    entrypoint: [ "php", "/app/index.php" ]
