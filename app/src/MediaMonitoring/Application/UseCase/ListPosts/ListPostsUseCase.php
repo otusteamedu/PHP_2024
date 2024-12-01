@@ -6,6 +6,7 @@ namespace App\MediaMonitoring\Application\UseCase\ListPosts;
 
 use App\MediaMonitoring\Domain\Entity\Post;
 use App\MediaMonitoring\Domain\Repository\PostRepositoryInterface;
+use DateTimeInterface;
 
 final readonly class ListPostsUseCase
 {
@@ -19,10 +20,10 @@ final readonly class ListPostsUseCase
 
         $postListItems = array_map(
             static fn(Post $post): PostListItem => new PostListItem(
-                $post->getId(),
-                $post->getTitle(),
-                $post->getDate(),
-                $post->getUrl(),
+                $post->getId()->value(),
+                $post->getTitle()->value(),
+                $post->getDate()->format(DateTimeInterface::ATOM),
+                $post->getUrl()->value(),
             ),
             $posts
         );

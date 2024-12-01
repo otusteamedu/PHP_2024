@@ -26,9 +26,9 @@ final readonly class ListPostsController
         $postListItems = array_map(
             static function (PostListItem $item): array {
                 return [
-                    'id' => $item->id->value(),
-                    'title' => $item->title->value(),
-                    'url' => $item->url->value(),
+                    'id' => $item->id,
+                    'title' => $item->title,
+                    'url' => $item->url,
                     'date' => $item->date,
                 ];
             },
