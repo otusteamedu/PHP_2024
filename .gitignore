@@ -3,3 +3,10 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/web/volumes/log/nginx/*
+/web/volumes/log/php/*
+/web/volumes/mysql-data/*
+/web/volumes/redis-data/*
+/web/volumes/code/vendor/
+.gitattributes
+.env

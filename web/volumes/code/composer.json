@@ -1,0 +1,12 @@
+{
+  "name": "rshevtsov/hw4",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "RShevtsov\\Hw5\\": "src/"
+    }
+  },
+  "require": {}
+}
