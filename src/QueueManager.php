@@ -1,20 +1,58 @@
 <?php
+// src/QueueManager.php
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+
 class QueueManager
 {
-    private $queueFile = '../storage/queue.json';
+    private $connection;
+    private $channel;
+    private $queueName;
 
-    public function addToQueue($request)
+    public function __construct()
     {
-        $queue = $this->getQueue();
-        $queue[] = $request;
-        file_put_contents($this->queueFile, json_encode($queue));
+        $config = require '../config/config.php';
+        $rabbitmqConfig = $config['rabbitmq'];
+
+        // Создаем подключение к RabbitMQ
+        $this->connection = new AMQPStreamConnection(
+            $rabbitmqConfig['host'], 
+            $rabbitmqConfig['port'], 
+            $rabbitmqConfig['user'], 
+            $rabbitmqConfig['password']
+        );
+
+        $this->channel = $this->connection->channel();
+        $this->queueName = $rabbitmqConfig['queue'];
+
+        // Создаем очередь, если она еще не существует
+        $this->channel->queue_declare($this->queueName, false, true, false, false);
+    }
+
+    public function addToQueue($message)
+    {
+         
+        $data = json_encode($message);
+
+    
+        $msg = new AMQPMessage(
+            $data,
+            ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT] // Устанавливаем сообщение как постоянное
+        );
+
+   
+        $this->channel->basic_publish($msg, '', $this->queueName);
     }
 
     public function getQueue()
     {
-        if (!file_exists($this->queueFile)) {
-            file_put_contents($this->queueFile, json_encode([]));
-        }
-        return json_decode(file_get_contents($this->queueFile), true);
+ 
+        return $this->channel;
+    }
+
+    public function close()
+    {
+        $this->channel->close();
+        $this->connection->close();
     }
 }
