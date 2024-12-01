@@ -1,0 +1,32 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: ${PROJECT_PREFIX}-nginx
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - ./app:/var/www/otus-hw-15/public
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  php-fpm:
+    container_name: ${PROJECT_PREFIX}-php-fpm
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    volumes:
+      - ./app:/var/www/otus-hw-15
+
+  postgres:
+    container_name: ${PROJECT_PREFIX}-postgres
+    image: postgres:${POSTGRES_VERSION}
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+
+volumes:
+  db_data:

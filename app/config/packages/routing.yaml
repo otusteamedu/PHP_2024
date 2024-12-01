@@ -1,0 +1,8 @@
+framework:
+  router:
+    default_uri: '%env(APP_BASE_URL)%'
+
+when@prod:
+  framework:
+    router:
+      strict_requirements: null

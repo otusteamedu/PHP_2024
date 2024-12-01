@@ -1,0 +1,5 @@
+media_monitoring:
+    type: attribute
+    resource:
+        path: ../src/MediaMonitoring/Infrastructure/Http
+        namespace: App\MediaMonitoring\Infrastructure\Http
