@@ -28,7 +28,7 @@ final readonly class CreatePostController
         )->postId;
 
         return new JsonResponse([
-            'id' => $postId->value(),
+            'id' => $postId,
         ]);
     }
 }

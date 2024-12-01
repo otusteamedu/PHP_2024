@@ -42,6 +42,6 @@ final readonly class CreatePostUseCase
 
         $post = $this->postRepository->save($post);
 
-        return new CreatePostResponse($post->getId());
+        return new CreatePostResponse($post->getId()->value());
     }
 }
