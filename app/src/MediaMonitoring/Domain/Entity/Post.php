@@ -20,13 +20,6 @@ final class Post
         return $this->id;
     }
 
-    public function setId(?PostId $id): Post
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getTitle(): PostTitle
     {
         return $this->title;
