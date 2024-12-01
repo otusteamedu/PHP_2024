@@ -15,4 +15,3 @@ $emails = [
 ];
 
 (new App())->run($emails);
-
