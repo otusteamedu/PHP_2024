@@ -1,0 +1,11 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/noster-krsk/php-email-verifier"
+        }
+    ],
+    "require": {
+        "username/email-verifier": "dev-main"
+    }
+}
