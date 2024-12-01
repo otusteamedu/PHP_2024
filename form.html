@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Запрос на генерацию выписки</title>
+</head>
+<body>
+    <form action="index.php" method="POST">
+        <label for="start_date">Начальная дата:</label>
+        <input type="date" name="start_date" required>
+        <label for="end_date">Конечная дата:</label>
+        <input type="date" name="end_date" required>
+        <label for="email">Email для уведомлений:</label>
+        <input type="email" name="email" required>
+        <button type="submit">Отправить запрос</button>
+    </form>
+</body>
+</html>
