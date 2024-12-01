@@ -26,7 +26,7 @@ create table movie_attribute_values
     value_text    text,
     value_boolean boolean,
     value_date    date,
-    value_float   float,
+    value_float   numeric,
     created_at    timestamp default current_timestamp
 );
 
