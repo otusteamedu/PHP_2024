@@ -1,16 +1,5 @@
 {
-    "name": "root/html",
     "require": {
-        "predis/predis": "^2.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "Root\\Html\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "YellowGreen"
-        }
-    ]
+        "petrova-a/verify-email": "^1.0"
+    }
 }

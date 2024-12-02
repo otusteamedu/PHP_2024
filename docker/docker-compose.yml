@@ -8,9 +8,6 @@ services:
     restart: unless-stopped
     volumes:
       - ../src:/var/www/html
-      - ./etc/php/php.ini:/usr/local/etc/php/php.ini
-      - ./etc/php/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
-      - ./php-socket:/var/run/php
     networks:
       - otusnet
 
@@ -24,39 +21,6 @@ services:
       - ../src:/var/www/html
       - ./etc/nginx/hosts/:/etc/nginx/conf.d/
       - ./log/nginx/:/var/log/nginx/
-      - ./php-socket:/var/run/php
-    networks:
-      - otusnet
-
-  otus-db:
-    image: mysql:5.7.22
-    container_name: otus-db
-    volumes:
-      - ./db/mysql:/var/lib/mysql
-    ports:
-      - "3306:3306"
-    restart: always
-    environment:
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    networks:
-      - otusnet
-
-  otus-redis:
-    image: redis:latest
-    container_name: otus-redis
-    ports:
-      - "6379:6379"
-    networks:
-      - otusnet
-
-  memcached:
-    image: memcached
-    container_name: otus-memcached
-    ports:
-      - "11211:11211"
     networks:
       - otusnet
 
