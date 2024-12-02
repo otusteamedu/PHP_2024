@@ -1,7 +1,6 @@
+.idea/
+/vendor/
+*.xml
 .DS_Store
 .AppleDouble
 .LSOverride
-*.xml
-
-.idea/
-/vendor/
