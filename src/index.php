@@ -1,8 +1,6 @@
 <?php
 
-session_start();
-$_SESSION['count'] = ($_SESSION['count'] ?? 1) + 1;
-
+require 'vendor/autoload.php';
 require 'CheckerBracket.php';
 
 $postData = file_get_contents('php://input');
@@ -46,8 +44,32 @@ function response($result): void
         'status' => $result['status'],
         'message' => $result['message'],
         'code' => $result['code'],
-        'session_count' => $_SESSION['count']
+        'count_views' => getCountViews()
     ]);
 
+}
+
+function getCountViews()
+{
+    $redisClient = getClientRedis();
+    $count = ($redisClient->get('count') ?? 0) + 1;
+    $redisClient->set('count', $count);
+
+    return $count;
+}
+
+function getClientRedis()
+{
+    return new \Predis\Client(
+        [
+            ["host" => "otus-redis-1", "port" => 6381],
+            ["host" => "otus-redis-2", "port" => 6382],
+            ["host" => "otus-redis-3", "port" => 6383],
+            ["host" => "otus-redis-4", "port" => 6384],
+            ["host" => "otus-redis-5", "port" => 6385],
+            ["host" => "otus-redis-6", "port" => 6386]
+        ],
+        ['cluster' => 'redis']
+    );
 }
 
