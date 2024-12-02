@@ -1,8 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use EmailVerifier\EmailVerifier;
+namespace EmailVerifier;
 
 class EmailChecker
 {
@@ -21,8 +19,8 @@ class EmailChecker
 
             $results[] = [
                 'email' => $email,
-                'valid' => $isValid ? 'Valid' : 'Invalid',
-                'exists' => $exists ? 'Exists' : 'Does not exist'
+                'valid' => $isValid,
+                'exists' => $exists
             ];
         }
 

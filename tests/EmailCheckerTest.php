@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use EmailVerifier\EmailChecker;
 
 class EmailCheckerTest extends TestCase
 {
@@ -8,14 +9,15 @@ class EmailCheckerTest extends TestCase
     {
         $checker = new EmailChecker();
         $emails = [
-            'noster2@gmail.com',
+            'valid@example.com',
             'invalid-email'
         ];
 
         $results = $checker->checkEmails($emails);
 
         $this->assertCount(2, $results);
-        $this->assertEquals('Valid', $results[0]['valid']);
-        $this->assertEquals('Invalid', $results[1]['valid']);
+        $this->assertEquals('valid@example.com', $results[0]['email']);
+        $this->assertTrue($results[0]['valid']);
+        $this->assertFalse($results[1]['valid']);
     }
 }
