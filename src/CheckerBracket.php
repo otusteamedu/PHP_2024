@@ -15,7 +15,7 @@ class CheckerBracket
 
         $brackets = $this->getBracketsFromString($bracketsStr);
 
-        if (count($brackets) < 2) throw new Exception('Количество скобок меньше 1');
+        if (count($brackets) < 2) throw new Exception('Количество скобок меньше 2');
         if (!$this->isOpen($brackets[0])) throw new Exception('Первая скобка не открывающая');
         if (!$this->isClosed($brackets[count($brackets) - 1])) throw new Exception('Последняя скобка не закрывающая');
 

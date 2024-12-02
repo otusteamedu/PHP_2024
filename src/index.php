@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+$_SESSION['count'] = ($_SESSION['count'] ?? 1) + 1;
+
 require 'CheckerBracket.php';
 
 $postData = file_get_contents('php://input');
@@ -34,7 +37,7 @@ try {
 
 response($result);
 
-function response($result)
+function response($result): void
 {
     http_response_code($result['code']);
     header('Content-type: application/json');
@@ -42,9 +45,9 @@ function response($result)
     echo json_encode([
         'status' => $result['status'],
         'message' => $result['message'],
-        'code' => $result['code']
+        'code' => $result['code'],
+        'session_count' => $_SESSION['count']
     ]);
 
 }
-
 
