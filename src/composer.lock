@@ -1,0 +1,54 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "1be418b80ce8f16fa4f94d5d2a43daa2",
+    "packages": [
+        {
+            "name": "petrova-a/verify-email",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/a-pecherskih/composer-package.git",
+                "reference": "475836c335a793bfa4d7bbc09887913587b5d312"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/a-pecherskih/composer-package/zipball/475836c335a793bfa4d7bbc09887913587b5d312",
+                "reference": "475836c335a793bfa4d7bbc09887913587b5d312",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">8.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PetrovaA\\VerifyEmail\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Yellow Green"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/a-pecherskih/composer-package/issues",
+                "source": "https://github.com/a-pecherskih/composer-package/tree/1.0.1"
+            },
+            "time": "2024-12-02T10:56:59+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "petrova-a/verify-email": "^1.0"
+    }
+}
