@@ -26,9 +26,9 @@ CREATE TABLE `Halls` (
 
 CREATE TABLE `Tickets` (
 	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
-	`session_id` INTEGER NOT NULL UNIQUE,
+	`session_id` INTEGER NOT NULL,
 	`price` DECIMAL NOT NULL,
-	`seat_number` VARCHAR(255) NOT NULL UNIQUE,
+	`seat_number` INTEGER NOT NULL,
 	`is_sold` BOOLEAN NOT NULL,
 	PRIMARY KEY(`id`)
 );

@@ -1,8 +1,7 @@
-select name SUM(price) AS total_profit from Sessions
-         join Movies on movie_id = id
-         join Halls on hall_is = id
-         join Tickets on id = session_id
-where is_sold = true
-group by name
-order by total_profit DESC
-limit 1
+select name, SUM(price) AS total_profit from Tickets 
+    left join Sessions on Tickets.session_id = Sessions.id 
+    left join Movies on Sessions.movie_id = Movies.id 
+where is_sold = 1 
+group by name 
+order by total_profit DESC 
+limit 1;
