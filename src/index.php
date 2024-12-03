@@ -1,17 +1,16 @@
 <?php
 
-use PetrovaA\VerifyEmail\EmailVerifier;
+require 'vendor/autoload.php';
 
-require './vendor/autoload.php';
+spl_autoload_register(function ($className) {
+    $file = __DIR__ . '\\' . $className . '.php';
+    $file = str_replace('\\', DIRECTORY_SEPARATOR, $file);
+    if (file_exists($file)) {
+        include $file;
+    }
+});
 
-$checkedEmails = [
-    'test@mail.ru' => false,
-    'test@email.ru' => false
-];
+$app = new \App\App();
+$app->run();
 
-foreach ($checkedEmails as $email => $isChecked) {
-    $isChecked = EmailVerifier::verifyEmail(email: $email, checkDNS: true);
-    $checkedEmails[$email] = $isChecked;
-}
 
-print_r($checkedEmails);
