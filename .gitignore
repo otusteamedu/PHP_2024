@@ -1,5 +1,6 @@
 .idea/
 /vendor/
+/docker/mysql/data
 .DS_Store
 .AppleDouble
 .LSOverride
