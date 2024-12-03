@@ -22,7 +22,6 @@ create table if not exists films
     primary key,
     name       varchar(255)                        not null,
     year       int                                 not null,
-    type       enum ('FILM', 'CARTOON')            not null,
     start_date timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment 'Дата начала продаж билетов'
     )
     collate = utf8mb4_unicode_ci;
@@ -130,8 +129,8 @@ INSERT INTO times (id, time) VALUES (3, '11:00');
 INSERT INTO countries (id, name) VALUES (1, 'США');
 INSERT INTO countries (id, name) VALUES (2, 'Великобритания');
 
-INSERT INTO films (id, name, year, type, start_date) VALUES (1, 'Бегущий в лабиринте', 2014, 'FILM', '2014-09-01 00:00:00');
-INSERT INTO films (id, name, year, type, start_date) VALUES (2, 'Прежде, чем я усну', 2014, 'FILM', '2014-09-03 00:00:00');
+INSERT INTO films (id, name, year, start_date) VALUES (1, 'Бегущий в лабиринте', 2014, '2014-09-01 00:00:00');
+INSERT INTO films (id, name, year, start_date) VALUES (2, 'Прежде, чем я усну', 2014, '2014-09-03 00:00:00');
 
 INSERT INTO country_film (country_id, film_id) VALUES (1, 1);
 INSERT INTO country_film (country_id, film_id) VALUES (2, 1);
