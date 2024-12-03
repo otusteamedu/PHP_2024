@@ -1,0 +1,174 @@
+services:
+
+  otus-nginx:
+    image: nginx:alpine
+    container_name: otus-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ../src:/var/www/html
+      - ./etc/nginx/hosts/:/etc/nginx/conf.d/
+      - ./log/nginx/:/var/log/nginx/
+    networks:
+      - network_redis_cluster
+
+  otus-php-1:
+    container_name: otus-php-1
+    image: otus-php
+    build:
+      context: ../
+      dockerfile: ./docker/php/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ../src:/var/www/html
+      - ./etc/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - network_redis_cluster
+
+  otus-php-2:
+    container_name: otus-php-2
+    image: otus-php
+    build:
+      context: ../
+      dockerfile: ./docker/php/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ../src:/var/www/html
+      - ./etc/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - network_redis_cluster
+
+  otus-redis-1:
+    image: redis:latest
+    restart: always
+    container_name: otus-redis-1
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      network_redis_cluster:
+        ipv4_address: 173.18.0.11
+    ports:
+      - "127.0.0.1:6381:6381"
+      - "127.0.0.1:16381:16381"
+    volumes:
+      - redis_1_data:/data
+      - ./etc/redis/redis-1.conf:/usr/local/etc/redis/redis.conf
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+
+  otus-redis-2:
+    image: redis:latest
+    restart: always
+    container_name: otus-redis-2
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      network_redis_cluster:
+        ipv4_address: 173.18.0.12
+    ports:
+      - "127.0.0.1:6382:6382"
+      - "127.0.0.1:16382:16382"
+    volumes:
+      - redis_2_data:/data
+      - ./etc/redis/redis-2.conf:/usr/local/etc/redis/redis.conf
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+
+  otus-redis-3:
+    image: redis:latest
+    restart: always
+    container_name: otus-redis-3
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      network_redis_cluster:
+        ipv4_address: 173.18.0.13
+    ports:
+      - "127.0.0.1:6383:6383"
+      - "127.0.0.1:16383:16383"
+    volumes:
+      - redis_3_data:/data
+      - ./etc/redis/redis-3.conf:/usr/local/etc/redis/redis.conf
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+
+  otus-redis-4:
+    image: redis:latest
+    restart: always
+    container_name: otus-redis-4
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      network_redis_cluster:
+        ipv4_address: 173.18.0.14
+    ports:
+      - "127.0.0.1:6384:6384"
+      - "127.0.0.1:16384:16384"
+    volumes:
+      - redis_4_data:/data
+      - ./etc/redis/redis-4.conf:/usr/local/etc/redis/redis.conf
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+
+  otus-redis-5:
+    image: redis:latest
+    restart: always
+    container_name: otus-redis-5
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      network_redis_cluster:
+        ipv4_address: 173.18.0.15
+    ports:
+      - "127.0.0.1:6385:6385"
+      - "127.0.0.1:16385:16385"
+    volumes:
+      - redis_5_data:/data
+      - ./etc/redis/redis-5.conf:/usr/local/etc/redis/redis.conf
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+
+  otus-redis-6:
+    image: redis:latest
+    restart: always
+    container_name: otus-redis-6
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      network_redis_cluster:
+        ipv4_address: 173.18.0.16
+    ports:
+      - "127.0.0.1:6386:6386"
+      - "127.0.0.1:16386:16386"
+    volumes:
+      - redis_6_data:/data
+      - ./etc/redis/redis-6.conf:/usr/local/etc/redis/redis.conf
+    command: "redis-server /usr/local/etc/redis/redis.conf"
+
+  otus-redis-cluster:
+    image: redis:latest
+    container_name: otus-redis-cluster
+    sysctls:
+      - net.core.somaxconn=65536
+    networks:
+      network_redis_cluster:
+        ipv4_address: 173.18.0.17
+    tty: true
+    command: "redis-cli --cluster create 173.18.0.11:6381 173.18.0.12:6382 173.18.0.13:6383 173.18.0.14:6384 173.18.0.15:6385 173.18.0.16:6386 --cluster-replicas 1 --cluster-yes"
+    depends_on:
+      - otus-redis-1
+      - otus-redis-2
+
+networks:
+  otusnet:
+    driver: bridge
+  network_redis_cluster:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 173.18.0.0/16
+
+volumes:
+  redis_1_data: {}
+  redis_2_data: {}
+  redis_3_data: {}
+  redis_4_data: {}
+  redis_5_data: {}
+  redis_6_data: {}
