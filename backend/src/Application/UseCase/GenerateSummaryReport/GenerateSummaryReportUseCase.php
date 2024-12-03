@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\GenerateSummaryReport;
 
+use App\Application\Gateway\FileStorageGatewayInterface;
+use App\Application\Gateway\FileStorageGatewayRequest;
 use App\Domain\Repository\NewsRepositoryInterface;
 
 class GenerateSummaryReportUseCase
 {
     public function __construct(
         private readonly NewsRepositoryInterface $newsRepository,
+        private readonly FileStorageGatewayInterface $fileStorageGateway,
     ) {
     }
 
@@ -26,17 +29,15 @@ class GenerateSummaryReportUseCase
             );
         }
         $htmlContent .= "</ul>";
-        $fileName = 'report_' . uniqid('', true) . '.html';
-        $filePath = __DIR__ . '/../../../public/reports/' . $fileName;
 
-        if (!is_dir(dirname($filePath))) {
-            if (!mkdir($concurrentDirectory = dirname($filePath), 0777, true) && !is_dir($concurrentDirectory)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
-            }
-        }
+        $fileRequest = new FileStorageGatewayRequest(
+            __DIR__ . '/../../../public/reports/',
+            'report_' . uniqid('', true) . '.html',
+            $htmlContent
+        );
 
-        file_put_contents($filePath, $htmlContent);
+        $fileResponse = $this->fileStorageGateway->saveFile($fileRequest);
 
-        return new GenerateSummaryReportResponse('/reports/' . $fileName);
+        return new GenerateSummaryReportResponse('/reports/' . basename($fileResponse->filePath));
     }
 }
