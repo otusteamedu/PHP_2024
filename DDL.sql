@@ -1,0 +1,34 @@
+CREATE TABLE `Sessions` (
+	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
+	`movie_id` INTEGER NOT NULL,
+	`hall_id` INTEGER NOT NULL,
+	`date` DATE NOT NULL,
+	`begin_time` TIME NOT NULL,
+	`duration` INTEGER NOT NULL,
+	PRIMARY KEY(`id`)
+);
+
+
+CREATE TABLE `Movies` (
+	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
+	`name` VARCHAR(255) NOT NULL,
+	PRIMARY KEY(`id`)
+);
+
+
+CREATE TABLE `Halls` (
+	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
+	`number` INTEGER NOT NULL,
+	`seats_count` INTEGER NOT NULL,
+	PRIMARY KEY(`id`)
+);
+
+
+CREATE TABLE `Tickets` (
+	`id` INTEGER NOT NULL AUTO_INCREMENT UNIQUE,
+	`session_id` INTEGER NOT NULL,
+	`price` DECIMAL NOT NULL,
+	`seat_number` INTEGER NOT NULL,
+	`is_sold` BOOLEAN NOT NULL,
+	PRIMARY KEY(`id`)
+);
