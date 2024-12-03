@@ -2,8 +2,7 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use EmailVerifier\EmailChecker;
-use EmailVerifier\ResultFormatter;
+use EmailVerifier\EmailVerifierFacade;
 
 // Список email для проверки
 $emails = [
@@ -12,9 +11,5 @@ $emails = [
     'nonexistent@domain.com'
 ];
 
-$checker = new EmailChecker();
-$formatter = new ResultFormatter();
-
-$results = $checker->checkEmails($emails);
-
-echo $formatter->format($results);
+$verifier = new EmailVerifierFacade();
+echo $verifier->verifyAndFormat($emails);

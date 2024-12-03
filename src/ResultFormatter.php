@@ -4,11 +4,6 @@ namespace EmailVerifier;
 
 class ResultFormatter
 {
-    /**
-     * Форматирует результаты проверки email-адресов в читаемую таблицу. 
-     * @param array $results
-     * @return string
-     */
     public function format(array $results): string
     {
         $output = str_pad("Email", 30) . str_pad("Validity", 15) . "Existence\n";

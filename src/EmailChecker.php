@@ -4,12 +4,6 @@ namespace EmailVerifier;
 
 class EmailChecker
 {
-    /**
-     * Проверяет список email-адресов.
-     *
-     * @param array $emails
-     * @return array
-     */
     public function checkEmails(array $emails): array
     {
         $results = [];
