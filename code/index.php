@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+if (empty($_POST)) {
+    echo "Запрос обработал контейнер: " . $_SERVER['HOSTNAME'];
+    die();
+}
+
 $PARAM_NAME = 'string';
 $OPEN = '(';
 $CLOSE = ')';

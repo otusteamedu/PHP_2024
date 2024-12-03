@@ -8,7 +8,7 @@ services:
     build:
       context: ./balancer
       dockerfile: Dockerfile
-    image: balance/nginx
+    image: balancer
     container_name: balancer
     # проброс портов
     ports:
@@ -24,11 +24,10 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    image: balance/nginx
+    image: nginx1
     container_name: nginx1
     volumes:
        - ./code:/data/mysite.local
-       - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
       - app-network
 
@@ -37,11 +36,10 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    image: balance/nginx
+    image: nginx2
     container_name: nginx2
     volumes:
        - ./code:/data/mysite.local
-       - ./nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
       - app-network
 
