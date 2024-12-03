@@ -55,7 +55,7 @@ create table if not exists hall_seats
     primary key,
     hall_id           bigint unsigned not null,
     number            varchar(255)    not null,
-    price_coefficient double(8, 2)    not null comment 'Коэфициент цены в зависимости от расположения',
+    price_coefficient decimal(8, 2)    not null comment 'Коэфициент цены в зависимости от расположения',
     max_count         int             not null comment 'Максимальная вместимость (н-р, диван - 2 человека)',
     constraint hall_seats_hall_id_foreign
     foreign key (hall_id) references halls (id)
@@ -79,7 +79,7 @@ create table if not exists sessions
     film_id bigint unsigned                     not null,
     time_id bigint unsigned                     not null,
     date    timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    price   double(8, 2)                        not null,
+    price   decimal(8, 2)                        not null,
     constraint sessions_film_id_foreign
     foreign key (film_id) references films (id)
     on delete cascade,
@@ -99,8 +99,8 @@ create table if not exists tickets
     client_id              bigint unsigned not null,
     session_id             bigint unsigned not null,
     hall_seat_id           bigint unsigned not null,
-    session_price          double(8, 2)    not null comment 'Фиксируем цену на сеанс на случай если поменяется',
-    seat_price_coefficient double(8, 2)    not null comment 'Фиксируем кф-т сиденья на случай если поменяется',
+    session_price          decimal(8, 2)    not null comment 'Фиксируем цену на сеанс на случай если поменяется',
+    seat_price_coefficient decimal(8, 2)    not null comment 'Фиксируем кф-т сиденья на случай если поменяется',
     constraint tickets_client_id_foreign
     foreign key (client_id) references clients (id)
     on delete cascade,
