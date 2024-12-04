@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase;
 
-use App\Application\UseCase\Dto\SubmitNewsListResponseDto;
+use App\Application\UseCase\Dto\SubmitNewsItemForListResponseDto;
 use App\Domain\Repository\NewsItemRepositoryInterface;
 
 class GetAllNewsUseCase
@@ -14,18 +14,18 @@ class GetAllNewsUseCase
     ) {
     }
 
-    public function __invoke(): SubmitNewsListResponseDto
+    public function __invoke(): array
     {
         $newsList = $this->repository->findAll();
         foreach ($newsList as $item) {
-            $arNews[] = [
-                'id' => $item->getId(),
-                'title' => $item->getTitle()->getValue(),
-                'url' => $item->getUrl()->getValue(),
-                'date' => $item->getDate()->getValue(),
-            ];
+            $arNews[] = new SubmitNewsItemForListResponseDto(
+                $item->getId(),
+                $item->getTitle()->getValue(),
+                $item->getUrl()->getValue(),
+                $item->getDate()->getValue()
+            );
         }
 
-        return new SubmitNewsListResponseDto($arNews ?? []);
+        return $arNews ?? [];
     }
 }

@@ -19,6 +19,6 @@ class NewsListApiController extends AbstractController
     {
         $newsListResponseDto = ($this->getAllNewsUseCase)();
 
-        return $this->json($newsListResponseDto->newsList);
+        return $this->json($newsListResponseDto);
     }
 }
