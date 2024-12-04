@@ -8,5 +8,5 @@ use EmailValidation\Validators\ValidatorInterface;
 
 interface ValidatorFactoryInterface
 {
-   public function emailValidator(): ValidatorInterface;
+    public function emailValidator(): ValidatorInterface;
 }

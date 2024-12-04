@@ -12,7 +12,7 @@ class EmailValidator implements ValidatorInterface
     {
         return $this->isEmailFormat($email) && $this->isCheckDns($email);
     }
-    
+
     protected function isEmailFormat(string $email): bool
     {
         return (bool)preg_match($this->pattern, $email);
@@ -22,7 +22,7 @@ class EmailValidator implements ValidatorInterface
     {
         $mailDomain = substr(strrchr($email, "@"), 1);
         $isValid = checkdnsrr($mailDomain, 'MX');
-        
+
         return $isValid;
     }
 }
