@@ -7,29 +7,29 @@ class Solution
     * @param Integer $denominator
     * @return String
     */
-    function fractionToDecimal($numerator, $denominator) 
+    public function fractionToDecimal($numerator, $denominator)
     {
         if ($numerator === 0) {
             return '0';
         }
 
         $result = '';
-        
+
         if ($numerator < 0 xor $denominator < 0) {
             $result .= '-';
         }
-        
+
         $numerator = abs($numerator);
         $denominator = abs($denominator);
-        
+
         $result .= intval($numerator / $denominator);
         $remainder = $numerator % $denominator;
 
-        if ($remainder === 0) { 
+        if ($remainder === 0) {
             return $result;
         }
 
-        $result .= '.'; 
+        $result .= '.';
         $map = [];
 
         while ($remainder !== 0) {  
