@@ -1,6 +1,6 @@
 <?php
 
-class Solution 
+class Solution
 {
     /**
     * @param Integer $numerator
@@ -32,7 +32,7 @@ class Solution
         $result .= '.';
         $map = [];
 
-        while ($remainder !== 0) {  
+        while ($remainder !== 0) {
             $map[$remainder] = strlen($result);
             $remainder *= 10;
             $result .= intval($remainder / $denominator);
@@ -40,7 +40,7 @@ class Solution
 
             if (isset($map[$remainder])) {
                 $index = $map[$remainder];
-                $result = substr($result, 0, $index) 
+                $result = substr($result, 0, $index)
                         . '(' . substr($result, $index) . ')';
                 break;
             }
