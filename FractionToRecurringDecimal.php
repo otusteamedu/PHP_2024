@@ -1,5 +1,7 @@
 <?php
 
+namespace EShulman\hw19;
+
 class Solution
 {
     /**

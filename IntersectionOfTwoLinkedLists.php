@@ -1,5 +1,7 @@
 <?php
 
+namespace EShulman\hw19;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -28,7 +30,7 @@ class Solution
             $node1 = $node1 == null ? $headB : $node1->next;
             $node2 = $node2 == null ? $headA : $node2->next;
         }
-                
+
         return $node2;
     }
 }
