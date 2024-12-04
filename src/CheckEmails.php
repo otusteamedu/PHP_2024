@@ -1,6 +1,7 @@
 <?php
-
 declare(strict_types=1);
+
+namespace Skudashkin\Hw5;
 
 class CheckEmails
 {

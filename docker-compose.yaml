@@ -9,15 +9,19 @@ services:
     ports:
       - "80:80"
     volumes:
-       - ./src:/data/mysite.local
+       - ./public:/data/mysite.local/public
+       - ./vendor:/data/mysite.local/vendor
+       - ./src:/data/mysite.local/src
     networks:
       - app-network
 
   app:
     image: php:8.2-fpm
-    container_name: hw5-app 
-    volumes:
-       - ./src:/data/mysite.local
+    container_name: hw5-app
+    volumes: 
+       - ./public:/data/mysite.local/public
+       - ./vendor:/data/mysite.local/vendor
+       - ./src:/data/mysite.local/src
     networks:
       - app-network
 

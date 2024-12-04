@@ -1,7 +1,7 @@
 <?php
-
 declare(strict_types=1);
-include_once 'CheckEmails.php';
+
+namespace Skudashkin\Hw5;
 
 class App{
 
