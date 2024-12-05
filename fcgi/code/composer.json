@@ -1,0 +1,16 @@
+{
+    "name": "otus/app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Otus\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Denis",
+            "email": "denis_mesnyankin@mail.ru"
+        }
+    ],
+    "require": {}
+}

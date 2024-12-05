@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  nginx-balancer:
+    build:
+      context: ./nginx_balancer
+      dockerfile: Dockerfile
+    image: balance/nginx-balancer
+    container_name: nginx-balancer
+    volumes:
+       - ./code:/data/mysite.local
+    ports:
+      - "8081:80"
+    networks:
+      - app-network
+
+  nginx1:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx1
+    container_name: nginx1
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+  nginx2:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx2
+    container_name: nginx2
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: .
+      dockerfile: fpm/Dockerfile
+    image: balance/php1
+    container_name: app1
+    command: ["sh", "-c", "composer install && php-fpm"]
+    environment:
+      DB_HOST: ${DB_NAME}
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASS: ${POSTGRES_PASSWORD}
+      DB_PORT: ${POSTGRES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_AUTH: ${REDIS_KEY}
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: .
+      dockerfile: fpm/Dockerfile
+    image: balance/php2
+    container_name: app2
+    command: ["sh", "-c", "php-fpm"]
+    environment:
+      DB_HOST: ${DB_NAME}
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASS: ${POSTGRES_PASSWORD}
+      DB_PORT: ${POSTGRES_PORT}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_AUTH: ${REDIS_KEY}
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+  
+  memcache:
+    image: memcached:latest
+    container_name: memcache
+    networks:
+      - app-network
+  
+  postgres:
+    image: postgres:17
+    container_name: ${DB_NAME}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes: 
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - app-network
+  
+  redis:
+    command: >
+      --requirepass ${REDIS_KEY}
+    image: "redis:alpine"
+    container_name: ${REDIS_HOST}
+    restart: unless-stopped
+    networks:
+      - app-network
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  app-network:
