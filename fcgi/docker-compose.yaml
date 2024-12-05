@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   nginx:
@@ -19,6 +19,7 @@ services:
       dockerfile: Dockerfile
     image: app/php
     container_name: app
+    command: ["sh", "-c", "composer install && php-fpm"]
     volumes: 
       - ./code:/data/site.local
     networks:

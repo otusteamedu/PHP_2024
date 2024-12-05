@@ -9,6 +9,7 @@ use Exception;
 class Validation
 {
     private $methods = ['bracket', 'empty'];
+
     public function check(string $input): void
     {
         foreach ($this->methods as $method) {
