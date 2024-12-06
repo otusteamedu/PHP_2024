@@ -22,7 +22,7 @@ ALTER TABLE attribute_type ADD CONSTRAINT attribute_id_type UNIQUE (title, attri
 CREATE TABLE attribute_value(
     "id" SERIAL PRIMARY KEY,
     "value_string" VARCHAR(255) DEFAULT NULL,
-    "value_text" VARCHAR(510) DEFAULT NULL,
+    "value_text" TEXT DEFAULT NULL,
     "value_int" INT DEFAULT NULL,
     "value_float" FLOAT DEFAULT NULL,
     "value_date" DATE DEFAULT NULL,
