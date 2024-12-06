@@ -1,0 +1,9 @@
+services:
+  otus_pgsql:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: otus_php
