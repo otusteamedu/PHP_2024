@@ -1,0 +1,14 @@
+{
+  "name": "yulia633/hw-5",
+  "description": "Homework fifth",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "EmailValidation\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^8.1"
+  }
+}
