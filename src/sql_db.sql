@@ -67,7 +67,6 @@ CREATE TABLE IF NOT EXISTS `customers` (
 CREATE TABLE IF NOT EXISTS `purchases` (
     `id` int AUTO_INCREMENT NOT NULL UNIQUE,
     `purchase_date` datetime NOT NULL,
-    `price` int NOT NULL,
     `customer_id` int NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`customer_id`) REFERENCES `customers`(`id`)
@@ -75,12 +74,10 @@ CREATE TABLE IF NOT EXISTS `purchases` (
 
 CREATE TABLE IF NOT EXISTS `tickets` (
     `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `purchase_id` int NOT NULL,
     `show_id` int NOT NULL,
     `seat_id` int NOT NULL,
     `price` int NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`purchase_id`) REFERENCES `purchases`(`id`),
     FOREIGN KEY (`show_id`) REFERENCES `shows`(`id`),
     FOREIGN KEY (`seat_id`) REFERENCES `seats`(`id`),
     UNIQUE (`show_id`, `seat_id`)
