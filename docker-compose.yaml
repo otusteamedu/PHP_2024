@@ -17,6 +17,10 @@ services:
        - ./code:/data/mysite.local
     networks:
       - app-network
+    depends_on:
+      - app1
+      - app2
+      - app3
 
   #Контейнер с PHP-FPM, назовём его app
   app1:
@@ -31,6 +35,10 @@ services:
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
 
   #Контейнер с PHP-FPM, назовём его app
   app2:
@@ -45,6 +53,10 @@ services:
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
 
   #Контейнер с PHP-FPM, назовём его app
   app3:
@@ -59,6 +71,16 @@ services:
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+      
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
 
 #Docker Networks
 networks:
