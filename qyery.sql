@@ -4,7 +4,7 @@ WITH revenue AS (
         f.id,
         f.rental_cost,
         f.title,
-        SUM(pwp.price) AS revenue_sum
+        SUM(CASE WHEN t.real_price IS NULL THEN pwp.base_price ELSE t.real_price END) AS revenue_sum
     FROM
         tickets t
             JOIN
