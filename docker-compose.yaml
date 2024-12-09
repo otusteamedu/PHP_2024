@@ -5,63 +5,86 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    image: myapp/nginx 
-    container_name: webserver 
+    image: hw1app/nginx
+    restart: always
+    container_name: ${CONTAINER_NGINX}
     ports:
       - "80:80"
-    volumes: 
-       - ./code:/data/mysite.local
-       - phpsocket:/var/run
+    volumes:
+      - ./nginx/hosts:/etc/nginx/conf.d
+      - ./code:/data/mysite.local
+      - phpsocket:/var/run/php
     networks:
-      - app-network
+      - hw1app-network
 
-  app:
+  php-fpm-app:
     build:
       context: ./fpm
       dockerfile: Dockerfile
-    image: myapp/php
-    container_name: app
+    image: hw1app/php
+    restart: always
+    container_name: ${CONTAINER_PHP}
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_PORT: '3306'
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./code:/data/mysite.local
-      - phpsocket:/var/run
-      - composer:/root/.composer/cache
-    depends_on:
-      - postgres
+      - phpsocket:/var/run/php
     networks:
-      - app-network
+      - hw1app-network
+    depends_on:
+      - mysql
 
   redis:
-    image: redis:latest
+    build:
+      context: ./redis
+      dockerfile: Dockerfile
+    image: hw1app/redis
+    restart: always
+    container_name: ${CONTAINER_REDIS}
     ports:
       - "6379:6379"
-    networks:
-      - app-network
-  
-  memcached:
-    image: memcached:latest
-    ports:
-      - "11211:11211"
-    networks:
-      - app-network
-
-  postgres:
-    image: postgres:16-alpine
     volumes:
-      - postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
-    ports:
-      - "${DB_PORT}:5432"
+      - redisdata:/usr/local/var/db/redis
     networks:
-      - app-network
+      - hw1app-network
 
-networks:
-  app-network:
-    driver: bridge
+  memcached:
+    image: memcached
+    restart: always
+    container_name: ${CONTAINER_MCACHE}
+    command:
+      - --conn-limit=1024
+      - --memory-limit=64
+      - --threads=4
+    networks:
+      - hw1app-network
+
+  mysql:
+    image: mysql
+    restart: always
+    container_name: ${CONTAINER_DB}
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - hw1app-network
 
 volumes:
-  postgres:
-  composer:
+  mysqldata:
+  redisdata:
   phpsocket:
+
+networks:
+  hw1app-network:
+    driver: bridge
