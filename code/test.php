@@ -25,8 +25,7 @@ echo '</pre>';
 
 if ($memcached->getStats() === false) {
     echo 'Returned false!';
-}
-else {
+} else {
     echo '<pre>';
     print_r($memcached->getStats());
     print_r($memcached->getAllKeys());
@@ -36,8 +35,7 @@ else {
 $response = $memcached->get("test");
 if ($response) {
     echo "The test key already exists. Its value is: {$response}<br><br>";
-}
-else {
+} else {
     echo "Adding test key ...<br><br>";
     $memcached->set("test", "The test key was memcached!") or die("The test key couldn't be created!!!");
 }
@@ -52,13 +50,13 @@ try {
     $redis->set('test', 'Redis. Saved value!');
     $glueStatus = $redis->get('test');
     if ($glueStatus) {
-      echo '<pre>';
-      print_r($glueStatus);
-      echo "<br>";
-      print_r($redis->keys("*"));
-      echo '</pre>';
-    } else {
-      echo 'Returned false!';
+        echo '<pre>';
+        print_r($glueStatus);
+        echo "<br>";
+        print_r($redis->keys("*"));
+        echo '</pre>';
+      } else {
+          echo 'Returned false!';
     }
 } catch (RedisException $e) {
     echo "Error: " . $e->getMessage();
