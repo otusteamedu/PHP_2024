@@ -55,9 +55,9 @@ try {
         echo "<br>";
         print_r($redis->keys("*"));
         echo '</pre>';
-      } else {
-          echo 'Returned false!';
-    }
+    } else {
+        echo 'Returned false!';
+      }
 } catch (RedisException $e) {
     echo "Error: " . $e->getMessage();
 }
