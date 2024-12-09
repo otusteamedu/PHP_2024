@@ -57,7 +57,7 @@ try {
         echo '</pre>';
     } else {
         echo 'Returned false!';
-      }
+    }
 } catch (RedisException $e) {
     echo "Error: " . $e->getMessage();
 }
