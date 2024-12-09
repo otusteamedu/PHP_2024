@@ -9,7 +9,7 @@
 function validateEmails(array $emails): array
 {
     $results = [];
-    
+
     foreach ($emails as $email) {
         // Validate email with regex
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
