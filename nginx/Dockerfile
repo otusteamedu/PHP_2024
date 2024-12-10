@@ -2,9 +2,9 @@ FROM nginx:latest
 
 COPY ./hosts/mysite.local.conf /etc/nginx/conf.d/mysite.local.conf
 
-WORKDIR /data  
+WORKDIR /data
 
-VOLUME /data  
+VOLUME /data
 
 EXPOSE 80
 
