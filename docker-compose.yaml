@@ -46,8 +46,6 @@ services:
     image: hw1app/redis
     restart: always
     container_name: ${CONTAINER_REDIS}
-    ports:
-      - "6379:6379"
     volumes:
       - redisdata:/usr/local/var/db/redis
     networks:
