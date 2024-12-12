@@ -1,5 +1,5 @@
 OBDeleven vehicle history log
-Date: 2024-12-12 14:06:59
+Date: 2024-12-12 14:05:43
 
 	VIN: 3VVTX7B22NM017095
 	Car: Volkswagen
@@ -103,8 +103,8 @@ Date: 2024-12-12 14:06:59
 					64.06 °
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:38
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:23
 
 	Backup
 		02 Transmission
@@ -138,8 +138,8 @@ Date: 2024-12-12 14:06:59
 					20 minute
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:38
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:24
 
 	Backup
 		03 Brakes
@@ -150,7 +150,7 @@ Date: 2024-12-12 14:06:59
 		Hardware version: H35
 		Backup name: Brakes
 		Long coding
-			86FB6A7EA0212473C5770209A2C82561560524A34045A47C1841F058D2824A0B00000523525212121035351919323200
+			86FB6A7EA0212473C7770209A2C82561560524E34045A47D1841F058D6824A0B00000523525212121035351919323200
 		Adaptations
 			Tire pressure monitoring display
 				Warning thresholds, tire pressure monitoring system
@@ -238,7 +238,7 @@ Date: 2024-12-12 14:06:59
 
 			AUTO HOLD functionality
 				AUTO HOLD functionality
-					Not activated
+					activated
 
 			AUTO HOLD increase threshold, reduced tensioning force
 				AUTO HOLD increase threshold, reduced tensioning force
@@ -276,7 +276,7 @@ Date: 2024-12-12 14:06:59
 
 			AUTO HOLD functional status
 				Personalized settings
-					Last setting
+					Never active
 
 			Tire pressure monitoring display, tire selection
 				Tire pressure monitoring display, tire selection
@@ -387,8 +387,8 @@ Date: 2024-12-12 14:06:59
 					activated
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:38
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:24
 
 	Backup
 		08 Air Conditioning
@@ -399,11 +399,11 @@ Date: 2024-12-12 14:06:59
 		Hardware version: H04
 		Backup name: Air Conditioning
 		Long coding
-			0902002420211C00100000400211D016
+			0902002420211400100001400011D014
 		Adaptations
 			Retention of driver's seat heater level
 				---
-					active
+					active for 10 minutes
 
 			Runtime for compressor run-in basic setting
 				---
@@ -415,7 +415,7 @@ Date: 2024-12-12 14:06:59
 
 			Stop release for start-stop function
 				---
-					always, except for safety-relevant functions
+					According to function requirements
 
 			Deactivation of start-stop function
 				---
@@ -439,7 +439,7 @@ Date: 2024-12-12 14:06:59
 
 			Air quality sensor sensitivity
 				---
-					Maximum
+					minimal
 
 			Speed switch-off threshold for compressor run-in (engine speed)
 				---
@@ -451,7 +451,7 @@ Date: 2024-12-12 14:06:59
 
 			Interior target temperature for production routines
 				---
-					22 °C
+					23 °C
 
 			Air distribution for production routines
 				---
@@ -491,7 +491,7 @@ Date: 2024-12-12 14:06:59
 
 			Automatic Activation of front windshield heater at MAX-Defrost
 				---
-					not active
+					active
 
 			Analysis 8
 				---
@@ -507,7 +507,7 @@ Date: 2024-12-12 14:06:59
 
 			Retention of frt.pass. seat heater level
 				---
-					active
+					active for 10 minutes
 
 			dimming_characteristic_1
 				X1
@@ -667,7 +667,7 @@ Date: 2024-12-12 14:06:59
 
 			Remote start function, activation of seat ventilation
 				---
-					activated
+					Not activated
 
 			Rem. start funct., activat.temper. of seat heating
 				---
@@ -691,11 +691,11 @@ Date: 2024-12-12 14:06:59
 
 			Remote start function, interior climate control status
 				---
-					Remote start function with last set value active
+					Remote start function with fixed rated temperature active
 
 			Target temperature of A/C - heater function via remote control
 				---
-					22.0 °C
+					23.0 °C
 
 			Filtering of interior air, store
 				Filtering of interior air, store
@@ -703,7 +703,7 @@ Date: 2024-12-12 14:06:59
 
 			Remote start function, windshield defogger
 				Remote start function, windshield defogger
-					Not activated
+					activated
 
 			Remote start function, windshield defogger takeover
 				Remote start function, windshield defogger takeover
@@ -715,11 +715,11 @@ Date: 2024-12-12 14:06:59
 
 			Remote start function, seat climate control takeover
 				Control module switch-off, switch-off time
-					activated
+					Not activated
 
 			Remote start function, windshield defogger can be activated
 				---
-					Not activated
+					activated
 
 			HMI_View_Switch
 				---
@@ -730,8 +730,8 @@ Date: 2024-12-12 14:06:59
 					None
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:38
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:24
 
 	Backup
 		09 Central Electrics
@@ -4578,7 +4578,7 @@ Date: 2024-12-12 14:06:59
 				Fahrlicht bei Tag
 					Daytime running lights
 				Tagfahrlicht nur in Schalterstellung AUTO
-					not active
+					active
 				Signaturlicht verbaut
 					not installed
 				Signaturlicht HMI-default Anzeige im Kombiinstrument
@@ -5349,8 +5349,8 @@ Date: 2024-12-12 14:06:59
 					Not available
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:38
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:24
 
 	Backup
 		13 Adaptive Cruise Control
@@ -5361,7 +5361,7 @@ Date: 2024-12-12 14:06:59
 		Hardware version: H04
 		Backup name: Adaptive Cruise Control
 		Long coding
-			3000470118FFC348949C812583578300000000000000000004
+			3000570118FFC348949E812483578300000000000000000004
 		Adaptations
 			Roller test bench mode, functional
 				---
@@ -5428,8 +5428,8 @@ Date: 2024-12-12 14:06:59
 					activated
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:38
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:24
 
 	Backup
 		15 Airbag
@@ -5579,8 +5579,8 @@ Date: 2024-12-12 14:06:59
 					activated
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:39
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:24
 
 	Backup
 		17 Dashboard
@@ -5591,7 +5591,7 @@ Date: 2024-12-12 14:06:59
 		Hardware version: 011
 		Backup name: Dashboard
 		Long coding
-			09A400082788000902883A095000000820600905
+			09A400082788000902887A095000000820600904
 		Adaptations
 			Roller test bench mode, functional
 				---
@@ -5897,7 +5897,7 @@ Date: 2024-12-12 14:06:59
 
 			Distance
 				---
-					12988 km
+					15679 km
 
 			WIV: Resetting ESI
 				---
@@ -5923,11 +5923,11 @@ Date: 2024-12-12 14:06:59
 
 			Hour
 				---
-					14 h
+					13 h
 
 			Minute
 				---
-					14 min
+					38 min
 
 			Year
 				---
@@ -5935,7 +5935,7 @@ Date: 2024-12-12 14:06:59
 
 			Month
 				---
-					10 mon
+					12 mon
 
 			Day
 				---
@@ -5943,11 +5943,11 @@ Date: 2024-12-12 14:06:59
 
 			SIE: distance driven from inspection
 				---
-					2600 km
+					5200 km
 
 			SIE: time from inspection
 				---
-					51 d
+					111 d
 
 			SIE: minimum value km-driving distance/inspection
 				---
@@ -5971,11 +5971,11 @@ Date: 2024-12-12 14:06:59
 
 			SIE: thermal load
 				---
-					5100 km
+					11200 km
 
 			Driving profiled for range remaining
 				---
-					9.3 l/100 km
+					10.0 l/100 km
 
 			Offset for tank calibration values
 				Offset sensor 1
@@ -6023,11 +6023,11 @@ Date: 2024-12-12 14:06:59
 
 			Oil temperature display
 				---
-					On
+					Off
 
 			Day counter
 				---
-					1170 d
+					1230 d
 
 			WIV: minimum value of time between inspections
 				---
@@ -6051,11 +6051,11 @@ Date: 2024-12-12 14:06:59
 
 			FIX: Distance covered since last mileage-dependent inspection
 				---
-					2600 km
+					5200 km
 
 			FIX: Time since last time-dependent inspection
 				---
-					51 d
+					111 d
 
 			Source for synchronization of time
 				---
@@ -6238,8 +6238,8 @@ Date: 2024-12-12 14:06:59
 					Not available
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:39
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:25
 
 	Backup
 		19 Gateway
@@ -6994,7 +6994,7 @@ Date: 2024-12-12 14:06:59
 
 			Counter for inconsistent states
 				---
-					313
+					407
 
 			Start/stop start voltage limit
 				---
@@ -7615,8 +7615,8 @@ Date: 2024-12-12 14:06:59
 					Configuration 4
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:39
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:25
 
 	Backup
 		3C Lane Change Assistant Right
@@ -7692,8 +7692,8 @@ Date: 2024-12-12 14:06:59
 					Not activated
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:39
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:25
 
 	Backup
 		42 Driver Door
@@ -7704,7 +7704,7 @@ Date: 2024-12-12 14:06:59
 		Hardware version: 008
 		Backup name: Driver Door
 		Long coding
-			003017220000028008000000
+			003017200000028008000000
 		Adaptations
 			Production mode
 				Reduce reverse threshold
@@ -7755,8 +7755,8 @@ Date: 2024-12-12 14:06:59
 					3348
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:39
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:25
 
 	Backup
 		44 Steering Assistance
@@ -7810,8 +7810,8 @@ Date: 2024-12-12 14:06:59
 					active
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:39
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:25
 
 	Backup
 		52 Passenger Door
@@ -7822,7 +7822,7 @@ Date: 2024-12-12 14:06:59
 		Hardware version: 008
 		Backup name: Passenger Door
 		Long coding
-			003013220000028000000000
+			003013200000028000000000
 		Adaptations
 			Production mode
 				Reduce reverse threshold
@@ -7873,8 +7873,8 @@ Date: 2024-12-12 14:06:59
 					3348
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:39
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:25
 
 	Backup
 		5F Multimedia
@@ -8337,7 +8337,7 @@ Date: 2024-12-12 14:06:59
 				nhtsa limitation switches for androidauto limit displayed message length
 					activated
 				nhtsa limitation switches for carplay no softKeyboard
-					activated
+					Not activated
 				nhtsa limitation switches for carplay no softPhoneKeypad
 					Not activated
 				nhtsa limitation switches for carplay limit nonMusicLists
@@ -8707,7 +8707,7 @@ Date: 2024-12-12 14:06:59
 
 			Country identification, country of sale HMI
 				---
-					US
+					DE
 
 			function_configuration_hmi
 				skinning
@@ -8755,7 +8755,7 @@ Date: 2024-12-12 14:06:59
 
 			Country identification, country of sale
 				---
-					US
+					DE
 
 			Interface for external media, activation
 				Connection 1
@@ -8807,7 +8807,7 @@ Date: 2024-12-12 14:06:59
 
 			function_configuration_radio
 				Station Logo DB Mode
-					0
+					1
 				band settings fm tuner
 					NAR
 				band settings am tuner
@@ -8879,7 +8879,7 @@ Date: 2024-12-12 14:06:59
 
 			Confirmation of installation change
 				Key
-					4FD4
+					3DF5
 
 			error_mask
 				dtc dfcc 1
@@ -8959,7 +8959,7 @@ Date: 2024-12-12 14:06:59
 
 			Developer mode
 				---
-					Not activated
+					activated
 
 			Key_code_monitoring
 				monitoring keycode 0x00 0x07
@@ -9971,15 +9971,15 @@ Date: 2024-12-12 14:06:59
 				menu display ENI after disclaimer
 					Not activated
 				menu display SportHMI
-					Not activated
+					activated
 				menu display SportHMI clamp 15 off
-					Not activated
+					activated
 				menu display SportHMI over threshold high
-					Not activated
+					activated
 				menu display SportHMI standstill
-					Not activated
+					activated
 				menu display SportHMI after disclaimer
-					Not activated
+					activated
 				menu display Adblue
 					Not activated
 				menu display Adblue clamp 15 off
@@ -10495,13 +10495,13 @@ Date: 2024-12-12 14:06:59
 
 			channel_band_width_802_11ac
 				---
-					20MHz
+					80MHz
 
 			wlan_channel_numbers
 				channel number for 2 4GHz
-					9
+					6
 				channel number for 5GHz
-					0
+					1
 
 			geocoordinate_create
 				---
@@ -10539,11 +10539,11 @@ Date: 2024-12-12 14:06:59
 
 			function_configuration_navigation
 				Country Navigation
-					no country
+					EU
 				Navigation System
-					Not activated
+					activated
 				gnns antenna Availability
-					Not activated
+					activated
 				vza
 					activated
 				VZO
@@ -10835,15 +10835,15 @@ Date: 2024-12-12 14:06:59
 
 			Navigation receiver GNSS configuration
 				Default
-					Not activated
+					activated
 				GPS
-					Not activated
+					activated
 				Galileo
-					Not activated
+					activated
 				Glonass
-					Not activated
+					activated
 				Compass
-					Not activated
+					activated
 				external GPS receiver via bus
 					activated
 				external GPS receiver 2 via bus
@@ -10853,7 +10853,7 @@ Date: 2024-12-12 14:06:59
 				Gnss update rate
 					10
 				GNSS over ethernet
-					Not activated
+					activated
 
 			function_configuration_pso
 				pso function
@@ -10918,8 +10918,8 @@ Date: 2024-12-12 14:06:59
 					preinstallation set 2
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:40
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:25
 
 	Backup
 		75 Telematics
@@ -11663,8 +11663,8 @@ Date: 2024-12-12 14:06:59
 					Off
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:40
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:26
 
 	Backup
 		B7 Start System Interface
@@ -12510,8 +12510,8 @@ Date: 2024-12-12 14:06:59
 					Not activated
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:40
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:26
 
 	Backup
 		CA Sunroof
@@ -12601,5 +12601,5 @@ Date: 2024-12-12 14:06:59
 					active
 
 
-		Mileage: 12988 km
-		Date: 2024-10-12 14:16:40
+		Mileage: 15679 km
+		Date: 2024-12-12 13:40:26
