@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class NewsController extends AbstractController
 {
     #[Route('Item', methods: ['POST'])]
-    public function addNewsItemAction(Request $request, EntityManagerInterface $em, NewsItemEventPublisher $publisher): JsonResponse
+    public function addNewsItemAction(Request $request, EntityManagerInterface $em, NewsItemEventPublisher $publisher, NewsItemCreateEventSubscriber $subscriber): JsonResponse
     {
         $title = $request->get('title');
         $author = $request->get('author');
@@ -32,7 +32,7 @@ class NewsController extends AbstractController
             return new JsonResponse(['error' => 'заполните все поля!'], 400);
         }
 
-        $publisher->subscribe(new NewsItemCreateEventSubscriber($em));
+        $publisher->subscribe($subscriber);
 
         try {
             $newsItem = new News();
