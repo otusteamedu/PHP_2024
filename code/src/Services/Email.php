@@ -12,8 +12,9 @@ class Email
 
     public function __construct(string $filePath)
     {
-        if (! file_exists($filePath))
+        if (! file_exists($filePath)) {
             throw new Exception("File not found: {$filePath}");
+        }
         $this->filePath = $filePath;
     }
 
