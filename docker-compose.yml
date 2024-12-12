@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  nginx:
+    build:
+      context: ./Docker/Nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/data/otusphp.local
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  php-fpm:
+    build:
+      context: ./Docker/Php-fpm
+    image: php-fpm
+    volumes:
+      - ./app:/data/otusphp.local
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_USER_PWD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
+    volumes:
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  memcached:
+    image: memcached
+    networks:
+      - app_otus_php
+
+networks:
+  app_otus_php:
+    driver: bridge
+
+volumes:
+  phpsocket:
