@@ -12,7 +12,7 @@ class Email
 
     public function __construct(string $filePath)
     {
-        if (!file_exists($filePath))
+        if (! file_exists($filePath))
             throw new Exception("File not found: {$filePath}");
         $this->filePath = $filePath;
     }
@@ -42,7 +42,7 @@ class Email
     public function getReadableResult(): void
     {
         $validResult = $this->isValid();
-        
+
         echo '<pre>';
         var_export($validResult);
         echo '</pre>';
