@@ -1,0 +1,18 @@
+{
+    "name": "otus/app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Services\\": "src/Services"
+        }
+    },
+    "authors": [
+        {
+            "name": "Denis",
+            "email": "denis_mesnyankin@mail.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0"
+    }
+}

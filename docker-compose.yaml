@@ -1,0 +1,33 @@
+version: '3.6'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: app/nginx
+    container_name: ${NGINX_NAME}
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code:/data/hw5
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+  
+  php-fpm:
+    build:
+      context: .
+      dockerfile: php-fpm/Dockerfile
+    image: app/php
+    container_name: ${FPM_NAME}
+    command: ["sh", "-c", "composer install && php-fpm"]
+    volumes:
+      - ./code:/data/hw5
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
