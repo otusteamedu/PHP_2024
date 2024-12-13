@@ -22,20 +22,17 @@ class Solution
 
         $startNode = $nextNodeList1;
 
-        while (!is_null($nextNodeList1)) {
-            while (!is_null($nextNodeList2)) {
+        while (!is_null($nextNodeList2)) {
 
-                if ($nextNodeList2->val >= $nextNodeList1->val && !is_null($nextNodeList1->next) && $nextNodeList2->val > $nextNodeList1->next->val) {
-                    break;
-                }
-
-                $next = $nextNodeList1->next;
-                $nextNodeList1->next = new ListNode($nextNodeList2->val, $next);
-
-                $nextNodeList2 = $nextNodeList2->next;
+            if ($nextNodeList2->val >= $nextNodeList1->val && !is_null($nextNodeList1->next) && $nextNodeList2->val > $nextNodeList1->next->val) {
+                $nextNodeList1 = $nextNodeList1->next;
+                continue;
             }
 
-            $nextNodeList1 = $nextNodeList1->next;
+            $next = $nextNodeList1->next;
+            $nextNodeList1->next = new ListNode($nextNodeList2->val, $next);
+
+            $nextNodeList2 = $nextNodeList2->next;
         }
 
         return $startNode;
