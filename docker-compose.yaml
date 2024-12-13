@@ -14,7 +14,7 @@ services:
     ports:
       - "80:80"
     volumes:
-       - ./code:/data/mysite.local
+       - ./public:/data/mysite.local
     networks:
       - app-network
     depends_on:
@@ -31,7 +31,7 @@ services:
     image: balance/php # имя будущего образа
     container_name: app1 # имя контейнера после запуска
     volumes:
-       - ./code:/data/mysite.local
+       - ./public:/data/mysite.local
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
@@ -49,7 +49,7 @@ services:
     image: balance/php # имя будущего образа
     container_name: app2 # имя контейнера после запуска
     volumes:
-      - ./code:/data/mysite.local
+      - ./public:/data/mysite.local
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
@@ -67,7 +67,7 @@ services:
     image: balance/php # имя будущего образа
     container_name: app3 # имя контейнера после запуска
     volumes:
-      - ./code:/data/mysite.local
+      - ./public:/data/mysite.local
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
       - app-network
