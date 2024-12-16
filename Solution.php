@@ -18,17 +18,15 @@ class Solution
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists($list1, $list2)
     {
         // инициализируем головной элемент результирующего списка и текущий (последний) элемент результирующего списка
         $head = $currentNode = null;
 
         // перебираем списки до тех пор, пока оба не переберем полностью
         while ($list1 !== null || $list2 !== null) {
-
             // если список 1 непустой и его первое значение меньше первого значения списка 2 или список 2 пуст
             if ($list1 !== null && ($list2 === null || $list1->val <= $list2->val)) {
-
                 if ($currentNode == null) { // если это самое начало и в результирующем списке еще нет элементов
                     $head = $currentNode = $list1; // началу списка и текущему элементу присваиваем первый элемент из списка 1
                 } else {  // в результирующем списке уже что-то есть
@@ -49,7 +47,7 @@ class Solution
         return $head;
     }
 
-    function showList($list)
+    public function showList($list)
     {
         $res = [];
         while ($list !== null) {
