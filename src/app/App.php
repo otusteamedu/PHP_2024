@@ -1,44 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-use App\MailValidationService;
+use App\ListNode;
+use App\LinkedList;
+use App\MergedLists;
 
 class App
 {
-    /**
-     * @throws \Exception
-     */
     public static function run(): void
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'];
+        $firstList = static::createLinkedList([1, 2, 4]);
 
-        $requestBody = $requestParam = [];
+        $secondList = static::createLinkedList([1, 3, 4]);
 
-        $mailValidationService = new MailValidationService();
+        $mergedLists = MergedLists::mergeTwoLists($firstList->head, $secondList->head);
 
-        if ($requestMethod === 'POST') {
-            $requestBody = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        static::printResult($mergedLists);
+    }
+
+    public static function createLinkedList(array $arr = []): LinkedList
+    {
+        $list = new LinkedList();
+
+        foreach ($arr as $value) {
+            $list->append($value);
         }
 
-        if ($requestMethod === 'GET') {
-            $requestBody = filter_input_array(INPUT_GET, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        }
+        return $list;
+    }
 
-        if (!RequestValidationClass::validateRequestBody($requestBody, $mailValidationService::MAILS_PARAM_NAME)) {
-            echo 'Unprocessable Entity';
-            return;
-        }
-
-        // Строка запроса
-        $requestParam = $requestBody[$mailValidationService::MAILS_PARAM_NAME] ?? [];
-
-        if ($mailValidationService->validate($requestParam)) {
-            echo 'Email is valid';
-        } else {
-            echo 'Email is not valid';
-        }
-
-        return;
+    public static function printResult(?ListNode $result): void
+    {
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
     }
 }

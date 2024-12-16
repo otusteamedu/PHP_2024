@@ -2,7 +2,6 @@
 
 https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
 
-
 ## Usage
 
 `cp .env.example .env`
@@ -11,4 +10,6 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 
 `docker exec -it php-fpm /bin/bash -c 'composer dump-autoload --optimize'`
 
-Request `curl -X POST -d "emails=webdeveloper@gmail.com,example@mail.ru" https://localhost`
+Navigate to `http://localhost:8080/`
+
+### Сложность линейная O(n)
