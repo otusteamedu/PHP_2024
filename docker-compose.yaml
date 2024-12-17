@@ -33,18 +33,6 @@ services:
     networks:
       - app-network
 
-  elasticsearch:
-    container_name: elastic
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
-    ports:
-      - "9200:9200"
-    networks:
-      - app-network
-    environment:
-      - ELASTIC_PASSWORD=password
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-
 
   # контейнер с MySQL
   db:

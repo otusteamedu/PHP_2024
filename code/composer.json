@@ -1,14 +1,13 @@
 {
-    "name": "naimushina/elastic_search",
+    "name": "naimushina/data_mapper",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Naimushina\\ElasticSearch\\": "src/"
+            "Naimushina\\DataMapper\\": "src/"
         }
     },
     "require": {
         "php": ">=8.0",
-        "elasticsearch/elasticsearch": "^8.15",
         "symfony/console": "^6.4"
     },
     "config": {
