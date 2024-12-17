@@ -1,31 +1,8 @@
-DROP TABLE IF EXISTS `cinemas`;
-DROP TABLE IF EXISTS `cinema_halls`;
 DROP TABLE IF EXISTS `movies`;
-DROP TABLE IF EXISTS `shows`;
-DROP TABLE IF EXISTS `seats`;
-DROP TABLE IF EXISTS `tickets`;
-DROP TABLE IF EXISTS `customers`;
-DROP TABLE IF EXISTS `purchases`;
-DROP TABLE IF EXISTS `purchase_tickets`;
+DROP TABLE IF EXISTS `attribute_types`;
+DROP TABLE IF EXISTS `attributes`;
+DROP TABLE IF EXISTS `attribute_values`;
 
-
-CREATE TABLE IF NOT EXISTS `cinemas` (
-    `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `title` varchar(255) NOT NULL,
-    `location` text NOT NULL,
-    `contacts` text NOT NULL,
-    PRIMARY KEY (`id`)
-    );
-
-CREATE TABLE IF NOT EXISTS `cinema_halls` (
-    `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `cinema_id` int NOT NULL,
-    `title` varchar(255) NOT NULL,
-    `capacity` int NOT NULL,
-    `type` int NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`cinema_id`) REFERENCES `cinemas`(`id`)
-    );
 
 CREATE TABLE IF NOT EXISTS `movies` (
     `id` int AUTO_INCREMENT NOT NULL UNIQUE,
@@ -37,58 +14,26 @@ CREATE TABLE IF NOT EXISTS `movies` (
     PRIMARY KEY (`id`)
     );
 
-CREATE TABLE IF NOT EXISTS `shows` (
+CREATE TABLE IF NOT EXISTS `attribute_types` (
     `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `cinema_hall_id` int NOT NULL,
-    `movie_id` int,
-    `start` datetime NOT NULL,
-    `end` datetime NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`cinema_hall_id`) REFERENCES `cinema_halls`(`id`),
-    FOREIGN KEY (`movie_id`) REFERENCES `movies`(`id`)
-    );
-
-CREATE TABLE IF NOT EXISTS `seats` (
-    `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `show_id` int NOT NULL,
-    `row` int NOT NULL,
-    `seat` int NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`show_id`) REFERENCES `shows`(`id`),
-    UNIQUE (`show_id`, `row`, `seat`)
-    );
-
-CREATE TABLE IF NOT EXISTS `customers` (
-    `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `name` varchar(255) NULL,
+    `type` enum('text','date','time','bool','int','float') NOT NULL DEFAULT 'text',
     PRIMARY KEY (`id`)
     );
 
-CREATE TABLE IF NOT EXISTS `purchases` (
+CREATE TABLE IF NOT EXISTS `attributes` (
     `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `purchase_date` datetime NOT NULL,
-    `customer_id` int NULL,
+    `name` varchar(255) NOT NULL,
+    `movie_id` int NOT NULL,
+    `attribute_type_id` int NOT NULL,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`customer_id`) REFERENCES `customers`(`id`)
+    FOREIGN KEY (`movie_id`) REFERENCES `movies`(`id`),
+    FOREIGN KEY (`attribute_type_id`) REFERENCES `attribute_types`(`id`)
     );
 
-CREATE TABLE IF NOT EXISTS `tickets` (
+CREATE TABLE IF NOT EXISTS `attribute_values` (
     `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `show_id` int NOT NULL,
-    `seat_id` int NOT NULL,
-    `price` int NOT NULL,
+    `attribute_id` int NOT NULL,
+    `value` text,
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`show_id`) REFERENCES `shows`(`id`),
-    FOREIGN KEY (`seat_id`) REFERENCES `seats`(`id`),
-    UNIQUE (`show_id`, `seat_id`)
-    );
-
-CREATE TABLE IF NOT EXISTS `purchase_tickets` (
-    `id` int AUTO_INCREMENT NOT NULL UNIQUE,
-    `purchase_id` int NOT NULL,
-    `ticket_id` int NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`purchase_id`) REFERENCES `purchases`(`id`),
-    FOREIGN KEY (`ticket_id`) REFERENCES `tickets`(`id`),
-    UNIQUE (`purchase_id`, `ticket_id`)
+    FOREIGN KEY (`attribute_id`) REFERENCES `attributes`(`id`)
     );
