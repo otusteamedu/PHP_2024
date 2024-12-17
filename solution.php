@@ -1,4 +1,5 @@
 <?php
+
 namespace Otus2024;
 
 use Otus2024\ListNode;
@@ -11,7 +12,7 @@ class Solution
      * @param ListNode $list2
      * @return ListNode
      */
-    function mergeTwoLists($list1, $list2)
+    public function mergeTwoLists($list1, $list2)
     {
         $dummy = new ListNode(-1);
         $current = $dummy;
