@@ -6,7 +6,6 @@ use Otus2024\ListNode;
 
 class Solution
 {
-
     /**
      * @param ListNode $list1
      * @param ListNode $list2
