@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS `movies` (
 CREATE TABLE IF NOT EXISTS `attribute_types` (
     `id` int AUTO_INCREMENT NOT NULL UNIQUE,
     `type` enum('text','date','time','bool','int','float') NOT NULL DEFAULT 'text',
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE (`type`)
     );
 
 CREATE TABLE IF NOT EXISTS `attributes` (
@@ -43,3 +44,8 @@ CREATE TABLE IF NOT EXISTS `attribute_values` (
     PRIMARY KEY (`id`),
     FOREIGN KEY (`attribute_id`) REFERENCES `attributes`(`id`)
     );
+
+
+CREATE INDEX idx_attributes_is_service ON attributes(is_service);
+
+CREATE INDEX idx_attribute_values_value_date ON attribute_values(value_date);
