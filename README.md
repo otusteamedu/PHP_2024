@@ -1,3 +1,18 @@
-# PHP_2024
+# Up APP
+```bash
+cp .env.example .env
+```
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+```bash
+docker-compose up -d
+```
+
+## Run to browser
+```bash
+http://hw5.local
+```
+
+## Change emails
+```bash
+code/data/emails.txt
+```

@@ -1,0 +1,4 @@
+example
+example.com
+example@gmail.com
+example@mail.ru
