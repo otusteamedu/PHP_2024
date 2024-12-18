@@ -21,7 +21,7 @@ class App
     {
         $configs = new ConfigService();
 
-        $storage = new ElasticSearchStorage(...$configs->getConfigByName('elastic'));
+        /*$storage = new ElasticSearchStorage(...$configs->getConfigByName('elastic'));
         $commandName = $_SERVER['argv'][1] ?? null;
         $consoleApp = new Application();
         match ($commandName) {
@@ -31,6 +31,6 @@ class App
 
             default => throw new Exception('Unknown command "' . $commandName . '"')
         };
-        return $consoleApp->run();
+        return $consoleApp->run();*/
     }
 }
