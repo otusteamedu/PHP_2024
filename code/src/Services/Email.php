@@ -140,7 +140,7 @@ class Email
     private function getTdsTable(array $headers, array $data): string
     {
         $tds = '';
-        
+
         foreach ($headers as $header) {
             $value = $data[$header] ?? '';
             $tds .= '<td>' . htmlspecialchars($this->convertationBoolToStr($value)) . '</td>';
