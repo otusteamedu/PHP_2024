@@ -1,21 +1,18 @@
-# String Processor
-
-Brief description of the package.
-
-## Requirements
-
-- PHP 7.4
-
-## Installation
-
+# Up APP
 ```bash
-$ composer require denis/fan-composer-package
+cp .env.example .env
 ```
 
-## Usage
+```bash
+docker-compose up -d
+```
 
-```php
-<?php
-$processor = new StringProcessor();
-echo $processor->getLength('my string'); //9
+## Run to browser
+```bash
+http://hw5.local
+```
+
+## Change emails
+```bash
+code/data/emails.txt
 ```
