@@ -1,6 +1,6 @@
 -- Проверка существует ли таблица halls и её удаление
 DROP TABLE IF EXISTS public.halls CASCADE;
--- Создание таблицы halls (Залы кинотеатра)
+-- Создание таблицы halls (Кинозалы)
 CREATE TABLE public.halls
 (
     "id"         BIGSERIAL    NOT NULL PRIMARY KEY,
@@ -56,18 +56,18 @@ CREATE TABLE public.sessions
 (
     "id"         BIGSERIAL NOT NULL primary key,
     "hall_id"    BIGINT    NOT NULL,
-    "movies_id"  BIGINT    NOT NULL,
+    "movie_id"  BIGINT    NOT NULL,
     "started_at" TIMESTAMP NOT NULL,
     "ended_at"   TIMESTAMP NOT NULL,
 
     CONSTRAINT public_sessions_hall_id_foreign FOREIGN KEY (hall_id) REFERENCES halls (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT public_sessions_movies_id_foreign FOREIGN KEY (movies_id) REFERENCES movies (id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT public_sessions_movie_id_foreign FOREIGN KEY (movie_id) REFERENCES movies (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Создание индекса для поля hall_id в таблице sessions
 CREATE INDEX public_sessions_hall_id_index on sessions ("hall_id");
 -- Создание индекса для поля movies_id в таблице sessions
-CREATE INDEX public_sessions_movies_id_index on sessions ("movies_id");
+CREATE INDEX public_sessions_movie_id_index on sessions ("movie_id");
 
 -- Проверка существует ли таблица clients и её удаление
 DROP TABLE IF EXISTS public.clients CASCADE;
