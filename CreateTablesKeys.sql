@@ -45,7 +45,9 @@ create table public.films_values
             references public.films_attributes,
     value_str      varchar,
     value_date     date,
-    value_decimal  numeric(15,2),
+    value_decimal  numeric,
+    value_int      integer,
+    value_float    double precision,
     constraint films_values_pk
         primary key (uuid_film, uuid_attribite)
 );

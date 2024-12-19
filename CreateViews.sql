@@ -43,14 +43,19 @@ SELECT f.name           AS film,
        CASE
            WHEN fv.value_str IS NULL THEN
                CASE
-                   WHEN fv.value_date IS NULL THEN fv.value_decimal::character varying
+                   WHEN fv.value_date IS NULL THEN
+                       CASE
+                           WHEN fv.value_decimal IS NULL THEN
+                               CASE
+                                   WHEN fv.value_int IS NULL THEN fv.value_float::character varying
+                                   ELSE fv.value_int::character varying
+                                   END
+                           ELSE fv.value_date::character varying
+                           END
                    ELSE fv.value_date::character varying
                    END
            ELSE fv.value_str
-           END          AS value_task,
-       fv.value_str     AS str_task,
-       fv.value_date    AS date_task,
-       fv.value_decimal AS decimal_tsk
+           END  AS value_task
 FROM films_values fv
          LEFT JOIN films f ON f.uuid = fv.uuid_film
          LEFT JOIN films_attributes fa ON fa.uuid = fv.uuid_attribite
