@@ -61,8 +61,8 @@ VALUES (1, 1, 1, 250),
        (4, 4, 15, 150);
 
 -- Наполнение таблицы tickets (Билеты)
-INSERT INTO tickets (id, client_id, price_id)
-VALUES (1, 1, 1),
-       (2, 2, 2),
-       (3, 3, 3),
-       (4, 4, 4);
+INSERT INTO tickets (id, client_id, price_id, price)
+VALUES (1, 1, 1, 200),
+       (2, 2, 2, 200),
+       (3, 3, 3, 150),
+       (4, 4, 4, 100);

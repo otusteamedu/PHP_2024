@@ -1,4 +1,4 @@
-SELECT movies.name, SUM(prices.price) AS total_sum
+SELECT movies.name, SUM(tickets.price) AS total_sum
 FROM movies
          INNER JOIN sessions ON movies.id = sessions.movie_id
          INNER JOIN prices ON sessions.id = prices.session_id

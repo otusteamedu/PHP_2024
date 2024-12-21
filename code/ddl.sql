@@ -109,6 +109,7 @@ CREATE TABLE public.tickets
     "id"        BIGSERIAL NOT NULL primary key,
     "client_id" BIGINT    NOT NULL,
     "price_id"  BIGINT    NOT NULL,
+    "price"      DECIMAL(5, 2) NOT NULL,
 
     CONSTRAINT public_tickets_client_id_foreign FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT public_tickets_price_id_foreign FOREIGN KEY (price_id) REFERENCES prices (id) ON DELETE CASCADE ON UPDATE CASCADE
