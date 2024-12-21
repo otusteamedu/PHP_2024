@@ -31,6 +31,6 @@ WORKDIR /var/www
 
 VOLUME /var/www
 
-EXPOSE 9000
+#EXPOSE 9000
 
 CMD ["php-fpm"]

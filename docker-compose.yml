@@ -1,13 +1,25 @@
-version: "3"
+version: '3'
 
 services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: otus2024-hw4/nginx
+    container_name: otus2024-hw4-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/otus2024
+    networks:
+      - otus2024-network
+
   app1:
     build:
       context: ./docker/fpm
       dockerfile: Dockerfile
-    image: otus2024-hw4/php
+    image: balance/php
     container_name: app1
-    restart: unless-stopped
     volumes:
       - ./app:/var/www/otus2024
     networks:
@@ -17,34 +29,19 @@ services:
     build:
       context: ./docker/fpm
       dockerfile: Dockerfile
-    image: otus2024-hw4/php
+    image: balance/php
     container_name: app2
-    restart: unless-stopped
     volumes:
       - ./app:/var/www/otus2024
     networks:
       - otus2024-network
 
-  redis:
-    image: redis:6.0.7
-    container_name: redisApp
-    restart: always
-    volumes:
-      - ./redis:/data/redis
-    #  ports:
-    #    - "6379:6379"
-    networks:
-      - otus2024-network
-
-  nginx:
+  app3:
     build:
-      context: ./docker/nginx
+      context: ./docker/fpm
       dockerfile: Dockerfile
-    image: otus2024-hw4/nginx
-    container_name: otus2024-hw4-nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
+    image: balance/php
+    container_name: app3
     volumes:
       - ./app:/var/www/otus2024
     networks:
@@ -53,3 +50,15 @@ services:
 networks:
   otus2024-network:
     driver: bridge
+
+
+#  redis:
+#    image: redis:6.0.7
+#    container_name: redisApp
+#    restart: always
+#    volumes:
+#      - ./redis:/data/redis
+#    #  ports:
+#    #    - "6379:6379"
+#    networks:
+#      - otus2024-network
