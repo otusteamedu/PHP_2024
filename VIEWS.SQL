@@ -22,13 +22,12 @@ GROUP BY
 
 CREATE VIEW marketing_data AS
 SELECT 
-    m.title AS `фильм`,
-    at.name AS `тип_атрибута`,
-    a.name AS `атрибут`,
+    m.name AS `movie`,
+    a.name AS `attribute`,
     CASE 
-        WHEN at.data_type = 'text' THEN v.value_text
-        WHEN at.data_type = 'boolean' THEN CASE WHEN v.value_bool THEN 'Да' ELSE 'Нет' END
-        WHEN at.data_type = 'date' THEN DATE_FORMAT(v.value_date, '%d.%m.%Y')
+        WHEN Attribute_types.data_type = 'text' THEN v.value_text
+        WHEN Attribute_types.data_type = 'boolean' THEN CASE WHEN v.value_bool THEN 'Да' ELSE 'Нет' END
+        WHEN Attribute_types.data_type = 'date' THEN DATE_FORMAT(v.value_date, '%d.%m.%Y')
         ELSE 'Неизвестный тип'
     END AS `значение`
 FROM 

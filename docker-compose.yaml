@@ -10,5 +10,7 @@ services:
       interval: 1s
       timeout: 10s
       retries: 10
+    volumes:
+      -
     ports:
       - 3306:3306
