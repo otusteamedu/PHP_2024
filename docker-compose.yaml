@@ -11,6 +11,6 @@ services:
       timeout: 10s
       retries: 10
     volumes:
-      -
+      - ./:/code
     ports:
       - 3306:3306

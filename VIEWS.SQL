@@ -1,40 +1,43 @@
 CREATE VIEW service_tasks AS
 SELECT 
-    m.title AS фильм,
-    GROUP_CONCAT(CASE 
-        WHEN v.value_date = CURDATE() THEN a.name 
-        END SEPARATOR ', ') AS `задачи_актуальные_на_сегодня`,
-    GROUP_CONCAT(CASE 
-        WHEN v.value_date = CURDATE() + INTERVAL 20 DAY THEN a.name 
-        END SEPARATOR ', ') AS `задачи_актуальные_через_20_дней`
+    m.name AS`movie`,
+    at.name AS `attribute_type`,
+    a.name AS `attribute`,
+    CASE 
+        WHEN v.value_timestamp = CURDATE() THEN a.name 
+    END AS `Задачи_актуальные_на_сегодня`,
+    CASE 
+        WHEN v.value_timestamp = CURDATE() + INTERVAL 20 DAY THEN a.name 
+    END AS `Задачи_актуальные_через_20_дней`
 FROM 
-    Movies m
+    `Movies` m
 JOIN 
-    values v ON m.movie_id = v.movie_id
+    `Values` v ON m.id = v.movie_id
 JOIN 
-    Attributes a ON v.attribute_id = a.attribute_id
+    `Attributes` a ON v.attribute_id = a.id
 JOIN 
-    Attribute_types at ON a.attribute_type_id = at.attribute_type_id
+    `Attribute_types` `at` ON a.attribute_type_id = at.id
 WHERE 
-    at.name = 'Служебные даты'
-GROUP BY 
-    m.movie_id, m.title;
+    a.name = 'служебные даты';
+
 
 CREATE VIEW marketing_data AS
 SELECT 
     m.name AS `movie`,
+    at.name AS `attribute_type`,
     a.name AS `attribute`,
     CASE 
-        WHEN Attribute_types.data_type = 'text' THEN v.value_text
-        WHEN Attribute_types.data_type = 'boolean' THEN CASE WHEN v.value_bool THEN 'Да' ELSE 'Нет' END
-        WHEN Attribute_types.data_type = 'date' THEN DATE_FORMAT(v.value_date, '%d.%m.%Y')
-        ELSE 'Неизвестный тип'
-    END AS `значение`
+        WHEN at.name = 'text' THEN v.value_text
+        WHEN at.name = 'boolean' THEN v.value_boolean
+        WHEN at.name = 'date' THEN DATE_FORMAT(v.value_date, '%d.%m.%Y')
+        WHEN at.name = 'timestamp' THEN DATE_FORMAT(v.value_timestamp, '%d.%m.%Y %H:%i:%s')
+        ELSE 'Unkwoun Name'
+    END AS `value`
 FROM 
-    Movies `m`
+    `Movies` AS m
 JOIN 
-    Values `v` ON m.movie_id = v.movie_id
+    `Values` AS v ON m.id = v.movie_id
 JOIN 
-    Attributes `a` ON v.attribute_id = a.attribute_id
+    `Attributes` AS a ON v.attribute_id = a.id
 JOIN 
-    Attribute_types `at` ON a.attribute_type_id = at.attribute_type_id;
+    `Attribute_types` AS `at` ON a.attribute_type_id = at.id;
