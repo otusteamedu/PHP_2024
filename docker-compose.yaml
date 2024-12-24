@@ -1,0 +1,16 @@
+services:
+  mysql:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 1s
+      timeout: 10s
+      retries: 10
+    volumes:
+      - ./:/code
+    ports:
+      - 3306:3306
