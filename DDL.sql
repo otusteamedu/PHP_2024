@@ -28,6 +28,7 @@ CREATE TABLE `Values`
     `value_boolean`   	BOOLEAN  				DEFAULT NULL,
     `value_date`      	DATE  					DEFAULT NULL,
     `value_timestamp` 	TIMESTAMP  				DEFAULT NULL,
+    `value_float` 	    FLOAT  				    DEFAULT NULL,
 	PRIMARY KEY(`id`)
 );
 
