@@ -1,90 +1,41 @@
-name: hw1
+name: hw14
 services:
-  
-  db:
-    image: mysql:latest
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    expose:
-      - 3306
-      - 33060 
-  
-  cache:
+  redis:
     image: redis:latest
-    restart: always
+    container_name: redis_container
+    #environment:
+    #  - REDIS_PASSWORD=${REDIS_PASSWORD}
+    #  - REDIS_USER=${REDIS_USER}
+    #  - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
     ports:
-      - 3679
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-    volumes: 
-      - cache:/data
-
-  memcached:
-    image: memcached:latest
-    command:
-      - --conn-limit=1024
-      - --memory-limit=64
-      - --threads=4 
-
-  composer:
-    image: composer:latest
-    command: install
-    restart: 'no'
+      - "6380:6379"
     volumes:
-      - ./code:/data/mysite.local       
-  
-  #контейнер с Nginx
-  nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: app/nginx
-    container_name: ${WEBSERVER_NAME}
-    # проброс портов
-    ports:
-      - "80:80"
-    volumes:
-       - ./code:/data/mysite.local
-       - ./php-socket:/var/run/php-fpm.sock
-    networks:
-      - app-network
+      - ./redisdata:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    #command: >
+    #  sh -c '
+    #    mkdir -p /usr/local/etc/redis &&
+    #    echo "bind 0.0.0.0" > /usr/local/etc/redis/redis.conf &&
+    #    echo "requirepass $REDIS_PASSWORD" >> /usr/local/etc/redis/redis.conf &&
+    #    echo "appendonly yes" >> /usr/local/etc/redis/redis.conf &&
+    #    echo "appendfsync everysec" >> /usr/local/etc/redis/redis.conf &&
+    #    echo "user default on nopass ~* +@all" > /usr/local/etc/redis/users.acl &&
+    #    echo "user $REDIS_USER on >$REDIS_USER_PASSWORD ~* +@all" >> /usr/local/etc/redis/users.acl &&
+    #    redis-server /usr/local/etc/redis/redis.conf --aclfile /usr/local/etc/redis/users.acl
+    #  '
+    #healthcheck:
+    #  test: ["CMD", "redis-cli", "-a", "$REDIS_PASSWORD", "ping"]
+    #  interval: 30s
+    #  timeout: 10s
+    #  retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
 
-  #Контейнер с PHP-FPM, назовём его app
-  app:
-    # Если нет секции build, то система будет искать образ в репозиториях
-    build:
-      context: ./fpm
-      dockerfile: Dockerfile
-    image: app/php # имя будущего образа
-    container_name: ${APP_NAME} # имя контейнера после запуска
-    depends_on:
-      - db
-      - cache
-      - memcached
-      - composer
-    environment:
-      REDIS_HOST: cache
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81  
-    volumes:
-       - ./code:/data/mysite.local
-       - ./php-socket:/var/run/php-fpm.sock
-    # мы можем создать для контейнеров внутреннюю сеть
-    networks:
-      - app-network 
-      
-
-#Docker Networks
-networks:
-  app-network:
-    driver: bridge
-
-#Volumes
-volumes:
-  db_data:
-  cache:
