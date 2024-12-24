@@ -30,10 +30,10 @@ services:
   db:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: mydb
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -42,14 +42,11 @@ services:
   redis:
     image: redis:latest
     ports:
-      - "6379:6379"
     networks:
       - devweb
 
   memcached:
     image: memcached:latest
-    ports:
-      - "11211:11211"
     networks:
       - devweb
 
