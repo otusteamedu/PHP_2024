@@ -31,5 +31,5 @@ CREATE TABLE `Values`
 	PRIMARY KEY(`id`)
 );
 
-CREATE INDEX idx_attribute_type_movie ON Attributes (attribute_type_id);
+CREATE INDEX idx_attribute_type_movie ON `Attributes` (attribute_type_id);
 CREATE INDEX idx_value_by_date ON `Values` (value_timestamp);

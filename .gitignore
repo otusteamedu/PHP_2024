@@ -5,3 +5,4 @@
 .LSOverride
 app/vendor
 .env
+db-data
