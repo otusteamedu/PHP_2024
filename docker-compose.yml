@@ -1,0 +1,80 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+      - ./code/:/data/mysite.local
+    networks:
+      - app-network
+    links:
+      - memcached
+
+  webserver:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+      - ./code/:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:5.7.22
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data/mysite.local
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached
+    container_name: memcached
+    ports:
+      - "11211:11211"
+    networks:
+      - app-network
+
+volumes:
+  redis:
+  mysql:
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
