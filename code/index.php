@@ -1,6 +1,6 @@
 <?php
 
-$memcached = new Memcached;
+$memcached = new Memcached();
 
 $memcached->addServer('memcached', '11211');
 
