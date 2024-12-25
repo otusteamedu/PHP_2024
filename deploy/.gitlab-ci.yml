@@ -1,0 +1,70 @@
+stages:
+  - staging
+  - deploy
+  - acceptance
+  - rollback
+
+before_script:
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - export DIR=$(date +%Y%m%d_%H%M%S)
+
+staging_server:
+  stage: staging
+  environment:
+    name: server
+    url: $SERVER_URL
+  script:
+    - ssh $SSH_USER@$SERVER_URL "sudo rm -rf /var/www/staging &&
+      cd /var/www &&
+      git clone $REPOSITORY_URL staging &&
+      sudo chown www-data:www-data staging -R &&
+      cd staging &&
+      sh ./deploy-staging.sh $SERVER_URL $DATABASE_HOST $DATABASE_USER $DATABASE_PASSWORD $DATABASE_NAME $RABBITMQ_HOST $RABBITMQ_USER $RABBITMQ_PASSWORD &&
+      sudo chmod 777 tests/_output -R  &&
+      php vendor/bin/codecept run Unit &&
+      php vendor/bin/codecept run Functional"  
+  only:
+    - master  
+
+deploy_server:
+  stage: deploy
+  environment:
+    name: server
+    url: $SERVER_URL
+  script:
+    - ssh $SSH_USER@$SERVER_URL "sudo cp -r /var/www/staging /var/www/production/$DIR/ &&
+      cd /var/www/production &&      
+      sudo chown www-data:www-data $DIR -R &&
+      cd $DIR &&
+      sh ./deploy.sh $SERVER_URL $DATABASE_HOST $DATABASE_USER $DATABASE_PASSWORD $DATABASE_NAME $RABBITMQ_HOST $RABBITMQ_USER $RABBITMQ_PASSWORD &&
+      cd .. &&
+      sudo rm -rf /var/www/production/$DIR/var/log &&
+      sudo ln -s /var/www/production/shared/log /var/www/production/$DIR/var/log &&
+      ( [ ! -d /var/www/production/current ] || mv -Tf /var/www/production/current /var/www/production/previous ) &&
+      sudo ln -s /var/www/production/$DIR /var/www/production/current"
+  only:
+    - master
+
+acceptance_tests:
+  stage: acceptance
+  environment:
+    name: server
+    url: $SERVER_URL
+  script:
+    - ssh $SSH_USER@$SERVER_URL "cd /var/www/production/current && 
+      sudo chmod 777 tests/_output -R  &&
+      php vendor/bin/codecept run Acceptance"  
+  only:
+  - master
+
+rollback:
+  stage: rollback
+  script:
+    - ssh $SSH_USER@$SERVER_URL "unlink /var/www/production/current &&
+      mv -Tf /var/www/production/previous /var/www/production/current &&
+      cd /var/www/production/current &&
+      sh ./rollback.sh $SERVER_URL"
+  when: manual    
