@@ -1,0 +1,26 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    PaymentServiceBundle\:
+        resource: '../src/'
+        exclude:
+          - '../src/DependencyInjection/'
+          - '../src/Entity/'
+
+    PaymentServiceBundle\Controller\http\Report\GetStatus\v1\Handler:
+        arguments:
+          - '%env(APP_SITE)%'
+
+    PaymentServiceBundle\Domain\Service\Mailer:
+        arguments:
+          - '%env(APP_SITE)%'
+
+    PaymentServiceBundle\Infrastructure\Bus\RabbitMqBus:
+        calls:
+          - [ 'registerProducer', [ !php/enum  PaymentServiceBundle\Infrastructure\Bus\AmqpExchangeEnum::PaymentCreate, '@old_sound_rabbit_mq.payment_service_payment_create_producer' ] ]
+          - [ 'registerProducer', [ !php/enum  PaymentServiceBundle\Infrastructure\Bus\AmqpExchangeEnum::PaymentUpdate, '@old_sound_rabbit_mq.payment_service_payment_update_producer' ] ]
+          - [ 'registerProducer', [ !php/enum  PaymentServiceBundle\Infrastructure\Bus\AmqpExchangeEnum::PaymentDelete, '@old_sound_rabbit_mq.payment_service_payment_delete_producer' ] ]
+          - [ 'registerProducer', [ !php/enum  PaymentServiceBundle\Infrastructure\Bus\AmqpExchangeEnum::ReportCreate,  '@old_sound_rabbit_mq.payment_service_report_create_producer' ] ]
+          - [ 'registerProducer', [ !php/enum  PaymentServiceBundle\Infrastructure\Bus\AmqpExchangeEnum::SendEmail   ,  '@old_sound_rabbit_mq.payment_service_send_email_producer' ] ]
