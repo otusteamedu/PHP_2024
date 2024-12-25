@@ -32,6 +32,7 @@ SELECT
         WHEN at.name = 'date' THEN DATE_FORMAT(v.value_date, '%d.%m.%Y')
         WHEN at.name = 'timestamp' THEN DATE_FORMAT(v.value_timestamp, '%d.%m.%Y %H:%i:%s')
         WHEN at.name = 'float' THEN v.value_float
+        WHEN at.name = 'integer' THEN v.value_int
         ELSE 'Unkwoun Name'
     END AS `value`
 FROM 

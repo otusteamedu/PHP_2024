@@ -29,6 +29,7 @@ CREATE TABLE `Values`
     `value_date`      	DATE  					DEFAULT NULL,
     `value_timestamp` 	TIMESTAMP  				DEFAULT NULL,
     `value_float` 	    FLOAT  				    DEFAULT NULL,
+    `value_int` 	    INTEGER  				DEFAULT NULL,
 	PRIMARY KEY(`id`)
 );
 

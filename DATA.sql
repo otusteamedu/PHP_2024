@@ -7,14 +7,16 @@ VALUES ('text'),
        ('boolean'),
        ('date'),
        ('timestamp'),
-       ('float');
+       ('float'),
+       ('integer');
 
 INSERT INTO Attributes (attribute_type_id, name)
 VALUES (1, 'рецензии'),
        (2, 'премия'),
        (3, 'важные даты'),
        (4, 'служебные даты'),
-       (5, 'рейтинг');
+       (5, 'рейтинг'),
+       (6, 'количество просмотров');
 
 -- Иван Васильевич меняет профессию
 INSERT INTO `Values` (movie_id, attribute_id, `value_text`)
@@ -32,6 +34,9 @@ VALUES (1, 4, CURRENT_TIMESTAMP);
 INSERT INTO `Values` (movie_id, attribute_id, `value_float`)
 VALUES (1, 5, 7.47583);
 
+INSERT INTO `Values` (movie_id, attribute_id, `value_int`)
+VALUES (1, 6, 18);
+
 -- Superman
 INSERT INTO `Values` (movie_id, attribute_id, `value_text`)
 VALUES (2, 1, 'Супергеройский фильм');
@@ -47,3 +52,6 @@ VALUES (2, 4, CURRENT_TIMESTAMP);
 
 INSERT INTO `Values` (movie_id, attribute_id, `value_float`)
 VALUES (2, 5, 6.3847);
+
+INSERT INTO `Values` (movie_id, attribute_id, `value_int`)
+VALUES (2, 6, 2);
