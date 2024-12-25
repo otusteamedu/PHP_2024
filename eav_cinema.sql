@@ -42,7 +42,7 @@ FROM values v
          JOIN films f ON v.film_id = f.id
          JOIN attributes a ON v.attribute_id = a.id
          JOIN types t ON v.type = t.id
-WHERE t.type_name = 'DATE'
+WHERE t.type_name = 'date'
 GROUP BY f.id;
 
 -- Marketing view
@@ -73,9 +73,10 @@ VALUES ('critic_review'),
        ('advertising_start_date');
 
 INSERT INTO types (type_name)
-VALUES ('TEXT'),
-       ('BOOL'),
-       ('DATE');
+VALUES ('string'),
+       ('bool'),
+       ('date'),
+       ('float');
 
 INSERT INTO values (film_id, attribute_id, type, value)
 VALUES (1, 1, 1, 'Film 1 critic review '),
