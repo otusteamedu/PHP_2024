@@ -37,7 +37,7 @@ class PaymentRepository implements PaymentRepositoryInterface
         }
 
         if ($updatePaymentRequestModel->purpose) {
-            $payment->setAmount($updatePaymentRequestModel->purpose);
+            $payment->setPurpose($updatePaymentRequestModel->purpose);
         }
 
         $this->entityManager->persist($payment);
