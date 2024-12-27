@@ -14,8 +14,7 @@ abstract class BasicMapper
 
     public function __construct(
         protected PDO $pdo
-    )
-    {
+    ) {
         $this->tableName = $this->getTableName();
         $this->columns = $this->getColumns();
         $this->identityMap = $this->getIdentityMapper();
@@ -148,9 +147,10 @@ abstract class BasicMapper
      */
     public function toCamelCase($string): string
     {
-        return str_replace(' ', '',
-            ucwords(str_replace(['-', '_'],
-                ' ', $string))
+        return str_replace(
+            ' ',
+            '',
+            ucwords(str_replace(['-', '_'], ' ', $string))
         );
     }
 
