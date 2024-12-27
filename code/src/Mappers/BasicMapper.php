@@ -23,18 +23,18 @@ abstract class BasicMapper
     /**
      * @return string
      */
-    protected abstract function getTableName(): string;
+    abstract protected function getTableName(): string;
 
     /**
      * @return array
      */
-    protected abstract function getColumns(): array;
+    abstract protected function getColumns(): array;
 
     /**
      * @param array $result
      * @return mixed
      */
-    protected abstract function setDTO(array $result);
+    abstract protected function setDTO(array $result);
 
     /**
      * @param int $id
@@ -161,6 +161,4 @@ abstract class BasicMapper
     {
         return new IdentityMap();
     }
-
-
 }
