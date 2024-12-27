@@ -14,7 +14,8 @@ abstract class BasicMapper
 
     public function __construct(
         protected PDO $pdo
-    ) {
+    )
+    {
         $this->tableName = $this->getTableName();
         $this->columns = $this->getColumns();
         $this->identityMap = $this->getIdentityMapper();
@@ -23,18 +24,18 @@ abstract class BasicMapper
     /**
      * @return string
      */
-    abstract function getTableName(): string;
+    protected abstract function getTableName(): string;
 
     /**
      * @return array
      */
-    abstract function getColumns(): array;
+    protected abstract function getColumns(): array;
 
     /**
      * @param array $result
      * @return mixed
      */
-    abstract function setDTO(array $result);
+    protected abstract function setDTO(array $result);
 
     /**
      * @param int $id
@@ -50,7 +51,7 @@ abstract class BasicMapper
         $statement->execute([$id]);
 
         $result = $statement->fetch();
-        if(!$result){
+        if (!$result) {
             return null;
         }
         $object = $this->setDto($result);
@@ -119,7 +120,7 @@ abstract class BasicMapper
      * @param $offset
      * @return array
      */
-    public function getAll( $limit = 100, $offset = 0): array
+    public function getAll($limit = 100, $offset = 0): array
     {
         $statement = $this->pdo->prepare(
             "SELECT * FROM {$this->tableName} LIMIT :limit OFFSET :offset"
@@ -130,8 +131,8 @@ abstract class BasicMapper
 
         $result = $statement->fetchAll();
         $items = [];
-        if($result){
-            foreach ($result as $raw){
+        if ($result) {
+            foreach ($result as $raw) {
                 $object = $this->setDto($raw);
                 $this->identityMap->set($object->getId(), $object);
                 $items[] = $object;
