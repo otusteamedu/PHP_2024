@@ -29,30 +29,30 @@ CREATE TABLE values
     film_id      INT REFERENCES films,
     attribute_id INT REFERENCES attributes,
     type         INT REFERENCES types,
-    text         TEXT,
-    date         DATE,
-    boolean      BOOLEAN,
-    real         REAL
+    txt          TEXT,
+    dat          DATE,
+    bool         BOOLEAN,
+    num          NUMERIC
 );
 CREATE INDEX film_id_attribute_id_type_idx ON values (film_id, attribute_id, type);
-CREATE INDEX text_idx ON values (text);
-CREATE INDEX date_idx ON values (date);
-CREATE INDEX real_idx ON values (real);
+CREATE INDEX text_idx ON values (txt);
+CREATE INDEX date_idx ON values (dat);
+CREATE INDEX real_idx ON values (num);
 
 -- Dates view
 CREATE VIEW tasks AS
 SELECT f.film_name      AS Фильм,
-       STRING_AGG(CASE WHEN (v.date >= CURRENT_DATE) THEN a.attribute_name || ' ' || v.date END,
+       STRING_AGG(CASE WHEN (v.dat >= CURRENT_DATE) THEN a.attribute_name || ' ' || v.dat END,
                   ', ') AS "Актуально сегодня",
        STRING_AGG(CASE
-                      WHEN (v.date >= (CURRENT_DATE + INTERVAL '20 DAYS'))
-                          THEN a.attribute_name || ' ' || v.date END,
+                      WHEN (v.dat >= (CURRENT_DATE + INTERVAL '20 DAYS'))
+                          THEN a.attribute_name || ' ' || v.dat END,
                   ', ') AS "Актуально через 20 дней"
 FROM values v
          JOIN films f ON v.film_id = f.id
          JOIN attributes a ON v.attribute_id = a.id
          JOIN types t ON v.type = t.id
-WHERE t.type_name = 'date'
+WHERE t.type_name = 'dat'
 GROUP BY f.id;
 
 -- Marketing view
@@ -61,11 +61,11 @@ SELECT f.film_name      AS фильм,
        t.type_name      AS "тип атрибута",
        a.attribute_name AS атрибут,
        CASE
-           WHEN (v.text IS NOT NULL) THEN v.text
-           WHEN (v.date IS NOT NULL) THEN TO_CHAR(v.date, 'dd-mm-yyy')
-           WHEN (v.boolean IS NOT NULL) THEN (CASE WHEN v.boolean THEN 'есть' ELSE 'нет' END)
-           WHEN (v.real IS NOT NULL) THEN TO_CHAR(v.real, '999D9')
-           END AS значение
+           WHEN (v.txt IS NOT NULL) THEN v.txt
+           WHEN (v.dat IS NOT NULL) THEN TO_CHAR(v.dat, 'dd-mm-yyy')
+           WHEN (v.bool IS NOT NULL) THEN (CASE WHEN v.bool THEN 'есть' ELSE 'нет' END)
+           WHEN (v.num IS NOT NULL) THEN TO_CHAR(v.num, '999D9')
+           END          AS значение
 FROM values v
          JOIN films f ON v.film_id = f.id
          JOIN attributes a ON v.attribute_id = a.id
@@ -87,12 +87,12 @@ VALUES ('critic_review'),
        ('advertising_start_date');
 
 INSERT INTO types (type_name)
-VALUES ('text'),
-       ('boolean'),
-       ('date'),
-       ('real');
+VALUES ('txt'),
+       ('bool'),
+       ('dat'),
+       ('num');
 
-INSERT INTO values (film_id, attribute_id, type, text, boolean, date)
+INSERT INTO values (film_id, attribute_id, type, txt, bool, dat)
 VALUES (1, 1, 1, 'Film 1 critic review ', null, null),
        (1, 2, 1, 'Film 1 academy review', null, null),
        (1, 4, 2, null, true, null),
