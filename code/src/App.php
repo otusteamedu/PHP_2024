@@ -34,7 +34,7 @@ class App
             'UTF8'
         );
 
-        $pdo = new PDO($dsn , $databaseConfig['user'], $databaseConfig['password']);
+        $pdo = new PDO($dsn, $databaseConfig['user'], $databaseConfig['password']);
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $commandName = $_SERVER['argv'][1] ?? null;
         match ($commandName) {

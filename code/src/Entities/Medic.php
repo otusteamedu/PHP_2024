@@ -9,9 +9,7 @@ class Medic
         private string $position_name,
         private int $cabinet_number,
         private ?int $id = null
-    )
-    {
-
+    ) {
     }
 
     /**
@@ -77,5 +75,4 @@ class Medic
     {
         $this->cabinet_number = $cabinet_number;
     }
-
 }

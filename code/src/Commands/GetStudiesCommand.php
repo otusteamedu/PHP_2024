@@ -29,7 +29,7 @@ class GetStudiesCommand extends Command
         try {
             $studies = $this->mapper->getAll();
             $studyLines = [];
-            foreach ($studies as $study){
+            foreach ($studies as $study) {
                 /**
                  * @type $study MedicalStudy
                  */
@@ -54,5 +54,4 @@ class GetStudiesCommand extends Command
             return self::FAILURE;
         }
     }
-
 }
