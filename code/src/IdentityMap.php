@@ -68,5 +68,4 @@ class IdentityMap
     {
         return $this->idToObject[$id] ?? null;
     }
-
 }

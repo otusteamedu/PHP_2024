@@ -11,8 +11,7 @@ class MedicalStudy
         private string $study_memo,
         private string $study_date,
         private ?int $id = null
-    )
-    {
+    ) {
     }
 
     /**
@@ -110,5 +109,4 @@ class MedicalStudy
     {
         $this->id = $id;
     }
-
 }

@@ -9,9 +9,7 @@ class Patient
         private string $birthday,
         private string $phone,
         private ?int $id = null
-    )
-    {
-
+    ) {
     }
 
     /**
@@ -77,5 +75,4 @@ class Patient
     {
         $this->phone = $phone;
     }
-
 }

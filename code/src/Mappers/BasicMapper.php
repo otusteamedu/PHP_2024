@@ -14,8 +14,7 @@ abstract class BasicMapper
 
     public function __construct(
         protected PDO $pdo
-    )
-    {
+    ) {
         $this->tableName = $this->getTableName();
         $this->columns = $this->getColumns();
         $this->identityMap = $this->getIdentityMapper();
