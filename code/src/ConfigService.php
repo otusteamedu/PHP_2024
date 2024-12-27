@@ -1,6 +1,6 @@
 <?php
 
-namespace Naimushina\ElasticSearch;
+namespace Naimushina\DataMapper;
 
 class ConfigService
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Naimushina\DataMapper;
+namespace Naimushina\DataMapper\Entities;
 
 class Patient
 {
     public function __construct(
-        private ?int $id,
         private string $fullName,
         private string $birthday,
-        private string $phone
+        private string $phone,
+        private ?int $id = null
     )
     {
 

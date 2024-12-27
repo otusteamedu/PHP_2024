@@ -13,8 +13,6 @@ services:
     volumes:
       - ./code:/data/mysite.local
     working_dir: /data/mysite.local
-    depends_on:
-      - elasticsearch
     networks:
       - app-network
 
@@ -36,7 +34,7 @@ services:
 
   # контейнер с MySQL
   db:
-    image: mysql:5.7.22
+    image: mysql:latest
     container_name: db
     ports:
       - "3306:3306"
@@ -48,16 +46,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./docker/dbdata:/var/lib/mysql
-    networks:
-      - app-network
-
-
-  #redis (соединяется с php по порту)
-  cache:
-    image: redis:latest
-    container_name: cache
-    ports:
-      -  "${REDIS_PORT}:${REDIS_PORT}"
     networks:
       - app-network
 

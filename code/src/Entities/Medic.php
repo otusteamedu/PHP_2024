@@ -1,14 +1,14 @@
 <?php
 
-namespace Naimushina\ElasticSearch;
+namespace Naimushina\DataMapper\Entities;
 
 class Medic
 {
     public function __construct(
-        private ?int $id,
         private string $fullName,
         private string $position_name,
-        private int $cabinet_number
+        private int $cabinet_number,
+        private ?int $id = null
     )
     {
 

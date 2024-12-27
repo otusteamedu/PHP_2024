@@ -1,6 +1,6 @@
 <?php
 
-use Naimushina\ElasticSearch\App;
+use Naimushina\DataMapper\App;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
