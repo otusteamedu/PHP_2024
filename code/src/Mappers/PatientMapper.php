@@ -18,13 +18,11 @@ class PatientMapper extends BasicMapper
 
     public function setDTO(array $result): Patient
     {
-       return new Patient(
-           $result['full_name'],
-           $result['birthday'],
-           $result['phone'],
-           $result['id'],
-       );
+        return new Patient(
+            $result['full_name'],
+            $result['birthday'],
+            $result['phone'],
+            $result['id'],
+        );
     }
-
-
 }

@@ -6,13 +6,12 @@ use Naimushina\DataMapper\Entities\Medic;
 
 class MedicMapper extends BasicMapper
 {
-
-    function getTableName(): string
+    protected function getTableName(): string
     {
         return 'medics';
     }
 
-    function getColumns(): array
+    protected function getColumns(): array
     {
         return [
             'full_name',
@@ -21,7 +20,7 @@ class MedicMapper extends BasicMapper
         ];
     }
 
-    function setDTO(array $result): Medic
+    protected function setDTO(array $result): Medic
     {
         return new Medic(
             $result['full_name'],

@@ -61,7 +61,7 @@ class MedicalStudyMapper extends BasicMapper
      */
     public function getPatient(int $patient_id): Patient|bool|null
     {
-        if($this->patient){
+        if ($this->patient) {
             return $this->patient;
         }
         $mapper = new PatientMapper($this->pdo);
@@ -75,7 +75,7 @@ class MedicalStudyMapper extends BasicMapper
      */
     public function getMedic(int $medic_id): Medic|bool|null
     {
-        if($this->medic){
+        if ($this->medic) {
             return $this->medic;
         }
         $mapper = new MedicMapper($this->pdo);
