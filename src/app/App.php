@@ -4,36 +4,22 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\ListNode;
-use App\LinkedList;
-use App\MergedLists;
+use App\DB\Seed;
 
 class App
 {
+    /**
+     * @throws \Exception
+     */
     public static function run(): void
     {
-        $firstList = static::createLinkedList([1, 2, 4]);
+        (new Seed)->DbSeed();
 
-        $secondList = static::createLinkedList([1, 3, 4]);
+        $query = "SELECT * FROM movies";
+        $stmt = (\App\DB\DbConnection::getInstance())->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        $mergedLists = MergedLists::mergeTwoLists($firstList->head, $secondList->head);
-
-        static::printResult($mergedLists);
-    }
-
-    public static function createLinkedList(array $arr = []): LinkedList
-    {
-        $list = new LinkedList();
-
-        foreach ($arr as $value) {
-            $list->append($value);
-        }
-
-        return $list;
-    }
-
-    public static function printResult(?ListNode $result): void
-    {
         echo '<pre>';
         print_r($result);
         echo '</pre>';
