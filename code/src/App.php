@@ -40,9 +40,9 @@ class App
         match ($commandName) {
             'get_studies' => $consoleApp->add(
                 new GetStudiesCommand(
-                    new MedicalStudyMapper($pdo,  new IdentityMap()),
-                    new PatientMapper($pdo,  new IdentityMap()),
-                    new MedicMapper($pdo,  new IdentityMap())
+                    new MedicalStudyMapper($pdo, new IdentityMap()),
+                    new PatientMapper($pdo, new IdentityMap()),
+                    new MedicMapper($pdo, new IdentityMap())
                 )
             ),
             'add_doctor' => $consoleApp->add(

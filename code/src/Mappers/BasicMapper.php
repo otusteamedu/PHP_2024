@@ -161,4 +161,3 @@ abstract class BasicMapper
         return new IdentityMap();
     }
 }
-
