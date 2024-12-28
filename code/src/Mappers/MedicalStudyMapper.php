@@ -54,32 +54,4 @@ class MedicalStudyMapper extends BasicMapper
             $result['id'],
         );
     }
-
-    /**
-     * @param int $patient_id
-     * @return Patient|bool|null
-     */
-    public function getPatient(int $patient_id): Patient|bool|null
-    {
-        if ($this->patient) {
-            return $this->patient;
-        }
-        $mapper = new PatientMapper($this->pdo);
-        $this->patient = $mapper->findById($patient_id);
-        return $this->patient;
-    }
-
-    /**
-     * @param int $medic_id
-     * @return Medic|bool|null
-     */
-    public function getMedic(int $medic_id): Medic|bool|null
-    {
-        if ($this->medic) {
-            return $this->medic;
-        }
-        $mapper = new MedicMapper($this->pdo);
-        $this->medic = $mapper->findById($medic_id);
-        return $this->medic;
-    }
 }

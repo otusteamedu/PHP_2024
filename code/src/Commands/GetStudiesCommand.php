@@ -4,6 +4,8 @@ namespace Naimushina\DataMapper\Commands;
 
 use Naimushina\DataMapper\Entities\MedicalStudy;
 use Naimushina\DataMapper\Mappers\MedicalStudyMapper;
+use Naimushina\DataMapper\Mappers\MedicMapper;
+use Naimushina\DataMapper\Mappers\PatientMapper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,11 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GetStudiesCommand extends Command
 {
-    /**
-     * @param MedicalStudyMapper $mapper
-     */
-    public function __construct(private MedicalStudyMapper $mapper)
-    {
+    public function __construct(
+        private readonly MedicalStudyMapper $mapper,
+        private readonly PatientMapper $patientMapper,
+        private readonly MedicMapper $medicMapper
+    ) {
         parent::__construct('get_studies');
     }
 
@@ -33,8 +35,8 @@ class GetStudiesCommand extends Command
                 /**
                  * @type $study MedicalStudy
                  */
-                $patient = $this->mapper->getPatient($study->getPatientId());
-                $medic = $this->mapper->getMedic($study->getMedicId());
+                $patient = $this->patientMapper->findById($study->getPatientId());
+                $medic = $this->medicMapper->findById($study->getMedicId());
                 $studyLines[] = [
                     $study->getStudyDate(),
                     $medic->getCabinetNumber(),

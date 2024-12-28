@@ -4,8 +4,8 @@ services:
   #Контейнер с php-fpm
   app:
     build:
-      context: ./docker/php
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: docker/php/Dockerfile
     image: myapp/php
     container_name: app
     env_file:

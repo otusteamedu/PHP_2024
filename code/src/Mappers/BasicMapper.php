@@ -10,14 +10,13 @@ abstract class BasicMapper
 {
     protected string $tableName;
     protected array $columns;
-    protected IdentityMap $identityMap;
 
     public function __construct(
-        protected PDO $pdo
+        protected PDO $pdo,
+        protected IdentityMap $identityMap
     ) {
         $this->tableName = $this->getTableName();
         $this->columns = $this->getColumns();
-        $this->identityMap = $this->getIdentityMapper();
     }
 
     /**
@@ -162,3 +161,4 @@ abstract class BasicMapper
         return new IdentityMap();
     }
 }
+

@@ -38,13 +38,24 @@ class App
         $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $commandName = $_SERVER['argv'][1] ?? null;
         match ($commandName) {
-            'get_studies' => $consoleApp->add(new GetStudiesCommand(new MedicalStudyMapper($pdo))),
-            'add_doctor' => $consoleApp->add(new AddDoctorCommand(new MedicMapper($pdo))),
-            'add_patient' => $consoleApp->add(new AddPatientCommand(new PatientMapper($pdo))),
-            'add_study' => $consoleApp->add(new AddStudyCommand(new MedicalStudyMapper($pdo))),
+            'get_studies' => $consoleApp->add(
+                new GetStudiesCommand(
+                    new MedicalStudyMapper($pdo,  new IdentityMap()),
+                    new PatientMapper($pdo,  new IdentityMap()),
+                    new MedicMapper($pdo,  new IdentityMap())
+                )
+            ),
+            'add_doctor' => $consoleApp->add(
+                new AddDoctorCommand(new MedicMapper($pdo, new IdentityMap()))
+            ),
+            'add_patient' => $consoleApp->add(
+                new AddPatientCommand(new PatientMapper($pdo, new IdentityMap()))
+            ),
+            'add_study' => $consoleApp->add(
+                new AddStudyCommand(new MedicalStudyMapper($pdo, new IdentityMap()))
+            ),
             default => throw new Exception('Unknown command "' . $commandName . '"')
         };
-        $consoleApp->add(new GetStudiesCommand(new MedicalStudyMapper($pdo)));
         return $consoleApp->run();
     }
 }

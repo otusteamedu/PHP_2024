@@ -32,7 +32,7 @@ docker-compose build
 ### Запуск контейнеров
 ```shell script
 docker-compose up -d &&
-docker-compose exec php bash -c "export COMPOSER_HOME=/var/www/mm-service && composer install" &&
+docker-compose exec app bash -c "export COMPOSER_HOME=/data/mysite.local && composer install" 
 ```
 ### Добавление Доктора
 ```shell script

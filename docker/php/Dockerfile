@@ -14,9 +14,14 @@ RUN apt-get update --fix-missing && apt-get install -y \
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-WORKDIR /data
+RUN usermod -u 1000 www-data
 
-VOLUME /data
+COPY --chown=www-data:www-data /code /data/mysite.local
+
+RUN chown -R www-data:www-data /data
+
+USER www-data
 
 CMD ["php-fpm"]
+
 
