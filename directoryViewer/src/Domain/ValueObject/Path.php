@@ -21,9 +21,9 @@ class Path
         if (empty($value)) {
             throw new \InvalidArgumentException('Directory path is required');
         }
-        if (file_exists($value)) {
+        /*if (file_exists($value)) {
             throw new \InvalidArgumentException('Should be valid directory path');
-        }
+        }*/
     }
 
 }
