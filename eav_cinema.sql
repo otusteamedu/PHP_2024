@@ -32,7 +32,8 @@ CREATE TABLE values
     txt          TEXT,
     dat          DATE,
     bool         BOOLEAN,
-    num          NUMERIC
+    num          NUMERIC,
+    intgr        INT
 );
 CREATE INDEX film_id_attribute_id_type_idx ON values (film_id, attribute_id, type);
 CREATE INDEX text_idx ON values (txt);
