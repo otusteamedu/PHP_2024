@@ -1,10 +1,12 @@
 <?php
 
+namespace App\Application\UseCase\ShowDirectory;
+
 use App\Domain\ValueObject\Path;
 
-class ShowDirectoryRequest
+readonly class ShowDirectoryRequest
 {
-    public function __construct( public readonly Path $path)
+    public function __construct(public Path $path)
     {
     }
 
