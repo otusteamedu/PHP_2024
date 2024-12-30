@@ -1,33 +1,48 @@
 <?php
 namespace App\Application\UseCase\ShowDirectory;
 
+use App\Application\Adapters\ContentAdapterInterface;
 use App\Application\Composite\Composite;
+use App\Application\Composite\HtmlLeaf;
 use App\Application\Composite\Leaf;
-use FilesystemIterator;
+use App\Application\Composite\TxtLeaf;
+use App\Domain\HandlerInterface;
 use ShowDirectoryRequest;
 use SplFileInfo;
 
 class ShowDirectoryUseCase
 {
-    public function __invoke(ShowDirectoryRequest $request)
+    private HandlerInterface $handler;
+
+    public function __invoke(ShowDirectoryRequest $request, HandlerInterface $handler): string
     {
         $pathToScan = $request->path->getValue();
+        $this->handler = $handler;
         $composite = $this->processDirectory($pathToScan);
         return $composite->show();
     }
 
-    private function processDirectory(string $path): Composite
+    private function processDirectory(string $path, int $level = 1): Composite
     {
-        $it = new FilesystemIterator($path, FilesystemIterator::CURRENT_AS_FILEINFO);
+        $it = new \DirectoryIterator($path);
 
-        $composite = new Composite(new SplFileInfo($path));
+        $composite = new Composite(new SplFileInfo($path), $level);
+        $level++;
         foreach ($it as $fileinfo) {
-
+            if (!$this->handler->handle($fileinfo)) {
+                continue;
+            }
             if($fileinfo->isDir()){
-                $composite->add($this->processDirectory($fileinfo->getPath(). DIRECTORY_SEPARATOR . $fileinfo->getFilename()));
+                $composite->add($this->processDirectory($fileinfo->getPathname(), $level));
             }
             if($fileinfo->isFile()){
-                $composite->add(new Leaf($fileinfo));
+                $extension = strtolower($fileinfo->getExtension());
+                match ($extension){
+                    'txt' => $composite->add(new TxtLeaf(new SplFileInfo($fileinfo->getPathname()), $level)),
+                    'html' => $composite->add(new HtmlLeaf(new SplFileInfo($fileinfo->getPathname()), $level)),
+                    default => $composite->add(new Leaf(new SplFileInfo($fileinfo->getPathname()), $level))
+                };
+
             }
         }
         return $composite;

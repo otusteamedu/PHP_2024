@@ -2,6 +2,8 @@
 
 namespace App\Infostructure\Command;
 
+use App\Application\Handlers\FileHandler;
+use App\Application\Handlers\SizeHandler;
 use App\Application\UseCase\ShowDirectory\ShowDirectoryUseCase;
 use App\Domain\ValueObject\Path;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,7 +33,9 @@ class ShowDirectoryCommand extends Command
             $showDirectoryRequest = new \ShowDirectoryRequest(
                 new Path($input->getArgument('path'))
             );
-            $showDirectoryResponse  = ($this->useCase)($showDirectoryRequest);
+            $handler = new FileHandler();
+            $handler->setNext(new SizeHandler(100 * 1024));
+            $showDirectoryResponse  = ($this->useCase)($showDirectoryRequest, $handler);
             $output->writeln($showDirectoryResponse);
             return Command::SUCCESS;
         } catch (\Throwable $e) {

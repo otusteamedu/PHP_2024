@@ -23,9 +23,9 @@ class Composite extends Component
 
     public function show(): string
     {
-        $result =  $this->fileInfo->getFilename() . PHP_EOL;
+        $result =  $this->name . " " . $this->size . PHP_EOL;
         foreach ($this->children as $child) {
-            $result .= '<br/>'   .  $child->show();
+            $result .= $child->show();
         }
         return $result;
     }
