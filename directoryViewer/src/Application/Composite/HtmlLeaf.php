@@ -21,5 +21,4 @@ class HtmlLeaf extends Component
         $content = strip_tags($content);
         return substr($content, 0, self::LIMIT);
     }
-
 }

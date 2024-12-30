@@ -2,7 +2,7 @@
 
 class ShowDirectoryResponse
 {
-    public function __construct(Directory $directory)
+    public function __construct(public  string $directory)
     {
     }
 

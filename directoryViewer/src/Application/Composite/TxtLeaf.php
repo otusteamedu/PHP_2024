@@ -19,5 +19,4 @@ class TxtLeaf extends Component
         }
         return substr($content, 0, self::LIMIT);
     }
-
 }

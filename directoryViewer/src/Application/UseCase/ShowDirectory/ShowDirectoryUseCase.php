@@ -14,12 +14,12 @@ class ShowDirectoryUseCase
 {
     private HandlerInterface $handler;
 
-    public function __invoke(ShowDirectoryRequest $request, HandlerInterface $handler): string
+    public function __invoke(ShowDirectoryRequest $request, HandlerInterface $handler): \ShowDirectoryResponse
     {
         $pathToScan = $request->path->getValue();
         $this->handler = $handler;
         $composite = $this->processDirectory($pathToScan);
-        return $composite->show();
+        return new \ShowDirectoryResponse($composite->show());
     }
 
     private function processDirectory(string $path, int $level = 1): Composite
@@ -32,7 +32,7 @@ class ShowDirectoryUseCase
             if (!$this->handler->handle($fileinfo)) {
                 continue;
             }
-            if($fileinfo->isDir()){
+            if($fileinfo->isDir() && !$fileinfo->isDot()){
                 $composite->add($this->processDirectory($fileinfo->getPathname(), $level));
             }
             if($fileinfo->isFile()){

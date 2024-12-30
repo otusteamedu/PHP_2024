@@ -36,7 +36,7 @@ class ShowDirectoryCommand extends Command
             $handler = new FileHandler();
             $handler->setNext(new SizeHandler(100 * 1024));
             $showDirectoryResponse  = ($this->useCase)($showDirectoryRequest, $handler);
-            $output->writeln($showDirectoryResponse);
+            $output->writeln($showDirectoryResponse->directory);
             return Command::SUCCESS;
         } catch (\Throwable $e) {
             $output->writeln($e->getMessage());

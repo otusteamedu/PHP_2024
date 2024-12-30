@@ -18,9 +18,14 @@ abstract class Component
         $this->name = $this->getName($fileInfo);
         $this->size = $this->getSize($fileInfo);
     }
-    public function add(?Component $component): void { }
 
-    public function remove(?Component $component): void { }
+    public function add(?Component $component): void
+    {
+    }
+
+    public function remove(?Component $component): void
+    {
+    }
 
 
     public function isComposite(): bool
@@ -46,6 +51,4 @@ abstract class Component
         }
         return round($bytes, 2) . ' ' . $units[$i];
     }
-
-
 }

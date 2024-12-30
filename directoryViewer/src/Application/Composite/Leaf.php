@@ -8,5 +8,4 @@ class Leaf extends Component
     {
         return   $this->name . " " . $this->size  . PHP_EOL;
     }
-
 }

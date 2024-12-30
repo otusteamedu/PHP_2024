@@ -22,5 +22,4 @@ class FileHandler implements HandlerInterface
 
         return !$this->next || $this->next->handle($fileinfo);
     }
-
 }
