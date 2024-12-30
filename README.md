@@ -17,10 +17,10 @@
 
 
 # Команды
-## Загрузка данных из файла
+## Вывод выбранной директории
 ```bash
-php index.php seed {абсолютный путь до файла}
+php php bin/console app:show-directory {путь до директории}
 ```
 ### пример 
 ```bash
-php index.php seed /data/mysite.local/books_39289_aa67f1-39289-6891db.json
+php bin/console app:show-directory /data/mysite.local
