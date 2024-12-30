@@ -7,7 +7,6 @@ use App\Application\Composite\HtmlLeaf;
 use App\Application\Composite\Leaf;
 use App\Application\Composite\TxtLeaf;
 use App\Domain\HandlerInterface;
-
 use SplFileInfo;
 
 class ShowDirectoryUseCase
@@ -42,10 +41,8 @@ class ShowDirectoryUseCase
                     'html' => $composite->add(new HtmlLeaf(new SplFileInfo($fileinfo->getPathname()), $level)),
                     default => $composite->add(new Leaf(new SplFileInfo($fileinfo->getPathname()), $level))
                 };
-
             }
         }
         return $composite;
-
     }
 }

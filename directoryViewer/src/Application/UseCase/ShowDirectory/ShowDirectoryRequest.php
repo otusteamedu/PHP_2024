@@ -9,5 +9,4 @@ readonly class ShowDirectoryRequest
     public function __construct(public Path $path)
     {
     }
-
 }

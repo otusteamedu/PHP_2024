@@ -17,8 +17,7 @@ class ShowDirectoryCommand extends Command
 {
     public function __construct(
         private readonly ShowDirectoryUseCase $useCase,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -35,7 +34,7 @@ class ShowDirectoryCommand extends Command
             );
             $handler = new FileHandler();
             $handler->setNext(new SizeHandler(100 * 1024));
-            $showDirectoryResponse  = ($this->useCase)($showDirectoryRequest, $handler);
+            $showDirectoryResponse = ($this->useCase)($showDirectoryRequest, $handler);
             $output->writeln($showDirectoryResponse->directory);
             return Command::SUCCESS;
         } catch (\Throwable $e) {
@@ -43,6 +42,4 @@ class ShowDirectoryCommand extends Command
             return Command::FAILURE;
         }
     }
-
-
 }

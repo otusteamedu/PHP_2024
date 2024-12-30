@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Domain\ValueObject;
+
 class Path
 {
     private string $value;
@@ -25,5 +26,4 @@ class Path
             throw new \InvalidArgumentException('Should be valid directory path');
         }
     }
-
 }
