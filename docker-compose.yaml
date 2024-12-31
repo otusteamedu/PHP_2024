@@ -15,7 +15,7 @@ services:
     image: nginx:latest
     container_name: web-server1
     volumes:
-      - ./code:/data/mysite.local
+      - ./application:/data/mysite.local
       - ./nginx/host/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
       - app-network
@@ -24,7 +24,7 @@ services:
     image: nginx:latest
     container_name: web-server2
     volumes:
-      - ./code:/data/mysite.local
+      - ./application:/data/mysite.local
       - ./nginx/host/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
     networks:
       - app-network
@@ -36,7 +36,7 @@ services:
     image: balance/php
     container_name: app1
     volumes:
-       - ./code:/data/mysite.local
+       - ./application:/data/mysite.local
     networks:
       - app-network
 
@@ -47,7 +47,7 @@ services:
     image: balance/php
     container_name: app2
     volumes:
-      - ./code:/data/mysite.local
+      - ./application:/data/mysite.local
     networks:
       - app-network
 
