@@ -1,4 +1,5 @@
 <?php
+
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['string'])) {
         if (!empty($_POST['string'])) {
@@ -22,7 +23,6 @@ try {
             } else {
                 throw new Exception('Строка с некорректным соответствием скобок!', 400);
             }
-
         } else {
             throw new Exception('Параметр string не может быть пустым', 400);
         }
