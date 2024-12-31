@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Сложность O(M+N) -
  * M длина первого списка
@@ -33,7 +34,6 @@ function getIntersectionNodeV2($headA, $headB)
     while ($pointerA !== $pointerB) {
         $pointerA = $pointerA ? $pointerA->next : $headB;
         $pointerB = $pointerB ? $pointerB->next : $headA;
-
     }
     return $pointerA;
 }
