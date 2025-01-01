@@ -10,8 +10,7 @@ class Request
         private readonly array $cookies,
         private readonly array $files,
         private readonly array $server
-    )
-    {
+    ) {
     }
 
     public function getParams(): array
