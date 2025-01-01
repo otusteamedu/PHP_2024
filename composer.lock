@@ -1,0 +1,40 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "b7e3fd4d647b57582e999dc91e6b18b1",
+    "packages": [
+        {
+            "name": "apeskovatzkov/christmas-tree-creator",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sevitb/christmas-tree-creator.git",
+                "reference": "cf701e4a530fd4546a54d1d009bc19f7f26fc7ad"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Apeskovatzkov\\ChristmasTreeCreator\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "apeskovatzkov"
+                }
+            ],
+            "time": "2025-01-01T12:45:10+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
+}
