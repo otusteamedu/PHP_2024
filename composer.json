@@ -1,0 +1,23 @@
+{
+    "name": "apeskovatzkov/homework",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Apeskovatzkov\\Homework\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "apeskovatzkov"
+        }
+    ],
+    "repositories": [
+        {
+            "url": "https://github.com/Sevitb/christmas-tree-creator.git",
+            "type": "git"
+        }
+    ],
+    "require": {
+        "apeskovatzkov/christmas-tree-creator": "^1.0"
+    }
+}
