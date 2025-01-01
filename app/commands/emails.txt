@@ -1,0 +1,9 @@
+test@test.ru
+msdeniomd@yandex.ru
+info@yandex.ru
+info@mail.ru
+info@gmail.com
+info@gmail
+not-email.ru
+
+
