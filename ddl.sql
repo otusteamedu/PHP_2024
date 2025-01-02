@@ -1,0 +1,83 @@
+CREATE DATABASE cinema ENCODING = 'UTF8';
+
+CREATE TABLE IF NOT EXISTS
+  films (
+    FILM_ID serial PRIMARY KEY,
+    TITLE varchar(255) NOT NULL,
+    DESCRIPTION text NOT NULL,
+    DURATION int NOT NULL,
+    START_DATE date NOT NULL,
+    END_DATE date NOT NULL,
+    AGE_RATING int NOT NULL,
+    DIRECTORS varchar(128) NOT NULL
+  );
+
+CREATE TABLE IF NOT EXISTS
+  genres (
+    GENRE_ID serial PRIMARY KEY,
+    TITLE varchar(128) UNIQUE NOT NULL,
+    DESCRIPTION text NOT NULL
+  );
+
+CREATE TABLE IF NOT EXISTS
+  film_genres (
+    FILM_ID int REFERENCES films (FILM_ID),
+    GENRE_ID int REFERENCES genres (GENRE_ID),
+    PRIMARY KEY (FILM_ID, GENRE_ID)
+  );
+
+CREATE TABLE IF NOT EXISTS
+  directors (
+    DIRECTOR_ID serial PRIMARY KEY,
+    NAME varchar(128) NOT NULL
+  );
+
+CREATE TABLE IF NOT EXISTS
+  film_directors (
+    FILM_ID int REFERENCES films (FILM_ID),
+    DIRECTOR_ID int REFERENCES directors (DIRECTOR_ID),
+    PRIMARY KEY (FILM_ID, DIRECTOR_ID)
+  );
+
+CREATE TABLE IF NOT EXISTS
+  halls (
+    HALL_ID serial PRIMARY KEY,
+    NAME varchar(128) UNIQUE NOT NULL
+  );
+
+CREATE TABLE IF NOT EXISTS
+  seats (
+    SEAT_ID serial PRIMARY KEY,
+    HALL_ID int REFERENCES halls (HALL_ID),
+    SEAT_ROW int NOT NULL,
+    SEAT_NUMBER int NOT NULL,
+    CONSTRAINT hall_seat_unique UNIQUE (HALL_ID, SEAT_ROW, SEAT_NUMBER)
+  );
+
+CREATE TABLE IF NOT EXISTS
+  sessions (
+    SESSION_ID serial PRIMARY KEY,
+    FILM_ID int REFERENCES films (FILM_ID),
+    HALL_ID int REFERENCES halls (HALL_ID),
+    START_TIME timestamp NOT NULL,
+    END_TIME timestamp NOT NULL,
+    RECOMMENDED_PRICE money NOT NULL,
+    CONSTRAINT session_time_valid CHECK (START_TIME < END_TIME)
+  );
+
+CREATE TABLE IF NOT EXISTS
+  customers (
+    CUSTOMER_ID serial PRIMARY KEY,
+    CUSTOMER_NAME varchar(128) NOT NULL,
+    EMAIL varchar(128) NOT NULL UNIQUE
+  );
+
+CREATE TABLE IF NOT EXISTS
+  tickets (
+    TICKET_ID uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    SESSION_ID int REFERENCES sessions (SESSION_ID),
+    SEAT_ID int REFERENCES seats (SEAT_ID),
+    PURCHASE_TIME timestamp DEFAULT CURRENT_TIMESTAMP,
+    PRICE money NOT NULL,
+    CUSTOMER_ID int REFERENCES customers (CUSTOMER_ID)
+  );
