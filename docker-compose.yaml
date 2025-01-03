@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  nginx:
+    build:
+      context: ./Docker/Nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./code:/data/otusphp.local
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  php-fpm:
+    build:
+      context: ./Docker/Php-fpm
+    image: php-fpm
+    volumes:
+      - ./code:/data/otusphp.local
+      - phpsocket:/usr/local/var/run/
+    networks:
+      - app_otus_php
+  redis:
+    image: redis
+    networks:
+      - app_otus_php
+  memcached:
+    image: memcached
+    networks:
+      - app_otus_php
+
+networks:
+  app_otus_php:
+    driver: bridge
+
+volumes:
+  phpsocket:
+
+
