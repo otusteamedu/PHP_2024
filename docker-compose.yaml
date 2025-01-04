@@ -1,16 +1,18 @@
 services:
-  mysql:
-    container_name: db
-    image: mysql
+  postgres:
+    container_name: postgres
+    image: postgres
     restart: always
+    shm_size: 128mb
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
-      interval: 1s
-      timeout: 10s
-      retries: 10
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - ./:/code
     ports:
-      - 3306:3306
+      - 5432:5432
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
