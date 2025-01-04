@@ -67,12 +67,12 @@ class EventRedisRepository implements EventRepositoryInterface
 
         foreach ($arEventsIds as $eventId)
         {
-            $redis->sUnionStore("set:UnionStore", "set:eventRequest", "set:{$eventId}");
-            $arDiff = $redis->sDiff("set:UnionStore", "set:eventRequest");
+            $redis->sUnionStore("set:unionStore", "set:eventRequest", "set:{$eventId}");
+            $arDiff = $redis->sDiff("set:unionStore", "set:eventRequest");
             if(empty($arDiff)) {
                 $arRelevantIds[] = $eventId;
             }
-            $redis->del("set:UnionStore");
+            $redis->del("set:unionStore");
         }
 
         if(!empty($arRelevantIds))
