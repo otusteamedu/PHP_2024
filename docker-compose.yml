@@ -1,0 +1,4 @@
+services:
+  nginx: ~
+  php-fpm: ~
+  elasticsearch: ~
