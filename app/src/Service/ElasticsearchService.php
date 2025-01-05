@@ -14,9 +14,8 @@ class ElasticsearchService implements SearchServiceInterface
     public function __construct(
         private readonly string $esIndex,
         private readonly ElasticsearchClientBuilderService $elasticsearchClientBuilderService,
-        private readonly DenormalizerInterface&NormalizerInterface $serializer
-    )
-    {
+        private readonly DenormalizerInterface&NormalizerInterface $serializer,
+    ) {
     }
 
     public function search(array $params): ?array
