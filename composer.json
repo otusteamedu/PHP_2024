@@ -1,0 +1,12 @@
+{
+    "name": "andrey-strelchanka/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AndreyStrelchanka\\Hw4\\": "src/"
+        }
+    },
+    "require": {
+        "andrey-strelchanka/composer-package-example": "^1.0"
+    }
+}
