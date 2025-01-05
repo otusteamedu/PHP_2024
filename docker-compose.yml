@@ -1,0 +1,39 @@
+services:
+  otus-nginx:
+    build:
+      context: ./docker/nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/app
+    networks:
+      - app_otus_php
+
+  otus-php-fpm:
+    build:
+      context: ./docker/php-fpm
+    image: php-fpm
+    volumes:
+      - ./app:/app
+      - sessions:/var/www/sessions
+    networks:
+      - app_otus_php
+
+  otus-elasticsearch:
+    image: elasticsearch:8.0.1
+    environment:
+      - discovery.type=single-node
+      - node.name=es01
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - app_otus_php
+
+volumes:
+  sessions:
+
+networks:
+  app_otus_php:
+    driver: bridge
