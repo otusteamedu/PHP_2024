@@ -31,7 +31,6 @@ select m.name  as movie_name,
                av.value_boolean::text,
                av.value_date::text,
                av.value_int::text,
-               av.value_numeric::text,
                av.value_float::text
        )       as attribute_value
 from movies m
