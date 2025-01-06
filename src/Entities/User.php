@@ -15,8 +15,7 @@ class User implements Entity
         private string $name,
         #[Assert\Positive]
         private int    $age,
-    )
-    {
+    ) {
 
     }
 

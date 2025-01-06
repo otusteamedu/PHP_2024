@@ -15,8 +15,7 @@ class Product implements Entity
         private string $name,
         #[Assert\Positive]
         private float  $price,
-    )
-    {
+    ) {
 
     }
 
