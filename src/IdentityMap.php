@@ -8,16 +8,26 @@ class IdentityMap
 {
     private array $map;
 
-    public function get(string $className, int $id): ?Entity
+    public function __construct()
     {
-        return $this->map[$className][$id] ?? null;
+        $this->map = [];
+    }
+
+    public function get(int $id): ?Entity
+    {
+        foreach ($this->map as $entity) {
+            if ($entity->getId() === $id) {
+                return $entity;
+            }
+        }
+        return null;
     }
 
     public function add(Entity $entity): void
     {
-        $className = $entity::class;
+        $objectHash = spl_object_id($entity); // spl_object_hash
 
-        $this->map[$className] ??= [];
-        $this->map[$className][$entity->getId()] = $entity;
+        $this->map[$objectHash] ??= [];
+        $this->map[$objectHash] = $entity;
     }
 }

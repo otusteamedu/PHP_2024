@@ -1,4 +1,4 @@
-insert into product (name, price)
+insert into product (title, price)
 values ('Телефон', '15000'),
        ('Видеокарта', '65000'),
        ('Диск', '500');

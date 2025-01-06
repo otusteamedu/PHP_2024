@@ -5,9 +5,8 @@ declare(strict_types=1);
 require __DIR__ . '/vendor/autoload.php';
 
 use Amikha1lov\DataMapper\DatabaseConnection;
-use Amikha1lov\DataMapper\DataMapper;
-use Amikha1lov\DataMapper\Entities\Product;
-use Amikha1lov\DataMapper\Entities\User;
+use Amikha1lov\DataMapper\Mappers\ProductMapper;
+use Amikha1lov\DataMapper\Mappers\UserMapper;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -27,18 +26,21 @@ try {
         $_ENV['DB_PASSWORD']
     );
 
-    $mapper = new DataMapper($databaseConnection);
+    $userMapper = new UserMapper($databaseConnection);
+    $productMapper = new ProductMapper($databaseConnection);
 
-    $userEntity = $mapper->findById(User::class, 1);
-    $productEntity = $mapper->findById(Product::class, 1);
-
-    $userCollection = $mapper->findAll(User::class);
-    $productCollection = $mapper->findAll(Product::class);
+    $userEntity = $userMapper->findById(1);
+    $userEntity = $userMapper->findById(2);
+    $productEntity = $productMapper->findById(2);
+    $userEntity = $userMapper->findById(3);
+    $userCollection = $userMapper->findAll();
+    $productCollection = $productMapper->findAll();
 
     dump($userEntity);
-    dump($userCollection);
     dump($productEntity);
+    dump($userCollection);
     dump($productCollection);
+
 } catch (\PDOException $exception) {
     echo $exception->getMessage();
 }
