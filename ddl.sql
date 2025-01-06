@@ -21,10 +21,8 @@ attributes_values (
     value_boolean   boolean NULL DEFAULT NULL,
     value_integer   int NULL DEFAULT NULL,
     value_float     float NULL DEFAULT NULL,
-    value_decimal   DECIMAL(12, 2) NULL DEFAULT NULL,
     value_date      date NULL DEFAULT NULL,
     value_timestamp TIMESTAMP NULL DEFAULT NULL,
-    value_varchar   varchar NULL DEFAULT NULL,
     value_text      text NULL DEFAULT NULL
 );
 

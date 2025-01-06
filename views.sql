@@ -38,10 +38,8 @@ CREATE VIEW marketing_data AS
                 av.value_boolean::text,
                 av.value_integer::text,
                 av.value_float::text,
-                av.value_decimal::text,
                 av.value_date::text,
                 av.value_timestamp::text,
-                av.value_varchar::text,
                 av.value_text::text
             )   AS attribute_value
  FROM films f
