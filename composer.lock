@@ -1,0 +1,46 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "11a887cadb840899f35ac7321c852fcc",
+    "packages": [
+        {
+            "name": "andrey-strelchanka/composer-package-example",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Andrey-Strelchanka/composer-package-example.git",
+                "reference": "24636f7508d5b3351ff638b72937e7b0ff0a1316"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Andrey-Strelchanka/composer-package-example/zipball/24636f7508d5b3351ff638b72937e7b0ff0a1316",
+                "reference": "24636f7508d5b3351ff638b72937e7b0ff0a1316",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AndreyStrelchanka\\ComposerPackageExample\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/Andrey-Strelchanka/composer-package-example/issues",
+                "source": "https://github.com/Andrey-Strelchanka/composer-package-example/tree/1.0.1"
+            },
+            "time": "2025-01-06T09:31:20+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
