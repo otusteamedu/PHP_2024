@@ -13,7 +13,8 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 try {
-    $dsn = sprintf('%s:host=%s;port=%d;dbname=%s',
+    $dsn = sprintf(
+        '%s:host=%s;port=%d;dbname=%s',
         $_ENV['DB_CONNECTION'],
         $_ENV['DB_HOST'],
         $_ENV['DB_PORT'],
@@ -38,11 +39,6 @@ try {
     dump($userCollection);
     dump($productEntity);
     dump($productCollection);
-
 } catch (\PDOException $exception) {
     echo $exception->getMessage();
 }
-
-
-
-

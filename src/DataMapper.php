@@ -56,7 +56,6 @@ class DataMapper
 
         $entities = [];
         foreach ($rows as $row) {
-
             $entity = $this->identityMap->get($className, $row['id']);
             if ($entity === null) {
                 $entity = $this->instantiateClass($className, $row);
@@ -76,7 +75,6 @@ class DataMapper
             $constructor = $reflection->getConstructor();
 
             if ($constructor) {
-
                 $params = $constructor->getParameters();
                 $arguments = [];
 
@@ -91,7 +89,6 @@ class DataMapper
 
                 return $reflection->newInstanceArgs($arguments);
             }
-
         } catch (\ReflectionException $exception) {
             echo $exception->getMessage();
         }

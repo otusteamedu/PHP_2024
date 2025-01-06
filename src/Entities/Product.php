@@ -10,13 +10,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Product implements Entity
 {
     public function __construct(
-        private int    $id,
+        private int $id,
         #[Assert\NotBlank]
         private string $name,
         #[Assert\Positive]
-        private float  $price,
+        private float $price,
     ) {
-
     }
 
     public function setId(int $id): static
