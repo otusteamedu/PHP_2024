@@ -35,7 +35,6 @@ try {
     dump($userMapper->findById(3));
     dump($userMapper->findAll());
     dump($productMapper->findAll());
-
 } catch (\PDOException $exception) {
     echo $exception->getMessage();
 }
