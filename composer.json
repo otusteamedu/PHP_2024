@@ -1,0 +1,21 @@
+{
+  "name": "root/www",
+  "autoload": {
+    "psr-4": {
+      "Amikha1lov\\DataMapper\\": "src/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*",
+    "vlucas/phpdotenv": "^5.6",
+    "symfony/validator": "^6.4"
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^6.4",
+    "friendsofphp/php-cs-fixer": "^3.66"
+  },
+  "scripts": {
+    "fixer": "vendor/bin/php-cs-fixer fix --dry-run --diff",
+    "fixer-fix": "vendor/bin/php-cs-fixer fix"
+  }
+}
