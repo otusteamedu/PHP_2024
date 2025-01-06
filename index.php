@@ -29,17 +29,12 @@ try {
     $userMapper = new UserMapper($databaseConnection);
     $productMapper = new ProductMapper($databaseConnection);
 
-    $userEntity = $userMapper->findById(1);
-    $userEntity = $userMapper->findById(2);
-    $productEntity = $productMapper->findById(2);
-    $userEntity = $userMapper->findById(3);
-    $userCollection = $userMapper->findAll();
-    $productCollection = $productMapper->findAll();
-
-    dump($userEntity);
-    dump($productEntity);
-    dump($userCollection);
-    dump($productCollection);
+    dump($userMapper->findById(1));
+    dump($userMapper->findById(2));
+    dump($productMapper->findById(2));
+    dump($userMapper->findById(3));
+    dump($userMapper->findAll());
+    dump($productMapper->findAll());
 
 } catch (\PDOException $exception) {
     echo $exception->getMessage();
