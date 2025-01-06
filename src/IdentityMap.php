@@ -20,5 +20,4 @@ class IdentityMap
         $this->map[$className] ??= [];
         $this->map[$className][$entity->getId()] = $entity;
     }
-
 }
