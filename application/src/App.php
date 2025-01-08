@@ -13,32 +13,48 @@ class App
     ) {
     }
 
-    public function run(): ?string
+    public function run(): string
     {
         $postData = $this->request->getData();
         $value = $postData['string'] ?? '';
-        $result = <<<END
-            <h1>Валидатор строки со скобками</h1>
-            <form action="/" method="POST">
-            <input size="50" type="text" name="string" placeholder="Введите строку со скобками пример(Привет(как(дела)))" value="{$value}">
-            <button type="submit">Валидировать</button>
-            </form>
-        END;
+        $hostname = $_SERVER['HOSTNAME'];
 
-        if ($this->request->getMethod() === 'POST' && isset($postData['string'])) {
-            $str = trim($postData['string']);
-            if (!empty($str)) {
-                $validatorService = new ValidatorService();
-                if ($validatorService->validate($str)) {
-                    $result .= '<strong>Все хорошо! Все скобки на месте!</strong>';
+        try {
+            $success = true;
+            $result = '';
+
+            if ($this->request->getMethod() === 'POST' && isset($postData['string'])) {
+                $str = trim($postData['string']);
+                if (!empty($str)) {
+                    $validatorService = new ValidatorService();
+                    if ($validatorService->validate($str)) {
+                        $result = 'Все хорошо! Все скобки на месте!';
+                    } else {
+                        throw new Exception('Строка с некорректным соответствием скобок!', 400);
+                    }
                 } else {
-                    throw new Exception('Строка с некорректным соответствием скобок!', 400);
+                    throw new Exception('Параметр string не может быть пустым', 400);
                 }
-            } else {
-                throw new Exception('Параметр string не может быть пустым', 400);
             }
+        } catch (Exception $exception) {
+            $success = false;
+            $result =  $exception->getMessage();
+            http_response_code($exception->getCode());
+        } finally {
+            return $this->render('main', compact('value', ['hostname', 'result', 'success']));
+        }
+    }
+
+    private function render(string $path, $data): string
+    {
+        foreach($data as $key => $val) {
+          $$key = $val;
         }
 
-        return $result;
+        ob_start();
+
+        include __DIR__ . '/../templates/' . $path . '.php';
+
+        return ob_get_clean();
     }
 }
