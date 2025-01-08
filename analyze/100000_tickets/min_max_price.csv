@@ -1,0 +1,8 @@
+"QUERY PLAN"
+"Aggregate  (cost=11.85..11.86 rows=1 width=16) (actual time=0.032..0.032 rows=1 loops=1)"
+"  Buffers: shared hit=3"
+"  ->  Index Scan using session_seat_unique on price p  (cost=0.28..11.83 rows=3 width=8) (actual time=0.025..0.026 rows=3 loops=1)"
+"        Index Cond: (session_id = 501)"
+"        Buffers: shared hit=3"
+"Planning Time: 0.105 ms"
+"Execution Time: 0.053 ms"
