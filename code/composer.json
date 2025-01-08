@@ -1,0 +1,12 @@
+{
+    "name": "sergey-shirykalov/redis-events",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SergeyShirykalov\\RedisEvents\\": "src/"
+        }
+    },
+    "require": {
+      "ext-redis": "*"
+    }
+}
