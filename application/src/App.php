@@ -10,7 +10,8 @@ class App
 {
     public function __construct(
         private readonly Request $request,
-    ) {
+    )
+    {
     }
 
     public function run(): string
@@ -38,7 +39,7 @@ class App
             }
         } catch (Exception $exception) {
             $success = false;
-            $result =  $exception->getMessage();
+            $result = $exception->getMessage();
             http_response_code($exception->getCode());
         } finally {
             return $this->render('main', compact('value', ['hostname', 'result', 'success']));
@@ -47,8 +48,8 @@ class App
 
     private function render(string $path, $data): string
     {
-        foreach($data as $key => $val) {
-          $$key = $val;
+        foreach ($data as $key => $val) {
+            $$key = $val;
         }
 
         ob_start();
