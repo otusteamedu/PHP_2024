@@ -2,11 +2,11 @@
 
 require 'vendor/autoload.php';
 
-use VladimirGrinko\Rabbit\View\View;
+use VladimirGrinko\Rabbit\Client\Worker;
 
 try {
-    $app = new View();
-    $app->run();
+    $worker = new Worker();
+    $worker->run();
 } catch (\Throwable $th) {
     echo $th->getMessage();
 }
