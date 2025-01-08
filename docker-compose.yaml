@@ -1,0 +1,28 @@
+services:
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: php
+    container_name: app
+    volumes:
+      - ./app:/app
+    depends_on:
+      - es
+    networks:
+      - app-network
+    tty: true
+    env_file: .env
+
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
+    container_name: ${ELASTIC_CONTAINER}
+    ports:
+      - ${ELASTIC_PORT}:${ELASTIC_PORT}
+    networks:
+      - app-network
+    env_file: .env
+
+networks:
+  app-network:
+    driver: bridge
