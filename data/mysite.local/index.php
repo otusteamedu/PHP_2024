@@ -10,7 +10,9 @@ session_start();
 
 try {
     StringValidator::validateBrackets($_POST['string'] ?? '');
+    http_response_code(200);
     echo "Все хорошо\n";
 } catch (Exception $e) {
+    http_response_code($e->getCode());
     echo $e->getMessage() . "\n";
 }
