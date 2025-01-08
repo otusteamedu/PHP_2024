@@ -41,8 +41,8 @@ class RedisStorage implements EventStorageInterface
             if ($match) {
                 // Если совпали все условия, то берем текущий элемент как результат и цикл прерываем,
                 // т.к. у нас множество упорядочено по убыванию приоритета
-               $res = $event;
-               break;
+                $res = $event;
+                break;
             }
         }
         return $res;
