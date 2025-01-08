@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  balancer:
+    image: nginx:latest
+    container_name: nginx-balancer
+    ports:
+      - "80:80"
+    volumes:
+       - ./nginx/balancer/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  web-server1:
+    image: nginx:latest
+    container_name: web-server1
+    volumes:
+      - ./application:/data/mysite.local
+      - ./nginx/host/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  web-server2:
+    image: nginx:latest
+    container_name: web-server2
+    volumes:
+      - ./application:/data/mysite.local
+      - ./nginx/host/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app1
+    volumes:
+       - ./application:/data/mysite.local
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php
+    container_name: app2
+    volumes:
+      - ./application:/data/mysite.local
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
