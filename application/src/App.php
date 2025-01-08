@@ -10,8 +10,7 @@ class App
 {
     public function __construct(
         private readonly Request $request,
-    )
-    {
+    ) {
     }
 
     public function run(): string
