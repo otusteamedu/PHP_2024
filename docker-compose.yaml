@@ -1,3 +1,45 @@
 services:
-  nginx:
-    
+  nginx-balancer:
+    build:
+      context: services/balancer
+    container_name: nginx-balancer
+    ports:
+      - 80:80
+
+  nginx1:
+    build:
+      context: services/nginx
+    container_name: nginx1
+    volumes:
+      - ./data/mysite.local:/var/www/mysite.local
+
+  nginx2:
+    build:
+      context: services/nginx
+    container_name: nginx2
+    volumes:
+      - ./data/mysite.local:/var/www/mysite.local
+
+  php1:
+    container_name: php1
+    build:
+      context: services/php
+    volumes:
+      - ./data/mysite.local:/var/www/mysite.local
+
+  php2:
+    container_name: php2
+    build:
+      context: services/php
+    volumes:
+      - ./data/mysite.local:/var/www/mysite.local
+
+  mysql:
+    image: mysql:9.1.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+  redis:
+    image: redis:7.4.2
+    container_name: redis

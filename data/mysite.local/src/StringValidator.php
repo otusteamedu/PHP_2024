@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Apeskovatzkov\Hw4;
 
-use \Exception;
+use Exception;
 
 class StringValidator
 {
