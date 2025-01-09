@@ -1,0 +1,18 @@
+{
+  "name": "anatoly-shilyaev/app",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "AnatolyShilyaev\\App\\": "src/"
+    }
+  },
+  "require": {
+    "elasticsearch/elasticsearch": "^8.17",
+    "vlucas/phpdotenv": "^5.6"
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}

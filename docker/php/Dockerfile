@@ -1,10 +1,14 @@
-FROM php:8.2-cli
+FROM php:8.2-fpm
 
-RUN apt-get update && apt-get install -y \
-    libcurl4-openssl-dev \
-    libzip-dev \
-    && docker-php-ext-install zip
+WORKDIR /app
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt-get update && apt-get install -y
 
-WORKDIR /data/public
+# ставим необходимые для нормальной работы модули
+# RUN pecl install redis && docker-php-ext-enable redis
+
+#загружаем composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    chmod +x /usr/local/bin/composer
+
+CMD ["php-fpm"]
