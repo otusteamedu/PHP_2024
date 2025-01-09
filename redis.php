@@ -1,7 +1,6 @@
 <?php
-
+//php redis.php
 $redis = new Redis();
-
 try{
     $redis->connect('127.0.0.1', 6380); 
     echo $redis->ping('Begin test').'<br/>';

@@ -1,3 +1,4 @@
+#make only redis
 name: hw14
 services:
   redis:

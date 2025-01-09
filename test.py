@@ -1,3 +1,4 @@
+#install redis and py test.py
 import redis
 
 r = redis.Redis(host='127.0.0.1', port=6380, db=0, username='hw14', password='hw14')
