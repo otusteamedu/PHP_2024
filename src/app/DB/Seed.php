@@ -25,7 +25,7 @@ class Seed
     /**
      * @throws Exception
      */
-    public function DbSeed(int $ticketsCount = 10_000): void
+    public function dbSeed(int $ticketsCount = 10_000): void
     {
         $faker = Factory::create('ru_RU');
 

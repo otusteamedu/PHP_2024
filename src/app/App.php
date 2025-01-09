@@ -13,11 +13,13 @@ class App
      */
     public static function run(): void
     {
+        $seed = new Seed();
+
         // 10_000 билетов
-        (new Seed)->DbSeed();
+        $seed->dbSeed();
 
 //        // 100_000 билетов
-//        (new Seed)->DbSeed(100_000);
+//        $seed->dbSeed(100_000);
 
         $query = "SELECT * FROM movies";
         $stmt = (\App\DB\DbConnection::getInstance())->prepare($query);
