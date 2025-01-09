@@ -199,9 +199,8 @@ class App
                         echo "    </tbody>";
                         echo "</table>";
                         break;
-
                     default:
-
+                        echo "";
                         break;
                 }
                 break;

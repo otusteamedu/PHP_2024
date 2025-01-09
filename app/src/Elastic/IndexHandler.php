@@ -64,8 +64,9 @@ class IndexHandler
                             ]
                         ]
                     ];
-
+                    break;
                 default:
+                    echo '';
                     break;
             }
 
