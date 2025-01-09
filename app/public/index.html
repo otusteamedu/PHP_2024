@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кнопка с AJAX</title>
+    <script>
+        // Функция для отправки AJAX-запроса
+        function buttonClick(method, action) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', "index.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            // Обрабатываем ответ и обновляем страницу
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    document.getElementById("response").innerHTML = xhr.responseText;
+                }
+            };
+            
+            // Отправляем данные
+            xhr.send("method=" + method + "&action=" + action);
+        }
+    </script>
+</head>
+<body>
+
+    <h1>Созданик индексов</h1>
+    <button onclick="buttonClick('SHOW', 'show_index')">Показать индексы</button>
+    <button onclick="buttonClick('SHOW', 'show_chanels')">Показать каналы</button>
+    <button onclick="buttonClick('SHOW', 'show_videos')">Показать видео</button>
+    <br>
+    <button onclick="buttonClick('CREATE_INDEX', 'channels_index')">Создать индекс для каналов</button>
+    <button onclick="buttonClick('CREATE_INDEX', 'videos_index')">Создать индекс для видео</button>
+    <br>
+    <button onclick="buttonClick('DELETE_INDEX', 'channels_index')">Удалить индекс для каналов</button>
+    <button onclick="buttonClick('DELETE_INDEX', 'videos_index')">Удалить индекс для видео</button>
+    <br>
+    <button onclick="buttonClick('ADD', 'channel')">Добавить канал</button>
+    <button onclick="buttonClick('DELETE', 'channel')">Удалить канал</button>
+    <button onclick="buttonClick('ADD', 'video')">Добавить видео</button>
+    <button onclick="buttonClick('DELETE', 'video')">Удалить видео</button>
+    <br>
+
+    <button onclick="buttonClick('GET', 'likes_count')">Показать количество лайков и дизлайков</button>
+    <button onclick="buttonClick('GET', 'top_video')">Показать ТОП каналов</button>
+    <br>
+    <div id="response"></div>
+
+</body>
+</html>
