@@ -9,8 +9,6 @@ services:
       - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
     ports:
       - "6380:6379"
-    #volumes:
-    #  - ./redisdata:/data
     deploy:
       resources:
         limits:
