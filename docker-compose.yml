@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # Nginx
+  nginx:
+    image: nginx:latest
+    container_name: otus-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./Docker/nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+      - .:/var/www
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+
+  # PHP-FPM
+  php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: otus-php-fpm
+    volumes:
+      - .:/var/www
+    networks:
+      - app-network
+
+  # Redis
+  redis:
+    image: redis:latest
+    container_name: otus-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  # Memcached
+  memcached:
+    image: memcached:latest
+    container_name: otus-memcached
+    ports:
+      - "11211:11211"
+    networks:
+      - app-network
+
+  # База данных (PostgreSQL)
+  postgres:
+    image: postgres:16
+    container_name: otus-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./Docker/postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+# Сеть для соединения контейнеров
+networks:
+  app-network:
+    driver: bridge
