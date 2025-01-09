@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Faker\Factory;
 use PDO;
+use PDOException;
 
 class Seed
 {
@@ -24,7 +25,7 @@ class Seed
     /**
      * @throws Exception
      */
-    public function DbSeed(): void
+    public function DbSeed(int $ticketsCount = 10_000): void
     {
         $faker = Factory::create('ru_RU');
 
@@ -69,10 +70,10 @@ class Seed
 
         $row = 0;
         $cinemaHallId = $showId = $movieId = 1;
-        $showDate = $now->addDays()->midDay();
+        $showDate = $now->subDays(20)->midDay();
         $showCount = 0;
-        $showDays = 30;
-        $showPerDay = 3;
+        $showDays = $ticketsCount > 10_000 ? 250 : 25;
+        $showPerDay = 2;
         $totalShows = $showDays * $showPerDay;
         $seatsPerShow = range(1, 10);
         $ticketsPerCustomer = 5;
@@ -148,11 +149,17 @@ class Seed
         }
 
         // public.tickets
-        $sql = 'INSERT INTO public.tickets (show_id, row, seat, price) VALUES (?, ?, ?, ?)';
-        $stmt = $this->dbConnection->prepare($sql);
+        $ticketsPerShowChunks = array_chunk($ticketsPerShow, 10000);
+        foreach ($ticketsPerShowChunks as $ticketsPerShowChunk) {
+            $values = str_repeat('?,', count($ticketsPerShowChunk[array_key_first($ticketsPerShowChunk)]) - 1) . '?';
+            // construct the entire query
+            $sql = "INSERT INTO public.tickets (show_id, row, seat, price) VALUES " .
+                // repeat the (?,?) sequence for each row
+                str_repeat("($values),", count($ticketsPerShowChunk) - 1) . "($values)";
 
-        foreach ($ticketsPerShow as $ticket) {
-            $rowsNumber = $stmt->execute($ticket);
+            $stmt = $this->dbConnection->prepare($sql);
+            // execute with all values from $data
+            $stmt->execute(array_merge(...$ticketsPerShowChunk));
         }
 
         // public.purchases
@@ -167,12 +174,12 @@ class Seed
         $selectedTickets = [];
         foreach ($purchases as $i => $purchase) {
             $purchaseId = $i + 1;
-            $selectedTicketIds = implode(',', $selectedTickets);
 
             foreach (range(1, $ticketsPerCustomer) as $i) {
-                if (empty($selectedTicketIds)) {
+                if (empty($selectedTickets)) {
                     $query = "SELECT public.tickets.id FROM public.tickets ORDER BY RANDOM() LIMIT 1";
                 } else {
+                    $selectedTicketIds = implode(',', $selectedTickets);
                     $query = "SELECT public.tickets.id FROM public.tickets WHERE public.tickets.id NOT IN ($selectedTicketIds) ORDER BY RANDOM() LIMIT 1";
                 }
                 $stmt = $this->dbConnection->prepare($query);
@@ -181,10 +188,15 @@ class Seed
 
                 $selectedTickets[] = $result['id'];
 
-                // public.tickets
+                // public.purchase_tickets
                 $sql = 'INSERT INTO public.purchase_tickets (purchase_id, ticket_id) VALUES (?, ?)';
                 $stmt = $this->dbConnection->prepare($sql);
-                $rowsNumber = $stmt->execute([$purchaseId, $result['id']]);
+                $stmt->execute([$purchaseId, $result['id']]);
+
+                // public.tickets
+                $sql = 'UPDATE public.tickets SET available = false WHERE public.tickets.id = ?';
+                $stmt = $this->dbConnection->prepare($sql);
+                $stmt->execute([$result['id']]);
             }
         }
 

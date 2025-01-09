@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS tickets (
     row INT NOT NULL,
     seat INT NOT NULL,
     price INT NOT NULL,
+    available BOOLEAN NOT NULL DEFAULT true,
     UNIQUE (show_id, row, seat),
     FOREIGN KEY (show_id) REFERENCES shows(id)
 );
