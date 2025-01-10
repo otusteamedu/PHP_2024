@@ -1,0 +1,21 @@
+services:
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+    volumes:
+      - ./app:/app
+    networks:
+      - app_otus_php
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_USER_PWD}
+      MYSQL_DATABASE: ${MYSQL_DB}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PWD}
+    networks:
+      - app_otus_php
+
+networks:
+  app_otus_php:
+    driver: bridge

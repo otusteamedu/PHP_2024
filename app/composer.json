@@ -1,0 +1,14 @@
+{
+    "name": "ikachko/hw14",
+    "autoload": {
+        "psr-4": {
+            "Ikachko\\Hw14\\": "src/"
+        }
+    },
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.67"
+    }
+}
