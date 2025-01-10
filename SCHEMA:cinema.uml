@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>c880c48a-f8d6-44d8-977a-067cc6cba9a2.SCHEMA:cinema</OriginalElement>
+  <nodes>
+    <node x="-83.0" y="548.0">c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.seat</node>
+    <node x="-81.0" y="-80.0">c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.cinema</node>
+    <node x="109.5" y="128.0">c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.movie</node>
+    <node x="-69.5" y="128.0">c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.hall</node>
+    <node x="6.0" y="356.0">c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.showtime</node>
+    <node x="18.5" y="788.0">c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.ticket</node>
+    <node x="107.0" y="548.0">c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.customer</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.ticket" target="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.showtime" relationship="REFERENCES">
+      <point x="0.0" y="-68.0" />
+      <point x="0.0" y="80.0" />
+    </edge>
+    <edge source="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.seat" target="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.hall" relationship="REFERENCES">
+      <point x="0.0" y="-68.0" />
+      <point x="-18.0" y="336.0" />
+      <point x="2.0" y="336.0" />
+      <point x="0.0" y="68.0" />
+    </edge>
+    <edge source="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.hall" target="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.cinema" relationship="REFERENCES">
+      <point x="0.0" y="-68.0" />
+      <point x="0.0" y="56.0" />
+    </edge>
+    <edge source="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.showtime" target="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.hall" relationship="REFERENCES">
+      <point x="-38.0" y="-80.0" />
+      <point x="44.0" y="336.0" />
+      <point x="2.0" y="336.0" />
+      <point x="0.0" y="68.0" />
+    </edge>
+    <edge source="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.showtime" target="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.movie" relationship="REFERENCES">
+      <point x="38.0" y="-80.0" />
+      <point x="120.0" y="336.0" />
+      <point x="182.0" y="336.0" />
+      <point x="0.0" y="68.0" />
+    </edge>
+    <edge source="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.ticket" target="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.customer" relationship="REFERENCES">
+      <point x="42.33333333333333" y="-68.0" />
+      <point x="124.33333333333331" y="756.0" />
+      <point x="182.0" y="756.0" />
+      <point x="0.0" y="68.0" />
+    </edge>
+    <edge source="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.ticket" target="c880c48a-f8d6-44d8-977a-067cc6cba9a2.TABLE:cinema.seat" relationship="REFERENCES">
+      <point x="-42.33333333333333" y="-68.0" />
+      <point x="39.666666666666686" y="756.0" />
+      <point x="-18.0" y="756.0" />
+      <point x="0.0" y="68.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.5194303891828685" showDependencies="false" x="514.6556638303036" y="432.09222899251085" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
