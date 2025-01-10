@@ -1,0 +1,75 @@
+services:
+  nginx:
+    build:
+      context: ./builds/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./builds/fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+       - ./code:/data
+    networks:
+      - app-network
+
+  elastic:
+    image: elasticsearch:8.17.0
+    container_name: elastic
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTIC_USERNAME: "elastic"
+      ELASTIC_PASSWORD: "MyPw123"
+      discovery.type: single-node
+      xpack.security.http.ssl.enabled: false
+
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - app-network
+
+
+#  redis:
+#    image: redis:latest
+#    container_name: redis
+#    command: ["redis-server", "--appendonly", "yes"]
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - app-network
+#
+#  memcached:
+#    image: memcached:latest
+#    container_name: memcached
+#    ports:
+#      - "11311:11211"
+#    networks:
+#      - app-network
+#
+#  db:
+#    image: postgres
+#    container_name: db
+#    environment:
+#      - POSTGRES_USER=${DB_USER}
+#      - POSTGRES_PASSWORD=${DB_PASS}
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - ./db:/var/lib/postgresql/data
+#    networks:
+#      - app-network
+
+networks:
+  app-network:
+    driver: bridge

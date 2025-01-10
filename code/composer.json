@@ -1,0 +1,21 @@
+{
+    "name": "asyrovatkin/hw10",
+    "autoload": {
+        "psr-4": {
+            "Asyrovatkin\\Hw10\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "asyrovatkin"
+        }
+    ],
+    "require": {
+        "elasticsearch/elasticsearch": "^8.17"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
