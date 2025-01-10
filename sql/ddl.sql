@@ -32,9 +32,8 @@ CREATE TABLE IF NOT EXISTS attribute_values
     date              DATE    DEFAULT NULL
 );
 
---create index if not exists attribute_values_value_string_idx ON attribute_values(value_string);
---create index if not exists attribute_values_value_text_idx ON attribute_values(value_text);
---create index if not exists attribute_values_value_boolean_idx ON attribute_values(value_boolean);
---create index if not exists attribute_values_value_int_idx ON attribute_values(value_int);
---create index if not exists attribute_values_value_float_idx ON attribute_values(value_float);
---create index if not exists attribute_values_value_date_idx ON attribute_values(value_date);
+create index if not exists attribute_values_text_idx ON attribute_values(text);
+create index if not exists attribute_values_boolean_idx ON attribute_values(boolean);
+create index if not exists attribute_values_int_idx ON attribute_values(int);
+create index if not exists attribute_values_num_idx ON attribute_values(num);
+create index if not exists attribute_values_date_idx ON attribute_values(date);
