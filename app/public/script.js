@@ -19,4 +19,4 @@ const check = () => {
   console.log("sdfhjkl");
 };
 
-window.onload(document.getElementById("check").onclick(check));
+window.onload = document.getElementById("check").addEventListener("click", buttonClick);

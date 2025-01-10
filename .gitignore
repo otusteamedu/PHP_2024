@@ -6,3 +6,4 @@
 app/vendor
 app/.env
 logs
+.env
