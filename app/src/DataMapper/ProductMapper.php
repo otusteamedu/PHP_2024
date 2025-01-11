@@ -6,6 +6,8 @@ namespace Ikachko\Hw14\DataMapper;
 
 use PDO;
 use PDOStatement;
+use ReflectionClass;
+use ReflectionProperty;
 
 class ProductMapper
 {
@@ -13,21 +15,21 @@ class ProductMapper
     private PDOStatement $selectStatement;
     private PDOStatement $selectAllStatement;
     private PDOStatement $insertStatement;
-    private PDOStatement $updateStatement;
     private PDOStatement $deleteStatement;
 
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
         $this->selectStatement = $pdo->prepare("SELECT * FROM products WHERE id = :id");
-        $this->selectAllStatement = $pdo->prepare("SELECT * FROM products");
+        $this->selectAllStatement = $pdo->prepare("SELECT * FROM products LIMIT :limit OFFSET :offset");
         $this->insertStatement = $pdo->prepare("INSERT INTO products (title, price, remnant) values (:title, :price, :remnant)");
-        $this->updateStatement = $pdo->prepare("UPDATE products SET title=:title, price=:price, remnant=:remnant where id=:id");
         $this->deleteStatement = $pdo->prepare("DELETE FROM products where id=:id");
     }
 
-    public function findAll(): ProductCollection
+    public function findAll(int $limit = 50, int $offset = 0): ProductCollection
     {
+        $this->selectAllStatement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $this->selectAllStatement->bindValue(':offset', $offset, PDO::PARAM_INT);
         $this->selectAllStatement->execute();
         $rawItems = $this->selectAllStatement->fetchAll(PDO::FETCH_ASSOC);
         return new ProductCollection($rawItems, $this);
@@ -66,15 +68,33 @@ class ProductMapper
 
     public function update(Product $product): bool
     {
-        $isExecuted = $this->updateStatement->execute([
-            ":title" => $product->getTitle(),
-            ":price" => $product->getPrice(),
-            ":remnant" => $product->getRemnant(),
-            ":id" => $product->getId()
-        ]);
+        $originalProduct = $this->getOriginalFromMap($product->getId());
 
-        $this->updateStatement->closeCursor();
-        $this->addToMap($product);
+        $reflection = new ReflectionClass($product);
+        $properties = $reflection->getProperties(ReflectionProperty::IS_PRIVATE | ReflectionProperty::IS_PROTECTED);
+        foreach ($properties as $property) {
+            $propName = $property->getName();
+            $getter = "get" . ucfirst($propName);
+            if (!is_callable([$product, $getter]) || !is_callable([$originalProduct, $getter])) {
+                continue;
+            }
+
+            $productPropValue = $product->$getter();
+            $originalPropValue = $originalProduct->$getter();
+
+            if ($productPropValue !== $originalPropValue) {
+                $arParamsToUpdate[$propName] = $productPropValue;
+            }
+        }
+
+        $isExecuted = true;
+        if (!empty($arParamsToUpdate)) {
+            $updateStatement = $this->getUpdateStatement($arParamsToUpdate);
+            $arParamsToUpdate["id"] = $product->getId();
+            $isExecuted = $updateStatement->execute($arParamsToUpdate);
+            $updateStatement->closeCursor();
+            $this->addToMap($product);
+        }
 
         return $isExecuted;
     }
@@ -115,6 +135,12 @@ class ProductMapper
         return $productWatcher::get($id);
     }
 
+    private function getOriginalFromMap($id): ?Product
+    {
+        $productWatcher = ProductWatcher::getInstance();
+        return $productWatcher::getOriginal($id);
+    }
+
     private function addToMap(Product $product): void
     {
         $productWatcher = ProductWatcher::getInstance();
@@ -125,5 +151,15 @@ class ProductMapper
     {
         $productWatcher = ProductWatcher::getInstance();
         $productWatcher::remove($id);
+    }
+
+    private function getUpdateStatement(array $arParamsToUpdate): PDOStatement
+    {
+        foreach ($arParamsToUpdate as $paramName => $paramValue) {
+            $arSetParams[] = $paramName . "=:" . $paramName;
+        }
+
+        $ddlQuery = "UPDATE products SET " . implode(", ", $arSetParams) . " where id=:id";
+        return $this->pdo->prepare($ddlQuery);
     }
 }

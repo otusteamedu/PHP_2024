@@ -7,7 +7,7 @@ namespace Ikachko\Hw14\DataMapper;
 class Product
 {
     public function __construct(
-        private int $id,
+        private readonly int $id,
         private string $title,
         private int $price,
         private int $remnant
@@ -17,12 +17,6 @@ class Product
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function setId(int $id): Product
-    {
-        $this->id = $id;
-        return $this;
     }
 
     public function getTitle(): string
