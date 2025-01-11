@@ -2,21 +2,17 @@
 
 namespace App\Application\UseCase\CreateStatement;
 
-
 use App\Domain\Factory\StatementFactoryInterface;
-
 use App\Domain\Repository\StatementRepositoryInterface;
 use OldSound\RabbitMqBundle\RabbitMq\ProducerInterface;
-
 
 class CreateStatementUseCase
 {
     public function __construct(
         private readonly StatementFactoryInterface $accountFactory,
-        private readonly StatementRepositoryInterface  $accountRepository,
+        private readonly StatementRepositoryInterface $accountRepository,
         private readonly ProducerInterface $producer
-    )
-    {
+    ) {
     }
 
     /**

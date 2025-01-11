@@ -2,8 +2,6 @@
 
 namespace App\Application\UseCase\GetStatementUseCase;
 
-
-
 use App\Domain\Entity\Statement;
 
 class GetStatementResponse

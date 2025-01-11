@@ -18,7 +18,6 @@ class SendStatementUseCase
         private MailerInterface $mailer,
         private AccountRepositoryInterface $accountRepository,
         private StatementRepositoryInterface $statementRepository
-
     ) {
     }
 

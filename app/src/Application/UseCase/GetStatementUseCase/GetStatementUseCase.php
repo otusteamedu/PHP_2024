@@ -12,7 +12,6 @@ class GetStatementUseCase
     public function __construct(
         private StatementRepositoryInterface $statementRepository,
         private TransactionRepositoryInterface $transactionRepository
-
     ) {
     }
 
