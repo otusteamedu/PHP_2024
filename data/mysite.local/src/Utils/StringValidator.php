@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Apeskovatzkov\Hw4;
+namespace Apeskovatzkov\Hw4\Utils;
 
 use Exception;
 
