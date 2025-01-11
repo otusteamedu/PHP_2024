@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+.env
+/local_pgdata/
+/local_pgadmin-dаta/
