@@ -22,6 +22,12 @@ CREATE TABLE sessions (
     start_time TIMESTAMP NOT NULL
 );
 
+-- Таблица для базовых цен на сеансы
+CREATE TABLE session_prices (
+    session_id INT PRIMARY KEY REFERENCES sessions(session_id),
+    base_price DECIMAL(10, 2) NOT NULL
+);
+
 -- Таблица для мест в зале
 CREATE TABLE seats (
     seat_id SERIAL PRIMARY KEY,

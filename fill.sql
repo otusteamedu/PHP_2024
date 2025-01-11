@@ -35,6 +35,19 @@ INSERT INTO sessions (movie_id, hall_id, start_time) VALUES
 (4, 4, '2025-01-08 21:00:00'),
 (5, 5, '2025-01-08 22:00:00');
 
+-- Вставка данных в таблицу базовых цен на сеансы
+INSERT INTO session_prices (session_id, base_price) VALUES
+(1, 15.00),
+(2, 12.50),
+(3, 10.00),
+(4, 8.50),
+(5, 20.00),
+(6, 15.00),
+(7, 12.50),
+(8, 10.00),
+(9, 8.50),
+(10, 20.00);
+
 -- Вставка данных в таблицу клиентов
 INSERT INTO customers (first_name, last_name, email, phone) VALUES
 ('John', 'Doe', 'john.doe@example.com', '123-456-7890'),
@@ -53,13 +66,24 @@ DO $$
 DECLARE
     ticket_count INT := 1000; -- нужное количество билетов
     i INT;
+    selected_session_id INT;
+    selected_base_price DECIMAL(10, 2);
 BEGIN
     FOR i IN 1..ticket_count LOOP
-        INSERT INTO tickets (session_id, seat_id, price)
+        -- Выбираем случайный сеанс и его базовую цену
+        SELECT s.session_id, sp.base_price
+        INTO selected_session_id, selected_base_price
+        FROM sessions s
+        JOIN session_prices sp ON s.session_id = sp.session_id
+        ORDER BY RANDOM() LIMIT 1;
+
+        -- Вставляем билет с базовой ценой
+        INSERT INTO tickets (session_id, seat_id, customer_id, price)
         VALUES (
-            (SELECT session_id FROM sessions ORDER BY RANDOM() LIMIT 1),
+            selected_session_id,
             (SELECT seat_id FROM seats ORDER BY RANDOM() LIMIT 1),
-            ROUND(RANDOM() * 20 + 5, 2)
+            (SELECT customer_id FROM customers ORDER BY RANDOM() LIMIT 1),
+            selected_base_price
         );
     END LOOP;
 END $$;
