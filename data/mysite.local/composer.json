@@ -1,0 +1,17 @@
+{
+    "name": "apeskovatzkov/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Apeskovatzkov\\Hw4\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "apeskovatzkov"
+        }
+    ],
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.11"
+    }
+}
