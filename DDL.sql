@@ -1,30 +1,4 @@
-CREATE TABLE IF NOT EXISTS Halls (
-	"id" SERIAL PRIMARY KEY,
-	"number" INTEGER NOT NULL,
-	"seats_count" INTEGER NOT NULL
-);
-
-
-CREATE TABLE IF NOT EXISTS Sessions (
-	"id" SERIAL PRIMARY KEY,
-	"movie_id" INTEGER NOT NULL,
-	"hall_id" INTEGER NOT NULL,
-	"date" DATE NOT NULL,
-	"begin_time" TIME NOT NULL,
-	"duration" INTEGER NOT NULL
-);
-tickets
-
 CREATE TABLE IF NOT EXISTS Movies (
 	"id" SERIAL PRIMARY KEY,
 	"name" VARCHAR(255) NOT NULL
-);
-
-
-CREATE TABLE IF NOT EXISTS Tickets (
-	"id" SERIAL PRIMARY KEY,
-	"session_id" INTEGER NOT NULL,
-	"price" DECIMAL NOT NULL,
-	"seat_number" INTEGER NOT NULL,
-	"is_sold" BOOLEAN NOT NULL
 );
