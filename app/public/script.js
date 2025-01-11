@@ -15,8 +15,4 @@ function buttonClick() {
   xhr.send();
 }
 
-const check = () => {
-  console.log("sdfhjkl");
-};
-
 window.onload = document.getElementById("check").addEventListener("click", buttonClick);
