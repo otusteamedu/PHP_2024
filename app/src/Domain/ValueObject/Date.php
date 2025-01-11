@@ -26,5 +26,4 @@ class Date
             throw new \InvalidArgumentException('Invalid date. Need format Y-m-d');
         }
     }
-
 }

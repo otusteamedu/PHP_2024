@@ -15,5 +15,4 @@ class AccountNumber
     {
         return $this->value;
     }
-
 }

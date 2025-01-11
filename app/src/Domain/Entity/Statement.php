@@ -16,8 +16,7 @@ class Statement
         private Date $dateTo,
         private Status $status,
         private iterable $transactions = []
-    )
-    {
+    ) {
     }
 
     public function setStatus(Status $status): void
@@ -58,9 +57,4 @@ class Statement
     {
         return $this->account;
     }
-
-    public function getAccountId()
-    {
-    }
-
 }

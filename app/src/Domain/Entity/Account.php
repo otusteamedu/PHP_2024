@@ -4,19 +4,15 @@ namespace App\Domain\Entity;
 
 use App\Domain\ValueObject\HolderEmail;
 use App\Domain\ValueObject\HolderName;
-use App\Infrastructure\Repositories\AccountOrmRepository;
-use Doctrine\ORM\Mapping as ORM;
 
 class Account
 {
     private ?int $id = null;
 
-
     public function __construct(
-         private readonly HolderName $holderName,
-         private readonly HolderEmail $holderEmail
-    )
-    {
+        private readonly HolderName $holderName,
+        private readonly HolderEmail $holderEmail
+    ) {
     }
 
     public function getHolderEmail(): HolderEmail

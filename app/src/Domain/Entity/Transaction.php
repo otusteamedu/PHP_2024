@@ -18,8 +18,7 @@ class Transaction
         private readonly Description $description,
         private readonly TransactionType $transactionType,
         private readonly AccountNumber $accountNumber
-    )
-    {
+    ) {
     }
 
     public function getAccountNumber(): AccountNumber
@@ -51,5 +50,4 @@ class Transaction
     {
         return $this->transactionType;
     }
-
 }

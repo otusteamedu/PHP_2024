@@ -15,5 +15,4 @@ class Status
     {
         return $this->value;
     }
-
 }
