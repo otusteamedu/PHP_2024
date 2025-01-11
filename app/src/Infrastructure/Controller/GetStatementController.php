@@ -31,10 +31,9 @@ final class GetStatementController extends AbstractController
      */
     public function __invoke(#[MapRequestPayload] CreateStatementRequest $request): JsonResponse
     {
-        $response = ($this->useCase)($request);
-        return $this->json($response);
         try {
-
+            $response = ($this->useCase)($request);
+            return $this->json($response);
         } catch (\Throwable $e) {
             $errorResponse = [
                 'message' => $e->getMessage()
@@ -42,6 +41,4 @@ final class GetStatementController extends AbstractController
             return $this->json($errorResponse, 400);
         }
     }
-
-
 }

@@ -10,5 +10,4 @@ interface StatementRepositoryInterface
     public function findById(int $id): ?Statement;
 
     public function save(Statement $statement): void;
-
 }

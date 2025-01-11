@@ -47,6 +47,4 @@ final class AddAccountController extends AbstractController
             return $this->json($errorResponse, 400);
         }
     }
-
-
 }

@@ -11,5 +11,4 @@ interface TransactionRepositoryInterface
     public function save(Transaction $transaction): void;
 
     public function findForStatement(int $accountId, string $dateFrom, string $dateTo): iterable;
-
 }

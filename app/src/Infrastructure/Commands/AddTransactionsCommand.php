@@ -20,8 +20,7 @@ class AddTransactionsCommand extends Command
     public function __construct(
         private readonly CreateTransactionUseCase $useCase,
         private AccountRepositoryInterface $accountRepository
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -35,12 +34,10 @@ class AddTransactionsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
-
-
-            $number  =  $input->getArgument('number');
+            $number = $input->getArgument('number');
             $accountId = (int)$input->getArgument('account');
             $account = $this->accountRepository->findById($accountId);
-            if(!$account){
+            if (!$account) {
                 $output->writeln("Account number $accountId doesn't exsist");
                 return Command::FAILURE;
             }
