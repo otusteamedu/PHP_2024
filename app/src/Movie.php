@@ -6,11 +6,12 @@ namespace AnatolyShilyaev\Hw11;
 
 class Movie
 {
-
     public function __construct(
         private ?int $id,
         private ?string $name
-    ) {}
+    ) {
+        //
+    }
 
     /**
      * @return int

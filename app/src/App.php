@@ -21,7 +21,6 @@ class App
     public function run(): void
     {
         try {
-
             //Добавление нового фильма
             $newMovie = new Movie(null, "Троя2");
             $newMovieId = $this->movieMapper->insert($newMovie);
