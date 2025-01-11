@@ -1,41 +1,36 @@
-version: '3'
+version: '3.3'
 
 services:
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
-    image: balance/nginx
-    container_name: nginx
+    image: nginx:latest
     ports:
       - "80:80"
     volumes:
-       - ./code:/data/mysite.local
-    networks:
-      - app-network
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+      - ./code:/var/www
+    links:
+      - php
 
-  app1:
-    build:
-      context: ./fpm
-      dockerfile: Dockerfile
-    image: balance/php
-    container_name: app1
+  php:
+    build: ./fpm
+    container_name: php-server
+    hostname: php-server
     volumes:
-       - ./code:/data/mysite.local
-    networks:
-      - app-network
+      - ./code:/var/www
+    links:
+      - redis
+      - mongo
 
-  app2:
-    build:
-      context: ./fpm
-      dockerfile: Dockerfile
-    image: balance/php
-    container_name: app2
-    volumes:
-      - ./code:/data/mysite.local
-    networks:
-      - app-network
+  redis:
+    image: redis
+    ports:
+      - "127.0.0.1:6379:6379"
 
-networks:
-  app-network:
-    driver: bridge
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+    ports:
+      - 27017:27017

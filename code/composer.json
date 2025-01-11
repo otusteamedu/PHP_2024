@@ -1,0 +1,10 @@
+{
+    "name": "ekonyaeva/otus",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Ekonyaeva\\Otus\\": "src/"
+        }
+    },
+    "require": {}
+}
