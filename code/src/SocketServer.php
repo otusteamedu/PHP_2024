@@ -25,7 +25,7 @@ class SocketServer
         if ($this->socket === false) {
             throw new Exception("Не удалось создать сокет: " . socket_strerror(socket_last_error()));
         }
-        socket_bind($this->socket, '0.0.0.0', 8000); // Слушаем на всех интерфейсах
+        socket_bind($this->socket, '0.0.0.0', 8000);
         socket_listen($this->socket);
 
         echo "Сервер запущен. Ожидание подключения клиента...\n";
@@ -41,7 +41,7 @@ class SocketServer
             $client = socket_accept($this->socket);
             if ($client === false) {
                 echo "Ошибка при принятии соединения.\n";
-                continue; // Если есть ошибка, переходим к следующему циклу
+                continue;
             }
 
             echo "Клиент подключился.\n";
@@ -56,7 +56,7 @@ class SocketServer
             $input = socket_read($client, 1024);
             if ($input === false || $input === "") {
                 echo "Клиент отключился.\n";
-                break; // Выходим из цикла, если клиент отключился
+                break;
             }
 
             echo "Получено сообщение от клиента: $input\n";
@@ -67,7 +67,7 @@ class SocketServer
             socket_write($client, $response, strlen($response));
         }
 
-        socket_close($client); // Закрываем сокет клиента после отключения
+        socket_close($client);
     }
 
     /**

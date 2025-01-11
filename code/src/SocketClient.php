@@ -25,7 +25,7 @@ class SocketClient
             throw new Exception("Не удалось создать сокет: " . socket_strerror(socket_last_error()));
         }
 
-        $result = socket_connect($this->socket, 'server', 8000); // Укажите адрес сервера и порт
+        $result = socket_connect($this->socket, 'server', 8000);
         if ($result === false) {
             throw new Exception("Не удалось подключиться к серверу: " . socket_strerror(socket_last_error($this->socket)));
         }
