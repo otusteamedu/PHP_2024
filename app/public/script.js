@@ -1,5 +1,5 @@
 // Функция для отправки AJAX-запроса
-function buttonClick(method, action) {
+function buttonClick() {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "index.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -12,7 +12,7 @@ function buttonClick(method, action) {
   };
 
   // Отправляем данные
-  xhr.send("method=" + method + "&action=" + action);
+  xhr.send();
 }
 
 const check = () => {
