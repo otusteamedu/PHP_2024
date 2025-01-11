@@ -6,8 +6,6 @@ class CreateTransactionResponse
 {
     public function __construct(
         public int $id
-    )
-    {
+    ) {
     }
-
 }

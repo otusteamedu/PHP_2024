@@ -12,9 +12,8 @@ class CreateAccountUseCase
 {
     public function __construct(
         private readonly AccountFactoryInterface $accountFactory,
-        private readonly AccountRepositoryInterface  $accountRepository
-    )
-    {
+        private readonly AccountRepositoryInterface $accountRepository
+    ) {
     }
 
     public function __invoke(CreateAccountRequest $request): CreateAccountResponse

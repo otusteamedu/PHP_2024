@@ -9,8 +9,6 @@ class CreateStatementRequest
         public string $dateFrom,
         public string $dateTo,
         public string $status = 'REQUESTED'
-    )
-    {
+    ) {
     }
-
 }

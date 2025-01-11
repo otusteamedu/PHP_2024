@@ -9,8 +9,6 @@ class CreateTransactionRequest
         public string $description,
         public int $transactionType,
         public int $accountId
-    )
-    {
+    ) {
     }
-
 }

@@ -6,8 +6,6 @@ class GetStatementRequest
 {
     public function __construct(
         public int $statementId
-    )
-    {
+    ) {
     }
-
 }

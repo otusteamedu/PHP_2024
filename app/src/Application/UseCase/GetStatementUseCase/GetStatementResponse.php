@@ -10,8 +10,6 @@ class GetStatementResponse
 {
     public function __construct(
         public Statement $statement
-    )
-    {
+    ) {
     }
-
 }

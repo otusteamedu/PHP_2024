@@ -16,9 +16,8 @@ class CreateTransactionUseCase
 {
     public function __construct(
         private readonly TransactionFactoryInterface $accountFactory,
-        private readonly TransactionRepositoryInterface  $accountRepository
-    )
-    {
+        private readonly TransactionRepositoryInterface $accountRepository
+    ) {
     }
 
     public function __invoke(CreateTransactionRequest $request): CreateTransactionResponse

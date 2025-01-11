@@ -6,8 +6,6 @@ class CreateStatementResponse
 {
     public function __construct(
         public int $id
-    )
-    {
+    ) {
     }
-
 }

@@ -10,8 +10,6 @@ class SendStatementResponse
 {
     public function __construct(
         public bool $result
-    )
-    {
+    ) {
     }
-
 }
