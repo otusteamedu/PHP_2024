@@ -1,0 +1,60 @@
+version: '3.1'
+
+services:
+
+  #Контейнер с php-fpm
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    env_file:
+      - ./app/.env
+    volumes:
+      - ./app:/data/mysite.local
+    working_dir: /data/mysite.local
+
+  #контейне с Nginx
+  webserver:
+    build:
+      context: docker/nginx
+      dockerfile: Dockerfile
+    image: nginx:latest
+    container_name: webserver
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./app:/data/mysite.local
+
+  postgres:
+    image: postgres:11
+    ports:
+      - 15432:5432
+    container_name: 'postgresql'
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: 'banking'
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+    volumes:
+      - dump:/app/dump
+      - postgresql:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.7.5-management
+    working_dir: /app
+    hostname: rabbit-mq
+    container_name: 'rabbit-mq'
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+
+volumes:
+  dump:
+  postgresql:

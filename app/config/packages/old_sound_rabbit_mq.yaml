@@ -1,0 +1,18 @@
+old_sound_rabbit_mq:
+    connections:
+        default:
+            host: 'rabbit-mq'
+            port: 5672
+            user: 'user'
+            password: 'password'
+    producers:
+        # use 'old_sound_rabbit_mq.task_producer' service to send data.
+        statement:
+            connection:       default
+            exchange_options: { name: 'statement', type: direct }
+    consumers:
+        statement:
+            connection:       default
+            exchange_options: { name: 'statement', type: direct }
+            queue_options:    { name: 'statement'}
+            callback:         App\Infrastructure\Consumer\StatementConsumer
