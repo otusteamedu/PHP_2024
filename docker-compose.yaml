@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data/application.local
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+       - ./code:/data/application.local
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
