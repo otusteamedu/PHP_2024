@@ -1,5 +1,9 @@
 <?php
 
+use DudkinId\OtusComposerPackage\NumberProcessor;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
 echo "123 456 Привет, Otus!<br>" . date("Y-m-d H:i:s") . "<br><br>";
 
 echo "Новая строка";
@@ -14,6 +18,9 @@ echo "Новая строка";
 //$redis->auth($_ENV['REDIS_PASSWORD']);
 //
 //echo "11";
+
+$processor = new NumberProcessor();
+echo $processor->max(8, 5); // 5
 
 $memcached = new Memcached();
 
