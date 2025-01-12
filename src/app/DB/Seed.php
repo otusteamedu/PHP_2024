@@ -72,7 +72,9 @@ class Seed
         $cinemaHallId = $showId = $movieId = 1;
         $showDate = $now->subDays(20)->midDay();
         $showCount = 0;
-        $showDays = $ticketsCount > 10_000 ? 250 : 25;
+        // $showDays = 25;
+        // $showDays = 2500;
+        $showDays = 25000;
         $showPerDay = 2;
         $totalShows = $showDays * $showPerDay;
         $seatsPerShow = range(1, 10);
@@ -160,7 +162,10 @@ class Seed
             $stmt = $this->dbConnection->prepare($sql);
             // execute with all values from $data
             $stmt->execute(array_merge(...$ticketsPerShowChunk));
+
+            unset($ticketsPerShowChunk);
         }
+        unset($ticketsPerShowChunks);
 
         // public.purchases
         $sql = 'INSERT INTO public.purchases (purchase_date, customer_id) VALUES (?, ?)';
