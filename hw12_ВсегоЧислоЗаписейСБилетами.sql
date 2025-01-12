@@ -1,0 +1,1 @@
+SELECT COUNT(*) FROM cinema_tickets
