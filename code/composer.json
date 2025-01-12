@@ -1,0 +1,12 @@
+{
+    "name": "asyrovatkin/hw11",
+    "autoload": {
+        "psr-4": {
+            "Asyrovatkin\\Hw11\\": "src/"
+        }
+    },
+    "require": {
+        "mongodb/mongodb": "^1.20",
+        "predis/predis": "v2.3.0"
+    }
+}
