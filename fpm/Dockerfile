@@ -1,3 +1,5 @@
+FROM composer:2.2 as composer_builder
+
 FROM php:8.2-fpm
 
 # ставим необходимые для нормальной работы модули
@@ -11,7 +13,9 @@ RUN apt-get update && apt-get install -y \
 	libmcrypt-dev \
         && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip
 
-RUN pecl install memcached && docker-php-ext-enable memcached
+COPY --from=composer_builder /usr/bin/composer /usr/bin/composer
+
+#RUN pecl install memcached && docker-php-ext-enable memcached
 		# && docker-php-ext-enable redis
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
