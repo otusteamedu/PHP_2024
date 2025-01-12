@@ -41,8 +41,9 @@ class MovieMapper
      */
     public function findAll(int $limit = 30, int $offset = 0): array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM movies LIMIT ? OFFSET ?');
-        $stmt->execute([$limit, $offset]);
+        print_r($offset + $limit);
+        $stmt = $this->pdo->prepare("SELECT * FROM movies WHERE id > ? ORDER BY id LIMIT ?");
+        $stmt->execute([$offset, $limit,]);
         $movies = [];
 
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -75,6 +76,23 @@ class MovieMapper
         $movie->setId($id);
 
         return $id;
+    }
+
+    /**
+     * @param Movie $movie
+     * @param string $newName
+     * @return bool
+     */
+    public function update(Movie $movie, string $newName): bool
+    {
+        $stmt = $this->pdo->prepare('UPDATE movies SET name = :name WHERE id = :id');
+
+        $result = $stmt->execute([
+            'name' => $newName,
+            'id' => $movie->getId(),
+        ]);
+
+        return $result;
     }
 
     /**

@@ -29,7 +29,7 @@ class App
             echo "<br><br>";
 
             //Получение всех фильмов
-            $movies = $this->movieMapper->findAll(10);
+            $movies = $this->movieMapper->findAll(10, rand(1, 9000000));
             echo "<table border=1 cellspacing=0>";
             echo "<thead>";
             echo "<tr>";
@@ -55,7 +55,18 @@ class App
 
             //Получение фильма по ID
             $movie = $this->movieMapper->find($newMovieId);
-            echo 'Movie Name: ' . $movie->getName() . "\n";
+            echo 'Movie Name: ' . $movie->getName() . "<br>";
+
+            //Обновление наименование фильма
+            $isUpdate = $this->movieMapper->update($movie, "Одиссея");
+
+            if ($isUpdate) {
+                //Получение обновленного фильма по ID
+                $movie = $this->movieMapper->find($newMovieId);
+                echo 'New Name: ' . $movie->getName() . "<br>";
+            } else {
+                echo "UPDATE ERROR";
+            }
 
             //Удаление фильма
             $this->movieMapper->delete($newMovieId);
