@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div style="display: block">
+    <h3>Добавьте данные</h3>
+    <form name="feedback" method="POST" style="width: 300px; display: block">
+        <textarea name="data" style="width: 300px; height: 500px">
+{
+    priority: 1000,
+    conditions: {
+        param1 = 1
+    },
+    event: {
+        ::event::
+    },
+},
+{
+    priority: 2000,
+    conditions: {
+        param1 = 2,
+        param2 = 2
+    },
+    event: {
+        ::event::
+    },
+},
+{
+    priority: 3000,
+    conditions: {
+        param1 = 1,
+        param2 = 2
+    },
+    event: {
+        ::event::
+    },
+},
+        </textarea>
+        <input type="submit" name="send" value="Отправить" style="float: right">
+    </form>
+</div>
+</body>
+</html>
