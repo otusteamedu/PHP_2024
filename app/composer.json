@@ -1,0 +1,16 @@
+{
+    "name": "anatoly-shilyaev/hw11",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "AnatolyShilyaev\\Hw11\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anatoly",
+            "email": "Anatoly.Shilyaev@gmail.com"
+        }
+    ],
+    "require": {}
+}
