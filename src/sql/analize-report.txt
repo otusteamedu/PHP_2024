@@ -257,3 +257,38 @@ JIT:
 "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
 "  Timing: Generation 1.409 ms (Deform 0.331 ms), Inlining 0.000 ms, Optimization 0.879 ms, Emission 20.126 ms, Total 22.414 ms"
 Execution Time: 239.606 ms
+
+
+--отсортированный список (15 значений) самых больших по размеру объектов БД
+SELECT relname                                       AS table_name,
+       pg_size_pretty(pg_total_relation_size(c.oid)) AS size
+FROM pg_catalog.pg_class c
+WHERE relnamespace = 'public'::regnamespace
+  AND c.relkind IN ('r', 'i')
+ORDER BY pg_total_relation_size(c.oid) DESC
+LIMIT 15;
+
+-- table_name | size
+tickets,712 MB
+tickets_pkey,214 MB
+shows,7336 kB
+shows_pkey,2208 kB
+theatres,32 kB
+movies,32 kB
+theatres_pkey,16 kB
+movies_pkey,16 kB
+
+
+--отсортированные списки (по 5 значений) самых часто и редко используемых индексов
+SELECT indexrelname index_title,
+       idx_scan     scan_count
+FROM pg_catalog.pg_stat_user_indexes
+WHERE schemaname = 'public'
+ORDER BY idx_scan
+LIMIT 5;
+
+-- index_title        | scan_count
+tickets_pkey,0
+movies_pkey,100102
+theatres_pkey,100103
+shows_pkey,10010004
