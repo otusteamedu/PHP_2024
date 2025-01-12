@@ -5,6 +5,5 @@
 .LSOverride
 
 .vscode
-.github
 .env
 /data/
