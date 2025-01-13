@@ -70,7 +70,7 @@ class TransactionOrmRepository extends ServiceEntityRepository implements Transa
 
         $items = $resultSet->fetchAllAssociative();
         $transactions = [];
-        foreach ($items as $item){
+        foreach ($items as $item) {
             $transaction = $this->factory->create(
                 $item['amount'],
                 $item['description'],
