@@ -1,5 +1,5 @@
 // Функция для отправки AJAX-запроса
-function buttonClick() {
+function buttonClick(type) {
   const xhr = new XMLHttpRequest();
   xhr.open("POST", "index.php", true);
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -12,7 +12,9 @@ function buttonClick() {
   };
 
   // Отправляем данные
-  xhr.send();
+  xhr.send("type=" + type);
 }
 
-window.onload = document.getElementById("check").addEventListener("click", buttonClick);
+window.onload = document.getElementById("add").addEventListener("click", () => buttonClick("add"));
+window.onload = document.getElementById("get").addEventListener("click", () => buttonClick("get"));
+window.onload = document.getElementById("del").addEventListener("click", () => buttonClick("del"));
