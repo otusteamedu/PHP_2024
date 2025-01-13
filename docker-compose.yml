@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:16
+    container_name: otus2024-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - otus2024-network
+
+volumes:
+  pg-data:
+    external: false
+
+networks:
+  otus2024-network:
+    driver: bridge
