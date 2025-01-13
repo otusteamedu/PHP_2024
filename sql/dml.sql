@@ -20,7 +20,7 @@ VALUES ('text'),
        ('num'),
        ('date');
 
-INSERT INTO attribute_values (movie_id, attribute_id, attribute_type_id, text, boolean, int, num, date)
+INSERT INTO attribute_values (movie_id, attribute_id, attribute_type_id, value_text, value_boolean, value_int, value_num, value_date)
 VALUES (1, 1, 1, 'Film 1 critic review ', null, null, null, null),
        (1, 2, 1, 'Film 1 academy review', null, null, null, null),
        (1, 4, 2, null, true, null, null, null),

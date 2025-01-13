@@ -25,11 +25,11 @@ CREATE TABLE IF NOT EXISTS attribute_values
     movie_id          INT NOT NULL REFERENCES movies (id),
     attribute_id      INT NOT NULL REFERENCES attributes (id),
     attribute_type_id INT NOT NULL REFERENCES attribute_types (id),
-    text              TEXT    DEFAULT NULL,
-    boolean           BOOLEAN DEFAULT NULL,
-    int               INT     DEFAULT NULL,
-    num               NUMERIC(4,2) DEFAULT NULL,
-    date              DATE    DEFAULT NULL
+    value_text        TEXT    DEFAULT NULL,
+    value_boolean     BOOLEAN DEFAULT NULL,
+    value_int         INT     DEFAULT NULL,
+    value_num         FLOAT   DEFAULT NULL,
+    value_date        DATE    DEFAULT NULL
 );
 
 create index if not exists attribute_values_text_idx ON attribute_values(text);
