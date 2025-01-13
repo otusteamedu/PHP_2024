@@ -37,14 +37,14 @@ DROP TABLE IF EXISTS public.values CASCADE;
 -- Создание таблицы values (Значения) + связь с таблицами (attributes, movies)
 CREATE TABLE public.values
 (
-    "id"              BIGSERIAL      NOT NULL primary key,
-    "attribute_id"    BIGINT         NOT NULL,
-    "movie_id"        BIGINT         NOT NULL,
-    "text_value"      TEXT           NULL DEFAULT NULL,
-    "boolean_value"   BOOLEAN        NULL DEFAULT NULL,
-    "date_value"      DATE           NULL DEFAULT NULL,
-    "integer_value"   INTEGER        NULL DEFAULT NULL,
-    "decimal_value"   DECIMAL(12, 2) NULL DEFAULT NULL,
+    "id"            BIGSERIAL NOT NULL primary key,
+    "attribute_id"  BIGINT    NOT NULL,
+    "movie_id"      BIGINT    NOT NULL,
+    "text_value"    TEXT      NULL DEFAULT NULL,
+    "boolean_value" BOOLEAN   NULL DEFAULT NULL,
+    "date_value"    DATE      NULL DEFAULT NULL,
+    "integer_value" INTEGER   NULL DEFAULT NULL,
+    "float_value"   FLOAT     NULL DEFAULT NULL,
 
     CONSTRAINT public_values_attribute_id_foreign FOREIGN KEY (attribute_id) REFERENCES attributes (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT public_values_movie_id_foreign FOREIGN KEY (movie_id) REFERENCES movies (id) ON DELETE CASCADE ON UPDATE CASCADE

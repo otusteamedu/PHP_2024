@@ -10,7 +10,7 @@ VALUES (1, 'Рецензия', 'text'),
        (3, 'Важные даты', 'date'),
        (4, 'Служебные даты', 'date'),
        (5, 'Часть', 'integer'),
-       (6, 'Деньги', 'decimal');
+       (6, 'Деньги', 'float');
 
 -- Наполнение таблицы attributes (Аттрибуты)
 INSERT INTO attributes (id, name, attribute_type_id)
@@ -27,7 +27,7 @@ VALUES (1, 'Рецензии на IMDb', 1),
        (11, 'Бюджет фильма', 6);
 
 -- Наполнение таблицы values (Значения)
-INSERT INTO values (id, attribute_id, movie_id, text_value, boolean_value, date_value, integer_value, decimal_value)
+INSERT INTO values (id, attribute_id, movie_id, text_value, boolean_value, date_value, integer_value, float_value)
 VALUES (1, 1, 1, 'Один из лучших боевиков, которые существуют, и определенно лучший в серии «Форсаж»...',
         NULL, NULL, NULL, NULL),
        (2, 2, 1, 'Фильм дарит положительные эмоции от всего того драйва, который открывается перед зрителем ...',

@@ -11,7 +11,7 @@ SELECT m.name  AS movies,
            WHEN at.type = 'boolean' THEN v.boolean_value::text
            WHEN at.type = 'date' THEN v.date_value::text
            WHEN at.type = 'integer' THEN v.integer_value::text
-           WHEN at.type = 'decimal' THEN v.decimal_value::text
+           WHEN at.type = 'float' THEN v.float_value::text
            ELSE NULL
            END AS value
 
