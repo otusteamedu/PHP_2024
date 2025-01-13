@@ -52,7 +52,7 @@ class RedisHelper implements StorageInterface
             // Декодируем в Ассоциативный массив
             $conditions = json_decode($validJson, true);
 
-            //Получаем невалидную JSON-alike строку
+            //Получаем строку
             $event = $this->client->hget("$eventId", 'event');
 
             // Проверяем выполнение условий
