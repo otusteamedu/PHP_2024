@@ -77,11 +77,4 @@ class Statement
     {
         $this->date_to = $date_to;
     }
-
-
-
-
-
-
-
 }

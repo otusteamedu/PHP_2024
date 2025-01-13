@@ -2,11 +2,9 @@
 
 namespace App\Infrastructure\Repositories;
 
-
 use App\Domain\Factory\TransactionFactoryInterface;
 use App\Domain\Repository\TransactionRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-
 use App\Infrastructure\Entity\Transaction as DbRecord;
 use App\Domain\Entity\Transaction;
 use Doctrine\Persistence\ManagerRegistry;
@@ -15,7 +13,7 @@ class TransactionOrmRepository extends ServiceEntityRepository implements Transa
 {
     public function __construct(ManagerRegistry $registry, private readonly TransactionFactoryInterface $factory)
     {
-        parent::__construct($registry, \App\Infrastructure\Entity\Transaction::class);
+        parent::__construct($registry, DbRecord::class);
     }
 
     public function save(Transaction $transaction): void
@@ -32,8 +30,6 @@ class TransactionOrmRepository extends ServiceEntityRepository implements Transa
         $reflectionProperty = new \ReflectionProperty(Transaction::class, 'id');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($transaction, $dbRecord->getId());
-
-
     }
 
     public function findById(int $id): ?Transaction

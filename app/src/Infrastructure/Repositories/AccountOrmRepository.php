@@ -3,21 +3,15 @@
 namespace App\Infrastructure\Repositories;
 
 use App\Domain\Entity\Account;
-use App\Domain\Entity\News;
 use App\Domain\Factory\AccountFactoryInterface;
 use App\Domain\Repository\AccountRepositoryInterface;
-use App\Domain\ValueObject\Title;
-use App\Domain\ValueObject\Url;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Infrastructure\Entity\Account as DbRecord;
 use Doctrine\Persistence\ManagerRegistry;
 
 class AccountOrmRepository extends ServiceEntityRepository implements AccountRepositoryInterface
 {
-
-
-    public function __construct( ManagerRegistry $registry,  private AccountFactoryInterface $factory)
+    public function __construct(ManagerRegistry $registry, private AccountFactoryInterface $factory)
     {
         parent::__construct($registry, DbRecord::class);
     }
@@ -33,13 +27,12 @@ class AccountOrmRepository extends ServiceEntityRepository implements AccountRep
         $reflectionProperty = new \ReflectionProperty(Account::class, 'id');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($account, $dbRecord->getId());
-
     }
 
     public function findById(int $id): ?Account
     {
-        $item =$this->find($id);
-        if(!$item){
+        $item = $this->find($id);
+        if (!$item) {
             return null;
         }
         $account = $this->factory->create(
