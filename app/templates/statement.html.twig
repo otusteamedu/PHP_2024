@@ -1,0 +1,18 @@
+<h1>Statement for account {{ accountNumber }}</h1>
+
+<table>
+    <tr>
+       <th>Date</th>
+        <th>Description</th>
+        <th>Amount</th>
+    </tr>
+    {% for transaction in transactions %}
+        <tr>
+            <th>{{ transaction['created_at'] }}</th>
+            <th>{{ transaction['description'] }}</th>
+            <th>{{ transaction['amount'] }}</th>
+        </tr>
+    {% endfor %}
+
+
+</table>
