@@ -7,6 +7,8 @@ WHERE CURRENT_DATE BETWEEN f.start_date AND f.end_date;
 -- CREATE INDEX films_start_date_idx ON films (start_date);
 -- CREATE INDEX films_end_date_idx ON films (end_date);
 
+-- UPD: не помогает, т.к. у нас изначально мало записей в данной таблице и добавление индексов, по сути, не влияет на скорость работы
+
 
 -- 2. Подсчёт проданных билетов за неделю
 EXPLAIN
