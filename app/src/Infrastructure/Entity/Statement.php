@@ -33,7 +33,7 @@ class Statement
         return $this->status;
     }
 
-    public function setStatus( ?StatusEnum $status): void
+    public function setStatus(?StatusEnum $status): void
     {
         $this->status = $status;
     }

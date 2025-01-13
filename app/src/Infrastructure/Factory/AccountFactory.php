@@ -9,7 +9,6 @@ use App\Domain\ValueObject\HolderName;
 
 class AccountFactory implements AccountFactoryInterface
 {
-
     public function create(string $holderName, string $holderEmail): Account
     {
         return new Account(

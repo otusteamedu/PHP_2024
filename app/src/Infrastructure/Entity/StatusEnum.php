@@ -9,5 +9,4 @@ enum StatusEnum: string
     case Done = "DONE";
 
     case Error = "ERROR";
-
 }

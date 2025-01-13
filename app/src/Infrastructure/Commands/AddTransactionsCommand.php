@@ -45,9 +45,9 @@ class AddTransactionsCommand extends Command
             for ($i = 0; $i < $number; $i++) {
                 try {
                     $request = new CreateTransactionRequest(
-                        rand(10,1000),
+                        rand(10, 1000),
                         'Transaction #' . $i,
-                        rand(1,2),
+                        rand(1, 2),
                         $accountId
                     );
                     $response = ($this->useCase)($request);
