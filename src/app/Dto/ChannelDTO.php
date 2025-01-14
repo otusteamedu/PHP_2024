@@ -10,10 +10,7 @@ final readonly class ChannelDTO
         private string $id,
         private string $name,
         private string $description
-    )
-    {
-        ///
-    }
+    ) {}
 
 
     public function getId(): string

@@ -13,10 +13,7 @@ final readonly class VideoDTO
         private string $description,
         private int $likes,
         private int $dislikes
-    )
-    {
-        ///
-    }
+    ) {}
 
 
     public function getId(): string
