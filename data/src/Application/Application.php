@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Apeskovatzkov\Hw5\Application;
 
+use Apeskovatzkov\Hw5\Contracts\RunnableInterface;
+
 class Application
 {
-    public function __construct(string $type = 'client')
-    {
+    public function __construct(
+        private RunnableInterface $runnable
+    ) {
     }
 
-    public static function run(): void
+    public function run(): void
     {
-
+        $this->runnable->run();
     }
 }

@@ -11,5 +11,8 @@
             "name": "apeskovatzkov"
         }
     ],
-    "require": {}
+    "require": {
+        "psr/container": "^2.0",
+        "ext-sockets": "*"
+    }
 }
