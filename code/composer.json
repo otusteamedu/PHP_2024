@@ -1,0 +1,17 @@
+{
+    "name": "otus-redis/app",
+    "type": "project",
+    "require": {
+        "predis/predis": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "OtusRedis\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel Miasnov"
+        }
+    ]
+}
