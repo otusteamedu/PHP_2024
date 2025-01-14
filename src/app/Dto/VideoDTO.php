@@ -11,11 +11,10 @@ final readonly class VideoDTO
         private string $channel_id,
         private string $title,
         private string $description,
-        private int    $likes,
-        private int    $dislikes
+        private int $likes,
+        private int $dislikes
     )
-    {
-    }
+    {}
 
 
     public function getId(): string
