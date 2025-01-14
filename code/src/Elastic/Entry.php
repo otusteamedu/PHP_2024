@@ -22,7 +22,7 @@ class Entry
         $this->config = $config;
 
         $this->client = ClientBuilder::create()
-            ->setHosts(['https://'. $this->config->host . ':' . $this->config->port])
+            ->setHosts(['https://' . $this->config->host . ':' . $this->config->port])
             ->setApiKey($this->config->apiKey)
             ->build();
     }

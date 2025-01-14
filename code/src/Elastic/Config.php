@@ -17,7 +17,7 @@ class Config
 
     public function __construct()
     {
-        $this->host = getenv('ELASTIC_CONTAINER');;
+        $this->host = getenv('ELASTIC_CONTAINER');
         $this->port = getenv('ELASTIC_PORT');
         $this->dataFile = getenv('ELASTIC_DATA_FILE');
         $this->indexName = getenv('ELASTIC_INDEX');
