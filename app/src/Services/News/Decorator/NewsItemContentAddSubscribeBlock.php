@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services\News\Decorator;
 
-class NewsItemContentAddSubscribeBlock implements NewsItemContentInterface
+class NewsItemContentAddSubscribeBlock extends NewsItemContentDecorator
 {
-    public function __construct(protected NewsItemContentInterface $newsItemContent)
-    {
-    }
-
     public function getContent(): string
     {
         $content = $this->newsItemContent->getContent();

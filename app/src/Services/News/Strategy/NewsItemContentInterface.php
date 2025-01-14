@@ -2,7 +2,7 @@
 
 namespace App\Services\News\Strategy;
 
-interface NewsItemContent
+interface NewsItemContentInterface
 {
     public function getContent(string $content): string;
 }

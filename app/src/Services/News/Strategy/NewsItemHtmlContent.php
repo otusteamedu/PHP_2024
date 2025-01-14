@@ -8,13 +8,15 @@ use App\Services\News\Decorator\NewsItemContentAddSubscribeBlock;
 use App\Services\News\Decorator\NewsItemContentAddTimeToRead;
 use App\Services\News\Decorator\NewsItemContentBase;
 
-class NewsItemHtmlContent implements NewsItemContent
+class NewsItemHtmlContent implements NewsItemContentInterface
 {
     public function getContent(string $content): string
     {
-        $newsItemContent = new NewsItemContentBase($content);
-        $newsItemContent = new NewsItemContentAddTimeToRead($newsItemContent);
-        $newsItemContent = new NewsItemContentAddSubscribeBlock($newsItemContent);
+        $newsItemContent = new NewsItemContentAddSubscribeBlock(
+            new NewsItemContentAddTimeToRead(
+                new NewsItemContentBase($content)
+            )
+        );
 
         return $newsItemContent->getContent();
     }

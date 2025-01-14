@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\News\Strategy;
 
-class NewsItemPlainContent implements NewsItemContent
+class NewsItemPlainContent implements NewsItemContentInterface
 {
     public function getContent(string $content): string
     {
