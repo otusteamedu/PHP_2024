@@ -11,7 +11,7 @@ final readonly class ChannelDTO
         private string $name,
         private string $description
     ) {
-
+        //
     }
 
 
