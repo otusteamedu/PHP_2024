@@ -1,0 +1,17 @@
+{
+    "name": "otus/db-pattern",
+    "type": "project",
+    "require": {
+        "ext-pdo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Otus\\DbPattern\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel Miasnov"
+        }
+    ]
+}
