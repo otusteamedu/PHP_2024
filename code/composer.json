@@ -1,0 +1,22 @@
+{
+    "name": "otus-elastic-shop/app",
+    "type": "project",
+    "require": {
+        "elasticsearch/elasticsearch": "^8.17"
+    },
+    "autoload": {
+        "psr-4": {
+            "OtusElasticShop\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel Miasnov"
+        }
+    ],
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
