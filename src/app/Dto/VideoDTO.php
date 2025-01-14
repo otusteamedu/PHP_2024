@@ -15,7 +15,7 @@ final readonly class VideoDTO
         private int $dislikes
     )
     {
-        //
+        ///
     }
 
 

@@ -12,7 +12,7 @@ final readonly class ChannelDTO
         private string $description
     )
     {
-        //
+        ///
     }
 
 
