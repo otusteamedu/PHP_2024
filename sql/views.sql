@@ -19,12 +19,13 @@ CREATE OR REPLACE VIEW all_attributes AS
 SELECT m.name      AS фильм,
        at.name      AS "тип атрибута",
        a.name AS атрибут,
-       CASE
-           WHEN (av.value_text IS NOT NULL) THEN av.text
-           WHEN (av.value_date IS NOT NULL) THEN TO_CHAR(av.value_date, 'dd-mm-yyy')
-           WHEN (av.value_boolean IS NOT NULL) THEN (CASE WHEN av.value_boolean THEN 'есть' ELSE 'нет' END)
-           WHEN (av.value_num IS NOT NULL) THEN TO_CHAR(av.num, 'FM99.99')
-           END          AS значение
+       COALESCE(
+               movie_attributes.value_boolean::text,
+               movie_attributes.value_int::text,
+               movie_attributes.value_float::text,
+               movie_attributes.value_date::text,
+               movie_attributes.value_text
+       ) AS значение
 FROM attribute_values av
          JOIN movies m ON av.movie_id = m.id
          JOIN attributes a ON av.attribute_id = a.id

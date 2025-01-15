@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS attribute_values
     value_text        TEXT    DEFAULT NULL,
     value_boolean     BOOLEAN DEFAULT NULL,
     value_int         INT     DEFAULT NULL,
-    value_num         FLOAT   DEFAULT NULL,
+    value_float       FLOAT   DEFAULT NULL,
     value_date        DATE    DEFAULT NULL
 );
 
