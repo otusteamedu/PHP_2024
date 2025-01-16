@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "konstantin-rudenko/otus-composer-package",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asistent0/otus-composer-package.git",
-                "reference": "aa17561fa8aa699cd1032e8dfa49c2440df13853"
+                "reference": "5bdb51c270064e11c8937d2f7f6e74ce35d42c49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asistent0/otus-composer-package/zipball/aa17561fa8aa699cd1032e8dfa49c2440df13853",
-                "reference": "aa17561fa8aa699cd1032e8dfa49c2440df13853",
+                "url": "https://api.github.com/repos/asistent0/otus-composer-package/zipball/5bdb51c270064e11c8937d2f7f6e74ce35d42c49",
+                "reference": "5bdb51c270064e11c8937d2f7f6e74ce35d42c49",
                 "shasum": ""
             },
             "require": {
@@ -39,9 +39,9 @@
             ],
             "support": {
                 "issues": "https://github.com/asistent0/otus-composer-package/issues",
-                "source": "https://github.com/asistent0/otus-composer-package/tree/1.0.0"
+                "source": "https://github.com/asistent0/otus-composer-package/tree/1.0.1"
             },
-            "time": "2025-01-16T20:44:57+00:00"
+            "time": "2025-01-16T21:01:10+00:00"
         }
     ],
     "packages-dev": [],
