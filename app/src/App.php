@@ -33,5 +33,4 @@ class App
             echo $email . ' - ' . $checkEmailResult . PHP_EOL;
         }
     }
-
 }
