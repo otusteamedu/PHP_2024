@@ -28,7 +28,7 @@ class App
         $emails = $_POST['emails'];
 
         foreach ($emails as $email) {
-            $checkEmailResult = $this->emailValidate->run($email);
+            $checkEmailResult = $this->emailValidate->run(trim($email));
 
             echo $email . ' - ' . $checkEmailResult . PHP_EOL;
         }
