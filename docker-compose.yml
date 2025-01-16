@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: otus-hw6/nginx
+    container_name: hw6-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw6-network
+
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw6/php
+    container_name: app
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw6-network
+
+networks:
+  otus-hw6-network:
+    driver: bridge
