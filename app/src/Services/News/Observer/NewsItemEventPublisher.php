@@ -13,7 +13,7 @@ class NewsItemEventPublisher
         $this->subscribers[] = $subscriber;
     }
 
-    public function notify(NewsItemCreateEvent $event)
+    public function notifySubscribers(NewsItemCreateEvent $event)
     {
         foreach ($this->subscribers as $subscriber) {
             $subscriber->notify($event);

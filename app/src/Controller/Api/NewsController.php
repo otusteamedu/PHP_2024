@@ -44,7 +44,7 @@ class NewsController extends AbstractController
             $em->flush();
 
             $newsItemCreateEvent = new NewsItemCreateEvent($newsItem);
-            $publisher->notify($newsItemCreateEvent);
+            $publisher->notifySubscribers($newsItemCreateEvent);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], 400);
         }

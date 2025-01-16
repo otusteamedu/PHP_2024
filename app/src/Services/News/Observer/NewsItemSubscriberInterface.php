@@ -6,5 +6,5 @@ namespace App\Services\News\Observer;
 
 interface NewsItemSubscriberInterface
 {
-    public function notify(NewsItemCreateEvent $event): void;
+    public function update(NewsItemCreateEvent $event): void;
 }

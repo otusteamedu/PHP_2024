@@ -13,7 +13,7 @@ class NewsItemCreateEventSubscriber implements NewsItemSubscriberInterface
     {
     }
 
-    public function notify(NewsItemCreateEvent $event): void
+    public function update(NewsItemCreateEvent $event): void
     {
         $category = $event->newsItem->getCategory();
         $subscribes = $this->em->getRepository(Subscribe::class)->findBy(['category' => $category]);
