@@ -1,0 +1,15 @@
+{
+    "name": "slava-makhov/otus-verification-email-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SlavaMakhov\\OtusVerificationEmailApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SlavaMakhov"
+        }
+    ],
+    "require": {}
+}

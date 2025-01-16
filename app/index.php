@@ -1,0 +1,14 @@
+<?php
+
+declare(strict_types=1);
+
+use SlavaMakhov\OtusVerificationEmailApp\App;
+
+require __DIR__ . '/vendor/autoload.php';
+
+try {
+    $app = new App();
+    echo $app->run();
+} catch (Exception $e) {
+    echo 'Ошибка ' . $e->getCode() . ': ' . $e->getMessage();
+}
