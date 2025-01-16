@@ -27,7 +27,7 @@ RUN docker-php-ext-install zip
 # RUN docker-php-ext-install pdo_pgsql pgsql && docker-php-ext-enable pgsql
 
 # Install the php redis extension
-# RUN pecl install redis && docker-php-ext-enable redis
+RUN pecl install redis && docker-php-ext-enable redis
 
 # Install the php memcached extension
 # RUN pecl install memcached && docker-php-ext-enable memcached
