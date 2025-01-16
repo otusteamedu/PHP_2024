@@ -1,0 +1,6 @@
+{
+  "name": "konstantin-rudenko/otus-composer-app",
+  "require": {
+    "konstantin-rudenko/otus-composer-package": "^1.0"
+  }
+}
