@@ -31,7 +31,7 @@ readonly class EventStorage
 
     public function getEventByParams(array $params): ?array
     {
-        $events = $this->storage->rangeByScore('events', '-inf', '+inf');
+        $events = $this->storage->rangeByScore(self::KEY_NAME, '-inf', '+inf');
 
         usort($events, static fn($a, $b) => $b['priority'] <=> $a['priority']);
 
