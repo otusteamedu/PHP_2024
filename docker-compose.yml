@@ -1,0 +1,30 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: ${PROJECT_PREFIX}-nginx
+    ports:
+      - ${NGINX_PORT}:80
+    volumes:
+      - .:/var/www/otus-hw-20/public
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
+  php-fpm:
+    container_name: ${PROJECT_PREFIX}-php-fpm
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - .:/var/www/otus-hw-20
+
+  rabbit-mq:
+    container_name: ${PROJECT_PREFIX}-rabbit-mq
+    image: rabbitmq:4-management
+    hostname: rabbit-mq # required to persist server state
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASSWORD}
