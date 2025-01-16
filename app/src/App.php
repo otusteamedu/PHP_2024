@@ -16,11 +16,13 @@ class App
     /**
      * Запуск приложения
      *
-     * @return void
+     * @return string
      * @throws CheckEmailsException
      */
-    public function run(): void
+    public function run(): string
     {
+        $message = '';
+
         if (!isset($_POST['emails'])) {
             throw new CheckEmailsException();
         }
@@ -30,7 +32,9 @@ class App
         foreach ($emails as $email) {
             $checkEmailResult = $this->emailValidate->run(trim($email));
 
-            echo $email . ' - ' . $checkEmailResult . PHP_EOL;
+            $message .= $email . ' - ' . $checkEmailResult . PHP_EOL;
         }
+
+        return $message;
     }
 }
