@@ -8,6 +8,8 @@ use App\Storages\EventStorageInterface;
 
 readonly class EventStorage
 {
+    public const KEY_NAME = 'events';
+
     public function __construct(private EventStorageInterface $storage)
     {
         //
@@ -15,7 +17,7 @@ readonly class EventStorage
 
     public function addEvent(int $priority, array $conditions, string $event): void
     {
-        $this->storage->add('events', $priority, json_encode([
+        $this->storage->add(self::KEY_NAME, $priority, json_encode([
             'priority' => $priority,
             'conditions' => $conditions,
             'event' => $event
@@ -24,7 +26,7 @@ readonly class EventStorage
 
     public function clearEvents(): void
     {
-        $this->storage->delete('events');
+        $this->storage->delete(self::KEY_NAME);
     }
 
     public function getEventByParams(array $params): ?array
