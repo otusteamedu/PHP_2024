@@ -15,8 +15,8 @@ class MergeService
     {
         if (!self::checkingSorting($list1) || !self::checkingSorting($list2)) {
             throw new Exception(
-                'Списки должны быть отсортирован по возрастанию'
-                , 400
+                'Списки должны быть отсортирован по возрастанию',
+                400
             );
         }
 
@@ -27,8 +27,8 @@ class MergeService
             || $list2->maxValue() > self::MAX_VALUE
         ) {
             throw new Exception(
-                'Значения списка должны быть в диапазоне от ' . self::MIN_VALUE . ' до ' . self::MAX_VALUE
-                , 400
+                'Значения списка должны быть в диапазоне от ' . self::MIN_VALUE . ' до ' . self::MAX_VALUE,
+                400
             );
         }
 

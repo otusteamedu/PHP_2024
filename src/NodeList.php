@@ -5,10 +5,9 @@ namespace Den\Php2024;
 class NodeList
 {
     public function __construct(
-        public ?int       $value = null,
+        public ?int $value = null,
         public ?NodeList $next = null,
-    )
-    {
+    ) {
     }
 
     public function countNodes(): int
