@@ -1,3 +1,9 @@
 # PHP_2024
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+## Домашнее задание к уроку 9 Решение алгоритмических задач 
+Задача https://leetcode.com/problems/merge-two-sorted-lists/description/
+
+Алгоритм решения в методе \Den\Php2024\MergeService::mergeTwoList
+
+Сложность алгоритма O(n), так как для решения надо пройтись по всем элементам обоих списков один раз.
+Это оптимально учитывая что ограничения в задаче на 50 элементов в списке. 
