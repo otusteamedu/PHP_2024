@@ -1,0 +1,113 @@
+version: '3.8'
+
+services:
+  # Балансировщик Nginx
+  nginx-balancer:
+    image: nginx:latest
+    container_name: otus-balancer
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx-balancer/balancer.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+    networks:
+      - app-network
+
+  # Nginx backend1
+  backend1:
+    image: nginx:latest
+    container_name: otus-backend1
+    volumes:
+      - ./docker/nginx/backend1.conf:/etc/nginx/nginx.conf
+      - ./docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./code:/var/www/html
+    depends_on:
+      - php-fpm1
+      - redis
+    networks:
+      - app-network
+
+  # Nginx backend2
+  backend2:
+    image: nginx:latest
+    container_name: otus-backend2
+    volumes:
+      - ./docker/nginx/backend2.conf:/etc/nginx/nginx.conf
+      - ./docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./code:/var/www/html
+    depends_on:
+      - php-fpm2
+      - redis
+    networks:
+      - app-network
+
+  # Nginx backend3
+  backend3:
+    image: nginx:latest
+    container_name: otus-backend3
+    volumes:
+      - ./docker/nginx/backend3.conf:/etc/nginx/nginx.conf
+      - ./docker/php/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./code:/var/www/html
+    depends_on:
+      - php-fpm3
+      - redis
+    networks:
+      - app-network
+
+  # PHP-FPM1
+  php-fpm1:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: otus-php-fpm1
+    hostname: php-fpm1
+    volumes:
+      - ./code:/var/www/html
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  # PHP-FPM1
+  php-fpm2:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: otus-php-fpm2
+    hostname: php-fpm2
+    volumes:
+      - ./code:/var/www/html
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  # PHP-FPM1
+  php-fpm3:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: otus-php-fpm3
+    hostname: php-fpm3
+    volumes:
+      - ./code:/var/www/html
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  # Redis
+  redis:
+    image: redis:latest
+    container_name: otus-redis
+    networks:
+      - app-network
+
+# Сеть для соединения контейнеров
+networks:
+  app-network:
+    driver: bridge
