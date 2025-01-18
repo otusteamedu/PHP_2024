@@ -1,3 +1,11 @@
-# PHP_2024
+# Проверка работы
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+1. Создание образа
+    ```shell
+      docker-composer -p otus-composer-app up -d
+    ```
+
+2. Выполнение команды
+    ```shell
+      docker exec -it php_app php index.php
+    ```
