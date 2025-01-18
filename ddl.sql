@@ -1,11 +1,12 @@
-CREATE DATABASE cinema;
+CREATE
+DATABASE cinema;
 
 CREATE TABLE movies
 (
     id          SERIAL PRIMARY KEY,
     name        VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    duration INTEGER NOT NULL
+    description TEXT         NOT NULL,
+    duration    INTEGER      NOT NULL
 );
 
 CREATE TABLE halls
@@ -24,13 +25,13 @@ CREATE TABLE places
 
 CREATE TABLE sessions
 (
-    id       SERIAL PRIMARY KEY,
-    date     TIMESTAMP NOT NULL,
-    movie_id INTEGER REFERENCES movies (id),
-    hall_id  INTEGER REFERENCES halls (id)
+    id           SERIAL PRIMARY KEY,
+    session_time TIMESTAMP NOT NULL,
+    movie_id     INTEGER REFERENCES movies (id),
+    hall_id      INTEGER REFERENCES halls (id)
 );
 
-CREATE TABLE tickets
+CREATE TABLE prices
 (
     id         SERIAL PRIMARY KEY,
     price      DECIMAL(10, 2) NOT NULL,
@@ -44,9 +45,9 @@ CREATE TABLE users
     name VARCHAR(255)
 );
 
-CREATE TABLE tickets_sold
+CREATE TABLE tickets
 (
-    id        SERIAL PRIMARY KEY,
-    ticket_id INTEGER UNIQUE REFERENCES tickets (id),
-    user_id   INTEGER REFERENCES users (id)
+    id       SERIAL PRIMARY KEY,
+    price_id INTEGER UNIQUE REFERENCES prices (id),
+    user_id  INTEGER REFERENCES users (id)
 );

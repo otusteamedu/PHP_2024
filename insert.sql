@@ -17,13 +17,13 @@ VALUES (1, 1, 1),
        (2, 1, 2),
        (2, 2, 2);
 
-INSERT INTO sessions (date, movie_id, hall_id)
+INSERT INTO sessions (session_time, movie_id, hall_id)
 VALUES ('2025-01-17T12:14:17+00:00', 1, 1),
        ('2025-01-18T12:14:17+00:00', 1, 2),
        ('2025-01-19T12:14:17+00:00', 2, 1),
        ('2025-01-20T12:14:17+00:00', 3, 1);
 
-INSERT INTO tickets (price, session_id, place_id)
+INSERT INTO prices (price, session_id, place_id)
 VALUES (25.00, 1, 1),
        (25.00, 1, 2),
        (20.00, 1, 3),
@@ -47,7 +47,7 @@ VALUES ('Денис'),
        ('Филипп'),
        ('Ксения');
 
-INSERT INTO tickets_sold (ticket_id, user_id)
+INSERT INTO tickets (price_id, user_id)
 VALUES (1, 1),
        (4, 4),
        (5, 1),
