@@ -12,8 +12,8 @@ readonly class IndexController
 
     public function __construct()
     {
-        $this->stringService = new StringService;
-        $this->sessionService = new SessionService;
+        $this->stringService = new StringService();
+        $this->sessionService = new SessionService();
     }
 
     public function handleStringRequest(): string

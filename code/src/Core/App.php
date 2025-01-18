@@ -6,10 +6,9 @@ use KRudenko\Otus\Service\RequestHandler;
 
 readonly class App
 {
-
     private RequestHandler $handler;
 
-    function __construct()
+    public function __construct()
     {
         $this->handler = new RequestHandler();
     }

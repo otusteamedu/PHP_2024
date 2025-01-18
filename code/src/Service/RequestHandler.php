@@ -6,10 +6,9 @@ use KRudenko\Otus\Controller\IndexController;
 
 readonly class RequestHandler
 {
-
     private IndexController $controller;
 
-    function __construct()
+    public function __construct()
     {
 
         $this->controller = new IndexController();
