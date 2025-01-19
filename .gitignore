@@ -4,6 +4,7 @@
 .AppleDouble
 .LSOverride
 
+.github
 .vscode
 .env
 /data/
