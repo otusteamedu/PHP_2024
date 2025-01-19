@@ -8,7 +8,7 @@ class Solution
 {
     public static function hasCycle(?ListNode $list): bool
     {
-        if ($list === NULL || $list->next === NULL) {
+        if ($list === null || $list->next === null) {
             return false;
         }
 
@@ -16,7 +16,7 @@ class Solution
         $fast = $list->next;
 
         while ($slow !== $fast) {
-            if ($fast === NULL || $fast->next === NULL) {
+            if ($fast === null || $fast->next === null) {
                 return false;
             }
             $slow = $slow->next;
