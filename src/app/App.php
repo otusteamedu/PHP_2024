@@ -22,7 +22,7 @@ class App
 
         $cycledListHead = static::createCycledLinkedList([1, 2, 3, 4], 1);
 
-        var_dump(Solution::hasCycle($cycledListHead));
+        var_dump(CycledListSolution::hasCycle($cycledListHead));
     }
 
     public static function createLinkedList(array $arr = []): LinkedList
