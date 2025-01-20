@@ -3,7 +3,7 @@
 $redis = new Redis();
 
 try{
-    $redis->connect('127.0.0.1', 6380); 
+    $redis->connect('127.0.0.1', 6379); 
     echo $redis->ping('Begin test').'<br/>';
 }
 catch(RedisException $ex){
