@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+namespace AnatolyShilyaev\Hw13;
+
 //Сложность O(4^n), т.к. каждая цифра добавляет 3 или 4 новых комбинации.
 class Solution
 {
