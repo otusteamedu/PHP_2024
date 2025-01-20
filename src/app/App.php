@@ -12,6 +12,18 @@ class App
 {
     public static function run(): void
     {
+
+        // Leetcode практикум.1 1
+        $cycledListHead = static::createCycledLinkedList([1, 2, 3, 4], 1);
+
+        var_dump(CycledListSolution::hasCycle($cycledListHead));
+
+        echo PHP_EOL;
+
+        // Leetcode практикум.1 2
+        static::printResult(PhoneLetterCombinationSolution::phoneLetterCombinations('23'));
+
+
 //        $firstList = static::createLinkedList([1, 2, 4]);
 //
 //        $secondList = static::createLinkedList([1, 3, 4]);
@@ -19,10 +31,6 @@ class App
 //        $mergedLists = MergedLists::mergeTwoLists($firstList->head, $secondList->head);
 //
 //        static::printResult($mergedLists);
-
-        $cycledListHead = static::createCycledLinkedList([1, 2, 3, 4], 1);
-
-        var_dump(CycledListSolution::hasCycle($cycledListHead));
     }
 
     public static function createLinkedList(array $arr = []): LinkedList
@@ -61,7 +69,7 @@ class App
         return $head;
     }
 
-    public static function printResult(?ListNode $result): void
+    public static function printResult(ListNode|array|null $result): void
     {
         echo '<pre>';
         print_r($result);
