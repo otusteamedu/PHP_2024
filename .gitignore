@@ -4,3 +4,5 @@
 .AppleDouble
 .LSOverride
 app/vendor
+.env
+logs
