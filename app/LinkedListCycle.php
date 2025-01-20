@@ -1,14 +1,12 @@
 <?php
 
-class ListNode
-{
-    public $val = 0;
-    public $next = null;
-    function __construct($val)
-    {
-        $this->val = $val;
-    }
-}
+declare(strict_types=1);
+
+namespace AnatolyShilyaev\Hw13;
+
+require './ListNode.php';
+
+use AnatolyShilyaev\Hw13\ListNode;
 
 //Сложность O(n), т.к. осуществляется проход по всему списку не более двух раз.
 class Solution
@@ -17,7 +15,7 @@ class Solution
      * @param ListNode $head
      * @return Boolean
      */
-    function hasCycle($head)
+    public function hasCycle($head)
     {
         $slow = $head;
         $fast = $head;
