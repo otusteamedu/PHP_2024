@@ -49,5 +49,6 @@ CREATE TABLE tickets
 (
     id       SERIAL PRIMARY KEY,
     price_id INTEGER UNIQUE REFERENCES prices (id),
-    user_id  INTEGER REFERENCES users (id)
+    user_id  INTEGER REFERENCES users (id),
+    price      DECIMAL(10, 2) NOT NULL
 );
