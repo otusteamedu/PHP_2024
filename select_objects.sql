@@ -12,19 +12,9 @@ from (SELECT
     WHERE i.schemaname NOT LIKE 'pg_%') as o
 order by object_size desc limit 15;
 
--- tickets,1578 MB,428 MB,1149 MB
--- films,945 MB,214 MB,730 MB
--- sessions,789 MB,214 MB,574 MB
--- times,24 kB,16 kB,8192 bytes
--- clients,24 kB,16 kB,8192 bytes
--- hall_seats,24 kB,16 kB,8192 bytes
--- halls,24 kB,16 kB,8192 bytes
--- countries,24 kB,16 kB,8192 bytes
--- country_film,8192 bytes,0 bytes,8192 bytes
-
-
 
 -- отсортированные списки (по 5 значений) самых часто и редко используемых индексов
+
 select *
 from pg_stat_user_indexes
 order by idx_tup_read desc limit 5; -- часто
