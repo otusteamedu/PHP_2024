@@ -1,3 +1,4 @@
+#https://stackoverflow.com/questions/42360356/docker-redis-connection-refused
 name: hw14
 services:
   nginx:
@@ -6,7 +7,6 @@ services:
       dockerfile: Dockerfile
     image: myapp/nginx
     container_name: hw14-nginx
-    # проброс портов
     ports:
       - "80:80"
     volumes:
@@ -16,21 +16,21 @@ services:
     networks:
       - app-network
 
-  cache:
+  redis:
     image: redis:latest
     container_name: hw14-redis
     restart: always
     ports:
       - 6379:6379
-    #command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    command: redis-server --save 20 1 --loglevel warning 
     networks:
       - app-network
 
   app:
-    image: php:8.2-fpm
+    image: php:8.3-fpm
     container_name: hw14-app
-    #depends_on:
-    #  - cache
+    depends_on:
+      - redis
     volumes: 
        - ./public:/data/mysite.local/public
        - ./vendor:/data/mysite.local/vendor

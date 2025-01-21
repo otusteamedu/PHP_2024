@@ -7,44 +7,37 @@ use Predis;
 
 class App{
 
-    public function runApp(): string{
+    public function runApp() {
         
         $client = new Predis\Client([
             'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
+            'host'   => 'redis',
             'port'   => 6379,
-            'password' => 'eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81'
         ]);
 
-        //$client = new Predis\Client();
         $client->connect();
-        //$client->set('foo', 'bar');
-        //$res = $client->get('foo');
-
-        // $res = $client->transaction(function ($t) {
-        //     $t->get('skey');
-        //     $t->hset('hkey', 'k', 'v');
-        //   });
+        $client->flushAll();
         
-        //$client->set('library', 'predis');
-        //$res = $client->get('library');
+        echo $client->zAdd('conditions:param1', 1000, '1').'<br/>';
+        echo $client->zAdd('event:event1', 1000, 'ok').'<br/>';
 
-        // $mkv = [
-        //     'uid:0001' => '1st user',
-        //     'uid:0002' => '2nd user',
-        //     'uid:0003' => '3rd user',
-        // ];
-        
-        //$client->mset($mkv);
-        //$response = $client->mget(array_keys($mkv));
+        echo $client->zAdd('conditions:param1', 2000, 2).'<br/>';
+        echo $client->zAdd('conditions:param2', 2000, 2).'<br/>';
+        echo $client->zAdd('event:event1', 2000, 'ok').'<br/>';
 
-        //var_export($response);
-        //return PHP_EOL;
+        echo $client->zAdd('conditions:param1', 3000, 1).'<br/>';
+        echo $client->zAdd('conditions:param2', 3000, 2).'<br/>';
+        echo $client->zAdd('event:event1', 3000, 'ok').'<br/>';
 
-        //$redis->flushAll();
-        //$redis->zAdd('conditions:param1', 1000, '1');
+        var_dump($client->zRevRangeByScore('conditions:param1', 5000, 0, ['WITHSCORES'=>true])); // 
+        echo '<br/>';
 
-        return 'connected';
+        //var_dump($client->zRangeByScore('conditions:param1', 0, 5000, ['WITHSCORES'=>true])); // 
+        //echo '<br/>';
+
+        var_dump($client->zUnion(['conditions:param1', 'conditions:param2'])); 
+ 
+        $client->disconnect();
     }
 }
 
