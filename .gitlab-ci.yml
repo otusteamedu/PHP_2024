@@ -1,0 +1,59 @@
+stages:
+  - build
+  - test
+  - deploy
+  - rollback
+
+build-job:
+  stage: build
+  script:
+    - echo "Building the application..."
+    - if [ -d /var/www/ikachko.ru/build ]; then rm -Rf /var/www/ikachko.ru/build; fi
+    - mkdir /var/www/ikachko.ru/build
+    - git clone git@gitlab.com:myown9174003/bills_helper.git /var/www/ikachko.ru/build
+    - cd /var/www/ikachko.ru/build/app
+    - /usr/local/bin/composer install
+    - echo "run phpcs..."
+    - echo "run tests..."
+  tags:
+    - my-runner
+
+deploy-job:
+  stage: deploy
+#  only:
+#    - main
+  script:
+    - echo "Deploying to VPS..."
+    - if [ -d /var/www/ikachko.ru/deploy ]; then rm -Rf /var/www/ikachko.ru/deploy; fi
+    - mkdir /var/www/ikachko.ru/deploy
+    - git clone git@gitlab.com:myown9174003/bills_helper.git /var/www/ikachko.ru/deploy
+    - chmod -R +x /var/www/ikachko.ru/deploy/deploy/*.sh
+    - /var/www/ikachko.ru/deploy/deploy/deploy.sh
+    - cp /var/www/ikachko.ru/.env /var/www/ikachko.ru/current/app/.env.local
+    - cd /var/www/ikachko.ru/current/app
+    - /usr/local/bin/composer install
+    - /var/www/ikachko.ru/deploy/deploy/reload.sh
+  tags:
+    - my-runner
+  needs:
+    - build-job
+
+test-job:
+  stage: test
+  script:
+    - echo "Running tests 1..."
+
+  tags:
+    - my-runner
+
+rollback-job:
+  stage: rollback
+  only:
+    - main
+  script:
+    - echo "Rolling back on VPS..."
+    - /var/www/ikachko.ru/deploy/deploy/rollback.sh
+    - /var/www/ikachko.ru/deploy/deploy/reload.sh
+  when: manual
+  tags:
+    - my-runner

@@ -1,0 +1,25 @@
+services:
+
+  otus-tg-nginx:
+    build:
+      context: ./nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./../app:/data/otustgbot.local
+    networks:
+      - otus_tg_bot
+  otus-tg-php-fpm:
+    build:
+      context: ./php-fpm
+    image: php-fpm
+    volumes:
+      - ./../app:/data/otustgbot.local
+    networks:
+      - otus_tg_bot
+
+networks:
+  otus_tg_bot:
+    driver: bridge
+
