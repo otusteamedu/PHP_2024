@@ -4,17 +4,27 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/dbal": "^3",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-migrations-bundle": "^3.4",
+        "doctrine/orm": "^3.3",
+        "php-amqplib/rabbitmq-bundle": "*",
+        "phpdocumentor/reflection-docblock": "^5.6",
+        "phpstan/phpdoc-parser": "^2.0",
+        "ramsey/uuid": "*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
         "symfony/framework-bundle": "7.2.*",
+        "symfony/property-access": "7.2.*",
+        "symfony/property-info": "7.2.*",
         "symfony/runtime": "7.2.*",
+        "symfony/serializer": "7.2.*",
+        "symfony/validator": "7.2.*",
         "symfony/yaml": "7.2.*"
-    },
-    "require-dev": {
     },
     "config": {
         "allow-plugins": {
@@ -46,6 +56,15 @@
         "symfony/polyfill-php82": "*"
     },
     "scripts": {
+        "db:validate": "@php bin/console doctrine:schema:validate",
+        "db:up": "@php bin/console doctrine:migrations:migrate --no-interaction",
+        "db:down": "@php bin/console doctrine:migrations:migrate first --no-interaction",
+        "db:info": "@php bin/console doctrine:mapping:info",
+        "db:diff": "@php bin/console doctrine:migrations:diff -vvv",
+        "db:refresh": [
+            "@db:down",
+            "@db:up"
+        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

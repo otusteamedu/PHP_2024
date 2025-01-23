@@ -16,6 +16,18 @@ services:
     volumes:
       - .:/var/www/otus-hw-21
 
+  postgres:
+    container_name: ${PROJECT_PREFIX}-postgres
+    image: postgres:${POSTGRES_VERSION:-15}
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
   rabbit-mq:
     container_name: ${PROJECT_PREFIX}-rabbit-mq
     image: rabbitmq:4-management
@@ -26,3 +38,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASSWORD}
+
+volumes:
+  db_data:

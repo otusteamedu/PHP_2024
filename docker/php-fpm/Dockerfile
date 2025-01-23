@@ -7,6 +7,9 @@ RUN apk add --update linux-headers
 # Install extensions
 RUN docker-php-ext-install sockets
 
+# Postgres
+RUN apk add --no-cache libpq-dev && docker-php-ext-install pdo_pgsql
+
 # Source code
 WORKDIR /var/www/otus-hw-21
 
