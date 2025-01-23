@@ -9,7 +9,6 @@ use App\DB\DbConnection;
 class MovieGateway extends AbstractGateway
 {
     protected static string $table = 'movies';
-    protected static string $directorsTable = 'movie_directors';
     protected static array $identityMap = [];
 
     public function findById($id)
