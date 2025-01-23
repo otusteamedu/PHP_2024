@@ -56,7 +56,9 @@ CREATE TABLE price
 
 CREATE TABLE ticket
 (
-    id       SERIAL PRIMARY KEY,
-    price_id INT REFERENCES price (id) ON DELETE CASCADE,
-    sold_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id         SERIAL PRIMARY KEY,
+    session_id INT REFERENCES session (id) ON DELETE CASCADE,
+    seat_id    INT REFERENCES seat (id) ON DELETE CASCADE,
+    price      DECIMAL(10, 2) NOT NULL,
+    sold_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
