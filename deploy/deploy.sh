@@ -9,12 +9,13 @@ NGINX_CONFIG_PATH="$BASE_PATH/current/infra/nginx/ikachko.ru.conf"  # Путь �
 NGINX_ENABLED_PATH="/etc/nginx/sites-enabled/ikachko.ru.conf"          # Путь к sites-enabled конфигу Nginx
 NGINX_AVAILABLE_PATH="/etc/nginx/sites-available/ikachko.ru.conf"          # Путь к sites-available конфигу Nginx
 BASE_ENV_FILE = "$BASE_PATH/.env"
-NEW_RELEASE_PATH="$DEPLOY_PATH/$TIMESTAMP"
-NEW_RELEASE_APP_PATH = "$NEW_RELEASE_PATH/app"
-NEW_RELEASE_ENV_ENV_FILE = "$NEW_RELEASE_APP_PATH/.env.local"
 
 # Получаем временную метку
 TIMESTAMP=$(date +'%d-%m-%Y_%H:%M:%S')
+
+NEW_RELEASE_PATH="$DEPLOY_PATH/$TIMESTAMP"
+NEW_RELEASE_APP_PATH = "$NEW_RELEASE_PATH/app"
+NEW_RELEASE_ENV_ENV_FILE = "$NEW_RELEASE_APP_PATH/.env.local"
 
 # Создаем директорию для нового релиза
 mkdir -p $NEW_RELEASE_PATH
@@ -23,7 +24,10 @@ echo "Копируем или клонируем проект в новую ди
 echo `git clone git@gitlab.com:myown9174003/bills_helper.git $NEW_RELEASE_PATH`
 
 echo "composer install"
-echo `composer install --working-dir=$NEW_RELEASE_APP_PATH`
+if ! composer install -q --working-dir=$NEW_RELEASE_APP_PATH; then
+   echo "composer install failure"
+   exit 1;
+fi
 
 cp $BASE_ENV_FILE $NEW_RELEASE_ENV_ENV_FILE
 
