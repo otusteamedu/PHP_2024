@@ -29,9 +29,6 @@ deploy-job:
     - git clone git@gitlab.com:myown9174003/bills_helper.git /var/www/ikachko.ru/deploy
     - chmod -R +x /var/www/ikachko.ru/deploy/deploy/*.sh
     - /var/www/ikachko.ru/deploy/deploy/deploy.sh
-    #- cp /var/www/ikachko.ru/.env /var/www/ikachko.ru/current/app/.env.local
-    #- cd /var/www/ikachko.ru/current/app
-    #- /usr/local/bin/composer install
     - /var/www/ikachko.ru/deploy/deploy/reload.sh
   tags:
     - my-runner
