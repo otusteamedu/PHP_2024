@@ -73,9 +73,9 @@ If the email (message) is consumed from the queue the `status` value will be cha
 
 ```json
 {
-    ...
-    "status": "sending",
-    ...
+    // other fields
+    "status": "sending"
+    // other fields
 }
 ```
 
@@ -83,8 +83,8 @@ If the email was successfully sent the `status` value will be changed to `sent`:
 
 ```json
 {
-    ...
-    "status": "sent",
-    ...
+    // other fields
+    "status": "sent"
+    // other fields
 }
 ```
