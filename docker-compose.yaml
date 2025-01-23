@@ -32,7 +32,6 @@ services:
     networks:
       - app-network
 
-
   postgres:
     image: postgres:17-alpine
     container_name: postgres

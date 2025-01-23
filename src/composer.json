@@ -6,9 +6,7 @@
     }
   },
   "require": {
-    "php": ">=8.0",
-    "ext-pdo": "*",
-    "fakerphp/faker": "^1.24",
-    "nesbot/carbon": "^3.8"
+    "php": ">=8.2",
+    "ext-pdo": "*"
   }
 }

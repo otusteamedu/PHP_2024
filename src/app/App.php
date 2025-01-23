@@ -4,30 +4,37 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\DB\Seed;
+use App\DB\DbConnection;
 
-class App
+final class App
 {
     /**
      * @throws \Exception
      */
     public static function run(): void
     {
-        $seed = new Seed();
+        $dbConnection = DbConnection::getInstance();
 
-        // 10_000 билетов
-        $seed->dbSeed();
+        $movieDirectorGateway = new MovieDirectorGateway();
+        $movieGateway = new MovieGateway();
 
-//        // 100_000 билетов
-//        $seed->dbSeed(100_000);
+        $movieDirectors = $movieDirectorGateway->findAll();
+        echo 'Movie Directors:' . PHP_EOL;
+        self::printResult($movieDirectors);
 
-        $query = "SELECT * FROM movies";
-        $stmt = (\App\DB\DbConnection::getInstance())->prepare($query);
-        $stmt->execute();
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $movie = $movieGateway->findById(1);
+        echo 'Movie By Id:' . PHP_EOL;
+        self::printResult($movie);
 
+        $movies = $movieGateway->findAll();
+        echo 'All movies:' . PHP_EOL;
+        self::printResult($movies);
+    }
+
+    public static function printResult(array $result): void
+    {
         echo '<pre>';
         print_r($result);
-        echo '</pre>';
+        echo '</pre>' . PHP_EOL;
     }
 }
