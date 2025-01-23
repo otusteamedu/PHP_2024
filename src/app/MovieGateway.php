@@ -10,11 +10,12 @@ class MovieGateway extends AbstractGateway
 {
     protected static string $table = 'movies';
     protected static string $directorsTable = 'movie_directors';
+    protected static array $identityMap = [];
 
     public function findById($id)
     {
-        if (isset($this->identityMap[$id])) {
-            return $this->identityMap[$id];
+        if (isset(static::$identityMap[$id])) {
+            return static::$identityMap[$id];
         }
 
         $stmt = $this->dbConnection->prepare("SELECT * FROM " . static::$table . " WHERE id = :id");
@@ -24,7 +25,7 @@ class MovieGateway extends AbstractGateway
         if ($row) {
             $director = (new MovieDirectorGateway())->findById($row['movie_director_id']);
             $movie = new Movie($row['id'], $row['title'], $row['orig_title'], $row['genre'], $row['year'], $row['duration'], $row['rating'], $row['movie_director_id'], $director);
-            $this->identityMap[$id] = $movie;
+            static::$identityMap[$id] = $movie->toArray();
             return $movie->toArray();
         }
 

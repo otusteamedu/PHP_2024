@@ -9,11 +9,13 @@ use App\DB\DbConnection;
 class MovieDirectorGateway extends AbstractGateway
 {
     protected static string $table = 'movie_directors';
+    protected static array $identityMap = [];
 
     public function findById($id)
     {
-        if (isset($this->identityMap[$id])) {
-            return $this->identityMap[$id];
+        if (isset(static::$identityMap[$id])) {
+            echo 'From identityMap' . PHP_EOL;
+            return static::$identityMap[$id];
         }
 
         $stmt = $this->dbConnection->prepare("SELECT * FROM " . static::$table . " WHERE id = :id");
@@ -22,7 +24,7 @@ class MovieDirectorGateway extends AbstractGateway
 
         if ($row) {
             $movieDirector = new MovieDirector($row['id'], $row['name'], $row['orig_name'], $row['date_of_birth']);
-            $this->identityMap[$id] = $movieDirector;
+            static::$identityMap[$id] = $movieDirector;
             return $movieDirector;
         }
 

@@ -8,9 +8,6 @@ use App\DB\DbConnection;
 
 final class App
 {
-    /**
-     * @throws \Exception
-     */
     public static function run(): void
     {
         $dbConnection = DbConnection::getInstance();

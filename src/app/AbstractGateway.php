@@ -9,7 +9,6 @@ use App\DB\DbConnection;
 class AbstractGateway
 {
     protected ?\PDO $dbConnection;
-    protected array $identityMap = [];
     protected static string $table = '';
 
     public function __construct()
