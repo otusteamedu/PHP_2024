@@ -17,18 +17,13 @@ TIMESTAMP=$(date +'%d-%m-%Y_%H:%M:%S')
 # Создаем директорию для нового релиза
 NEW_RELEASE_PATH="$DEPLOY_PATH/$TIMESTAMP"
 NEW_RELEASE_APP_PATH = "$NEW_RELEASE_PATH/app"
-NEW_RELEASE_ENV_ENV_FILE = "$NEW_RELEASE_APP_PATH/app/.env.local"
+NEW_RELEASE_ENV_ENV_FILE = "$NEW_RELEASE_APP_PATH/.env.local"
 mkdir -p $NEW_RELEASE_PATH
 
 # Копируем или клонируем проект в новую директорию
 git clone git@gitlab.com:myown9174003/bills_helper.git $NEW_RELEASE_PATH
-
-if [ -L "$NEW_RELEASE_APP_PATH" ]; then
-  cp $BASE_ENV_FILE $NEW_RELEASE_ENV_ENV_FILE
-  cd $NEW_RELEASE_APP_PATH
-  composer install
-  cd $BASE_PATH
-fi
+cp $BASE_ENV_FILE $NEW_RELEASE_ENV_ENV_FILE
+composer install --working-dir=$NEW_RELEASE_APP_PATH
 
 # Если текущая версия существует, сохраняем её как предыдущую
 if [ -L "$CURRENT_PATH" ]; then
