@@ -29,7 +29,6 @@ create table if not exists values
     attribute_id  integer
     references attributes (id),
     value_text    text          null,
-    value_string  varchar(256)  null,
     value_integer int           null,
     value_float   decimal(8, 2) null,
     value_date    date          null,

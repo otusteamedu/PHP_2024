@@ -25,7 +25,6 @@ CREATE OR REPLACE VIEW movie_tasks as
 select m.name  as movie_name,
        a.name  as attribute_name,
        CASE
-           WHEN at.value_type = 'String' THEN value_string
            WHEN at.value_type = 'Text' THEN value_text
            WHEN at.value_type = 'Date' THEN value_date::text
            WHEN at.value_type = 'Integer' THEN value_integer::text
