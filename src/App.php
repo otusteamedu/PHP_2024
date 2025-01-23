@@ -17,26 +17,29 @@ class App{
 
         $client->connect();
         $client->flushAll();
+
+        $client->zAdd('conditions:param1', 1000, 'event:event1').'<br/>';
+
+        $client->zAdd('conditions:param1', 2000, 'event:event2').'<br/>';
+        $client->zAdd('conditions:param2', 2000, 'event:event2').'<br/>';
         
-        echo $client->zAdd('conditions:param1', 1000, '1').'<br/>';
-        echo $client->zAdd('event:event1', 1000, 'ok').'<br/>';
+        $client->zAdd('conditions:param1', 3000, 'event:event3').'<br/>';
+        $client->zAdd('conditions:param2', 3000, 'event:event3').'<br/>';
 
-        echo $client->zAdd('conditions:param1', 2000, 2).'<br/>';
-        echo $client->zAdd('conditions:param2', 2000, 2).'<br/>';
-        echo $client->zAdd('event:event1', 2000, 'ok').'<br/>';
-
-        echo $client->zAdd('conditions:param1', 3000, 1).'<br/>';
-        echo $client->zAdd('conditions:param2', 3000, 2).'<br/>';
-        echo $client->zAdd('event:event1', 3000, 'ok').'<br/>';
-
+        echo "zRevRangeByScore('conditions:param1', 5000, 0, ['WITHSCORES'=>true])<br/> = ";
         var_dump($client->zRevRangeByScore('conditions:param1', 5000, 0, ['WITHSCORES'=>true])); // 
         echo '<br/>';
+        echo '<br/>';
 
-        //var_dump($client->zRangeByScore('conditions:param1', 0, 5000, ['WITHSCORES'=>true])); // 
+        //var_dump($clienredis->zRangeByScore('conditions:param1', 0, 5000, ['WITHSCORES'=>true])); // 
         //echo '<br/>';
 
-        var_dump($client->zUnion(['conditions:param1', 'conditions:param2'])); 
- 
+        //var_dump($client->zUnion(['conditions:param1', 'conditions:param2'], NULL, 'max']));
+        echo "zInter(['conditions:param1', 'conditions:param2'], [], 'min', true) and sort <br/> = ";
+        $result_inter = $client->zInter(['conditions:param1', 'conditions:param2'], [], 'min', true); 
+        arsort($result_inter);
+        var_dump($result_inter); 
+
         $client->disconnect();
     }
 }
