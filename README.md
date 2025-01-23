@@ -71,20 +71,24 @@ You will see the following response:
 
 If the email (message) is consumed from the queue the `status` value will be changed to `sending`:
 
-```json
+```json5
 {
-    // other fields
-    "status": "sending"
-    // other fields
+    "id": "019492fc-4dcd-71dc-868a-ac3f53b10a82",
+    "status": "sending", // <- here
+    "from": "sender@test.com",
+    "to": "receiver@test.com",
+    "text": "Hello!"
 }
 ```
 
 If the email was successfully sent the `status` value will be changed to `sent`:
 
-```json
+```json5
 {
-    // other fields
-    "status": "sent"
-    // other fields
+    "id": "019492fc-4dcd-71dc-868a-ac3f53b10a82",
+    "status": "sent", // <- here
+    "from": "sender@test.com",
+    "to": "receiver@test.com",
+    "text": "Hello!"
 }
 ```
