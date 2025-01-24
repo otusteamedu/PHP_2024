@@ -1,0 +1,42 @@
+version: '3'
+services:
+  otus-elasticsearch:
+    container_name: otus-elasticsearch
+    image: elasticsearch:8.8.0
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    networks:
+      - otusnet
+
+  otus-php:
+    container_name: otus-php
+    image: otus-php
+    build:
+      context: ../
+      dockerfile: ./docker/php/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ../src:/var/www/html
+    networks:
+      - otusnet
+
+  otus-nginx:
+    image: nginx:alpine
+    container_name: otus-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ../src:/var/www/html
+      - ./etc/nginx/hosts/:/etc/nginx/conf.d/
+      - ./log/nginx/:/var/log/nginx/
+    networks:
+      - otusnet
+
+networks:
+  otusnet:
+    driver: bridge

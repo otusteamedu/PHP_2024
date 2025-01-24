@@ -1,5 +1,4 @@
 .idea/
-/vendor/
 *.xml
 .DS_Store
 .AppleDouble
