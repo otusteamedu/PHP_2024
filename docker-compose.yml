@@ -1,5 +1,6 @@
 services:
   ngnix:
+    container_name: MyNgnix
     ports:
       - "80:80"
     build:
@@ -14,6 +15,7 @@ services:
       - php
 
   php:
+    container_name: MyPhp
     build:
       context: ./WEB/php
       dockerfile: dockerfile
