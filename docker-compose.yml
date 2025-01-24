@@ -1,0 +1,42 @@
+services:
+  ngnix:
+    container_name: MyNgnix
+    ports:
+      - "80:80"
+    build:
+      context: ./WEB/ngnix
+      dockerfile: dockerfile
+    networks:
+      - devweb
+    volumes:
+      - ./WEB/www/:/var/www/html/
+      - ./WEB/www/logs/ngnix:/var/log/ngnix/
+    depends_on:
+      - php
+
+  php:
+    container_name: MyPhp
+    build:
+      context: ./WEB/php
+      dockerfile: dockerfile
+    volumes:
+     - ./WEB/www/:/var/www/html/
+     - ./WEB/www/logs/php.log:/var/log/fpm-php.www.log
+    networks:
+      - devweb
+  php2:
+    container_name: MyPhp2
+    build:
+      context: ./WEB/php
+      dockerfile: dockerfile
+    volumes:
+      - ./WEB/www/:/var/www/html/
+      - ./WEB/www/logs/php.log:/var/log/fpm-php.www.log
+    networks:
+      - devweb
+
+
+networks:
+  devweb:
+    name: devweb
+    driver: bridge
