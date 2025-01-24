@@ -1,8 +1,6 @@
 services:
   ngnix:
     container_name: MyNgnix
-    environment:
-      - SERVER_NAME = my.local
     ports:
       - "80:80"
     build:
