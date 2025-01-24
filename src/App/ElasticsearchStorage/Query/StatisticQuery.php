@@ -62,12 +62,25 @@ class StatisticQuery
                             'field' => 'channel_id'
                         ],
                         'aggs' => [
-                            'ratio' => [
+                            'sum_likes' => [
                                 'sum' => [
-                                    'script' => [
-                                        'source' => "doc['count_likes'].value / doc['count_dislikes'].value"
-                                    ]
+                                    'field' => 'count_likes'
                                 ]
+                            ],
+                            'sum_dislikes' => [
+                                'sum' => [
+                                    'field' => 'count_dislikes'
+                                ]
+                            ],
+                            'ratio' => [
+                                'bucket_script' => [
+                                    'buckets_path' => [
+                                        'totalLikes' => 'sum_likes',
+                                        'totalDislike' => 'sum_dislikes'
+                                    ],
+                                    'script' => 'params.totalLikes / params.totalDislike'
+
+                                ],
                             ],
                             'sort_by_ratio' => [
                                 'bucket_sort' => [
@@ -96,6 +109,8 @@ class StatisticQuery
             $result[] = [
                 'channel_id' => $item['key'],
                 'ratio' => $item['ratio']['value'],
+                'sum_likes' => $item['sum_likes']['value'],
+                'sum_dislikes' => $item['sum_dislikes']['value'],
             ];
         }
 

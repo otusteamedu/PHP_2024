@@ -69,6 +69,22 @@ return [
                 'name' => 'Name channel',
                 'link' => 'https://www.youtube.com/channel-2',
             ]
+        ],
+        [
+            'id' => 'video-4',
+            'name' => 'Name video 4',
+            'description' => 'Description video 4',
+            'link' => 'https://www.youtube.com/channel-2/watch?v=video-4',
+            'date_created' => '2025-01-25',
+            'count_likes' => 100,
+            'count_dislikes' => 1,
+            'count_comments' => 0,
+            'channel_id' => 'channel-2',
+            'channel' => [
+                'id' => 'channel-2',
+                'name' => 'Name channel',
+                'link' => 'https://www.youtube.com/channel-2',
+            ]
         ]
     ]
 ];
