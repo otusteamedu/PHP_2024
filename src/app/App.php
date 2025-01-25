@@ -12,18 +12,18 @@ final class App
     {
         $dbConnection = DbConnection::getInstance();
 
-        $movieDirectorGateway = new MovieDirectorGateway();
-        $movieGateway = new MovieGateway();
+        $movieDirectorDataMapper = new MovieDirectorDataMapper();
+        $movieDataMapper = new MovieDataMapper();
 
-        $movieDirectors = $movieDirectorGateway->findAll();
+        $movieDirectors = $movieDirectorDataMapper->findAll();
         echo 'Movie Directors:' . PHP_EOL;
         self::printResult($movieDirectors);
 
-        $movie = $movieGateway->findById(1);
+        $movie = $movieDataMapper->findById(1);
         echo 'Movie By Id:' . PHP_EOL;
         self::printResult($movie);
 
-        $movies = $movieGateway->findAll();
+        $movies = $movieDataMapper->findAll();
         echo 'All movies:' . PHP_EOL;
         self::printResult($movies);
     }
