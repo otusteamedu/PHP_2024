@@ -1,0 +1,11 @@
+{
+  "name": "krudenko/hw9",
+  "description": "Otus Home Work 9",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "KRudenko\\Otus\\": "src/"
+    }
+  },
+  "require": {}
+}
