@@ -4,7 +4,8 @@ namespace KRudenko\Otus;
 
 class Solution
 {
-    function mergeTwoLists(ListNode $list1, ListNode $list2): ListNode {
+    public function mergeTwoLists(ListNode $list1, ListNode $list2): ListNode
+    {
         $l1 = $list1;
         $l2 = $list2;
 
