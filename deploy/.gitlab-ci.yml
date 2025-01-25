@@ -1,0 +1,49 @@
+stages:
+  - build
+  - test
+  - deploy
+  - rollback
+
+
+build-job:
+  stage: build
+  script:
+    - echo "Building the application..."
+    - ls -l
+  tags:
+    - practice-runner
+
+
+deploy-job:
+  stage: deploy
+  only:
+    - main # этот job выполняется только на основной ветке
+  script:
+    - echo "Deploying to VPS..."
+    - cd /var/docker/cicd_practice  # Переходим в директорию проекта
+    - git pull  # Обновляем код
+    - ./deploy.sh  # Запускаем скрипт деплоя
+    - ./reload.sh  # Перечитываем конфиги сервисов
+  tags:
+    - practice-runner
+
+test-job:
+  stage: test
+  script:
+    - echo "Running tests 1..."
+    # команды для запуска тестов
+  tags:
+    - practice-runner
+
+rollback-job:
+  stage: rollback
+  only:
+    - main
+  script:
+    - echo "Rolling back on VPS..."
+    - cd /var/docker/cicd_practice  # Переходим в директорию проекта
+    - ./rollback.sh  # Запускаем скрипт отката
+    - ./reload.sh  # Перечитываем конфиги сервисов
+  when: manual  # Запуск в ручном режиме
+  tags:
+    - practice-runner
