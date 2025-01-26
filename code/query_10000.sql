@@ -370,7 +370,7 @@ where nspname not in ('pg_catalog', 'information_schema')
 order by pg_total_relation_size(C.oid) desc
 limit 15;
 
-/* ----- Самые часто и редко используемых индексов -----*/
+/* ----- Самые часто и редко используемые индексов -----*/
 
 /**
     index_name   |index_scans|
