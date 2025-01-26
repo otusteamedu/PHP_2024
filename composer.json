@@ -1,0 +1,16 @@
+{
+    "name": "den/php_2024",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Den\\Php2024\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Modesov Denis",
+            "email": "msdenimod@yandex.ru"
+        }
+    ],
+    "require": {}
+}
