@@ -1,18 +1,19 @@
-#View сборки служебных данных в форме:
+#View
+сборки служебных данных в форме:
 #- фильм, задачи актуальные на сегодня, задачи актуальные через 20 дней
 CREATE VIEW service_tasks_view AS
 SELECT m.title AS movie,
        STRING_AGG(
                CASE
-                   WHEN av.value::DATE <= CURRENT_DATE THEN a.name
-            ELSE NULL
-        END, ', '
+                   WHEN av.value_date = CURRENT_DATE THEN a.name
+                   ELSE NULL
+                   END, ', '
        )       AS tasks_due_today,
        STRING_AGG(
                CASE
-                   WHEN av.value::DATE <= (CURRENT_DATE + INTERVAL '20 days') THEN a.name
-            ELSE NULL
-        END, ', '
+                   WHEN av.value_date >= (CURRENT_DATE + INTERVAL '20 days') THEN a.name
+                   ELSE NULL
+                   END, ', '
        )       AS tasks_due_in_20_days
 FROM movie m
          JOIN
@@ -24,13 +25,22 @@ FROM movie m
 GROUP BY
     m.id;
 
-#View сборки данных для маркетинга в форме (три колонки):
+#View
+сборки данных для маркетинга в форме (три колонки):
 #- фильм, тип атрибута, атрибут, значение (значение выводим как текст)
 CREATE VIEW marketing_data_view AS
 SELECT m.title AS movie,
-       at.type AS attribute_type,
+       at.name AS attribute_type,
        a.name  AS attribute,
-       av.value AS value
+       CASE
+            at.type
+            WHEN 'text' THEN av.value_text
+            WHEN 'boolean' THEN (av.value_boolean)::text
+            WHEN 'float' THEN (av.value_float)::text
+            WHEN 'integer' THEN (av.value_integer)::text
+            WHEN 'date' THEN (av.value_date)::text
+            ELSE ''::text
+       END AS value
 FROM
     movie m
 JOIN
