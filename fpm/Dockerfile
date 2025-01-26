@@ -13,11 +13,12 @@ RUN apt-get update && apt-get install -y \
 #	&& docker-php-ext-enable mcrypt \
         && docker-php-ext-install -j$(nproc) iconv mbstring mysqli pdo_mysql zip \
 	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
-        && docker-php-ext-install -j$(nproc) gd \
+        && docker-php-ext-install -j$(nproc) gd
 #     && pecl install memcached && \
 #        docker-php-ext-enable memcached
 
-RUN  docker-php-ext-enable redis
+RUN      pecl install redis \
+         && docker-php-ext-enable redis
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
 WORKDIR /data

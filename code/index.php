@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-phpinfo();
 $string = $_POST['string'];
 
 

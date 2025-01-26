@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     image: balance/balancer
     container_name: balancer
+    volumes:
+      - ./code:/data/mysite.local
     # проброс портов
     ports:
       - "80:80"
@@ -83,9 +85,7 @@ services:
     image: redis # имя будущего образа
     container_name: redis # имя контейнера после запуска
     environment:
-      - REDIS_PASSWORD=redis_password
-      - REDIS_USER="redis_user"
-      - REDIS_USER_PASSWORD=redis_password
+      - REDIS_PASSWORD="redis_password"
     networks:
       - app-network
 
