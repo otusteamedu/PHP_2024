@@ -10,7 +10,8 @@ class SolutionHasCycle
     private const MIN_VALUE_NODE = -100000;
     private const MAX_VALUE_NODE = 100000;
 
-    public static function hasCycle(ListNode $listNode) {
+    public static function hasCycle(ListNode $listNode)
+    {
         $hash = [];
         while (true) {
             $hash[] = $listNode;
