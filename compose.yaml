@@ -33,9 +33,7 @@ services:
     image: redis:7.4.1
     container_name: redis
     environment:
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_USER=${REDIS_USER}
-      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+      - REDIS_PASSWORD="redis_pass"
     ports:
       - "6379:6379"
     networks:
