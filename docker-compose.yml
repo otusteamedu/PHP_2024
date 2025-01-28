@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw12/php
+    container_name: app
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw12-network
+
+  elasticsearch:
+    container_name: elastic
+    image: elasticsearch:8.12.2
+    ports:
+      - "9200:9200"
+    networks:
+      - otus-hw12-network
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+
+networks:
+  otus-hw12-network:
+    driver: bridge
