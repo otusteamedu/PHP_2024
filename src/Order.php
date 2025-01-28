@@ -14,12 +14,12 @@ class Order
     private int|null $id = null;
     #[ORM\Column(type: 'string')]
     private string $number;
-    #[ORM\Column(type: 'DateTime')]
+    #[ORM\Column(type: 'date')]
     private DateTime $date;
 
-    /** @var Collection<int, Order_line> */
-    #[ORM\ManyToMany(targetEntity: Order_line::class)]
-    private Collection $order_lines;
+    /** @var Collection<int,Bug> An ArrayCollection of Bug objects. */
+    #[ORM\OneToMany(targetEntity: OrderLine::class, mappedBy: 'order')]
+    private $order_lines;
 
     /**
      * Get the value of name
@@ -53,7 +53,7 @@ class Order
      *
      * @return  self
      */ 
-    public function setDate(DateTime $date)
+    public function setDate($date)
     {
         $this->date = $date;
         return $this;
@@ -67,15 +67,16 @@ class Order
         return $this->id;
     }
 
-    public function addLineToOrder(Order_line $order_line): void
+    public function addLineToOrder(Order_line $order_line)
     {
         $this->order_lines[] = $order_line;
+        return $this;
     }
 
     /** @return Collection<int, Product> */
-    public function getProducts(): Collection
+    public function getLines(): Collection
     {
-        return $this->products;
+        return $this->order_lines;
     }
 }
 
