@@ -1,9 +1,9 @@
 {
-    "name": "skudashkin/hw14",
+    "name": "skudashkin/hw16",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Skudashkin\\Hw14\\": "src/"
+            "Skudashkin\\Hw16\\": "src/"
         }
     },
     "authors": [
@@ -13,6 +13,8 @@
         }
     ],
     "require": {
-        "predis/predis": "^2.3"
+        "doctrine/orm": "^3",
+        "doctrine/dbal": "^4",
+        "symfony/cache": "^7"
     }
 }
