@@ -18,10 +18,27 @@ $config = ORMSetup::createAttributeMetadataConfiguration(
 //);
 
 // configuring the database connection
-$connection = DriverManager::getConnection([
-    'driver' => 'pdo_sqlite',
-    'path' => __DIR__ . '/db.sqlite',
-], $config);
+//$connection = DriverManager::getConnection([
+//     'driver' => 'pdo_sqlite',
+//     'path' => __DIR__ . '/db.sqlite',
+// ], $config);
+//$connection = DriverManager::getConnection([
+//    'driver' => 'pdo_sqlite',
+//    'path' => __DIR__ . '/db.sqlite',
+//], $config);
+
+
+// configuring the database connection
+$connectionParams = array(
+    'dbname' => 'otus',
+    'user' => 'otus',
+    'password' => 'otus',
+    'host' => 'localhost',
+    'port' => 33060,
+    'driver' => 'pdo_mysql',
+);
+$connection = \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+
 
 // obtaining the entity manager
 $entityManager = new EntityManager($connection, $config);

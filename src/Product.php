@@ -1,11 +1,11 @@
 <?php
-
+namespace Skudashkin\Hw16;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'products')]
-class Product{
-
+class Product 
+{
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
@@ -14,7 +14,23 @@ class Product{
     #[ORM\Column(type: 'string')]
     private string|null $name = null;
 
-    //#[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'order_lines')]
-    //private Order|null $order = null;
 
+    /**
+     * Get the value of name
+     */ 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @return  self
+     */ 
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 }

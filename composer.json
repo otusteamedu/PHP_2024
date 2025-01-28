@@ -4,7 +4,10 @@
     "autoload": {
         "psr-4": {
             "Skudashkin\\Hw16\\": "src/"
-        }
+        },
+        "psr-0": {
+            "": "src/"
+        }     
     },
     "authors": [
         {

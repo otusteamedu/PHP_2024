@@ -1,12 +1,12 @@
-#https://stackoverflow.com/questions/42360356/docker-redis-connection-refused
-name: hw14
+#https://www.doctrine-project.org/projects/doctrine-orm/en/current/tutorials/getting-started.html
+name: hw16
 services:
   nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
     image: myapp/nginx
-    container_name: hw14-nginx
+    container_name: hw16-nginx
     ports:
       - "80:80"
     volumes:
@@ -16,21 +16,27 @@ services:
     networks:
       - app-network
 
-  redis:
-    image: redis:latest
-    container_name: hw14-redis
+  db:
+    image: mysql:latest
+    container_name: hw16-db
+    #volumes:
+    #  - db_data:/var/lib/mysql
     restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=otus
+      - MYSQL_DATABASE=otus
+      - MYSQL_USER=otus
+      - MYSQL_PASSWORD=otus
     ports:
-      - 6379:6379
-    command: redis-server --save 20 1 --loglevel warning 
+      - "33060:3306" 
     networks:
       - app-network
 
   app:
     image: php:8.3-fpm
-    container_name: hw14-app
+    container_name: hw16-app
     depends_on:
-      - redis
+      - db
     volumes: 
        - ./public:/data/mysite.local/public
        - ./vendor:/data/mysite.local/vendor

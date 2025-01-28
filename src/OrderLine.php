@@ -1,5 +1,5 @@
 <?php
-
+namespace Skudashkin\Hw16;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -11,13 +11,19 @@ class OrderLine{
     #[ORM\GeneratedValue]
     private int|null $id = null;
 
+    function __construct(Order $order, Product $product, string $count){
+        $this->order = $order;
+        $this->product = $product;
+        $this->count = $count;
+    }
+
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'order_lines')]
     private Order|null $order = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class)]
     private Product|null $product = null;
 
-    #[ORM\Column(type:"decimal", precision:2, scale:15)]
-    private string|null $Quantity = null;
+    #[ORM\Column(type:"decimal", precision:15, scale:2)]
+    private string|null $count = null;
 
 }
