@@ -286,5 +286,4 @@ class ElasticSearchService
             throw new Exception("Ошибка при массовом добавлении документов: " . $e->getMessage() . PHP_EOL);
         }
     }
-
 }
