@@ -19,7 +19,9 @@ class NewsController
         private CreateNewsUseCase $createUseCase,
         private FindAllNewsUseCase $findAllUseCase,
         private GetReportNewsUseCase $getReportUseCase,
-    ) {}
+    ) {
+        // Empty constructor
+    }
 
     public function create(CreateNewsRequest $request): CreateNewsResponse
     {

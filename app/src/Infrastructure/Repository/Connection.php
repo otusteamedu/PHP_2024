@@ -42,6 +42,6 @@ final class Connection
 
     protected function __construct()
     {
-        //
+        // Empty constructor
     }
 }

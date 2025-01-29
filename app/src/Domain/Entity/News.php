@@ -8,14 +8,15 @@ use Anatolyshilyaev\Hw14\Domain\ValueObject\Url;
 
 class News
 {
-
     private ?int $id = null;
 
     public function __construct(
         private Title $title,
         private Date $date,
         private Url $url
-    ) {}
+    ) {
+        // Empty constructor
+    }
 
     public function getId(): ?int
     {

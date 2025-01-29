@@ -10,9 +10,7 @@ use Anatolyshilyaev\Hw14\Domain\ValueObject\Url;
 
 class CommonNewsFactory implements NewsFactoryInterface
 {
-
     public function create(string $url): News
-
     {
         return new News(
             new Title($this->getTitle($url)),

@@ -17,7 +17,6 @@ class NewsMapper
 
     public function save(News $news): int
     {
-
         $stmt = $this->pdo->prepare(
             "INSERT INTO news (title, date, url) 
             VALUES (:title, :date, :url)"

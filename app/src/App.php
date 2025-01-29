@@ -45,7 +45,6 @@ class App
     }
     public function __invoke(): void
     {
-
         $this->router->add('/create', function () {
             $url = "https://dev.to/jkettmann/path-to-a-cleaner-react-architecture-a-shared-api-client-2d4p";
             // $url = "https://dev.to/jkettmann/path-to-a-cleaner-react-architecture-api-layer-fetch-functions-4jin";

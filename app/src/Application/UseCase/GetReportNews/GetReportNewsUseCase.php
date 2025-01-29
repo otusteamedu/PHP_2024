@@ -7,11 +7,12 @@ use Anatolyshilyaev\Hw14\Domain\Repository\NewsRepositoryInterface;
 
 class GetReportNewsUseCase
 {
-
     public function __construct(
         private readonly NewsFactoryInterface $newsFactory,
         private readonly NewsRepositoryInterface $newsRepository,
-    ) {}
+    ) {
+        // Empty constructor
+    }
 
     public function __invoke(GetReportNewsRequest $request): GetReportNewsResponse
     {
