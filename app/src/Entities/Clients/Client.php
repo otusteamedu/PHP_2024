@@ -161,7 +161,8 @@ class Client extends BaseEntity
     public function insert(): string
     {
         try {
-            $this->db->query("INSERT INTO clients (surname, name, email, phone, age) VALUES (?, ?, ?, ?, ?)",
+            $this->db->query(
+                "INSERT INTO clients (surname, name, email, phone, age) VALUES (?, ?, ?, ?, ?)",
                 [
                     $this->surname,
                     $this->name,
@@ -188,7 +189,8 @@ class Client extends BaseEntity
     public function update(): string
     {
         try {
-            $this->db->query("UPDATE clients SET surname = ?, name = ?, email = ?, phone = ?, age = ? WHERE id = ?",
+            $this->db->query(
+                "UPDATE clients SET surname = ?, name = ?, email = ?, phone = ?, age = ? WHERE id = ?",
                 [
                     $this->surname,
                     $this->name,
