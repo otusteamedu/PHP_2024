@@ -20,7 +20,6 @@ class CreateNewsUseCase
 
         //Save news to DB
         $this->newsRepository->save($news);
-        print_r($news);
 
         return new CreateNewsResponse($news->getId());
     }

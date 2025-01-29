@@ -9,6 +9,13 @@ use Anatolyshilyaev\Hw14\Domain\Repository\NewsRepositoryInterface;
 
 class DBNewsRepository implements NewsRepositoryInterface
 {
+    private NewsMapper $newsMapper;
+
+    public function __construct()
+    {
+        $pdo = Connection::get()->connect();
+        $this->newsMapper = new NewsMapper($pdo);
+    }
 
     public function findAll(): iterable
     {
@@ -19,9 +26,11 @@ class DBNewsRepository implements NewsRepositoryInterface
     public function save(News $news): void
     {
         // TODO: Implement save() method.
+        $newsId = $this->newsMapper->insert($news);
+        print_r($newsId);
         $reflectionProperty = new \ReflectionProperty(News::class, 'id');
         $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($news, 1);
+        $reflectionProperty->setValue($news, $newsId);
     }
 
     public function getReport(array $ids): string
