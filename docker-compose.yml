@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw14/php
+    container_name: app
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw14-network
+
+  db:
+    image: postgres:16
+    container_name: db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - otus-hw14-network
+
+volumes:
+  pg-data:
+    external: false
+
+networks:
+  otus-hw14-network:
+    driver: bridge
