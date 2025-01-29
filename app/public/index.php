@@ -6,4 +6,4 @@ require '../vendor/autoload.php';
 
 use Anatolyshilyaev\Hw14\App;
 
-$app = new App();
+$app = (new App())();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Anatolyshilyaev\Hw14\Infrastructure\Repository;
 
+use Anatolyshilyaev\Hw14\Application\UseCase\GetReportNews\GetReportNewsRequest;
 use Anatolyshilyaev\Hw14\Domain\Entity\News;
 use Anatolyshilyaev\Hw14\Domain\Repository\NewsRepositoryInterface;
 
@@ -19,23 +20,43 @@ class DBNewsRepository implements NewsRepositoryInterface
 
     public function findAll(): iterable
     {
-        // TODO: Implement findAll() method.
-        return [];
+        $news = $this->newsMapper->findAll();
+        return $news;
     }
 
     public function save(News $news): void
     {
-        // TODO: Implement save() method.
-        $newsId = $this->newsMapper->insert($news);
-        print_r($newsId);
+        $newsId = $this->newsMapper->save($news);
         $reflectionProperty = new \ReflectionProperty(News::class, 'id');
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($news, $newsId);
     }
 
-    public function getReport(array $ids): string
+    public function getReport(GetReportNewsRequest $request): string
     {
-        // TODO: Implement delete() method.
-        return "";
+        $news = $this->newsMapper->getReport($request);
+
+        $folder = "saved_reports";
+        $files = glob("$folder/*.html");
+        $filename = "$folder/report_" . count($files) + 1 . ".html";
+
+        // Создаём папку, если её нет
+        if (!is_dir($folder)) {
+            mkdir($folder, 0777, true);
+        }
+
+        $html = "<ul>";
+
+        foreach ($news as $new) {
+            $title = $new["title"];
+            $url = $new["url"];
+            $html .= "<li><a href='$url'>$title</a></li>";
+        }
+        $html .= "</ul>";
+
+        // Сохраняем файл
+        file_put_contents($filename, $html);
+
+        return "<a href='$filename' target='_blank'>Открыть файл</a>";
     }
 }
