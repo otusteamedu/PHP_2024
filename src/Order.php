@@ -15,7 +15,7 @@ class Order
     #[ORM\Column(type: 'string')]
     private string $number;
     #[ORM\Column(type: 'date')]
-    private DateTime $date;
+    private \DateTime $date;
 
     /** @var Collection<int,Bug> An ArrayCollection of Bug objects. */
     #[ORM\OneToMany(targetEntity: OrderLine::class, mappedBy: 'order')]
