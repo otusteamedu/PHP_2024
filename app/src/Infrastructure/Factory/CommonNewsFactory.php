@@ -30,12 +30,15 @@ class CommonNewsFactory implements NewsFactoryInterface
 
         $context = stream_context_create($options);
         $fp = file_get_contents($url, false, $context);
-        if (!$fp)
+
+        if (!$fp) {
             return null;
+        }
 
         $res = preg_match("/<title>(.*)<\/title>/siU", $fp, $title_matches);
-        if (!$res)
+        if (!$res) {
             return null;
+        }
 
         // Clean up title: remove EOL's and excessive whitespace.
         $title = preg_replace('/\s+/', ' ', $title_matches[1]);
