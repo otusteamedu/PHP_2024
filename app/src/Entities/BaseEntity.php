@@ -170,5 +170,4 @@ abstract class BaseEntity
             echo "Ошибка при удалении: " . $e->getMessage() . PHP_EOL;
         }
     }
-
 }
