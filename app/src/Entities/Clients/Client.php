@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace SlavaMakhov\OtusDatabasePatternApp\Entities\Clients;
 
-use SlavaMakhov\OtusDatabasePatternApp\Services\DatabaseService;
 use SlavaMakhov\OtusDatabasePatternApp\Entities\BaseEntity;
-use Exception;
 
 class Client extends BaseEntity
 {
@@ -22,15 +20,48 @@ class Client extends BaseEntity
     /** @var string */
     protected string $phone;
 
-    /** @var int */
-    protected int $age;
-
-    /** @var DatabaseService */
-    private DatabaseService $db;
+    /** @var string */
+    protected string $dob;
 
     public function __construct()
     {
-        $this->db = DatabaseService::getInstance();
+        parent::__construct();
+    }
+
+    /**
+     * Метод возвращает список столбцов таблицы
+     *
+     * @return array
+     */
+    protected function getColumns(): array
+    {
+        return [
+            'surname',
+            'name',
+            'email',
+            'phone',
+            'dob'
+        ];
+    }
+
+    /**
+     * Метод возвращает название таблицы
+     *
+     * @return string
+     */
+    protected function getTableName(): string
+    {
+        return 'clients';
+    }
+
+    /**
+     * Метод возвращает название сущности на кирилице
+     *
+     * @return string
+     */
+    protected function getEntityName(): string
+    {
+        return 'Клиент';
     }
 
     /**
@@ -74,13 +105,13 @@ class Client extends BaseEntity
     }
 
     /**
-     * Получить возраст
+     * Получить дату рождения
      *
-     * @return int
+     * @return string
      */
-    public function getAge(): int
+    public function getDob(): string
     {
-        return $this->age;
+        return $this->dob;
     }
 
     /**
@@ -140,95 +171,16 @@ class Client extends BaseEntity
     }
 
     /**
-     * Добавить возраст
+     * Добавить дату рождения
      *
-     * @param int $age
+     * @param string $dob
      *
      * @return $this
      */
-    public function setAge(int $age): self
+    public function setDob(string $dob): self
     {
-        $this->age = $age;
+        $this->dob = $dob;
 
         return $this;
-    }
-
-    /**
-     * Метод добавляет новую сущность
-     *
-     * @return string
-     */
-    public function insert(): string
-    {
-        try {
-            $this->db->query(
-                "INSERT INTO clients (surname, name, email, phone, age) VALUES (?, ?, ?, ?, ?)",
-                [
-                    $this->surname,
-                    $this->name,
-                    $this->email,
-                    $this->phone,
-                    $this->age
-                ],
-                static::class
-            );
-
-            $this->id = (int)$this->db->getPdo()->lastInsertId();
-
-            return "Клиент с id: " . $this->id . ", успешно создан!" . PHP_EOL;
-        } catch (Exception $e) {
-            echo "Ошибка при создании клиента:: " . $e->getMessage() . PHP_EOL;
-        }
-    }
-
-    /**
-     * Метод обновляет сущность
-     *
-     * @return string
-     */
-    public function update(): string
-    {
-        try {
-            $this->db->query(
-                "UPDATE clients SET surname = ?, name = ?, email = ?, phone = ?, age = ? WHERE id = ?",
-                [
-                    $this->surname,
-                    $this->name,
-                    $this->email,
-                    $this->phone,
-                    $this->age,
-                    $this->id
-                ],
-                static::class
-            );
-
-            return "Клиент с id: " . $this->id . ", успешно обновлен!" . PHP_EOL;
-        } catch (Exception $e) {
-            echo "Ошибка при обновлении клиента: " . $e->getMessage() . PHP_EOL;
-        }
-    }
-
-    /**
-     * Метод удаляет сущность
-     *
-     * @return string
-     */
-    public function delete(): string
-    {
-        try {
-            $this->db->query("DELETE FROM clients WHERE id = ?", [$this->id], static::class);
-
-            return "Клиент с id: " . $this->id . ", успешно удален!" . PHP_EOL;
-        } catch (Exception $e) {
-            echo "Ошибка при удалении клиента: " . $e->getMessage() . PHP_EOL;
-        }
-    }
-
-    /**
-     * @return string
-     */
-    protected static function getTableName(): string
-    {
-        return 'clients';
     }
 }
