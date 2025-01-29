@@ -34,7 +34,8 @@ abstract class BaseEntity
         $db = DatabaseService::getInstance();
         $entity = $db->query(
             "SELECT * FROM " . static::getTableName() . " WHERE id = ?;",
-            [$id], static::class
+            [$id],
+            static::class
         );
 
         return !empty($entity) ? $entity[0] : null;
@@ -60,5 +61,4 @@ abstract class BaseEntity
      * @return string
      */
     abstract protected static function getTableName(): string;
-
 }

@@ -168,7 +168,9 @@ class Client extends BaseEntity
                     $this->email,
                     $this->phone,
                     $this->age
-                ], static::class);
+                ],
+                static::class
+            );
 
             $this->id = (int)$this->db->getPdo()->lastInsertId();
 
@@ -194,7 +196,9 @@ class Client extends BaseEntity
                     $this->phone,
                     $this->age,
                     $this->id
-                ], static::class);
+                ],
+                static::class
+            );
 
             return "Клиент с id: " . $this->id . ", успешно обновлен!" . PHP_EOL;
         } catch (Exception $e) {
@@ -210,8 +214,7 @@ class Client extends BaseEntity
     public function delete(): string
     {
         try {
-            $this->db->query("DELETE FROM clients WHERE id = ?",
-                [$this->id], static::class);
+            $this->db->query("DELETE FROM clients WHERE id = ?", [$this->id], static::class);
 
             return "Клиент с id: " . $this->id . ", успешно удален!" . PHP_EOL;
         } catch (Exception $e) {
