@@ -2,7 +2,5 @@
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-echo "Проверка redis!<br>".date("Y-m-d H:i:s") ."<br><br>";
-
-$application = new Skudashkin\Hw14\App();
+$application = new Skudashkin\Hw16\App();
 echo $application->runApp();

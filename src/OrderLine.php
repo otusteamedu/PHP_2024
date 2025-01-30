@@ -26,4 +26,26 @@ class OrderLine{
     #[ORM\Column(type:"decimal", precision:15, scale:2)]
     private string|null $count = null;
 
+    
+
+
+    /**
+     * Get the value of count
+     */ 
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Set the value of count
+     *
+     * @return  self
+     */ 
+    public function setCount($count)
+    {
+        $this->count = $count;
+
+        return $this;
+    }
 }

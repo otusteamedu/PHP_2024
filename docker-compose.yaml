@@ -34,6 +34,9 @@ services:
 
   app:
     image: php:8.3-fpm
+    build:
+       context: ./app
+       dockerfile: Dockerfile
     container_name: hw16-app
     depends_on:
       - db
