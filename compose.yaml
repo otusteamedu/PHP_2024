@@ -1,0 +1,17 @@
+services:
+  server:
+    build:
+      context: /services/php
+    container_name: server
+    volumes:
+      - ./data:/usr/src/chat
+    command: ["php","./app.php","server"]
+
+  client:
+    build:
+      context: /services/php
+    volumes:
+      - ./data:/usr/src/chat
+    container_name: client
+    depends_on:
+      - server

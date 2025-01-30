@@ -11,7 +11,7 @@ use Exception;
 class Server implements RunnableInterface
 {
     public function __construct(
-        private ?Socket $socket
+        private ?Socket $socket = null
     )
     {
         $this->socket ??= $this->initSocket();
@@ -20,20 +20,22 @@ class Server implements RunnableInterface
     public function run(): void
     {
         echo 'Starting server...' . PHP_EOL;
-        echo 'Init socket...' . PHP_EOL;
+        echo 'Wait for messages...' . PHP_EOL;
 
         while (true) {
             if (!socket_set_block($this->socket)) {
                 throw new Exception('Unable to set block socket');
             }
+            $from = '';
             $buffer = '';
-            echo 'Ready to read...' . PHP_EOL;
+            $port = 8082;
 
-            $bytes_received = socket_recvfrom($this->socket, $buffer, 65536, 0, $from);
-            if ($bytes_received == -1) {
+            $bytesReceived = socket_recvfrom($this->socket, $buffer, 65536, MSG_WAITALL, $from, $port);
+            echo $from . PHP_EOL;
+            if ($bytesReceived == -1) {
                 throw new Exception('An error occurred while reading from the socket');
             }
-            echo "Получено сообщение: \"$buffer\"" . PHP_EOL;
+            echo "Get message: \"$buffer\"" . PHP_EOL;
         }
     }
 
@@ -43,10 +45,24 @@ class Server implements RunnableInterface
             throw new Exception('Unable to create socket: ' . socket_strerror(socket_last_error()));
         }
 
-        if (socket_bind($socket, $_SERVER['DOCUMENT_ROOT'] . '/shared.sock')) {
+        if (!socket_bind($socket, $_SERVER['DOCUMENT_ROOT'] . '/shared.sock')) {
             throw new Exception('Unable to bind socket: ' . socket_strerror(socket_last_error()));
         }
 
         return $socket;
     }
+
+    private function destructSocket(): void
+    {
+        socket_close($this->socket);
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/shared.sock')) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . '/shared.sock');
+        }
+    }
+
+    public function __destruct()
+    {
+        $this->destructSocket();
+    }
+
 }
