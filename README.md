@@ -14,4 +14,4 @@ php bin/doctrine orm:schema-tool:drop --force
 
 2. php init_db.php - начальное заполнение данными
 
-3. http://mysite.local - App.php вывод сложного запроса
+3. http://mysite.local - App.php вывод сложного запроса Количество товаров за день
