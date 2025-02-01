@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: otus-hw4/nginx
+    container_name: otus-hw4-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw4-network
+
+  app1:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw4/php
+    container_name: app1
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw4-network
+
+  app2:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw4/php
+    container_name: app2
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw4-network
+
+  app3:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw4/php
+    container_name: app3
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw4-network
+
+  redis:
+    image: redis:latest
+    container_name: otus-hw4-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - otus-hw4-network
+
+networks:
+  otus-hw4-network:
+    driver: bridge
