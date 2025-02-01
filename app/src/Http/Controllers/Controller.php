@@ -7,7 +7,7 @@ namespace SlavaMakhov\OtusWebserversApp\Http\Controllers;
 class Controller
 {
     /**
-     * Метод отправляет json в ответ
+     * Метод отдает json в ответ
      *
      * @param array $data
      * @param int $code
@@ -20,6 +20,7 @@ class Controller
         header('Content-Type: application/json');
         $data['hostname'] = $_SERVER['HOSTNAME'];
         $data['session'] = $_SESSION;
-        exit(json_encode($data));
+
+        echo json_encode($data);
     }
 }
