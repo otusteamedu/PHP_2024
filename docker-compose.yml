@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: server-hw20
+    ports:
+      - "80:80"
+    volumes:
+      - ./app/:/var/www/html
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    container_name: app-hw20
+    env_file: .env
+    volumes:
+      - ./app/:/var/www/html
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: public.ecr.aws/docker/library/rabbitmq:3.13.7-management
+    container_name: rabbit
+    working_dir: /app
+    env_file: .env
+    ports:
+      - 15672:15672
+      - ${RABBIT_PORT}:5672
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
+    networks:
+      - app-network
+
+  redis:
+    image: redis:6.0.7
+    container_name: redis_db
+    restart: always
+    volumes:
+      - ./redis:/data/redis
+    networks:
+      - app-network
+    depends_on:
+      - helper
+
+  helper:
+    image: alpine
+    command: sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+    privileged: true
+
+networks:
+  app-network:
+    driver: bridge

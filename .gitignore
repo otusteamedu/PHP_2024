@@ -3,3 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+/.env
+/app/vendor/
+/app/composer.lock
+/app/composer.phar
