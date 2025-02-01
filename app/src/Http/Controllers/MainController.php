@@ -51,8 +51,12 @@ class MainController extends Controller
     {
         $counter = 0;
         foreach (str_split($string) as $letter) {
-            if ($letter == '(') ++$counter;
-            if ($letter == ')') --$counter;
+            if ($letter == '(') {
+                ++$counter;
+            }
+            if ($letter == ')') {
+                --$counter;
+            }
             if ($counter < 0) {
                 return false;
             }
