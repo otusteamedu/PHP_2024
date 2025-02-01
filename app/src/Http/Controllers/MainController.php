@@ -37,7 +37,7 @@ class MainController extends Controller
             $result = ['status' => 'error', 'message' => 'Validate failed!'];
         }
 
-        $this->sendJsonResponse($result, $code);
+        echo $this->sendJsonResponse($result, $code);
     }
 
     /**

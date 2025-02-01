@@ -12,15 +12,17 @@ class Controller
      * @param array $data
      * @param int $code
      *
-     * @return void
+     * @return string
      */
-    protected function sendJsonResponse(array $data, int $code = 200): void
+    protected function sendJsonResponse(array $data, int $code = 200): string
     {
+        header_remove();
         http_response_code($code);
         header('Content-Type: application/json');
+        header('Status: ' . $code);
         $data['hostname'] = $_SERVER['HOSTNAME'];
         $data['session'] = $_SESSION;
 
-        echo json_encode($data);
+        return json_encode($data);
     }
 }
