@@ -38,11 +38,13 @@ class App
      */
     protected function setSessionRedis(): void
     {
-        if (!isset($_SESSION)) {
-            session_start([
-                'save_handler' => $this->redisService->host,
-                'save_path' => $this->redisService->path
-            ]);
+        session_start([
+            'save_handler' => $this->redisService->host,
+            'save_path' => $this->redisService->path
+        ]);
+
+        if (!isset($_SESSION['key'])) {
+            $_SESSION['key'] = md5((string)strtotime(date('d-m-Y H:i:s')));
         }
     }
 }
