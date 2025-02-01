@@ -1,11 +1,14 @@
 <?php
 
 declare(strict_types=1);
-error_reporting(E_ALL);
-mb_internal_encoding("UTF-8");
 
-require 'autoload.php';
+use SlavaMakhov\OtusWebserversApp\App;
 
-echo "Привет, Otus!<br>".date("Y-m-d H:i:s")."<br><br>";
+require __DIR__ . '/vendor/autoload.php';
 
-echo "Запрос обработал контейнер: " . $_SERVER['HOSTNAME'];
+try {
+    $app = new App();
+    $app->run();
+} catch (Exception $e) {
+    echo 'Ошибка ' . $e->getCode() . ': ' . $e->getMessage() . PHP_EOL;
+}
