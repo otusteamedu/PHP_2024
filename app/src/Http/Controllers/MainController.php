@@ -24,9 +24,9 @@ class MainController extends Controller
      *
      * @param Request $request
      *
-     * @return
+     * @return void
      */
-    public function stringValidate(Request $request)
+    public function stringValidate(Request $request): void
     {
         $params = $request->params['post'];
         $code = 200;
