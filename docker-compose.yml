@@ -9,8 +9,8 @@ services:
     networks:
       - devweb
     volumes:
-      - ./WEB/www/:/var/www/html/
-      - ./WEB/www/logs/ngnix:/var/log/ngnix/
+      - ./WEB/htdocs/:/var/www/html/
+      - ./WEB/htdocs/logs/ngnix:/var/log/ngnix/
     depends_on:
       - php
 
@@ -20,8 +20,8 @@ services:
       context: ./WEB/php
       dockerfile: dockerfile
     volumes:
-     - ./WEB/www/:/var/www/html/
-     - ./WEB/www/logs/php.log:/var/log/fpm-php.www.log
+     - ./WEB/htdocs/:/var/www/html/
+     - ./WEB/htdocs/logs/php.log:/var/log/fpm-php.htdocs.log
     networks:
       - devweb
   php2:
@@ -30,8 +30,8 @@ services:
       context: ./WEB/php
       dockerfile: dockerfile
     volumes:
-      - ./WEB/www/:/var/www/html/
-      - ./WEB/www/logs/php.log:/var/log/fpm-php.www.log
+      - ./WEB/htdocs/:/var/www/html/
+      - ./WEB/htdocs/logs/php.log:/var/log/fpm-php.htdocs.log
     networks:
       - devweb
 
