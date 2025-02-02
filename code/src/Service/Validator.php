@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DudkinIv\TestPackage\Service;
 
 class Validator
-
 {
     public function validateString(string $string): bool
     {
@@ -20,15 +19,15 @@ class Validator
                 return false;
             }
             switch ($string[$i]) {
-                case "(";
+                case "(":
                     $count++;
                     break;
 
-                case ")";
+                case ")":
                     $count--;
                     break;
 
-                default;
+                default:
                     return false;
             }
         }
