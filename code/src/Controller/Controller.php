@@ -4,5 +4,4 @@ namespace DudkinIv\TestPackage\Controller;
 
 interface Controller
 {
-
 }

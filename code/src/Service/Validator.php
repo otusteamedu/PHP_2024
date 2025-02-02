@@ -23,7 +23,7 @@ class Validator
             return false;
         }
 
-        $email_domain = preg_replace('/^.+?@/', '', $email).'.';
+        $email_domain = preg_replace('/^.+?@/', '', $email) . '.';
         if (!checkdnsrr($email_domain)) {
             return false;
         }
