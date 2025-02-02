@@ -13,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('app:search', 'Search in Elasticsearch')]
 class SearchCommand extends Command
 {
-
     public function __construct(
         private readonly ElasticService $elasticService
     ) {
@@ -41,7 +40,7 @@ class SearchCommand extends Command
             $results = $this->elasticService->search($title, $price, $inComment, $page);
 
             $output->writeln("Search results:");
-            $output->writeln(json_encode($results, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES));
+            $output->writeln(json_encode($results, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
             return Command::SUCCESS;
         } catch (Exception $e) {

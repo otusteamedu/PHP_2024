@@ -38,7 +38,7 @@ class BulkCommand extends Command
             $document = json_decode(file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
 
             $result = $this->elasticService->bulk($document);
-            
+
             if ($result) {
                 $output->writeln('Document indexed successfully!');
             } else {

@@ -16,7 +16,7 @@ readonly class Kernel
     private Container $container;
     private Application $console;
 
-    function __construct()
+    public function __construct()
     {
         $this->boot();
     }
@@ -50,10 +50,10 @@ readonly class Kernel
         ]);
 
         if ($_ENV['APP_ENV'] === 'prod') {
-            $builder->enableCompilation(dirname(__DIR__, 2).'/var/cache');
-            $builder->writeProxiesToFile(true, dirname(__DIR__, 2).'/var/proxies');
+            $builder->enableCompilation(dirname(__DIR__, 2) . '/var/cache');
+            $builder->writeProxiesToFile(true, dirname(__DIR__, 2) . '/var/proxies');
         }
-        
+
         $this->container = $builder->build();
     }
 
@@ -61,7 +61,7 @@ readonly class Kernel
     {
         $this->console = new Application('Otus', '1.0');
 
-        foreach ($this->findCommands(dirname(__DIR__).'/Command') as $commandClass) {
+        foreach ($this->findCommands(dirname(__DIR__) . '/Command') as $commandClass) {
             $this->console->add($this->container->get($commandClass));
         }
     }
@@ -73,7 +73,7 @@ readonly class Kernel
 
         $commands = [];
         foreach ($finder as $file) {
-            $className = 'KRudenko\\Otus\\Command\\'.$file->getBasename('.php');
+            $className = 'KRudenko\\Otus\\Command\\' . $file->getBasename('.php');
             if (is_subclass_of($className, Command::class)) {
                 $commands[] = $className;
             }

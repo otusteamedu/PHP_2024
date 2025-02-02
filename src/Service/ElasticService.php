@@ -12,7 +12,8 @@ readonly class ElasticService
 {
     public function __construct(
         private Client $client
-    ) {}
+    ) {
+    }
 
     public function bulk(array $document): bool
     {
@@ -23,8 +24,8 @@ readonly class ElasticService
 
         try {
             return $this->client->bulk($params)->asBool();
-        } catch (ClientResponseException|ServerResponseException $e) {
-            throw new RuntimeException('Bulk failed: '.$e->getMessage());
+        } catch (ClientResponseException | ServerResponseException $e) {
+            throw new RuntimeException('Bulk failed: ' . $e->getMessage());
         }
     }
 

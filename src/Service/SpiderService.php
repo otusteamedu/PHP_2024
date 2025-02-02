@@ -31,7 +31,7 @@ class SpiderService
             'timeout' => 10,
         ]));
 
-        $this->outputFile = dirname(__DIR__, 2).'/files/books.json';
+        $this->outputFile = dirname(__DIR__, 2) . '/files/books.json';
     }
 
     public function run(OutputInterface $output, ?string $path): void
@@ -106,8 +106,10 @@ class SpiderService
     private function extractPrice(Crawler $crawler): ?float
     {
         try {
-            return (float)preg_replace('/[^0-9.]/', '',
-                $crawler->filter('meta[itemprop=price]')->attr('content')
+            return (float)preg_replace(
+                '/[^0-9.]/',
+                '',
+                $crawler->filter('meta[itemprop=price]')->attr('content'),
             );
         } catch (Exception) {
             return 0;
@@ -117,7 +119,9 @@ class SpiderService
     private function extractReviewsCount(Crawler $crawler): int
     {
         try {
-            return (int)preg_replace('/[^0-9]/', '',
+            return (int)preg_replace(
+                '/[^0-9]/',
+                '',
                 $crawler->filter('meta[itemprop=reviewCount]')->attr('content')
             );
         } catch (Exception) {
@@ -128,7 +132,9 @@ class SpiderService
     private function extractRating(Crawler $crawler): ?float
     {
         try {
-            return (float)preg_replace('/[^0-9.]/', '',
+            return (float)preg_replace(
+                '/[^0-9.]/',
+                '',
                 $crawler->filter('meta[itemprop=ratingValue]')->attr('content')
             );
         } catch (Exception) {

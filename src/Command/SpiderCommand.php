@@ -13,7 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('app:spider', 'Сбор данных о книгах с labirint.ru')]
 class SpiderCommand extends Command
 {
-
     protected function configure(): void
     {
         $this
@@ -30,10 +29,11 @@ class SpiderCommand extends Command
             (new SpiderService())->run($output, $path);
 
             $output->writeln('✅ Данные успешно сохранены');
-            return Command::SUCCESS;
 
+            return Command::SUCCESS;
         } catch (Exception $e) {
-            $output->writeln('<error>❌ Ошибка: '.$e->getMessage().'</error>');
+            $output->writeln('<error>❌ Ошибка: ' . $e->getMessage() . '</error>');
+
             return Command::FAILURE;
         }
     }

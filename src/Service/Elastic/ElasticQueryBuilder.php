@@ -12,7 +12,9 @@ class ElasticQueryBuilder
     private array $query = ['bool' => ['must' => [], 'filter' => []]];
     private int $from = 0;
 
-    public function __construct(private readonly Client $client) {}
+    public function __construct(private readonly Client $client)
+    {
+    }
 
     public function matchText(string $field, string $value): self
     {
@@ -70,8 +72,8 @@ class ElasticQueryBuilder
         try {
             $response = $this->client->search($this->build());
             return $response->asArray();
-        } catch (ClientResponseException|ServerResponseException $e) {
-            throw new RuntimeException('Search failed: '.$e->getMessage());
+        } catch (ClientResponseException | ServerResponseException $e) {
+            throw new RuntimeException('Search failed: ' . $e->getMessage());
         }
     }
 
