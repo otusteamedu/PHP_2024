@@ -7,7 +7,7 @@ namespace DudkinIv\TestPackage\Service;
 class Validator
 
 {
-    function validateString(string $string): bool
+    public function validateString(string $string): bool
     {
         if (empty($string)) {
             return false;
@@ -18,25 +18,18 @@ class Validator
         for ($i = 0; $i < strlen($string); $i++) {
             if ($count < 0) {
                 return false;
-
             }
             switch ($string[$i]) {
-                case "(":
-                {
+                case "(";
                     $count++;
                     break;
 
-                }
-                case ")":
-                {
+                case ")";
                     $count--;
                     break;
 
-                }
-                default:
-                {
+                default;
                     return false;
-                }
             }
         }
 
