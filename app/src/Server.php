@@ -38,18 +38,18 @@ class Server
         echo "Ожидание сообщений от клиента. Для выхода нажмите CTRL + C" . PHP_EOL;
 
         while (true) {
-            $message = $this->socketService->readMessage($this->socketService->client);
+            foreach ($this->socketService->readMessage($this->socketService->client) as $message) {
+                echo PHP_EOL . "Сообщение от клиента: {$message}" . PHP_EOL;
 
-            echo PHP_EOL . "Сообщение от клиента: {$message}" . PHP_EOL;
+                if ($message === 'exit') {
+                    break;
+                }
 
-            if ($message === 'exit') {
-                break;
+                $this->socketService->sendMessage(
+                    $this->socketService->client,
+                    PHP_EOL . 'Ответ от сервера: получено ' . strlen($message) . ' байт' . PHP_EOL
+                );
             }
-
-            $this->socketService->sendMessage(
-                $this->socketService->client,
-                PHP_EOL . 'Ответ от сервера: получено ' . strlen($message) . ' байт' . PHP_EOL
-            );
         }
 
         $this->socketService->closeSession();

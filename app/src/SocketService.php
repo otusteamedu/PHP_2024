@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SlavaMakhov\OtusChatSocketsApp;
 
 use Exception;
+use Generator;
 use Socket;
 
 class SocketService
@@ -30,7 +31,7 @@ class SocketService
         try {
             $this->socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
         } catch (Exception $e) {
-            throw new Exception('socket_create() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_create() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 
@@ -46,7 +47,7 @@ class SocketService
         try {
             socket_bind($this->socket, $this->file);
         } catch (Exception $e) {
-            throw new Exception('socket_bind() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_bind() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 
@@ -62,7 +63,7 @@ class SocketService
         try {
             socket_listen($this->socket, 1);
         } catch (Exception $e) {
-            throw new Exception('socket_listen() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_listen() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 
@@ -78,7 +79,7 @@ class SocketService
         try {
             $this->client = socket_accept($this->socket);
         } catch (Exception $e) {
-            throw new Exception('socket_accept() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_accept() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 
@@ -94,7 +95,7 @@ class SocketService
         try {
             socket_connect($this->socket, $this->file);
         } catch (Exception $e) {
-            throw new Exception('socket_connect() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_connect() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 
@@ -112,21 +113,24 @@ class SocketService
         try {
             return socket_write($socket, $message);
         } catch (Exception $e) {
-            throw new Exception('socket_write() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_write() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 
     /**
      * Метод принимает сообщения от указанного сокета
      *
+     * @param Socket $socket
+     *
+     * @return Generator
      * @throws Exception
      */
-    public function readMessage(Socket $socket): string
+    public function readMessage(Socket $socket): Generator
     {
         try {
-            return socket_read($socket, $this->length);
+            yield socket_read($socket, $this->length);
         } catch (Exception $e) {
-            throw new Exception('socket_read() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_read() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 
@@ -141,7 +145,7 @@ class SocketService
         try {
             socket_close($this->socket);
         } catch (Exception $e) {
-            throw new Exception('socket_close() failed: ' . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception('socket_close() failed: ' . socket_strerror(socket_last_error()) . PHP_EOL);
         }
     }
 

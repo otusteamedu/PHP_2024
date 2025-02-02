@@ -38,9 +38,13 @@ class Client
                     return;
                 }
 
-                echo $this->socketService->readMessage($this->socketService->socket);
+                foreach ($this->socketService->readMessage($this->socketService->socket) as $message) {
+                    echo $message;
+                }
             }
         }
+
+        $this->socketService->closeSession();
     }
 
     /**
