@@ -1,0 +1,10 @@
+{
+    "name": "dudkin_iv/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "DudkinIv\\TestPackage\\": "src/"
+        }
+    },
+    "require": {}
+}

@@ -1,3 +1,5 @@
+FROM composer:2.2 as composer_builder
+
 FROM php:7.4-fpm
 
 # ставим необходимые для нормальной работы модули
@@ -20,6 +22,8 @@ RUN apt-get update && apt-get install -y \
 RUN      pecl install redis \
          && docker-php-ext-enable redis
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
+
+COPY --from=composer_builder /usr/bin/composer /usr/bin/composer
 
 WORKDIR /data
 
