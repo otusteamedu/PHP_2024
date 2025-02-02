@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw5/php
+    container_name: server
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw5-network
+
+  client:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw5/php
+    container_name: client
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw5-network
+
+networks:
+  otus-hw5-network:
+    driver: bridge
