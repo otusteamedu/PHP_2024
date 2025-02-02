@@ -1,6 +1,6 @@
 FROM composer:2.2 as composer_builder
 
-FROM php:7.4-fpm
+FROM php:8.0-fpm
 
 # ставим необходимые для нормальной работы модули
 RUN apt-get update && apt-get install -y \
