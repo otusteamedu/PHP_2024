@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.17.1
+    container_name: elastic_book
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: book_shop
+    depends_on:
+      - elasticsearch
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+
+volumes:
+  es_data:
