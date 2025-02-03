@@ -10,7 +10,7 @@ class ListNode
     /** @var ListNode|null */
     public ?ListNode $next = null;
 
-    function __construct(?int $val = 0)
+    public function __construct(?int $val = 0)
     {
         $this->val = $val;
     }
@@ -22,7 +22,7 @@ class ListNode
      *
      * @return void
      */
-    function setNext(ListNode $next): void
+    public function setNext(ListNode $next): void
     {
         $this->next = $next;
     }
