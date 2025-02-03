@@ -18,6 +18,7 @@ class Client
     public function __construct(string $file, int $length)
     {
         $this->socketService = new SocketService($file, $length);
+        echo 'Введите свое сообщение ниже. Для выхода нажмите CTRL + C' . PHP_EOL;
     }
 
     /**
@@ -28,12 +29,13 @@ class Client
     public function run(): void
     {
         $this->socketService->socketConnect();
-        echo 'Введите свое сообщение ниже. Для выхода нажмите CTRL + C' . PHP_EOL;
 
         while (true) {
             foreach ($this->getMessages() as $msg) {
-                if (!$this->socketService->sendMessage($this->socketService->socket, $msg)) {
-                    echo 'Ошибка отправки сообщения! Сеанс завершен.' . PHP_EOL;
+                if (!$this->socketService->sendMessage(
+                    $this->socketService->socket,
+                    PHP_EOL . "Сообщение от клиента: {$msg}" . PHP_EOL
+                )) {
                     $this->socketService->closeSession();
                     return;
                 }

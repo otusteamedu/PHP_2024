@@ -21,6 +21,7 @@ class Server
     {
         $this->file = $file;
         $this->socketService = new SocketService($file, $length);
+        echo "Ожидание сообщений от клиента. Для выхода нажмите CTRL + C" . PHP_EOL;
     }
 
     /**
@@ -35,20 +36,21 @@ class Server
         $this->socketService->listen();
         $this->socketService->accept();
 
-        echo "Ожидание сообщений от клиента. Для выхода нажмите CTRL + C" . PHP_EOL;
-
         while (true) {
             foreach ($this->socketService->readMessage($this->socketService->client) as $message) {
-                echo PHP_EOL . "Сообщение от клиента: {$message}" . PHP_EOL;
-
                 if ($message === 'exit') {
                     break;
+                } else {
+                    echo $message;
                 }
 
-                $this->socketService->sendMessage(
+                if (!$this->socketService->sendMessage(
                     $this->socketService->client,
                     PHP_EOL . 'Ответ от сервера: получено ' . strlen($message) . ' байт' . PHP_EOL
-                );
+                )) {
+                    $this->socketService->closeSession();
+                    return;
+                }
             }
         }
 
