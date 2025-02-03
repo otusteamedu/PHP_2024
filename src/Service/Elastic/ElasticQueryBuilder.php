@@ -29,7 +29,7 @@ class ElasticQueryBuilder
     private function handleComplexCondition(array &$query, string $field, array $condition): void
     {
         foreach ($condition as $type => $value) {
-            match($type) {
+            match ($type) {
                 'match' => $query['bool']['must'][] = [
                     'match' => [
                         $field => [
@@ -53,7 +53,7 @@ class ElasticQueryBuilder
     {
         $query['bool']['must'][] = [
             'range' => [
-                $field => array_map(function($v) {
+                $field => array_map(function ($v) {
                     return is_numeric($v) ? (float)$v : $v;
                 }, $range)
             ]

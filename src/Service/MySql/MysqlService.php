@@ -6,7 +6,6 @@ use KRudenko\Otus\Service\SearchServiceInterface;
 
 class MysqlService implements SearchServiceInterface
 {
-
     public function bulk(array $document, string $index): bool
     {
         return true;
