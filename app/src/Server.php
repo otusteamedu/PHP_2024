@@ -44,10 +44,12 @@ class Server
                     echo $message;
                 }
 
-                if (!$this->socketService->sendMessage(
-                    $this->socketService->client,
-                    PHP_EOL . 'Ответ от сервера: получено ' . strlen($message) . ' байт' . PHP_EOL
-                )) {
+                if (
+                    !$this->socketService->sendMessage(
+                        $this->socketService->client,
+                        PHP_EOL . 'Ответ от сервера: получено ' . strlen($message) . ' байт' . PHP_EOL
+                    )
+                ) {
                     $this->socketService->closeSession();
                     return;
                 }

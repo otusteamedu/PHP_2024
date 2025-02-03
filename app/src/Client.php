@@ -32,10 +32,12 @@ class Client
 
         while (true) {
             foreach ($this->getMessages() as $msg) {
-                if (!$this->socketService->sendMessage(
-                    $this->socketService->socket,
-                    PHP_EOL . "Сообщение от клиента: {$msg}" . PHP_EOL
-                )) {
+                if (
+                    !$this->socketService->sendMessage(
+                        $this->socketService->socket,
+                        PHP_EOL . "Сообщение от клиента: {$msg}" . PHP_EOL
+                    )
+                ) {
                     $this->socketService->closeSession();
                     return;
                 }
