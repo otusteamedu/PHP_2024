@@ -1,3 +1,11 @@
-# PHP_2024
+https://leetcode.com/problems/linked-list-cycle/
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Сложность:
+O(1) — в лучшем случае если один из списков будет пуст.
+O(n) — в худшем случае каждый узел посещается один раз.
+
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
+
+Сложность:
+O(1) - если переданные параметры не проходят валидацию.
+O(n) - в худшем случае поскольку нам необходимо сохранить все возможные комбинации в выходном массиве.
