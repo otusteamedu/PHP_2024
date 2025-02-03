@@ -2,106 +2,61 @@
 
 namespace KRudenko\Otus\Service\Elastic;
 
-use Elastic\Elasticsearch\Client;
-use Elastic\Elasticsearch\Exception\ClientResponseException;
-use Elastic\Elasticsearch\Exception\ServerResponseException;
-use RuntimeException;
+use InvalidArgumentException;
 
 class ElasticQueryBuilder
 {
-    private array $query = ['bool' => ['must' => [], 'filter' => []]];
-    private int $from = 0;
-
-    public function __construct(private readonly Client $client)
+    public function buildQuery(array $criteria): array
     {
+        $query = ['bool' => ['must' => []]];
+
+        foreach ($criteria as $field => $condition) {
+            $this->addCondition($query, $field, $condition);
+        }
+
+        return ['query' => $query];
     }
 
-    public function matchText(string $field, string $value): self
+    private function addCondition(array &$query, string $field, $condition): void
     {
-        if (!empty($value)) {
-            $this->query['bool']['must'][] = [
-                'match' => [
-                    $field => [
-                        'query' => $value,
-                        'fuzziness' => 'AUTO'
+        if (is_array($condition)) {
+            $this->handleComplexCondition($query, $field, $condition);
+        } else {
+            $query['bool']['must'][] = ['term' => [$field => $condition]];
+        }
+    }
+
+    private function handleComplexCondition(array &$query, string $field, array $condition): void
+    {
+        foreach ($condition as $type => $value) {
+            match($type) {
+                'match' => $query['bool']['must'][] = [
+                    'match' => [
+                        $field => [
+                            'query' => $value,
+                            'fuzziness' => 'AUTO'
+                        ]
                     ]
-                ]
-            ];
+                ],
+                'in' => $query['bool']['must'][] = [
+                    'terms' => [
+                        $field => (array)$value
+                    ]
+                ],
+                'range' => $this->addRangeCondition($query, $field, $value),
+                default => throw new InvalidArgumentException("Неподдерживаемый тип условия: $type")
+            };
         }
-        return $this;
     }
 
-    public function filterRange(string $field, array $conditions): self
+    private function addRangeCondition(array &$query, string $field, array $range): void
     {
-        $range = [];
-        foreach ($conditions as $condition) {
-            $operator = $condition['operator'];
-            $value = $condition['value'];
-            $range[$operator] = $value;
-        }
-
-        if (!empty($range)) {
-            $this->query['bool']['filter'][] = [
-                'range' => [
-                    $field => $range
-                ]
-            ];
-        }
-        return $this;
-    }
-
-    public function paginate(int $page): self
-    {
-        $this->from = ($page - 1) * $_ENV['PAGE_SIZE'];
-
-        return $this;
-    }
-
-    public function build(): array
-    {
-        return [
-            'index' => $_ENV['ELASTIC_INDEX'],
-            'body'  => ['query' => $this->query],
-            'from'  => $this->from,
-            'size'  => $_ENV['PAGE_SIZE'],
+        $query['bool']['must'][] = [
+            'range' => [
+                $field => array_map(function($v) {
+                    return is_numeric($v) ? (float)$v : $v;
+                }, $range)
+            ]
         ];
-    }
-
-    public function execute(): array
-    {
-        try {
-            $response = $this->client->search($this->build());
-            return $response->asArray();
-        } catch (ClientResponseException | ServerResponseException $e) {
-            throw new RuntimeException('Search failed: ' . $e->getMessage());
-        }
-    }
-
-    public static function parsePriceConditions(array $prices): array
-    {
-        $conditions = [];
-        $operatorsMap = [
-            '=' => 'eq',
-            '>' => 'gt',
-            '<' => 'lt',
-            '>=' => 'gte',
-            '<=' => 'lte'
-        ];
-
-        foreach ($prices as $price) {
-            preg_match('/([<>=]{0,2})(\d+)/', $price, $matches);
-            $operator = $matches[1] ?: '=';
-            $value = (float)$matches[2];
-
-            $conditions[] = [
-                'operator' => $operatorsMap[$operator],
-                'value' => $value
-            ];
-            if (count($conditions) === 2) {
-                break;
-            }
-        }
-
-        return $conditions;
     }
 }

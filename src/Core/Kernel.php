@@ -7,6 +7,9 @@ use DI\ContainerBuilder;
 use Dotenv\Dotenv;
 use Elastic\Elasticsearch\Client;
 use KRudenko\Otus\Service\Elastic\ElasticClient;
+use KRudenko\Otus\Service\Elastic\ElasticService;
+use KRudenko\Otus\Service\MySql\MysqlService;
+use KRudenko\Otus\Service\SearchServiceInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Finder\Finder;
@@ -47,6 +50,12 @@ readonly class Kernel
 
         $builder->addDefinitions([
             Client::class => fn() => ElasticClient::getClient(),
+            SearchServiceInterface::class => function (Container $c) {
+                return $c->get(match ($_ENV['SEARCH_ENGINE']) {
+                    'mysql' => MysqlService::class,
+                    default => ElasticService::class,
+                });
+            },
         ]);
 
         if ($_ENV['APP_ENV'] === 'prod') {
