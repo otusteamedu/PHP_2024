@@ -22,10 +22,11 @@ class Solution
      * @param ListNode $head
      * @return Boolean
      */
-    public function hasCycle($head) {
+    public function hasCycle($head)
+    {
         $h = $head;
-        while($h) {
-            if($h->val === null) {
+        while ($h) {
+            if ($h->val === null) {
                 return true;
             }
             $h->val = null;

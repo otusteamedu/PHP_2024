@@ -9,13 +9,14 @@ namespace PavelMiasnov\Hw14\LetterCombinations;
  * Сложность по памяти: O(3^N * 4^M), т.к. сложность зависит от количества необходимых для хранения комбинаций.
  */
 
-class Solution {
-
+class Solution
+{
     /**
      * @param String $digits
      * @return String[]
      */
-    function letterCombinations($digits) {
+    public function letterCombinations($digits)
+    {
         if (empty($digits)) {
             return [];
         }
