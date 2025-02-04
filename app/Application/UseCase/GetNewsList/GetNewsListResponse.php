@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\UseCase\GetNewsList;
+namespace App\Application\UseCase\GetNewsList;
 
 class GetNewsListResponse
 {

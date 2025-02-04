@@ -1,8 +1,8 @@
 <?php
 
-namespace Domain\Factory;
+namespace App\Domain\Factory;
 
-use Domain\Entity\News;
+use App\Domain\Entity\News;
 
 interface NewsFactoryInterface
 {

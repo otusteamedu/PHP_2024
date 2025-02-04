@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Gateway;
+namespace App\Application\Gateway;
 
 interface NewsGatewayInterface
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Application\UseCase\AddNews;
+namespace App\Application\UseCase\AddNews;
 
-use Application\Gateway\NewsGatewayInterface;
-use Application\Gateway\NewsGatewayRequest;
-use Domain\Factory\NewsFactoryInterface;
-use Domain\Repository\NewsRepositoryInterface;
+use App\Application\Gateway\NewsGatewayInterface;
+use App\Application\Gateway\NewsGatewayRequest;
+use App\Domain\Factory\NewsFactoryInterface;
+use App\Domain\Repository\NewsRepositoryInterface;
 
 class AddNewsUseCase
 {

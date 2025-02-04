@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\ReportGenerator;
+namespace App\Domain\ReportGenerator;
 
 class ReportGeneratorResponse
 {

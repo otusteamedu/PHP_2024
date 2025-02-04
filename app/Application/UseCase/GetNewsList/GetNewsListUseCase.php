@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\UseCase\GetNewsList;
+namespace App\Application\UseCase\GetNewsList;
 
-use Domain\Repository\NewsRepositoryInterface;
+use App\Domain\Repository\NewsRepositoryInterface;
 
 class GetNewsListUseCase
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Domain\Repository;
+namespace App\Domain\Repository;
 
-use Domain\Entity\News;
+use App\Domain\Entity\News;
 
 interface NewsRepositoryInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Domain\Entity;
+namespace App\Domain\Entity;
 
-use Domain\ValueObject\Title;
-use Domain\ValueObject\Url;
+use App\Domain\ValueObject\Title;
+use App\Domain\ValueObject\Url;
 
 class News
 {
@@ -37,4 +37,18 @@ class News
         return $this->url;
     }
 
+    public function setDate(?\DateTime $date): void
+    {
+        $this->date = $date;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'date' => $this->date->format('Y-m-d'),
+            'title' => $this->title->getValue(),
+            'url' => $this->url->getValue(),
+        ];
+    }
 }

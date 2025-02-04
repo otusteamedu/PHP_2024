@@ -1,8 +1,8 @@
 <?php
 
-namespace Domain\ReportGenerator;
+namespace App\Domain\ReportGenerator;
 
-use Domain\Entity\News;
+use App\Domain\Entity\News;
 
 interface ReportGeneratorInterface
 {

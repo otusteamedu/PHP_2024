@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\UseCase\AddNews;
+namespace App\Application\UseCase\AddNews;
 
 class AddNewsRequest
 {

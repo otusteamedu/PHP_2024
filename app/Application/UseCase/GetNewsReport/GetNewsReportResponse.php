@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\UseCase\GetNewsReport;
+namespace App\Application\UseCase\GetNewsReport;
 
 class GetNewsReportResponse
 {

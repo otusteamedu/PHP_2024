@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\UseCase\GetNewsReport;
+namespace App\Application\UseCase\GetNewsReport;
 
-use Domain\ReportGenerator\ReportGeneratorInterface;
-use Domain\Repository\NewsRepositoryInterface;
+use App\Domain\ReportGenerator\ReportGeneratorInterface;
+use App\Domain\Repository\NewsRepositoryInterface;
 
 class GetNewsReportUseCase
 {
