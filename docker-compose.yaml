@@ -1,0 +1,32 @@
+#https://www.doctrine-project.org/projects/doctrine-orm/en/current/tutorials/getting-started.html
+name: hw19
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: hw19-nginx
+    ports:
+      - "80:80"
+    volumes:
+       - ./public:/data/mysite.local/public
+       - ./vendor:/data/mysite.local/vendor
+       - ./src:/data/mysite.local/src
+    networks:
+      - app-network
+  app:
+    image: php:8.3-fpm
+    container_name: hw19-app
+    volumes: 
+       - ./public:/data/mysite.local/public
+       - ./vendor:/data/mysite.local/vendor
+       - ./src:/data/mysite.local/src
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge

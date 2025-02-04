@@ -1,0 +1,17 @@
+{
+    "name": "skudashkin/hw19",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Skudashkin\\Hw19\\": "src/"
+        }   
+    },
+    "authors": [
+        {
+            "name": "sikudamobile",
+            "email": "ya.sikuda@yandex.ru"
+        }
+    ],
+    "require": {
+    }
+}
