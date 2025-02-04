@@ -8,11 +8,13 @@ class RedisStorage implements StorageInterface
 {
     private Client $redis;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->redis = new Client($_ENV['REDIS_HOST']);
     }
 
-    public function addEvent(array $event): int {
+    public function addEvent(array $event): int
+    {
         $id = $this->redis->incr('event:id');
         $key = "event:$id";
 
@@ -24,7 +26,8 @@ class RedisStorage implements StorageInterface
         return $id;
     }
 
-    public function clearEvents(): void {
+    public function clearEvents(): void
+    {
         $keys = $this->redis->keys('event:*');
         if (!empty($keys)) {
             $this->redis->del($keys);
@@ -32,11 +35,13 @@ class RedisStorage implements StorageInterface
         $this->redis->del('events:priorities', 'event:id');
     }
 
-    public function getAllEventsSortedByPriority(): array {
+    public function getAllEventsSortedByPriority(): array
+    {
         return $this->redis->zrevrange('events:priorities', 0, -1);
     }
 
-    public function getEventData(int $id): array {
+    public function getEventData(int $id): array
+    {
         $key = "event:$id";
         return [
             'conditions' => json_decode($this->redis->hget($key, 'conditions'), true),

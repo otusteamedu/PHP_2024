@@ -10,12 +10,14 @@ class MemcachedStorage implements StorageInterface
     private string $sortedEventsKey = 'events_sorted';
     private string $idCounterKey = 'event_id';
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->memcached = new Memcached();
         $this->memcached->addServer($_ENV['MEMCACHED_HOST'], $_ENV['MEMCACHED_PORT']);
     }
 
-    public function addEvent(array $event): int {
+    public function addEvent(array $event): int
+    {
         $id = $this->memcached->increment($this->idCounterKey, 1, 1);
         $key = "event:$id";
 
@@ -35,7 +37,8 @@ class MemcachedStorage implements StorageInterface
         return $id;
     }
 
-    public function clearEvents(): void {
+    public function clearEvents(): void
+    {
         $keys = [];
         foreach ($this->getAllEventKeys() as $id) {
             $keys[] = "event:$id";
@@ -45,11 +48,13 @@ class MemcachedStorage implements StorageInterface
         $this->memcached->delete($this->idCounterKey);
     }
 
-    public function getAllEventsSortedByPriority(): array {
+    public function getAllEventsSortedByPriority(): array
+    {
         return $this->getSortedEvents();
     }
 
-    public function getEventData(int $id): array {
+    public function getEventData(int $id): array
+    {
         $data = json_decode($this->memcached->get("event:$id"), true);
         return [
             'conditions' => $data['conditions'],
@@ -58,12 +63,14 @@ class MemcachedStorage implements StorageInterface
         ];
     }
 
-    private function getSortedEvents(): array {
+    private function getSortedEvents(): array
+    {
         $sorted = json_decode($this->memcached->get($this->sortedEventsKey), true) ?? [];
         return array_filter($sorted, fn($id) => $this->memcached->get("event:$id") !== false);
     }
 
-    private function getAllEventKeys(): array {
+    private function getAllEventKeys(): array
+    {
         return $this->getSortedEvents();
     }
 }

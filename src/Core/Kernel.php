@@ -9,7 +9,7 @@ use KRudenko\Otus\Service\Storage\RedisStorage;
 
 class Kernel
 {
-    function __construct()
+    public function __construct()
     {
         $this->boot();
     }
@@ -26,7 +26,7 @@ class Kernel
 
         switch ($command) {
             case 'add':
-                $options = $this->get_opt();
+                $options = $this->getOpt();
                 $id = $eventSystem->addEvent([
                     'priority' => (int)$options['priority'] ?? 0,
                     'conditions' => json_decode($options['conditions'] ?? '{}', true),
@@ -39,7 +39,7 @@ class Kernel
                 return "All events cleared\n";
 
             case 'find':
-                $options = $this->get_opt();
+                $options = $this->getOpt();
                 $result = $eventSystem->findBestEvent(
                     json_decode($options['params'] ?? '{}', true)
                 );
@@ -64,7 +64,7 @@ class Kernel
         $dotenv->load();
     }
 
-    private function get_opt(): array
+    private function getOpt(): array
     {
         $options = array();
         foreach (array_slice($_SERVER["argv"], 2) as $arg) {
