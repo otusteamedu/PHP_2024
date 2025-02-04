@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: otus_storage
+    depends_on:
+      - redis
+      - memcached
+      - hazelcast
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+
+  hazelcast:
+    image: hazelcast/hazelcast:5.3.0
+    ports:
+      - "5701:5701"
+    environment:
+      - JAVA_OPTS=-Dhazelcast.local.publicAddress=hazelcast:5701
