@@ -23,5 +23,4 @@ class Url
             throw new \InvalidArgumentException('Invalid url: ' . $value);
         }
     }
-
 }

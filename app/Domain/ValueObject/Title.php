@@ -23,5 +23,4 @@ class Title
             throw new \InvalidArgumentException('Invalid title: ' . $value);
         }
     }
-
 }

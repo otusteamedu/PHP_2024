@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Storage;
 
 class InFileSummaryGenerator implements ReportGeneratorInterface
 {
-
     /**
      * @inheritDoc
      */
