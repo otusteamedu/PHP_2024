@@ -19,5 +19,4 @@ class GetNewsListUseCase
         // Сформировать и вернуть ответ
         return new GetNewsListResponse($newsList);
     }
-
 }

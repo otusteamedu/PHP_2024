@@ -8,5 +8,4 @@ class GetNewsListResponse
         public readonly array $newsList
     ) {
     }
-
 }

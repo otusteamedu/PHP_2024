@@ -9,7 +9,6 @@ use App\Domain\ValueObject\Url;
 
 class NewsFactory implements NewsFactoryInterface
 {
-
     public function create(string $url, string $title): News
     {
         return new News(
