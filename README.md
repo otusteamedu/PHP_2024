@@ -42,5 +42,32 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 3) Для хранения сущностей вы можете использовать БД или файловую систему, это не принципиально, но — см. предыдущее замечание.
 
 ## Решение
+За основу сервиса взят фреймворк Laravel 11. Для запуска используются docker-контейнеры. 
+Для хранения данных используется БД MySQL. В качестве веб-сервера использован Nginx.
+Имя сайта, прописанное в конфигурации mysite.local
+
+### Установка
+1. Склонировать себе сервис (git clone)
+2. Запустить контейнеры (docker-compose up -d --build)
+3. Сделать привязку в файле hosts домена mysite.local к 127.0.0.1
+Дальнейшие команды выполняются внутри контейнера php-fpm.
+4. Зайти внутрь контейнера (docker-compose exec php-fpm bash)
+5. Установить библиотеки composer (composer install)
+6. Создать и заполнить файл .env (лучше просто сделать копию с файла env.example)
+7. Обновить конфигурацию (php artisan optimize) 
+8. Запустить миграцию для создания БД и таблицы (php artisan migrate)
+
+### Работа с сервисом
+Сервис предоставляет апи (для упрощения работы через браузер сделал все апи методами GET):
+- GET api/v1/news/add?url=<ur> - добавить новость
+- GET api/v1/news - получить список всех новостей
+- GET api/v1/news/summary - cформировать сводный отчет
+
 
 ### Примеры запросов
+GET http://mysite.local/api/v1/news/add?url=https://google.com
+
+GET http://mysite.local/api/v1/news/
+
+GET http://mysite.local/api/v1/news/summary?ids[]=2&ids[]=5
+
