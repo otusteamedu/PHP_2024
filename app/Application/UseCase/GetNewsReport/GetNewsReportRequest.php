@@ -8,5 +8,4 @@ class GetNewsReportRequest
         public readonly array $ids
     ) {
     }
-
 }

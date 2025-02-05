@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-
     /**
      * @param GetNewsListUseCase $getNewsListUseCase
      * @param AddNewsUseCase $addNewsUseCase
@@ -22,8 +21,7 @@ class ApiController extends Controller
         public readonly GetNewsListUseCase $getNewsListUseCase,
         public readonly AddNewsUseCase $addNewsUseCase,
         public readonly GetNewsReportUseCase $getNewsReportUseCase,
-    )
-    {
+    ) {
     }
 
     /**
@@ -33,9 +31,11 @@ class ApiController extends Controller
     {
         $newsList = ($this->getNewsListUseCase)();
 
-        return response()->json(array_map(
-            static fn ($item) => $item->toArray(),
-            $newsList->newsList)
+        return response()->json(
+            array_map(
+                static fn($item) => $item->toArray(),
+                $newsList->newsList
+            )
         );
     }
 

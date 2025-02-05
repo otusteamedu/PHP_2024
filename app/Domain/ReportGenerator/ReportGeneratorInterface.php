@@ -6,7 +6,6 @@ use App\Domain\Entity\News;
 
 interface ReportGeneratorInterface
 {
-
     /**
      * @param News[] $news
      * @return ReportGeneratorResponse

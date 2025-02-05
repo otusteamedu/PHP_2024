@@ -24,5 +24,4 @@ class GetNewsReportUseCase
         // Сформировать и вернуть ответ
         return new GetNewsReportResponse($reportGeneratorResponse->link);
     }
-
 }

@@ -8,5 +8,4 @@ class GetNewsReportResponse
         public readonly string $link,
     ) {
     }
-
 }
