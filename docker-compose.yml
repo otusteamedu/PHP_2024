@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw19/php
+    container_name: app
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw19-network
+
+networks:
+  otus-hw19-network:
+    driver: bridge

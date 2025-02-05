@@ -1,3 +1,9 @@
-# PHP_2024
+https://leetcode.com/problems/fraction-to-recurring-decimal/
 
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+Сложность:
+O(n) - где n - знаменатель, чем больше n, тем больше нужно будет пройтись.
+
+https://leetcode.com/problems/intersection-of-two-linked-lists/
+
+Сложность:
+O(M+N) - где M длина первого списка,а N длина второго списка.
