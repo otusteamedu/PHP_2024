@@ -1,0 +1,6 @@
+<b>{{ title }}</b>
+{% if items != null %}
+{% for key, item in items %}
+<b>{{ loop.index }}. {{ item.title }}</b> ({{ item.firstName }}, {{ item.date }})
+{% endfor %}
+{% endif %}

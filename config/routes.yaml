@@ -1,0 +1,10 @@
+controllers:
+  resource:
+    path: ../src/Controller/
+    namespace: App\Controller
+  type: attribute
+
+shopping_together_bot_web_hook:
+  path: '%shopping_together_bot_web_hook_rout%'
+  methods: POST
+  controller: App\Controller\WebHook\Controller::create

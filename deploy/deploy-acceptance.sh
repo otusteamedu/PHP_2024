@@ -1,0 +1,1 @@
+docker exec -i php-telegram-bot-prod sh -c "php vendor/bin/codecept run Acceptance"

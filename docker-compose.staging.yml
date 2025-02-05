@@ -1,0 +1,77 @@
+services:
+
+  php-fpm:
+    build: docker
+    container_name: ${PHP_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    environment:
+      - "XDEBUG_MODE=coverage"
+    volumes:
+      - ./:/app
+    networks:
+      - telegram-bot-dev
+
+  nginx:
+    image: nginx
+    container_name: ${NGINX_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    volumes:
+      - ./:/app
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/ssl:/etc/nginx/ssl
+    networks:
+      - telegram-bot-dev
+    depends_on:
+      - php-fpm
+      - postgres
+
+  postgres:
+    image: postgres:15
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - dump-telegram-bot:/app/dump
+      - postgresql-telegram-bot:/var/lib/postgresql/data
+    networks:
+      - telegram-bot-dev
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: ${RABBITMQ_HOST}
+    working_dir: /app
+    restart: always
+    hostname: ${RABBITMQ_HOST}
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASSWORD}"
+    networks:
+      - telegram-bot-dev
+
+  supervisor:
+    build: docker/supervisor
+    container_name: ${SUPERVISOR_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+    command: [ "supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
+    networks:
+      - telegram-bot-dev
+
+networks:
+  telegram-bot-dev:
+    driver: bridge
+
+volumes:
+  php-fpm:
+  nginx:
+  postgresql-telegram-bot:
+  dump-telegram-bot:

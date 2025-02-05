@@ -1,0 +1,35 @@
+framework:
+    messenger:
+#        buses:
+#            messenger.bus.default:
+#                middleware:
+#                    - doctrine_ping_connection
+#                    - doctrine_close_connection
+#                    - doctrine_transaction
+        transports:
+#            async: "%env(MESSENGER_TRANSPORT_DSN)%"
+#            async: "%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%"
+#                doctrine:
+
+#            doctrine:
+#                dsn: "%env(MESSENGER_DOCTRINE_TRANSPORT_DSN)%"
+#                serializer: 'messenger.transport.symfony_serializer'
+
+#        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            # async: '%env(MESSENGER_TRANSPORT_DSN)%'
+            # failed: 'doctrine://default?queue_name=failed'
+#        sync: 'sync://'
+
+#        routing:
+            # Route your messages to the transports
+#             'App\Domain\DTO\Notification\SmsNotificationInterface': async
+#                App\Domain\DTO\Notification\*: doctrine
+
+# when@test:
+#    framework:
+#        messenger:
+#            transports:
+#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
+#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+#                async: 'in-memory://'

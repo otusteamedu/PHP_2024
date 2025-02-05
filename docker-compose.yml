@@ -1,0 +1,81 @@
+services:
+
+  php-fpm:
+    build: docker
+    container_name: ${PHP_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    environment:
+      - "XDEBUG_MODE=coverage"
+    volumes:
+      - ./:/app
+      - /etc/letsencrypt/live/montigomo.ru/:/etc/letsencrypt/live/montigomo.ru/
+    networks:
+      - telegram-bot
+
+  nginx:
+    image: nginx
+    container_name: ${NGINX_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    ports:
+      - "${APP_HTTPS_PORT}:443"
+      - "${APP_HTTP_PORT}:80"
+    volumes:
+      - ./:/app
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/letsencrypt/:/etc/letsencrypt/
+    networks:
+      - telegram-bot
+    depends_on:
+      - php-fpm
+      - postgres
+
+  postgres:
+    image: postgres:15
+    container_name: ${POSTGRES_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    environment:
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - dump-telegram-bot:/app/dump
+      - postgresql-telegram-bot:/var/lib/postgresql/data
+    networks:
+      - telegram-bot
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: ${RABBITMQ_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    hostname: ${RABBITMQ_CONTAINER_NAME}
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_PASSWORD}"
+    networks:
+      - telegram-bot
+
+  supervisor:
+    build: docker/supervisor
+    container_name: ${SUPERVISOR_CONTAINER_NAME}
+    working_dir: /app
+    restart: always
+    volumes:
+      - ./:/app
+      - ./docker/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf
+    command: [ "supervisord", "-c", "/etc/supervisor/supervisord.conf" ]
+    networks:
+      - telegram-bot
+
+networks:
+  telegram-bot:
+    driver: bridge
+
+volumes:
+  php-fpm:
+  nginx:
+  postgresql-telegram-bot:
+  dump-telegram-bot:

@@ -1,0 +1,19 @@
+# Codeception Acceptance Test Suite Configuration
+#
+# Perform tests in a browser by either emulating one using PhpBrowser, or in a real browser using WebDriver.
+# If you need both WebDriver and PhpBrowser tests, create a separate suite for each.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - REST:
+              # url: https://localhost:8000
+#              url: http://%SERVER_URL%
+              url: %SERVER_URL%%SHOPPING_TOGETHER_BOT_WEB_HOOK_ROUT%
+              depends: PhpBrowser
+              part: Json
+# Add Codeception\Step\Retry trait to AcceptanceTester to enable retries
+step_decorators:
+    - Codeception\Step\ConditionalAssertion
+    - Codeception\Step\TryTo
+    - Codeception\Step\Retry

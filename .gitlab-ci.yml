@@ -1,0 +1,81 @@
+stages:
+  - staging
+  - tests
+  - deploy
+  - acceptance
+  - rollback
+
+before_script:
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  - export DIR=$(date +%Y%m%d_%H%M%S)
+
+staging_server:
+  stage: staging
+  environment:
+    name: server
+    url: $SERVER_URL
+  script:
+    - ssh $SSH_USER@$SERVER_URL "sudo rm -rf /var/www/telegram-bot/staging &&
+      cd /var/www/telegram-bot &&
+      git clone $REPOSITORY_URL staging &&
+      sudo chown www-data:www-data staging -R &&
+      cd staging &&
+      sudo chmod 777 tests/_output -R &&
+      sh ./deploy/deploy-staging.sh $APP_ENV_DEV $SERVER_NAME_DEV"
+  only:
+  - master
+
+staging_tests:
+  stage: tests
+  environment:
+    name: server
+    url: $SERVER_URL
+  script:
+    - ssh $SSH_USER@$SERVER_URL "cd /var/www/telegram-bot/staging && 
+      sudo chmod 777 tests/_output -R  &&
+      sh ./deploy/deploy-tests.sh"
+  only:
+  - master    
+
+deploy_server:
+  stage: deploy
+  environment:
+    name: server
+    url: $SERVER_URL
+  script:
+    - ssh $SSH_USER@$SERVER_URL "cd /var/www/telegram-bot && 
+      mkdir $DIR &&
+      cd $DIR &&
+      git clone $REPOSITORY_URL production &&   
+      sudo chown www-data:www-data production -R &&
+      cd production &&        
+      sh ./deploy/deploy-production.sh $APP_ENV_PROD $SERVER_NAME_PROD &&
+      ( [ ! -d /var/www/telegram-bot/current ] || mv -Tf /var/www/telegram-bot/current /var/www/telegram-bot/previous ) &&
+      sudo ln -s /var/www/telegram-bot/$DIR /var/www/telegram-bot/current"
+  only:
+    - master
+
+acceptance_tests:
+  stage: acceptance
+  environment:
+    name: server
+    url: $SERVER_URL
+  script:
+    - ssh $SSH_USER@$SERVER_URL "cd /var/www/telegram-bot/current/production && 
+      sudo chmod 777 tests/_output -R  &&
+      sh ./deploy/deploy-acceptance.sh"
+  only:
+  - master    
+
+rollback:
+  stage: rollback
+  script:
+    - ssh $SSH_USER@$SERVER_URL "unlink /var/www/telegram-bot/current &&
+      mv -Tf /var/www/telegram-bot/previous /var/www/telegram-bot/current &&
+      cd /var/www/telegram-bot/current/production &&
+      sh ./deploy/deploy-rollback.sh $SERVER_URL"
+  when: manual  
+  

@@ -1,0 +1,52 @@
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+
+parameters:
+    app_env:                              '%env(APP_ENV)%'
+    site_url:                             '%env(SITE_URL)%'
+    shopping_together_bot_web_hook_rout:  '%env(SHOPPING_TOGETHER_BOT_WEB_HOOK_ROUT)%'
+    shopping_together_bot_telegram_token: '%env(SHOPPING_TOGETHER_BOT_TELEGRAM_TOKEN)%'
+
+    bot_message_log_path:                  var/log/%env(APP_ENV)%.bot_message/bot_message
+    bot_command_log_path:                  var/log/%env(APP_ENV)%.bot_command/bot_command
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Domain/Entity/'
+            - '../src/Kernel.php'
+
+    App\Infrastructure\Bus\RabbitMqBus:
+        calls:
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::ChatUpdate,  '@old_sound_rabbit_mq.chat_update_producer' ] ]
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::SendMessage, '@old_sound_rabbit_mq.send_message_producer' ] ]
+            - [ 'registerProducer', [ !php/enum App\Infrastructure\Bus\AmqpExchangeEnum::EditMessage, '@old_sound_rabbit_mq.edit_message_producer' ] ]
+
+#### Symfony/Doctrine-messenger
+    App\Controller\SyncNotification\NotificationHandler:
+        tags:
+            -
+                name: messenger.message_handler
+                handles: App\Domain\DTO\Notification\UpdateNotification
+####
+
+#### инъекция зависимости без конструктора
+#    message_repository:
+#        class: App\Infrastructure\Repository\MessageRepository
+#
+#    App\Domain\Service\MessageService:
+#        calls:
+#            - setMessageRepository: ['@message_repository']
+
+#    message_service:
+#        class: App\Domain\Service\MessageService
+#
+#    App\Application\EventListener\ShowCommandCallListener:
+#        calls:
+#            - setMessageService: ['@message_service']
+####
