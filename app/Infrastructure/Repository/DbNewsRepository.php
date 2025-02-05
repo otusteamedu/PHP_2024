@@ -11,13 +11,11 @@ use ReflectionProperty;
 
 class DbNewsRepository implements NewsRepositoryInterface
 {
-
     const TABLE_NAME = 'news';
 
     public function __construct(
         private readonly NewsFactoryInterface $newsFactory
-    )
-    {
+    ) {
     }
 
     /**

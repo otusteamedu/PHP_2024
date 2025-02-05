@@ -12,8 +12,7 @@ class News
 
     public function __construct(private readonly Title $title,
                                 private readonly Url $url
-    )
-    {
+    ) {
         $this->date = new \DateTime();
     }
 

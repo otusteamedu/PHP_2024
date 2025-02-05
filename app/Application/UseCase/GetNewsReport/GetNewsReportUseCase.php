@@ -10,8 +10,7 @@ class GetNewsReportUseCase
     public function __construct(
         private readonly NewsRepositoryInterface $newsRepository,
         private readonly ReportGeneratorInterface $reportGenerator,
-    )
-    {
+    ) {
     }
 
     public function __invoke(GetNewsReportRequest $request): GetNewsReportResponse

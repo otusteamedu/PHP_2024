@@ -13,8 +13,7 @@ class AddNewsUseCase
         private readonly NewsFactoryInterface    $newsFactory,
         private readonly NewsRepositoryInterface $newsRepository,
         private readonly NewsGatewayInterface    $newsGateway
-    )
-    {
+    ) {
     }
 
     public function __invoke(AddNewsRequest $request): AddNewsResponse
@@ -32,5 +31,4 @@ class AddNewsUseCase
         // Сформировать и вернуть ответ
         return new AddNewsResponse($news->getId());
     }
-
 }

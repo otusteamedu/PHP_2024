@@ -6,8 +6,7 @@ class GetNewsReportRequest
 {
     public function __construct(
         public readonly array $ids
-    )
-    {
+    ) {
     }
 
 }
