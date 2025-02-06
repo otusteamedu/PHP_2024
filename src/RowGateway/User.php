@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 //https://github.com/ab-budaev/otus-php-database-patterns-lesson/blob/master/src/RowGateway/User.php
-namespace SKudashkin\hw16;
+namespace Skudashkin\Hw16\RowGateway;
 
 use PDO;
 use PDOStatement;

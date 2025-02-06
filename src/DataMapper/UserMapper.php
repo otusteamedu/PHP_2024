@@ -3,8 +3,7 @@
 declare(strict_types=1);
 
 //https://github.com/ab-budaev/otus-php-database-patterns-lesson/blob/master/src/DataMapper/User.php
-namespace SKudashkin\hw16;
-
+namespace Skudashkin\Hw16\DataMapper;
 
 use PDO;
 use PDOStatement;
