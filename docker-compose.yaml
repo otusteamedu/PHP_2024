@@ -19,8 +19,6 @@ services:
   db:
     image: mysql:latest
     container_name: hw16-db
-    #volumes:
-    #  - db_data:/var/lib/mysql
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=otus
