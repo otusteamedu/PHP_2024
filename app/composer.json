@@ -1,0 +1,17 @@
+{
+    "name": "slava-makhov/otus-redis-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SlavaMakhov\\OtusRedisApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SlavaMakhov"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
