@@ -28,18 +28,32 @@ class App
        }
 
         $userTableGateway = new \Skudashkin\Hw16\TableGateway\User($PDO);
-        $userTableGateway->insert('RowGateway','','');
+        $userTableGateway->insert('TableGateway','','');
         
         $userRowGateway = new \Skudashkin\Hw16\RowGateway\User($PDO);
         $userRowGateway->setFirstName('RowGateway');
-        $userRowGateway->update();
+        $userRowGateway->insert();
 
         $activeRecordUser = new \Skudashkin\Hw16\ActiveRecord\User($PDO);
         $activeRecordUser->setFirstName('activeRecordUser');
         $activeRecordUser->setEmail('test@test.com');
+        $activeRecordUser->insert();
 
         $user = (new \Skudashkin\Hw16\DataMapper\UserMapper($PDO))->findById(1);
         echo $user->getFirstName();
+
+        $mapperIMap = new \Skudashkin\Hw16\DataMapper\UserMapper($PDO);
+        $User = $mapperIMap->findById(1);
+        $User->setFirstName('UserMapper');
+        $mapperIMap->update($User);
+        $User2 = $mapperIMap->findById(1);
+        if($User == $User2){
+            echo "- Они одинаковы получены из массива";
+        }
+        else{
+            echo "- Они не одинаковы не получены из массива";
+        }
+
         
     }   
 
