@@ -10,7 +10,9 @@ require __DIR__ . "/vendor/autoload.php";
  */
 function createListNode(array $values, int $pos): ?ListNode
 {
-    if (empty($values)) return null;
+    if (empty($values)) {
+        return null;
+    }
 
     $head = new ListNode($values[0]);
     $current = $head;
