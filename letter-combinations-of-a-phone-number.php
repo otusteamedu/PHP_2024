@@ -1,6 +1,5 @@
 <?php
 
-
 use KRudenko\Otus\LetterCombinationsOfAPhoneNumber\Solution;
 
 require __DIR__ . "/vendor/autoload.php";

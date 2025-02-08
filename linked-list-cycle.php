@@ -8,7 +8,8 @@ require __DIR__ . "/vendor/autoload.php";
 /**
  * Генерирует связный список. Если $pos передать -1, то будет список без цикла.
  */
-function createListNode(array $values, int $pos): ?ListNode {
+function createListNode(array $values, int $pos): ?ListNode
+{
     if (empty($values)) return null;
 
     $head = new ListNode($values[0]);
@@ -57,12 +58,12 @@ $testCases = [
         'name' => 'Маленький цикл (2 -> 1)'
     ],
     [
-        'list' => createListNode([-21,10,17,8,4,26,5,35,33,-7,-16,27,-12,6,29,-12,5,9,20,14,14,2,13,-24,21,23,-21,5], -1),
+        'list' => createListNode([-21, 10, 17, 8, 4, 26, 5, 35, 33, -7, -16, 27, -12, 6, 29, -12, 5, 9, 20, 14, 14, 2, 13, -24, 21, 23, -21, 5], -1),
         'expected' => false,
         'name' => 'Большой список без цикла с повторениями значений'
     ],
     [
-        'list' => createListNode([-21,10,17,8,4,26,5,35,33,-7,-16,27,-12,6,29,-12,5,9,20,14,14,2,13,-24,21,23,-21,5], 5),
+        'list' => createListNode([-21, 10, 17, 8, 4, 26, 5, 35, 33, -7, -16, 27, -12, 6, 29, -12, 5, 9, 20, 14, 14, 2, 13, -24, 21, 23, -21, 5], 5),
         'expected' => true,
         'name' => 'Большой список с циклом с повторениями значений'
     ]

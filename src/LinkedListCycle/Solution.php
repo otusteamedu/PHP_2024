@@ -4,7 +4,7 @@ namespace KRudenko\Otus\LinkedListCycle;
 
 class Solution
 {
-    function hasCycle(?ListNode $head): bool
+    public function hasCycle(?ListNode $head): bool
     {
         if (!$head || !$head->next) {
             return false;

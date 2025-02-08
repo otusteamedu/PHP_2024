@@ -7,7 +7,7 @@ class Solution
     /**
      * @return string[]
      */
-    function letterCombinations(string $digits): array
+    public function letterCombinations(string $digits): array
     {
         if (empty($digits)) {
             return [];
