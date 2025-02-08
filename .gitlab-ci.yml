@@ -1,0 +1,39 @@
+stages:
+  - test
+  - deploy
+  - rollback
+
+
+deploy-job:
+  stage: deploy
+  only:
+    - main # этот job выполняется только на основной ветке
+  script:
+    - echo "Deploying to VPS..."
+    - cd /var/www/health-diary  # Переходим в директорию проекта
+    - git pull  # Обновляем код
+    - ./deploy.sh  # Запускаем скрипт деплоя
+    - ./reload.sh  # Перечитываем конфиги сервисов
+  tags:
+    - deploy
+
+test-job:
+  stage: test
+  script:
+    - echo "Running tests 1..."
+    # команды для запуска тестов
+  tags:
+    - deploy
+
+rollback-job:
+  stage: rollback
+  only:
+    - main
+  script:
+    - echo "Rolling back on VPS..."
+    - cd /var/www/health-diary  # Переходим в директорию проекта
+    - ./rollback.sh  # Запускаем скрипт отката
+    - ./reload.sh  # Перечитываем конфиги сервисов
+  when: manual  # Запуск в ручном режиме
+  tags:
+    - deploy
