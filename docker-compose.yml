@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  php-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: otus-php-app
+    volumes:
+      - .:/var/www
