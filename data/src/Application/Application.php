@@ -12,7 +12,7 @@ class Application
 {
     public function __construct(
         private ApplicationTypes $appType = ApplicationTypes::Client,
-        private readonly ContainerInterface $container = new Container,
+        private readonly ContainerInterface $container = new Container(),
     ) {
         $this->configurate();
     }
