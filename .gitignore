@@ -1,0 +1,6 @@
+.idea/
+.vscode/
+logs/*.log
+context/composer/composer.lock
+.DS_Store
+Thumbs.db
