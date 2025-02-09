@@ -39,22 +39,29 @@ class App
         $activeRecordUser->setEmail('test@test.com');
         $activeRecordUser->insert();
 
-        $user = (new \Skudashkin\Hw16\DataMapper\UserMapper($PDO))->findById(1);
-        echo $user->getFirstName();
+        $numFind = 13;    
+        $user = (new \Skudashkin\Hw16\DataMapper\UserMapper($PDO))->findById($numFind);
+        $name1 = $user->getFirstName();
+        echo '<br>get User by id=1'.$name1;
 
-        $mapperIMap = new \Skudashkin\Hw16\DataMapper\UserMapper($PDO);
-        $User = $mapperIMap->findById(1);
-        $User->setFirstName('UserMapper');
-        $mapperIMap->update($User);
-        $User2 = $mapperIMap->findById(1);
-        if($User == $User2){
-            echo "- Они одинаковы получены из массива";
+        $mapperIMap = new \Skudashkin\Hw16\DataMapper\UserMapperIMap($PDO);
+        $user1 = $mapperIMap->findById($numFind);
+        $user1
+          ->setFirstName('UserMapperImap')
+          ->setLastName('from TableGateway');
+        $mapperIMap->update($user1);
+        $name2 = $user1->getFirstName();
+        echo '<br>get User by id=1'.$name2;
+
+        echo '<br> get another user  by id=1 bi IMapIdentify';
+        $user2 = $mapperIMap->findById($numFind);
+        
+        if($user1 === $user1){
+            echo "<br>- Они одинаковы получены из IMap";
         }
         else{
-            echo "- Они не одинаковы не получены из массива";
-        }
-
-        
+            echo "<br>- Они не одинаковы";
+        }    
     }   
 
 }

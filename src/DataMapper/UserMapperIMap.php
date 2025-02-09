@@ -8,7 +8,7 @@ namespace Skudashkin\Hw16\DataMapper;
 use PDO;
 use PDOStatement;
 
-class UserMapper
+class UserMapperIMap
 {
     private PDO          $pdo;
 
@@ -46,14 +46,14 @@ class UserMapper
         $this->selectStatement->execute([$id]);
         $result = $this->selectStatement->fetch();
 
-        $User = new User(
+        $user = new User(
             $result['id'],
             $result['first_name'],
             $result['last_name'],
             $result['email'],
         );
-        $this->identityMap[$id] = $User;
-        return $User;
+        $this->identityMap[$id] = $user;
+        return $user;
     }
 
     public function insert(array $rawUserData): User
@@ -64,19 +64,19 @@ class UserMapper
             $rawUserData['email'],
         ]);
 
-        $User = new User(
+        $user = new User(
             (int)$this->pdo->lastInsertId(),
             $rawUserData['first_name'],
             $rawUserData['last_name'],
             $rawUserData['email'],
         );
-        $this->identityMap[$User->getId()] = $User;
-        return $User;
+        $this->identityMap[$User->getId()] = $user;
+        return $user;
     }
 
     public function update(User $user): bool
     {
-        $this->identityMap[$User->getId()] = $User;
+        $this->identityMap[$user->getId()] = $user;
 
         return $this->updateStatement->execute([
             $user->getFirstName(),
@@ -89,7 +89,7 @@ class UserMapper
 
     public function delete(User $user): bool
     {
-        unset($this->identityMap[$User->getId()]);
+        unset($this->identityMap[$user->getId()]);
         return $this->deleteStatement->execute([$user->getId()]);
     }
 }
