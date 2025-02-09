@@ -1,39 +1,43 @@
 services:
-  ngnix:
-    container_name: MyNgnix
+  nginx:
+    container_name: MyNginx
     ports:
       - "80:80"
     build:
-      context: ./WEB/ngnix
+      context: ./context/nginx
       dockerfile: dockerfile
     networks:
       - devweb
     volumes:
-      - ./WEB/htdocs/:/var/www/html/
-      - ./WEB/htdocs/logs/ngnix:/var/log/ngnix/
+      - ./project/htdocs/public_html:/var/www/html/public_html
+      - ./logs/nginx:/var/log/nginx/
     depends_on:
       - php
 
   php:
     container_name: MyPhp
     build:
-      context: ./WEB/php
+      context: ./context/php
       dockerfile: dockerfile
     volumes:
-     - ./WEB/htdocs/:/var/www/html/
-     - ./WEB/htdocs/logs/php.log:/var/log/fpm-php.htdocs.log
+      - ./project/htdocs/:/var/www/html/
+      - ./logs/php.log:/var/log/fpm-php.www.log
     networks:
       - devweb
-  php2:
-    container_name: MyPhp2
+
+
+  composer:
     build:
-      context: ./WEB/php
-      dockerfile: dockerfile
+      context: ./context/composer
+      dockerfile: Dockerfile
+    container_name: MyComposer
+    working_dir: /var/www/html
     volumes:
-      - ./WEB/htdocs/:/var/www/html/
-      - ./WEB/htdocs/logs/php.log:/var/log/fpm-php.htdocs.log
+      - ./project/htdocs/:/var/www/html
     networks:
       - devweb
+    depends_on:
+      - php
 
 
 networks:
