@@ -23,7 +23,7 @@ docker exec -ti otus_app php index.php migrate down
 ## Получить список всех пользователей
 
 ```shell
-docker exec -ti otus_app php index.php get_users
+docker exec -ti otus_app php index.php get_users --limit=10 --offset=0
 ```
 
 ## Получить пользователя по id
@@ -38,8 +38,8 @@ docker exec -ti otus_app php index.php get_user 1
 docker exec -ti otus_app php index.php add_user --add="{'name':'test2','email':'test2@test.test'}"
 ```
 
-## Очистка событий
+## Обновление пользователя
 
 ```shell
-docker exec -ti otus_app php index.php clear
+docker exec -ti otus_app php index.php update_user 2 --update="{'name':'test2','email':'example@test.test'}"
 ```

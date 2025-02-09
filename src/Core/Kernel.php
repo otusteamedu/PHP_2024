@@ -40,10 +40,12 @@ class Kernel
                 }
 
             case 'get_users':
-                $users = User::findAll();
+                $limit = (int)($options['limit'] ?? 100);
+                $offset = (int)($options['offset'] ?? 0);
+                $users = User::findAll($limit, $offset);
                 /** @var User $user */
                 foreach ($users as $user) {
-                    echo "ID: $user->id, User: $user->name, Email: $user->email\n";
+                    echo "ID: $user->id, Name: $user->name, Email: $user->email\n";
                 }
                 return "Show all users\n";
 
@@ -52,7 +54,7 @@ class Kernel
                     /** @var User $user */
                     $user = User::findById($arg);
                     if ($user) {
-                        return "ID: $user->id, User: $user->name, Email: $user->email\n";
+                        return "ID: $user->id, Name: $user->name, Email: $user->email\n";
                     } else {
                         return "User $arg not found\n";
                     }
@@ -66,12 +68,39 @@ class Kernel
                     if (is_array($data)) {
                         $newUser = new User($data);
                         $newUser->save();
-                        return "ID: $newUser->id, User: $newUser->name, Email: $newUser->email\n";
+                        return "ID: $newUser->id, Name: $newUser->name, Email: $newUser->email\n";
                     } else {
                         return "Error data user\n";
                     }
                 }
                 return "Use option --add=\"{'name': 'test', 'email': 'example@test.test'}\"\n";
+
+            case 'update_user':
+                if ($options['update']) {
+                    if (is_numeric($arg)) {
+                        /** @var User $user */
+                        $user = User::findById($arg);
+                        if (!$user) {
+                            return "User $arg not found\n";
+                        }
+                    } else {
+                        return "Pass the user ID\n";
+                    }
+                    $data = str_replace("'", '"', $options['update']);
+                    $data = json_decode($data, true);
+                    if (is_array($data)) {
+                        foreach ($data as $key => $value) {
+                            if (property_exists($user, $key)) {
+                                $user->{$key} = $value;
+                            }
+                        }
+                        $user->save();
+                        return "ID: $user->id, Name: $user->name, Email: $user->email\n";
+                    } else {
+                        return "Error data user\n";
+                    }
+                }
+                return "Use pass the user ID and option --update=\"{'name': 'test', 'email': 'example@test.test'}\"\n";
 
             case 'delete_user':
                 if (is_numeric($arg)) {
@@ -89,9 +118,10 @@ class Kernel
             default:
                 return "Usage:\n"
                     . "php index.php migrate up\n"
-                    . "php index.php get_users\n"
+                    . "php index.php get_users --limit=100 --offset=0\n"
                     . "php index.php get_user 1\n"
                     . "php index.php add_user --add='JSON'\n"
+                    . "php index.php update_user 1 --update='JSON'\n"
                     . "php index.php delete_user 2\n"
                     . "php index.php migrate down\n";
         }

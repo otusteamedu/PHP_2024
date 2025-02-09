@@ -8,7 +8,7 @@ class User extends ActiveRecord
 {
     protected static string $tableName = 'user';
 
-    public ?int $id = null;
-    public string $name = '';
-    public string $email = '';
+    protected ?int $id = null;
+    protected string $name = '';
+    protected string $email = '';
 }

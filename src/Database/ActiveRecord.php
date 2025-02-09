@@ -11,18 +11,20 @@ abstract class ActiveRecord
     protected static ?PDO $pdo = null;
     protected static string $tableName;
     protected static array $identityMap = [];
+    protected array $originalData = [];
+    protected array $changedFields = [];
 
     public static function setConnection(PDO $pdo): void
     {
         self::$pdo = $pdo;
     }
 
-    public static function findAll(): Collection
+    public static function findAll(int $limit = 100, int $offset = 0): Collection
     {
         self::checkConnection();
 
         try {
-            $stmt = self::$pdo->query('SELECT * FROM "' . static::$tableName . '"');
+            $stmt = self::$pdo->query("SELECT * FROM \"" . static::$tableName . "\" LIMIT $limit OFFSET $offset");
             $rows = $stmt->fetchAll();
         } catch (PDOException $e) {
             throw new DatabaseException("Query failed: " . $e->getMessage());
@@ -88,6 +90,8 @@ abstract class ActiveRecord
             }
         }
 
+        $this->changedFields = [];
+
         return $this;
     }
 
@@ -118,6 +122,37 @@ abstract class ActiveRecord
 
         if (isset($data['id'])) {
             unset($data['id']);
+        }
+
+        $this->originalData = $this->toArray();
+        $this->changedFields = [];
+    }
+
+    public function __set(string $name, $value): void
+    {
+        if (property_exists($this, $name)) {
+            $this->trackChanges($name, $value);
+            $this->$name = $value;
+        }
+    }
+
+    public function __get(string $name): mixed
+    {
+        if (property_exists($this, $name)) {
+            return $this->$name;
+        }
+
+        return null;
+    }
+
+    protected function trackChanges(string $field, $newValue): void
+    {
+        $currentValue = $this->originalData[$field] ?? null;
+
+        if ($currentValue !== $newValue && !in_array($field, $this->changedFields)) {
+            $this->changedFields[] = $field;
+        } elseif ($currentValue === $newValue && $key = array_search($field, $this->changedFields)) {
+            unset($this->changedFields[$key]);
         }
     }
 
@@ -150,22 +185,40 @@ abstract class ActiveRecord
 
     private function update(): void
     {
-        $columns = get_object_vars($this);
-        $set = implode(', ', array_map(fn($k) => "$k = :$k", array_keys($columns)));
+        if (empty($this->changedFields)) {
+            return;
+        }
+
+        $setParts = [];
+        $params = ['id' => $this->id];
+
+        foreach ($this->changedFields as $field) {
+            $setParts[] = "$field = :$field";
+            $params[$field] = $this->$field;
+        }
+        $set = implode(', ', $setParts);
 
         self::checkConnection();
 
         try {
             $stmt = self::$pdo->prepare("
                 UPDATE \"" . static::$tableName . "\"
-                SET {$set}
+                SET $set
                 WHERE id = :id
             ");
 
-            $stmt->execute($columns);
+            $stmt->execute($params);
         } catch (PDOException $e) {
             throw new DatabaseException("Query failed: " . $e->getMessage());
         }
+
+        $this->originalData = $this->toArray();
+        $this->changedFields = [];
+    }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 
     public function delete(): void
