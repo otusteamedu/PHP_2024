@@ -44,6 +44,21 @@ $testCases = [
             'cfg', 'cfh', 'cfi'
         ],
         'name' => 'Три цифры (234)'
+    ],
+    [
+        'digits' => '237',
+        'expected' => [
+            'adp', 'adq', 'adr', 'ads',
+            'aep', 'aeq', 'aer', 'aes',
+            'afp', 'afq', 'afr', 'afs',
+            'bdp', 'bdq', 'bdr', 'bds',
+            'bep', 'beq', 'ber', 'bes',
+            'bfp', 'bfq', 'bfr', 'bfs',
+            'cdp', 'cdq', 'cdr', 'cds',
+            'cep', 'ceq', 'cer', 'ces',
+            'cfp', 'cfq', 'cfr', 'cfs'
+        ],
+        'name' => 'Три цифры (237)'
     ]
 ];
 

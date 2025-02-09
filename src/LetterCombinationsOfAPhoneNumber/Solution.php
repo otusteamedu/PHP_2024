@@ -24,20 +24,37 @@ class Solution
             '9' => ['w', 'x', 'y', 'z'],
         ];
 
-        $result = [''];
-
+        $letters = [];
         for ($i = 0; $i < strlen($digits); $i++) {
             $currentDigit = $digits[$i];
-            $letters = $digitMap[$currentDigit];
-            $temp = [];
-
-            foreach ($result as $combination) {
-                for ($j = 0; $j < count($letters); $j++) {
-                    $temp[] = $combination . $letters[$j];
-                }
+            if (isset($digitMap[$currentDigit])) {
+                $letters[] = $digitMap[$currentDigit];
             }
+        }
 
-            $result = $temp;
+        if (empty($letters)) {
+            return [];
+        }
+        if (count($letters) === 1) {
+            return $letters[0];
+        }
+
+        $count = count($letters);
+        return $this->backtrack($letters, [], $count, 0, []);
+    }
+
+    private function backtrack(array $letters, array $path, int $count, int $index, $result): array
+    {
+        if ($index === $count) {
+            $result[] = implode('', $path);
+            return $result;
+        }
+
+        $current_digit = $letters[$index];
+        foreach ($current_digit as $letter) {
+            $newPath = $path;
+            $newPath[] = $letter;
+            $result = $this->backtrack($letters, $newPath, $count, $index + 1, $result);
         }
 
         return $result;
