@@ -1,6 +1,0 @@
-192.168.65.1 - - [09/Feb/2025:11:59:04 +0000] "GET / HTTP/1.1" 400 99 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15" "-"
-192.168.65.1 - - [09/Feb/2025:11:59:05 +0000] "GET / HTTP/1.1" 400 99 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15" "-"
-192.168.65.1 - - [09/Feb/2025:11:59:07 +0000] "GET / HTTP/1.1" 400 99 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15" "-"
-192.168.65.1 - - [09/Feb/2025:12:02:47 +0000] "GET / HTTP/1.1" 400 99 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15" "-"
-192.168.65.1 - - [09/Feb/2025:12:02:48 +0000] "GET / HTTP/1.1" 400 99 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15" "-"
-192.168.65.1 - - [09/Feb/2025:12:03:59 +0000] "GET / HTTP/1.1" 200 76432 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3 Safari/605.1.15" "-"
