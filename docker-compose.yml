@@ -9,7 +9,7 @@ services:
     networks:
       - devweb
     volumes:
-      - ./project/htdocs/:/var/www/html/
+      - ./project/htdocs/public_html:/var/www/html/public_html
       - ./logs/nginx:/var/log/nginx/
     depends_on:
       - php
