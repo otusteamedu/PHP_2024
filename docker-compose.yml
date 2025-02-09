@@ -4,7 +4,7 @@ services:
     ports:
       - "80:80"
     build:
-      context: ./WEB/ngnix
+      context: ./context/ngnix
       dockerfile: dockerfile
     networks:
       - devweb
@@ -17,24 +17,13 @@ services:
   php:
     container_name: MyPhp
     build:
-      context: ./WEB/php
+      context: ./context/php
       dockerfile: dockerfile
     volumes:
      - ./WEB/www/:/var/www/html/
      - ./WEB/www/logs/php.log:/var/log/fpm-php.www.log
     networks:
       - devweb
-  php2:
-    container_name: MyPhp2
-    build:
-      context: ./WEB/php
-      dockerfile: dockerfile
-    volumes:
-      - ./WEB/www/:/var/www/html/
-      - ./WEB/www/logs/php.log:/var/log/fpm-php.www.log
-    networks:
-      - devweb
-
 
 networks:
   devweb:
