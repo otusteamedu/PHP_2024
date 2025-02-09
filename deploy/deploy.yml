@@ -1,0 +1,101 @@
+name: Invoicer Deploy
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  checkout_code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+  deploy_docker:
+    runs-on: ubuntu-latest
+    needs: checkout_code
+    steps:
+      - name: Deploy to VPS (Docker)
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /home/deployer/invoicer
+            git pull origin master
+            cd _docker 
+            cp .env.example .env
+            docker compose -f docker-compose.production.yml build
+            docker compose -f docker-compose.production.yml up -d --remove-orphans
+
+  configure_app:
+    runs-on: ubuntu-latest
+    needs: deploy_docker
+    steps:
+      - name: Configure Environment
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /home/deployer/invoicer/sources
+            rm -rf .env
+            cat <<EOF > .env
+            APP_ENV=prod
+            APP_SECRET=${{ secrets.APP_SECRET }}
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
+            RABBITMQ_URL=${{ secrets.RABBITMQ_URL }}
+            MAILER_DSN=${{ secrets.MAILER_DSN }}
+            JWT_TOKEN=${{ secrets.JWT_TOKEN }}
+            EMAIL_FROM=${{ secrets.EMAIL_FROM }}
+            EOF
+
+  run_migrations:
+    runs-on: ubuntu-latest
+    needs: configure_app
+    steps:
+      - name: Install Dependencies and Migrate DB
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /home/deployer/invoicer/_docker
+            docker compose exec php bash -c "cd sources && composer install"
+            docker compose exec php bash -c "cd sources && php bin/console doctrine:migrations:migrate --no-interaction"
+
+  clear_cache:
+    runs-on: ubuntu-latest
+    needs: run_migrations
+    steps:
+      - name: Clear Cache
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /home/deployer/invoicer/_docker
+            docker compose exec php bash -c "cd sources && bin/console cache:clear"
+
+  restart_supervisor:
+    runs-on: ubuntu-latest
+    needs: clear_cache
+    steps:
+      - name: Restart Supervisor Workers
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd /home/deployer/invoicer/_docker
+            docker compose exec php bash -c "cd sources && supervisorctl restart messenger-consume:*"
