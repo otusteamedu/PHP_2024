@@ -8,4 +8,6 @@ project/htdocs/           # Корневая папка проекта (PHP-ко
 
 ## 🛠 Установка и запуск
 
-''docker-compose up --build''
+  ```sh
+  docker-compose up --build
+  ```
