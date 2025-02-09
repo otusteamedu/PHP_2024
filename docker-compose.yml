@@ -25,6 +25,22 @@ services:
     networks:
       - devweb
 
+
+  composer:
+    build:
+      context: ./context/composer
+      dockerfile: Dockerfile
+    container_name: MyComposer
+    working_dir: /var/www/html
+    volumes:
+      - ./project/htdocs/:/var/www/html
+    networks:
+      - devweb
+    depends_on:
+      - php
+
+
+
 networks:
   devweb:
     name: devweb
