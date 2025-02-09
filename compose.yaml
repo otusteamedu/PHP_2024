@@ -1,0 +1,21 @@
+services:
+  server:
+    build:
+      context: ./services/php
+    container_name: server
+    tty: true
+    volumes:
+      - ./data:/usr/src/chat
+    command: ["php","./app.php","server"]
+
+  client:
+    build:
+      context: ./services/php
+    container_name: client
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/usr/src/chat
+    command: [ "php","./app.php","client" ]
+    depends_on:
+      - server

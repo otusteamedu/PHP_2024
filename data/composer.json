@@ -1,0 +1,18 @@
+{
+    "name": "apeskovatzkov/hw5",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Apeskovatzkov\\Hw5\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "apeskovatzkov"
+        }
+    ],
+    "require": {
+        "psr/container": "^2.0",
+        "ext-sockets": "*"
+    }
+}
