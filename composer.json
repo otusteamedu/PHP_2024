@@ -1,0 +1,20 @@
+{
+    "name": "skudashkin/hw16",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Skudashkin\\Hw16\\": "src/"
+        }   
+    },
+    "authors": [
+        {
+            "name": "sikudamobile",
+            "email": "ya.sikuda@yandex.ru"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "^3",
+        "doctrine/dbal": "^4",
+        "symfony/cache": "^7"
+    }
+}
