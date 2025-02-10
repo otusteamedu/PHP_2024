@@ -34,6 +34,10 @@ class UserMapperIMap
         $this->deleteStatement = $pdo->prepare(
             'DELETE FROM users WHERE id = ?'
         );
+
+        $this->listStatement = $pdo->prepare(
+            'SELECT * FROM users LIMIT ?'
+        );
     }
 
     public function findById(int $id): User
@@ -91,5 +95,23 @@ class UserMapperIMap
     {
         unset($this->identityMap[$user->getId()]);
         return $this->deleteStatement->execute([$user->getId()]);
+    }
+
+    public function list(int $limit=100): array
+    {
+        $this->selectStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $this->selectStatement->execute($limit);
+        $result  = $this->listStatement->fetch();
+        while($result !== false){
+            $user = new User(
+                $result['id'],
+                $result['first_name'],
+                $result['last_name'],
+                $result['email'],
+            );
+            $this->identityMap[$id] = $user;
+            $result  = $this->listStatement->fetch();
+        }
+        return $this->identityMap[$id];
     }
 }
