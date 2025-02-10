@@ -1,10 +1,6 @@
 <?php
 
-require __DIR__ . '/autoload.php';
-
-use app\Controllers\MainController;
-use app\Services\ValidationService; // Corrected namespace
-use app\Services\EmailValidationService;
+require __DIR__ . '../autoload.php';
 
 // Список email-адресов для проверки
 $emails = [
