@@ -1,0 +1,14 @@
+{
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Application\\": "Application/",
+      "Domain\\": "Domain/",
+      "Infrastructure\\": "Infrastructure/"
+    }
+  },
+  "require": {
+    "php": ">=8.2",
+    "ext-pdo": "*"
+  }
+}
