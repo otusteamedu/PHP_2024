@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Gateway;
 
-use App\Application\Gateway\DomCrawler;
-use App\Application\Gateway\DomCrawlerRequest;
-use App\Application\Gateway\DomCrawlerResponse;
+use App\Application\Gateway\Crawler\DomCrawler;
+use App\Application\Gateway\Crawler\DomCrawlerRequest;
+use App\Application\Gateway\Crawler\DomCrawlerResponse;
 use RuntimeException;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

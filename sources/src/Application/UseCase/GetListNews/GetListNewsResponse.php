@@ -7,7 +7,7 @@ namespace App\Application\UseCase\GetListNews;
 readonly class GetListNewsResponse
 {
     public function __construct(
-        public array $news,
+        private array $news,
     )
     {
     }

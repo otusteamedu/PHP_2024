@@ -7,7 +7,7 @@ namespace App\Application\UseCase\SubmitNews;
 readonly class SubmitNewsRequest
 {
     public function __construct(
-        public string $url,
+        private string $url,
     )
     {
     }

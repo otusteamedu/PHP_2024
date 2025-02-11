@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Gateway;
+namespace App\Application\Gateway\Crawler;
 
 readonly class DomCrawlerResponse
 {
     public function __construct(
-        public string $title
+        private string $title
     )
     {
     }

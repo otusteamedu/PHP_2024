@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\SubmitNews;
 
-use App\Application\Gateway\DomCrawler;
-use App\Application\Gateway\DomCrawlerRequest;
+use App\Application\Gateway\Crawler\DomCrawler;
+use App\Application\Gateway\Crawler\DomCrawlerRequest;
 use App\Domain\Factory\NewsFactory;
 use App\Domain\Repository\NewsRepository;
 use App\Domain\ValueObject\Url;
@@ -24,7 +24,7 @@ readonly class SubmitNewsUseCase
     public function __invoke(SubmitNewsRequest $request): SubmitNewsResponse
     {
         // Допускается ли тут использовать VO ? Выглядит логично, т.к нет смысла далее передавать если это не url
-        $urlTitle = $this->crawler->getTitle(new DomCrawlerRequest(new Url($request->url)));
+        $urlTitle = $this->crawler->getTitle(new DomCrawlerRequest(new Url($request->getUrl())));
 
         $news = $this->factory->create(
             $request->getUrl(),

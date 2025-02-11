@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Gateway;
+namespace App\Application\Gateway\Crawler;
 
 interface DomCrawler
 {

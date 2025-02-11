@@ -10,12 +10,12 @@ use App\Infrastructure\Persistence\Doctrine\Entity\DoctrineNews;
 use App\Infrastructure\Persistence\Doctrine\Mapper\NewsMapper;
 use Doctrine\ORM\EntityManagerInterface;
 
-class DoctrineNewsRepository implements NewsRepository
+readonly class DoctrineNewsRepository implements NewsRepository
 {
 
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private readonly NewsMapper    $mapper
+        private NewsMapper             $mapper
     )
     {
     }
@@ -32,7 +32,8 @@ class DoctrineNewsRepository implements NewsRepository
 
     public function getNewsByIds(iterable $ids): array
     {
-
+        return $this->entityManager->getRepository(DoctrineNews::class)
+            ->findBy(['id' => $ids]);
     }
 
     public function findAll(): array
