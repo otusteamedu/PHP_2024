@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Сводный отчет</title>
+</head>
+<body>
+<ul>
+    {% for article in news %}
+        <li>
+            <a href="{{ article.url }}">{{ article.title }}</a>
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>
