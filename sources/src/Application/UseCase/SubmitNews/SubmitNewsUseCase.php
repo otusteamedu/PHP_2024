@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase;
+namespace App\Application\UseCase\SubmitNews;
 
-use App\Domain\Factory\NewsFactory;
-use App\Domain\Repository\NewsRepository;
 use App\Application\Gateway\DomCrawler;
 use App\Application\Gateway\DomCrawlerRequest;
+use App\Domain\Factory\NewsFactory;
+use App\Domain\Repository\NewsRepository;
 use App\Domain\ValueObject\Url;
 use DateTimeImmutable;
 

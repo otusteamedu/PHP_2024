@@ -10,7 +10,7 @@ interface NewsRepository
 {
     public function save(News $news): void;
 
-    public function getNewsByIds(iterable $ids): iterable;
+    public function getNewsByIds(iterable $ids): array;
 
-    public function findAll(): iterable;
+    public function findAll(): array;
 }

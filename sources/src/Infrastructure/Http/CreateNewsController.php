@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http;
 
-use App\Application\UseCase\SubmitNewsRequest;
-use App\Application\UseCase\SubmitNewsUseCase;
+use App\Application\UseCase\SubmitNews\SubmitNewsRequest;
+use App\Application\UseCase\SubmitNews\SubmitNewsUseCase;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Throwable;
 
-class NewsController extends AbstractController
+class CreateNewsController extends AbstractController
 {
     public function __construct(
         private readonly SubmitNewsUseCase $useCase

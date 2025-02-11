@@ -30,13 +30,14 @@ class DoctrineNewsRepository implements NewsRepository
         $news->setId($doctrineNews->getId());
     }
 
-    public function getNewsByIds(iterable $ids): iterable
+    public function getNewsByIds(iterable $ids): array
     {
-        // TODO: Implement getNewsByIds() method.
+
     }
 
-    public function findAll(): iterable
+    public function findAll(): array
     {
-        // TODO: Implement findAll() method.
+        return $this->entityManager->getRepository(DoctrineNews::class)
+            ->findAll();
     }
 }

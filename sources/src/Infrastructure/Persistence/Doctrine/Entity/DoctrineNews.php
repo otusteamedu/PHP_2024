@@ -26,7 +26,7 @@ class DoctrineNews
     private string $url;
 
     #[Column(type: 'date')]
-    private \DateTimeImmutable $date;
+    private \DateTime $date;
 
     public function getId(): ?int
     {
@@ -61,12 +61,12 @@ class DoctrineNews
         return $this;
     }
 
-    public function getDate(): \DateTimeImmutable
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeImmutable $date): DoctrineNews
+    public function setDate(\DateTime $date): DoctrineNews
     {
         $this->date = $date;
         return $this;
