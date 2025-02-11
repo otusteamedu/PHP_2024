@@ -1,0 +1,4 @@
+api:
+    resource: '../src/**/*'
+    type: attribute
+    prefix: /api/v1
