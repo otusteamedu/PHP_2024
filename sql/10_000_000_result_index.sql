@@ -1,0 +1,108 @@
+-- выбор всех фильмов за сегодня
+-- Gather  (cost=1000.45..172906.76 rows=50000 width=29) (actual time=7.454..1062.546 rows=7549956 loops=1)
+--   Workers Planned: 2
+--   Workers Launched: 2
+--   ->  Nested Loop  (cost=0.45..166906.76 rows=20833 width=29) (actual time=6.102..877.373 rows=2516652 loops=3)
+--         ->  Parallel Seq Scan on sessions s  (cost=0.00..166374.67 rows=20833 width=24) (actual time=6.059..350.014 rows=2516652 loops=3)
+--               Filter: ((start_time)::date = CURRENT_DATE)
+--               Rows Removed by Filter: 816681
+--         ->  Memoize  (cost=0.45..5.65 rows=1 width=17) (actual time=0.000..0.000 rows=1 loops=7549956)
+--               Cache Key: s.movie_id
+--               Cache Mode: logical
+--               Hits: 2095542  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+--               Worker 0:  Hits: 2756591  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+--               Worker 1:  Hits: 2697820  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+--               ->  Index Scan using movies_pkey on movies m  (cost=0.43..5.64 rows=1 width=17) (actual time=0.031..0.031 rows=1 loops=3)
+--                     Index Cond: (id = s.movie_id)
+-- Planning Time: 0.623 ms
+-- JIT:
+--   Functions: 39
+-- "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+-- "  Timing: Generation 1.558 ms, Inlining 0.000 ms, Optimization 0.778 ms, Emission 17.360 ms, Total 19.696 ms"
+-- Execution Time: 1268.950 ms
+
+
+-- подсчёт проданных билетов за неделю
+-- Aggregate  (cost=2035.71..2035.72 rows=1 width=8) (actual time=0.005..0.006 rows=1 loops=1)
+--   ->  Nested Loop  (cost=8.10..2034.58 rows=453 width=4) (actual time=0.004..0.004 rows=0 loops=1)
+--         ->  Bitmap Heap Scan on tickets t  (cost=7.67..25.60 rows=453 width=12) (actual time=0.004..0.004 rows=0 loops=1)
+--               Recheck Cond: (purchase_time >= (CURRENT_DATE - '7 days'::interval))
+--               ->  Bitmap Index Scan on idx_tickets_purchase_time  (cost=0.00..7.55 rows=453 width=0) (actual time=0.003..0.003 rows=0 loops=1)
+--                     Index Cond: (purchase_time >= (CURRENT_DATE - '7 days'::interval))
+--         ->  Index Only Scan using sessions_pkey on sessions s  (cost=0.43..4.43 rows=1 width=4) (never executed)
+--               Index Cond: (id = t.session_id)
+--               Heap Fetches: 0
+-- Planning Time: 0.463 ms
+-- Execution Time: 0.024 ms
+
+-- формирование афиши
+-- Gather  (cost=1000.45..172906.76 rows=50000 width=29) (actual time=8.400..1065.963 rows=7549956 loops=1)
+--   Workers Planned: 2
+--   Workers Launched: 2
+--   ->  Nested Loop  (cost=0.45..166906.76 rows=20833 width=29) (actual time=6.232..884.889 rows=2516652 loops=3)
+--         ->  Parallel Seq Scan on sessions s  (cost=0.00..166374.67 rows=20833 width=24) (actual time=6.196..353.664 rows=2516652 loops=3)
+--               Filter: ((start_time)::date = CURRENT_DATE)
+--               Rows Removed by Filter: 816681
+--         ->  Memoize  (cost=0.45..5.65 rows=1 width=17) (actual time=0.000..0.000 rows=1 loops=7549956)
+--               Cache Key: s.movie_id
+--               Cache Mode: logical
+--               Hits: 2076818  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+--               Worker 0:  Hits: 2737436  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+--               Worker 1:  Hits: 2735699  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+--               ->  Index Scan using movies_pkey on movies m  (cost=0.43..5.64 rows=1 width=17) (actual time=0.024..0.024 rows=1 loops=3)
+--                     Index Cond: (id = s.movie_id)
+-- Planning Time: 0.159 ms
+-- JIT:
+--   Functions: 39
+-- "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+-- "  Timing: Generation 1.512 ms, Inlining 0.000 ms, Optimization 0.792 ms, Emission 17.759 ms, Total 20.063 ms"
+-- Execution Time: 1272.488 ms
+
+-- 3 самых прибыльных фильмов за неделю
+-- Limit  (cost=3892.86..3892.87 rows=3 width=25) (actual time=0.007..0.007 rows=0 loops=1)
+--   ->  Sort  (cost=3892.86..3894.00 rows=453 width=25) (actual time=0.006..0.007 rows=0 loops=1)
+--         Sort Key: (sum(t.price)) DESC
+--         Sort Method: quicksort  Memory: 25kB
+--         ->  GroupAggregate  (cost=3879.08..3887.01 rows=453 width=25) (actual time=0.004..0.005 rows=0 loops=1)
+--               Group Key: m.id
+--               ->  Sort  (cost=3879.08..3880.21 rows=453 width=21) (actual time=0.004..0.004 rows=0 loops=1)
+--                     Sort Key: m.id
+--                     Sort Method: quicksort  Memory: 25kB
+--                     ->  Nested Loop  (cost=0.88..3859.10 rows=453 width=21) (actual time=0.002..0.003 rows=0 loops=1)
+--                           ->  Nested Loop  (cost=0.43..3846.78 rows=453 width=12) (actual time=0.002..0.002 rows=0 loops=1)
+--                                 ->  Seq Scan on tickets t  (cost=0.00..33.80 rows=453 width=12) (actual time=0.002..0.002 rows=0 loops=1)
+--                                       Filter: (purchase_time >= (CURRENT_DATE - '7 days'::interval))
+--                                 ->  Index Scan using sessions_pkey on sessions s  (cost=0.43..8.42 rows=1 width=12) (never executed)
+--                                       Index Cond: (id = t.session_id)
+--                           ->  Memoize  (cost=0.45..0.51 rows=1 width=17) (never executed)
+--                                 Cache Key: s.movie_id
+--                                 Cache Mode: logical
+--                                 ->  Index Scan using movies_pkey on movies m  (cost=0.43..0.50 rows=1 width=17) (never executed)
+--                                       Index Cond: (id = s.movie_id)
+-- Planning Time: 0.222 ms
+-- Execution Time: 0.030 ms
+
+-- схема зала
+-- Hash Join  (cost=18.68..28.84 rows=1 width=40) (actual time=0.013..0.014 rows=0 loops=1)
+--   Hash Cond: (t.seat_id = s.id)
+--   ->  Bitmap Heap Scan on tickets t  (cost=4.21..14.35 rows=7 width=12) (actual time=0.012..0.013 rows=0 loops=1)
+--         Recheck Cond: (session_id = 1)
+--         ->  Bitmap Index Scan on idx_tickets_session_id  (cost=0.00..4.21 rows=7 width=0) (actual time=0.011..0.012 rows=0 loops=1)
+--               Index Cond: (session_id = 1)
+--   ->  Hash  (cost=14.37..14.37 rows=8 width=12) (never executed)
+--         ->  Bitmap Heap Scan on seats s  (cost=4.21..14.37 rows=8 width=12) (never executed)
+--               Recheck Cond: (hall_id = 1)
+--               ->  Bitmap Index Scan on idx_seats_hall_id  (cost=0.00..4.21 rows=8 width=0) (never executed)
+--                     Index Cond: (hall_id = 1)
+-- Planning Time: 0.331 ms
+-- Execution Time: 0.032 ms
+
+
+-- диапазон на конкретный сеанс
+-- Aggregate  (cost=14.39..14.40 rows=1 width=8) (actual time=0.005..0.006 rows=1 loops=1)
+--   ->  Bitmap Heap Scan on tickets t  (cost=4.21..14.35 rows=7 width=4) (actual time=0.003..0.003 rows=0 loops=1)
+--         Recheck Cond: (session_id = 1)
+--         ->  Bitmap Index Scan on idx_tickets_session_id  (cost=0.00..4.21 rows=7 width=0) (actual time=0.002..0.002 rows=0 loops=1)
+--               Index Cond: (session_id = 1)
+-- Planning Time: 0.132 ms
+-- Execution Time: 0.022 ms

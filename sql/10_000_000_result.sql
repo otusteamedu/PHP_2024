@@ -1,0 +1,89 @@
+-- выбор всех фильмов за сегодня
+-- Gather  (cost=1000.43..308402.65 rows=56075 width=29) (actual time=7.242..3511.636 rows=7549956 loops=1)
+--   Workers Planned: 2
+--   Workers Launched: 2
+--   ->  Nested Loop  (cost=0.43..301795.15 rows=23365 width=29) (actual time=5.065..3332.827 rows=2516652 loops=3)
+--         ->  Parallel Seq Scan on sessions s  (cost=0.00..175233.75 rows=23365 width=24) (actual time=5.023..493.259 rows=2516652 loops=3)
+--               Filter: ((start_time)::date = CURRENT_DATE)
+--               Rows Removed by Filter: 816681
+--         ->  Index Scan using movies_pkey on movies m  (cost=0.43..5.42 rows=1 width=17) (actual time=0.001..0.001 rows=1 loops=7549956)
+--               Index Cond: (id = s.movie_id)
+-- Planning Time: 0.624 ms
+-- JIT:
+--   Functions: 24
+-- "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+-- "  Timing: Generation 1.548 ms, Inlining 0.000 ms, Optimization 0.832 ms, Emission 14.193 ms, Total 16.573 ms"
+-- Execution Time: 3744.096 ms
+
+-- подсчёт проданных билетов за неделю
+-- Aggregate  (cost=3847.92..3847.93 rows=1 width=8) (actual time=0.009..0.010 rows=1 loops=1)
+--   ->  Nested Loop  (cost=0.43..3846.78 rows=453 width=4) (actual time=0.005..0.006 rows=0 loops=1)
+--         ->  Seq Scan on tickets t  (cost=0.00..33.80 rows=453 width=12) (actual time=0.005..0.005 rows=0 loops=1)
+--               Filter: (purchase_time >= (CURRENT_DATE - '7 days'::interval))
+--         ->  Index Only Scan using sessions_pkey on sessions s  (cost=0.43..8.42 rows=1 width=4) (never executed)
+--               Index Cond: (id = t.session_id)
+--               Heap Fetches: 0
+-- Planning Time: 0.232 ms
+-- Execution Time: 0.039 ms
+
+
+-- формирование афиши
+-- Gather  (cost=1000.43..308402.65 rows=56075 width=29) (actual time=5.140..3341.323 rows=7549956 loops=1)
+--   Workers Planned: 2
+--   Workers Launched: 2
+--   ->  Nested Loop  (cost=0.43..301795.15 rows=23365 width=29) (actual time=4.511..3162.764 rows=2516652 loops=3)
+--         ->  Parallel Seq Scan on sessions s  (cost=0.00..175233.75 rows=23365 width=24) (actual time=4.480..370.594 rows=2516652 loops=3)
+--               Filter: ((start_time)::date = CURRENT_DATE)
+--               Rows Removed by Filter: 816681
+--         ->  Index Scan using movies_pkey on movies m  (cost=0.43..5.42 rows=1 width=17) (actual time=0.001..0.001 rows=1 loops=7549956)
+--               Index Cond: (id = s.movie_id)
+-- Planning Time: 0.146 ms
+-- JIT:
+--   Functions: 24
+-- "  Options: Inlining false, Optimization false, Expressions true, Deforming true"
+-- "  Timing: Generation 1.167 ms, Inlining 0.000 ms, Optimization 0.632 ms, Emission 12.747 ms, Total 14.545 ms"
+-- Execution Time: 3548.669 ms
+
+-- 3 самых прибыльных фильмов за неделю
+-- Limit  (cost=4103.70..4103.71 rows=3 width=25) (actual time=0.020..0.021 rows=0 loops=1)
+--   ->  Sort  (cost=4103.70..4104.83 rows=453 width=25) (actual time=0.020..0.020 rows=0 loops=1)
+--         Sort Key: (sum(t.price)) DESC
+--         Sort Method: quicksort  Memory: 25kB
+--         ->  GroupAggregate  (cost=4089.92..4097.85 rows=453 width=25) (actual time=0.018..0.018 rows=0 loops=1)
+--               Group Key: m.id
+--               ->  Sort  (cost=4089.92..4091.05 rows=453 width=21) (actual time=0.017..0.018 rows=0 loops=1)
+--                     Sort Key: m.id
+--                     Sort Method: quicksort  Memory: 25kB
+--                     ->  Nested Loop  (cost=0.87..4069.93 rows=453 width=21) (actual time=0.002..0.002 rows=0 loops=1)
+--                           ->  Nested Loop  (cost=0.43..3846.78 rows=453 width=12) (actual time=0.002..0.002 rows=0 loops=1)
+--                                 ->  Seq Scan on tickets t  (cost=0.00..33.80 rows=453 width=12) (actual time=0.002..0.002 rows=0 loops=1)
+--                                       Filter: (purchase_time >= (CURRENT_DATE - '7 days'::interval))
+--                                 ->  Index Scan using sessions_pkey on sessions s  (cost=0.43..8.42 rows=1 width=12) (never executed)
+--                                       Index Cond: (id = t.session_id)
+--                           ->  Index Scan using movies_pkey on movies m  (cost=0.43..0.49 rows=1 width=17) (never executed)
+--                                 Index Cond: (id = s.movie_id)
+-- Planning Time: 0.212 ms
+-- Execution Time: 0.043 ms
+
+-- схема зала
+-- Nested Loop  (cost=0.16..56.38 rows=1 width=40) (actual time=0.003..0.003 rows=0 loops=1)
+--   ->  Seq Scan on tickets t  (cost=0.00..27.00 rows=7 width=12) (actual time=0.002..0.002 rows=0 loops=1)
+--         Filter: (session_id = 1)
+--   ->  Memoize  (cost=0.16..4.18 rows=1 width=12) (never executed)
+--         Cache Key: t.seat_id
+--         Cache Mode: logical
+--         ->  Index Scan using seats_pkey on seats s  (cost=0.15..4.17 rows=1 width=12) (never executed)
+--               Index Cond: (id = t.seat_id)
+--               Filter: (hall_id = 1)
+-- Planning Time: 0.218 ms
+-- Execution Time: 0.022 ms
+
+-- диапазон на конкретный сеанс
+--
+-- Aggregate  (cost=27.04..27.05 rows=1 width=8) (actual time=0.004..0.005 rows=1 loops=1)
+--   ->  Seq Scan on tickets t  (cost=0.00..27.00 rows=7 width=4) (actual time=0.002..0.002 rows=0 loops=1)
+--         Filter: (session_id = 1)
+-- Planning Time: 0.063 ms
+-- Execution Time: 0.017 ms
+
+
