@@ -41,7 +41,7 @@ class SocketTest extends TestCase
     public function testConnectSocket()
     {
         $socketMock = Mockery::mock(Socket::class)->makePartial();
-        $socketMock->shouldAllowMockingProtectedMethods();  // Разрешаем мокацию protected методов
+        $socketMock->shouldAllowMockingProtectedMethods();
 
         $socketMock->shouldReceive('connect')->once()->andReturn(true);
 
