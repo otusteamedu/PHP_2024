@@ -5,16 +5,21 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use App\Command\SearchProductsCommand;
 use App\ElasticStorage;
+use App\Storage;
+use DI\ContainerBuilder;
 use Symfony\Component\Console\Application;
+use function DI\autowire;
 
-
-$storageService = new ElasticStorage();
-
-$application = new Application();
-
-$application->add(new SearchProductsCommand($storageService));
+$containerBuilder = new ContainerBuilder();
+$containerBuilder->addDefinitions([
+    Storage::class => autowire(ElasticStorage::class)
+]);
 
 try {
+    $container = $containerBuilder->build();
+    $application = new Application();
+
+    $application->add($container->get(SearchProductsCommand::class));
     $application->run();
 } catch (\Exception $exception) {
     echo $exception->getMessage();
