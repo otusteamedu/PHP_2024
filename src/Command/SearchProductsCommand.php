@@ -122,9 +122,10 @@ class SearchProductsCommand extends Command
             foreach ($products as $product) {
                 $output->writeln(
                     sprintf(
-                        "Продукт: %s - %s",
-                        $product['_source']['title'],
-                        $product['_source']['sku'])
+                    "Продукт: %s - %s",
+                    $product['_source']['title'],
+                    $product['_source']['sku']
+                    )
                 );
             }
         }
