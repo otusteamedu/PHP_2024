@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use App\Command\ClearEventsCommand;
+use App\Command\MatchingEventCommand;
+use App\Command\AddEventCommand;
+use App\RedisEventStorage;
+use Symfony\Component\Console\Application;
+
+
+$eventStorageService = new RedisEventStorage();
+
+$application = new Application();
+
+$application->add(new AddEventCommand($eventStorageService));
+$application->add(new ClearEventsCommand($eventStorageService));
+$application->add(new MatchingEventCommand($eventStorageService));
+
+try {
+    $application->run();
+} catch (\Exception $exception) {
+    echo $exception->getMessage();
+}
