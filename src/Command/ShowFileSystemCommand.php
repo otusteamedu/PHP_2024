@@ -14,7 +14,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowFileSystemCommand extends Command
 {
-
     public function __construct(private readonly Handler $fileHandler)
     {
         parent::__construct();
