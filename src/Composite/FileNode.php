@@ -14,9 +14,8 @@ abstract class FileNode
 
     public function __construct(
         protected SplFileInfo $file,
-        protected int         $level
-    )
-    {
+        protected int $level
+    ){
         $this->children = new \SplObjectStorage();
         $this->name = $this->formatName();
         $this->size = $this->formatSize();
