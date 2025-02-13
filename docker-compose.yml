@@ -20,8 +20,8 @@ services:
       context: ./context/php
       dockerfile: dockerfile
     volumes:
-      - ./project/htdocs/:/var/www/html/
-      - ./logs/php.log:/var/log/fpm-php.www.log
+     - ./project/htdocs/:/var/www/html/
+     - ./logs/php.log:/var/log/fpm-php.www.log
     networks:
       - devweb
 
@@ -33,11 +33,13 @@ services:
     container_name: MyComposer
     working_dir: /var/www/html
     volumes:
-      - ./project/htdocs/:/var/www/html
+      - ./project/htdocs/:/var/www/
+    command: ["composer", "dump-autoload"]
     networks:
       - devweb
     depends_on:
       - php
+
 
 
 networks:
