@@ -1,0 +1,18 @@
+{
+    "name": "slava-makhov/otus-test-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SlavaMakhov\\OtusTestApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SlavaMakhov"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.5",
+        "mockery/mockery": "^1.6"
+    }
+}
