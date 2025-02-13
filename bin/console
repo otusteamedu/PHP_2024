@@ -4,13 +4,22 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Command\ShowFileSystemCommand;
+use App\Handlers\FileHandler;
+use App\Handlers\Handler;
+use DI\ContainerBuilder;
 use Symfony\Component\Console\Application;
+use function DI\autowire;
 
-$application = new Application();
-
-$application->add(new ShowFileSystemCommand());
+$containerBuilder = new ContainerBuilder();
+$containerBuilder->addDefinitions([
+    Handler::class => autowire(FileHandler::class)
+]);
 
 try {
+    $container = $containerBuilder->build();
+    $application = new Application();
+
+    $application->add($container->get(ShowFileSystemCommand::class));
     $application->run();
 } catch (\Exception $exception) {
     echo $exception->getMessage();

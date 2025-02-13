@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Handlers\FileHandler;
+use App\Handlers\Handler;
 use App\Handlers\SizeHandler;
 use App\ShowDirectory;
 use Symfony\Component\Console\Command\Command;
@@ -14,6 +14,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowFileSystemCommand extends Command
 {
+
+    public function __construct(private readonly Handler $fileHandler)
+    {
+        parent::__construct();
+    }
+
     protected function configure(): void
     {
         $this->setName('app:show-file-system')
@@ -26,7 +32,7 @@ class ShowFileSystemCommand extends Command
         try {
             $path = $input->getArgument('path');
 
-            $handler = new FileHandler();
+            $handler = $this->fileHandler;
             $handler->next(new SizeHandler(102400));
 
             $output->writeln(
