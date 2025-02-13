@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {
+    "symfony/console": "^7.2",
+    "php-di/php-di": "^7.0"
+  }
+}
