@@ -1,12 +1,23 @@
 version: '3'
 
 services:
-  app:
+  server:
     build:
       context: ./docker/fpm
       dockerfile: Dockerfile
     image: otus-hw18/php
-    container_name: app
+    container_name: server
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw18-network
+
+  client:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw18/php
+    container_name: client
     volumes:
       - ./app:/var/www
     networks:

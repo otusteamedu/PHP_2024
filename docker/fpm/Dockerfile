@@ -18,11 +18,13 @@ RUN set -eux; \
             libmcrypt-dev \
             libonig-dev \
             libzip-dev; \
-    rm -rf /var/lib/apt/lists/* \
+    rm -rf /var/lib/apt/lists/*
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
+    docker-php-ext-install sockets;\
+    docker-php-ext-enable sockets; \
     # Install the PHP pdo_mysql extention
     docker-php-ext-install pdo_mysql; \
     # Install the PHP pdo_pgsql extention
@@ -36,9 +38,6 @@ RUN set -eux; \
             --with-freetype; \
     docker-php-ext-install gd; \
     php -r 'var_dump(gd_info());'
-
-RUN pecl install redis \
-    && docker-php-ext-enable redis
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer self-update
