@@ -123,8 +123,8 @@ class SearchProductsCommand extends Command
                 $output->writeln(
                     sprintf(
                     "Продукт: %s - %s",
-                    $product['_source']['title'],
-                    $product['_source']['sku']
+                        $product['_source']['title'],
+                        $product['_source']['sku']
                     )
                 );
             }
