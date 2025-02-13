@@ -27,7 +27,8 @@ class MatchingEventCommand extends Command
                 'Данные события в формате JSON - params: {
                     param1 = 1,
                     param2 = 2
-                }');
+            }'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
