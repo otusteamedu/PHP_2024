@@ -24,17 +24,11 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
-        "doctrine/annotations": "^2.0",
-        "doctrine/dbal": "^4.0",
-        "doctrine/migrations": "^3.8",
-        "doctrine/orm": "^3.0",
-        "doctrine/persistence": "^4.0",
         "monolog/monolog": "^2.8",
         "php-amqplib/php-amqplib": "3.7.2",
         "php-di/php-di": "^6.4",
         "slim/psr7": "^1.5",
-        "slim/slim": "^4.10",
-        "symfony/cache": "^7.2"
+        "slim/slim": "^4.10"
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^1.0.0",
