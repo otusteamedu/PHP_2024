@@ -8,7 +8,6 @@ class GetStatusTaskResponse
 {
     public function __construct(
         public string $status,
-    )
-    {
+    ){
     }
 }

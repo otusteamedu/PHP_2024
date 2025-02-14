@@ -10,8 +10,7 @@ readonly class GetStatusTask
 {
     public function __construct(
         private TaskRepositoryInterface $repository
-    )
-    {
+    ){
     }
 
     public function __invoke(GetStatusTaskRequest $request): GetStatusTaskResponse

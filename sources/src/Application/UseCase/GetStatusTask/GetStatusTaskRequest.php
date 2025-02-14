@@ -8,7 +8,6 @@ class GetStatusTaskRequest
 {
     public function __construct(
         public string $id,
-    )
-    {
+    ){
     }
 }

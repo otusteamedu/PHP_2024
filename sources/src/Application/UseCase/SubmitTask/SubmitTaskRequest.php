@@ -8,7 +8,6 @@ class SubmitTaskRequest
 {
     public function __construct(
         public string $title,
-    )
-    {
+    ){
     }
 }

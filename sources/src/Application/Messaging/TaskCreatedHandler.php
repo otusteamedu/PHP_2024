@@ -18,7 +18,9 @@ class TaskCreatedHandler
         $repository = new TaskRepository(); // TODO через контейнер\
 
         $task = $repository->findOneById($taskId);
-        if ($task === null) return;
+        if ($task === null) {
+            return;
+        }
 
         $task->setStatus(StatusEnum::COMPLETED->value);
 

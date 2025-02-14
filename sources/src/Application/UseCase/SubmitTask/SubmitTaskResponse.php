@@ -8,7 +8,6 @@ class SubmitTaskResponse
 {
     public function __construct(
         public string $id,
-    )
-    {
+    ){
     }
 }

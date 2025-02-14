@@ -14,8 +14,7 @@ readonly class SubmitTask
         private TaskRepositoryInterface $repository,
         private TaskFactoryInterface    $taskFactory,
         private MessageSenderInterface  $messageSender,
-    )
-    {
+    ){
     }
 
     public function __invoke(SubmitTaskRequest $request): SubmitTaskResponse
