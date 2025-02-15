@@ -10,8 +10,7 @@ readonly class FeedRepository implements FeedFileRepositoryInterface
 {
     public function __construct(
         private string $reportsDir,
-    )
-    {
+    ) {
     }
 
     /**

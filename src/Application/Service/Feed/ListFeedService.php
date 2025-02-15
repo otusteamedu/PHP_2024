@@ -8,11 +8,9 @@ use App\Domain\Repository\FeedRepositoryInterface;
 
 readonly class ListFeedService
 {
-
-    function __construct(
+    public function __construct(
         private FeedRepositoryInterface $feedRepository,
-    )
-    {
+    ) {
     }
 
     /**

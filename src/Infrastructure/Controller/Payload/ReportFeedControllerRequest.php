@@ -9,14 +9,14 @@ readonly class ReportFeedControllerRequest
     /**
      * @param int[] $ids
      */
-    function __construct(
+    public function __construct(
         #[Assert\NotBlank]
         #[Assert\All([
-                new Assert\Type('integer')
+                new Assert\Type('integer'),
             ]
         )]
         public array $ids = [],
-    )
-    {
+    ) {
     }
+
 }

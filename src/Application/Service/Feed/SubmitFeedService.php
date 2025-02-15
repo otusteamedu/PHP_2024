@@ -12,12 +12,11 @@ use DateTimeImmutable;
 
 readonly class SubmitFeedService
 {
-    function __construct(
-        private FeedFactoryInterface    $feedFactory,
+    public function __construct(
+        private FeedFactoryInterface $feedFactory,
         private FeedRepositoryInterface $feedRepository,
-        private UrlGatewayInterface     $urlGateway,
-    )
-    {
+        private UrlGatewayInterface $urlGateway,
+    ) {
     }
 
     public function execute(SubmitFeedRequest $request): SubmitFeedResponse

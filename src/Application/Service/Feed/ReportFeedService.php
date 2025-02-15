@@ -9,12 +9,10 @@ use App\Domain\Repository\FeedRepositoryInterface;
 
 readonly class ReportFeedService
 {
-
-    function __construct(
+    public function __construct(
         private FeedRepositoryInterface $feedRepository,
         private FeedFileRepositoryInterface $feedFileRepository,
-    )
-    {
+    ) {
     }
 
     public function execute(ReportFeedRequest $request): ReportFeedResponse

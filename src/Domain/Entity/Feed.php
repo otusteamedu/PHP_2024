@@ -10,12 +10,11 @@ class Feed
 {
     private ?int $id = null;
 
-    function __construct(
+    public function __construct(
         private readonly DateTimeImmutable $date,
-        private readonly Title             $title,
-        private readonly Url               $url,
-    )
-    {
+        private readonly Title $title,
+        private readonly Url $url,
+    ) {
     }
 
     public function getId(): ?int
