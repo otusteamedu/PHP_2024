@@ -1,11 +1,11 @@
-## Случайные даты:
+## Случайные данные:
 	•	10 жанров,
 	•	3 типа фильмов,
 	•	100 режиссёров,
 	•	500 актёров,
 	•	10 000 фильмов с рандомными значениями.
 
---
+-- Запрос для проверки
 ```sql
 SELECT
     m.id, m.title, m.release_date, d.name AS director, mt.type_name AS movie_type
@@ -13,9 +13,10 @@ FROM LoadTesting.Movies m
          JOIN LoadTesting.Directors d ON m.director_id = d.id
          JOIN LoadTesting.MovieTypes mt ON m.type_id = mt.id
 ```
---
+---
 
 ```sql
+-- Запрос на 10 тысяч
 Hash Join  (cost=25.40..332.22 rows=10000 width=147) (actual time=0.109..6.594 rows=10000 loops=1)
   Hash Cond: (m.type_id = mt.id)
   ->  Hash Join  (cost=3.25..283.61 rows=10000 width=33) (actual time=0.094..4.168 rows=10000 loops=1)
@@ -44,7 +45,6 @@ Hash Join  (cost=25.40..307689.92 rows=10000000 width=150) (actual time=11.233..
 Создал индексы:
 CREATE INDEX idx_movies_director ON LoadTesting.Movies (director_id);
 CREATE INDEX idx_movies_id ON LoadTesting.Movies (id);
-Время немного уменьшилось
 ----
 
 Hash Join  (cost=25.40..307689.92 rows=10000000 width=150) (actual time=9.311..4444.159 rows=10000000 loops=1)
@@ -58,3 +58,6 @@ Hash Join  (cost=25.40..307689.92 rows=10000000 width=150) (actual time=9.311..4
   ->  Hash  (cost=15.40..15.40 rows=540 width=122) (actual time=0.017..0.018 rows=3 loops=1)
         Buckets: 1024  Batches: 1  Memory Usage: 9kB
 
+----
+Реальное выполнение запроса уменьшается в 2 раза
+----
