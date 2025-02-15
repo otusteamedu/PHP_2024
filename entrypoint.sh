@@ -8,6 +8,6 @@ php bin/console doctrine:cache:clear-result
 php bin/console doctrine:migrations:migrate --no-interaction
 php bin/console cache:clear
 
-chown -R www-data:www-data var
+chown -R www-data:www-data var public
 
 php-fpm

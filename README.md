@@ -29,10 +29,10 @@ docker-compose up -d
 После завершения всех предыдущих шагов, вы можете получить доступ к вашему приложению,
 перейдя по следующему URL: http://media-otus.local
 
-В приложении доступны 3 урл:
-   - /user/register
-   - /login
-   - /user/get/{id}
-   - /user/search/?first_name=Ек&last_name=Пе
+В приложении доступны 4 урл:
+   - /feed/create - Создает сущность по переданному урл и возвращает id
+   - /feed/list - Получает limit и page и возвращает список статей
+   - /feed/report - Получается список id статей и возвращает ссылку для скачивания файла
+   - /feed/report/download/{fileName} - скачивает файл
 
-Коллекция Postman находится в файле [SocialNetwork.postman_collection.json](SocialNetwork.postman_collection.json)
+Коллекция Postman находится в файле [OtusFeed.postman_collection.json](OtusFeed.postman_collection.json)
