@@ -124,3 +124,20 @@ CREATE TABLE Tickets (
     price DECIMAL(10, 2) NOT NULL,
     sold_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+##SQL для нахождения самого прибыльного фильма
+
+```sql
+SELECT
+    m.title AS movie_title,
+    SUM(t.price) AS total_revenue
+FROM
+    Movies m
+JOIN Schedules s ON m.id = s.movie_id
+JOIN Tickets t ON s.id = t.schedule_id
+GROUP BY
+    m.title
+ORDER BY
+    total_revenue DESC
+LIMIT 1;
