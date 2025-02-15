@@ -4,3 +4,4 @@ logs/*.log
 context/composer/composer.lock
 .DS_Store
 Thumbs.db
+project/htdocs/vendor/

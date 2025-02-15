@@ -1,13 +1,15 @@
-# PHP + Nginx + Composer в Docker
-Этот проект представляет собой окружение для разработки PHP-приложений с использованием **Docker, Nginx, PHP-FPM и Composer**.
+# PHP
+## Домашнее задание
+## Leetcode практикум.1
+# Цель:
+https://leetcode.com/problems/linked-list-cycle/ <br>
 
-## 📂 Структура проекта
+Итоговая временная сложность: O(n), где n — количество узлов в списке.
+Пространственная сложность (Space Complexity):
+(i.e. constant) memory: O(1).
 
-context/                  # Файлы конфигурации для контейнеров <BR>
-project/htdocs/           # Корневая папка проекта (PHP-код)
+https://leetcode.com/problems/letter-combinations-of-a-phone-number/
 
-## 🛠 Установка и запуск
 
-  ```sh
-  docker-compose up --build
-  ```
+Если все цифры имеют 3 буквы, то сложность будет O(3^n).
+Итоговая временная сложность: O(4^n), где n — количество цифр.

@@ -1,0 +1,10 @@
+{
+  "name": "project/app",
+  "description": "My PHP Project",
+  "version": "1.0.0",
+  "require": {
+    "php": "^8.0"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
