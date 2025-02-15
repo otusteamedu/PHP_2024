@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: otus-hw21/nginx
+    container_name: otus-hw21-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw21-network
+
+  app:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: otus-hw21/php
+    container_name: app1
+    volumes:
+      - ./app:/var/www
+    networks:
+      - otus-hw21-network
+
+  rabbitmq:
+    image: rabbitmq:3.9.10-management-alpine
+    ports:
+      - "5672:5672"
+      - "15673:15672"
+    networks:
+      - otus-hw21-network
+
+networks:
+  otus-hw21-network:
+    driver: bridge

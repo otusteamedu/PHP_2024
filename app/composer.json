@@ -1,0 +1,18 @@
+{
+    "name": "slava-makhov/otus-queue-app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SlavaMakhov\\OtusQueueApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SlavaMakhov"
+        }
+    ],
+    "require": {
+        "php-amqplib/php-amqplib": "^2.8",
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
