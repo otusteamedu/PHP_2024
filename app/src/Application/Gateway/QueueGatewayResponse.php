@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SlavaMakhov\OtusArchitectureApp\Application\Gateway;
 
-class RedisGatewayResponse
+class QueueGatewayResponse
 {
     /**
-     * Метод DTO (Response) для Redis
+     * Метод DTO (Response) для очереди
      *
      * @param int $id
      */

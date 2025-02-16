@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SlavaMakhov\OtusArchitectureApp\Application\UseCase;
 
 use SlavaMakhov\OtusArchitectureApp\Domain\Factory\ConditionListFactoryInterface;
-use SlavaMakhov\OtusArchitectureApp\Application\Gateway\RedisGatewayInterface;
+use SlavaMakhov\OtusArchitectureApp\Application\Gateway\QueueGatewayInterface;
 use SlavaMakhov\OtusArchitectureApp\Domain\Factory\ConditionFactoryInterface;
-use SlavaMakhov\OtusArchitectureApp\Application\Gateway\RedisGatewayRequest;
+use SlavaMakhov\OtusArchitectureApp\Application\Gateway\QueueGatewayRequest;
 use SlavaMakhov\OtusArchitectureApp\Domain\Factory\EventFactoryInterface;
 
 class SubmitEventUseCase
@@ -16,13 +16,13 @@ class SubmitEventUseCase
      * @param EventFactoryInterface $eventFactory
      * @param ConditionFactoryInterface $conditionFactory
      * @param ConditionListFactoryInterface $conditionListFactory
-     * @param RedisGatewayInterface $redisGateway
+     * @param QueueGatewayInterface $queueGateway
      */
     public function __construct(
         private readonly EventFactoryInterface $eventFactory,
         private readonly ConditionFactoryInterface $conditionFactory,
         private readonly ConditionListFactoryInterface $conditionListFactory,
-        private readonly RedisGatewayInterface $redisGateway
+        private readonly QueueGatewayInterface $queueGateway
     )
     {
     }
@@ -41,9 +41,9 @@ class SubmitEventUseCase
         $condition_list = $this->conditionListFactory->getList();
         $event = $this->eventFactory->create($request->priority, $request->name, $condition_list);
 
-        $redisGatewayRequest = new RedisGatewayRequest($event);
-        $redisGatewayResponse = $this->redisGateway->saveEvent($redisGatewayRequest);
+        $queueGatewayRequest = new QueueGatewayRequest($event);
+        $queueGatewayResponse = $this->queueGateway->saveEvent($queueGatewayRequest);
 
-        return new SubmitEventResponse($redisGatewayResponse->id);
+        return new SubmitEventResponse($queueGatewayResponse->id);
     }
 }

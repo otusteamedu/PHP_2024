@@ -6,10 +6,10 @@ namespace SlavaMakhov\OtusArchitectureApp\Application\Gateway;
 
 use SlavaMakhov\OtusArchitectureApp\Domain\Entity\Event;
 
-class RedisGatewayRequest
+class QueueGatewayRequest
 {
     /**
-     *  Метод DTO (Request) для Redis
+     *  Метод DTO (Request) для очереди
      *
      * @param Event $event
      */

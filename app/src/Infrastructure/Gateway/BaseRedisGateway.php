@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace SlavaMakhov\OtusArchitectureApp\Infrastructure\Gateway;
 
+use SlavaMakhov\OtusArchitectureApp\Application\Gateway\QueueGatewayInterface;
+use SlavaMakhov\OtusArchitectureApp\Application\Gateway\QueueGatewayResponse;
+use SlavaMakhov\OtusArchitectureApp\Application\Gateway\QueueGatewayRequest;
 use Dotenv\Dotenv;
 use Exception;
 use Redis;
-
-class BaseRedisGateway
+class BaseRedisGateway implements QueueGatewayInterface
 {
     /** @var ?BaseRedisGateway */
     private static ?BaseRedisGateway $instance = null;
@@ -27,6 +29,34 @@ class BaseRedisGateway
         } catch (Exception $e) {
             exit('Ошибка подключения к Redis: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function saveEvent(QueueGatewayRequest $request): QueueGatewayResponse
+    {
+        $id = $this->getTotal();
+        $id++;
+        $priority = $this->redis->executeRaw(["GET", "priority:{$request->event->getPriority()->getValue()}"], false);
+
+        if (!empty($priority) && (int)$priority === 1) {
+            throw new Exception("Priority {$request->event->getPriority()->getValue()} exists");
+        }
+
+        $this->redis->executeRaw(["ZADD", "priority", $request->event->getPriority()->getValue(), $id], false);
+
+        $this->redis->executeRaw(["SET", "priority:{$request->event->getPriority()->getValue()}", 1], false);
+
+        foreach ($request->event->getConditionList()->getConditionList() AS $key => $value) {
+            $this->redis->executeRaw(["RPUSH", "$key:$value", $id], false);
+        }
+
+        $this->redis->executeRaw(["SET", "params:$id", json_encode(array_keys($request->event->getConditionList()->getConditionList()))], false);
+
+        $this->redis->executeRaw(["SET", "events:$id", $request->event->getName()->getValue()], false);
+
+        return new QueueGatewayResponse($id);
     }
 
     /**

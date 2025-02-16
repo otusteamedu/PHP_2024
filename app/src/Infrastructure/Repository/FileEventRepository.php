@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SlavaMakhov\OtusArchitectureApp\Infrastructure\Repository;
 
-use ReflectionProperty;
 use SlavaMakhov\OtusArchitectureApp\Domain\Repository\EventRepositoryInterface;
 use SlavaMakhov\OtusArchitectureApp\Domain\Entity\Event;
+use ReflectionProperty;
 
 class FileEventRepository implements EventRepositoryInterface
 {

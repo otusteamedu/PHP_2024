@@ -61,7 +61,7 @@ class App
         $submitEventRequest = new SubmitEventRequest($eventArrayData['priority'], $eventArrayData['event'], $eventArrayData['conditions']);
         $result = $submitEventCommand($submitEventRequest);
 
-        echo "Добавилено новое событие с id: " . $result->id . PHP_EOL;
+        echo "Добавлено новое событие с id: " . $result->id . PHP_EOL;
     }
 
     /**
