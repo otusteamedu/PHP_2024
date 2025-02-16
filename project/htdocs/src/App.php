@@ -12,14 +12,14 @@ class App {
             $verifier = new VerifyEmail();
             $result = $verifier->verifyEmails($emailList);
 
-            $this->renderView('views/form.php', ['result' => $result]);
+            $this->renderView('form.php', ['result' => $result]);
         } else {
-            $this->renderView('views/form.php');
+            $this->renderView('form.php');
         }
     }
 
     private function renderView($view, $data = []) {
         extract($data);
-        require '../public_html/' . $view;
+        require __DIR__ . '/../views/' . $view;
     }
 }
