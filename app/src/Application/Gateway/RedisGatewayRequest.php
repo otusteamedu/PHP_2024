@@ -13,9 +13,5 @@ class RedisGatewayRequest
      *
      * @param Event $event
      */
-    public function __construct(
-        public readonly Event $event
-    ){
-
-    }
+    public function __construct(public readonly Event $event){}
 }
