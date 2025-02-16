@@ -15,6 +15,5 @@ class RedisGatewayRequest
      */
     public function __construct(public readonly Event $event)
     {
-
     }
 }
