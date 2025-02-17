@@ -107,6 +107,7 @@ CREATE TABLE Schedules (
     id SERIAL PRIMARY KEY,
     movie_id INT REFERENCES Movies(id),
     hall_id INT REFERENCES Halls(id),
+    ticket_price DECIMAL(10, 2) NOT NULL;
     show_time TIMESTAMP NOT NULL
 );
 
