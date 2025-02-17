@@ -17,8 +17,7 @@ class CreateNewsCommand extends Command
 {
     public function __construct(
         private CreateNewsUseCase $createNewsUseCase,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

@@ -25,8 +25,7 @@ class NewsController
         CreateNewsUseCase $createNewsUseCase,
         GenerateReportUseCase $generateReportUseCase,
         NewsRepositoryInterface $newsRepository
-    )
-    {
+    ) {
         $this->createNewsUseCase = $createNewsUseCase;
         $this->generateReportUseCase = $generateReportUseCase;
         $this->newsRepository = $newsRepository;

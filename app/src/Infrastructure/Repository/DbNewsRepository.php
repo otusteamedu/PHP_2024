@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PavelMiasnov\MediaMonitoring\Infrastructure\Repository;
 
-use Cassandra\Date;
 use PavelMiasnov\MediaMonitoring\Domain\Entity\News;
 use PavelMiasnov\MediaMonitoring\Domain\Repository\NewsRepositoryInterface;
 use PavelMiasnov\MediaMonitoring\Domain\ValueObject\Title;
@@ -32,7 +31,7 @@ class DbNewsRepository implements NewsRepositoryInterface
             ':url' => $news->getUrl()->getValue(),
             ':title' => $news->getTitle()->getValue(),
         ]);
-        $result =$stmt->fetchColumn();
+        $result = $stmt->fetchColumn();
 
         $reflectionPropertyId = new \ReflectionProperty(News::class, 'id');
         $reflectionPropertyId->setAccessible(true);
