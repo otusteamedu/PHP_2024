@@ -1,98 +1,58 @@
--- Создание схемы EAVCINEMA
-CREATE SCHEMA EAVCINEMA;
+# EAVCINEMA Database Schema
 
--- Использование схемы EAVCINEMA
-USE EAVCINEMA;
+## Описание
 
--- Таблица для хранения фильмов
-CREATE TABLE films (
-    film_id INT PRIMARY KEY AUTO_INCREMENT,  -- Уникальный идентификатор фильма
-    title VARCHAR(255) NOT NULL,             -- Название фильма
-    release_year INT                        -- Год выпуска фильма
-);
+Схема базы данных `EAVCINEMA` предназначена для хранения информации о фильмах, их атрибутах, а также различных задачах и событиях, связанных с продвижением фильмов и их атрибутами. Основной принцип - использование подхода Entity-Attribute-Value (EAV), где атрибуты фильмов могут быть разнообразными и могут иметь разные типы данных.
 
--- Таблица для типов атрибутов
-CREATE TABLE attribute_types (
-    attribute_type_id INT PRIMARY KEY AUTO_INCREMENT,  -- Уникальный идентификатор типа атрибута
-    type_name VARCHAR(50) NOT NULL                     -- Тип атрибута (Текст, Логический, Дата, Изображение)
-);
+## Таблицы
 
--- Таблица для хранения атрибутов
-CREATE TABLE attributes (
-    attribute_id INT PRIMARY KEY AUTO_INCREMENT,       -- Уникальный идентификатор атрибута
-    attribute_name VARCHAR(255) NOT NULL,               -- Название атрибута (например, Рецензия, Премия)
-    attribute_type_id INT,                             -- Идентификатор типа атрибута (связь с таблицей attribute_types)
-    FOREIGN KEY (attribute_type_id) REFERENCES attribute_types(attribute_type_id)  -- Внешний ключ на тип атрибута
-);
+1. **films**
+   - `film_id` (INT, PRIMARY KEY) — Уникальный идентификатор фильма
+   - `title` (VARCHAR(255), NOT NULL) — Название фильма
+   - `release_year` (INT) — Год выпуска фильма
 
--- Таблица для хранения значений атрибутов (ключевая таблица EAV)
-CREATE TABLE attribute_values (
-    film_id INT,                                      -- Идентификатор фильма
-    attribute_id INT,                                 -- Идентификатор атрибута
-    value_text TEXT,                                  -- Для текстовых значений
-    value_date DATE,                                  -- Для значений даты
-    value_boolean BOOLEAN,                            -- Для логических значений
-    value_image BLOB,                                 -- Для изображений (например, для премий)
-    PRIMARY KEY (film_id, attribute_id),              -- Составной первичный ключ
-    FOREIGN KEY (film_id) REFERENCES films(film_id),  -- Внешний ключ на фильм
-    FOREIGN KEY (attribute_id) REFERENCES attributes(attribute_id)  -- Внешний ключ на атрибут
-);
+2. **attribute_types**
+   - `attribute_type_id` (INT, PRIMARY KEY) — Уникальный идентификатор типа атрибута
+   - `type_name` (VARCHAR(50), NOT NULL) — Название типа атрибута (например, Текст, Логический, Дата, Изображение)
 
--- Таблица для важнейших атрибутов типа 'Дата'
-CREATE TABLE important_dates (
-    film_id INT,                                      -- Идентификатор фильма
-    attribute_id INT,                                 -- Идентификатор атрибута (например, премьера)
-    value_date DATE,                                  -- Дата значений
-    PRIMARY KEY (film_id, attribute_id),              -- Составной первичный ключ
-    FOREIGN KEY (film_id) REFERENCES films(film_id),  -- Внешний ключ на фильм
-    FOREIGN KEY (attribute_id) REFERENCES attributes(attribute_id)  -- Внешний ключ на атрибут
-);
+3. **attributes**
+   - `attribute_id` (INT, PRIMARY KEY) — Уникальный идентификатор атрибута
+   - `attribute_name` (VARCHAR(255), NOT NULL) — Название атрибута (например, Рецензия, Премия)
+   - `attribute_type_id` (INT) — Идентификатор типа атрибута (ссылка на `attribute_types`)
 
--- Таблица для служебных атрибутов (например, даты начала продаж билетов, запуска рекламы)
-CREATE TABLE service_dates (
-    film_id INT,                                      -- Идентификатор фильма
-    attribute_id INT,                                 -- Идентификатор атрибута
-    value_date DATE,                                  -- Дата значений
-    PRIMARY KEY (film_id, attribute_id),              -- Составной первичный ключ
-    FOREIGN KEY (film_id) REFERENCES films(film_id),  -- Внешний ключ на фильм
-    FOREIGN KEY (attribute_id) REFERENCES attributes(attribute_id)  -- Внешний ключ на атрибут
-);
+4. **attribute_values**
+   - `film_id` (INT) — Идентификатор фильма (ссылка на `films`)
+   - `attribute_id` (INT) — Идентификатор атрибута (ссылка на `attributes`)
+   - `value_text` (TEXT) — Для текстовых значений
+   - `value_date` (DATE) — Для значений даты
+   - `value_boolean` (BOOLEAN) — Для логических значений
+   - `value_image` (BLOB) — Для изображений (например, для премий)
+   - **PRIMARY KEY** (`film_id`, `attribute_id`) — Составной первичный ключ
 
--- Представление для сбора данных для маркетинга
-CREATE VIEW marketing_data AS
-SELECT 
-    f.title AS film,                                  -- Название фильма
-    at.attribute_name AS attribute_type,              -- Тип атрибута (например, Рецензия, Премия)
-    av.value_text AS attribute_value                  -- Значение атрибута (например, текст рецензии)
-FROM 
-    films f
-JOIN 
-    attribute_values av ON f.film_id = av.film_id
-JOIN 
-    attributes at ON av.attribute_id = at.attribute_id
-WHERE 
-    at.attribute_type_id = (SELECT attribute_type_id FROM attribute_types WHERE type_name = 'Текст');  -- Только текстовые атрибуты (например, рецензии)
+5. **important_dates**
+   - `film_id` (INT) — Идентификатор фильма (ссылка на `films`)
+   - `attribute_id` (INT) — Идентификатор атрибута (ссылка на `attributes`)
+   - `value_date` (DATE) — Дата значений
+   - **PRIMARY KEY** (`film_id`, `attribute_id`) — Составной первичный ключ
 
--- Представление для сбора служебных задач (актуальные на сегодня)
-CREATE VIEW service_tasks_today AS
-SELECT 
-    f.title AS film,                                  -- Название фильма
-    sd.value_date AS task_date                        -- Дата задачи (например, дата начала продаж билетов)
-FROM 
-    films f
-JOIN 
-    service_dates sd ON f.film_id = sd.film_id
-WHERE 
-    sd.value_date = CURRENT_DATE;  -- Задачи актуальные на сегодня
+6. **service_dates**
+   - `film_id` (INT) — Идентификатор фильма (ссылка на `films`)
+   - `attribute_id` (INT) — Идентификатор атрибута (ссылка на `attributes`)
+   - `value_date` (DATE) — Дата значений
+   - **PRIMARY KEY** (`film_id`, `attribute_id`) — Составной первичный ключ
 
--- Представление для сбора задач, актуальных через 20 дней
-CREATE VIEW service_tasks_20_days AS
-SELECT 
-    f.title AS film,                                  -- Название фильма
-    sd.value_date AS task_date                        -- Дата задачи (например, дата начала продаж билетов)
-FROM 
-    films f
-JOIN 
-    service_dates sd ON f.film_id = sd.film_id
-WHERE 
-    sd.value_date = DATE_ADD(CURRENT_DATE, INTERVAL 20 DAY);  -- Задачи актуальные через 20 дней
+## Представления
+
+1. **marketing_data**
+   Сбор данных для маркетинга, фильтруя только текстовые атрибуты (например, рецензии).
+
+   ```sql
+   CREATE VIEW marketing_data AS
+   SELECT 
+       f.title AS film, 
+       at.attribute_name AS attribute_type,
+       av.value_text AS attribute_value
+   FROM films f
+   JOIN attribute_values av ON f.film_id = av.film_id
+   JOIN attributes at ON av.attribute_id = at.attribute_id
+   WHERE at.attribute_type_id = (SELECT attribute_type_id FROM attribute_types WHERE type_name = 'Текст');
