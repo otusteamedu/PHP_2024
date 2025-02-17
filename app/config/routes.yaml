@@ -1,0 +1,14 @@
+app_create_news:
+  path: /create-news
+  methods: [POST]
+  controller: PavelMiasnov\MediaMonitoring\Infrastructure\Http\NewsController::createNewsAction
+
+app_get_news_list:
+  path: /news-list
+  methods: [GET]
+  controller: PavelMiasnov\MediaMonitoring\Infrastructure\Http\NewsController::getNewsListAction
+
+app_generate_report:
+  path: /generate-report
+  methods: [POST]
+  controller: PavelMiasnov\MediaMonitoring\Infrastructure\Http\NewsController::generateReportAction

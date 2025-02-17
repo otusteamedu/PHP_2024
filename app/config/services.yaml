@@ -1,0 +1,59 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  PavelMiasnov\MediaMonitoring\:
+    resource: '../src'
+    exclude: '../src/{Domain,Application}/**'
+
+  # Domain Layer
+  PavelMiasnov\MediaMonitoring\Domain\Factory\NewsFactoryInterface:
+    class: PavelMiasnov\MediaMonitoring\Infrastructure\Factory\CreateNewsFactory
+
+  PavelMiasnov\MediaMonitoring\Domain\Repository\NewsRepositoryInterface:
+    class: PavelMiasnov\MediaMonitoring\Infrastructure\Repository\DbNewsRepository
+    arguments:
+      - '@pdo'
+
+  # Application Layer
+  PavelMiasnov\MediaMonitoring\Application\Gateway\WebGatewayInterface:
+    class: PavelMiasnov\MediaMonitoring\Infrastructure\Gateway\WebGateway
+    arguments:
+      - '@PavelMiasnov\MediaMonitoring\Infrastructure\Service\HtmlDownloader'
+
+  PavelMiasnov\MediaMonitoring\Application\UseCase\CreateNews\CreateNewsUseCase:
+    arguments:
+      - '@PavelMiasnov\MediaMonitoring\Application\Gateway\WebGatewayInterface'
+      - '@PavelMiasnov\MediaMonitoring\Domain\Factory\NewsFactoryInterface'
+      - '@PavelMiasnov\MediaMonitoring\Domain\Repository\NewsRepositoryInterface'
+
+  PavelMiasnov\MediaMonitoring\Application\UseCase\GenerateReport\GenerateReportUseCase:
+    arguments:
+      - '@PavelMiasnov\MediaMonitoring\Domain\Repository\NewsRepositoryInterface'
+      - '@PavelMiasnov\MediaMonitoring\Infrastructure\Service\ReportGenerator'
+
+  # Infrastructure Layer
+  PavelMiasnov\MediaMonitoring\Infrastructure\Service\HtmlDownloader: ~
+
+  PavelMiasnov\MediaMonitoring\Infrastructure\Service\ReportGenerator:
+    arguments:
+      - '%kernel.project_dir%/reports'
+
+  pdo:
+    class: PDO
+    # factory: ['PDO', '__construct']
+    arguments:
+      - 'pgsql:host=%env(resolve:DATABASE_HOST)%;port=%env(resolve:DATABASE_PORT)%;dbname=%env(resolve:DATABASE_NAME)%'
+      - '%env(resolve:DATABASE_USER)%'
+      - '%env(resolve:DATABASE_PASSWORD)%'
+      - !php/const PDO::ATTR_ERRMODE: !php/const PDO::ERRMODE_EXCEPTION
+
+  # Commands
+  PavelMiasnov\MediaMonitoring\Infrastructure\Command\CreateNewsCommand:
+    tags: ['console.command']
+
+  # Controllers
+  PavelMiasnov\MediaMonitoring\Infrastructure\Http\NewsController:
+    public: true

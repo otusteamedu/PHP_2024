@@ -3,3 +3,9 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+
+**/vendor
+**/var
+**/db_data
+**/.env
+**/reports
