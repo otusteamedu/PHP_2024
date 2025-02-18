@@ -1,45 +1,65 @@
 # EAVCINEMA Database Schema
 
-## Описание
-
-Схема базы данных `EAVCINEMA` предназначена для хранения информации о фильмах, их атрибутах, а также различных задачах и событиях, связанных с продвижением фильмов и их атрибутами. Основной принцип - использование подхода Entity-Attribute-Value (EAV), где атрибуты фильмов могут быть разнообразными и могут иметь разные типы данных.
-
 ## Таблицы
 
-1. **films**
-   - `film_id` (INT, PRIMARY KEY) — Уникальный идентификатор фильма
-   - `title` (VARCHAR(255), NOT NULL) — Название фильма
-   - `release_year` (INT) — Год выпуска фильма
+'''sql
+-- Создание таблицы films
+CREATE TABLE films (
+    film_id INT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    release_year INT
+);
 
-2. **attribute_types**
-   - `attribute_type_id` (INT, PRIMARY KEY) — Уникальный идентификатор типа атрибута
-   - `type_name` (VARCHAR(50), NOT NULL) — Название типа атрибута (например, Текст, Логический, Дата, Изображение)
+-- Создание таблицы attribute_types
+CREATE TABLE attribute_types (
+    attribute_type_id INT PRIMARY KEY,
+    type_name VARCHAR(50) NOT NULL
+);
 
-3. **attributes**
-   - `attribute_id` (INT, PRIMARY KEY) — Уникальный идентификатор атрибута
-   - `attribute_name` (VARCHAR(255), NOT NULL) — Название атрибута (например, Рецензия, Премия)
-   - `attribute_type_id` (INT) — Идентификатор типа атрибута (ссылка на `attribute_types`)
+-- Создание таблицы attributes
+CREATE TABLE attributes (
+    attribute_id INT PRIMARY KEY,
+    attribute_name VARCHAR(255) NOT NULL,
+    attribute_type_id INT,
+    FOREIGN KEY (attribute_type_id) REFERENCES attribute_types(attribute_type_id)
+);
 
-4. **attribute_values**
-   - `film_id` (INT) — Идентификатор фильма (ссылка на `films`)
-   - `attribute_id` (INT) — Идентификатор атрибута (ссылка на `attributes`)
-   - `value_text` (TEXT) — Для текстовых значений
-   - `value_date` (DATE) — Для значений даты
-   - `value_boolean` (BOOLEAN) — Для логических значений
-   - `value_image` (BLOB) — Для изображений (например, для премий)
-   - **PRIMARY KEY** (`film_id`, `attribute_id`) — Составной первичный ключ
+-- Создание таблицы attribute_values
+CREATE TABLE attribute_values (
+    film_id INT NOT NULL,
+    attribute_id INT NOT NULL,
+    value_text TEXT,
+    value_date DATE,
+    value_boolean BOOLEAN,
+    value_image BLOB,
+    value_int INT,
+    value_float FLOAT,
+    value_decimal DECIMAL(15,4),
+    PRIMARY KEY (film_id, attribute_id),
+    FOREIGN KEY (film_id) REFERENCES films(film_id),
+    FOREIGN KEY (attribute_id) REFERENCES attributes(attribute_id)
+);
 
-5. **important_dates**
-   - `film_id` (INT) — Идентификатор фильма (ссылка на `films`)
-   - `attribute_id` (INT) — Идентификатор атрибута (ссылка на `attributes`)
-   - `value_date` (DATE) — Дата значений
-   - **PRIMARY KEY** (`film_id`, `attribute_id`) — Составной первичный ключ
+-- Создание таблицы important_dates
+CREATE TABLE important_dates (
+    film_id INT NOT NULL,
+    attribute_id INT NOT NULL,
+    value_date DATE NOT NULL,
+    PRIMARY KEY (film_id, attribute_id),
+    FOREIGN KEY (film_id) REFERENCES films(film_id),
+    FOREIGN KEY (attribute_id) REFERENCES attributes(attribute_id)
+);
 
-6. **service_dates**
-   - `film_id` (INT) — Идентификатор фильма (ссылка на `films`)
-   - `attribute_id` (INT) — Идентификатор атрибута (ссылка на `attributes`)
-   - `value_date` (DATE) — Дата значений
-   - **PRIMARY KEY** (`film_id`, `attribute_id`) — Составной первичный ключ
+-- Создание таблицы service_dates
+CREATE TABLE service_dates (
+    film_id INT NOT NULL,
+    attribute_id INT NOT NULL,
+    value_date DATE NOT NULL,
+    PRIMARY KEY (film_id, attribute_id),
+    FOREIGN KEY (film_id) REFERENCES films(film_id),
+    FOREIGN KEY (attribute_id) REFERENCES attributes(attribute_id)
+);
+'''
 
 ## Представления
 
