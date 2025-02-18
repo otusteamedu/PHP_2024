@@ -2,7 +2,7 @@
 
 ## Таблицы
 
-'''sql
+```sql
 -- Создание таблицы films
 CREATE TABLE films (
     film_id INT PRIMARY KEY,
@@ -59,7 +59,7 @@ CREATE TABLE service_dates (
     FOREIGN KEY (film_id) REFERENCES films(film_id),
     FOREIGN KEY (attribute_id) REFERENCES attributes(attribute_id)
 );
-'''
+```
 
 ## Представления
 
