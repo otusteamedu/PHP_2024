@@ -23,7 +23,7 @@ class AddNewsUseCase
         $newsGatewayResponse = $this->newsGateway->readNews($newsGatewayRequest);
 
         // Создать News
-        $news = $this->newsFactory->create($request->url, $newsGatewayResponse->title);
+        $news = $this->newsFactory->create($request->url, $newsGatewayResponse->title, new \DateTimeImmutable());
 
         // Сохранить в БД
         $this->newsRepository->save($news);

@@ -2,8 +2,9 @@
 
 namespace App\Infrastructure\ReportGenerator;
 
-use App\Domain\ReportGenerator\ReportGeneratorInterface;
-use App\Domain\ReportGenerator\ReportGeneratorResponse;
+use App\Application\ReportGenerator\ReportGeneratorInterface;
+use App\Application\ReportGenerator\ReportGeneratorRequest;
+use App\Application\ReportGenerator\ReportGeneratorResponse;
 use Illuminate\Support\Facades\Storage;
 
 class InFileSummaryGenerator implements ReportGeneratorInterface
@@ -11,13 +12,13 @@ class InFileSummaryGenerator implements ReportGeneratorInterface
     /**
      * @inheritDoc
      */
-    public function generate(array $news): ReportGeneratorResponse
+    public function generate(ReportGeneratorRequest $request): ReportGeneratorResponse
     {
         $content = '<html><head><meta charset="utf-8"><title>Summary</title></head><body><ul>';
-        foreach ($news as $item) {
+        foreach ($request->newsDto as $item) {
             $content .= '<li><a href="'
-                . $item->getUrl()->getValue() . '">'
-                . $item->getTitle()->getValue() . '</li>';
+                . $item->url . '">'
+                . $item->title . '</li>';
         }
         $content .= '</ul></body></html>';
 

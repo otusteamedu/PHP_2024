@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Application\Gateway\NewsGatewayInterface;
+use App\Application\ReportGenerator\ReportGeneratorInterface;
 use App\Domain\Factory\NewsFactoryInterface;
-use App\Domain\ReportGenerator\ReportGeneratorInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
 use App\Infrastructure\Factory\NewsFactory;
 use App\Infrastructure\Gateway\InternetNewsGateway;

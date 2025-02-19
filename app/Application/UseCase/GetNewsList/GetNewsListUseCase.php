@@ -16,7 +16,18 @@ class GetNewsListUseCase
         // Прочитать все новости из базы
         $newsList = $this->newsRepository->findAll();
 
+        // Переложить список в массив DTO
+        $newsDtoArr = [];
+        foreach ($newsList as $news) {
+            $newsDtoArr[] = new NewsDTO(
+                $news->getId(),
+                $news->getTitle()->getValue(),
+                $news->getUrl()->getValue(),
+                $news->getDate()
+            );
+        }
+
         // Сформировать и вернуть ответ
-        return new GetNewsListResponse($newsList);
+        return new GetNewsListResponse($newsDtoArr);
     }
 }

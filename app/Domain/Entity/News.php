@@ -8,13 +8,12 @@ use App\Domain\ValueObject\Url;
 class News
 {
     private ?int $id = null;
-    private ?\DateTime $date;
 
     public function __construct(
         private readonly Title $title,
-        private readonly Url   $url
+        private readonly Url   $url,
+        private readonly \DateTimeImmutable $date,
     ) {
-        $this->date = new \DateTime();
     }
 
     public function getId(): ?int
@@ -22,7 +21,7 @@ class News
         return $this->id;
     }
 
-    public function getDate(): ?\DateTime
+    public function getDate(): \DateTimeImmutable
     {
         return $this->date;
     }
@@ -35,20 +34,5 @@ class News
     public function getUrl(): Url
     {
         return $this->url;
-    }
-
-    public function setDate(?\DateTime $date): void
-    {
-        $this->date = $date;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'date' => $this->date->format('Y-m-d'),
-            'title' => $this->title->getValue(),
-            'url' => $this->url->getValue(),
-        ];
     }
 }

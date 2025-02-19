@@ -6,5 +6,5 @@ use App\Domain\Entity\News;
 
 interface NewsFactoryInterface
 {
-    public function create(string $url, string $title): News;
+    public function create(string $url, string $title, \DateTimeImmutable $date): News;
 }

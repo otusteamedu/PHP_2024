@@ -46,8 +46,7 @@ class DbNewsRepository implements NewsRepositoryInterface
         $reflectionProperty->setAccessible(true);
         $newsList = [];
         foreach ($data as $row) {
-            $news = $this->newsFactory->create($row->url, $row->title);
-            $news->setDate(new \DateTime($row->date));
+            $news = $this->newsFactory->create($row->url, $row->title, new \DateTimeImmutable($row->date));
             $reflectionProperty->setValue($news, $row->id);
             $newsList[] = $news;
         }
