@@ -32,7 +32,7 @@ class DbNewsRepository implements NewsRepositoryInterface
      */
     public function findByIds(array $ids): iterable
     {
-        $newsModels = \App\Models\News::query()
+        $newsModels = \App\Infrastructure\Models\News::query()
             ->when(!empty($ids), function ($query) use ($ids) {
                 $query->whereIn('id', $ids);
             })
@@ -52,7 +52,7 @@ class DbNewsRepository implements NewsRepositoryInterface
 
     public function save(News $news): void
     {
-        $newsModel = \App\Models\News::query()
+        $newsModel = \App\Infrastructure\Models\News::query()
             ->create([
                          'title' => $news->getTitle()->getValue(),
                          'url' => $news->getUrl()->getValue(),
