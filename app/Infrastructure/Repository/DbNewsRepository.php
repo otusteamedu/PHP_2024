@@ -5,14 +5,10 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Entity\News;
 use App\Domain\Factory\NewsFactoryInterface;
 use App\Domain\Repository\NewsRepositoryInterface;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\DB;
 use ReflectionProperty;
 
 class DbNewsRepository implements NewsRepositoryInterface
 {
-    const TABLE_NAME = 'news';
-
     public function __construct(
         private readonly NewsFactoryInterface $newsFactory
     ) {
@@ -36,7 +32,7 @@ class DbNewsRepository implements NewsRepositoryInterface
      */
     public function findByIds(array $ids): iterable
     {
-        $data = DB::table(self::TABLE_NAME)
+        $newsModels = \App\Models\News::query()
             ->when(!empty($ids), function ($query) use ($ids) {
                 $query->whereIn('id', $ids);
             })
@@ -45,9 +41,9 @@ class DbNewsRepository implements NewsRepositoryInterface
         $reflectionProperty = new ReflectionProperty(News::class, 'id');
         $reflectionProperty->setAccessible(true);
         $newsList = [];
-        foreach ($data as $row) {
-            $news = $this->newsFactory->create($row->url, $row->title, new \DateTimeImmutable($row->date));
-            $reflectionProperty->setValue($news, $row->id);
+        foreach ($newsModels as $newsModel) {
+            $news = $this->newsFactory->create($newsModel->url, $newsModel->title, new \DateTimeImmutable($newsModel->date));
+            $reflectionProperty->setValue($news, $newsModel->id);
             $newsList[] = $news;
         }
 
@@ -56,17 +52,16 @@ class DbNewsRepository implements NewsRepositoryInterface
 
     public function save(News $news): void
     {
-        $insertId = DB::table(self::TABLE_NAME)
-            ->insertGetId([
-                'title' => $news->getTitle()->getValue(),
-                'url' => $news->getUrl()->getValue(),
-                'date' => $news->getDate(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        $newsModel = \App\Models\News::query()
+            ->create([
+                         'title' => $news->getTitle()->getValue(),
+                         'url' => $news->getUrl()->getValue(),
+                         'date' => $news->getDate(),
+                     ]
+            );
 
         $reflectionProperty = new ReflectionProperty(News::class, 'id');
         $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($news, $insertId);
+        $reflectionProperty->setValue($news, $newsModel->id);
     }
 }
