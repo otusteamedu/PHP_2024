@@ -1,5 +1,7 @@
 <?php
 
+namespace Anatolyshilyaev\App;
+
 // Definition for a singly-linked list.
 class ListNode
 {

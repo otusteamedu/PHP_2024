@@ -1,5 +1,7 @@
 <?php
 
+namespace Anatolyshilyaev\App;
+
 //Сложность O(n)
 class Solution
 {
