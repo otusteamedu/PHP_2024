@@ -1,0 +1,55 @@
+services:
+  
+  nginx:
+    container_name: OTUS-nginx
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: OTUS/nginx
+    volumes:
+      - ./app:/app
+      - ./logs/nginx:/var/log/nginx/
+    ports:
+      - 80:80
+    networks:
+      - app-network
+  
+  php:
+    container_name: OTUS-php
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: OTUS/php
+    volumes:
+       - ./app:/app
+       - ./logs/php.log:/var/log/fpm-php.www.log
+    restart: always
+    networks:
+      - app-network
+  
+  postgres:
+    container_name: OTUS-postgres
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./:/code
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+  
+  adminer:
+    container_name: OTUS-adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
