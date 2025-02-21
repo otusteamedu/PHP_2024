@@ -2,6 +2,8 @@
 
 namespace Anatolyshilyaev\App;
 
+require '../vendor/autoload.php';
+
 // Definition for a singly-linked list.
 class ListNode
 {
@@ -21,7 +23,7 @@ class Solution
      * @param ListNode|null $headB
      * @return ListNode|null
      */
-    function getIntersectionNode($headA, $headB)
+    public function getIntersectionNode($headA, $headB)
     {
         $lenA = $this->getLength($headA);
         $lenB = $this->getLength($headB);

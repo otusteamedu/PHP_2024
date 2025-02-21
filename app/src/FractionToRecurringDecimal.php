@@ -2,6 +2,8 @@
 
 namespace Anatolyshilyaev\App;
 
+require '../vendor/autoload.php';
+
 //Сложность O(n)
 class Solution
 {
@@ -10,9 +12,11 @@ class Solution
      * @param int $denominator
      * @return String
      */
-    function fractionToDecimal($numerator, $denominator)
+    public function fractionToDecimal(int $numerator, int $denominator): string
     {
-        if ($numerator == 0) return "0";
+        if ($numerator == 0) {
+            return "0";
+        }
 
         $result = "";
 
