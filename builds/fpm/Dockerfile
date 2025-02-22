@@ -15,7 +15,9 @@ RUN pecl install redis \
         && rm -rf /tmp/pear \
         && docker-php-ext-enable redis\
         && pecl install zlib zip mongodb \
-        && docker-php-ext-enable mongodb
+        && docker-php-ext-enable mongodb \
+        && pecl install xdebug \
+        && docker-php-ext-enable xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

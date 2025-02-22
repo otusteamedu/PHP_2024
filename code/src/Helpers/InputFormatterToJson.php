@@ -36,7 +36,7 @@ class InputFormatterToJson
      */
     public function validator($result): void
     {
-        if (is_numeric($result) || array_key_exists('event', $result)) {
+        if (is_numeric($result) || !is_array($result) || array_key_exists('event', $result)) {
             throw new Exception('Проблема с входными данными');
         }
     }

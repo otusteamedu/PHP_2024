@@ -4,28 +4,20 @@ declare(strict_types=1);
 
 namespace Asyrovatkin\Hw11\Classes;
 
+use Asyrovatkin\Hw11\Builders\EventBuilder;
 use Asyrovatkin\Hw11\Controllers\EventController;
-use Asyrovatkin\Hw11\Storages\MongoDb\MongoDb;
+use Asyrovatkin\Hw11\Helpers\InputFormatterToJson;
+use Asyrovatkin\Hw11\Repositories\EventRepository;
 
 class Router
 {
     private array $routes;
     public Request $request;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->request = new Request();
+        $this->request = $request;
         $this->routes = $this->getRoutes();
-    }
-
-    public function get($path, $callback): void
-    {
-        $this->routes['get'][$path] = $callback;
-    }
-
-    public function post($path, $callback): void
-    {
-        $this->routes['post'][$path] = $callback;
     }
 
     public function resolve()
@@ -50,23 +42,28 @@ class Router
                     echo file_get_contents('./src/Views/main.html');
                 },
                 'clear' => function() {
-                    (new EventController())->clearStorage();
+                    $this->getEventController()->clearStorage();
                 },
                 'search' => function() {
                     echo file_get_contents('./src/Views/search.html');
-                },
-                'test' => function() {
-                    new MongoDb();
                 }
             ],
             'post' => [
                 'main' => function() {
-                    (new EventController())->putEvent();
+                    $this->getEventController()->putEvent();
                 },
                 'search' => function() {
-                    (new EventController())->getEventIdsByParamsWithMaxPriority();
+                    $this->getEventController()->getEventIdsByParamsWithMaxPriority();
                 }
             ]
         ];
+    }
+
+    private function getEventController()
+    {
+        $eventRepository = new EventRepository();
+        $inputFormatterToJson = new InputFormatterToJson();
+        $eventBuilder = new EventBuilder();
+        return new EventController($eventRepository, $inputFormatterToJson, $eventBuilder);
     }
 }

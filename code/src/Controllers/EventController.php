@@ -13,11 +13,17 @@ class EventController
 {
     private EventRepository $eventRepository;
     private InputFormatterToJson $inputFormatterToJson;
+    private EventBuilder $eventBuilder;
 
-    public function __construct()
+    public function __construct(
+        EventRepository      $eventRepository,
+        InputFormatterToJson $inputFormatterToJson,
+        EventBuilder         $eventBuilder
+    )
     {
-        $this->eventRepository = new EventRepository();
-        $this->inputFormatterToJson = new InputFormatterToJson();
+        $this->eventRepository = $eventRepository;
+        $this->inputFormatterToJson = $inputFormatterToJson;
+        $this->eventBuilder = $eventBuilder;
     }
 
     public function putEvent()
@@ -31,9 +37,8 @@ class EventController
             die();
         }
 
-        $eventBuilder = new EventBuilder();
         foreach ($eventsArr as $eventArr) {
-            $event = $eventBuilder->build($eventArr);
+            $event = $this->eventBuilder->build($eventArr);
             $this->eventRepository->addEvent($event);
         }
 

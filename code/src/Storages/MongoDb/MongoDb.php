@@ -11,14 +11,13 @@ use MongoDB\Collection;
 
 class MongoDb implements Storage
 {
-
     private Client $client;
     private Collection $collection;
 
     public function __construct()
     {
-        $this->client = new Client('mongodb://root:mypass1@mongo:27017');
-        $this->collection = $this->client->hw11->records;
+        $this->client = $this->getClient();
+        $this->collection = $this->getCollection();
     }
 
     public function addEvent(Event $event)
@@ -48,5 +47,18 @@ class MongoDb implements Storage
     public function clearStorage(): void
     {
         $this->collection->drop();
+    }
+
+    /**
+     * @return Client
+     */
+    public function getClient(): Client
+    {
+        return new Client('mongodb://root:mypass1@mongo:27017');
+    }
+
+    public function getCollection()
+    {
+        return $this->client->hw11->records;
     }
 }

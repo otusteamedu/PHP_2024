@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Asyrovatkin\Hw11;
 
+use Asyrovatkin\Hw11\Classes\Request;
 use Asyrovatkin\Hw11\Classes\Router;
 
 class App
@@ -12,7 +13,8 @@ class App
 
     public function __construct()
     {
-        $this->router = new Router();
+        $request = new Request();
+        $this->router = new Router($request);
     }
 
     public function run(): void
