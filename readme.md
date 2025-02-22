@@ -33,7 +33,6 @@ CREATE TABLE attribute_values (
     value_boolean BOOLEAN,
     value_image BLOB,
     value_int INT,
-    value_float FLOAT,
     value_decimal DECIMAL(15,4),
     PRIMARY KEY (film_id, attribute_id),
     FOREIGN KEY (film_id) REFERENCES films(film_id),
