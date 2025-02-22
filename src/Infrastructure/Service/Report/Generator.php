@@ -9,7 +9,6 @@ use Symfony\Component\Filesystem\Filesystem;
 
 readonly class Generator implements ReportGeneratorInterface
 {
-
     public function __construct(
         private string $reportsDir,
     ) {
