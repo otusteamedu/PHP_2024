@@ -2,8 +2,8 @@
 
 namespace App\Application\Service\Feed;
 
-use App\Domain\Entity\Feed;
-use App\Domain\Repository\FeedAllParameters;
+use App\Application\Service\Feed\DTO\ListFeetResponse;
+use App\Domain\Repository\PaginationParams;
 use App\Domain\Repository\FeedRepositoryInterface;
 
 readonly class ListFeedService
@@ -14,10 +14,21 @@ readonly class ListFeedService
     }
 
     /**
-     * @return Feed[]
+     * @return ListFeetResponse[]
      */
-    public function execute(FeedAllParameters $request): array
+    public function execute(PaginationParams $request): array
     {
-        return $this->feedRepository->getAll($request);
+        $feeds = $this->feedRepository->getAll($request);
+        $listFeed = [];
+        foreach ($feeds as $feed) {
+            $listFeed[] = new ListFeetResponse(
+                $feed->getId(),
+                $feed->getDate(),
+                $feed->getUrl(),
+                $feed->getTitle(),
+            );
+        }
+
+        return $listFeed;
     }
 }

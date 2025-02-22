@@ -2,13 +2,14 @@
 
 namespace App\Domain\Entity;
 
+use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
 use DateTimeImmutable;
 
 class Feed
 {
-    private ?int $id = null;
+    private ?Id $id = null;
 
     public function __construct(
         private readonly DateTimeImmutable $date,
@@ -17,7 +18,7 @@ class Feed
     ) {
     }
 
-    public function getId(): ?int
+    public function getId(): ?Id
     {
         return $this->id;
     }

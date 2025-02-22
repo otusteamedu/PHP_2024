@@ -9,7 +9,7 @@ interface FeedRepositoryInterface
     /**
      * @return Feed[]
      */
-    public function getAll(FeedAllParameters $parameters): iterable;
+    public function getAll(PaginationParams $parameters): iterable;
 
     /**
      * @return Feed[]

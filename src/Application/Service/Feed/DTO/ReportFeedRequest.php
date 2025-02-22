@@ -2,7 +2,7 @@
 
 namespace App\Application\Service\Feed\DTO;
 
-class ReportFeedRequest
+readonly class ReportFeedRequest
 {
     public function __construct(
         /** @var int[] $ids */

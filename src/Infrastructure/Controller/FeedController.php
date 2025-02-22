@@ -7,7 +7,7 @@ use App\Application\Service\Feed\DTO\SubmitFeedRequest;
 use App\Application\Service\Feed\ListFeedService;
 use App\Application\Service\Feed\ReportFeedService;
 use App\Application\Service\Feed\SubmitFeedService;
-use App\Domain\Repository\FeedAllParameters;
+use App\Domain\Repository\PaginationParams;
 use App\Infrastructure\Controller\Payload\CreateFeedRequest;
 use App\Infrastructure\Controller\Payload\ListFeedRequest;
 use App\Infrastructure\Controller\Payload\ReportFeedControllerRequest;
@@ -35,7 +35,7 @@ final class FeedController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(['id' => $submitFeedResponse->id]);
+        return new JsonResponse(['id' => $submitFeedResponse->id->getValue()]);
     }
 
     #[Route('/list', name: '_list', methods: ['GET'])]
@@ -46,7 +46,7 @@ final class FeedController extends AbstractController
         $limit = $listFeedRequest->limit;
         $page = $listFeedRequest->page;
 
-        $parameters = new FeedAllParameters($limit, $page);
+        $parameters = new PaginationParams($limit, $page);
 
         try {
             $feeds = $listFeedService->execute($parameters);
@@ -57,10 +57,10 @@ final class FeedController extends AbstractController
         $result = [];
         foreach ($feeds as $feed) {
             $result[] = [
-                'ID' => $feed->getId(),
-                'data' => $feed->getDate()->format('Y-m-d H:i:s'),
-                'url' => $feed->getUrl()->getValue(),
-                'title' => $feed->getTitle()->getValue(),
+                'ID' => $feed->id->getValue(),
+                'date' => $feed->date->format('Y-m-d H:i:s'),
+                'url' => $feed->url->getValue(),
+                'title' => $feed->title->getValue(),
             ];
         }
 

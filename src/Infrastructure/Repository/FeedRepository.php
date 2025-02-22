@@ -5,8 +5,9 @@
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Entity\Feed as DomainFeed;
-use App\Domain\Repository\FeedAllParameters;
+use App\Domain\Repository\PaginationParams;
 use App\Domain\Repository\FeedRepositoryInterface;
+use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Title;
 use App\Domain\ValueObject\Url;
 use App\Infrastructure\Entity\Feed;
@@ -27,7 +28,7 @@ class FeedRepository extends ServiceEntityRepository implements FeedRepositoryIn
     /**
      * @return DomainFeed[]
      */
-    public function getAll(FeedAllParameters $parameters): array
+    public function getAll(PaginationParams $parameters): array
     {
         $entities = $this->createQueryBuilder('Feed')
             ->setMaxResults($parameters->limit)
@@ -103,6 +104,6 @@ class FeedRepository extends ServiceEntityRepository implements FeedRepositoryIn
     private function addId(DomainFeed $feed, Feed $entity): void
     {
         $reflectionProperty = new ReflectionProperty(DomainFeed::class, 'id');
-        $reflectionProperty->setValue($feed, $entity->getId());
+        $reflectionProperty->setValue($feed, new Id($entity->getId()));
     }
 }

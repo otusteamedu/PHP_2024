@@ -2,7 +2,7 @@
 
 namespace App\Domain\Repository;
 
-readonly class FeedAllParameters
+readonly class PaginationParams
 {
     public function __construct(
         public int $limit,
