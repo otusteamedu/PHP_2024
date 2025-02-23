@@ -3,3 +3,8 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+
+.env
+var
+vendor
+db_data
