@@ -1,0 +1,55 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Otus\Hw16\:
+        resource: '../src/*'
+        exclude: '../src/{Tests,Kernel.php}'
+
+    Otus\Hw16\Domain\Chain\CookingHandlerInterface:
+        class: Otus\Hw16\Domain\Chain\BurgerHandler
+
+    Otus\Hw16\Infrastructure\Service\PdoDatabaseService:
+        arguments:
+            $host: '%env(DB_HOST)%'
+            $port: '%env(DB_PORT)%'
+            $dbname: '%env(DB_NAME)%'
+            $user: '%env(DB_USER)%'
+            $password: '%env(DB_PASSWORD)%'
+
+    Otus\Hw16\Domain\Repository\FoodItemRepositoryInterface:
+        class: Otus\Hw16\Infrastructure\Persistence\PdoFoodItemRepository
+        arguments:
+            $pdoDatabaseService: '@Otus\Hw16\Infrastructure\Service\PdoDatabaseService'
+
+    Otus\Hw16\Domain\Service\CookingServiceInterface:
+        class: Otus\Hw16\Infrastructure\Proxy\CookingProxy
+        arguments:
+            $cookingService: '@Otus\Hw16\Infrastructure\Service\PdoDatabaseService'
+
+    Otus\Hw16\Application\Service\OrderService:
+        arguments:
+            $repository: '@Otus\Hw16\Domain\Repository\FoodItemRepositoryInterface'
+            $bus: '@messenger.bus.default'
+
+    Otus\Hw16\Domain\Builder\BurgerBuilder: ~
+    Otus\Hw16\Domain\Builder\HotDogBuilder: ~
+    Otus\Hw16\Domain\Builder\SandwichBuilder: ~
+
+    Otus\Hw16\Application\UseCase\OrderFoodItemUseCase: ~
+
+    Otus\Hw16\Infrastructure\Controller\OrderController:
+        tags: [ 'controller.service_arguments' ]
+
+    Otus\Hw16\Domain\Entity\CookingProcess: ~
+
+    Otus\Hw16\Application\Handler\CookFoodItemHandler:
+        tags:
+            - { name: 'messenger.message_handler' }
+
+    Otus\Hw16\Infrastructure\Observer\CookingStatusObserverFactory:
+        class: Otus\Hw16\Infrastructure\Observer\CookingStatusObserverFactory
+        arguments:
+            $repository: '@Otus\Hw16\Domain\Repository\FoodItemRepositoryInterface'
