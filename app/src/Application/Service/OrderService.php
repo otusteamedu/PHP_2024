@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Otus\Hw16\Application\Service;
 
 use Otus\Hw16\Application\Command\CookFoodItemCommand;
@@ -36,7 +38,7 @@ class OrderService
         $this->repository->saveStatusHistory(new OrderStatusHistory($id, 'Order received'));
 
         $observer = $this->observerFactory->create($id);
-        $command = new CookFoodItemCommand($foodItem, $customIngredients, $observer);
+        $command = new CookFoodItemCommand($foodItem, $observer, $customIngredients);
         try {
             $this->bus->dispatch($command);
         } catch (\RuntimeException $e) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Otus\Hw16\Application\Command;
 
 use Otus\Hw16\Domain\Entity\FoodItem;
@@ -9,8 +11,8 @@ class CookFoodItemCommand
 {
     public function __construct(
         private FoodItem $foodItem,
+        private CookingStatusObserverInterface $observer,
         private array $customIngredients = [],
-        private CookingStatusObserverInterface $observer
     ) {
     }
 

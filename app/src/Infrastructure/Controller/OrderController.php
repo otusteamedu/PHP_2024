@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Otus\Hw16\Infrastructure\Controller;
 
 use FOS\RestBundle\Controller\AbstractFOSRestController;

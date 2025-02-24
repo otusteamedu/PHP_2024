@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Otus\Hw16\Infrastructure\Observer;
 
 use Otus\Hw16\Domain\Entity\CookingProcess;

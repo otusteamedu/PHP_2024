@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Otus\Hw16\Infrastructure\Service;
 
 use Otus\Hw16\Domain\Entity\FoodItem;
