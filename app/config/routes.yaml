@@ -1,0 +1,4 @@
+order_food_item:
+    path: /order
+    controller: Otus\Hw16\Infrastructure\Controller\OrderController::orderFoodItem
+    methods: POST

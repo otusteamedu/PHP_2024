@@ -1,0 +1,44 @@
+services:
+  app:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: fastfood_app
+    volumes:
+      - ./app:/data/mysite.local
+    depends_on:
+      - db
+    environment:
+      - APP_ENV=dev
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=app
+      - DB_USER=app
+      - DB_PASSWORD=app
+      - MESSENGER_TRANSPORT_DSN=in-memory://
+
+  db:
+    image: postgres:15
+    container_name: fastfood_db
+    environment:
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=app
+      - POSTGRES_DB=app
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  nginx:
+    image: nginx:alpine
+    container_name: fastfood_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/data/mysite.local
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+volumes:
+  db_data:
