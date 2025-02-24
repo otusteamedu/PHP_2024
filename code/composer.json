@@ -1,0 +1,17 @@
+{
+    "name": "pavel-miasnov/php-socket-chat",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "PavelMiasnov\\PhpSocketChat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "PavelMiasnov"
+        }
+    ],
+    "require": {
+        "ext-sockets": "*"
+    }
+}
