@@ -5,6 +5,7 @@
 .LSOverride
 
 .vscode
-.github
 .env
-/data/
+.phpunit.cache
+.phpunit.result.cache
+coverage.xml
