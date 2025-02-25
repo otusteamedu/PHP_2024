@@ -16,7 +16,9 @@ class Client
     public function app(callable $inputProvider = null): void
     {
         $this->client->socketConnect();
-        $inputProvider = $inputProvider ?? function () { return fgets(STDIN); };
+        $inputProvider = $inputProvider ?? function () {
+            return fgets(STDIN);
+        };
         while (true) {
             echo 'Input message' . PHP_EOL;
             $msg = $inputProvider();
