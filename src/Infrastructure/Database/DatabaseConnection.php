@@ -11,18 +11,18 @@ final class DatabaseConnection
     private static ?self $instance = null;
     private PDO $connection;
 
-    private static string $host = 'postgres';
-    private static int $port = 5432;
-    private static string $dbName = 'developer';
-    private static string $user = 'developer';
-    private static string $password = 'secret';
-    private static array $options = [];
-
-    private function __construct()
+    final public function __construct(
+        private readonly string $host = 'postgres',
+        private readonly int    $port = 5432,
+        private readonly string $dbName = 'developer',
+        private readonly string $user = 'developer',
+        private readonly string $password = 'secret',
+        private readonly array  $options = [],
+    )
     {
-        $dsn = 'pgsql:host=' . self::$host . ';port=' . self::$port . ';dbname=' . self::$dbName;
+        $dsn = 'pgsql:host=' . $this->host . ';port=' . $this->port . ';dbname=' . $this->dbName;
 
-        $this->connection = new PDO($dsn, self::$user, self::$password, self::$options);
+        $this->connection = new PDO($dsn, $this->user, $this->password, $this->options);
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
