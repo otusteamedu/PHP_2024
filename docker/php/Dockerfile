@@ -32,6 +32,9 @@ RUN docker-php-ext-install pdo_pgsql pgsql && docker-php-ext-enable pgsql
 # Install the php memcached extension
 # RUN pecl install memcached && docker-php-ext-enable memcached
 
+# Install the Xdebug extension
+RUN pecl install xdebug
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

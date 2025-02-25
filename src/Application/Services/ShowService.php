@@ -24,14 +24,14 @@ class ShowService
         return $this->repository->findById($id);
     }
 
-    public function createShow(Show $entity): void
+    public function createShow(Show $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
-    public function updateShow(Show $entity): void
+    public function updateShow(Show $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
     public function deleteShow(int $id): void

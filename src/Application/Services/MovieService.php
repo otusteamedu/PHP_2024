@@ -24,14 +24,14 @@ class MovieService
         return $this->repository->findById($id);
     }
 
-    public function createMovie(Movie $entity): void
+    public function createMovie(Movie $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
-    public function updateMovie(Movie $entity): void
+    public function updateMovie(Movie $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
     public function deleteMovie(int $id): void

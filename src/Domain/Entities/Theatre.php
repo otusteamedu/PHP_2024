@@ -6,7 +6,7 @@ namespace Domain\Entities;
 
 class Theatre
 {
-    public int $id;
+    public ?int $id = null;
     public string $title;
     public string $location;
     public int $capacity;

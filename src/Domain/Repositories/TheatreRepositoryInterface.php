@@ -10,7 +10,7 @@ interface TheatreRepositoryInterface
 
     public function findById(int $id): ?Theatre;
 
-    public function save(Theatre $entity): void;
+    public function save(Theatre $entity): string|false;
 
     public function delete(int $id): void;
 }

@@ -10,7 +10,7 @@ use PDO;
 class TheatreRepository implements TheatreRepositoryInterface
 {
     private PDO $connection;
-    public const TABLE = 'theatres';
+    public const string TABLE = 'theatres';
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class TheatreRepository implements TheatreRepositoryInterface
         return $stmt->fetchObject(Theatre::class) ?: null;
     }
 
-    public function save(Theatre $entity): void
+    public function save(Theatre $entity): string|false
     {
         if ($entity->id) {
             $stmt = $this->connection->prepare("UPDATE " . self::TABLE . " SET title = :title, location = :location, capacity = :capacity WHERE id = :id");
@@ -48,6 +48,8 @@ class TheatreRepository implements TheatreRepositoryInterface
                 'capacity' => $entity->capacity
             ]);
         }
+
+        return $this->connection->lastInsertId();
     }
 
     public function delete(int $id): void

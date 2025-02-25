@@ -6,7 +6,7 @@ namespace Domain\Entities;
 
 class Ticket
 {
-    public int $id;
+    public ?int $id = null;
     public int $show_id;
     public int $seat;
     public int $price;

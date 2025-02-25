@@ -24,14 +24,14 @@ class TheatreService
         return $this->repository->findById($id);
     }
 
-    public function createTheatre(Theatre $entity): void
+    public function createTheatre(Theatre $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
-    public function updateTheatre(Theatre $entity): void
+    public function updateTheatre(Theatre $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
     public function deleteTheatre(int $id): void

@@ -10,7 +10,7 @@ use PDO;
 class TicketRepository implements TicketRepositoryInterface
 {
     private PDO $connection;
-    public const TABLE = 'tickets';
+    public const string TABLE = 'tickets';
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class TicketRepository implements TicketRepositoryInterface
         return $stmt->fetchObject(Ticket::class) ?: null;
     }
 
-    public function save(Ticket $entity): void
+    public function save(Ticket $entity): false|string
     {
         if ($entity->id) {
             $stmt = $this->connection->prepare("UPDATE " . self::TABLE . " SET show_id = :show_id, seat = :seat, price = :price, available = :available WHERE id = :id");
@@ -50,6 +50,8 @@ class TicketRepository implements TicketRepositoryInterface
                 'available' => $entity->available,
             ]);
         }
+
+        return $this->connection->lastInsertId();
     }
 
     public function delete(int $id): void

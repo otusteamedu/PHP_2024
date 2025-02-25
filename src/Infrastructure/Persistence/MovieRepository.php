@@ -10,7 +10,7 @@ use PDO;
 class MovieRepository implements MovieRepositoryInterface
 {
     private PDO $connection;
-    public const TABLE = 'movies';
+    public const string TABLE = 'movies';
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class MovieRepository implements MovieRepositoryInterface
         return $stmt->fetchObject(Movie::class) ?: null;
     }
 
-    public function save(Movie $entity): void
+    public function save(Movie $entity): false|string
     {
         if ($entity->id) {
             $stmt = $this->connection->prepare("UPDATE " . self::TABLE . " SET title = :title, genre = :genre WHERE id = :id");
@@ -46,6 +46,8 @@ class MovieRepository implements MovieRepositoryInterface
                 'genre' => $entity->genre,
             ]);
         }
+
+        return $this->connection->lastInsertId();
     }
 
     public function delete(int $id): void

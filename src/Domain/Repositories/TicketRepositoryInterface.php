@@ -10,7 +10,7 @@ interface TicketRepositoryInterface
 
     public function findById(int $id): ?Ticket;
 
-    public function save(Ticket $ticket): void;
+    public function save(Ticket $ticket): string|false;
 
     public function delete(int $id): void;
 }

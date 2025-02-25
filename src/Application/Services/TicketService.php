@@ -24,14 +24,14 @@ class TicketService
         return $this->repository->findById($id);
     }
 
-    public function createTicket(Ticket $entity): void
+    public function createTicket(Ticket $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
-    public function updateTicket(Ticket $entity): void
+    public function updateTicket(Ticket $entity): string|false
     {
-        $this->repository->save($entity);
+        return $this->repository->save($entity);
     }
 
     public function deleteTicket(int $id): void

@@ -6,4 +6,6 @@
 
 .vscode
 .env
-/data/
+.phpunit.cache
+.phpunit.result.cache
+coverage.xml
