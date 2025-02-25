@@ -13,9 +13,16 @@ class App
     public $port;
     public $length;
 
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
-        $this->config = parse_ini_file(__DIR__ . "/config.ini");
+        $configFile = __DIR__ . "/config.ini";
+        if (!file_exists($configFile)) {
+            throw new Exception("Configuration file '$configFile' not found");
+        }
+        $this->config = parse_ini_file($configFile);
         $this->host = $this->config["host"];
         $this->port = intval($this->config["port"]);
         $this->length = intval($this->config["length"]);
@@ -24,16 +31,16 @@ class App
     /**
      * @throws Exception
      */
-    public function run(): void
+    public function run(?Server $server = null, ?Client $client = null): void
     {
         $mode = $_SERVER['argv'][1] ?? null;
         switch ($mode) {
             case 'server':
-                $server = new Server($this->host, $this->port, $this->length);
+                $server = $server ?? new Server($this->host, $this->port, $this->length);
                 $server->app();
                 break;
             case 'client':
-                $client = new Client($this->host, $this->port, $this->length);
+                $client = $client ?? new Client($this->host, $this->port, $this->length);
                 $client->app();
                 break;
             default:

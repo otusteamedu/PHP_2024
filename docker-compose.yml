@@ -3,6 +3,9 @@ services:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
+    environment:
+      XDEBUG_MODE: ${XDEBUG_MODE}
+      SERVER_NAME: ${SERVER_NAME}
     image: chat/console-php-server
     container_name: server-side
     volumes:
@@ -14,6 +17,9 @@ services:
     build:
       context: ./docker/php
       dockerfile: Dockerfile
+    environment:
+      XDEBUG_MODE: ${XDEBUG_MODE}
+      SERVER_NAME: ${SERVER_NAME}
     image: chat/console-php-client
     container_name: client-side
     volumes:

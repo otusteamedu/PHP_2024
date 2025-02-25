@@ -21,22 +21,22 @@ class Server
     /**
      * @throws Exception
      */
-    public function app()
+    public function app(): void
     {
         $this->server->bind();
         $this->server->listen();
         $this->server->accept();
 
         while (true) {
-            $msg = $this->server->readMessage();
-            if ($msg) {
+            try {
+                $msg = $this->server->readMessage();
                 if (trim($msg) == 'exit') {
                     echo "Клиент закончил сеанс \n";
                     break;
                 } else {
                     echo "Новое сообщение: $msg";
                 }
-            } else {
+            } catch (Exception $e) {
                 throw new Exception("Не удалось прочитать соообщение");
             }
         }

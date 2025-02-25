@@ -6,6 +6,11 @@
             "PavelMiasnov\\PhpSocketChat\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "PavelMiasnov\\PhpSocketChat\\Tests\\": "tests/"
+        }
+    },
     "authors": [
         {
             "name": "PavelMiasnov"
@@ -13,5 +18,8 @@
     ],
     "require": {
         "ext-sockets": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.0"
     }
 }

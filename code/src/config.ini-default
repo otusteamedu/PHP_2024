@@ -1,4 +1,9 @@
 [configuration]
-host=0.0.0.0
-port=6666
+# UNIX
+host=test.sock
+port=0
 length=2048
+# Windows
+# host=127.0.0.1
+# port=8080
+# length=2048

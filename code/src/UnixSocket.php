@@ -8,12 +8,15 @@ use Exception;
 
 class UnixSocket
 {
-    public $host;
-    public $port;
-    public $length;
+    public string $host;
+    public int $port;
+    public int $length;
     public $socket;
     public $client;
 
+    /**
+     * @throws Exception
+     */
     public function __construct($host, $port, $length)
     {
         $this->host = $host;
@@ -21,45 +24,85 @@ class UnixSocket
         $this->length = $length;
         $socket = socket_create(AF_UNIX, SOCK_STREAM, 0);
         if (!$socket) {
-            throw new Exception("failed: reason: " . socket_strerror(socket_last_error()) . "\n");
+            throw new Exception("Failed to create socket: " . socket_strerror(socket_last_error()) . "\n");
         }
         $this->socket = $socket;
     }
 
-    public function bind()
+    /**
+     * @throws Exception
+     */
+    public function bind(): void
     {
-        socket_bind($this->socket, $this->host, $this->port);
+        if (!socket_bind($this->socket, $this->host)) {
+            throw new Exception("Failed to bind socket: " . socket_strerror(socket_last_error($this->socket)) . "\n");
+        }
     }
 
-    public function listen()
+    /**
+     * @throws Exception
+     */
+    public function listen(): void
     {
-        socket_listen($this->socket, 1);
+        if (!socket_listen($this->socket, 1)) {
+            throw new Exception("Failed to listen on socket: " . socket_strerror(socket_last_error($this->socket)) . "\n");
+        }
     }
 
-    public function accept()
+    /**
+     * @throws Exception
+     */
+    public function accept(): void
     {
-        $this->client = socket_accept($this->socket);
+        $client = socket_accept($this->socket);
+        if (!$client) {
+            throw new Exception("Failed to accept connection: " . socket_strerror(socket_last_error($this->socket)) . "\n");
+        }
+        $this->client = $client;
     }
 
-    public function socketConnect()
+    /**
+     * @throws Exception
+     */
+    public function socketConnect(): void
     {
-        socket_connect($this->socket, $this->host, $this->port);
+        if (!socket_connect($this->socket, $this->host)) {
+            throw new Exception("Failed to connect socket: " . socket_strerror(socket_last_error($this->socket)) . "\n");
+        }
     }
 
-    public function sendMessage($msg)
+    /**
+     * @throws Exception
+     */
+    public function sendMessage($msg): void
     {
-        socket_write($this->socket, $msg);
+        if (!socket_write($this->socket, $msg, strlen($msg))) {
+            throw new Exception("Failed to send message: " . socket_strerror(socket_last_error($this->socket)) . "\n");
+        }
     }
 
-    public function readMessage()
+    /**
+     * @throws Exception
+     */
+    public function readMessage(): string
     {
+        if ($this->client === null) {
+            throw new Exception("No client connection established");
+        }
         $msg = socket_read($this->client, $this->length);
-
+        if ($msg === false) {
+            throw new Exception("Failed to read message: " . socket_strerror(socket_last_error($this->client)) . "\n");
+        }
         return $msg;
     }
 
-    public function closeSession()
+    public function closeSession(): void
     {
-        socket_close($this->socket);
+        if (is_resource($this->client)) {
+            socket_close($this->client);
+        }
+        if (is_resource($this->socket)) {
+            socket_close($this->socket);
+        }
     }
 }

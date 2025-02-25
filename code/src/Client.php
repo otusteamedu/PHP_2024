@@ -13,13 +13,13 @@ class Client
         $this->client = new UnixSocket($host, $port, $length);
     }
 
-    public function app()
+    public function app(callable $inputProvider = null): void
     {
         $this->client->socketConnect();
+        $inputProvider = $inputProvider ?? function () { return fgets(STDIN); };
         while (true) {
             echo 'Input message' . PHP_EOL;
-
-            $msg = fgets(STDIN);
+            $msg = $inputProvider();
             $this->client->sendMessage($msg);
             if (trim($msg) === 'exit') {
                 echo "Сеанс завершен \n";

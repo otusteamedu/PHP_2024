@@ -1,2 +1,5 @@
 /vendor/
 /src/config.ini
+.phpunit.cache
+coverage
+test.sock
