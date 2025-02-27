@@ -14,4 +14,5 @@ Navigate to `http://localhost:8080/`
 
 ### Сложность (Big O)
 Сложность метода `IntersectionNodeSolution@getIntersectionNode` равна O(n + m), где n — длина списка headA, а m — длина списка headB
+
 Сложность метода `FractionToDecimalSolution@fractionToDecimal` равна O(d), где d — значение знаменателя
