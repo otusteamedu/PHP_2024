@@ -20,4 +20,17 @@ class LinkedList
             $current->next = new ListNode($value);
         }
     }
+
+    public function appendNode(ListNode $node): void
+    {
+        if ($this->head === null) {
+            $this->head = $node;
+        } else {
+            $current = $this->head;
+            while ($current->next !== null) {
+                $current = $current->next;
+            }
+            $current->next = $node;
+        }
+    }
 }

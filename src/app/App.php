@@ -12,18 +12,6 @@ class App
 {
     public static function run(): void
     {
-
-        // Leetcode практикум.1 1
-        $cycledListHead = static::createCycledLinkedList([1, 2, 3, 4], 1);
-
-        var_dump(CycledListSolution::hasCycle($cycledListHead));
-
-        echo PHP_EOL;
-
-        // Leetcode практикум.1 2
-        static::printResult(PhoneLetterCombinationSolution::phoneLetterCombinations('23'));
-
-
 //        $firstList = static::createLinkedList([1, 2, 4]);
 //
 //        $secondList = static::createLinkedList([1, 3, 4]);
@@ -31,6 +19,23 @@ class App
 //        $mergedLists = MergedLists::mergeTwoLists($firstList->head, $secondList->head);
 //
 //        static::printResult($mergedLists);
+
+
+        // Intersection of Two Linked Lists
+        $intersectVal = 8;
+        [$listA, $listB] = static::createIntersectingLinkedLists($intersectVal);
+        $intersection = IntersectionNodeSolution::getIntersectionNode($listA->head, $listB->head);
+
+        // Fraction to Recurring Decimal
+        $numerator = 1;
+        $denominator = 2;
+        $decimal = FractionToDecimalSolution::fractionToDecimal($numerator, $denominator);
+
+        echo '<pre>';
+        var_dump($intersection);
+        echo '</pre>' . PHP_EOL;
+
+        static::printResult([$decimal]) . PHP_EOL;
     }
 
     public static function createLinkedList(array $arr = []): LinkedList
@@ -44,29 +49,30 @@ class App
         return $list;
     }
 
-    public static function createCycledLinkedList(array $arr, int $pos = 0): ?ListNode
+    public static function createIntersectingLinkedLists($intersectVal): array
     {
-        if (empty($arr)) {
-            return null;
-        }
+        // Создаем первый Linked List
+        $listA = new LinkedList();
+        $listA->append(4);
+        $listA->append(1);
 
-        $head = new ListNode($arr[0]);
-        $current = $head;
+        // Создаем узел пересечения
+        $intersectNode = new ListNode($intersectVal);
+        $listA->appendNode($intersectNode);
 
-        for ($i = 1; $i < count($arr); $i++) {
-            $newNode = new ListNode($arr[$i]);
-            $current->next = $newNode;
-            $current = $newNode;
+        $listA->append(4);
+        $listA->append(5);
 
-            if ($pos > 0 && $pos === $i) {
-                $head = $newNode;
-            }
-        }
+        // Создаем второй Linked List
+        $listB = new LinkedList();
+        $listB->append(5);
+        $listB->append(6);
+        $listB->append(1);
 
-        // Point the last node to the head, creating a cycle
-        $current->next = $head;
+        // Связываем второй Linked List с узлом пересечения
+        $listB->appendNode($intersectNode);
 
-        return $head;
+        return [$listA, $listB];
     }
 
     public static function printResult(ListNode|array|null $result): void
