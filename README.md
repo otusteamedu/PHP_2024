@@ -4,15 +4,17 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 
 ## Usage
 
-`cp .env.example .env`
-
 `docker-compose up -d`
 
-`docker exec -it php-fpm /bin/bash -c 'composer dump-autoload --optimize'`
+`cp .env.example .env`
 
-Navigate to `http://localhost:8080/`
+Установка зависимостей:
+`docker exec -it php-fpm /bin/bash -c 'composer install'`
 
-### Сложность (Big O)
-Сложность метода `IntersectionNodeSolution@getIntersectionNode` равна O(n + m), где n — длина списка headA, а m — длина списка headB
+Генерация OpenApi документации:
+`docker exec -it php-fpm /bin/bash -c 'php generate-openapi.php > openapi.json'`
 
-Сложность метода `FractionToDecimalSolution@fractionToDecimal` равна O(d), где d — значение знаменателя
+Navigate to `http://localhost`
+
+Swagger UI:
+`http://localhost/swagger`
