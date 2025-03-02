@@ -20,10 +20,10 @@ const ROOT_PATH = __DIR__ . '/../';
 
 $app = AppFactory::create();
 
-$config = require __DIR__ . '/../app/Infrastructure/config/config.php';
+$config = require ROOT_PATH . 'app/Infrastructure/config/config.php';
 
 // Настройка Twig
-$twig = Twig::create(__DIR__ . '/../app/Infrastructure/templates', ['cache' => false]);
+$twig = Twig::create(ROOT_PATH . 'app/Infrastructure/templates', ['cache' => false]);
 $app->add(TwigMiddleware::create($app, $twig));
 
 // Сервис очередей
