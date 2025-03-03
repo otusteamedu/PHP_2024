@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Application\UseCase\CreateAccount\CreateAccountRequest;
-use App\Application\UseCase\CreateAccount\CreateAccountUseCase;
+use App\Application\UseCase\CreateRequest\CreateRequestRequest;
+use App\Application\UseCase\CreateRequest\CreateRequestUseCase;
 use Nelmio\ApiDocBundle\Attribute\Security;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,30 +12,39 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(
-    '/api/v1/account/add',
-    name: 'account_add',
+    '/api/v1/request',
+    name: 'request_add',
     methods: ['POST']
 )]
 #[OA\Response(
     response: 200,
-    description: 'Returns accountId',
+    description: 'Returns requestId',
     content: new OA\JsonContent(
         type: 'int'
     )
 )]
+#[OA\Response(
+    response: 400,
+    description: 'Bad request, invalid input data',
+    content: new OA\JsonContent(
+        properties: [
+            new OA\Property(property: 'message', type: 'string')
+        ]
+    )
+)]
 #[Security(name: 'Bearer')]
-final class AddAccountController extends AbstractController
+final class CreateRequestController extends AbstractController
 {
     public function __construct(
-        private readonly CreateAccountUseCase $useCase,
+        private readonly CreateRequestUseCase $useCase,
     ) {
     }
 
     /**
-     * @param CreateAccountRequest $request
+     * @param CreateRequestRequest $request
      * @return JsonResponse
      */
-    public function __invoke(#[MapRequestPayload] CreateAccountRequest $request): JsonResponse
+    public function __invoke(#[MapRequestPayload] CreateRequestRequest $request): JsonResponse
     {
         try {
             $response = ($this->useCase)($request);

@@ -3,3 +3,10 @@ controllers:
         path: ../src/Infrastructure/Controller/
         namespace: App\Infrastructure\Controller
     type: attribute
+
+
+# config/routes.yaml
+app.swagger_ui:
+    path: /api/doc
+    methods: GET
+    defaults: { _controller: nelmio_api_doc.controller.swagger_ui }

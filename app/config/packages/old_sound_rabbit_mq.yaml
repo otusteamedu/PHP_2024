@@ -7,12 +7,12 @@ old_sound_rabbit_mq:
             password: 'password'
     producers:
         # use 'old_sound_rabbit_mq.task_producer' service to send data.
-        statement:
+        request:
             connection:       default
-            exchange_options: { name: 'statement', type: direct }
+            exchange_options: { name: 'request', type: direct }
     consumers:
         statement:
             connection:       default
-            exchange_options: { name: 'statement', type: direct }
-            queue_options:    { name: 'statement'}
-            callback:         App\Infrastructure\Consumer\StatementConsumer
+            exchange_options: { name: 'request', type: direct }
+            queue_options:    { name: 'request'}
+            callback:         App\Infrastructure\Consumer\RequestConsumer

@@ -4,7 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-
+    kernel.secret: '%env(APP_SECRET)%'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -20,9 +20,15 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    # Automatically register all controllers in Infrastructure/Controller
+    App\Infrastructure\Controller\:
+        resource: '../src/Infrastructure/Controller'
+        autowire: true
+        autoconfigure: true
+        public: true  # Ensure the controller is accessible
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    App\Application\UseCase\CreateStatement\CreateStatementUseCase:
+    App\Application\UseCase\CreateRequest\CreateRequestUseCase:
         autowire: true
         arguments:
-            $producer: "@old_sound_rabbit_mq.statement_producer"
+            $producer: "@old_sound_rabbit_mq.request_producer"

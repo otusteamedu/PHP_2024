@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\UseCase\CreateStatement;
+namespace App\Application\UseCase\CreateRequest;
 
-class CreateStatementResponse
+class CreateRequestResponse
 {
     public function __construct(
         public int $id
