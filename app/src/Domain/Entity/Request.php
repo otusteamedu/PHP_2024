@@ -6,14 +6,13 @@ use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Name;
 use App\Domain\ValueObject\Status;
 
-
 class Request
 {
     private ?int $id = null;
 
     public function __construct(
-        private Name   $requesterName,
-        private Email  $requesterEmail,
+        private Name $requesterName,
+        private Email $requesterEmail,
         private Status $status,
     ) {
     }
@@ -57,5 +56,4 @@ class Request
     {
         $this->id = $id;
     }
-
 }

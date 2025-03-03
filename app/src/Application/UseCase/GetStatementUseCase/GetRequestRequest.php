@@ -6,11 +6,9 @@ use OpenApi\Attributes as OA;
 
 class GetRequestRequest
 {
-
     #[OA\Property(description: 'The unique ID of the request(provided when request made)')]
     public int $requestId;
 
-    // Constructor
     public function __construct(int $requestId)
     {
         $this->requestId = $requestId;

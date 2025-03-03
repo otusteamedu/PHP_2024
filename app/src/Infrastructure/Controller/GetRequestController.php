@@ -51,8 +51,7 @@ final class GetRequestController extends AbstractController
         try {
             $response = ($this->useCase)($request);
             return $this->json($response);
-        }
-        catch (\Throwable $e) {
+        } catch (\Throwable $e) {
             $errorResponse = [
                 'message' => $e->getMessage()
             ];

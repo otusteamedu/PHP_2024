@@ -22,7 +22,7 @@ class GetRequestUseCase
     public function __invoke(GetRequestRequest $request): GetRequestResponse
     {
         $request = $this->requestRepository->findById($request->requestId);
-        if(!$request){
+        if (!$request) {
             throw new Exception('Request not found');
         }
         return new GetRequestResponse(

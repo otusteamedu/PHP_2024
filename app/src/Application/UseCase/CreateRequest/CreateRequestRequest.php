@@ -3,6 +3,7 @@
 namespace App\Application\UseCase\CreateRequest;
 
 use OpenApi\Attributes as OA;
+
 class CreateRequestRequest
 {
     #[OA\Property(description: 'The name of the requester')]

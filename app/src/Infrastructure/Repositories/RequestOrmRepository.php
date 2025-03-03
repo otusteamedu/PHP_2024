@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Repositories;
 
-
 use App\Domain\Factory\RequestFactoryInterface;
 use App\Domain\Repository\RequestRepositoryInterface;
 use App\Infrastructure\Entity\StatusEnum;
@@ -13,7 +12,7 @@ use App\Domain\Entity\Request;
 
 class RequestOrmRepository extends ServiceEntityRepository implements RequestRepositoryInterface
 {
-    public function __construct(ManagerRegistry $registry , private readonly RequestFactoryInterface $factory)
+    public function __construct(ManagerRegistry $registry, private readonly RequestFactoryInterface $factory)
     {
         parent::__construct($registry, DbRecord::class);
     }
