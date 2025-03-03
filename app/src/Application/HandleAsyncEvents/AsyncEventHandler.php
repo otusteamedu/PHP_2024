@@ -6,7 +6,10 @@ readonly class AsyncEventHandler
 {
     const LISTEN_ASYNC_EVENTS_MSG = "Listen async events";
 
-    public function __construct(private AsyncEventRepository $repository) {}
+    public function __construct(private AsyncEventRepository $repository)
+    {
+        //empty construct
+    }
 
     public function __invoke(callable $callback): string
     {
