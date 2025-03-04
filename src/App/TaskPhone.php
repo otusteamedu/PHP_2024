@@ -4,7 +4,7 @@ namespace App;
 
 class TaskPhone
 {
-    private $lettersByDigits = [];
+    private $lettersByDigits;
 
     public function __construct()
     {
@@ -25,39 +25,55 @@ class TaskPhone
      * @param String $digits
      * @return String[]
      */
-    public function letterCombinations($digits): array
+    function letterCombinations(string $digits): array
     {
         $arrLettersByDigits = $this->getArrLettersByDigits($digits);
-
-        if (empty($arrLettersByDigits)) return $arrLettersByDigits;
-
-        $letters = array_shift($arrLettersByDigits);
-        $combinations = $letters;
-
-        $letters = array_shift($arrLettersByDigits);
-        while (!empty($letters)) {
-            $upgradeCombinations = [];
-
-            foreach ($combinations as $key => $combination) {
-                foreach ($letters as $letter) {
-                    $upgradeCombinations[] = $combination.$letter;
-                }
-            }
-
-            $combinations = $upgradeCombinations;
-
-            $letters = array_shift($arrLettersByDigits);
-        }
-
-        return $combinations;
+        return $this->getCombinations($arrLettersByDigits);
     }
 
+    /**
+     * @param array $arrLettersByDigits
+     * @param array $combinations
+     * @return String[]
+     */
+    private function getCombinations($arrLettersByDigits, $combinations = []): array
+    {
+        if (empty($arrLettersByDigits)) return $combinations;
+
+        $letters = array_shift($arrLettersByDigits);
+
+        if (empty($combinations)) {
+            $combinations = $letters;
+            return $this->getCombinations($arrLettersByDigits, $combinations);
+        }
+
+        $newCombinations = [];
+
+        foreach ($letters as $letter) {
+            foreach ($combinations as $combination) {
+                $newCombinations[] = $combination.$letter;
+            }
+        }
+
+        $combinations = $newCombinations;
+
+        return $this->getCombinations($arrLettersByDigits, $combinations);
+    }
+
+    /**
+     * @param $digit
+     * @return bool
+     */
     private function isCorrectDigit($digit): bool
     {
         return is_numeric($digit) && ($digit >= 2 && $digit <= 9);
     }
 
-    private function getArrLettersByDigits($digits)
+    /**
+     * @param $digits
+     * @return String[]
+     */
+    private function getArrLettersByDigits($digits): array
     {
         $lettersByDigits = [];
 
