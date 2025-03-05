@@ -1,0 +1,12 @@
+{
+    "name": "asyrovatkin/hw19",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Asyrovatkin\\Hw19\\": "src/"
+        }
+    },
+    "require": {
+        "php-amqplib/php-amqplib": "v3.7.3"
+    }
+}
