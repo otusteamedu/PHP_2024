@@ -1,3 +1,6 @@
 # PHP_2024
-
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
+## Александр Сыроваткин HW19  
+1. Перейти в каталог с проектом и запустить [docker-compose.yml](docker-compose.yml) (docker-compose up)
+2. В браузере открыть http://mysite.local
+3. Добавить произвольное к-во запросов в очередь через форму
+4. Для получения сообщения - в контейнере **app**, в каталоге **data**, запускать **php get_queue_mesage.php** 
