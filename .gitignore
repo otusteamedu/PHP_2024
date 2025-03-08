@@ -6,3 +6,4 @@
 app/vendor
 logs
 .env
+/app/src/Infrastructure/Repository/database.ini
