@@ -47,4 +47,17 @@ class User {
     public function getCreatedAt() {
         return $this->createdAt;
     }
+     // Проверка, изменилось ли поле
+    public function hasChanged($field): bool {
+        return $this->$field !== $this->originalData[$field];
+    }
+
+    // Сброс оригинальных данных после обновления
+    public function resetOriginalData() {
+        $this->originalData = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'createdAt' => $this->createdAt,
+        ];
+    }
 }
