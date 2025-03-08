@@ -62,14 +62,31 @@ class UserMapper {
 
     // Обновляет пользователя
     public function update(User $user): bool {
-        $query = "UPDATE users SET name = :name, email = :email WHERE id = :id";
-        $stmt = $this->pdo->prepare($query);
-        return $stmt->execute([
-            'id' => $user->getId(),
-            'name' => $user->getName(),
-            'email' => $user->getEmail()
-        ]);
+    $dirtyFields = $user->getDirtyFields();
+    
+    if (empty($dirtyFields)) {
+        return false; // Нечего обновлять
     }
+
+    $setClauses = [];
+    $params = ['id' => $user->getId()];
+    
+    foreach ($dirtyFields as $field) {
+        $getter = 'get' . ucfirst($field);
+        $setClauses[] = "$field = :$field";
+        $params[$field] = $user->$getter();
+    }
+
+    $query = "UPDATE users SET " . implode(', ', $setClauses) . " WHERE id = :id";
+    $stmt = $this->pdo->prepare($query);
+    $result = $stmt->execute($params);
+    
+    if ($result) {
+        $user->resetDirtyFields(); // Сброс после успешного обновления
+    }
+    
+    return $result;
+}
 
     // Удаляет пользователя
     public function delete(int $id): bool {
