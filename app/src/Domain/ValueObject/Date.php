@@ -2,31 +2,19 @@
 
 namespace Anatolyshilyaev\Hw14\Domain\ValueObject;
 
+use DateTimeImmutable;
+
 class Date
 {
-    private string $value;
+    private DateTimeImmutable $value;
 
-    public function __construct(string $value)
+    public function __construct(DateTimeImmutable $value)
     {
-        $this->assertValidDate($value);
         $this->value = $value;
     }
 
-    public function getValue(): string
+    public function getValue(): DateTimeImmutable
     {
         return $this->value;
-    }
-
-    public function assertValidDate(string $value): void
-    {
-        $format = 'Y-m-d';
-        $date = \DateTime::createFromFormat($format, $value);
-
-        if (!$date) {
-            throw new \InvalidArgumentException("The value is not s Date");
-        }
-        if ($date->format($format) !== $value) {
-            throw new \InvalidArgumentException("Wrong date format");
-        }
     }
 }

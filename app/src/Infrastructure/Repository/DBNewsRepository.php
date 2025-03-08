@@ -32,31 +32,10 @@ class DBNewsRepository implements NewsRepositoryInterface
         $reflectionProperty->setValue($news, $newsId);
     }
 
-    public function getReport(GetReportNewsRequest $request): string
+    public function findSome(GetReportNewsRequest $request): iterable
     {
         $news = $this->newsMapper->getReport($request);
 
-        $folder = "saved_reports";
-        $files = glob("$folder/*.html");
-        $filename = "$folder/report_" . count($files) + 1 . ".html";
-
-        // Создаём папку, если её нет
-        if (!is_dir($folder)) {
-            mkdir($folder, 0777, true);
-        }
-
-        $html = "<ul>";
-
-        foreach ($news as $new) {
-            $title = $new["title"];
-            $url = $new["url"];
-            $html .= "<li><a href='$url'>$title</a></li>";
-        }
-        $html .= "</ul>";
-
-        // Сохраняем файл
-        file_put_contents($filename, $html);
-
-        return "<a href='$filename' target='_blank'>Открыть файл</a>";
+        return $news;
     }
 }

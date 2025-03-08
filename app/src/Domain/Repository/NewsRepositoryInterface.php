@@ -11,5 +11,5 @@ interface NewsRepositoryInterface
 
     public function save(News $news): void;
 
-    public function getReport(GetReportNewsRequest $ids): string;
+    public function findSome(GetReportNewsRequest $ids): iterable;
 }

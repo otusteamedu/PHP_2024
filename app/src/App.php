@@ -4,66 +4,76 @@ declare(strict_types=1);
 
 namespace Anatolyshilyaev\Hw14;
 
+use Anatolyshilyaev\Hw14\Infrastructure\NewsParser\NewsParser;
+use Anatolyshilyaev\Hw14\Infrastructure\ReportGenerator\ReportGenerator;
 use Anatolyshilyaev\Hw14\Application\UseCase\CreateNews\CreateNewsRequest;
 use Anatolyshilyaev\Hw14\Application\UseCase\CreateNews\CreateNewsUseCase;
 use Anatolyshilyaev\Hw14\Application\UseCase\FindAllNews\FindAllNewsUseCase;
 use Anatolyshilyaev\Hw14\Application\UseCase\GetReportNews\GetReportNewsRequest;
 use Anatolyshilyaev\Hw14\Application\UseCase\GetReportNews\GetReportNewsUseCase;
 use Anatolyshilyaev\Hw14\Infrastructure\Factory\CommonNewsFactory;
-use Anatolyshilyaev\Hw14\Infrastructure\Http\NewsController;
+use Anatolyshilyaev\Hw14\Infrastructure\Http\CreateNewsController;
+use Anatolyshilyaev\Hw14\Infrastructure\Http\FindAllNewsController;
+use Anatolyshilyaev\Hw14\Infrastructure\Http\GetReportNewsController;
 use Anatolyshilyaev\Hw14\Infrastructure\Repository\DBNewsRepository;
 
 class App
 {
     private Router $router;
 
-    private CommonNewsFactory $CommonNewsFactory;
-    private DBNewsRepository $DBNewsRepository;
+    private CommonNewsFactory $commonNewsFactory;
+    private NewsParser $newsParser;
+    private DBNewsRepository $dbNewsRepository;
+    private ReportGenerator $reportGenerator;
 
     private CreateNewsUseCase $createNews;
     private FindAllNewsUseCase $findAllNews;
     private GetReportNewsUseCase $getReportNews;
 
-    private NewsController $newsController;
+    private CreateNewsController $createNewsController;
+    private FindAllNewsController $findAllNewsController;
+    private getReportNewsController $getReportNewsController;
 
     public function __construct()
     {
         $this->router = new Router();
 
-        $this->CommonNewsFactory = new CommonNewsFactory();
-        $this->DBNewsRepository = new DBNewsRepository();
+        $this->newsParser = new NewsParser();
+        $this->reportGenerator = new ReportGenerator();
+        $this->commonNewsFactory = new CommonNewsFactory();
+        $this->dbNewsRepository = new DBNewsRepository();
 
-        $this->createNews = new CreateNewsUseCase($this->CommonNewsFactory, $this->DBNewsRepository);
-        $this->findAllNews = new FindAllNewsUseCase($this->CommonNewsFactory, $this->DBNewsRepository);
-        $this->getReportNews = new GetReportNewsUseCase($this->CommonNewsFactory, $this->DBNewsRepository);
+        $this->createNews = new CreateNewsUseCase($this->commonNewsFactory, $this->newsParser, $this->dbNewsRepository);
+        $this->findAllNews = new FindAllNewsUseCase($this->commonNewsFactory, $this->dbNewsRepository);
+        $this->getReportNews = new GetReportNewsUseCase($this->dbNewsRepository, $this->reportGenerator);
 
-        $this->newsController = new NewsController(
-            $this->createNews,
-            $this->findAllNews,
-            $this->getReportNews
-        );
+        $this->createNewsController = new CreateNewsController($this->createNews);
+        $this->findAllNewsController = new FindAllNewsController($this->findAllNews);
+        $this->getReportNewsController = new getReportNewsController($this->getReportNews);
     }
+
     public function __invoke(): void
     {
         $this->router->add('/create', function () {
-            $url = "https://dev.to/jkettmann/path-to-a-cleaner-react-architecture-a-shared-api-client-2d4p";
-            // $url = "https://dev.to/jkettmann/path-to-a-cleaner-react-architecture-api-layer-fetch-functions-4jin";
-            // $url = "https://dev.to/jkettmann/path-to-a-cleaner-react-architecture-api-layer-data-transformations-1go0";
-            // $url = "https://dev.to/jkettmann/path-to-a-cleaner-react-architecture-domain-entities-dtos-3ja0";
-            // $url = "https://dev.to/jkettmann/path-to-a-cleaner-react-architecture-part-5-infrastructure-services-dependency-injection-for-testability-586j";
+            $url = "https://saint-art.net/vozvrashhenie-shedevrovdva-korolevskih-konnyh-portreta-diego-velaskesa-vernulis-v-muzej-prado-posle-restavraczii/";
             $createNewsRequest = new CreateNewsRequest($url);
-            print_r($this->newsController->create($createNewsRequest));
+            $newsId = $this->createNewsController->create($createNewsRequest)->id;
+            print_r($newsId);
+            return $newsId;
         });
 
         $this->router->add('/findall', function () {
-            print_r($this->newsController->findall());
+            $allNews = $this->findAllNewsController->findAll();
+            print_r($allNews);
+            return $allNews;
         });
 
         $this->router->add('/getreport', function () {
-            $ids = [29, 30, 32];
+            $ids = [1, 3, 7];
             $getReportNewsRequest = new GetReportNewsRequest($ids);
-            // $this->newsController->getReport($getReportNewsRequest);
-            print_r(($this->newsController->getReport($getReportNewsRequest))->link);
+            $link = ($this->getReportNewsController->getReport($getReportNewsRequest))->filename;
+            print_r($link);
+            return $link;
         });
 
         $this->router->dispatch($_SERVER['REQUEST_URI']);

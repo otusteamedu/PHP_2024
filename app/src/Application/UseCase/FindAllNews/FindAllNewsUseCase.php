@@ -4,6 +4,7 @@ namespace Anatolyshilyaev\Hw14\Application\UseCase\FindAllNews;
 
 use Anatolyshilyaev\Hw14\Domain\Factory\NewsFactoryInterface;
 use Anatolyshilyaev\Hw14\Domain\Repository\NewsRepositoryInterface;
+use DateTimeImmutable;
 
 class FindAllNewsUseCase
 {
@@ -14,10 +15,17 @@ class FindAllNewsUseCase
         // Empty constructor
     }
 
-    public function __invoke(): FindAllNewsResponse
+    public function __invoke(): iterable
     {
-        //get all News
+        //Get all News
         $news = $this->newsRepository->findAll();
-        return new FindAllNewsResponse($news);
+
+        // Create DTO array
+        $newsArr = [];
+        foreach ($news as $new) {
+            $newsArr[] = new NewsResponseItems($new["title"], new DateTimeImmutable($new["date"]), $new["url"]);
+        }
+
+        return $newsArr;
     }
 }

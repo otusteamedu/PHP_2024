@@ -24,7 +24,7 @@ class NewsMapper
 
         $stmt->execute([
             'title' => $news->getTitle()->getValue(),
-            'date' => $news->getDate()->getValue(),
+            'date' => $news->getDate()->getValue()->format('Y-m-d'),
             'url' => $news->getUrl()->getValue(),
         ]);
 

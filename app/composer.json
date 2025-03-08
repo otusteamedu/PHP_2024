@@ -12,5 +12,7 @@
             "email": "Anatoly.Shilyaev@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ramsey/uuid": "^4.7"
+    }
 }
