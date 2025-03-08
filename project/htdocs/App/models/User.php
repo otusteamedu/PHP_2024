@@ -7,7 +7,7 @@ class User {
     private $name;
     private $email;
     private $createdAt;
-
+    
     public function __construct($id = null, $name = '', $email = '', $createdAt = '') {
         $this->id = $id;
         $this->name = $name;
