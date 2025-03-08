@@ -8,7 +8,7 @@ use Anatolyshilyaev\Hw14\Domain\ValueObject\Date;
 use Anatolyshilyaev\Hw14\Domain\ValueObject\Title;
 use Anatolyshilyaev\Hw14\Domain\ValueObject\Url;
 
-class CommonNewsFactory implements NewsFactoryInterface
+class NewsFactory implements NewsFactoryInterface
 {
     public function create(Title $title, Date $date, Url $url): News
     {

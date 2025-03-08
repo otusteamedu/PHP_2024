@@ -11,19 +11,19 @@ use Anatolyshilyaev\Hw14\Application\UseCase\CreateNews\CreateNewsUseCase;
 use Anatolyshilyaev\Hw14\Application\UseCase\FindAllNews\FindAllNewsUseCase;
 use Anatolyshilyaev\Hw14\Application\UseCase\GetReportNews\GetReportNewsRequest;
 use Anatolyshilyaev\Hw14\Application\UseCase\GetReportNews\GetReportNewsUseCase;
-use Anatolyshilyaev\Hw14\Infrastructure\Factory\CommonNewsFactory;
+use Anatolyshilyaev\Hw14\Infrastructure\Factory\NewsFactory;
 use Anatolyshilyaev\Hw14\Infrastructure\Http\CreateNewsController;
 use Anatolyshilyaev\Hw14\Infrastructure\Http\FindAllNewsController;
 use Anatolyshilyaev\Hw14\Infrastructure\Http\GetReportNewsController;
-use Anatolyshilyaev\Hw14\Infrastructure\Repository\DBNewsRepository;
+use Anatolyshilyaev\Hw14\Infrastructure\Repository\NewsRepository;
 
 class App
 {
     private Router $router;
 
-    private CommonNewsFactory $commonNewsFactory;
+    private NewsFactory $newsFactory;
     private NewsParser $newsParser;
-    private DBNewsRepository $dbNewsRepository;
+    private NewsRepository $newsRepository;
     private ReportGenerator $reportGenerator;
 
     private CreateNewsUseCase $createNews;
@@ -40,12 +40,12 @@ class App
 
         $this->newsParser = new NewsParser();
         $this->reportGenerator = new ReportGenerator();
-        $this->commonNewsFactory = new CommonNewsFactory();
-        $this->dbNewsRepository = new DBNewsRepository();
+        $this->newsFactory = new NewsFactory();
+        $this->newsRepository = new NewsRepository();
 
-        $this->createNews = new CreateNewsUseCase($this->commonNewsFactory, $this->newsParser, $this->dbNewsRepository);
-        $this->findAllNews = new FindAllNewsUseCase($this->commonNewsFactory, $this->dbNewsRepository);
-        $this->getReportNews = new GetReportNewsUseCase($this->dbNewsRepository, $this->reportGenerator);
+        $this->createNews = new CreateNewsUseCase($this->newsFactory, $this->newsParser, $this->newsRepository);
+        $this->findAllNews = new FindAllNewsUseCase($this->newsFactory, $this->newsRepository);
+        $this->getReportNews = new GetReportNewsUseCase($this->newsRepository, $this->reportGenerator);
 
         $this->createNewsController = new CreateNewsController($this->createNews);
         $this->findAllNewsController = new FindAllNewsController($this->findAllNews);

@@ -8,7 +8,7 @@ use Anatolyshilyaev\Hw14\Application\UseCase\GetReportNews\GetReportNewsRequest;
 use Anatolyshilyaev\Hw14\Domain\Entity\News;
 use Anatolyshilyaev\Hw14\Domain\Repository\NewsRepositoryInterface;
 
-class DBNewsRepository implements NewsRepositoryInterface
+class NewsRepository implements NewsRepositoryInterface
 {
     private NewsMapper $newsMapper;
 
