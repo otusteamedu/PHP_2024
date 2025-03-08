@@ -1,0 +1,24 @@
+CREATE VIEW marketing_data AS
+SELECT 
+    m.title AS movie,
+    at.name AS attribute_type,
+    a.name AS attribute,
+    COALESCE(v.value_text, 
+             CASE WHEN v.value_boolean THEN 'Yes' ELSE 'No' END, 
+             TO_CHAR(v.value_date, 'YYYY-MM-DD')) AS value
+FROM values v
+JOIN attributes a ON v.attribute_id = a.id
+JOIN movies m ON v.movie_id = m.id
+JOIN attribute_types at ON a.type_id = at.id;
+
+CREATE VIEW service_tasks AS
+SELECT 
+    m.title AS movie,
+    STRING_AGG(a.name || ': ' || TO_CHAR(v.value_date, 'YYYY-MM-DD'), ', ') AS tasks
+FROM values v
+JOIN attributes a ON v.attribute_id = a.id
+JOIN movies m ON v.movie_id = m.id
+JOIN attribute_types at ON a.type_id = at.id
+WHERE at.name = 'Service Dates'
+AND v.value_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL '20 days'
+GROUP BY m.title;
