@@ -7,12 +7,20 @@ class User {
     private $name;
     private $email;
     private $createdAt;
+    private $originalData = [];
     
     public function __construct($id = null, $name = '', $email = '', $createdAt = '') {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
         $this->createdAt = $createdAt;
+
+         // Сохраняем исходные данные
+        $this->originalData = [
+            'name' => $name,
+            'email' => $email,
+            'createdAt' => $createdAt,
+        ];
     }
 
     // Геттеры и сеттеры
