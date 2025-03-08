@@ -10,7 +10,6 @@ use Anatolyshilyaev\Hw14\Domain\ValueObject\Title;
 use Anatolyshilyaev\Hw14\Domain\ValueObject\Url;
 use DateTimeImmutable;
 
-
 class CreateNewsUseCase
 {
     public function __construct(
