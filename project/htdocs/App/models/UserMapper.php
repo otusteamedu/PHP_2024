@@ -62,16 +62,16 @@ class UserMapper {
 
     // Обновляет пользователя
     public function update(User $user): bool {
-    $dirtyFields = $user->getDirtyFields();
+    $originalData = $user->getDirtyFields();
     
-    if (empty($dirtyFields)) {
+    if (empty($originalData)) {
         return false; // Нечего обновлять
     }
 
     $setClauses = [];
     $params = ['id' => $user->getId()];
     
-    foreach ($dirtyFields as $field) {
+    foreach ($originalData as $field) {
         $getter = 'get' . ucfirst($field);
         $setClauses[] = "$field = :$field";
         $params[$field] = $user->$getter();
@@ -82,7 +82,7 @@ class UserMapper {
     $result = $stmt->execute($params);
     
     if ($result) {
-        $user->resetDirtyFields(); // Сброс после успешного обновления
+        $user->resetOriginalData(); // Сброс после успешного обновления
     }
     
     return $result;
