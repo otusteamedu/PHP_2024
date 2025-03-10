@@ -11,10 +11,12 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 Установка зависимостей:
 `docker exec -it php-fpm /bin/bash -c 'composer install'`
 
-Генерация OpenApi документации:
-`docker exec -it php-fpm /bin/bash -c 'php generate-openapi.php > openapi.json'`
-
 Navigate to `http://localhost`
 
-Swagger UI:
-`http://localhost/swagger`
+MailHog UI `http://localhost:8025`
+
+Контейнер Consumer'а очередей:
+`docker exec -it php-worker /bin/bash`
+
+Файл Consumer'а очередей:
+`src/app/Infrastructure/Workers/Worker.php`

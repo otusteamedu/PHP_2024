@@ -28,7 +28,7 @@ services:
       # Mounting app volume
       - ./src:/var/www/html
     depends_on:
-      - redis
+      - rabbitmq
       - php-worker
       # - mysql
       # - memcached
@@ -40,13 +40,37 @@ services:
       context: .
       dockerfile: ./docker/php/Dockerfile
     container_name: php-worker
+    restart: unless-stopped
     volumes:
       - ./src:/var/www/html
     depends_on:
-      - redis
+      - rabbitmq
     command: php app/Infrastructure/Workers/Worker.php
     networks:
       - app-network
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "${RABBIT_WEB_PORT:-15672}:15672"
+      - "${RABBIT_PORT:-5672}:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-developer}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-secret}
+    networks:
+      - app-network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - app-network
+
 
   # mysql:
   #   image: mysql:latest
@@ -56,23 +80,23 @@ services:
   #   # ports:
   #   #   - 3306:3306
   #   environment:
-  #     MYSQL_DATABASE: ${DB_DATABASE}
-  #     MYSQL_USER: ${DB_USERNAME}
-  #     MYSQL_PASSWORD: ${DB_PASSWORD}
-  #     MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  #     MYSQL_DATABASE: ${DB_DATABASE:-developer}
+  #     MYSQL_USER: ${DB_USERNAME:-developer}
+  #     MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+  #     MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-secret}
   #   volumes:
   #     - ./data/mysql:/var/lib/mysql
   #   networks:
   #     - app-network
 
-  redis:
-    image: redis:alpine
-    container_name: redis
-    restart: unless-stopped
-    # ports:
-    #   - 6379:6379
-    networks:
-      - app-network
+  #  redis:
+  #    image: redis:alpine
+  #    container_name: redis
+  #    restart: unless-stopped
+  #    # ports:
+  #    #   - 6379:6379
+  #    networks:
+  #      - app-network
 
   # memcached:
   #   image: memcached:alpine

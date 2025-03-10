@@ -4,43 +4,22 @@ declare(strict_types=1);
 
 namespace App\Application\Services;
 
-use Predis\Client;
+use App\Application\Contracts\QueueDriverInterface;
 
 readonly class QueueService
 {
-    public function __construct(private Client $client)
+    public function __construct(private QueueDriverInterface $driver)
     {
         //
     }
 
-    public function addToQueue(string $data): string
+    public function sendMessage(string $message): void
     {
-        $requestId = uniqid('req_', true);
-        $this->client->set("request:$requestId", 'pending');
-        $this->client->rpush('queue', (array)json_encode(['id' => $requestId, 'data' => $data]));
-        return $requestId;
+        $this->driver->sendMessage($message);
     }
 
-    public function getStatus(string $requestId): ?string
+    public function receiveMessage(callable $callback): void
     {
-        return $this->client->get("request:$requestId") ?? null;
-    }
-
-    public function processQueue(): void
-    {
-        while ($item = $this->client->lpop('queue')) {
-            $data = json_decode($item, true);
-            $requestId = $data['id'];
-
-            // Имитация обработки запроса
-            sleep(3);
-
-            $this->client->set("request:$requestId", 'processing');
-
-            // Имитация обработки запроса
-            sleep(5);
-
-            $this->client->set("request:$requestId", 'completed');
-        }
+        $this->driver->receiveMessage($callback);
     }
 }

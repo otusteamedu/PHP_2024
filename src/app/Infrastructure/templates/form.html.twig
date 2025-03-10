@@ -10,7 +10,6 @@
         body {
             padding: 20px;
         }
-
         .status {
             margin-top: 20px;
             font-weight: bold;
@@ -24,13 +23,23 @@
             <h1 class="text-center mb-4">Queue Request Form</h1>
             <form id="requestForm" class="mb-3">
                 <div class="mb-3">
-                    <label for="data" class="form-label">Enter Data:</label>
-                    <input type="text" class="form-control" id="data" name="data" placeholder="Enter anything" required>
+                    <label for="dateFrom" class="form-label">Enter date from:</label>
+                    <input type="date" class="form-control" id="dateFrom" name="dateFrom"
+                           placeholder="01.03.2025" required>
                 </div>
+                <div class="mb-3">
+                    <label for="dateTo" class="form-label">Enter date to:</label>
+                    <input type="date" class="form-control" id="dateTo" name="dateTo" placeholder="11.03.2025" required>
+                </div>
+{#                <div class="mb-3">#}
+{#                    <label for="data" class="form-label">Enter Data:</label>#}
+{#                    <textarea class="form-control" id="data" name="data" placeholder="Enter json data..." rows="3"#}
+{#                              required></textarea>#}
+{#                </div>#}
                 <button type="submit" class="btn btn-primary w-100">Submit</button>
             </form>
 
-            <div class="alert alert-info status" id="status" role="alert">
+            <div class="alert alert-info status visually-hidden" id="status" role="alert">
                 <!-- Здесь будет отображаться статус -->
             </div>
         </div>
@@ -44,58 +53,32 @@
     document.getElementById('requestForm').addEventListener('submit', function (e) {
         e.preventDefault();
 
-        const data = document.getElementById('data').value;
+        const statusElement = document.getElementById('status');
+
+        const formData = new FormData(this);
+        const dataObject = {};
+        formData.forEach((value, key) => dataObject[key] = value);
+        const dataJson = JSON.stringify(dataObject);
+
+        //console.log(dataJson);
+
+        statusElement.innerText = 'Sending request...';
 
         fetch('/api/v1/request', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: `data=${encodeURIComponent(data)}`,
-        })
-            .then(response => response.json())
-            .then(data => {
-                const requestId = data.request_id;
-                const statusElement = document.getElementById('status');
-                statusElement.innerText = `Request ID: ${requestId}. Checking status...`;
-                statusElement.classList.remove('alert-success', 'alert-danger');
-                statusElement.classList.add('alert-info');
-
-                // Периодическая проверка статуса
-                const interval = setInterval(() => {
-                    fetch(`/api/v1/request/${requestId}`)
-                        .then(response => response.json())
-                        .then(statusData => {
-                            if (statusData.status === 'completed') {
-                                statusElement.innerText = `Request ID: ${requestId}. Status: Completed.`;
-                                statusElement.classList.remove('alert-warning');
-                                statusElement.classList.add('alert-success');
-                                clearInterval(interval);
-                            } else if (statusData.status === 'processing') {
-                                statusElement.innerText = `Request ID: ${requestId}. Status: Processing...`;
-                                statusElement.classList.remove('alert-info');
-                                statusElement.classList.add('alert-warning');
-                            } else if (statusData.status === 'pending') {
-                                statusElement.innerText = `Request ID: ${requestId}. Status: Pending...`;
-                            } else {
-                                statusElement.innerText = `Request ID: ${requestId}. Status: Not Found.`;
-                                statusElement.classList.remove('alert-info');
-                                statusElement.classList.add('alert-danger');
-                                clearInterval(interval);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error checking status:', error);
-                            statusElement.innerText = 'Error checking status.';
-                            statusElement.classList.remove('alert-info');
-                            statusElement.classList.add('alert-danger');
-                            clearInterval(interval);
-                        });
-                }, 2000); // Проверка каждые 2 секунды
+            body: `data=${encodeURIComponent(dataJson)}`,
+        }).then(response => response.text())
+            .then(responseText => {
+                statusElement.innerText = responseText;
+                statusElement.classList.remove('visually-hidden', 'alert-info');
+                statusElement.classList.add('alert-success');
+                this.reset();
             })
             .catch(error => {
                 console.error('Error submitting request:', error);
-                const statusElement = document.getElementById('status');
                 statusElement.innerText = 'Error submitting request.';
                 statusElement.classList.remove('alert-info');
                 statusElement.classList.add('alert-danger');
