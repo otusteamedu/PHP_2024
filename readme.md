@@ -136,3 +136,69 @@ class Router {
 - Логировать ошибки по PSR-3
 - Добавить поддержку HTTP методов $method = $_SERVER['REQUEST_METHOD'];
 - 
+
+## Переделка 2 :
+```php
+class Router {
+    private array $routes = []; // Все маршруты хранятся здесь
+    private string $controllersPath;
+    public function __construct(string $routesPath = './core/config/routes.php', string $controllersPath = './core/controllers/') {
+        $this->controllersPath = $controllersPath;
+        $this->loadRoutes($routesPath);
+    }
+    private function loadRoutes(string $routesPath): void {
+        if (!file_exists($routesPath)) {
+            throw new RuntimeException("Routes file not found: $routesPath");
+        }
+        foreach (include $routesPath as $pattern => $handler) {
+            $this->addRoute($pattern, $handler);
+        }
+    }
+    private function addRoute(string $pattern, array $handler): void {
+        $pattern = trim($pattern, '/');
+        $parts = explode('/', $pattern);
+        $routeData = [
+            'handler' => $handler,
+            'parts' => $this->parsePattern($parts),
+            'is_dynamic' => strpos($pattern, '{') !== false
+        ];
+        $this->routes[] = $routeData;
+    }
+    private function parsePattern(array $parts): array {
+        return array_map(function($part) {
+            if ($part[0] === '{' && $part[-1] === '}') {
+                return substr($part, 1, -1);
+            }
+            return $part;
+        }, $parts);
+    }
+    public function run(): void {
+        $uri = $this->getUri();
+        $uriParts = explode('/', $uri);
+        foreach ($this->routes as $route) {
+            $params = [];
+            $match = true;
+            // Пропускаем маршруты с разным количеством сегментов
+            if (count($uriParts) !== count($route['parts'])) {
+                continue;
+            }
+            foreach ($route['parts'] as $i => $part) {
+                $uriSegment = $uriParts[$i];
+                if ($part === $uriSegment) {
+                    continue;
+                } elseif (is_string($part)) {
+                    $match = false;
+                    break;
+                } else {
+                    $params[$part] = $uriSegment;
+                }
+            }
+            if ($match) {
+                $this->executeHandler($route['handler'], $params);
+                return;
+            }
+        }
+        throw new RuntimeException("No route matched for URI: $uri");
+    }
+}
+```
