@@ -16,7 +16,6 @@ class RequestStatementUseCase
         private StatementRequestRepositoryInterface $repository,
         private MessageBusInterface $messageBus
     ) {
-
     }
 
     public function execute(\DateTimeInterface $startDate, \DateTimeInterface $endDate): StatementRequest

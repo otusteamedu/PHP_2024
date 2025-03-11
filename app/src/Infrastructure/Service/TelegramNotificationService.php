@@ -12,7 +12,6 @@ class TelegramNotificationService
         private string $token,
         private string $chatId
     ) {
-
     }
 
     public function sendMessage(string $text): void

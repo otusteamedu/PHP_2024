@@ -8,7 +8,6 @@ class GenerateStatementMessage
 {
     public function __construct(private int $requestId)
     {
-
     }
 
     public function getRequestId(): int
