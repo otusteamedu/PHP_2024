@@ -12,10 +12,11 @@ class ReportNewsGateway implements ReportNewsGatewayInterface
     public function getReport(ReportNewsGatewayRequest $request): ReportNewsGatewayResponse
     {
         $view = view('report', ['newsList' => $request->news]);
-        $render = $view->render(); // Hello, World!
+        $render = $view->render();
 
         $filename = 'news_list_' . now()->timestamp.'.html';
 
+        /** @TODO вынести в Helper ? в какую директорию */
         Storage::disk('public')->append($filename, $render);
         $path = Storage::disk('public')->url($filename);
 
