@@ -10,7 +10,10 @@ use Otus\Hw20\Domain\Repository\StatementRequestRepositoryInterface;
 
 class StatementRequestRepository implements StatementRequestRepositoryInterface
 {
-    public function __construct(private EntityManagerInterface $em) {}
+    public function __construct(private EntityManagerInterface $em)
+    {
+
+    }
 
     public function save(StatementRequest $request): void
     {

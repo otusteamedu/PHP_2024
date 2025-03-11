@@ -24,6 +24,12 @@ class DateRange
         $this->endDate = $endDate;
     }
 
-    public function getStartDate(): \DateTimeInterface { return $this->startDate; }
-    public function getEndDate(): \DateTimeInterface { return $this->endDate; }
+    public function getStartDate(): \DateTimeInterface
+    {
+        return $this->startDate;
+    }
+    public function getEndDate(): \DateTimeInterface
+    {
+        return $this->endDate;
+    }
 }

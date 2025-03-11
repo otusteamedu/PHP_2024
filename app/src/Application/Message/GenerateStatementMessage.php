@@ -6,7 +6,13 @@ namespace Otus\Hw20\Application\Message;
 
 class GenerateStatementMessage
 {
-    public function __construct(private int $requestId) {}
+    public function __construct(private int $requestId)
+    {
 
-    public function getRequestId(): int { return $this->requestId; }
+    }
+
+    public function getRequestId(): int
+    {
+        return $this->requestId;
+    }
 }

@@ -27,8 +27,20 @@ class StatementRequest
         $this->dateRange = $dateRange;
     }
 
-    public function getId(): int { return $this->id; }
-    public function getDateRange(): DateRange { return $this->dateRange; }
-    public function getStatus(): string { return $this->status; }
-    public function setStatus(string $status): void { $this->status = $status; }
+    public function getId(): int
+    {
+        return $this->id;
+    }
+    public function getDateRange(): DateRange
+    {
+        return $this->dateRange;
+    }
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
 }
