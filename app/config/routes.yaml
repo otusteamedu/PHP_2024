@@ -1,0 +1,4 @@
+app_statement_request:
+    path: /statement/request
+    controller: Otus\Hw20\Infrastructure\Http\StatementController::request
+    methods: [GET, POST]
