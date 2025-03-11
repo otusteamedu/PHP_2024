@@ -24,6 +24,22 @@ services:
     networks:
       - otusnet
 
+  otus-db:
+    image: mysql
+    container_name: otus-db
+    volumes:
+      - ./db/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - otusnet
+
 networks:
   otusnet:
     driver: bridge
