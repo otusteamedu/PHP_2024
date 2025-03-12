@@ -1,0 +1,14 @@
+api_statement_request:
+    path: /api/statement/request
+    controller: Otus\Hw20\Infrastructure\Http\Api\StatementController::createRequest
+    methods: [POST]
+
+api_statement_status:
+    path: /api/statement/{id}/status
+    controller: Otus\Hw20\Infrastructure\Http\Api\StatementController::getStatus
+    methods: [GET]
+
+app_statement_request:
+    path: /statement/request
+    controller: Otus\Hw20\Infrastructure\Http\StatementController::request
+    methods: [GET, POST]
