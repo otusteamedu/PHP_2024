@@ -8,21 +8,25 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-sockets": "*",
-        "doctrine/dbal": "^3",
-        "doctrine/doctrine-bundle": "^2.13",
-        "doctrine/doctrine-migrations-bundle": "^3.4",
-        "doctrine/orm": "^3.3",
-        "php-amqplib/rabbitmq-bundle": "^2.17",
+        "doctrine/dbal": "^3.9.4",
+        "doctrine/doctrine-bundle": "^2.13.2",
+        "doctrine/doctrine-migrations-bundle": "^3.4.1",
+        "doctrine/orm": "^3.3.2",
+        "nelmio/api-doc-bundle": "^5.0",
+        "php-amqplib/rabbitmq-bundle": "^2.17.3",
         "symfony/amqp-messenger": "7.2.*",
+        "symfony/asset": "7.2.*",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.5",
         "symfony/framework-bundle": "7.2.*",
-        "symfony/http-client": "^7.2",
-        "symfony/messenger": "^7.2",
+        "symfony/http-client": "^7.2.4",
+        "symfony/messenger": "^7.2.4",
         "symfony/runtime": "7.2.*",
         "symfony/twig-bundle": "^7.2",
-        "symfony/yaml": "7.2.*"
+        "symfony/yaml": "7.2.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
@@ -75,6 +79,6 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.62"
+        "symfony/maker-bundle": "^1.62.1"
     }
 }

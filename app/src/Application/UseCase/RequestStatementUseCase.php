@@ -26,4 +26,9 @@ class RequestStatementUseCase
         $this->messageBus->dispatch(new GenerateStatementMessage($request->getId()));
         return $request;
     }
+
+    public function getRepository(): StatementRequestRepositoryInterface
+    {
+        return $this->repository;
+    }
 }

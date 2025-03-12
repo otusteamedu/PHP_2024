@@ -13,7 +13,7 @@ services:
       - rabbitmq
 
   db:
-    image: postgres:15
+    image: postgres:17
     container_name: deferred_db
     environment:
       - POSTGRES_USER=app_user
