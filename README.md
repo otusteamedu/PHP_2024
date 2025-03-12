@@ -33,4 +33,22 @@ docker-compose exec app php bin/console messenger:consume async
 Statement generated for 2025-03-01 to 2025-03-10
 ```
 
+6. **Создание запроса (API):**
+
+```bash
+curl -X POST http://localhost/api/statement/request \
+     -H "Content-Type: application/json" \
+     -d '{"start_date": "2025-03-01", "end_date": "2025-03-10"}'
+```
+
+```bash
+curl -X GET http://localhost/api/statement/1/status
+```
+
+7. **Endpoint API doc (Swagger, используя библиотеку nelmio/api-doc-bundle):**
+
+```
+http://localhost/api/doc
+```
+
 https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
