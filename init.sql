@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS media_monitoring;
+-- DROP DATABASE IF EXISTS media_monitoring;
 
-CREATE DATABASE media_monitoring;
+-- CREATE DATABASE media_monitoring;
 
 CREATE TABLE IF NOT EXISTS news
 (

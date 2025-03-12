@@ -11,11 +11,12 @@ use PavelMiasnov\MediaMonitoring\Application\UseCase\GenerateReport\GenerateRepo
 use PavelMiasnov\MediaMonitoring\Application\UseCase\GenerateReport\GenerateReportUseCase;
 use PavelMiasnov\MediaMonitoring\Domain\Entity\News;
 use PavelMiasnov\MediaMonitoring\Domain\Repository\NewsRepositoryInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class NewsController
+class NewsController extends AbstractController
 {
     private CreateNewsUseCase $createNewsUseCase;
     private GenerateReportUseCase $generateReportUseCase;
@@ -31,6 +32,7 @@ class NewsController
         $this->newsRepository = $newsRepository;
     }
 
+    #[Route('/create-news', name: 'app_create_news', methods: ['POST'])]
     public function createNewsAction(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -46,6 +48,7 @@ class NewsController
         return new JsonResponse(['id' => $response->getNewsId()], 201);
     }
 
+    #[Route('/news-list', name: 'app_get_news_list', methods: ['GET'])]
     public function getNewsListAction(): JsonResponse
     {
         $newsList = $this->newsRepository->findAll();
@@ -61,6 +64,7 @@ class NewsController
         return new JsonResponse($newsData);
     }
 
+    #[Route('/generate-report', name: 'app_generate_report', methods: ['POST'])]
     public function generateReportAction(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);

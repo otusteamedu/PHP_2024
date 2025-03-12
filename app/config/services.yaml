@@ -6,7 +6,9 @@ services:
 
   PavelMiasnov\MediaMonitoring\:
     resource: '../src'
-    exclude: '../src/{Domain,Application}/**'
+    exclude:
+      - '../src/Domain/Entity/'
+      - '../src/Kernel.php'
 
   # Domain Layer
   PavelMiasnov\MediaMonitoring\Domain\Factory\NewsFactoryInterface:
