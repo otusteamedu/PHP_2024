@@ -17,7 +17,6 @@ class StatementController extends AbstractController
 {
     public function __construct(private RequestStatementUseCase $useCase)
     {
-
     }
 
     #[Route('/api/statement/request', name: 'api_statement_request', methods: ['POST'])]
