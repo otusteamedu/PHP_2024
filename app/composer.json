@@ -1,0 +1,48 @@
+{
+    "name": "pavel-miasnov/media-monitoring",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "PavelMiasnov\\MediaMonitoring\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pavel Miasnov",
+            "email": "miasnov.p@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "symfony/console": "7.2.*",
+        "symfony/dotenv": "7.2.*",
+        "symfony/flex": "^2.5",
+        "symfony/framework-bundle": "7.2.*",
+        "symfony/http-client": "^7.2.4",
+        "symfony/messenger": "^7.2.4",
+        "symfony/runtime": "7.2.*",
+        "symfony/twig-bundle": "^7.2",
+        "symfony/yaml": "7.2.*"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        },
+        "bump-after-update": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    }
+}
