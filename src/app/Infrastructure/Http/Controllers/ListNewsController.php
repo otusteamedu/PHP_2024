@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\UseCase\ListNews\ListNewsResponse;
 use App\Application\UseCase\ListNews\ListNewsUseCase;
-use App\Http\Resources\NewsResource;
+use App\Infrastructure\Http\Resources\NewsResource;
 
 class ListNewsController extends Controller
 {

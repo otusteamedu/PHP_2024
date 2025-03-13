@@ -14,7 +14,7 @@ class DatabaseNewsRepository implements NewsRepositoryInterface
 
     public function get(array $ids = []): array
     {
-        $dbNewsList = \App\Models\News::query()
+        $dbNewsList = \App\Infrastructure\Models\News::query()
             ->when(!blank($ids), function ($q) use ($ids) {
                 $q->whereIn('id', $ids);
             })
@@ -38,7 +38,7 @@ class DatabaseNewsRepository implements NewsRepositoryInterface
 
     public function save(News $news): News
     {
-        $newsDB = \App\Models\News::query()->create([
+        $newsDB = \App\Infrastructure\Models\News::query()->create([
             'name' => $news->getName()->getName(),
             'url' => $news->getUrl()->getUrl(),
             'created_at' => $news->getCreatedAt(),

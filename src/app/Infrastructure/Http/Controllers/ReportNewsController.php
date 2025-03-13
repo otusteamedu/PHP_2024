@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\UseCase\ReportNews\ReportNewsRequest;
 use App\Application\UseCase\ReportNews\ReportNewsUseCase;
-use App\Http\Requests\ReportNewsHttpRequest;
+use App\Infrastructure\Http\Requests\ReportNewsHttpRequest;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 
 class ReportNewsController extends Controller
 {

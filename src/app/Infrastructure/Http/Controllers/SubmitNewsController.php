@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\UseCase\SubmitNews\SubmitNewsRequest;
 use App\Application\UseCase\SubmitNews\SubmitNewsResponse;
 use App\Application\UseCase\SubmitNews\SubmitNewsUseCase;
-use App\Http\Requests\SubmitNewsHttpRequest;
+use App\Infrastructure\Http\Requests\SubmitNewsHttpRequest;
 use Illuminate\Http\Response;
 
 class SubmitNewsController extends Controller
