@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Order; 
 use Illuminate\Support\Str;
-use Illuminate\Http\Response;
 use App\Jobs\OrderJob;
 
 class OrderController extends Controller

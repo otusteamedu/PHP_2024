@@ -27,11 +27,4 @@ class Order extends Model
         '',
     ];
 
-    static public function add(){
-        return 1;
-    }
-
-    public function show(int $id){
-        return 0;
-    }
 }

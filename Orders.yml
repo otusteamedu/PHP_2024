@@ -5,12 +5,46 @@ info:
 servers:
   - url: https://api.server.test/v1
 
+components:
+  schemas:
+    id:
+      type: integer
+    order:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string 
+          example: "test"
+        status:
+          type: string
+          example: "done"
+        uuid:
+          type: string
+          format: uuid
+          example: "63e74491-f0d7-47c2-b532-86e627197ad7"
+        created_at:
+          type: string
+          format: datetime
+          example: "2025-03-13T07:47:17.000000Z"
+        updated_at:
+          type: string
+          format: datetime
+          example: "2025-03-13T07:47:17.000000Z"  
+
 paths:
   /add:
     get:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/id'             
+          
   /show/{id}:
     get:
       parameters:
@@ -23,4 +57,8 @@ paths:
             format: int64
       responses:
         '200':
-          description: OK        
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/order'          

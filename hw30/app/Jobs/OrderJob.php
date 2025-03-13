@@ -28,7 +28,7 @@ class OrderJob extends Job
         
         //Поставим фиктивную задержку
         usleep(500);
-        
+            
         if($order){
             $order->status = "done";
             $order->save();
