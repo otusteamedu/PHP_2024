@@ -1,7 +1,3 @@
-# PHP_2024
-
-https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
-
 -hw30
 - Использую фремворк lumen (директория hw30)
 - Подключаем базу данных - файл .env 
@@ -36,4 +32,7 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
     php artisan queue:work
     Смотрим что все статусы done
 
-- Делаем файл Orders.yml для Swagger     
+- Делаем файл Orders.yml для Swagger    
+    
+
+                  
