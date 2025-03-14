@@ -50,7 +50,7 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 8. Запустить миграцию для создания БД и таблицы (php artisan migrate)
 
 ### Работа с сервисом
-Сервис предоставляет REST API (для упрощения работы через браузер сделал все апи методами GET):
+Сервис предоставляет REST API:
 - POST api/v1/news?title=<title>&author=<author>&category=<category> - добавить новость. Текст новости передается в теле запроса 
 - GET api/v1/news?format=<format> - получить список всех новостей. Параметр format (text, html)- формат вывода поля text
 - GET api/v1/news/{id}?format=<format> - получить новость по id. Параметр format (text, html) - формат вывода поля text
