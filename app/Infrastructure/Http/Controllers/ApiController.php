@@ -70,7 +70,7 @@ class ApiController extends Controller
             $request->get('title'),
             $request->get('author'),
             $request->get('category'),
-            $request->get('text'),
+            $request->getContent(),
         );
 
         return response()->json(($this->addNewsUseCase)($addNewsRequest));

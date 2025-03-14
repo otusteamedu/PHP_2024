@@ -51,13 +51,13 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 
 ### Работа с сервисом
 Сервис предоставляет REST API (для упрощения работы через браузер сделал все апи методами GET):
-- POST api/v1/news - добавить новость. Принимает form-data параметры title, author, category, text
+- POST api/v1/news?title=<title>&author=<author>&category=<category> - добавить новость. Текст новости передается в теле запроса 
 - GET api/v1/news?format=<format> - получить список всех новостей. Параметр format (text, html)- формат вывода поля text
 - GET api/v1/news/{id}?format=<format> - получить новость по id. Параметр format (text, html) - формат вывода поля text
 
 
 ### Примеры запросов
-POST http://mysite.local/api/v1/news
+POST http://mysite.local/api/v1/news?title=Название&author=Автор&category=Спорт
 
 GET http://mysite.local/api/v1/news?format=text
 
