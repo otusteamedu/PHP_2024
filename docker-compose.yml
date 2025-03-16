@@ -1,0 +1,63 @@
+services:
+  nginx:
+    build:
+      context: ./builds/nginx
+      dockerfile: Dockerfile
+    image: myapp/nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+       - ./code:/data
+    networks:
+      - app-network
+
+  app:
+    build:
+      context: ./builds/fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app
+    volumes:
+       - ./code:/data
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:latest
+    container_name: memcached
+    ports:
+      - "11311:11211"
+    networks:
+      - app-network
+
+  db:
+    image: postgres
+    container_name: db
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:4.0.3-management
+    working_dir: /app
+    hostname: rabbit-mq
+    container_name: 'rabbit-mq'
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

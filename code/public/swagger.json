@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: My API
+  description: API for handling requests and checking their status
+  version: 1.0.0
+
+paths:
+  /some_request:
+    post:
+      summary: Create a new request
+      description: Endpoint to submit data and receive a unique ID.
+      operationId: createRequest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: string
+                  description: The data to be sent.
+                  example: "some data"
+      responses:
+        '200':
+          description: Successfully created request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The unique ID of the created request.
+                    example: "12345"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Details of the error.
+                    example: "Invalid input data."
+
+  /check_status:
+    get:
+      summary: Check the status of a request
+      description: Retrieves the status of a request using its ID.
+      operationId: checkStatus
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: The unique ID of the request to check the status.
+          schema:
+            type: string
+            example: "1"
+      responses:
+        '200':
+          description: Status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: The current status of the request.
+                    example: "completed"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Details of the error.
+                    example: "Invalid request ID."
+        '404':
+          description: Request not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Details of the error.
+                    example: "Request not found."
