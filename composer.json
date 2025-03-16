@@ -1,0 +1,17 @@
+{
+    "name": "sikuda/hw29",
+    "autoload": {
+        "psr-4": {
+            "Sikuda\\Hw29\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sergey Kudashkin",
+            "email": "ya.sikuda@yandex.ru"
+        }
+    ],
+    "require": {
+        "php-amqplib/php-amqplib": "^3.7"
+    }
+}
