@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../models/StatementRequest.php';
+namespace App\Controllers;
+
+use App\Models\StatementRequest;
 
 class StatementController {
     private $requestModel;
@@ -9,7 +11,7 @@ class StatementController {
     }
 
     public function showForm() {
-        require_once __DIR__ . '/../views/statement/form.php';
+        require __DIR__ . '/../../views/statement/form.php';
     }
 
     public function processForm() {
@@ -23,10 +25,10 @@ class StatementController {
             if ($this->requestModel->validate($data)) {
                 $this->requestModel->queueRequest($data);
                 $message = "Запрос на генерацию выписки принят в обработку. Результат будет отправлен на {$data['email']}";
-                require_once __DIR__ . '/../views/statement/success.php';
+                require __DIR__ . '/../../views/statement/success.php';
             } else {
                 $error = "Пожалуйста, заполните все поля корректно";
-                require_once __DIR__ . '/../views/statement/form.php';
+                require __DIR__ . '/../../views/statement/form.php';
             }
         } else {
             $this->showForm();

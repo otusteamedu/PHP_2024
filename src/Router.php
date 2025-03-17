@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../controllers/StatementController.php';
+namespace App;
+
+use App\Controllers\StatementController;
 
 class Router {
     private $controller;

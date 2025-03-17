@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace App\Models;
+
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -7,7 +8,7 @@ class StatementRequest {
     private $config;
 
     public function __construct() {
-        $this->config = require __DIR__ . '/../config/rabbitmq.php';
+        $this->config = require __DIR__ . '/../../config/rabbitmq.php';
     }
 
     public function validate($data) {
