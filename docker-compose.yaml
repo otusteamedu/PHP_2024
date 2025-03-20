@@ -5,12 +5,12 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     image: myapp/nginx
-    container_name: ${CONTAINER_NAME}
+    container_name: app-nginx
     # проброс портов
     ports:
-      - "80:80"
+      - "8080:80"
     volumes:
-       - ./code:/data/mysite.local
+      - ./code:/data/mysite.local
     networks:
       - app-network
 
@@ -20,11 +20,46 @@ services:
       context: ./fpm
       dockerfile: Dockerfile
     image: myapp/php
-    container_name: app
+    container_name: app-php
     volumes:
-       - ./code:/data/mysite.local
+      - ./code:/data/mysite.local
     networks:
       - app-network
+
+  #Контейнер с Redis
+  redis:
+    image: redis:alpine
+    container_name: app-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:alpine
+    container_name: app-memcached
+    ports:
+      - "11211:11211"
+    # Опционально: настройка параметров Memcached
+    command: memcached -m 128 # ограничение использования памяти до 128 МБ
+    networks:
+      - app-network
+
+  # База данных (PostgreSQL)
+  postgres:
+    image: postgres:latest
+    container_name: app-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ./Docker/postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
 
 #Docker Networks
 networks:
