@@ -1,4 +1,5 @@
 .idea/
+.env
 /vendor/
 .DS_Store
 .AppleDouble
