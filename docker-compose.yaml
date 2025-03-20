@@ -11,6 +11,8 @@ services:
       - "8080:80"
     volumes:
       - ./code:/data/mysite.local
+      - ./vendor:/data/vendor
+      - ./.env:/data/.env
     networks:
       - app-network
 
@@ -23,6 +25,8 @@ services:
     container_name: app-php
     volumes:
       - ./code:/data/mysite.local
+      - ./vendor:/data/vendor
+      - ./.env:/data/.env
     networks:
       - app-network
 
