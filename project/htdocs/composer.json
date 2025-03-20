@@ -1,0 +1,14 @@
+{
+  "name": "sbogdanov/php-socket-chat",
+  "description": "My application",
+  "type": "project",
+  "require": {
+    "php": "^8.3",
+    "cboden/ratchet": "^0.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
