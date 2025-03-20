@@ -3,9 +3,9 @@
 namespace App\Infrastructure\Factory;
 
 use App\Domain\Entity\News;
-use App\Domain\Entity\ValueObject\Name;
-use App\Domain\Entity\ValueObject\Url;
 use App\Domain\Factory\NewsFactoryInterface;
+use App\Domain\ValueObject\Name;
+use App\Domain\ValueObject\Url;
 use Carbon\Carbon;
 
 class CommonNewsFactory implements NewsFactoryInterface

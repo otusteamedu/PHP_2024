@@ -8,7 +8,6 @@ class SubmitNewsResponse
         public int $id
     )
     {
-
     }
 
 }

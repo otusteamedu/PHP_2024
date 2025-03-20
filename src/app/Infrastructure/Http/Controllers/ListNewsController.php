@@ -4,16 +4,14 @@ namespace App\Infrastructure\Http\Controllers;
 
 use App\Application\UseCase\ListNews\ListNewsResponse;
 use App\Application\UseCase\ListNews\ListNewsUseCase;
-use App\Infrastructure\Http\Resources\NewsResource;
 
 class ListNewsController extends Controller
 {
     public function __invoke(ListNewsUseCase $useCase): \Illuminate\Http\JsonResponse
     {
-        /** @var ListNewsResponse $response */
+        /** @var ListNewsResponse[] $response */
         $response = ($useCase)();
 
-        return response()->json(['news' => NewsResource::collection($response->news)]);
-
+        return response()->json($response);
     }
 }

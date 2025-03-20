@@ -2,9 +2,9 @@
 
 namespace App\Infrastructure\Gateway;
 
-use App\Application\Gateway\ReportNewsGatewayInterface;
-use App\Application\Gateway\ReportNewsGatewayRequest;
-use App\Application\Gateway\ReportNewsGatewayResponse;
+use App\Application\Gateway\ReportNews\ReportNewsGatewayInterface;
+use App\Application\Gateway\ReportNews\ReportNewsGatewayRequest;
+use App\Application\Gateway\ReportNews\ReportNewsGatewayResponse;
 use Illuminate\Support\Facades\Storage;
 
 class ReportNewsGateway implements ReportNewsGatewayInterface
@@ -14,9 +14,8 @@ class ReportNewsGateway implements ReportNewsGatewayInterface
         $view = view('report', ['newsList' => $request->news]);
         $render = $view->render();
 
-        $filename = 'news_list_' . now()->timestamp.'.html';
+        $filename = 'news_list_' . now()->timestamp . '.html';
 
-        /** @TODO вынести в Helper ? в какую директорию */
         Storage::disk('public')->append($filename, $render);
         $path = Storage::disk('public')->url($filename);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Gateway;
+namespace App\Application\Gateway\ReportNews;
 
 interface ReportNewsGatewayInterface
 {

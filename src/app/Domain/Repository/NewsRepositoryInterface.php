@@ -6,11 +6,14 @@ use App\Domain\Entity\News;
 
 interface NewsRepositoryInterface
 {
-
     /**
      * @return News[]
      */
-    public function get(array $ids);
+    public function all(): array;
+    /**
+     * @return News[]
+     */
+    public function findByIds(array $ids): array;
 
-    public function save(News $news): News;
+    public function save(News $news): void;
 }

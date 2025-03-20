@@ -2,8 +2,8 @@
 
 namespace App\Domain\Entity;
 
-use App\Domain\Entity\ValueObject\Name;
-use App\Domain\Entity\ValueObject\Url;
+use App\Domain\ValueObject\Name;
+use App\Domain\ValueObject\Url;
 use Carbon\Carbon;
 
 class News
@@ -17,16 +17,6 @@ class News
     )
     {
         //
-    }
-
-    public function toArray(): array
-    {
-        return [
-          'id' => $this->id,
-          'url' => $this->url->getUrl(),
-          'name' => $this->name->getName(),
-          'createdAt' => $this->createdAt->format('Y-m-d H:i:s'),
-        ];
     }
 
     public function getId(): ?int
@@ -47,5 +37,10 @@ class News
     public function getCreatedAt(): ?Carbon
     {
         return $this->createdAt;
+    }
+
+    public function getCreatedAtByFormat($format = 'Y-m-d H:i:s'): string
+    {
+        return $this->createdAt->format($format);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Entity\ValueObject;
+namespace App\Domain\ValueObject;
 
 class Url
 {

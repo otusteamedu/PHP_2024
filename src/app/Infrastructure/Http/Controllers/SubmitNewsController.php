@@ -5,12 +5,12 @@ namespace App\Infrastructure\Http\Controllers;
 use App\Application\UseCase\SubmitNews\SubmitNewsRequest;
 use App\Application\UseCase\SubmitNews\SubmitNewsResponse;
 use App\Application\UseCase\SubmitNews\SubmitNewsUseCase;
-use App\Infrastructure\Http\Requests\SubmitNewsHttpRequest;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class SubmitNewsController extends Controller
 {
-    public function __invoke(SubmitNewsHttpRequest $httpRequest, SubmitNewsUseCase $useCase): \Illuminate\Http\JsonResponse
+    public function __invoke(Request $httpRequest, SubmitNewsUseCase $useCase): \Illuminate\Http\JsonResponse
     {
         $request = new SubmitNewsRequest($httpRequest->url);
         /** @var SubmitNewsResponse $response */

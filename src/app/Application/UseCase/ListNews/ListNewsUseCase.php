@@ -2,6 +2,7 @@
 
 namespace App\Application\UseCase\ListNews;
 
+use App\Domain\Entity\News;
 use App\Domain\Repository\NewsRepositoryInterface;
 
 class ListNewsUseCase
@@ -12,9 +13,24 @@ class ListNewsUseCase
     {
     }
 
-    public function __invoke(): ListNewsResponse
+    /**
+     * @return ListNewsResponse[] array
+     */
+    public function __invoke(): array
     {
-        $news = $this->repository->get();
-        return new ListNewsResponse($news);
+        $newsList = $this->repository->all();
+
+        $response = [];
+
+        /** @var News $news */
+        foreach ($newsList as $news) {
+            $response[] = new ListNewsResponse(
+                $news->getName()->getName(),
+                $news->getUrl()->getUrl(),
+                $news->getCreatedAtByFormat(),
+            );
+        }
+
+        return $response;
     }
 }
