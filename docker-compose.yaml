@@ -49,7 +49,7 @@ services:
     networks:
       - app-network
 
-  # База данных (PostgreSQL)
+  # База данных (PostgresSQL)
   postgres:
     image: postgres:latest
     container_name: app-postgres
