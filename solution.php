@@ -1,4 +1,7 @@
 <?php
+
+namespace ValentinFilshin;
+
 /**
  * Definition for a singly-linked list.
  * class ListNode {
@@ -10,8 +13,6 @@
  *     }
  * }
  */
-
-namespace ValentinFilshin;
 
 class Solution
 {
