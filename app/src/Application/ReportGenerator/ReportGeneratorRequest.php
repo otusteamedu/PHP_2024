@@ -4,7 +4,6 @@ namespace Anatolyshilyaev\Hw14\Application\ReportGenerator;
 
 class ReportGeneratorRequest
 {
-
     /**
      * @param string $title
      * @param string $url
