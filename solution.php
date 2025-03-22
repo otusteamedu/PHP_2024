@@ -11,6 +11,8 @@
  * }
  */
 
+namespace ValentinFilshin;
+
 class Solution
 {
 
