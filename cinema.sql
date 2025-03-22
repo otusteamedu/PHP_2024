@@ -46,7 +46,16 @@ CREATE TABLE schedule
     CONSTRAINT fk_schedule_movie FOREIGN KEY (movie_id) REFERENCES movie (id) ON DELETE CASCADE
 );
 
--- 6. Таблица для билетов
+-- 6. Таблица для клиентов
+CREATE TABLE customer
+(
+    id    SERIAL PRIMARY KEY,           -- Уникальный идентификатор клиента
+    name  VARCHAR(255)        NOT NULL, -- Имя клиента
+    email VARCHAR(255) UNIQUE NOT NULL, -- Уникальный email
+    phone VARCHAR(20)                   -- Телефон клиента
+);
+
+-- 7. Таблица для билетов
 CREATE TABLE ticket
 (
     id           SERIAL PRIMARY KEY,                         -- Уникальный идентификатор билета
@@ -59,15 +68,6 @@ CREATE TABLE ticket
     CONSTRAINT fk_ticket_seat FOREIGN KEY (seat_id) REFERENCES seat (id) ON DELETE CASCADE,
     CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE,
     UNIQUE (schedule_id, seat_id)                            -- Каждое место может быть куплено только один раз на конкретный сеанс
-);
-
--- 7. Таблица для клиентов
-CREATE TABLE customer
-(
-    id    SERIAL PRIMARY KEY,           -- Уникальный идентификатор клиента
-    name  VARCHAR(255)        NOT NULL, -- Имя клиента
-    email VARCHAR(255) UNIQUE NOT NULL, -- Уникальный email
-    phone VARCHAR(20)                   -- Телефон клиента
 );
 
 INSERT INTO cinema (name)
