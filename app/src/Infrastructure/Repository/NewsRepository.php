@@ -18,6 +18,10 @@ class NewsRepository implements NewsRepositoryInterface
         $this->newsMapper = new NewsMapper($pdo);
     }
 
+    /**
+     * @param News $news
+     * @return void
+     */
     public function save(News $news): void
     {
         $newsId = $this->newsMapper->save($news);
@@ -26,15 +30,22 @@ class NewsRepository implements NewsRepositoryInterface
         $reflectionProperty->setValue($news, $newsId);
     }
 
+    /**
+     * @return News[]
+     */
     public function findAll(): iterable
     {
         $news = $this->newsMapper->findAll();
         return $news;
     }
 
-    public function findSome(GetReportNewsRequest $request): iterable
+    /**
+     * @param GetReportNewsRequest $request
+     * @return News[]
+     */
+    public function findByIds(GetReportNewsRequest $request): iterable
     {
-        $news = $this->newsMapper->getReport($request);
+        $news = $this->newsMapper->findByIds($request);
         return $news;
     }
 }

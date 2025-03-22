@@ -4,5 +4,9 @@ namespace Anatolyshilyaev\Hw14\Application\ReportGenerator;
 
 interface ReportGeneratorInterface
 {
-    public function generate(array $news): ?string;
+    /**
+     * @param ReportGeneratorRequest[] $reportGeneratorRequest
+     * @return ?ReportGeneratorResponse $reportGeneratorResponse
+     */
+    public function generate(array $reportGeneratorRequest): ?ReportGeneratorResponse;
 }

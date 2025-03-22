@@ -4,6 +4,7 @@ namespace Anatolyshilyaev\Hw14\Application\UseCase\CreateNews;
 
 use Anatolyshilyaev\Hw14\Domain\Factory\NewsFactoryInterface;
 use Anatolyshilyaev\Hw14\Application\NewsParser\NewsParserInterface;
+use Anatolyshilyaev\Hw14\Application\NewsParser\NewsParserRequest;
 use Anatolyshilyaev\Hw14\Domain\Repository\NewsRepositoryInterface;
 use Anatolyshilyaev\Hw14\Domain\ValueObject\Date;
 use Anatolyshilyaev\Hw14\Domain\ValueObject\Title;
@@ -24,7 +25,8 @@ class CreateNewsUseCase
     {
         //Prepare ValueObjects
         $url = new Url($request->url);
-        $title = new Title($this->newsParser->parse($url));
+        $newsParserRequest = new NewsParserRequest($url->getValue());
+        $title = new Title($this->newsParser->parse($newsParserRequest)->title);
         $date = new Date(new DateTimeImmutable());
 
         //Create news

@@ -44,7 +44,7 @@ class App
         $this->newsRepository = new NewsRepository();
 
         $this->createNews = new CreateNewsUseCase($this->newsFactory, $this->newsParser, $this->newsRepository);
-        $this->findAllNews = new FindAllNewsUseCase($this->newsFactory, $this->newsRepository);
+        $this->findAllNews = new FindAllNewsUseCase($this->newsRepository);
         $this->getReportNews = new GetReportNewsUseCase($this->newsRepository, $this->reportGenerator);
 
         $this->createNewsController = new CreateNewsController($this->createNews);
@@ -63,9 +63,9 @@ class App
         });
 
         $this->router->add('/findall', function () {
-            $allNews = $this->findAllNewsController->findAll();
-            print_r($allNews);
-            return $allNews;
+            $news = $this->findAllNewsController->findAll();
+            print_r($news);
+            return $news;
         });
 
         $this->router->add('/getreport', function () {

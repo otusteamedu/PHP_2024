@@ -9,7 +9,7 @@ interface NewsRepositoryInterface
 {
     public function findAll(): iterable;
 
-    public function save(News $news): void;
+    public function findByIds(GetReportNewsRequest $ids): iterable;
 
-    public function findSome(GetReportNewsRequest $ids): iterable;
+    public function save(News $news): void;
 }

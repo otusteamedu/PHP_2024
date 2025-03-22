@@ -4,12 +4,12 @@ namespace Anatolyshilyaev\Hw14\Application\UseCase\FindAllNews;
 
 use DateTimeImmutable;
 
-class NewsResponseItems
+class FindAllNewsResponse
 {
     public function __construct(
         public readonly string $title,
-        public readonly DateTimeImmutable $date,
         public readonly string $url,
+        public readonly DateTimeImmutable $date
     ) {
         // Empty constructor
     }

@@ -3,13 +3,14 @@
 namespace Anatolyshilyaev\Hw14\Infrastructure\NewsParser;
 
 use Anatolyshilyaev\Hw14\Application\NewsParser\NewsParserInterface;
-use Anatolyshilyaev\Hw14\Domain\ValueObject\Url;
+use Anatolyshilyaev\Hw14\Application\NewsParser\NewsParserRequest;
+use Anatolyshilyaev\Hw14\Application\NewsParser\NewsParserResponse;
 
 class NewsParser implements NewsParserInterface
 {
-    public function parse(Url $url): ?string
+    public function parse(NewsParserRequest $request): ?NewsParserResponse
     {
-        $fp = file_get_contents($url->getValue(), false);
+        $fp = file_get_contents($request->url, false);
         if (!$fp) {
             return null;
         }
@@ -22,6 +23,6 @@ class NewsParser implements NewsParserInterface
         // Clean up title: remove EOL's and excessive whitespace.
         $title = preg_replace('/\s+/', ' ', $title_matches[1]);
         $title = trim($title);
-        return $title;
+        return new NewsParserResponse($title);
     }
 }
