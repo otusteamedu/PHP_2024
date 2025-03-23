@@ -9,7 +9,7 @@ echo "Hello from PHP-FPM!<br>";
 
 // Проверка подключения к Redis
 $redis = new Redis();
-$redis->connect('redis', 6379);
+$redis->connect('redis');
 echo "Connected to Redis: " . ($redis->ping() ? "Yes" : "No") . "<br>";
 
 // Проверка подключения к Memcached
