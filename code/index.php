@@ -1,33 +1,55 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
+session_start();
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
+// Устанавливаем корректные заголовки для ответа
+header('Content-Type: text/plain');
 
-echo "Hello from PHP-FPM!<br>";
-
-// Проверка подключения к Redis
-$redis = new Redis();
-$redis->connect('redis');
-echo "Connected to Redis: " . ($redis->ping() ? "Yes" : "No") . "<br>";
-
-// Проверка подключения к Memcached
-$memcached = new Memcached();
-$memcached->addServer('memcached', 11211);
-echo "Connected to Memcached: " . ($memcached->set('test', 'Hello Memcached') ? "Yes" : "No") . "<br>";
-
-// Проверка подключения к PostgreSQL
-try {
-    $host = 'postgres';   // MySQL server hostname within the same Docker network
-    $user = $_SERVER['POSTGRES_USER'];    // MySQL username
-    $pass = $_SERVER['POSTGRES_PASSWORD'];   // MySQL password
-    $db = $_SERVER['POSTGRES_DB'];// MySQL database name
-
-    $pdo = new PDO("pgsql:host=$host;dbname=$db", $user, $pass);
-    echo "Connected to PostgreSQL: Yes<br>";
-} catch (PDOException $e) {
-    echo "Connected to PostgreSQL: No<br>";
+// Проверяем, что запрос POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405); // Метод не поддерживается
+    echo "Method Not Allowed";
+    exit;
 }
 
-phpinfo();
+// Получаем строку string из POST-запроса
+$string = $_POST['string'] ?? null;
+
+// 1.1. Проверка на непустоту
+if (empty($string)) {
+    http_response_code(400); // Некорректный запрос
+    echo "Ошибка: строка пуста";
+    exit;
+}
+
+// 1.2. Проверка корректности открытых/закрытых скобок
+function isValidParentheses(string $str): bool
+{
+    $balance = 0;
+
+    for ($i = 0, $len = strlen($str); $i < $len; $i++) {
+        if ($str[$i] === '(') {
+            $balance++;
+        } elseif ($str[$i] === ')') {
+            $balance--;
+        }
+
+        // Если на каком-то этапе баланс < 0, значит, скобки некорректны
+        if ($balance < 0) {
+            return false;
+        }
+    }
+
+    // Строка корректна, если баланс в конце = 0
+    return $balance === 0;
+}
+
+if (!isValidParentheses($string)) {
+    http_response_code(400); // Некорректный запрос
+    echo "Ошибка: некорректный формат строки";
+    exit;
+}
+
+// Если все проверки пройдены
+http_response_code(200); // Всё хорошо
+echo "Все хорошо: строка корректна.";

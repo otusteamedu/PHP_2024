@@ -30,6 +30,32 @@ services:
     networks:
       - app-network
 
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app-php2
+    volumes:
+      - ./code:/data/mysite.local
+      - ./vendor:/data/vendor
+      - ./.env:/data/.env
+    networks:
+      - app-network
+
+  app3:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: myapp/php
+    container_name: app-php3
+    volumes:
+      - ./code:/data/mysite.local
+      - ./vendor:/data/vendor
+      - ./.env:/data/.env
+    networks:
+      - app-network
+
   #Контейнер с Redis
   redis:
     image: redis:alpine
