@@ -1,0 +1,10 @@
+{
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "require": {
+    "fakerphp/faker": "^1.24"
+  }
+}
