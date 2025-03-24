@@ -10,4 +10,4 @@ spl_autoload_register(function ($className) {
     }
 });
 
-(new \App\App())->run();
+(new \App\Infrastructure\App())->run();
