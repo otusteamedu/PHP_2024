@@ -61,12 +61,12 @@ CREATE TABLE ticket
     id           SERIAL PRIMARY KEY,                         -- Уникальный идентификатор билета
     schedule_id  INT            NOT NULL,                    -- Внешний ключ на расписание
     seat_id      INT            NOT NULL,                    -- Внешний ключ на место
-    customer_id  INT            NOT NULL,                    -- Внешний ключ на клиента
+    customer_id  INT,                                        -- Внешний ключ на клиента
     purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        -- Дата и время покупки
     price        NUMERIC(10, 2) NOT NULL CHECK (price >= 0), -- Стоимость билета
     CONSTRAINT fk_ticket_schedule FOREIGN KEY (schedule_id) REFERENCES schedule (id) ON DELETE CASCADE,
     CONSTRAINT fk_ticket_seat FOREIGN KEY (seat_id) REFERENCES seat (id) ON DELETE CASCADE,
-    CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE,
+    CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id),
     UNIQUE (schedule_id, seat_id)                            -- Каждое место может быть куплено только один раз на конкретный сеанс
 );
 
@@ -98,21 +98,17 @@ VALUES ('Иван Иванов', 'ivanov@example.com', '+79001234567');
 
 INSERT INTO ticket (schedule_id, seat_id, customer_id, price)
 VALUES (1, 1, 1, 500), -- Сеанс №1, Место №1, Покупатель №1
-       (1, 2, 1, 600), -- Сеанс №1, Место №2, Покупатель №1
+       (1, 2, NULL, 600), -- Сеанс №1, Место №2, Покупателя еще нет
        (2, 2, 1, 600); -- Сеанс №2, Место №2, Покупатель №2
 
-SELECT
-    m.id AS movie_id,
-    m.title AS movie_title,
-    SUM(t.price) AS total_revenue
-FROM
-    ticket t
-        JOIN
-    schedule s ON t.schedule_id = s.id
-        JOIN
-    movie m ON s.movie_id = m.id
-GROUP BY
-    m.id, m.title
-ORDER BY
-    total_revenue DESC
-    LIMIT 1;
+SELECT m.id         AS movie_id,
+       m.title      AS movie_title,
+       SUM(t.price) AS total_revenue
+FROM ticket t
+         JOIN
+     schedule s ON t.schedule_id = s.id
+         JOIN
+     movie m ON s.movie_id = m.id
+WHERE t.customer_id IS NOT NULL
+GROUP BY m.id, m.title
+ORDER BY total_revenue DESC LIMIT 1;
