@@ -1,0 +1,10 @@
+{
+    "name": "valentingilshin/hw4",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {}
+}
