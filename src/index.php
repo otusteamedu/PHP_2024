@@ -2,19 +2,22 @@
 declare(strict_types=1);
 require_once __DIR__ . '/vendor/autoload.php';
 
-//Silence is gold
-use PhpAmqpLib\Connection\AMQPStreamConnection;
-use PhpAmqpLib\Message\AMQPMessage;
 
-$connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
-$channel = $connection->channel();
+echo '
+<p>Введите данные</p>
+<form action="action_rabbitmq.php" method="POST">
 
-$channel->queue_declare('hello', false, false, false, false);
+<label for="date_from">From:</label>
+<input type="date" id="date_from" name="dateFrom"><br><br>
+<label for="date_to">From:</label>
+<input type="date" id="date_to" name="dateTo"><br><br>
 
-$msg = new AMQPMessage('Hello World!');
-$channel->basic_publish($msg, '', 'hello');
+<label for="email">E-mail:</label>
+<input type="email" id="email" name="email"><br><br>
 
-echo " [x] Sent 'Hello World!'\n";
+<label for="comment">Comment:</label>
+<input type="text" name="comment"><br><br>
 
-$channel->close();
-$connection->close();
+<input type="submit">
+</form>';
+

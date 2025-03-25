@@ -14,7 +14,10 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     expose:
       - 3306
-      - 33060 
+    ports:
+      - "33060:3306"
+    networks:
+      - app-network       
   
   rabbitmq:
     image: rabbitmq:3.10.7-management
@@ -54,7 +57,7 @@ services:
     image: app/php # имя будущего образа
     container_name: ${APP_NAME} # имя контейнера после запуска
     depends_on:
-      - db
+      - "db"
       - rabbitmq 
     volumes:
        - ./src:/data/mysite.local
