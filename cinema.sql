@@ -75,7 +75,8 @@ CREATE TABLE ticket
     customer_id   INT NOT NULL,                        -- Внешний ключ на клиента
     purchased_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Дата и время покупки
     CONSTRAINT fk_ticket_price_list FOREIGN KEY (price_list_id) REFERENCES price_list (id),
-    CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id)
+    CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id),
+    UNIQUE (price_list_id, customer_id)                      -- У билета может быть один владелец
 );
 
 INSERT INTO cinema (name)
