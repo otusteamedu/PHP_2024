@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 //Silence is gold
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -16,10 +16,10 @@ if(isset($_POST)){
     $connection = new AMQPStreamConnection('rabbitmq', 5672, 'guest', 'guest');
     $channel = $connection->channel();
 
-    $channel->queue_declare('hello', false, false, false, false);
+    $channel->queue_declare('otus', false, false, false, false);
 
     $msg = new AMQPMessage($json);
-    $channel->basic_publish($msg, '', 'hello');
+    $channel->basic_publish($msg, '', 'otus');
 
     echo $json;
 

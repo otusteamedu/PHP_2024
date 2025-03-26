@@ -37,12 +37,13 @@ services:
       context: ./nginx
       dockerfile: Dockerfile
     image: app/nginx
+    restart: always
     container_name: ${WEBSERVER_NAME}
     # проброс портов
     ports:
       - "80:80"
     volumes:
-       - ./src:/data/mysite.local
+       - ./src:/data/mysite.local/src
        - ./vendor:/data/mysite.local/vendor
        - ./php-socket:/var/run/php-fpm.sock
     networks:
@@ -60,7 +61,7 @@ services:
       - "db"
       - rabbitmq 
     volumes:
-       - ./src:/data/mysite.local
+       - ./src:/data/mysite.local/src
        - ./vendor:/data/mysite.local/vendor
        - ./php-socket:/var/run/php-fpm.sock
     # мы можем создать для контейнеров внутреннюю сеть
