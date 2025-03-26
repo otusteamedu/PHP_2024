@@ -1,4 +1,4 @@
-name: hw1
+name: hw29
 services:
   
   db:
@@ -6,6 +6,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     restart: always
+    container_name: ${MYSQL_NAME}
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -13,43 +14,37 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     expose:
       - 3306
-      - 33060 
-  
-  cache:
-    image: redis:latest
-    restart: always
     ports:
-      - 3679
-    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-    volumes: 
-      - cache:/data
-
-  memcached:
-    image: memcached:latest
-    command:
-      - --conn-limit=1024
-      - --memory-limit=64
-      - --threads=4 
-
-  composer:
-    image: composer:latest
-    command: install
-    restart: 'no'
-    volumes:
-      - ./code:/data/mysite.local       
+      - "33060:3306"
+    networks:
+      - app-network       
   
+  rabbitmq:
+    image: rabbitmq:3.10.7-management
+    hostname: rabbitmq
+    restart: always
+    container_name: rabbitmq
+    ports:
+      - 15672:15672
+    expose:
+      - 5672
+    networks:
+      - app-network  
+
   #контейнер с Nginx
   nginx:
     build:
       context: ./nginx
       dockerfile: Dockerfile
     image: app/nginx
+    restart: always
     container_name: ${WEBSERVER_NAME}
     # проброс портов
     ports:
       - "80:80"
     volumes:
-       - ./code:/data/mysite.local
+       - ./src:/data/mysite.local/src
+       - ./vendor:/data/mysite.local/vendor
        - ./php-socket:/var/run/php-fpm.sock
     networks:
       - app-network
@@ -63,16 +58,11 @@ services:
     image: app/php # имя будущего образа
     container_name: ${APP_NAME} # имя контейнера после запуска
     depends_on:
-      - db
-      - cache
-      - memcached
-      - composer
-    environment:
-      REDIS_HOST: cache
-      REDIS_PORT: 6379
-      REDIS_PASSWORD: eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81  
+      - "db"
+      - rabbitmq 
     volumes:
-       - ./code:/data/mysite.local
+       - ./src:/data/mysite.local/src
+       - ./vendor:/data/mysite.local/vendor
        - ./php-socket:/var/run/php-fpm.sock
     # мы можем создать для контейнеров внутреннюю сеть
     networks:
