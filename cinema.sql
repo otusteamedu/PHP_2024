@@ -72,7 +72,7 @@ CREATE TABLE ticket
 (
     id            SERIAL PRIMARY KEY,                  -- Уникальный идентификатор билета
     price_list_id INT NOT NULL,
-    customer_id   INT NOT NULL,                                 -- Внешний ключ на клиента
+    customer_id   INT NOT NULL,                        -- Внешний ключ на клиента
     purchased_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Дата и время покупки
     CONSTRAINT fk_ticket_price_list FOREIGN KEY (price_list_id) REFERENCES price_list (id),
     CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id)
@@ -102,22 +102,22 @@ VALUES (1, 1, 1),
        (1, 2, 3);
 
 INSERT INTO price_list (seat_id, schedule_id, price)
-VALUES (1,1, 510),
-       (1,2, 600),
-       (2,1, 720),
-       (2,2, 600);
+VALUES (1, 1, 510),
+       (1, 2, 600),
+       (2, 1, 720),
+       (2, 2, 600);
 
 INSERT INTO customer (name, email, phone)
 VALUES ('Иван Иванов', 'ivanov@example.com', '+79001234567');
 
 INSERT INTO ticket (customer_id, price_list_id)
-VALUES (1,  1),
-       (1,  2),
-       (1,  3),
-       (1,  4);
+VALUES (1, 1),
+       (1, 2),
+       (1, 3),
+       (1, 4);
 
-SELECT m.id         AS movie_id,
-       m.title      AS movie_title,
+SELECT m.id          AS movie_id,
+       m.title       AS movie_title,
        SUM(pl.price) AS total_revenue
 FROM ticket t
          JOIN
