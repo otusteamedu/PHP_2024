@@ -71,8 +71,8 @@ CREATE TABLE price_list
 CREATE TABLE ticket
 (
     id            SERIAL PRIMARY KEY,                  -- Уникальный идентификатор билета
-    price_list_id INT,
-    customer_id   INT,                                 -- Внешний ключ на клиента
+    price_list_id INT NOT NULL,
+    customer_id   INT NOT NULL,                                 -- Внешний ключ на клиента
     purchased_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Дата и время покупки
     CONSTRAINT fk_ticket_price_list FOREIGN KEY (price_list_id) REFERENCES price_list (id),
     CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id)
