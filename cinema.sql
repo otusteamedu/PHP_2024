@@ -55,19 +55,27 @@ CREATE TABLE customer
     phone VARCHAR(20)                   -- Телефон клиента
 );
 
--- 7. Таблица для билетов
-CREATE TABLE ticket
+-- 7. Таблица для цен на сеанс
+CREATE TABLE price_list
 (
-    id           SERIAL PRIMARY KEY,                         -- Уникальный идентификатор билета
-    schedule_id  INT            NOT NULL,                    -- Внешний ключ на расписание
-    seat_id      INT            NOT NULL,                    -- Внешний ключ на место
-    customer_id  INT,                                        -- Внешний ключ на клиента
-    purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,        -- Дата и время покупки
-    price        NUMERIC(10, 2) NOT NULL CHECK (price >= 0), -- Стоимость билета
+    id          SERIAL PRIMARY KEY,                         -- Уникальный идентификатор цены
+    seat_id     INT            NOT NULL,
+    schedule_id INT            NOT NULL,
+    price       NUMERIC(10, 2) NOT NULL CHECK (price >= 0), -- Стоимость билета
     CONSTRAINT fk_ticket_schedule FOREIGN KEY (schedule_id) REFERENCES schedule (id) ON DELETE CASCADE,
     CONSTRAINT fk_ticket_seat FOREIGN KEY (seat_id) REFERENCES seat (id) ON DELETE CASCADE,
-    CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id),
-    UNIQUE (schedule_id, seat_id)                            -- Каждое место может быть куплено только один раз на конкретный сеанс
+    UNIQUE (schedule_id, seat_id)                           -- У каждого место/сеанса может быть только одна цена
+);
+
+-- 8. Таблица для билетов
+CREATE TABLE ticket
+(
+    id            SERIAL PRIMARY KEY,                  -- Уникальный идентификатор билета
+    price_list_id INT,
+    customer_id   INT,                                 -- Внешний ключ на клиента
+    purchased_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Дата и время покупки
+    CONSTRAINT fk_ticket_price_list FOREIGN KEY (price_list_id) REFERENCES price_list (id),
+    CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id)
 );
 
 INSERT INTO cinema (name)
@@ -93,22 +101,31 @@ VALUES (1, 1, 1),
        (1, 2, 2),
        (1, 2, 3);
 
+INSERT INTO price_list (seat_id, schedule_id, price)
+VALUES (1,1, 510),
+       (1,2, 600),
+       (2,1, 720),
+       (2,2, 600);
+
 INSERT INTO customer (name, email, phone)
 VALUES ('Иван Иванов', 'ivanov@example.com', '+79001234567');
 
-INSERT INTO ticket (schedule_id, seat_id, customer_id, price)
-VALUES (1, 1, 1, 500), -- Сеанс №1, Место №1, Покупатель №1
-       (1, 2, NULL, 600), -- Сеанс №1, Место №2, Покупателя еще нет
-       (2, 2, 1, 600); -- Сеанс №2, Место №2, Покупатель №2
+INSERT INTO ticket (customer_id, price_list_id)
+VALUES (1,  1),
+       (1,  2),
+       (1,  3),
+       (1,  4);
 
 SELECT m.id         AS movie_id,
        m.title      AS movie_title,
-       SUM(t.price) AS total_revenue
+       SUM(pl.price) AS total_revenue
 FROM ticket t
          JOIN
-     schedule s ON t.schedule_id = s.id
+     price_list pl on t.price_list_id = pl.id
+         JOIN
+     schedule s ON pl.schedule_id = s.id
          JOIN
      movie m ON s.movie_id = m.id
-WHERE t.customer_id IS NOT NULL
 GROUP BY m.id, m.title
-ORDER BY total_revenue DESC LIMIT 1;
+ORDER BY total_revenue DESC
+LIMIT 1;
