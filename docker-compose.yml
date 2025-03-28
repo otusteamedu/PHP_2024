@@ -1,0 +1,15 @@
+services:
+  server-side:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: verification/console-php-server
+    container_name: server-side
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
