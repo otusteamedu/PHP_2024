@@ -1,0 +1,9 @@
+{
+    "name": "a_syrovatkin/hw5",
+    "autoload": {
+        "psr-4": {
+            "ASyrovatkin\\Hw5\\": "src/"
+        }
+    },
+    "require": {}
+}
