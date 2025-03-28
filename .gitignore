@@ -1,5 +1,7 @@
 .idea/
 /vendor/
+/volumes/mysql/data/
 .DS_Store
 .AppleDouble
 .LSOverride
+.env
