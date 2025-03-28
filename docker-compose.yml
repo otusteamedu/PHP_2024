@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  balancer:
+    build:
+      context: ./docker/balancer
+    ports:
+      - "80:80"
+    networks:
+      - app
+
+  nginx1:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app
+
+  nginx2:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app
+
+  app1:
+    environment:
+      REDIS_HOST: redis
+    build:
+      context: ./docker/fpm
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app
+
+  app2:
+    environment:
+      REDIS_HOST: redis
+    build:
+      context: ./docker/fpm
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - app
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - app
+    volumes:
+      - redis:/data
+
+networks:
+  app:
+    driver: bridge
+
+volumes:
+  redis:
+    driver: local

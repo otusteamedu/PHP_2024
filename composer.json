@@ -1,0 +1,21 @@
+{
+  "name": "yulia633/hw-4",
+  "description": "Homework fourth",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    },
+    "scripts": {
+      "phpcs": "phpcs",
+      "phpcbf": "phpcbf"
+    },
+    "require-dev": {
+      "squizlabs/php_codesniffer": "^3.3"
+    }
+  },
+  "require": {
+    "squizlabs/php_codesniffer": "^3.3"
+  }
+}
