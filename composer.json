@@ -1,0 +1,17 @@
+{
+    "name": "pavel-miasnov/test-composer-using",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "PavelMiasnov\\TestComposerUsing\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "PavelMiasnov"
+        }
+    ],
+    "require": {
+        "pavel-miasnov/first-composer-package": "^1.0"
+    }
+}
