@@ -1,0 +1,18 @@
+# версия синтаксиса
+version: '3'
+
+services:
+  bash-test:
+    build:
+      context: ./scripts
+      dockerfile: Dockerfile
+    image: php
+    container_name: bash-test
+    stdin_open: true 
+    tty: true
+    volumes:
+       - ./scripts:/scripts
+
+#Docker Networks
+networks:
+  default:
