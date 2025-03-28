@@ -1,0 +1,16 @@
+{
+    "name": "builov/redis_app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Builov\\RedisApp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitriy",
+            "email": "builov@inbox.ru"
+        }
+    ],
+    "require": {}
+}

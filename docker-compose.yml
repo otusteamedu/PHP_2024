@@ -1,0 +1,43 @@
+services:
+
+  nginx:
+    image: nginx
+    container_name: redis_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./www/:/var/www/
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    working_dir: /var/www/
+    depends_on:
+      - php
+    networks:
+      - app-network
+
+  php:
+    image: php:8.0
+    container_name: redis_php
+    build: ./docker/php
+    volumes:
+      - ./www/:/var/www/
+      - ./docker/php/conf.d/browscap.ini:/usr/local/etc/php/conf.d/browscap.ini
+      - ./docker/php/conf.d/php.ini:/usr/local/etc/php/conf.d/php.ini
+    working_dir: /var/www/
+    networks:
+      - app-network
+
+  redis-server:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+     - ./redisdata:/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

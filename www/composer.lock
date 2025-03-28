@@ -1,0 +1,62 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "42da81bd832a192dc0d9e73166fb32b6",
+    "packages": [
+        {
+            "name": "phpredis/phpredis",
+            "version": "6.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpredis/phpredis.git",
+                "reference": "5419cc9c60d1ee04163b4d5323dd0fb02fb4f8bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpredis/phpredis/zipball/5419cc9c60d1ee04163b4d5323dd0fb02fb4f8bb",
+                "reference": "5419cc9c60d1ee04163b4d5323dd0fb02fb4f8bb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 7.4.0"
+            },
+            "type": "php-ext",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "PHP-3.01"
+            ],
+            "description": "A PHP extension for Redis",
+            "support": {
+                "issues": "https://github.com/phpredis/phpredis/issues",
+                "source": "https://github.com/phpredis/phpredis/tree/6.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/[user1",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/michael-grunder] # Replace with up to 4 GitHub Sponsors-enabled usernames e.g.",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/user2",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-04T18:28:33+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
