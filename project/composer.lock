@@ -1,0 +1,55 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "e3963b6ee77a9f78540ad0d8e21bea32",
+    "packages": [
+        {
+            "name": "sikudamobile/testlib",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mobilesikuda/testlib.git",
+                "reference": "e106da2f640eb7b57bb948b164ece20bdddaf127"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mobilesikuda/testlib/zipball/e106da2f640eb7b57bb948b164ece20bdddaf127",
+                "reference": "e106da2f640eb7b57bb948b164ece20bdddaf127",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sikudamobile\\Testlib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "sikudamobile",
+                    "email": "ya.sikuda@yandex.ru"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/mobilesikuda/testlib/issues",
+                "source": "https://github.com/mobilesikuda/testlib/tree/1.0.0"
+            },
+            "time": "2024-11-25T05:39:28+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}

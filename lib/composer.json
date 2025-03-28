@@ -1,0 +1,17 @@
+{
+    "name": "sikudamobile/testlib",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Sikudamobile\\Testlib\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "sikudamobile",
+            "email": "ya.sikuda@yandex.ru"
+        }
+    ],
+    "require": {}
+}
