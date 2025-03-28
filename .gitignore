@@ -3,3 +3,5 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+block 1/local_pgdata/*
+block 1/.env

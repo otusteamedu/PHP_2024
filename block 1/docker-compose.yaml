@@ -1,0 +1,79 @@
+# версия синтаксиса
+version: '3'
+
+# в этом блоке мы описываем контейнеры, которые будут запускаться
+services:
+  #контейнер с Nginx
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: ${CONTAINER_NAME}
+    # проброс портов
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code:/data/mysite.local
+      - phpsocket:/var/run
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  #Контейнер с PHP-FPM, назовём его app
+  app:
+    # Если нет секции build, то система будет искать образ в репозиториях
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: php # имя будущего образа
+    container_name: app # имя контейнера после запуска
+    environment: 
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+       - ./code:/data/mysite.local
+       - phpsocket:/var/run
+    depends_on:
+      - redis
+      - memcached
+      - postgres
+    # мы можем создать для контейнеров внутреннюю сеть
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./local_pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  #Контейнер с Redis
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached
+    container_name: mymemcached
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  phpsocket:
