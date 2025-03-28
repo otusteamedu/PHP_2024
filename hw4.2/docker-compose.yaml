@@ -1,0 +1,72 @@
+services:
+  nginx_common:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: balance/nginx
+    container_name: ${CONTAINER_NAME}
+    depends_on:
+      - srv1
+      - srv2
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  srv1:
+    build:
+      context: ./srv1
+      dockerfile: Dockerfile
+    image: srv1-nginx
+    container_name: ${SRV1_NAME}
+    volumes:
+       - ./code:/data/mysite.local
+    ports:
+       - "8080"   
+    networks:
+      - app-network 
+
+  srv2:
+    build:
+      context: ./srv2
+      dockerfile: Dockerfile
+    image: srv2-nginx
+    container_name: ${SRV2_NAME}
+    volumes:
+       - ./code:/data/mysite.local
+    ports:
+      - "8080"
+    networks:
+      - app-network  
+
+  app1:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php 
+    container_name: ${APP1_NAME}  
+    volumes:
+       - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: balance/php 
+    container_name: ${APP2_NAME} 
+    volumes:
+      - ./code:/data/mysite.local
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - "6379:6379"
+  
+networks:
+  app-network:
+    driver: bridge
