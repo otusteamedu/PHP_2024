@@ -1,0 +1,69 @@
+services:
+  app1:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    container_name: app1
+    volumes:
+       - ./src:/data/mysite.local
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: docker/fpm
+      dockerfile: Dockerfile
+    container_name: app2
+    volumes:
+       - ./src:/data/mysite.local
+    networks:
+      - app-network
+
+  webserver-proxy:
+    build:
+      context: docker/nginx-proxy
+      dockerfile: Dockerfile
+    container_name: webserver-proxy
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    depends_on:
+      - webserver1
+      - webserver2
+
+  webserver1:
+    build:
+      context: docker/nginx-balancer
+      dockerfile: Dockerfile
+    container_name: webserver1
+    volumes:
+      - ./src:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+
+  webserver2:
+    build:
+      context: docker/nginx-balancer
+      dockerfile: Dockerfile
+    container_name: webserver2
+    volumes:
+      - ./src:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - app1
+      - app2
+
+  redis:
+    image: redis
+    container_name: redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
