@@ -1,0 +1,9 @@
+{
+  "name": "yulia633/hw-1",
+  "description": "Homework first",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": "^8.1"
+  }
+}

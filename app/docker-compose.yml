@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+  nginx:
+    build:
+      context: docker/nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/app
+    depends_on:
+      - php-fpm
+    networks:
+      - default
+
+  php-fpm:
+    build:
+      context: docker/php-fpm
+    volumes:
+      - ./:/app
+    networks:
+      - default
+
+  php-cli:
+    build:
+      context: docker/php-cli
+    volumes:
+      - ./:/app
+    networks:
+      - default
+
+  app-postgres:
+    image: postgres:13.3-alpine
+    environment:
+      POSTGRES_DB: '${DB_DATABASE}'
+      POSTGRES_USER: '${DB_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_PASSWORD}'
+    ports:
+      - "54321:5432"
+    volumes:
+      - ./postgres-vol:/var/lib/postgresql/data
+    networks:
+      - default
+
+  app-redis:
+    image: 'redis:alpine'
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-vol:/data
+    networks:
+      - default
+
+  app-memcached:
+    image: memcached:1.6.28
+    ports:
+      - "11212:11211"
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
