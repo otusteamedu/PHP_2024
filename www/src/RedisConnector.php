@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Builov\RedisApp;
@@ -10,7 +11,8 @@ class RedisConnector implements DbConnector
 {
     private Redis $redis;
 
-    function __construct() {
+    public function __construct()
+    {
         $this->redis = new Redis();
         try {
             $this->redis->connect('redis-server', 6379);

@@ -8,7 +8,7 @@ class EventModel
 {
     private DbConnector $dbConnection;
 
-    function __construct($dbConnection)
+    public function __construct($dbConnection)
     {
         $this->dbConnection = $dbConnection;
     }

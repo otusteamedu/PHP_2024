@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Builov\RedisApp;
@@ -7,7 +8,8 @@ class AppController
 {
     private DbConnector $dbConnection;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->dbConnection = new RedisConnector();
     }
 
@@ -18,7 +20,7 @@ class AppController
         $data['messages'] = [];
 
         if (!empty($_POST)) {
-            array_walk_recursive( $_POST, function(&$value, $key) {
+            array_walk_recursive($_POST, function (&$value, $key) {
                 $value = htmlspecialchars($value);
             });
 

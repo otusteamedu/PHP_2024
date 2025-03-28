@@ -17,7 +17,6 @@ class View
             foreach ($data['messages'] as $message) {
                 $messages .= '<p class="mt-3">' . $message . '</p>';
             }
-
         }
 
         $html = <<<HTML
