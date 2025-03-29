@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS MOVIES
 CREATE TABLE IF NOT EXISTS ATTRIBUTE_TYPES
 (
     id         SERIAL PRIMARY KEY, -- Уникальный идентификатор типа атрибута
-    value_type varchar(64)         -- Название типа атрибута
+    value_type varchar(64),        -- Название типа атрибута
+    code       varchar(64)         -- Код типа атрибута
 );
 
 CREATE TABLE IF NOT EXISTS ATTRIBUTE

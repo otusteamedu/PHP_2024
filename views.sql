@@ -14,7 +14,7 @@ select m.name                     as movie_name,
 from movies m
          join attribute_values av on m.id = av.movie_id
          join attribute on av.attribute_id = attribute.id
-         join attribute_types on attribute.attribute_type_id = attribute_types.id;
+         join attribute_types on attribute.attribute_type_id = attribute_types.id where attribute_types.code != 'business_date';
 
 CREATE VIEW service_tasks_view AS
 SELECT m.name AS movie,
@@ -31,5 +31,5 @@ SELECT m.name AS movie,
 FROM movies m
          join attribute_values av ON m.id = av.movie_id
          join attribute a ON av.attribute_id = a.id
-         join attribute_types at ON a.attribute_type_id = at.id
+         join attribute_types at ON a.attribute_type_id = at.id where at.code = 'business_date'
 GROUP BY m.id;
