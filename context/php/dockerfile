@@ -1,0 +1,4 @@
+FROM php:8.3-fpm
+
+# Установка расширения Redis
+RUN pecl install redis && docker-php-ext-enable redis
