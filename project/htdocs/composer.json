@@ -3,7 +3,7 @@
   "description": "My application",
   "type": "project",
   "require": {
-    "php": "^8.3",
+    "php": "^7.0",
     "predis/predis": "^2.0"
   },
   "autoload": {
