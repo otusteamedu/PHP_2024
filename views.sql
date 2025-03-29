@@ -17,7 +17,7 @@ from movies m
          join attribute_types on attribute.attribute_type_id = attribute_types.id where attribute_types.code != 'business_date';
 
 CREATE VIEW service_tasks_view AS
-SELECT m.name AS movie,
+select m.name AS movie,
        STRING_AGG(
                CASE
                    WHEN av.value_date = CURRENT_DATE THEN a.name
@@ -28,8 +28,8 @@ SELECT m.name AS movie,
                    WHEN av.value_date >= (CURRENT_DATE + INTERVAL '20 days') THEN a.name
                    END, ', '
        )      AS tasks_due_in_20_days
-FROM movies m
+from movies m
          join attribute_values av ON m.id = av.movie_id
          join attribute a ON av.attribute_id = a.id
          join attribute_types at ON a.attribute_type_id = at.id where at.code = 'business_date'
-GROUP BY m.id;
+group by m.id;
