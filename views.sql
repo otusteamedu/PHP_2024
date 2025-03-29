@@ -14,20 +14,18 @@ select m.name as movie_name,
 from movies m
          join attribute_values av on m.id = av.movie_id
          join attribute on  av.attribute_id = attribute.id
-         join attribute_types on attribute.attribute_type_id = attribute_types.id
+         join attribute_types on attribute.attribute_type_id = attribute_types.id;
 
 CREATE VIEW service_tasks_view AS
 SELECT m.name AS movie,
        STRING_AGG(
                CASE
                    WHEN av.value_date = CURRENT_DATE THEN a.name
-                   ELSE NULL
                    END, ', '
        )       AS tasks_due_today,
        STRING_AGG(
                CASE
                    WHEN av.value_date >= (CURRENT_DATE + INTERVAL '20 days') THEN a.name
-                   ELSE NULL
                    END, ', '
        )       AS tasks_due_in_20_days
 FROM movies m
