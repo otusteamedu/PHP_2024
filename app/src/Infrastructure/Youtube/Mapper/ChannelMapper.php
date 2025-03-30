@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Infrastructure\YoutubeAnalyze\Mapper;
+namespace Valen\App\Infrastructure\Youtube\Mapper;
 
 use DateMalformedStringException;
-use Valen\App\Domain\YoutubeAnalyze\Channel;
+use Valen\App\Domain\Youtube\Channel;
 
 final class ChannelMapper
 {

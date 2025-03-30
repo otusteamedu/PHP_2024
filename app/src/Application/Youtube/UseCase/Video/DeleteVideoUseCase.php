@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Application\YotubeAnalize\UseCase\Video;
+namespace Valen\App\Application\Youtube\UseCase\Video;
 
 use DomainException;
-use Valen\App\Domain\YoutubeAnalyze\VideoRepositoryInterface;
+use Valen\App\Domain\Youtube\VideoRepositoryInterface;
 
 final readonly class DeleteVideoUseCase
 {

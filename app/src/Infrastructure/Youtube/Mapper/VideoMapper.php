@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Infrastructure\YoutubeAnalyze\Mapper;
+namespace Valen\App\Infrastructure\Youtube\Mapper;
 
 use DateMalformedStringException;
-use Valen\App\Domain\YoutubeAnalyze\Video;
+use Valen\App\Domain\Youtube\Video;
 
 final class VideoMapper
 {

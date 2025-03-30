@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Domain\YoutubeAnalyze;
+namespace Valen\App\Domain\Youtube;
 
 interface VideoRepositoryInterface
 {

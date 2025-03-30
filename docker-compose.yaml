@@ -34,6 +34,10 @@ services:
       - bootstrap.memory_lock=true # Disable JVM heap memory swapping
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # Set min and max JVM heap sizes to at least 50% of system RAM
       - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD}    # Sets the demo admin user password when using demo configuration, required for OpenSearch 2.12 and later
+      - "DISABLE_SECURITY_PLUGIN=true"
+      - "plugins.security.disabled=true"
+      - "plugins.security.ssl.http.enabled=false"
+
     ulimits:
       memlock:
         soft: -1 # Set memlock to unlimited (no soft or hard limit)

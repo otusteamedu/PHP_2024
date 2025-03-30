@@ -3,18 +3,19 @@
 declare(strict_types=1);
 
 use OpenSearch\SymfonyClientFactory;
-use Valen\App\Application\YotubeAnalize\UseCase\Channel\AddChannelUseCase;
-use Valen\App\Domain\YoutubeAnalyze\Channel;
-use Valen\App\Infrastructure\YoutubeAnalyze\Mapper\ChannelMapper;
-use Valen\App\Infrastructure\YoutubeAnalyze\Repository\OpenSearchChannelRepository;
+
+use Valen\App\Application\Youtube\UseCase\Channel\AddChannelUseCase;
+use Valen\App\Domain\Youtube\Channel;
+use Valen\App\Infrastructure\Youtube\Mapper\ChannelMapper;
+use Valen\App\Infrastructure\Youtube\Repository\OpenSearchChannelRepository;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
 echo getenv('OPENSEARCH_INITIAL_ADMIN_PASSWORD');
 
 $openSearchClient = (new SymfonyClientFactory())->create([
-    'base_uri' => 'https://localhost:9200',
-    'auth_basic' => ['admin', getenv('OPENSEARCH_INITIAL_ADMIN_PASSWORD')],
+    'base_uri' => 'http://localhost:9200',
+    'auth_basic' => ['admin', 'cf45yokoCF$%!!!!'],
     'verify_peer' => false,
 ]);
 $channelMapper = new ChannelMapper();
@@ -33,4 +34,4 @@ $channel = Channel::fromArray($arChannel);
 
 print_r($channel);
 
-//$addChannel->execute($channel);
+$addChannel->execute($channel);

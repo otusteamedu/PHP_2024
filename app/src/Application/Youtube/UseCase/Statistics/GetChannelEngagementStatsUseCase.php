@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Application\YotubeAnalize\UseCase\Statistics;
+namespace Valen\App\Application\Youtube\UseCase\Statistics;
 
 use DomainException;
-use Valen\App\Domain\YoutubeAnalyze\ChannelRepositoryInterface;
-use Valen\App\Domain\YoutubeAnalyze\VideoRepositoryInterface;
+use Valen\App\Domain\Youtube\ChannelRepositoryInterface;
+use Valen\App\Domain\Youtube\VideoRepositoryInterface;
 
 final readonly class GetChannelEngagementStatsUseCase
 {

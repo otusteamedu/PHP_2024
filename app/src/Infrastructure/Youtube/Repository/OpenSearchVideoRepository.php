@@ -2,33 +2,33 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Infrastructure\YoutubeAnalyze\Repository;
+namespace Valen\App\Infrastructure\Youtube\Repository;
 
-use DateMalformedStringException;
 use OpenSearch\Client;
-use Valen\App\Domain\YoutubeAnalyze\Channel;
-use Valen\App\Domain\YoutubeAnalyze\ChannelRepositoryInterface;
-use Valen\App\Infrastructure\YoutubeAnalyze\Mapper\ChannelMapper;
+use Valen\App\Domain\Youtube\Video;
+use Valen\App\Domain\Youtube\VideoRepositoryInterface;
+use Valen\App\Infrastructure\Youtube\Mapper\VideoMapper;
 
-final class OpenSearchChannelRepository implements ChannelRepositoryInterface
+final class OpenSearchVideoRepository implements VideoRepositoryInterface
 {
-    private const string INDEX_NAME = 'youtube_channels';
+    private const string INDEX_NAME = 'youtube_videos';
 
     public function __construct(
         private readonly Client $client,
-        private readonly ChannelMapper $channelMapper
+        private readonly VideoMapper $videoMapper
     ) {
+        $this->createIndexIfNotExists();
     }
 
     /**
-     * Сохраняет канал в OpenSearch
+     * Сохраняет видео в OpenSearch
      */
-    public function save(Channel $channel): void
+    public function save(Video $video): void
     {
         $params = [
             'index' => self::INDEX_NAME,
-            'id' => $channel->channelId,
-            'body' => $this->channelMapper->toStorage($channel),
+            'id' => $video->videoId,
+            'body' => $this->videoMapper->toStorage($video),
             'refresh' => true, // Для немедленного обновления индекса
         ];
 
@@ -36,38 +36,37 @@ final class OpenSearchChannelRepository implements ChannelRepositoryInterface
     }
 
     /**
-     * Удаляет канал из OpenSearch
+     * Удаляет видео из OpenSearch
      */
-    public function delete(string $channelId): void
+    public function delete(string $videoId): void
     {
         $params = [
             'index' => self::INDEX_NAME,
-            'id' => $channelId,
+            'id' => $videoId,
             'refresh' => true,
         ];
 
-        // Проверяем, существует ли документ, прежде чем пытаться удалить его
         if ($this->client->exists($params)) {
             $this->client->delete($params);
         }
     }
 
     /**
-     * Находит канал по его ID
+     * Находит видео по его ID
      */
-    public function findById(string $channelId): ?Channel
+    public function findById(string $videoId): ?Video
     {
         $params = [
             'index' => self::INDEX_NAME,
-            'id' => $channelId,
+            'id' => $videoId,
         ];
 
         try {
             $response = $this->client->get($params);
             if (isset($response['_source'])) {
-                return $this->channelMapper->toDomain($response['_source']);
+                return $this->videoMapper->toDomain($response['_source']);
             }
-        } catch (DateMalformedStringException $e) {
+        } catch (\OpenSearch\Common\Exceptions\Missing404Exception) {
             // Документ не найден
         }
 
@@ -75,37 +74,37 @@ final class OpenSearchChannelRepository implements ChannelRepositoryInterface
     }
 
     /**
-     * Возвращает список всех каналов с пагинацией
-     * @throws DateMalformedStringException
+     * Находит все видео конкретного канала
      */
-    public function findAll(int $limit = 100, int $offset = 0): array
+    public function findByChannelId(string $channelId): array
     {
         $params = [
             'index' => self::INDEX_NAME,
             'body' => [
                 'query' => [
-                    'match_all' => (object)[],
+                    'term' => [
+                        'channelId' => $channelId
+                    ]
                 ],
-                'from' => $offset,
-                'size' => $limit,
+                'size' => 1000, // Лимит результатов
                 'sort' => [
                     'publishedAt' => [
-                        'order' => 'desc',
-                    ],
-                ],
-            ],
+                        'order' => 'desc'
+                    ]
+                ]
+            ]
         ];
 
         $response = $this->client->search($params);
 
-        $channels = [];
-        if (!empty($response['hits']['hits'])) {
+        $videos = [];
+        if (isset($response['hits']['hits']) && !empty($response['hits']['hits'])) {
             foreach ($response['hits']['hits'] as $hit) {
-                $channels[] = $this->channelMapper->toDomain($hit['_source']);
+                $videos[] = $this->videoMapper->toDomain($hit['_source']);
             }
         }
 
-        return $channels;
+        return $videos;
     }
 
     /**
@@ -121,12 +120,14 @@ final class OpenSearchChannelRepository implements ChannelRepositoryInterface
             $params['body'] = [
                 'mappings' => [
                     'properties' => [
+                        'videoId' => ['type' => 'keyword'],
                         'channelId' => ['type' => 'keyword'],
                         'title' => ['type' => 'text', 'fields' => ['keyword' => ['type' => 'keyword']]],
-                        'description' => ['type' => 'text'],
-                        'subscriberCount' => ['type' => 'integer'],
-                        'videoCount' => ['type' => 'integer'],
                         'publishedAt' => ['type' => 'date'],
+                        'viewCount' => ['type' => 'integer'],
+                        'likeCount' => ['type' => 'integer'],
+                        'dislikeCount' => ['type' => 'integer'],
+                        'commentCount' => ['type' => 'integer'],
                     ],
                 ],
                 'settings' => [

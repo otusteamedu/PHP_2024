@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Application\YotubeAnalize\UseCase\Channel;
+namespace Valen\App\Application\Youtube\UseCase\Channel;
 
-use Valen\App\Domain\YoutubeAnalyze\Channel;
-use Valen\App\Domain\YoutubeAnalyze\ChannelRepositoryInterface;
+use Valen\App\Domain\Youtube\Channel;
+use Valen\App\Domain\Youtube\ChannelRepositoryInterface;
 
 final readonly class AddChannelUseCase
 {

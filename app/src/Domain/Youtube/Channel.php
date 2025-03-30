@@ -2,40 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Domain\YoutubeAnalyze;
+namespace Valen\App\Domain\Youtube;
 
 use DateMalformedStringException;
 use DateTimeImmutable;
 
-readonly class Video
+readonly class Channel
 {
     public function __construct(
-        public string $videoId,
         public string $channelId,
         public string $title,
+        public string $description,
+        public int $subscriberCount,
+        public int $videoCount,
         public DateTimeImmutable $publishedAt,
-        public int $viewCount,
-        public int $likeCount,
-        public int $dislikeCount,
-        public int $commentCount,
     ) {
     }
 
     /**
-     * Создает объект Video из массива данных
+     * Создает объект Channel из массива данных
      * @throws DateMalformedStringException
      */
     public static function fromArray(array $data): self
     {
         return new self(
-            videoId: $data['video_id'],
             channelId: $data['channel_id'],
             title: $data['title'],
+            description: $data['description'],
+            subscriberCount: (int)$data['subscriber_count'],
+            videoCount: (int)$data['video_count'],
             publishedAt: new DateTimeImmutable($data['published_at']),
-            viewCount: (int)$data['view_count'],
-            likeCount: (int)$data['like_count'],
-            dislikeCount: (int)$data['dislike_count'],
-            commentCount: (int)$data['comment_count'],
         );
     }
 
@@ -45,14 +41,12 @@ readonly class Video
     public function toArray(): array
     {
         return [
-            'video_id' => $this->videoId,
             'channel_id' => $this->channelId,
             'title' => $this->title,
+            'description' => $this->description,
+            'subscriber_count' => $this->subscriberCount,
+            'video_count' => $this->videoCount,
             'published_at' => $this->publishedAt->format('c'),
-            'view_count' => $this->viewCount,
-            'like_count' => $this->likeCount,
-            'dislike_count' => $this->dislikeCount,
-            'comment_count' => $this->commentCount,
         ];
     }
 }
