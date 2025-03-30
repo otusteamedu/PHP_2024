@@ -1,0 +1,21 @@
+{"create": {"_index": "youtube_channels"}}
+{"channel": "О природе","title": "Животные Африки","release_date": "2025-01-15","likes": 3,"dislikes": 10}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "О природе","title": "Рыбы Тихого океана","release_date": "2025-01-15","likes": 3,"dislikes": 10}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "О природе","title": "Горы Австралии","release_date": "2025-01-15","likes": 3,"dislikes": 10}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "Кулинария","title": "Торты","release_date": "2025-01-13","likes": 100,"dislikes": 15}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "Кулинария","title": "Супы","release_date": "2025-01-13","likes": 200,"dislikes": 150}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "Кулинария","title": "Котлеты","release_date": "2025-01-13","likes": 1000,"dislikes": 1}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "Поэзия","title": "Стихи Пушкина","release_date": "2025-01-13","likes": 100,"dislikes": 15}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "Литература","title": "Творчество Достоевского","release_date": "2025-01-13","likes": 100,"dislikes": 150}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "Советское кино","title": "Комедии","release_date": "2025-01-13","likes": 501,"dislikes": 150}
+{"create": {"_index": "youtube_channels"}}
+{"channel": "Советское кино","title": "Драмы","release_date": "2025-01-13","likes": 588,"dislikes": 51}
+{"create": {"_index": "youtube_channels"}}

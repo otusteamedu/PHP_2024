@@ -1,0 +1,31 @@
+{
+  "properties": {
+    "channel": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    },
+    "dislikes": {
+      "type": "long"
+    },
+    "likes": {
+      "type": "long"
+    },
+    "release_date": {
+      "type": "date"
+    },
+    "title": {
+      "type": "text",
+      "fields": {
+        "keyword": {
+          "type": "keyword",
+          "ignore_above": 256
+        }
+      }
+    }
+  }
+}
