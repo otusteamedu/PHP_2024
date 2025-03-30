@@ -51,5 +51,4 @@ interface VideoStorageInterface
     public function seed(): void;
 
     public function storageInfo(): string;
-
 }

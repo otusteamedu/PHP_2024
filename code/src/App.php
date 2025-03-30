@@ -16,7 +16,7 @@ class App
     {
         self::$command = $_REQUEST['command'] ?? null;
         if (empty(self::$command)) {
-            return Response::response('Необходимо указать параметр command!', 400);
+            return JsonResponse::response(['Необходимо указать параметр command!'], 400);
         } else {
             $data = $_REQUEST['data'] ?? null;
             if (!is_null($data)) {
