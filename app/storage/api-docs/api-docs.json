@@ -1,0 +1,369 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API для судов",
+        "description": "API для получения данных о судах",
+        "termsOfService": "https://example.com/terms",
+        "contact": {
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/courts/{court}": {
+            "delete": {
+                "tags": [
+                    "Courts"
+                ],
+                "summary": "Удаление суда",
+                "description": "Удаляет указанный суд по его ID.",
+                "operationId": "deleteCourt",
+                "parameters": [
+                    {
+                        "name": "court",
+                        "in": "path",
+                        "description": "ID суда",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Перенаправление на список судов"
+                    },
+                    "404": {
+                        "description": "Суд не найден"
+                    }
+                }
+            }
+        },
+        "/courts": {
+            "get": {
+                "tags": [
+                    "Courts"
+                ],
+                "summary": "Получить список судов",
+                "operationId": "ffeedaac9445be9ffda934eb92937682",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы пагинации",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Фильтр по названию суда",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Кировского"
+                        }
+                    },
+                    {
+                        "name": "address",
+                        "in": "query",
+                        "description": "Фильтр по адресу суда",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Хабаровск"
+                        }
+                    },
+                    {
+                        "name": "cass_region",
+                        "in": "query",
+                        "description": "Фильтр по региону кассации суда",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "1КО"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список судов",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Court"
+                                            }
+                                        },
+                                        "current_page": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "total": {
+                                            "type": "integer",
+                                            "example": 100
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Courts"
+                ],
+                "summary": "Создать новый суд",
+                "operationId": "52b685c7ccd8639a5c63921aa33339bb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "address",
+                                    "region_id",
+                                    "cass_region",
+                                    "general_type_id",
+                                    "phone",
+                                    "email",
+                                    "site"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Московский городской суд"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Москва, ул. Тверская, 1"
+                                    },
+                                    "region_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "cass_region": {
+                                        "type": "string",
+                                        "example": "Московская область"
+                                    },
+                                    "general_type_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "+7 495 123-45-67"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "info@court.ru"
+                                    },
+                                    "site": {
+                                        "type": "string",
+                                        "example": "http://court.ru"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Суд успешно создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Суд успешно создан"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибки валидации данных",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ошибка валидации данных"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/courts/{id}": {
+            "put": {
+                "tags": [
+                    "Courts"
+                ],
+                "summary": "Обновить информацию о суде",
+                "operationId": "a224ff70179df5808f8041f42cfd030d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID суда",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCourtRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Суд успешно обновлён",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Court"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка в запросе"
+                    },
+                    "404": {
+                        "description": "Суд не найден"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UpdateCourtRequest": {
+                "title": "Запрос на обновление суда",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Обновленный суд"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "Обновленный адрес"
+                    },
+                    "region_id": {
+                        "type": "string",
+                        "example": "2"
+                    },
+                    "cass_region": {
+                        "type": "string",
+                        "example": "Обновленный кассационный округ"
+                    },
+                    "general_type_id": {
+                        "type": "string",
+                        "example": "3"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+7 495 000-00-00"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "updated@court.ru"
+                    },
+                    "site": {
+                        "type": "string",
+                        "example": "http://updated-court.ru"
+                    }
+                },
+                "type": "object"
+            },
+            "Court": {
+                "title": "Court",
+                "description": "Модель суда",
+                "properties": {
+                    "id": {
+                        "type": "uuid",
+                        "example": "004cc1b9-997c-4028-8d0e-4f53a6acfa1f"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Приокский районный суд г. Нижний Новгород (Нижегородская область)"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "119618, Москва, ул. 50-лет Октября, д. 6, корпус 2"
+                    },
+                    "region_id": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "cass_region": {
+                        "type": "string",
+                        "example": "Московская область"
+                    },
+                    "general_type_id": {
+                        "type": "string",
+                        "example": "1"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+7 495 123-45-67"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "info@court.ru"
+                    },
+                    "site": {
+                        "type": "string",
+                        "example": "http://court.ru"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Courts",
+            "description": "Courts"
+        }
+    ]
+}
