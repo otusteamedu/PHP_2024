@@ -7,7 +7,9 @@ use App\Services\Court\Service;
 
 class BaseController extends Controller
 {
-    function __construct(
+    public function __construct(
         public Service $service
-    ) {}
+    ) {
+        // empty container
+    }
 }
