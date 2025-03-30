@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+
+    #Nginx Service
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./code:/data/mysite.local
+            - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+        networks:
+            - docker-network
+
+    #PHP Service
+    php-fpm:
+        build:
+            context: ./docker/php-fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: php-fpm
+        volumes:
+            - ./code:/data/mysite.local
+        networks:
+            - docker-network
+
+    # Elastic search
+    elasticsearch:
+        image: elasticsearch:8.16.1
+        container_name: elasticsearch
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false  # disable authentication
+            - xpack.security.enrollment.enabled=false # disable authentication
+
+        deploy:
+            resources:
+                limits:
+                    memory: 500M
+        ports:
+            - "9200:9200"
+        networks:
+            - docker-network
+
+#Docker Networks
+networks:
+    docker-network:
+        driver: bridge
+

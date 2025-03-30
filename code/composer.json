@@ -1,0 +1,18 @@
+{
+    "name": "sergey-shirykalov/youtube-channels",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "SergeyShirykalov\\YoutubeChannels\\": "src/"
+        }
+    },
+    "require": {
+      "ext-redis": "*",
+        "elasticsearch/elasticsearch": "^8.17"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
