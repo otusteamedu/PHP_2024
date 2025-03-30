@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Application\UseCase\Statistics;
+namespace Valen\App\Application\YotubeAnalize\UseCase\Statistics;
 
 use DomainException;
 use Valen\App\Domain\YoutubeAnalyze\ChannelRepositoryInterface;

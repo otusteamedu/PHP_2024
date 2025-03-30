@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Application\UseCase\Channel;
+namespace Valen\App\Application\YotubeAnalize\UseCase\Channel;
 
 use Valen\App\Domain\YoutubeAnalyze\Channel;
 use Valen\App\Domain\YoutubeAnalyze\ChannelRepositoryInterface;
