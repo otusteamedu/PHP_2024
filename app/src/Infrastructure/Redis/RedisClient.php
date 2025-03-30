@@ -6,6 +6,7 @@ namespace Aware\App\Infrastructure\Redis;
 
 use Aware\App\Domain\Event\Event;
 use Redis;
+use Exception;
 
 class RedisClient
 {
@@ -23,7 +24,7 @@ class RedisClient
 
         try {
             $this->client->ping();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             die("Redis connection failed: " . $e->getMessage());
         }
     }

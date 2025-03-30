@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Aware\App\Domain\Event;
 
-use Exception;
-
 readonly class Event
 {
     public int $priority;
