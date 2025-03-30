@@ -1,0 +1,69 @@
+services:
+  
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: otus-nginx
+    volumes:
+      - ./app:/app
+      - ./logs/nginx:/var/log/nginx/
+    ports:
+      - 80:80
+    networks:
+      - app-network
+  
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: php
+    container_name: otus-php
+    volumes:
+       - ./app:/app
+       - ./logs/php.log:/var/log/fpm-php.www.log
+    restart: always
+    networks:
+      - app-network
+  
+  postgres:
+    container_name: otus-postgres
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./:/code
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+  
+  adminer:
+    image: adminer
+    container_name: otus-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+  
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: otus-swagger
+    restart: always
+    platform: linux/amd64
+    ports:
+      - 8081:8080
+    volumes:
+      - ./app/storage/api-docs:/usr/share/nginx/html/swagger
+    environment:
+      SWAGGER_JSON: /usr/share/nginx/html/swagger/api-docs.json
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
