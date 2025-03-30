@@ -37,7 +37,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function before(Builder $builder)
     {
-        //empty 
+        //empty
     }
 
     /**
