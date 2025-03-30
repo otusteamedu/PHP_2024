@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Application\UseCase\Channel;
+namespace Valen\App\Application\UseCase\Channel;
 
 use DomainException;
 use Valen\App\Domain\YoutubeAnalyze\ChannelRepositoryInterface;

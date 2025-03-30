@@ -1,6 +1,8 @@
 <?php
 
-namespace Infrastructure\OpenSearch;
+declare(strict_types=1);
+
+namespace Valen\App\Infrastructure\OpenSearch;
 
 use OpenSearch\Client;
 use OpenSearch\SymfonyClientFactory;
