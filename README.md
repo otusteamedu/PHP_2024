@@ -1,1 +1,0 @@
-Установите зависимости: composer require php-amqplib/php-amqplib
