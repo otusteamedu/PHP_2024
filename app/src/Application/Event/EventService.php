@@ -15,9 +15,6 @@ readonly class EventService
     ) {
     }
 
-    /**
-     * @throws Exception
-     */
     public function addEvent($event): void
     {
         $event = Event::decode($event);
