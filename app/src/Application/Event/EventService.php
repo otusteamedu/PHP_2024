@@ -9,12 +9,11 @@ use Aware\App\Domain\Event\EventBuilder;
 use Aware\App\Domain\Event\EventRepositoryInterface;
 use Exception;
 
-class EventService
+readonly class EventService
 {
-    private EventRepositoryInterface $repository;
-    public function __construct(EventRepositoryInterface $eventRepository)
-    {
-        $this->repository = $eventRepository;
+    public function __construct(
+        private EventRepositoryInterface $eventRepository
+    ) {
     }
 
     /**
@@ -38,16 +37,16 @@ class EventService
 
         $event = $eventBuilder->build();
 
-        $this->repository->addEvent($event);
+        $this->eventRepository->addEvent($event);
     }
 
     public function deleteEvents(): void
     {
-        $this->repository->deleteEvents();
+        $this->eventRepository->deleteEvents();
     }
 
     public function getBestEvent($conditions): Event
     {
-        return $this->repository->getBestEvent($conditions);
+        return $this->eventRepository->getBestEvent($conditions);
     }
 }

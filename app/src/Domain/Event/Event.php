@@ -6,15 +6,11 @@ namespace Aware\App\Domain\Event;
 
 readonly class Event
 {
-    public int $priority;
-    public array $conditions;
-    public array $event;
-
-    public function __construct(int $priority, array $conditions, array $event)
-    {
-        $this->priority = $priority;
-        $this->conditions = $conditions;
-        $this->event = $event;
+    public function __construct(
+        public int $priority,
+        public array $conditions,
+        public array $event
+    ) {
     }
 
     public static function decode(string $json): Event
