@@ -78,3 +78,7 @@ CREATE TABLE ticket
     CONSTRAINT fk_ticket_customer FOREIGN KEY (customer_id) REFERENCES customer (id),
     UNIQUE (price_list_id, customer_id)                      -- У билета может быть один владелец
 );
+
+-- Индексы по итогам тестирования запросов
+CREATE INDEX idx_price_list_schedule_price ON price_list(schedule_id, price);
+CREATE INDEX idx_schedule_date_movie ON schedule(show_time, movie_id);
