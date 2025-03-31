@@ -55,7 +55,7 @@ INSERT INTO hall (cinema_id, name, capacity)
 SELECT random(1, 2),
        CONCAT('hall_', random_string(10)),
        random(50, 100)
-FROM generate_series(1, 10) AS id;
+FROM generate_series(1, 5000) AS id;
 
 -- seat
 
@@ -86,15 +86,15 @@ INSERT INTO movie (title, duration, release_date)
 SELECT CONCAT('movie_', random_string(10)),
        random(1, 3),
        CURRENT_DATE + (random() * 40)::int
-FROM generate_series(1, 20) AS id;
+FROM generate_series(1, 5000) AS id;
 
 -- schedule
 
 WITH date_range AS (
     -- Создаем диапазон дат для расписания
     SELECT generate_series(
-                           CURRENT_DATE,
-                           CURRENT_DATE + 40,
+                           CURRENT_DATE - 20,
+                           CURRENT_DATE + 10,
                            interval '1 day'
            )::date AS show_date),
      movie_dates AS (
@@ -182,7 +182,7 @@ SELECT
     (ARRAY['900', '901', '902', '903', '905', '906', '908', '909', '910', '912', '913', '914', '915', '916', '917', '918', '919', '920', '921', '922'])[1 + floor(random() * 20)] ||
     LPAD(floor(random() * 10000000)::text, 7, '0') AS phone
 
-FROM generate_series(1, 1000);
+FROM generate_series(1, 500000);
 
 -- price_list
 
