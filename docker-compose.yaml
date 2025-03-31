@@ -1,0 +1,65 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: app_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+
+  php-fpm:
+    image: aware-php
+    container_name: app_php
+    build:
+      dockerfile: ./docker/php-fpm/Dockerfile
+    volumes:
+      - ./app:/var/www/html
+      - ./.env:/var/www/.env
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: app_redis
+    networks:
+      - app-network
+
+  # Добавляем MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: app_mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./docker/mongodb-data:/data/db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # Добавляем MongoDB Express для управления
+  mongo-express:
+    image: mongo-express:latest
+    container_name: app_mongo_express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+    restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge

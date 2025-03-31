@@ -1,0 +1,14 @@
+{
+    "name": "aware/app",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Aware\\App\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/dotenv": "^7.2",
+        "ext-redis": "*",
+        "mongodb/mongodb": "^1.21"
+    }
+}
