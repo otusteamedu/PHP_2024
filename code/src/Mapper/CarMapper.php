@@ -35,7 +35,7 @@ class CarMapper
             'SELECT * FROM cars WHERE mark = ?'
         );
         $this->selectAllStatement = $pdo->prepare(
-            'SELECT * FROM cars'
+            'SELECT * FROM cars LIMIT :limit'
         );
         $this->insertStatement = $pdo->prepare(
             'INSERT INTO cars (mark, model, vin, pts_number, pts_date) VALUES (?, ?, ?, ? ,?)'
@@ -68,9 +68,10 @@ class CarMapper
     /**
      * @throws \Exception
      */
-    public function findAll(): Collection
+    public function findAll(int $limit = 10): Collection
     {
         $this->selectAllStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $this->selectAllStatement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $this->selectAllStatement->execute();
         $result = $this->selectAllStatement->fetchAll();
 
