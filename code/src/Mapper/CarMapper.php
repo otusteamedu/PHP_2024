@@ -41,7 +41,13 @@ class CarMapper
             'INSERT INTO cars (mark, model, vin, pts_number, pts_date) VALUES (?, ?, ?, ? ,?)'
         );
         $this->updateStatement = $pdo->prepare(
-            'UPDATE cars SET mark = ?, model = ?, vin = ?, pts_number = ? , pts_date = ? WHERE id = ?'
+            'UPDATE cars SET
+                mark = COALESCE(NULLIF(?, mark), mark),
+                model = COALESCE(NULLIF(?, model), model),
+                vin = COALESCE(NULLIF(?, vin), vin),
+                pts_number = COALESCE(NULLIF(?, pts_number), pts_number),
+                pts_date = COALESCE(NULLIF(?, pts_date), pts_date)
+                WHERE id = ?'
         );
         $this->deleteStatement = $pdo->prepare(
             'DELETE FROM cars WHERE id = ?'
