@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+
+    #Nginx Service
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./code:/data/mysite.local
+            - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+        networks:
+            - docker-network
+
+    #PHP Service
+    php-fpm:
+        build:
+            context: ./docker/php-fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: php-fpm
+        volumes:
+            - ./code:/data/mysite.local
+        networks:
+            - docker-network
+
+    #MySQL
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        restart: always
+        # если не нужен внешний доступ, то убрать раздел ports
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: pattern_data_mapper
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - ./docker/mysql/data:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - docker-network
+
+#Docker Networks
+networks:
+    docker-network:
+        driver: bridge
+
