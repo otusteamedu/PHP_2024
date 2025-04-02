@@ -85,4 +85,16 @@ class Car
         return $this;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'mark' => $this->mark,
+            'model' => $this->model,
+            'vin' => $this->vin,
+            'pts_number' => $this->pts->getNumber(),
+            'pts_date' => $this->pts->getDate()->format('Y-m-d'),
+        ];
+    }
+
 }

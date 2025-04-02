@@ -133,14 +133,38 @@ class CarMapper
 
     public function update(Car $car): bool
     {
-        return $this->updateStatement->execute([
-                                                   $car->getMark(),
-                                                   $car->getModel(),
-                                                   $car->getVin(),
-                                                   $car->getPts()->getNumber(),
-                                                   $car->getPts()->getDate()->format('Y-m-d'),
-                                                   $car->getId()
-                                               ]);
+        // получим оригинальный объект из БД
+        $original = $this->findById($car->getId());
+
+        // получим массив отличий переданного для обновления объекта с оригинальным
+        $difference = array_diff_assoc($original->toArray(), $car->toArray());
+
+        // если массив пустой, значит, объект не изменился, ничего не делаем, выходим
+        if (empty($difference)) {
+            return true;
+        }
+
+        // сформируем запрос для обновления только измененных параметров
+        $query = "UPDATE cars SET";
+        foreach ($difference as $key => $value) {
+            $query .= " $key = ?,";
+        }
+        $query = substr($query, 0, -1);
+        $query .= " WHERE id = ?";
+
+        // выполняем запрос и возвращаем результат
+        return $this->pdo->prepare($query)->execute([
+                                                        ...array_values($difference),
+                                                        $car->getId()
+                                                    ]);
+//        return $this->updateStatement->execute([
+//                                                   $car->getMark(),
+//                                                   $car->getModel(),
+//                                                   $car->getVin(),
+//                                                   $car->getPts()->getNumber(),
+//                                                   $car->getPts()->getDate()->format('Y-m-d'),
+//                                                   $car->getId()
+//                                               ]);
     }
 
     public function delete(Car $car): bool
