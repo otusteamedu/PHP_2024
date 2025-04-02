@@ -1,0 +1,122 @@
+name: Deployment
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      rollback:
+        description: 'Rollback to previous version?'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  call-linter:
+    uses: ./.github/workflows/lint.yml
+  call-tests:
+    uses: ./.github/workflows/tests.yml
+
+  setup:
+    runs-on: ubuntu-latest
+    needs: [ call-linter, call-tests ]
+    outputs:
+      temp_dir: ${{ steps.setvars.outputs.temp_dir }}
+      release_dir: ${{ steps.setvars.outputs.release_dir }}
+      target_dir: ${{ steps.setvars.outputs.target_dir }}
+    steps:
+      - name: Set deployment variables
+        id: setvars
+        run: |
+          RELEASE_DIR="/var/www/html/releases/$(date +%Y%m%d%H%M%S)"
+          echo "temp_dir=/var/www/temp/app" >> $GITHUB_OUTPUT
+          echo "release_dir=$RELEASE_DIR" >> $GITHUB_OUTPUT
+          echo "target_dir=/var/www/html/current" >> $GITHUB_OUTPUT
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: setup
+    if: github.event.inputs.rollback == 'false'
+
+    steps:
+      - name: Use variables
+        run: |
+          echo "Temp dir: ${{ needs.setup.outputs.temp_dir }}"
+          echo "Release dir: ${{ needs.setup.outputs.release_dir }}"
+          echo "Target dir: ${{ needs.setup.outputs.target_dir }}"
+
+      - name: Upload files via SSH
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "."
+          target: ${{ needs.setup.outputs.temp_dir }}
+          strip_components: 1
+
+      - name: Run deployment commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            TEMP_DIR="${{ needs.setup.outputs.temp_dir }}"
+            RELEASE_DIR="${{ needs.setup.outputs.release_dir }}"
+            TARGET_DIR="${{ needs.setup.outputs.target_dir }}"
+
+            # Copy files to release directory
+            mkdir -p $RELEASE_DIR
+            cp -R $TEMP_DIR/* $RELEASE_DIR
+            cd $RELEASE_DIR
+
+            # Install dependencies and optimize
+            composer install --optimize-autoloader --no-dev
+            php artisan optimize:clear && php artisan optimize
+
+            # Update symlink
+            ln -sfn $RELEASE_DIR $TARGET_DIR
+
+            # Fix permissions
+            chown -R www-data:www-data $RELEASE_DIR/storage
+            chown -R www-data:www-data $RELEASE_DIR/bootstrap/cache
+
+            # Clear temp folder
+            rm -rf $TEMP_DIR/.
+
+  rollback:
+    runs-on: ubuntu-latest
+    needs: setup
+    if: github.event.inputs.rollback == 'true'
+
+    steps:
+      - name: Use variables
+        run: |
+          echo "Temp dir: ${{ needs.setup.outputs.temp_dir }}"
+          echo "Release dir: ${{ needs.setup.outputs.release_dir }}"
+          echo "Target dir: ${{ needs.setup.outputs.target_dir }}"
+
+      - name: Rollback to previous version
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            RELEASE_DIR="${{ needs.setup.outputs.release_dir }}"
+            TARGET_DIR="${{ needs.setup.outputs.target_dir }}"
+
+            cd $RELEASE_DIR
+            PREVIOUS_RELEASE=$(ls -t | head -n 2 | tail -n 1)
+            if [ -z "$PREVIOUS_RELEASE" ]; then
+              echo "No previous release found"
+              exit 1
+            fi
+            ln -sfn $RELEASE_DIR/$PREVIOUS_RELEASE $TARGET_DIR
+            echo "Rolled back to $PREVIOUS_RELEASE"
