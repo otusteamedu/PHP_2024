@@ -1,5 +1,7 @@
 # PHP_2024 Laravel App
 
+В папке .github/workflows содержатся файлы GitHub actions для Laravel приложения
+
 ### Добавьте необходимые секреты (Secrets) в GitHub репозиторий:
 
 1. Перейдите в Settings → Secrets and variables → Actions
