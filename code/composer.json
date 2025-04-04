@@ -1,0 +1,12 @@
+{
+    "name": "Asyrovatkin/Hw15",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Asyrovatkin\\Hw15\\": "src/"
+        }
+    },
+    "require": {
+        "splitbrain/php-cli": "*"
+    }
+}
