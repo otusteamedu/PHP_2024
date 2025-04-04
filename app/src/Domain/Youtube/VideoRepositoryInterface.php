@@ -10,7 +10,7 @@ interface VideoRepositoryInterface
 
     public function delete(string $videoId): void;
 
-    public function findById(string $videoId): ?Video;
+    public function findById(int $videoId): ?Video;
 
     public function findByChannelId(string $channelId): array;
 }

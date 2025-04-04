@@ -4,55 +4,107 @@ declare(strict_types=1);
 
 namespace Valen\App\Domain\Youtube;
 
-use DateMalformedStringException;
 use DateTimeImmutable;
 
-readonly class Video
+class Video
 {
-    public function __construct(
-        public string $videoId,
-        public string $channelId,
-        public string $title,
-        public DateTimeImmutable $publishedAt,
-        public int $viewCount,
-        public int $likeCount,
-        public int $dislikeCount,
-        public int $commentCount,
-    ) {
+    private ?int $id = null;
+    private string $videoId;
+    private string $title;
+    private DateTimeImmutable $publishedAt;
+    private int $viewCount;
+    private int $likeCount;
+    private int $dislikeCount;
+    private int $commentCount;
+    private string $channelId;
+
+    public function getId(): ?int
+    {
+        return $this->id;
     }
 
-    /**
-     * Создает объект Video из массива данных
-     * @throws DateMalformedStringException
-     */
-    public static function fromArray(array $data): self
+    public function setId(int $id): void
     {
-        return new self(
-            videoId: $data['video_id'],
-            channelId: $data['channel_id'],
-            title: $data['title'],
-            publishedAt: new DateTimeImmutable($data['published_at']),
-            viewCount: (int)$data['view_count'],
-            likeCount: (int)$data['like_count'],
-            dislikeCount: (int)$data['dislike_count'],
-            commentCount: (int)$data['comment_count'],
-        );
+        $this->id = $id;
     }
 
-    /**
-     * Преобразует объект в массив для сохранения в OpenSearch
-     */
-    public function toArray(): array
+    public function getVideoId(): string
     {
-        return [
-            'video_id' => $this->videoId,
-            'channel_id' => $this->channelId,
-            'title' => $this->title,
-            'published_at' => $this->publishedAt->format('c'),
-            'view_count' => $this->viewCount,
-            'like_count' => $this->likeCount,
-            'dislike_count' => $this->dislikeCount,
-            'comment_count' => $this->commentCount,
-        ];
+        return $this->videoId;
+    }
+
+    public function setVideoId(string $videoId): void
+    {
+        $this->videoId = $videoId;
+    }
+
+    public function getChannelId(): string
+    {
+        return $this->channelId;
+    }
+
+    public function setChannelId(string $channelId): void
+    {
+        $this->channelId = $channelId;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    public function getPublishedAt(): DateTimeImmutable
+    {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(DateTimeImmutable $publishedAt): void
+    {
+        $this->publishedAt = $publishedAt;
+    }
+
+    public function getViewCount(): int
+    {
+        return $this->viewCount;
+    }
+
+    public function setViewCount(int $viewCount): void
+    {
+        $this->viewCount = $viewCount;
+    }
+
+    public function getLikeCount(): int
+    {
+        return $this->likeCount;
+    }
+
+    public function setLikeCount(int $likeCount): void
+    {
+        $this->likeCount = $likeCount;
+    }
+
+    public function getDislikeCount(): int
+    {
+        return $this->dislikeCount;
+    }
+
+    public function setDislikeCount(int $dislikeCount): void
+    {
+        $this->dislikeCount = $dislikeCount;
+    }
+
+    public function getCommentCount(): int
+    {
+        return $this->commentCount;
+    }
+
+    public function setCommentCount(int $commentCount): void
+    {
+        $this->commentCount = $commentCount;
     }
 }

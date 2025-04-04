@@ -4,49 +4,102 @@ declare(strict_types=1);
 
 namespace Valen\App\Domain\Youtube;
 
-use DateMalformedStringException;
 use DateTimeImmutable;
 
-readonly class Channel
+class Channel
 {
-    public function __construct(
-        public string $channelId,
-        public string $title,
-        public string $description,
-        public int $subscriberCount,
-        public int $videoCount,
-        public DateTimeImmutable $publishedAt,
-    ) {
+    private ?int $id = null;
+    private string $channelId;
+    private string $title;
+    private string $description;
+
+    private int $subscriberCount;
+    private int $videoCount;
+    private DateTimeImmutable $publishedAt;
+
+    // Реализация LazyLoad
+    private array|null $video = null;
+
+    public function __construct(private readonly VideoRepositoryInterface $videoRepository)
+    {
     }
 
-    /**
-     * Создает объект Channel из массива данных
-     * @throws DateMalformedStringException
-     */
-    public static function fromArray(array $data): self
+    public function getId(): ?int
     {
-        return new self(
-            channelId: $data['channel_id'],
-            title: $data['title'],
-            description: $data['description'],
-            subscriberCount: (int)$data['subscriber_count'],
-            videoCount: (int)$data['video_count'],
-            publishedAt: new DateTimeImmutable($data['published_at']),
-        );
+        return $this->id;
     }
 
-    /**
-     * Преобразует объект в массив для сохранения в OpenSearch
-     */
-    public function toArray(): array
+    public function setId(?int $id): void
     {
-        return [
-            'channel_id' => $this->channelId,
-            'title' => $this->title,
-            'description' => $this->description,
-            'subscriber_count' => $this->subscriberCount,
-            'video_count' => $this->videoCount,
-            'published_at' => $this->publishedAt->format('c'),
-        ];
+        $this->id = $id;
+    }
+
+    public function setTitle(string $title): void
+    {
+        $this->title = $title;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function setSubscriberCount(int $subscriberCount): void
+    {
+        $this->subscriberCount = $subscriberCount;
+    }
+
+    public function setVideoCount(int $videoCount): void
+    {
+        $this->videoCount = $videoCount;
+    }
+
+    public function setPublishedAt(DateTimeImmutable $publishedAt): void
+    {
+        $this->publishedAt = $publishedAt;
+    }
+
+    public function setChannelId(string $channelId): void
+    {
+        $this->channelId = $channelId;
+    }
+
+    public function getChannelId(): string
+    {
+        return $this->channelId;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getSubscriberCount(): int
+    {
+        return $this->subscriberCount;
+    }
+
+    public function getVideoCount(): int
+    {
+        return $this->videoCount;
+    }
+
+    public function getPublishedAt(): DateTimeImmutable
+    {
+        return $this->publishedAt;
+    }
+
+    public function getVideo(): array|null
+    {
+        if ($this->video === null) {
+            $this->video = $this->videoRepository->findByChannelId($this->channelId);
+        }
+
+        return $this->video;
     }
 }
