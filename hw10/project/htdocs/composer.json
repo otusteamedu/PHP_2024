@@ -1,0 +1,19 @@
+{
+  "name": "sbogdanov/phpes",
+  "description": "My application",
+  "type": "project",
+  "require": {
+    "php": "^7.0 || ^8.0",
+    "elasticsearch/elasticsearch": "^8.17"
+  },
+  "autoload": {
+    "psr-4": {
+      "Src\\": "src/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "php-http/discovery": true
+    }
+  }
+}

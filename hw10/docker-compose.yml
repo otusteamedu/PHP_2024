@@ -1,0 +1,75 @@
+services:
+  nginx:
+    container_name: MyNginx
+    ports:
+      - "80:80"
+    build:
+      context: ./context/nginx
+      dockerfile: dockerfile
+    networks:
+      - devweb
+    volumes:
+      - ./project/htdocs/:/var/www/html/
+      - ./logs/nginx:/var/log/nginx/
+    depends_on:
+      - php
+
+  php:
+    container_name: MyPhp
+    build:
+      context: ./context/php
+      dockerfile: dockerfile
+    volumes:
+     - ./project/htdocs/:/var/www/html/
+     - ./logs/php.log:/var/log/fpm-php.www.log
+    networks:
+      - devweb
+    depends_on:
+      - elasticsearch
+
+  postgres:
+    container_name: MyPostgres
+    image: postgres:16
+    env_file:
+      - ./context/postgres/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - devweb
+
+  composer:
+    build:
+      context: ./context/composer
+      dockerfile: Dockerfile
+    container_name: MyComposer
+    volumes:
+      - ./project/htdocs/:/var/www/html
+    networks:
+      - devweb
+    depends_on:
+      - php
+
+  elasticsearch:
+    image: elasticsearch:8.16.6
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false # Отключение безопасности
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - devweb
+
+networks:
+  devweb:
+    name: devweb
+    driver: bridge
+
+volumes:
+  postgres_data:
+  esdata:
