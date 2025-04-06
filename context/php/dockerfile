@@ -1,9 +1,0 @@
-FROM php:8.3-fpm
-# Устанавливаем необходимые зависимости
-RUN apt-get update && apt-get install -y \
-    # Дополнительные зависимости, если нужны
-    && docker-php-ext-install sockets
-
-
-# Запуск сокет-сервера
-CMD ["php", "server.php"]

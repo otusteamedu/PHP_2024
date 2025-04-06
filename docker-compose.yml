@@ -9,7 +9,7 @@ services:
     networks:
       - devweb
     volumes:
-      - ./project/htdocs/public_html:/var/www/html/public_html
+      - ./project/htdocs/:/var/www/html/
       - ./logs/nginx:/var/log/nginx/
     depends_on:
       - php
@@ -22,10 +22,10 @@ services:
     volumes:
      - ./project/htdocs/:/var/www/html/
      - ./logs/php.log:/var/log/fpm-php.www.log
-    ports:
-      - "38081:38081"  # Новый порт для WebSocket-сервера
     networks:
       - devweb
+    depends_on:
+      - elasticsearch
 
   postgres:
     container_name: MyPostgres
@@ -51,6 +51,20 @@ services:
     depends_on:
       - php
 
+  elasticsearch:
+    image: elasticsearch:8.16.6
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false # Отключение безопасности
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - devweb
+
 networks:
   devweb:
     name: devweb
@@ -58,3 +72,4 @@ networks:
 
 volumes:
   postgres_data:
+  esdata:

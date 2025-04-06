@@ -15,3 +15,8 @@ project/htdocs/           # Корневая папка проекта (PHP-ко
   docker-compose run --rm composer install
   -- docker-compose run --rm composer require some/package
   ```
+
+  ```sh
+docker exec -it <container_name\or_id> bash
+  ```
+
