@@ -1,4 +1,4 @@
-# PHP + Nginx + Composer в Docker
+# PHP + Nginx + Composer + ElasticSearch в Docker
 Этот проект представляет собой окружение для разработки PHP-приложений с использованием **Docker, Nginx, PHP-FPM и Composer**.
 
 ## 📂 Структура проекта
