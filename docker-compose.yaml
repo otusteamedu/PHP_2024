@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+    nginx:
+        image: nginx:latest
+        container_name: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/data/mysite.local
+            - ./docker/nginx/hosts/mysite.local.conf:/etc/nginx/conf.d/mysite.local.conf
+        networks:
+            - docker-network
+
+    php-fpm:
+        build:
+            context: ./docker/php-fpm
+            dockerfile: Dockerfile
+        image: myapp/php
+        container_name: php-fpm
+        volumes:
+            - ./:/data/mysite.local
+        networks:
+            - docker-network
+
+    rabbitmq:
+        image: rabbitmq:3.7.5-management
+        hostname: rabbit-mq
+        container_name: 'rabbit-mq'
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: password
+        networks:
+            - docker-network
+
+
+networks:
+    docker-network:
+        driver: bridge
+
