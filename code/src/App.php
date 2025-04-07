@@ -28,10 +28,9 @@ class App
         $notifier = new Infrastructure\ClientNotifier();
         $preparationStatus->addObserver($notifier);
 
-        $product = $restaurant->serve(new BurgerFactory(), [
-            Domain\Dish\Decorator\KetchupDecorator::class,
-            Domain\Dish\Decorator\MayonnaiseDecorator::class,
-        ]);
+        $product = $restaurant->serve(new BurgerFactory(), function($dish) {
+            return $dish->addKetchup()->addMayonnaise();
+        });
 
         echo $product->getDescription() . PHP_EOL;
     }
