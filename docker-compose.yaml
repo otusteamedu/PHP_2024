@@ -28,8 +28,6 @@ services:
   redis:
     image: redis:alpine
     container_name: ${REDIS_HOST}
-    ports:
-      - ${REDIS_PORT}:${REDIS_PORT}
     networks:
       - app-network
 
@@ -49,8 +47,6 @@ services:
   memcached:
     image: memcached:alpine
     container_name: ${MEMCACHED_HOST}
-    ports:
-      - ${MEMCACHED_PORT}:${MEMCACHED_PORT}
     networks:
       - app-network
 
