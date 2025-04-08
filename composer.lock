@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "eb64b1718f307a8e9bbdf22250f09c5f",
+    "packages": [
+        {
+            "name": "antonkuzmichev/data-validator",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kuzmichevAnton/data-validator.git",
+                "reference": "ff4f1fc40ba43d8c59bf2fcef75dd1e555fe15f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kuzmichevAnton/data-validator/zipball/ff4f1fc40ba43d8c59bf2fcef75dd1e555fe15f9",
+                "reference": "ff4f1fc40ba43d8c59bf2fcef75dd1e555fe15f9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AntonKuzmicev\\DataValidator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Anton Kuzmichev",
+                    "email": "kuzm.anton@gmail.com"
+                }
+            ],
+            "description": "A simple PHP package for data validation.",
+            "support": {
+                "issues": "https://github.com/kuzmichevAnton/data-validator/issues",
+                "source": "https://github.com/kuzmichevAnton/data-validator/tree/v1.0.0"
+            },
+            "time": "2025-04-08T11:27:24+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
+}
