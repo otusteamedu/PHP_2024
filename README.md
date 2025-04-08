@@ -28,7 +28,9 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 - 2 балла за документацию (например, в Swagger)
 
 ## Решение
-Решение реализовано в виде REST API сервиса. За основу сервиса взят фреймворк Laravel 11. Для запуска используются docker-контейнеры.
+Решение реализовано в виде REST API сервиса.
+Сервис реализован в формате чистой архитектуры, с разделением по слоям.
+За основу сервиса взят фреймворк Laravel 11. Для запуска используются docker-контейнеры.
 Для хранения данных используется БД MySQL. В качестве веб-сервера использован Nginx.
 В качестве брокера очередей использован RabbitMQ.
 
@@ -61,7 +63,7 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
 ### Примеры запросов
 
 #### Создание заявки 
-    POST api/v1/leads/
+    POST http://mysite.local/api/v1/leads/
     {
         "userName": "Иванов Петр",
         "email": "test@testemail.ru",
@@ -75,7 +77,7 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
     }
 
 #### Получить статус заявки
-    GET api/v1/leads/7/status
+    GET http://mysite.local/api/v1/leads/7/status
 
 Ответ:
 
@@ -84,7 +86,7 @@ https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_
     }
 
 #### Получить результат выполнения заявки
-    GET api/v1/leads/7/result
+    GET http://mysite.local/api/v1/leads/7/result
 
 Ответ:
 
