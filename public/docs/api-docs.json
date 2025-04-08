@@ -1,0 +1,211 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Rest API for async Lead processing",
+        "version": "1"
+    },
+    "servers": [
+        {
+            "url": "http://mysite.local/api/v1",
+            "description": "API V1 Local"
+        }
+    ],
+    "paths": {
+        "/leads/": {
+            "post": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Создание заявки",
+                "description": "Создание заявки",
+                "operationId": "bd4973354325d2d71ab74795ad257756",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "userName": {
+                                        "type": "string",
+                                        "example": "Иванов Петр"
+                                    },
+                                    "email": {
+                                        "description": "Email",
+                                        "type": "string",
+                                        "example": "test@testemail.ru"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Какая-то информация по заявке"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Заявка успешно создана",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка создания заявки",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/leads/{leadId}/status": {
+            "get": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Получить статус заявки",
+                "description": "Получить статус заявки",
+                "operationId": "a84bb4a961c5242cf9eceef8f573a331",
+                "parameters": [
+                    {
+                        "name": "leadId",
+                        "in": "path",
+                        "description": "Номер заявки"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Статус заявки",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Заявка не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        },
+        "/leads/{leadId}/result": {
+            "get": {
+                "tags": [
+                    "Leads"
+                ],
+                "summary": "Получить результат выполнения заявки",
+                "description": "Получить результат выполнения заявки",
+                "operationId": "b7f1355476e44c0897e7c93bd0b789c6",
+                "parameters": [
+                    {
+                        "name": "leadId",
+                        "in": "path",
+                        "description": "Номер заявки"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Результат выполнения заявки",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "result": {
+                                            "properties": {
+                                                "sum": {
+                                                    "type": "integer"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Заявка не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "token": []
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Leads",
+            "description": "Leads"
+        }
+    ]
+}
