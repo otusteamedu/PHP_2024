@@ -12,7 +12,7 @@ use Valen\App\Infrastructure\Youtube\Mapper\VideoMapper;
 
 class VideoRepository implements VideoRepositoryInterface
 {
-    public const string INDEX_NAME = 'youtube_videos';
+    public const STRING INDEX_NAME = 'youtube_videos';
 
     public function __construct(
         private readonly OpenSearchClient $client,

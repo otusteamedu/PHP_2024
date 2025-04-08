@@ -7,7 +7,7 @@ use Valen\App\Domain\Youtube\VideoRepositoryInterface;
 
 class GetTopChannelsByLikesRatioUseCase
 {
-    private const int MIN_DISLIKES_THRESHOLD = 10;
+    private const INT MIN_DISLIKES_THRESHOLD = 10;
 
     public function __construct(
         private readonly ChannelRepositoryInterface $channelRepository,

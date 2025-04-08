@@ -12,7 +12,7 @@ use Valen\App\Infrastructure\Youtube\Mapper\ChannelMapper;
 
 class ChannelRepository implements ChannelRepositoryInterface
 {
-    public const string INDEX_NAME = 'youtube_channels';
+    public const STRING INDEX_NAME = 'youtube_channels';
 
     public function __construct(
         private readonly OpenSearchClient $client,
