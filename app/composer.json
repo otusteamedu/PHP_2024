@@ -15,7 +15,9 @@
     "require": {
         "opensearch-project/opensearch-php": "^2.4",
         "symfony/http-client": "^7.2",
-        "nyholm/psr7": "^1.8"
+        "nyholm/psr7": "^1.8",
+        "symfony/dependency-injection": "*",
+        "vlucas/phpdotenv": "^5.6"
     },
     "config": {
         "allow-plugins": {

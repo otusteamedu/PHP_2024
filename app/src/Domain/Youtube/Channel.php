@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Valen\App\Domain\Youtube;
 
-use DateTimeImmutable;
+use DateTime;
 
 class Channel
 {
@@ -15,12 +15,9 @@ class Channel
 
     private int $subscriberCount;
     private int $videoCount;
-    private DateTimeImmutable $publishedAt;
+    private DateTime $publishedAt;
 
-    // Реализация LazyLoad
-    private array|null $video = null;
-
-    public function __construct(private readonly VideoRepositoryInterface $videoRepository)
+    public function __construct()
     {
     }
 
@@ -54,9 +51,9 @@ class Channel
         $this->videoCount = $videoCount;
     }
 
-    public function setPublishedAt(DateTimeImmutable $publishedAt): void
+    public function setPublishedAt(DateTime $dataTime): void
     {
-        $this->publishedAt = $publishedAt;
+        $this->publishedAt = $dataTime;
     }
 
     public function setChannelId(string $channelId): void
@@ -89,17 +86,22 @@ class Channel
         return $this->videoCount;
     }
 
-    public function getPublishedAt(): DateTimeImmutable
+    public function getPublishedAt(): DateTime
     {
         return $this->publishedAt;
     }
 
-    public function getVideo(): array|null
+    public static function createFromArray(array $data): Channel
     {
-        if ($this->video === null) {
-            $this->video = $this->videoRepository->findByChannelId($this->channelId);
-        }
+        $channel = new self();
+        $channel->id = $data['id'] ?? null;
+        $channel->channelId = $data['channelId'];
+        $channel->title = $data['title'];
+        $channel->description = $data['description'];
+        $channel->subscriberCount = $data['subscriberCount'];
+        $channel->videoCount = $data['videoCount'];
+        $channel->publishedAt = new DateTime($data['publishedAt']);
 
-        return $this->video;
+        return $channel;
     }
 }
