@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Valen\App\Application\Youtube\UseCase\Channel\DeleteChannelUseCase;
 use Valen\App\Application\Youtube\UseCase\Channel\AddChannelUseCase;
+use Valen\App\Application\Youtube\UseCase\Statistics\GetChannelStatsUseCase;
 use Valen\App\Application\Youtube\UseCase\Video\AddVideoUseCase;
 use Valen\App\Domain\Youtube\Channel;
 use Valen\App\Domain\Youtube\Video;
@@ -37,6 +38,15 @@ class App
             'publishedAt' => '2020-10-10'
         ];
 
+        $channelArray2 = [
+            'channelId' => 'UF-lHJZR3Gqxm24_Vd_AJ5Yw',
+            'title' => 'Test2',
+            'description' => 'Test2',
+            'subscriberCount' => 100002,
+            'videoCount' => 200,
+            'publishedAt' => '2020-10-10'
+        ];
+
         $videoArray = [
             'videoId' => '123',
             'title' => 'Test',
@@ -50,7 +60,7 @@ class App
         ];
 
         $videoArray2 = [
-            'videoId' => '123',
+            'videoId' => '1234',
             'title' => 'Test2',
             'description' => 'Test2',
             'publishedAt' => '2020-10-12',
@@ -58,10 +68,11 @@ class App
             'likeCount' => 11,
             'dislikeCount' => 12,
             'commentCount' => 1002,
-            'channelId' => 'OT-lHJZR3Gqxm24_Vd_AJ5Yw'
+            'channelId' => 'UC-lHJZR3Gqxm24_Vd_AJ5Yw'
         ];
 
         $channel = Channel::createFromArray($channelArray);
+        $channel2 = Channel::createFromArray($channelArray2);
         $video = Video::createFromArray($videoArray);
         $video2 = Video::createFromArray($videoArray2);
 
@@ -70,6 +81,7 @@ class App
         try {
             $addChannelUseCase = $this->container->get('addChannelUseCase');
             $addChannelUseCase->execute($channel);
+            $addChannelUseCase->execute($channel2);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -89,6 +101,15 @@ class App
         } catch (Exception $e) {
             echo $e->getMessage();
         }
+
+        try {
+            $getStatsUseCase = $this->container->get('getChannelStatsUseCase');
+            $stats = $getStatsUseCase->execute($channel->getChannelId());
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
+        print_r($stats);
 
         echo '</pre>';
     }
@@ -121,6 +142,10 @@ class App
             ->addArgument(new Reference('videoRepository'));
 
         $container->register('addVideoUseCase', AddVideoUseCase::class)
+            ->addArgument(new Reference('channelRepository'))
+            ->addArgument(new Reference('videoRepository'));
+
+        $container->register('getChannelStatsUseCase', GetChannelStatsUseCase::class)
             ->addArgument(new Reference('channelRepository'))
             ->addArgument(new Reference('videoRepository'));
 
