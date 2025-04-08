@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Valen\App\Application\Youtube\UseCase\Statistics;
 
 use Valen\App\Domain\Youtube\Channel;

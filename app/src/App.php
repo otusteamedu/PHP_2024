@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Valen\App\Application\Youtube\UseCase\Channel\DeleteChannelUseCase;
 use Valen\App\Application\Youtube\UseCase\Channel\AddChannelUseCase;
 use Valen\App\Application\Youtube\UseCase\Statistics\GetChannelStatsUseCase;
+use Valen\App\Application\Youtube\UseCase\Statistics\GetTopChannelsByLikesRatioUseCase;
 use Valen\App\Application\Youtube\UseCase\Video\AddVideoUseCase;
 use Valen\App\Domain\Youtube\Channel;
 use Valen\App\Domain\Youtube\Video;
@@ -53,20 +54,32 @@ class App
             'description' => 'Test',
             'publishedAt' => '2020-10-10',
             'viewCount' => 100,
-            'likeCount' => 10,
-            'dislikeCount' => 1,
+            'likeCount' => 1000,
+            'dislikeCount' => 100,
             'commentCount' => 1000,
             'channelId' => 'UC-lHJZR3Gqxm24_Vd_AJ5Yw'
         ];
 
         $videoArray2 = [
+            'videoId' => '12345',
+            'title' => 'Test2',
+            'description' => 'Test2',
+            'publishedAt' => '2020-10-12',
+            'viewCount' => 102,
+            'likeCount' => 1100,
+            'dislikeCount' => 120,
+            'commentCount' => 1002,
+            'channelId' => 'UF-lHJZR3Gqxm24_Vd_AJ5Yw'
+        ];
+
+        $videoArray3 = [
             'videoId' => '1234',
             'title' => 'Test2',
             'description' => 'Test2',
             'publishedAt' => '2020-10-12',
             'viewCount' => 102,
-            'likeCount' => 11,
-            'dislikeCount' => 12,
+            'likeCount' => 1100,
+            'dislikeCount' => 120,
             'commentCount' => 1002,
             'channelId' => 'UC-lHJZR3Gqxm24_Vd_AJ5Yw'
         ];
@@ -75,6 +88,7 @@ class App
         $channel2 = Channel::createFromArray($channelArray2);
         $video = Video::createFromArray($videoArray);
         $video2 = Video::createFromArray($videoArray2);
+        $video3 = Video::createFromArray($videoArray3);
 
         echo '<pre>';
 
@@ -89,8 +103,8 @@ class App
         try {
             $addVideoUseCase = $this->container->get('addVideoUseCase');
             $addVideoUseCase->execute($video);
-
             $addVideoUseCase->execute($video2);
+            $addVideoUseCase->execute($video3);
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -109,7 +123,15 @@ class App
             echo $e->getMessage();
         }
 
+        try {
+            $getStatsUseCase = $this->container->get('getTopChannelsByLikesRatioUseCase');
+            $stats2 = $getStatsUseCase->execute(2);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
         print_r($stats);
+        print_r($stats2);
 
         echo '</pre>';
     }
@@ -146,6 +168,10 @@ class App
             ->addArgument(new Reference('videoRepository'));
 
         $container->register('getChannelStatsUseCase', GetChannelStatsUseCase::class)
+            ->addArgument(new Reference('channelRepository'))
+            ->addArgument(new Reference('videoRepository'));
+
+        $container->register('getTopChannelsByLikesRatioUseCase', GetTopChannelsByLikesRatioUseCase::class)
             ->addArgument(new Reference('channelRepository'))
             ->addArgument(new Reference('videoRepository'));
 

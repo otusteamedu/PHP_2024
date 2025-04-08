@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Valen\App\Infrastructure\Youtube\Repository;
 
 use OpenSearch\Exception\NotFoundHttpException;

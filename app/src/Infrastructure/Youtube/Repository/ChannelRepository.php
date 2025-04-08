@@ -68,8 +68,27 @@ class ChannelRepository implements ChannelRepositoryInterface
     #[\Override]
     public function findAll(int $limit = 100, int $offset = 0): array
     {
-        // TODO: Implement findAll() method.
-        return [];
+        try {
+            $response = $this->client->client->search([
+                'index' => self::INDEX_NAME,
+                'body' => [
+                    'query' => [
+                        'match_all' => new \stdClass()
+                    ],
+                    'size' => 10000 // Ограничение на максимальное количество каналов
+                ]
+            ]);
+
+            $channels = [];
+            foreach ($response['hits']['hits'] as $hit) {
+                $channels[] = $this->channelMapper->toDomain($hit['_source']);
+            }
+
+            return $channels;
+        } catch (\Exception $e) {
+            // Ничего не найдено
+            return [];
+        }
     }
 
     private function createIndexIfNotExists(): void
