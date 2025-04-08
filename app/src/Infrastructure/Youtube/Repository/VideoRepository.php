@@ -1,43 +1,38 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Valen\App\Infrastructure\Youtube\Repository;
 
-use OpenSearch\Client;
+use OpenSearch\Exception\NotFoundHttpException;
 use Valen\App\Domain\Youtube\Video;
 use Valen\App\Domain\Youtube\VideoRepositoryInterface;
+use Valen\App\Infrastructure\OpenSearch\OpenSearchClient;
 use Valen\App\Infrastructure\Youtube\Mapper\VideoMapper;
 
-final class OpenSearchVideoRepository implements VideoRepositoryInterface
+class VideoRepository implements VideoRepositoryInterface
 {
-    private const string INDEX_NAME = 'youtube_videos';
+    public const string INDEX_NAME = 'youtube_videos';
 
     public function __construct(
-        private readonly Client $client,
+        private readonly OpenSearchClient $client,
         private readonly VideoMapper $videoMapper
     ) {
         $this->createIndexIfNotExists();
     }
 
-    /**
-     * Сохраняет видео в OpenSearch
-     */
+    #[\Override]
     public function save(Video $video): void
     {
         $params = [
             'index' => self::INDEX_NAME,
-            'id' => $video->videoId,
+            'id' => $video->getVideoId(),
             'body' => $this->videoMapper->toStorage($video),
-            'refresh' => true, // Для немедленного обновления индекса
+            'refresh' => true // Для немедленного обновления индекса
         ];
 
-        $this->client->index($params);
+        $this->client->client->index($params);
     }
 
-    /**
-     * Удаляет видео из OpenSearch
-     */
+    #[\Override]
     public function delete(string $videoId): void
     {
         $params = [
@@ -46,14 +41,12 @@ final class OpenSearchVideoRepository implements VideoRepositoryInterface
             'refresh' => true,
         ];
 
-        if ($this->client->exists($params)) {
-            $this->client->delete($params);
+        if ($this->client->client->exists($params)) {
+            $this->client->client->delete($params);
         }
     }
 
-    /**
-     * Находит видео по его ID
-     */
+    #[\Override]
     public function findById(string $videoId): ?Video
     {
         $params = [
@@ -62,20 +55,15 @@ final class OpenSearchVideoRepository implements VideoRepositoryInterface
         ];
 
         try {
-            $response = $this->client->get($params);
-            if (isset($response['_source'])) {
-                return $this->videoMapper->toDomain($response['_source']);
-            }
-        } catch (\OpenSearch\Common\Exceptions\Missing404Exception) {
+            $response = $this->client->client->get($params);
+            return $this->videoMapper->toDomain($response['_source']);
+        } catch (NotFoundHttpException $e) {
             // Документ не найден
+            return null;
         }
-
-        return null;
     }
 
-    /**
-     * Находит все видео конкретного канала
-     */
+    #[\Override]
     public function findByChannelId(string $channelId): array
     {
         $params = [
@@ -95,10 +83,10 @@ final class OpenSearchVideoRepository implements VideoRepositoryInterface
             ]
         ];
 
-        $response = $this->client->search($params);
+        $response = $this->client->client->search($params);
 
         $videos = [];
-        if (isset($response['hits']['hits']) && !empty($response['hits']['hits'])) {
+        if (!empty($response['hits']['hits'])) {
             foreach ($response['hits']['hits'] as $hit) {
                 $videos[] = $this->videoMapper->toDomain($hit['_source']);
             }
@@ -107,16 +95,13 @@ final class OpenSearchVideoRepository implements VideoRepositoryInterface
         return $videos;
     }
 
-    /**
-     * Создает индекс в OpenSearch, если он еще не существует
-     */
-    public function createIndexIfNotExists(): void
+    private function createIndexIfNotExists(): void
     {
         $params = [
             'index' => self::INDEX_NAME,
         ];
 
-        if (!$this->client->indices()->exists($params)) {
+        if (!$this->client->client->indices()->exists($params)) {
             $params['body'] = [
                 'mappings' => [
                     'properties' => [
@@ -136,7 +121,7 @@ final class OpenSearchVideoRepository implements VideoRepositoryInterface
                 ],
             ];
 
-            $this->client->indices()->create($params);
+            $this->client->client->indices()->create($params);
         }
     }
 }

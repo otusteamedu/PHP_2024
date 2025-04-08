@@ -4,29 +4,18 @@ declare(strict_types=1);
 
 namespace Valen\App\Domain\Youtube;
 
-use DateTimeImmutable;
+use DateTime;
 
 class Video
 {
-    private ?int $id = null;
     private string $videoId;
     private string $title;
-    private DateTimeImmutable $publishedAt;
+    private DateTime $publishedAt;
     private int $viewCount;
     private int $likeCount;
     private int $dislikeCount;
     private int $commentCount;
     private string $channelId;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
 
     public function getVideoId(): string
     {
@@ -58,12 +47,12 @@ class Video
         $this->title = $title;
     }
 
-    public function getPublishedAt(): DateTimeImmutable
+    public function getPublishedAt(): DateTime
     {
         return $this->publishedAt;
     }
 
-    public function setPublishedAt(DateTimeImmutable $publishedAt): void
+    public function setPublishedAt(DateTime $publishedAt): void
     {
         $this->publishedAt = $publishedAt;
     }
@@ -106,5 +95,21 @@ class Video
     public function setCommentCount(int $commentCount): void
     {
         $this->commentCount = $commentCount;
+    }
+
+    public static function createFromArray(array $data): Video
+    {
+        $video = new self();
+
+        $video->videoId = $data['videoId'];
+        $video->title = $data['title'];
+        $video->publishedAt = new DateTime($data['publishedAt']);
+        $video->viewCount = $data['viewCount'];
+        $video->likeCount = $data['likeCount'];
+        $video->dislikeCount = $data['dislikeCount'];
+        $video->commentCount = $data['commentCount'];
+        $video->channelId = $data['channelId'];
+
+        return $video;
     }
 }

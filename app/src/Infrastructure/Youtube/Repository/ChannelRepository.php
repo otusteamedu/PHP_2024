@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Valen\App\Infrastructure\Youtube\Repository;
 
+use OpenSearch\Exception\NotFoundHttpException;
 use Valen\App\Domain\Youtube\Channel;
 use Valen\App\Domain\Youtube\ChannelRepositoryInterface;
 use Valen\App\Infrastructure\OpenSearch\OpenSearchClient;
@@ -20,6 +21,7 @@ class ChannelRepository implements ChannelRepositoryInterface
         $this->createIndexIfNotExists();
     }
 
+    #[\Override]
     public function save(Channel $channel): void
     {
         $params = [
@@ -32,6 +34,7 @@ class ChannelRepository implements ChannelRepositoryInterface
         $this->client->client->index($params);
     }
 
+    #[\Override]
     public function delete(string $channelId): void
     {
         $params = [
@@ -45,7 +48,7 @@ class ChannelRepository implements ChannelRepositoryInterface
             $this->client->client->delete($params);
         }
     }
-
+    #[\Override]
     public function findById(string $channelId): ?Channel
     {
         $params = [
@@ -53,14 +56,16 @@ class ChannelRepository implements ChannelRepositoryInterface
             'id' => $channelId,
         ];
 
-        $response = $this->client->client->get($params);
-        if (isset($response['_source'])) {
+        try {
+            $response = $this->client->client->get($params);
             return $this->channelMapper->toDomain($response['_source']);
+        } catch (NotFoundHttpException $e) {
+            // Документ не найден
+            return null;
         }
-
-        return null;
     }
 
+    #[\Override]
     public function findAll(int $limit = 100, int $offset = 0): array
     {
         // TODO: Implement findAll() method.

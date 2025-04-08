@@ -11,7 +11,6 @@ final class VideoMapper
     public function toStorage(Video $video): array
     {
         return [
-            'id' => $video->getId(),
             'videoId' => $video->getVideoId(),
             'channelId' => $video->getChannelId(),
             'title' => $video->getTitle(),
@@ -21,5 +20,10 @@ final class VideoMapper
             'dislikeCount' => $video->getDislikeCount(),
             'commentCount' => $video->getCommentCount(),
         ];
+    }
+
+    public function toDomain(array $video): Video
+    {
+        return Video::createFromArray($video);
     }
 }

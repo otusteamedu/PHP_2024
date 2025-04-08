@@ -25,10 +25,10 @@ final readonly class AddVideoUseCase
     public function execute(Video $video): void
     {
         // Проверяем, что канал существует перед добавлением видео
-        $channel = $this->channelRepository->findById($video->getId());
+        $channel = $this->channelRepository->findById($video->getChannelId());
 
         if ($channel === null) {
-            throw new DomainException("Канал с ID {$video->getId()} не найден");
+            throw new DomainException("Канал с ID {$video->getChannelId()} не найден");
         }
 
         $this->videoRepository->save($video);
