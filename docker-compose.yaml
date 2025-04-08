@@ -1,0 +1,55 @@
+services:
+  nginx:
+    build:
+      context: ./.docker/nginx
+      dockerfile: Dockerfile
+    image: otus/nginx
+    container_name: webserver
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html/otus.local
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: ./.docker/php-fpm
+      dockerfile: Dockerfile
+    image: otus/php
+    container_name: app
+    env_file:
+      - .env
+    volumes:
+      - ./src:/var/www/html/otus.local
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: ${REDIS_HOST}
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql
+    container_name: ${MYSQL_HOST}
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - app-network
+
+  memcached:
+    image: memcached:alpine
+    container_name: ${MEMCACHED_HOST}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
