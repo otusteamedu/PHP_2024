@@ -18,11 +18,10 @@ class ApiController extends Controller
      * @param GetLeadStatusUseCase $getLeadStatusUseCase
      */
     public function __construct(
-        public readonly AddLeadUseCase $addLeadUseCase,
+        public readonly AddLeadUseCase       $addLeadUseCase,
         public readonly GetLeadResultUseCase $getLeadResultUseCase,
         public readonly GetLeadStatusUseCase $getLeadStatusUseCase,
-    )
-    {
+    ) {
     }
 
     /**
@@ -32,6 +31,13 @@ class ApiController extends Controller
      *     description="Создание заявки",
      *     summary="Создание заявки",
      *     security={{"token": {}}},
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="userName", type="string", example="Иванов Петр"),
+     *             @OA\Property(property="email", type="string", description="Email", example="test@testemail.ru" ),
+     *             @OA\Property(property="body", type="string", example="Какая-то информация по заявке"),
+     *         )
+     *     ),
      *     @OA\Response (response="201", description="Заявка успешно создана",
      *         @OA\JsonContent(
      *              @OA\Property(property="id", type="int"),
@@ -50,14 +56,15 @@ class ApiController extends Controller
     public function addLead(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $addLeadRequest = new AddLeadRequest(
-            $data['userName'],
-            $data['email'],
-            $data['body'],
-        );
 
         try {
-            return response()->json(($this->addLeadUseCase)($addLeadRequest));
+            $addLeadRequest = new AddLeadRequest(
+                $data['userName'],
+                $data['email'],
+                $data['body'],
+            );
+
+            return response()->json(($this->addLeadUseCase)($addLeadRequest), 201);
         } catch (\Throwable $e) {
             return response()->json(['error' => 'Ошибка создания заявки ' . $e->getMessage()], 400);
         }
@@ -71,12 +78,16 @@ class ApiController extends Controller
      *     summary="Получить статус заявки",
      *     security={{"token": {}}},
      *     @OA\Parameter (name="leadId", in="path", description="Номер заявки"),
-     *     @OA\Response (response="201", description="Статус заявки",
+     *     @OA\Response (response="200", description="Статус заявки",
      *         @OA\JsonContent(
      *              @OA\Property(property="status", type="string"),
      *         )
      *     ),
-     *     @OA\Response (response="404", description="Заявка не найдена")
+     *     @OA\Response (response="404", description="Заявка не найдена",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="error", type="string"),
+     *         )
+     *     ),
      * )
      *
      * @param Request $request
@@ -85,7 +96,11 @@ class ApiController extends Controller
      */
     public function getLeadStatus(Request $request, int $leadId): JsonResponse
     {
-        return response()->json(($this->getLeadStatusUseCase)($leadId));
+        try {
+            return response()->json(($this->getLeadStatusUseCase)($leadId));
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -96,7 +111,7 @@ class ApiController extends Controller
      *     summary="Получить результат выполнения заявки",
      *     security={{"token": {}}},
      *     @OA\Parameter (name="leadId", in="path", description="Номер заявки"),
-     *     @OA\Response (response="201", description="Результат выполнения заявки",
+     *     @OA\Response (response="200", description="Результат выполнения заявки",
      *         @OA\JsonContent(
      *              @OA\Property (property="result", type="object",
      *                  @OA\Property (property="sum", type="integer"),
@@ -105,7 +120,11 @@ class ApiController extends Controller
      *              ),
      *         )
      *     ),
-     *     @OA\Response (response="404", description="Заявка не найдена")
+     *     @OA\Response (response="404", description="Заявка не найдена",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="error", type="string"),
+     *         )
+     *     )
      * )
      *
      * @param Request $request
@@ -114,8 +133,12 @@ class ApiController extends Controller
      */
     public function getLeadResult(Request $request, int $leadId): JsonResponse
     {
-        return response()->json([
-                                    'result' => json_decode(($this->getLeadResultUseCase)($leadId)->result)
-                                ]);
+        try {
+            return response()->json([
+                                        'result' => json_decode(($this->getLeadResultUseCase)($leadId)->result)
+                                    ]);
+        } catch (\Throwable $e) {
+            return response()->json(['error' => $e->getMessage()], 404);
+        }
     }
 }

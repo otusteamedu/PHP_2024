@@ -19,6 +19,30 @@
                 "summary": "Создание заявки",
                 "description": "Создание заявки",
                 "operationId": "bd4973354325d2d71ab74795ad257756",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "userName": {
+                                        "type": "string",
+                                        "example": "Иванов Петр"
+                                    },
+                                    "email": {
+                                        "description": "Email",
+                                        "type": "string",
+                                        "example": "test@testemail.ru"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Какая-то информация по заявке"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "201": {
                         "description": "Заявка успешно создана",
@@ -74,7 +98,7 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Статус заявки",
                         "content": {
                             "application/json": {
@@ -90,7 +114,19 @@
                         }
                     },
                     "404": {
-                        "description": "Заявка не найдена"
+                        "description": "Заявка не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -116,7 +152,7 @@
                     }
                 ],
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "Результат выполнения заявки",
                         "content": {
                             "application/json": {
@@ -143,7 +179,19 @@
                         }
                     },
                     "404": {
-                        "description": "Заявка не найдена"
+                        "description": "Заявка не найдена",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
