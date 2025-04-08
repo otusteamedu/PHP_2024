@@ -14,13 +14,13 @@ class Lead
     public const STATUS_ERROR = 'error';
 
     private ?int $id = null;
-    private ?string $result;
-    private string $status = self::STATUS_NEW;
 
     public function __construct(
         private readonly UserName $userName,
         private readonly Email    $email,
         private readonly Body     $body,
+        private string $status = self::STATUS_NEW,
+        private ?string $result = null,
     )
     {
     }

@@ -34,12 +34,12 @@ readonly class ConsumeUseCase
             // Обрабатываем заявку и записываем результат обработки и статус заявки
             try {
                 $leadHandlerResult = $this->leadHandler->handle($lead);
-                $lead->setResult($leadHandlerResult->result);
+                $lead->setResult(json_encode($leadHandlerResult, JSON_UNESCAPED_UNICODE));
                 $lead->setStatus(Lead::STATUS_SUCCESS);
-                $this->leadRepository->save($lead);
+                $this->leadRepository->update($lead);
             } catch (\Throwable $e) {
                 $lead->setStatus(Lead::STATUS_ERROR);
-                $this->leadRepository->save($lead);
+                $this->leadRepository->update($lead);
             }
 
         };

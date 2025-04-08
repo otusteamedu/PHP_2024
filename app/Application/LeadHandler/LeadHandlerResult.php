@@ -6,7 +6,9 @@ class LeadHandlerResult
 {
 
     public function __construct(
-        public string $result
+        public string $status,
+        public int $sum,
+        public string $message,
     )
     {
     }

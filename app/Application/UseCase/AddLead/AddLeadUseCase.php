@@ -4,6 +4,7 @@ namespace App\Application\UseCase\AddLead;
 
 use App\Application\AsyncHandler\AsyncHandlerInterface;
 use App\Application\AsyncHandler\LeadRequest;
+use App\Domain\Entity\Lead;
 use App\Domain\Factory\LeadFactoryInterface;
 use App\Domain\Repository\LeadRepositoryInterface;
 
@@ -36,6 +37,10 @@ class AddLeadUseCase
                 $lead->getId(),
             )
         );
+
+        // Меняем статус на QUEUED
+        $lead->setStatus(Lead::STATUS_QUEUED);
+        $this->leadRepository->update($lead);
 
         return new AddLeadResponse($lead->getId());
     }

@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "darkaonline/l5-swagger": "^9.0",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
         "php-amqplib/php-amqplib": "^3.7"

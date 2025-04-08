@@ -2,11 +2,11 @@
 
 namespace App\Application\AsyncHandler;
 
-class LeadRequest
+readonly class LeadRequest
 {
 
     public function __construct(
-        private readonly int    $leadId,
+        private int $leadId,
     )
     {
     }
@@ -16,4 +16,10 @@ class LeadRequest
         return $this->leadId;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'leadId' => $this->leadId,
+        ];
+    }
 }
