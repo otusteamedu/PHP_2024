@@ -10,7 +10,7 @@ interface ChannelRepositoryInterface
 
     public function delete(string $channelId): void;
 
-    public function findById(int $channelId): ?Channel;
+    public function findById(string $channelId): ?Channel;
 
     public function findAll(int $limit = 100, int $offset = 0): array;
 }

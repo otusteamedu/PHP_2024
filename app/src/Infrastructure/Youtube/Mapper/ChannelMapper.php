@@ -20,4 +20,9 @@ final class ChannelMapper
             'publishedAt' => $channel->getPublishedAt()->format('c'),
         ];
     }
+
+    public function toDomain(array $channel): Channel
+    {
+        return Channel::createFromArray($channel);
+    }
 }

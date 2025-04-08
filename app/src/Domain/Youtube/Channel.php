@@ -8,7 +8,6 @@ use DateTime;
 
 class Channel
 {
-    private ?int $id = null;
     private string $channelId;
     private string $title;
     private string $description;
@@ -19,16 +18,6 @@ class Channel
 
     public function __construct()
     {
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): void
-    {
-        $this->id = $id;
     }
 
     public function setTitle(string $title): void
@@ -94,7 +83,6 @@ class Channel
     public static function createFromArray(array $data): Channel
     {
         $channel = new self();
-        $channel->id = $data['id'] ?? null;
         $channel->channelId = $data['channelId'];
         $channel->title = $data['title'];
         $channel->description = $data['description'];

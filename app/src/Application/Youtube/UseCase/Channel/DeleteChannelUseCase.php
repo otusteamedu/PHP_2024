@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Application\YotubeAnalize\UseCase\Channel;
+namespace Valen\App\Application\Youtube\UseCase\Channel;
 
 use DomainException;
 use Valen\App\Domain\Youtube\ChannelRepositoryInterface;
@@ -12,7 +12,7 @@ final readonly class DeleteChannelUseCase
 {
     public function __construct(
         private ChannelRepositoryInterface $channelRepository,
-        private VideoRepositoryInterface $videoRepository,
+        //private VideoRepositoryInterface $videoRepository,
     ) {
     }
 
@@ -25,12 +25,12 @@ final readonly class DeleteChannelUseCase
         }
 
         // Получаем все видео канала для удаления
-        $videos = $this->videoRepository->findByChannelId($channelId);
+        //$videos = $this->videoRepository->findByChannelId($channelId);
 
         // Удаляем каждое видео
-        foreach ($videos as $video) {
-            $this->videoRepository->delete($video->videoId);
-        }
+        //foreach ($videos as $video) {
+        //    $this->videoRepository->delete($video->videoId);
+        //}
 
         // Удаляем канал
         $this->channelRepository->delete($channelId);
