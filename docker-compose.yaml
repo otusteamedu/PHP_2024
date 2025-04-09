@@ -1,0 +1,116 @@
+services:
+  
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: nginx
+    container_name: laravel-nginx
+    volumes:
+      - ./app:/app
+      - ./logs/nginx:/var/log/nginx/
+    ports:
+      - 80:80
+    networks:
+      - app-network
+  
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    image: php
+    container_name: laravel-php
+    volumes:
+       - ./app:/app
+       - ./logs/php.log:/var/log/fpm-php.www.log
+    restart: always
+    networks:
+      - app-network
+  
+  postgres:
+    container_name: laravel-postgres
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./:/code
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+  
+  adminer:
+    image: adminer
+    container_name: laravel-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+  
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: laravel-swagger
+    restart: always
+    platform: linux/amd64
+    ports:
+      - 8081:8080
+    volumes:
+      - ./app/storage/api-docs:/usr/share/nginx/html/swagger
+    environment:
+      SWAGGER_JSON: /usr/share/nginx/html/swagger/api-docs.json
+    networks:
+      - app-network
+  
+  selenium:
+    image: seleniarm/standalone-chromium:latest
+    container_name: laravel-selenium-chrome
+    ports:
+      - "4444:4444" # Порт Selenium WebDriver
+    shm_size: '2gb' # нужно для стабильности Chrome
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "1.5"
+    networks:
+      - app-network
+  
+  jenkins-main:
+    container_name: laravel-jenkins
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    privileged: true
+    restart: unless-stopped
+    hostname: "jenkins-main.example.ru"
+    ports:
+      - 8082:8080
+      - 50000:50000
+    volumes:
+      - "config:/var/jenkins_home"
+      - "docker_certs:/certs/client"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - app-network
+
+  maildev:
+    container_name:  laravel-maildev
+    image: maildev/maildev:2.1.0
+    hostname: "maildev.example.ru"
+    restart: unless-stopped
+    ports:
+      - 1080:1080 # maildev - web application 
+      - 1025:1025 # jenkins will use 'mail:1025' to send emails
+    networks:
+      - app-network
+
+volumes:
+  config:
+  docker_certs:
+
+networks:
+  app-network:
+    driver: bridge
