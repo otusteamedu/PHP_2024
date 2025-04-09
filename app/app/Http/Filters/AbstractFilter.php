@@ -35,7 +35,10 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * @param Builder $builder
      */
-    protected function before(Builder $builder) {}
+    protected function before(Builder $builder)
+    {
+        //empty
+    }
 
     /**
      * @param string $key

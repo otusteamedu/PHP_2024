@@ -15,7 +15,7 @@ class CourtFilter extends AbstractFilter
         return [
             self::NAME => [$this, 'name'],
             self::ADDRESS => [$this, 'address'],
-            self::CASS_REGION => [$this, 'cass_region'],
+            self::CASS_REGION => [$this, 'cassRegion'],
         ];
     }
 
@@ -29,7 +29,7 @@ class CourtFilter extends AbstractFilter
         $builder->where('address', 'ILIKE', "%{$value}%");
     }
 
-    public function cass_region(Builder $builder, $value)
+    public function cassRegion(Builder $builder, $value)
     {
         $builder->where('cass_region', $value);
     }

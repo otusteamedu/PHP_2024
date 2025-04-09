@@ -6,12 +6,12 @@ use App\Models\Court;
 
 class Service
 {
-    function store($data)
+    public function store($data)
     {
         Court::create($data);
     }
 
-    function update($court, $data)
+    public function update($court, $data)
     {
         $court->update($data);
     }
