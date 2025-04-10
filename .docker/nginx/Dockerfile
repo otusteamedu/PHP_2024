@@ -1,11 +1,3 @@
-FROM nginx:latest
+FROM nginx:alpine
 
-COPY ./hosts/otus.local.conf /etc/nginx/conf.d/otus.local.conf
-
-WORKDIR /var/www/html
-
-VOLUME /data
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+COPY nginx.conf /etc/nginx/nginx.conf

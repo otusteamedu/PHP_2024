@@ -2,66 +2,59 @@
 
 declare(strict_types=1);
 
-?>
-    <p>Redis check: <?= isRedisConnected() ? 'Success' : 'Error' ?></p>
-    <p>Memcached check: <?= isMemcachedConnected() ? 'Success' : 'Error' ?></p>
-    <p>MySQL check: <?= isMySQLConnected() ? 'Success' : 'Error' ?></p>
-<?php
+// Устанавливаем заголовки для обработки CORS
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
+header("HTTP/1.1");
 
-/**
- * @return bool
- */
-function isMemcachedConnected(): bool
-{
-    $memcached = new Memcached();
+// Проверяем, был ли отправлен POST-запрос
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Получаем данные из POST-запроса
+    $string = isset($_POST['string']) ? $_POST['string'] : '';
 
-    try {
-        $memcached->addServer(getenv('MEMCACHED_HOST'), (int)getenv('MEMCACHED_PORT'));
-    } catch (Throwable $e) {
-        echo $e->getMessage();
-        return false;
+    // Проверка на непустоту
+    if (empty($string)) {
+        http_response_code(400);
+        echo json_encode(["message" => "String cannot be empty."]);
+        exit;
     }
 
-    $memcached->set('key', 1);
+    // Функция для проверки корректности скобок
+    function areBracketsBalanced($str) {
+        // Инициализация счетчика
+        $count = 0;
 
-    return $memcached->getResultCode() === Memcached::RES_SUCCESS && !empty($memcached->get('key'));
-}
+        // Проходим по каждому символу в строке
+        for ($i = 0; $i < strlen($str); $i++) {
+            // Увеличиваем счетчик для открывающей скобки
+            if ($str[$i] == '(') {
+                $count++;
+            }
+            // Уменьшаем счетчик для закрывающей скобки
+            elseif ($str[$i] == ')') {
+                $count--;
+            }
 
-/**
- * @return bool
- */
-function isMySQLConnected(): bool
-{
-    $dsn = sprintf(
-        "mysql:host=%s;port=%s;dbname=%s",
-        getenv('MYSQL_HOST'),
-        getenv('MYSQL_PORT'),
-        getenv('MYSQL_DATABASE')
-    );
+            // Если счетчик становится отрицательным, значит закрывающие скобки идут первыми
+            if ($count < 0) {
+                return false;
+            }
+        }
 
-    try {
-        new PDO($dsn, getenv('MYSQL_USER'), getenv('MYSQL_PASSWORD'));
-    } catch (Throwable $e) {
-        echo $e->getMessage();
-        return false;
+        // Счетчик должен вернуться к нулю для сбалансирования
+        return $count === 0;
     }
 
-    return true;
-}
-
-/**
- * @return bool
- */
-function isRedisConnected(): bool
-{
-    $redis = new Redis();
-
-    try {
-        $redis->connect(getenv('REDIS_HOST'), (int)getenv('REDIS_PORT'));
-
-        return $redis->ping();
-    } catch (Throwable $e) {
-        echo $e->getMessage();
-        return false;
+    // Проверка на корректность пары скобок
+    if (!areBracketsBalanced($string)) {
+        http_response_code(400);
+        echo json_encode(["message" => "String is not balanced."]);
+    } else {
+        http_response_code(200);
+        echo json_encode(["message" => "All good!"]);
     }
+} else {
+    // Если метод запроса не POST
+    http_response_code(405);
+    echo json_encode(["message" => "Method Not Allowed."]);
 }
