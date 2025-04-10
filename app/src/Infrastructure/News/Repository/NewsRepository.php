@@ -2,72 +2,71 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Infrastructure\Youtube\Repository;
+namespace Valen\App\Infrastructure\News\Repository;
 
-use OpenSearch\Exception\NotFoundHttpException;
-use Valen\App\Domain\Youtube\Channel;
-use Valen\App\Domain\Youtube\ChannelRepositoryInterface;
+use Valen\App\Domain\News\Entity\News;
+use Valen\App\Domain\News\Repository\NewsRepositoryInterface;
+use Valen\App\Infrastructure\News\Mapper\NewsMapper;
 use Valen\App\Infrastructure\OpenSearch\OpenSearchClient;
-use Valen\App\Infrastructure\Youtube\Mapper\ChannelMapper;
 
-class ChannelRepository implements ChannelRepositoryInterface
+class NewsRepository implements NewsRepositoryInterface
 {
-    public const STRING INDEX_NAME = 'youtube_channels';
+    public const string INDEX_NAME = 'news';
 
     public function __construct(
         private readonly OpenSearchClient $client,
-        private readonly ChannelMapper $channelMapper
+        private readonly NewsMapper $newsMapper
     ) {
         $this->createIndexIfNotExists();
     }
 
-    #[\Override]
-    public function save(Channel $channel): void
+    public function save(News $news): void
     {
+        // TODO: Implement save() method.
         $params = [
             'index' => self::INDEX_NAME,
-            'id' => $channel->getChannelId(),
-            'body' => $this->channelMapper->toStorage($channel),
+            'id' => $video->getVideoId(),
+            'body' => $this->videoMapper->toStorage($video),
             'refresh' => true // Для немедленного обновления индекса
         ];
 
         $this->client->client->index($params);
     }
 
-    #[\Override]
-    public function delete(string $channelId): void
+    public function delete(int $newsId): void
     {
+        // TODO: Implement delete() method.
         $params = [
             'index' => self::INDEX_NAME,
-            'id' => $channelId,
+            'id' => $videoId,
             'refresh' => true,
         ];
 
-        // Проверяем, существует ли документ, прежде чем пытаться удалить его
         if ($this->client->client->exists($params)) {
             $this->client->client->delete($params);
         }
     }
-    #[\Override]
-    public function findById(string $channelId): ?Channel
+
+    public function findById(int $newsId): ?News
     {
+        // TODO: Implement findById() method.
         $params = [
             'index' => self::INDEX_NAME,
-            'id' => $channelId,
+            'id' => $videoId,
         ];
 
         try {
             $response = $this->client->client->get($params);
-            return $this->channelMapper->toDomain($response['_source']);
+            return $this->videoMapper->toDomain($response['_source']);
         } catch (NotFoundHttpException $e) {
             // Документ не найден
             return null;
         }
     }
 
-    #[\Override]
     public function findAll(int $limit = 100, int $offset = 0): array
     {
+        // TODO: Implement findAll() method.
         try {
             $response = $this->client->client->search([
                 'index' => self::INDEX_NAME,
@@ -101,12 +100,14 @@ class ChannelRepository implements ChannelRepositoryInterface
             $params['body'] = [
                 'mappings' => [
                     'properties' => [
+                        'videoId' => ['type' => 'keyword'],
                         'channelId' => ['type' => 'keyword'],
                         'title' => ['type' => 'text', 'fields' => ['keyword' => ['type' => 'keyword']]],
-                        'description' => ['type' => 'text'],
-                        'subscriberCount' => ['type' => 'integer'],
-                        'videoCount' => ['type' => 'integer'],
                         'publishedAt' => ['type' => 'date'],
+                        'viewCount' => ['type' => 'integer'],
+                        'likeCount' => ['type' => 'integer'],
+                        'dislikeCount' => ['type' => 'integer'],
+                        'commentCount' => ['type' => 'integer'],
                     ],
                 ],
                 'settings' => [

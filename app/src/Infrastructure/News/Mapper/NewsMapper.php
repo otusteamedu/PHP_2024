@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Valen\App\Infrastructure\Youtube\Mapper;
+namespace Valen\App\Infrastructure\News\Mapper;
 
-use Valen\App\Domain\Youtube\Channel;
+use Valen\App\Domain\News\Entity\News;
 
-final class ChannelMapper
+final class NewsMapper
 {
-    public function toStorage(Channel $channel): array
+    public function toStorage(News $channel): array
     {
         return [
             'id' => $channel->getChannelId(),
@@ -21,8 +21,8 @@ final class ChannelMapper
         ];
     }
 
-    public function toDomain(array $channel): Channel
+    public function toDomain(array $channel): News
     {
-        return Channel::createFromArray($channel);
+        return News::createFromArray($channel);
     }
 }
