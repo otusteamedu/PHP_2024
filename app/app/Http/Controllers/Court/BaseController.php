@@ -10,6 +10,6 @@ class BaseController extends Controller
     public function __construct(
         public Service $service
     ) {
-        //
+        // Empty
     }
 }

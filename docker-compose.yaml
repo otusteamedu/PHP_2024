@@ -5,7 +5,7 @@ services:
       context: ./docker/nginx
       dockerfile: Dockerfile
     image: nginx
-    container_name: laravel-nginx
+    container_name: otus-nginx
     volumes:
       - ./app:/app
       - ./logs/nginx:/var/log/nginx/
@@ -19,7 +19,7 @@ services:
       context: ./docker/php
       dockerfile: Dockerfile
     image: php
-    container_name: laravel-php
+    container_name: otus-php
     volumes:
        - ./app:/app
        - ./logs/php.log:/var/log/fpm-php.www.log
@@ -28,12 +28,15 @@ services:
       - app-network
   
   postgres:
-    container_name: laravel-postgres
+    container_name: otus-postgres
     image: postgres
     restart: always
     shm_size: 128mb
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SONAR_DB=sonarqube
+      - SONAR_USER=sonar
+      - SONAR_PASSWORD=sonar
     volumes:
       - ./:/code
     ports:
@@ -43,7 +46,7 @@ services:
   
   adminer:
     image: adminer
-    container_name: laravel-adminer
+    container_name: otus-adminer
     restart: always
     ports:
       - 8080:8080
@@ -52,7 +55,7 @@ services:
   
   swagger:
     image: swaggerapi/swagger-ui
-    container_name: laravel-swagger
+    container_name: otus-swagger
     restart: always
     platform: linux/amd64
     ports:
@@ -66,7 +69,7 @@ services:
   
   selenium:
     image: seleniarm/standalone-chromium:latest
-    container_name: laravel-selenium-chrome
+    container_name: otus-selenium-chrome
     ports:
       - "4444:4444" # Порт Selenium WebDriver
     shm_size: '2gb' # нужно для стабильности Chrome
@@ -79,7 +82,7 @@ services:
       - app-network
   
   jenkins-main:
-    container_name: laravel-jenkins
+    container_name: otus-jenkins
     build:
       context: .
       dockerfile: Dockerfile.jenkins
@@ -97,7 +100,7 @@ services:
       - app-network
 
   maildev:
-    container_name:  laravel-maildev
+    container_name:  otus-maildev
     image: maildev/maildev:2.1.0
     hostname: "maildev.example.ru"
     restart: unless-stopped
@@ -106,10 +109,31 @@ services:
       - 1025:1025 # jenkins will use 'mail:1025' to send emails
     networks:
       - app-network
+  
+  sonarqube:
+    image: sonarqube:community
+    container_name: otus-sonarqube
+    depends_on:
+      - postgres
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://otus-postgres:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - app-network
 
 volumes:
   config:
   docker_certs:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
 
 networks:
   app-network:
