@@ -8,16 +8,12 @@ use Valen\App\Domain\News\Entity\News;
 
 final class NewsMapper
 {
-    public function toStorage(News $channel): array
+    public function toStorage(News $news): array
     {
         return [
-            'id' => $channel->getChannelId(),
-            'channelId' => $channel->getChannelId(),
-            'title' => $channel->getTitle(),
-            'description' => $channel->getDescription(),
-            'subscriberCount' => $channel->getSubscriberCount(),
-            'videoCount' => $channel->getVideoCount(),
-            'publishedAt' => $channel->getPublishedAt()->format('c'),
+            'id' => $news->getId(),
+            'url' => $news->getUrl()->url,
+            'title' => $news->getTitle()->title
         ];
     }
 

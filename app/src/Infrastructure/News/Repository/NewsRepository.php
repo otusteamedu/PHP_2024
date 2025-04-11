@@ -26,7 +26,7 @@ class NewsRepository implements NewsRepositoryInterface
         $params = [
             'index' => self::INDEX_NAME,
             'id' => $video->getVideoId(),
-            'body' => $this->videoMapper->toStorage($video),
+            'body' => $this->newsMapper->toStorage($video),
             'refresh' => true // Для немедленного обновления индекса
         ];
 
@@ -57,7 +57,7 @@ class NewsRepository implements NewsRepositoryInterface
 
         try {
             $response = $this->client->client->get($params);
-            return $this->videoMapper->toDomain($response['_source']);
+            return $this->newsMapper->toDomain($response['_source']);
         } catch (NotFoundHttpException $e) {
             // Документ не найден
             return null;
@@ -80,7 +80,7 @@ class NewsRepository implements NewsRepositoryInterface
 
             $channels = [];
             foreach ($response['hits']['hits'] as $hit) {
-                $channels[] = $this->channelMapper->toDomain($hit['_source']);
+                $channels[] = $this->newsMapper->toDomain($hit['_source']);
             }
 
             return $channels;

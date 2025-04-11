@@ -16,6 +16,9 @@ class App
         $this->loadEnv();
         $this->loadDI();
 
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            echo 123;
+        }
     }
 
     private function loadEnv(): void
