@@ -15,7 +15,9 @@ RUN apt-get update && apt-get install -y \
         && docker-php-ext-enable redis \
         && pecl install memcached-3.2.0 \
         && docker-php-ext-enable memcached \
-        && docker-php-ext-install sockets
+        && docker-php-ext-install sockets \
+        && pecl install xdebug \
+        && docker-php-ext-enable xdebug
 
 COPY ./php.ini /usr/local/etc/php/conf.d/php-custom.ini
 
