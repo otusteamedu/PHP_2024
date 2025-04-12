@@ -1,0 +1,23 @@
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY" | base64 -d)
+  - mkdir -p ~/.ssh
+  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+deploy_server1:
+  stage: deploy
+  environment:
+    name: server1
+    url: $SERVER1
+  script:
+    - ssh $SSH_USER@$SERVER1 "sudo rm -rf /var/www/asyncbank &&
+      cd /var/www &&
+      git clone https://deploy_user:gldt-J9drijSQ1AqbySS8PMku@gitlab.com/sergey-shirykalov/symfony-lesson-content.git asyncbank &&
+      sudo chown www-data:www-data asyncbank -R &&
+      cd asyncbank &&
+      sh ./deploy.sh $SERVER1 $DATABASE_HOST $DATABASE_USER $DATABASE_PASSWORD $DATABASE_NAME $RABBITMQ_HOST $RABBITMQ_USER $RABBITMQ_PASSWORD"
+  only:
+    - main
