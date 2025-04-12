@@ -1,0 +1,7 @@
+-- Create a table
+CREATE TABLE IF NOT EXISTS news (
+    id SERIAL PRIMARY KEY,
+    url VARCHAR(1000) NOT NULL,
+    title VARCHAR(1000) NOT NULL,
+    date DATE NOT NULL
+);
