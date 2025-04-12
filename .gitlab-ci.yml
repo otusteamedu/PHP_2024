@@ -15,7 +15,7 @@ deploy_server1:
   script:
     - ssh $SSH_USER@$SERVER1 "sudo rm -rf /var/www/asyncbank &&
       cd /var/www &&
-      git clone https://deploy_user:gldt-J9drijSQ1AqbySS8PMku@gitlab.com/sergey-shirykalov/symfony-lesson-content.git asyncbank &&
+      git clone https://deploy_user:gldt-Tiz3p63nbMRVyytjRuzT@gitlab.com/sergey-shirykalov/otus-2025-hw21-async-bank.git asyncbank &&
       sudo chown www-data:www-data asyncbank -R &&
       cd asyncbank &&
       sh ./deploy.sh $SERVER1 $DATABASE_HOST $DATABASE_USER $DATABASE_PASSWORD $DATABASE_NAME $RABBITMQ_HOST $RABBITMQ_USER $RABBITMQ_PASSWORD"
