@@ -13,3 +13,11 @@ sudo -u www-data sed -i -- "s|%RABBITMQ_USER%|$7|g" .env
 sudo -u www-data sed -i -- "s|%RABBITMQ_PASSWORD%|$8|g" .env
 sudo -u www-data php artisan optimize
 sudo -u www-data php artisan migrate
+
+echo "🔍 Запуск unit-тестов..."
+sudo -u www-data ./vendor/bin/phpunit tests/Unit
+if [ $? -ne 0 ]; then
+  echo "❌ Unit-тесты не прошли! Деплой остановлен."
+  exit 1
+fi
+
