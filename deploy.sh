@@ -11,6 +11,7 @@ sudo -u www-data sed -i -- "s|%DATABASE_NAME%|$5|g" .env
 sudo -u www-data sed -i -- "s|%RABBITMQ_HOST%|$6|g" .env
 sudo -u www-data sed -i -- "s|%RABBITMQ_USER%|$7|g" .env
 sudo -u www-data sed -i -- "s|%RABBITMQ_PASSWORD%|$8|g" .env
+sudo -u www-data sed -i -- "s|%SERVER_NAME%|$1|g" .env
 sudo -u www-data php artisan optimize
 sudo -u www-data php artisan migrate
 
