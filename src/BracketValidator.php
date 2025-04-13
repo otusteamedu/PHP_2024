@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace App;
+
 /**
  * BracketValidator class to check if brackets are balanced.
  */

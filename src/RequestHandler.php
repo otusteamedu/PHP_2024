@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+namespace App;
+
+use App\BracketValidator;
+use App\ResponseFormatter;
+
 /**
  * RequestHandler class to handle incoming requests and validate brackets.
  */
@@ -48,7 +53,7 @@ class RequestHandler
             }
 
             // Get data from POST request
-            $string = isset($_POST['string']) ? $_POST['string'] : '';
+            $string = $_POST['string'] ?? '';
 
             // Check if string is empty
             if (empty($string)) {

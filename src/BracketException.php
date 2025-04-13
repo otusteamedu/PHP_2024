@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace App;
+
+use Exception;
+
 /**
  * BracketException class to handle exceptions related to bracket validation.
  */
