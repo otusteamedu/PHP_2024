@@ -42,7 +42,7 @@ services:
         soft: 65536 # Maximum number of open files for the opensearch user - set to at least 65536
         hard: 65536
     volumes:
-      - ./docker/opensearch:/usr/share/opensearch/data # Creates volume called opensearch-data1 and mounts it to the container
+      - opensearch-data:/usr/share/opensearch/data # Creates volume called opensearch-data and mounts it to the container
     ports:
       - "9200:9200" # REST API
       - "9600:9600" # Performance Analyzer
@@ -64,3 +64,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  opensearch-data:

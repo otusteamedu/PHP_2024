@@ -15,6 +15,8 @@ class Channel
     private int $subscriberCount;
     private int $videoCount;
     private DateTime $publishedAt;
+    private ?array $videos = null;
+    private ?VideoRepositoryInterface $videoRepository = null;
 
     public function __construct()
     {
@@ -78,6 +80,22 @@ class Channel
     public function getPublishedAt(): DateTime
     {
         return $this->publishedAt;
+    }
+
+    public function setVideoRepository(VideoRepositoryInterface $videoRepository): void
+    {
+        $this->videoRepository = $videoRepository;
+    }
+
+    public function getVideos(): array
+    {
+        if ($this->videos === null) {
+            if ($this->videoRepository === null) {
+                throw new \RuntimeException('Video repository is not set');
+            }
+            return $this->videos = $this->videoRepository->findByChannelId($this->channelId);
+        }
+        return $this->videos;
     }
 
     public static function createFromArray(array $data): Channel

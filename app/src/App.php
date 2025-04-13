@@ -97,7 +97,7 @@ class App
             $addChannelUseCase->execute($channel);
             $addChannelUseCase->execute($channel2);
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo $e->getMessage() . PHP_EOL;
         }
 
         try {
@@ -110,28 +110,19 @@ class App
         }
 
         try {
-            $deleteChannelUseCase = $this->container->get('deleteChannelUseCase');
-            // $deleteChannelUseCase->execute($channel->getChannelId());
+            $videos = $channel->getVideos();
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo $e->getMessage() . PHP_EOL;
         }
 
         try {
-            $getStatsUseCase = $this->container->get('getChannelStatsUseCase');
-            $stats = $getStatsUseCase->execute($channel->getChannelId());
+            $channel->setVideoRepository($this->container->get('videoRepository'));
+            $lazyLoadVideos = $channel->getVideos();
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo $e->getMessage() . PHP_EOL;
         }
 
-        try {
-            $getStatsUseCase = $this->container->get('getTopChannelsByLikesRatioUseCase');
-            $stats2 = $getStatsUseCase->execute(2);
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
-
-        print_r($stats);
-        print_r($stats2);
+        print_r($lazyLoadVideos);
 
         echo '</pre>';
     }
