@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  #контейнер с Nginx
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: dockerapp/nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./code:/data/mysite.local
+      - ./nginx/hosts/mysite.local.conf:/etc/nginx/sites-enabled/mysite.local.conf
+    networks:
+      - app-network
+
+  #контейнер с php
+  app:
+    build:
+      context: ./fpm
+      dockerfile: Dockerfile
+    image: dockerapp/php
+    container_name: app
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./code:/data/mysite.local
+      - ./fpm/php.ini:/usr/local/etc/php/conf.d/php-custom.ini
+    networks:
+      - app-network
+
+  #контейнер с rabbitmq
+  rabbitmq:
+    image: rabbitmq:3.7.5-management
+    working_dir: /app
+    hostname: rabbit-mq
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: pass
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
