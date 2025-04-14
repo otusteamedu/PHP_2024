@@ -9,7 +9,9 @@ class GenerateBaseProductUseCase
 {
     public function __construct(
         private readonly ProductHandlerInterface $productHandlerChain
-    ) {}
+    ) {
+        // Empty
+    }
 
     public function __invoke(string $type): ?Product
     {

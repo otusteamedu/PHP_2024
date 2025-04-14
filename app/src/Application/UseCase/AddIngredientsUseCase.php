@@ -9,7 +9,9 @@ class AddIngredientsUseCase
 {
     public function __construct(
         private IngredientDecoratorFactoryInterface $decoratorFactory,
-    ) {}
+    ) {
+        // Empty
+    }
 
     public function execute(Product $product, array $ingredients): Product
     {

@@ -8,7 +8,9 @@ abstract class BaseIngredientDecorator extends Product
 {
     public function __construct(
         protected Product $product
-    ) {}
+    ) {
+        // Empty
+    }
 
     public function getName(): string
     {

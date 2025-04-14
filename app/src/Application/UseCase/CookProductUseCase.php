@@ -9,7 +9,9 @@ class CookProductUseCase
 {
     public function __construct(
         private CookingStrategyInterface $strategy
-    ) {}
+    ) {
+        // Empty
+    }
 
     public function __invoke(Product $product): void
     {

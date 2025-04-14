@@ -10,7 +10,9 @@ class ProductStatusService
 {
     public function __construct(
         private ProductStatusNotifier $notifier
-    ) {}
+    ) {
+        // Empty
+    }
 
     public function changeStatus(Product $product, ProductStatus $status): void
     {
