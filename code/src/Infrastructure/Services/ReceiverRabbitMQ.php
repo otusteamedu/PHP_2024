@@ -11,7 +11,7 @@ class ReceiverRabbitMQ
     private string $queue = 'email_queue';
 
     public function __construct(){
-        $config = ROOT .'/config/amqpconfig.php';
+        $config = ROOT .'/config/config.php';
         include($config);
     }
 
