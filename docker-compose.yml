@@ -1,0 +1,50 @@
+services:
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www
+      - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8876:80"
+    depends_on:
+      - app
+    container_name: project_nginx
+
+  app:
+    build:
+      context: .
+      dockerfile: _docker/app/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+        - db
+    container_name: project_app
+
+  db:
+    image: mysql:8.0
+    restart: always
+    volumes:
+       - ./tmp/db:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: otuslaravel
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    container_name: project_db
+
+  elasticsearch:
+      image: elasticsearch:8.17.0
+      container_name: elasticsearch
+      ports:
+          - "9200:9200"
+      environment:
+          - xpack.security.enabled=false
+          - cluster.name=docker-cluster
+          - bootstrap.memory_lock=true
+          - discovery.type=single-node
+          - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      ulimits:
+          memlock:
+              soft: -1
+              hard: -1
