@@ -1,0 +1,38 @@
+
+services:
+  postgres:
+    image: postgres:15
+    ports:
+      - 15432:5432
+    container_name: 'postgresql'
+    restart: always
+    environment:
+      POSTGRES_DB: 'otus_hw8'
+      POSTGRES_USER: 'otus'
+      POSTGRES_PASSWORD: 'otus'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init:/docker-entrypoint-initdb.d
+    networks:
+      - postgres_network
+
+  # Optional: Add pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: 'pgadmin'
+    depends_on:
+      - postgres
+    ports:
+      - 5050:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - postgres_network
+
+volumes:
+  postgres_data:
+
+networks:
+  postgres_network:
+    driver: bridge
