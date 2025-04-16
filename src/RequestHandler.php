@@ -37,9 +37,9 @@ class RequestHandler
     /**
      * Handle the request and validate brackets.
      *
-     * @return void
+     * @return string
      */
-    public function handle(): void
+    public function handle(): string
     {
         // Set CORS headers
         header("Access-Control-Allow-Origin: *");
@@ -66,10 +66,10 @@ class RequestHandler
             }
 
             // Success response
-            $this->responseFormatter->sendSuccess(200, "All good!");
+            return $this->responseFormatter->sendSuccess(200, "All good!");
 
         } catch (BracketException $e) {
-            $this->responseFormatter->sendError($e->getCode(), $e->getMessage());
+            return $this->responseFormatter->sendError($e->getCode(), $e->getMessage());
         }
     }
 }

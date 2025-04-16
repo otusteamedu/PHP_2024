@@ -1,0 +1,13 @@
+{
+    "name": "otus/homework4",
+    "description": "Home work 4",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}

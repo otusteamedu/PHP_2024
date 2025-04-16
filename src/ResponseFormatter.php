@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use JetBrains\PhpStorm\NoReturn;
-
 /**
  * ResponseFormatter class to format and send responses.
  */
@@ -16,13 +14,12 @@ class ResponseFormatter
      *
      * @param int $statusCode HTTP status code
      * @param string $message Error message
-     * @return void
+     * @return string
      */
-    #[NoReturn] public function sendError(int $statusCode, string $message): void
+    public function sendError(int $statusCode, string $message): string
     {
         http_response_code($statusCode);
-        echo json_encode(["message" => $message]);
-        exit;
+        return json_encode(["message" => $message]);
     }
 
     /**
@@ -30,12 +27,11 @@ class ResponseFormatter
      *
      * @param int $statusCode HTTP status code
      * @param string $message Success message
-     * @return void
+     * @return string
      */
-    #[NoReturn] public function sendSuccess(int $statusCode, string $message): void
+    public function sendSuccess(int $statusCode, string $message): string
     {
         http_response_code($statusCode);
-        echo json_encode(["message" => $message]);
-        exit;
+        return json_encode(["message" => $message]);
     }
 }
