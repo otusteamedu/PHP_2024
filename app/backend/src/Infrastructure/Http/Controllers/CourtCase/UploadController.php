@@ -4,15 +4,12 @@ namespace AnatolyShilyaev\Backend\Infrastructure\Http\Controllers\CourtCase;
 
 use AnatolyShilyaev\Backend\Application\UseCase\GetAllCourtCases\GetAllCourtCasesUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\ParseCourtCases\ParseCourtCasesUseCase;
-use AnatolyShilyaev\Backend\Application\UseCase\UpdateCourtParseStatus\UpdateCourtParseStatusRequest;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateCourtParseStatus\UpdateCourtParseStatusUseCase;
-use AnatolyShilyaev\Backend\Application\UseCase\UpdateParsedCourtCase\UpdateParsedCourtCaseRequest;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateParsedCourtCase\UpdateParsedCourtCaseUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateParseStatus\UpdateParseStatusRequest;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateParseStatus\UpdateParseStatusUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\UploadCourtCases\UploadCourtCasesRequest;
 use AnatolyShilyaev\Backend\Application\UseCase\UploadCourtCases\UploadCourtCasesUseCase;
-
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace AnatolyShilyaev\Backend\Infrastructure\Queue;
+
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateCourtParseStatus\UpdateCourtParseStatusUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateParsedCourtCase\UpdateParsedCourtCaseUseCase;
 use AnatolyShilyaev\Backend\Infrastructure\Factory\CourtCaseFactory;
