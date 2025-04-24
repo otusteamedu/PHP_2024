@@ -12,12 +12,6 @@ class ParseCourtCasesUseCase
 {
     public function __invoke(string $url): array
     {
-        // $url = "https://avtozavodsky--nnov.sudrf.ru/modules.php?name=sud_delo&srv_num=2&name_op=case&case_id=255166987&case_uid=2e2fe5a9-6781-41da-9abc-12ff18ab89e2&delo_id=1540005";
-        // $html = file_get_contents($url);
-        // $html = mb_convert_encoding($html, 'UTF-8', 'Windows-1251');
-        // $html = preg_replace('/<meta.*charset=windows-1251.*>/i', '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">', $html);
-        // dump($html);
-        //
         $host = 'http://otus-selenium-chrome:4444/wd/hub'; // обращение к selenium в сети docker
         $options = new ChromeOptions();
         $options->addArguments([
