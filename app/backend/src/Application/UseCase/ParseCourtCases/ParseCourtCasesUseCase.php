@@ -7,7 +7,9 @@ class ParseCourtCasesUseCase
     public function __construct(
         private GetCourtCaseHtmlUseCase $htmlUseCase,
         private ParseCourtCaseFromHtmlUseCase $parserUseCase
-    ) {}
+    ) {
+        //empty
+    }
 
     public function __invoke(string $url): array
     {
