@@ -1,0 +1,196 @@
+services:
+  
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    image: nginx
+    container_name: otus-nginx
+    volumes:
+      - ./app/backend:/app
+      - ./app/frontend/build:/app/public/frontend
+      - ./logs/nginx:/var/log/nginx/
+    ports:
+      - 80:80
+    networks:
+      - app-network
+  
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    image: php
+    container_name: otus-php
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+       - ./app/backend:/app
+       - ./logs/php.log:/var/log/fpm-php.www.log
+       - ./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    restart: always
+    networks:
+      - app-network
+  
+  react:
+    build:
+      context: .
+      dockerfile: ./docker/react/Dockerfile
+    container_name: otus-react
+    image: react
+    restart: always
+    ports:
+      - "3000:3000" # Проброс порта для среды разработки
+    environment:
+      NODE_ENV: dev
+      AUTH_SERVICE_URL: http://nginx:80
+    volumes:
+      - ./app/frontend:/app
+      - /app/node_modules # это для того, чтобы node_modules не удалялись в контейнере
+    networks:
+      - app-network
+    command: ["npm", "start"]
+  
+  postgres:
+    container_name: otus-postgres
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - SONAR_DB=sonarqube
+      - SONAR_USER=sonar
+      - SONAR_PASSWORD=sonar
+    volumes:
+      - ./:/code
+    ports:
+      - 5432:5432
+    networks:
+      - app-network
+  
+  adminer:
+    image: adminer
+    container_name: otus-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+  
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: otus-swagger
+    restart: always
+    platform: linux/amd64
+    ports:
+      - 8081:8080
+    volumes:
+      - ./app/storage/api-docs:/usr/share/nginx/html/swagger
+    environment:
+      SWAGGER_JSON: /usr/share/nginx/html/swagger/api-docs.json
+    networks:
+      - app-network
+  
+  selenium:
+    image: seleniarm/standalone-chromium:latest
+    container_name: otus-selenium-chrome
+    ports:
+      - "4444:4444" # Порт Selenium WebDriver
+      - "7900:7900"
+    shm_size: '2gb' # нужно для стабильности Chrome
+    deploy:
+      resources:
+        limits:
+          memory: 0.5G
+          cpus: "0.8"
+    networks:
+      - app-network
+  
+  jenkins-main:
+    container_name: otus-jenkins
+    build:
+      context: ./docker/jenkins
+      dockerfile: Dockerfile
+    privileged: true
+    restart: unless-stopped
+    hostname: "jenkins-main.example.ru"
+    ports:
+      - 8082:8080
+      - 50000:50000
+    volumes:
+      - "config:/var/jenkins_home"
+      - "docker_certs:/certs/client"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - app-network
+
+  maildev:
+    container_name: otus-maildev
+    image: maildev/maildev:2.1.0
+    hostname: "maildev.example.ru"
+    restart: unless-stopped
+    ports:
+      - 1080:1080 # maildev - web application 
+      - 1025:1025 # jenkins will use 'mail:1025' to send emails
+    networks:
+      - app-network
+  
+  sonarqube:
+    image: sonarqube:community
+    container_name: otus-sonarqube
+    depends_on:
+      - postgres
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://otus-postgres:5432/sonarqube
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - app-network
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: otus-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"   # порт для приложений
+      - "15672:15672" # веб-интерфейс RabbitMQ
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: "-rabbit loopback_users []"
+    networks:
+      - app-network
+  
+  worker:
+    build:
+      context: .
+      dockerfile: ./docker/worker/Dockerfile
+    image: php-worker
+    container_name: otus-worker
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./app:/app
+      - ./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    depends_on:
+      - rabbitmq
+    command: ["/wait-for-it.sh", "rabbitmq:5672", "--", "php", "/app/backend/src/Infrastructure/Queue/QueueWorker.php"]
+    networks:
+      - app-network
+
+volumes:
+  config:
+  docker_certs:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+
+networks:
+  app-network:
+    driver: bridge
