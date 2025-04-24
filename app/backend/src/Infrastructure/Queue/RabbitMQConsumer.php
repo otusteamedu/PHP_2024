@@ -2,6 +2,8 @@
 
 namespace AnatolyShilyaev\Backend\Infrastructure\Queue;
 
+use AnatolyShilyaev\Backend\Application\UseCase\ParseCourtCases\GetCourtCaseHtmlUseCase;
+use AnatolyShilyaev\Backend\Application\UseCase\ParseCourtCases\ParseCourtCaseFromHtmlUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\ParseCourtCases\ParseCourtCasesUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateCourtParseStatus\UpdateCourtParseStatusRequest;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateCourtParseStatus\UpdateCourtParseStatusUseCase;
@@ -14,22 +16,21 @@ class RabbitMQConsumer
     private AMQPStreamConnection $connection;
     private ParseCourtCasesUseCase $parseCourtCasesUseCase;
 
+
     public function __construct(
         private UpdateParsedCourtCaseUseCase $updateParsedCourtCaseUseCase,
         private UpdateCourtParseStatusUseCase $updateCourtParseStatusUseCase,
+        private GetCourtCaseHtmlUseCase $getCourtCaseHtmlUseCase,
+        private ParseCourtCaseFromHtmlUseCase $parseCourtCaseFromHtmlUseCase,
     ) {
         $this->connection = new AMQPStreamConnection(
             'rabbitmq',
             5672,
             'guest',
             'guest',
-            // '/',              // Виртуальный хост RabbitMQ (по умолчанию "/")
-            // false,            // Включить TLS (если требуется безопасное соединение)
-            // true,            // Включить автоматическое восстановление соединений
-            // 3600              // Это не "время жизни соединения", а параметр `heartbeat`, если передать 0, это отключает heartbeat
         );
 
-        $this->parseCourtCasesUseCase = new ParseCourtCasesUseCase();
+        $this->parseCourtCasesUseCase = new ParseCourtCasesUseCase($this->getCourtCaseHtmlUseCase, $this->parseCourtCaseFromHtmlUseCase);
     }
 
     public function __invoke()

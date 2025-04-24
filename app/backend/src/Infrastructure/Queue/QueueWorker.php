@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AnatolyShilyaev\Backend\Infrastructure\Queue;
 
+use AnatolyShilyaev\Backend\Application\UseCase\ParseCourtCases\GetCourtCaseHtmlUseCase;
+use AnatolyShilyaev\Backend\Application\UseCase\ParseCourtCases\ParseCourtCaseFromHtmlUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateCourtParseStatus\UpdateCourtParseStatusUseCase;
 use AnatolyShilyaev\Backend\Application\UseCase\UpdateParsedCourtCase\UpdateParsedCourtCaseUseCase;
 use AnatolyShilyaev\Backend\Infrastructure\Factory\CourtCaseFactory;
@@ -31,6 +33,8 @@ class QueueWorker
 
     private UpdateParsedCourtCaseUseCase $updateParsedCourtCaseUseCase;
     private UpdateCourtParseStatusUseCase $updateCourtParseStatusUseCase;
+    private GetCourtCaseHtmlUseCase $getCourtCaseHtmlUseCase;
+    private ParseCourtCaseFromHtmlUseCase $parseCourtCaseFromHtmlUseCase;
 
     public function __construct()
     {
@@ -50,8 +54,15 @@ class QueueWorker
             $this->eventRepository
         );
         $this->updateCourtParseStatusUseCase = new UpdateCourtParseStatusUseCase($this->courtParseStatusFactory, $this->courtParseStatusRepository);
+        $this->getCourtCaseHtmlUseCase = new GetCourtCaseHtmlUseCase();
+        $this->parseCourtCaseFromHtmlUseCase = new ParseCourtCaseFromHtmlUseCase();
 
-        $this->consumer = new RabbitMQConsumer($this->updateParsedCourtCaseUseCase, $this->updateCourtParseStatusUseCase);
+        $this->consumer = new RabbitMQConsumer(
+            $this->updateParsedCourtCaseUseCase,
+            $this->updateCourtParseStatusUseCase,
+            $this->getCourtCaseHtmlUseCase,
+            $this->parseCourtCaseFromHtmlUseCase
+        );
     }
 
     public function __invoke(): void
