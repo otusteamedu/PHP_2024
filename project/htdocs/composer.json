@@ -1,0 +1,8 @@
+{
+    "name": "root/html",
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        }
+    }
+}
