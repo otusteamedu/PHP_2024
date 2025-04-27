@@ -1,6 +1,0 @@
-{
-  "require": {
-    "php-amqplib/php-amqplib": "^3.5",
-    "telegram-bot/api": "^2.3"
-  }
-}

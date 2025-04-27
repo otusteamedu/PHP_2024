@@ -1,8 +1,0 @@
-FROM rabbitmq:4.0.8-management
-
-ENV RABBITMQ_DEFAULT_USER=admin \
-    RABBITMQ_DEFAULT_PASS=secret
-
-COPY rabbitmq.conf /etc/rabbitmq/rabbitmq.conf
-# Запуск RabbitMQ
-CMD ["rabbitmq-server"]
