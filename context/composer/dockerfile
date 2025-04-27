@@ -1,0 +1,6 @@
+FROM composer:latest
+
+WORKDIR /var/www/html
+
+# Указываем точку входа (опционально, если вы хотите запускать composer по умолчанию)
+ENTRYPOINT ["composer"]
