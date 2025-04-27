@@ -1,22 +1,22 @@
 # Nginx + PHP + Composer + PostgresSQL + RabbitMQ в Docker
-Этот проект представляет собой окружение для разработки PHP-приложений с использованием **Docker, Nginx, PHP-FPM и Composer**.
+Этот проект представляет собой окружение для разработки PHP-приложений с использованием **Docker, Nginx, PHP-FPM и Composer, RabbitMQ**.
 
-## 📂 Структура проекта
+## 🛠 
 
-context/                  # Файлы конфигурации для контейнеров <BR>
-project/htdocs/           # Корневая папка проекта (PHP-код)
-
-## 🛠 Установка и запуск
 
   ```sh
-  docker-compose up --build
-  ```
-  ```sh
-  docker-compose run --rm composer install
-  -- docker-compose run --rm composer require some/package
+POST:http://localhost/enqueue
+{"data":"process me"}
+{"request_id":9}
   ```
 
+
   ```sh
-docker exec -it <container_name\or_id> bash
+GET:http://localhost/status/9
+{"status":"pending"}
   ```
+
+
+
+
 
