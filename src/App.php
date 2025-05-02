@@ -38,16 +38,38 @@ class App
      */
     public function run(): string
     {
-     // For demonstration purposes
-        $emails = [
-            'user@example.com',
-            'invalid-email',
-            'user@nonexistentdomain123456789.com',
-            'user@gmail.com'
-        ];
+        // Get email data from a request or configuration
+        $emails = $this->getEmailsFromRequest();
 
+        // Verify the emails
         $results = $this->controller->verifyEmails($emails);
 
+        // Return JSON response
+        header('Content-Type: application/json');
         return json_encode($results, JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Get emails from the request
+     *
+     * @return array<string>
+     */
+    private function getEmailsFromRequest(): array
+    {
+        // Parse email addresses from request parameters
+        // This is a simple example - you might want to get this from POST data
+        $emailParam = $_GET['emails'] ?? '';
+
+        if (empty($emailParam)) {
+            return [];
+        }
+
+        // If comma-separated string
+        if (is_string($emailParam)) {
+            return array_map('trim', explode(',', $emailParam));
+        }
+
+        // If array from request
+        return $emailParam;
     }
 }
