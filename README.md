@@ -2,11 +2,11 @@
 
 https://otus.ru/lessons/razrabotchik-php/?utm_source=github&utm_medium=free&utm_campaign=otus
 
-docker-compose up --build -d
+```docker-compose up --build -d
 docker compose exec -it app bash
 composer install
 php artisan migrate
-
+```
 ### Для того чтобы очереди начали обрабатываться, необходимо запустить процесс, используя следующую команду:
 ```
 php artisan queue:process   
