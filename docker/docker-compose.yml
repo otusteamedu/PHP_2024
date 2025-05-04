@@ -1,0 +1,60 @@
+services:
+  app:
+    build:
+      context: ./php-fpm
+      dockerfile: Dockerfile
+    image: otus/php-fpm
+    container_name: otus-php-fpm
+    volumes:
+      - ../code:/var/www/app.loc
+    networks:
+      - otus-network
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    image: otus/nginx
+    container_name: otus-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ../code:/var/www/app.loc
+    networks:
+      - otus-network
+
+  rabbitmq:
+    image: rabbitmq:3.7.5-management
+    working_dir: /app
+    hostname: rabbit-mq
+    container_name: 'otus-rabbit-mq'
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - otus-network
+
+  postgres:
+    build:
+      context: ./postgres
+      dockerfile: Dockerfile
+    image: otus/postgres
+    container_name: otus-postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres/dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "otus"
+      POSTGRES_USER: "otus"
+      POSTGRES_PASSWORD: "otus"
+    networks:
+      - otus-network
+
+
+networks:
+  otus-network:
+    driver: bridge
