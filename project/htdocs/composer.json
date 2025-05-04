@@ -1,0 +1,13 @@
+{
+  "name": "sbogdanov/php-socket-chat",
+  "description": "My application",
+  "type": "project",
+  "require": {
+    "php": "^7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  }
+}

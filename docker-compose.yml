@@ -1,0 +1,59 @@
+services:
+  nginx:
+    container_name: MyNginx
+    ports:
+      - "80:80"
+    build:
+      context: ./context/nginx
+      dockerfile: DockerFile
+    networks:
+      - devweb
+    volumes:
+      - ./project/htdocs/:/var/www/html/
+      - ./logs/nginx:/var/log/nginx/
+    depends_on:
+      - php
+
+  php:
+    container_name: MyPhp
+    build:
+      context: ./context/php
+      dockerfile: DockerFile
+    volumes:
+      - ./project/htdocs/:/var/www/html/
+      - ./logs/php.log:/var/log/fpm-php.www.log
+    networks:
+      - devweb
+
+  postgres:
+    container_name: MyPostgres
+    image: postgres:16
+    env_file:
+      - ./context/postgres/.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres_data:/var/lib/postgresql/data
+    networks:
+      - devweb
+
+  composer:
+    build:
+      context: ./context/composer
+      dockerfile: DockerFile
+    container_name: MyComposer
+    volumes:
+      - ./project/htdocs/:/var/www/html
+    networks:
+      - devweb
+    depends_on:
+      - php
+
+networks:
+  devweb:
+    name: devweb
+    driver: bridge
+
+volumes:
+  postgres_data:
+
