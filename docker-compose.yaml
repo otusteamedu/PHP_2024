@@ -12,7 +12,7 @@ services:
     ports:
       - 80:80
     networks:
-      - app-network
+      - app-network-14
   
   php:
     build:
@@ -25,7 +25,7 @@ services:
        - ./logs/php.log:/var/log/fpm-php.www.log
     restart: always
     networks:
-      - app-network
+      - app-network-14
   
   postgres:
     container_name: postgres
@@ -39,7 +39,7 @@ services:
     ports:
       - 5432:5432
     networks:
-      - app-network
+      - app-network-14
   
   adminer:
     image: adminer
@@ -47,8 +47,8 @@ services:
     ports:
       - 8080:8080
     networks:
-      - app-network
+      - app-network-14
 
 networks:
-  app-network:
+  app-network-14:
     driver: bridge

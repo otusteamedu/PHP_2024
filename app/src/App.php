@@ -54,6 +54,10 @@ class App
 
     public function __invoke(): void
     {
+        $this->router->add('/', function () {
+            print_r('$newsId');
+        });
+
         $this->router->add('/create', function () {
             $url = "https://saint-art.net/vozvrashhenie-shedevrovdva-korolevskih-konnyh-portreta-diego-velaskesa-vernulis-v-muzej-prado-posle-restavraczii/";
             $createNewsRequest = new CreateNewsRequest($url);
