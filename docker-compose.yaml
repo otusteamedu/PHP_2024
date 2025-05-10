@@ -20,9 +20,12 @@ services:
       dockerfile: Dockerfile
     image: php
     container_name: php
+    extra_hosts:
+      - host.docker.internal:host-gateway
     volumes:
        - ./app:/app
        - ./logs/php.log:/var/log/fpm-php.www.log
+       - ./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     restart: always
     networks:
       - app-network-14
