@@ -18,7 +18,7 @@ class NewsMapper
     public function __construct(
         private NewsFactory $factory
     ) {
-        $this->pdo = Connection::get()->connect();;
+        $this->pdo = Connection::get()->connect();
     }
 
     public function save(News $news): int
