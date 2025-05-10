@@ -14,12 +14,11 @@ use PDO;
 class NewsMapper
 {
     private PDO $pdo;
-    private NewsFactory $factory;
 
-    public function __construct(PDO $pdo)
-    {
-        $this->pdo = $pdo;
-        $this->factory = new NewsFactory();
+    public function __construct(
+        private NewsFactory $factory
+    ) {
+        $this->pdo = Connection::get()->connect();;
     }
 
     public function save(News $news): int
