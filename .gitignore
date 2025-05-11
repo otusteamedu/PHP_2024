@@ -3,3 +3,8 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+app/vendor
+logs
+.env
+/app/src/Infrastructure/Repository/database.ini
+app/.phpunit.cache
