@@ -10,12 +10,10 @@ use Anatolyshilyaev\Hw14\Domain\Repository\NewsRepositoryInterface;
 
 class NewsRepository implements NewsRepositoryInterface
 {
-    private NewsMapper $newsMapper;
-
-    public function __construct()
-    {
-        $pdo = Connection::get()->connect();
-        $this->newsMapper = new NewsMapper($pdo);
+    public function __construct(
+        private NewsMapper $newsMapper
+    ) {
+        // Empty constructor
     }
 
     /**

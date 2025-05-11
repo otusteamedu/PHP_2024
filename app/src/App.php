@@ -15,6 +15,7 @@ use Anatolyshilyaev\Hw14\Infrastructure\Factory\NewsFactory;
 use Anatolyshilyaev\Hw14\Infrastructure\Http\CreateNewsController;
 use Anatolyshilyaev\Hw14\Infrastructure\Http\FindAllNewsController;
 use Anatolyshilyaev\Hw14\Infrastructure\Http\GetReportNewsController;
+use Anatolyshilyaev\Hw14\Infrastructure\Repository\NewsMapper;
 use Anatolyshilyaev\Hw14\Infrastructure\Repository\NewsRepository;
 
 class App
@@ -23,6 +24,7 @@ class App
 
     private NewsFactory $newsFactory;
     private NewsParser $newsParser;
+    private NewsMapper $newsMapper;
     private NewsRepository $newsRepository;
     private ReportGenerator $reportGenerator;
 
@@ -41,7 +43,8 @@ class App
         $this->newsParser = new NewsParser();
         $this->reportGenerator = new ReportGenerator();
         $this->newsFactory = new NewsFactory();
-        $this->newsRepository = new NewsRepository();
+        $this->newsMapper = new NewsMapper($this->newsFactory);
+        $this->newsRepository = new NewsRepository($this->newsMapper);
 
         $this->createNews = new CreateNewsUseCase($this->newsFactory, $this->newsParser, $this->newsRepository);
         $this->findAllNews = new FindAllNewsUseCase($this->newsRepository);
