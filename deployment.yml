@@ -1,0 +1,46 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  DEPLOY_SERVER: "91.107.126.239"
+  DEPLOY_USER: "CICDrunner"
+  REPO_CONFIGS: "git@github.com:mitzury/bogdi-configs.git"
+  DOCKER_IMAGE: "my-app:$CI_COMMIT_REF_SLUG"
+
+build:
+  stage: build
+  script:
+    - echo "Building the application..."
+    - docker build -t $DOCKER_IMAGE .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $DOCKER_IMAGE
+
+deploy:
+  stage: deploy
+  environment:
+    name: production
+    url: http://bogdi.ru
+  before_script:
+    - mkdir -p configs
+    - git clone $REPO_CONFIGS configs
+  script:
+    - scp -o StrictHostKeyChecking=no -r configs/nginx.conf $DEPLOY_USER@$DEPLOY_SERVER:/tmp/nginx.conf
+    - ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_SERVER <<EOF
+        set -e
+        echo "Stopping old version..."
+        docker stop my-app || true
+        docker rm my-app || true
+        
+        echo "Pulling new version..."
+        docker pull $DOCKER_IMAGE
+        
+        echo "Starting new version..."
+        docker run -d --name my-app -p 8080:80 $DOCKER_IMAGE
+        
+        echo "Reloading Nginx..."
+        sudo cp /tmp/nginx.conf /etc/nginx/nginx.conf
+        sudo nginx -t && sudo nginx -s reload
+EOF
+  only:
+    - main
