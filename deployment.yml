@@ -28,19 +28,29 @@ deploy:
     - scp -o StrictHostKeyChecking=no -r configs/nginx.conf $DEPLOY_USER@$DEPLOY_SERVER:/tmp/nginx.conf
     - ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_SERVER <<EOF
         set -e
-        echo "Stopping old version..."
-        docker stop my-app || true
-        docker rm my-app || true
-        
+
+        CURRENT_CONTAINER=\$(docker ps --filter "name=my-app" --format "{{.Names}}" | head -n1)
+        NEW_CONTAINER="MyNginxNew"
+
         echo "Pulling new version..."
         docker pull $DOCKER_IMAGE
-        
-        echo "Starting new version..."
-        docker run -d --name my-app -p 8080:80 $DOCKER_IMAGE
-        
-        echo "Reloading Nginx..."
+
+        echo "Starting new version in the background..."
+        docker run -d --name \$NEW_CONTAINER -p 8081:80 $DOCKER_IMAGE
+
+        echo "Waiting for new container to be healthy..."
+        echo "Reloading Nginx to point to the new container..."
         sudo cp /tmp/nginx.conf /etc/nginx/nginx.conf
         sudo nginx -t && sudo nginx -s reload
+
+        echo "Stopping old container..."
+        if [ -n "\$CURRENT_CONTAINER" ]; then
+          docker stop \$CURRENT_CONTAINER
+          docker rm \$CURRENT_CONTAINER
+        fi
+
+        echo "Renaming new container to the main name..."
+        docker rename \$NEW_CONTAINER MyNginx
 EOF
   only:
     - main
