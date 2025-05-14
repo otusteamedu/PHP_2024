@@ -29,7 +29,7 @@ deploy:
     - ssh -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_SERVER <<EOF
         set -e
 
-        CURRENT_CONTAINER=\$(docker ps --filter "name=my-app" --format "{{.Names}}" | head -n1)
+        CURRENT_CONTAINER=\$(docker ps --filter "name=MyNginx" --format "{{.Names}}" | head -n1)
         NEW_CONTAINER="MyNginxNew"
 
         echo "Pulling new version..."
