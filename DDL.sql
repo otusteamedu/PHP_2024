@@ -1,0 +1,6 @@
+CREATE TABLE news (
+	id		SERIAL PRIMARY KEY,
+	title	VARCHAR(255) NOT NULL,
+	date	DATE NOT NULL,
+	url		TEXT NOT NULL
+);
