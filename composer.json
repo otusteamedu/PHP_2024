@@ -1,0 +1,13 @@
+{
+    "name": "restaurant/fast-food",
+    "description": "Fast food restaurant implementation with design patterns",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.1"
+    }
+}
