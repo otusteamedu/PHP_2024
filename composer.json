@@ -1,0 +1,5 @@
+{
+    "require": {
+        "vkomar/otus-composer-package": "^1.2"
+    }
+}
