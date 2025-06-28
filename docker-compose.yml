@@ -1,0 +1,114 @@
+version: '3'
+
+services:
+  nginx1:
+    build:
+      context: ./docker/nginx1
+      dockerfile: Dockerfile
+    image: myapp/nginx1
+    volumes:
+      - ./code/:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - app1
+
+  nginx2:
+    build:
+      context: ./docker/nginx2
+      dockerfile: Dockerfile
+    image: myapp/nginx2
+    volumes:
+      - ./code/:/data/mysite.local
+    networks:
+      - app-network
+    depends_on:
+      - app2
+
+  balancer:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    image: myapp/balancer
+    container_name: balancer
+    volumes:
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - nginx1
+      - nginx2
+    networks:
+      - app-network
+
+  app1:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: myapp/php1
+    container_name: app1
+    depends_on:
+      - redis
+      - mysql
+    env_file:
+      - .env
+    volumes:
+      - ./code/:/data/mysite.local
+    networks:
+      - app-network
+
+  app2:
+    build:
+      context: ./docker/fpm
+      dockerfile: Dockerfile
+    image: myapp/php2
+    container_name: app2
+    depends_on:
+      - redis
+      - mysql
+    env_file:
+      - .env
+    volumes:
+      - ./code/:/data/mysite.local
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:5.7.22
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - app-network
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_USER=${REDIS_USER}
+      - REDIS_USER_PASSWORD=${REDIS_USER_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data/mysite.local
+    networks:
+      - app-network
+
+volumes:
+  redis:
+  mysql:
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
