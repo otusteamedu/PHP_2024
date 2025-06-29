@@ -1,40 +1,23 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-    echo 'Method Not Allowed';
-    return;
-}
+require 'Validation.php';
 
 $string = $_POST['string'] ?? '';
-if ($string === '') {
-    http_response_code(400);
-    echo 'Empty string';
-    return;
-}
 
-$stack = [];
-foreach (mb_str_split($string) as $char) {
-    if ($char === '(') {
-        $stack[] = $char;
-    } elseif ($char === ')') {
-        if (empty($stack)) {
-            http_response_code(400);
-            echo "Все плохо";
-            return;
-        }
-        array_pop($stack);
-    }
-}
+$validation = new StringValidation();
 
-if (empty($stack)) {
-    http_response_code(200);
-    echo 'Все хорошо';
-} else {
+header('Content-Type: application/json');
+try {
+    echo $validation->checkString($string);
+} catch (\Exception $exception) {
+
     http_response_code(400);
-    echo 'Все плохо';
+    echo json_encode([
+        'status' => 'ERROR',
+        'message' => $exception->getMessage(),
+        'code' => 400,
+    ]);
 }
-return;
 
 /*
 echo "Привет, Otus!<br>".date("Y-m-d H:i:s")."<br><br>";
