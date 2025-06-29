@@ -1,4 +1,5 @@
 <?php
+
 require 'StringValidation.php';
 
 $string = $_POST['string'] ?? '';
@@ -9,7 +10,6 @@ header('Content-Type: application/json');
 try {
     echo $validation->checkString($string);
 } catch (\Exception $exception) {
-
     http_response_code(400);
     echo json_encode([
         'status' => 'ERROR',
