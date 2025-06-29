@@ -1,10 +1,9 @@
 <?php
-
-require 'Validation.php';
+require 'StringValidation.php';
 
 $string = $_POST['string'] ?? '';
 
-$validation = new StringValidation();
+$validation = new VKomar\StringValidation();
 
 header('Content-Type: application/json');
 try {
