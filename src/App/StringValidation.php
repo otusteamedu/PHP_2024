@@ -71,7 +71,6 @@ class StringValidation
                 throw new Exception('All bad');
             }
             $this->response('All good', 200, 'OK');
-
         } catch (\Exception $exception) {
             $this->response($exception->getMessage());
         }
