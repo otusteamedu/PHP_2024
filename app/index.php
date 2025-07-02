@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/code/vendor/autoload.php';
 
-use VKomar\App\StringValidation;
+use VKomar\StringValidation;
 
 $validation = new StringValidation();
 $validation->checkString();

@@ -1,6 +1,6 @@
 <?php
 
-namespace VKomar\App;
+namespace VKomar;
 
 use Exception;
 

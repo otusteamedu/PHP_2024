@@ -7,7 +7,8 @@ services:
       dockerfile: Dockerfile
     image: myapp/nginx1
     volumes:
-      - ./code/:/data/mysite.local
+      - ./code/:/data/mysite.local/code
+      - ./app/:/data/mysite.local
     networks:
       - app-network
     depends_on:
@@ -19,7 +20,8 @@ services:
       dockerfile: Dockerfile
     image: myapp/nginx2
     volumes:
-      - ./code/:/data/mysite.local
+      - ./code/:/data/mysite.local/code
+      - ./app/:/data/mysite.local
     networks:
       - app-network
     depends_on:
@@ -53,7 +55,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./code/:/data/mysite.local
+      - ./code/:/data/mysite.local/code
+      - ./app/:/data/mysite.local
     networks:
       - app-network
 
@@ -69,7 +72,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./code/:/data/mysite.local
+      - ./code/:/data/mysite.local/code
+      - ./app/:/data/mysite.local
     networks:
       - app-network
 
