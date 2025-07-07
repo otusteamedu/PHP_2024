@@ -1,5 +1,5 @@
 insert into films
-(`name`, `description`, `release_date`, `timing`)
+    (`name`, `description`, `release_date`, `timing`)
 VALUES ('Дюна: Часть вторая',
         'Герцог Пол Атрейдес присоединяется к фрименам, чтобы стать Муад Дибом, одновременно пытаясь остановить наступление войны.',
         '2024-03-01', 166),
@@ -17,13 +17,13 @@ VALUES ('Дюна: Часть вторая',
         '2025-04-22', 108);
 
 insert into rooms
-(`name`, `capacity`)
+    (`name`, `capacity`)
 VALUES ('Красный зал', 20),
        ('Синий зал', 42),
        ('Зеленый зал', 80);
 
 insert into seats
-(room_id, row, number)
+    (room_id, row, number)
 VALUES (1, 1, 1),
        (1, 1, 2),
        (1, 1, 3),
@@ -46,7 +46,7 @@ VALUES (1, 1, 1),
        (1, 4, 5);
 
 insert into seats
-(room_id, row, number)
+    (room_id, row, number)
 VALUES (2, 1, 1),
        (2, 1, 2),
        (2, 1, 3),
@@ -91,7 +91,7 @@ VALUES (2, 1, 1),
        (2, 6, 7);
 
 insert into seats
-(room_id, row, number)
+    (room_id, row, number)
 VALUES (3, 1, 1),
        (3, 1, 2),
        (3, 1, 3),
@@ -174,7 +174,7 @@ VALUES (3, 1, 1),
        (3, 8, 10);
 
 insert into sessions
-(datetime, price, film_id, room_id)
+    (datetime, price, film_id, room_id)
 VALUES ('2025-07-11 10:00:00', 500, 4, 1),
        ('2025-07-11 14:00:00', 600, 3, 1),
        ('2025-07-11 18:00:00', 700, 2, 1),
@@ -219,28 +219,27 @@ VALUES ('ivanov1@example.com', '+79000000001', 'Иванов', 'Иван'),
        ('lebedeva10@example.com', '+79000000010', 'Лебедева', 'Наталья');
 
 insert into orders
-(user_id, session_id, seat_id)
-VALUES
-    (1, 1, 6),
-    (1, 1, 7),
-    (1, 1, 8),
-    (1, 1, 9),
-    (1, 1, 10),
-    (2, 6, 40),
-    (2, 6, 41),
-    (5, 24, 106),
-    (5, 24, 107),
-    (5, 24, 108),
-    (7, 24, 97),
-    (7, 24, 98);
+    (user_id, session_id, seat_id, price)
+VALUES (1, 1, 6, (SELECT price FROM sessions WHERE id = 1)),
+       (1, 1, 7, (SELECT price FROM sessions WHERE id = 1)),
+       (1, 1, 8, (SELECT price FROM sessions WHERE id = 1)),
+       (1, 1, 9, (SELECT price FROM sessions WHERE id = 1)),
+       (1, 1, 10, (SELECT price FROM sessions WHERE id = 1)),
+       (2, 6, 40, (SELECT price FROM sessions WHERE id = 6)),
+       (2, 6, 41, (SELECT price FROM sessions WHERE id = 6)),
+       (5, 24, 106, (SELECT price FROM sessions WHERE id = 24)),
+       (5, 24, 107, (SELECT price FROM sessions WHERE id = 24)),
+       (5, 24, 108, (SELECT price FROM sessions WHERE id = 24)),
+       (7, 24, 97, (SELECT price FROM sessions WHERE id = 24)),
+       (7, 24, 98, (SELECT price FROM sessions WHERE id = 24));
 
 
 /* Самый прибыльный фильм */
-select f.name, sum(s.price) as total_sum
+select f.name, sum(o.price) as total_sum
 from orders o
          join sessions s on o.session_id = s.id
          join films f on s.film_id = f.id
-group by f.name
+group by f.id
 order by total_sum DESC
-    limit 1
+limit 1
 ;

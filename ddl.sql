@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `rooms`
     `capacity` INT         NOT NULL,
     PRIMARY KEY (`id`)
 ) CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;;
+  COLLATE utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table `users`
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS users
     UNIQUE INDEX `email_UNIQUE` (`email` ASC),
     UNIQUE INDEX `phone_UNIQUE` (`phone` ASC)
 ) CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;;
+  COLLATE utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table `films`
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `films`
     `timing`       INT          NOT NULL,
     PRIMARY KEY (`id`)
 ) CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;;
+  COLLATE utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------
 -- Table `sessions`
@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS `orders`
     `user_id`    INT NOT NULL,
     `session_id` INT NOT NULL,
     `seat_id`    INT NOT NULL,
+    `price`      INT NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `user_id_idx` (`user_id` ASC),
     INDEX `seat_id_idx` (`seat_id` ASC),
